@@ -1,0 +1,2932 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="FieldSet.img">
+	<imgdir name="KerningPQ">
+	</imgdir>
+	<imgdir name="easter_2016">
+		<int name="0" value="109010000"/>
+		<int name="1" value="109010100"/>
+		<int name="2" value="109010101"/>
+		<int name="3" value="109010102"/>
+		<int name="4" value="109010103"/>
+		<int name="5" value="109010104"/>
+		<int name="6" value="109010105"/>
+		<int name="7" value="109010106"/>
+		<int name="8" value="109010107"/>
+		<int name="9" value="109010108"/>
+		<int name="10" value="109010109"/>
+		<int name="11" value="109010110"/>
+		<int name="12" value="109010200"/>
+		<int name="13" value="109010201"/>
+		<int name="14" value="109010202"/>
+		<int name="15" value="109010203"/>
+		<int name="16" value="109010204"/>
+		<int name="17" value="109010205"/>
+		<int name="18" value="109010206"/>
+		<imgdir name="party">
+			<int name="onlyWithParty" value="1"/>
+			<int name="checkPartyOut" value="1"/>
+			<int name="memberMin" value="4"/>
+			<int name="memberMax" value="6"/>
+			<int name="levelMin" value="0"/>
+			<int name="levelMax" value="200"/>
+		</imgdir>
+		<imgdir name="event">
+
+		</imgdir>
+		<int name="timeOut" value="600"/>
+	</imgdir>
+  <imgdir name="npq1">
+	<int name="0" value="889100001"/>
+	<imgdir name="party">
+		<int name="onlyWithParty" value="1"/>
+		<int name="checkPartyOut" value="1"/>
+		<int name="memberMin" value="3"/>
+		<int name="memberMax" value="6"/>
+		<int name="levelMin" value="10"/>
+		<int name="levelMax" value="40"/>
+	 </imgdir>
+	<imgdir name="event">
+		
+	</imgdir>
+	<int name="timeOut" value="600"/>
+  </imgdir>
+  <imgdir name="npq2">
+	<int name="0" value="889100001"/>
+	<imgdir name="party">
+		<int name="onlyWithParty" value="1"/>
+		<int name="checkPartyOut" value="1"/>
+		<int name="memberMin" value="3"/>
+		<int name="memberMax" value="6"/>
+		<int name="levelMin" value="41"/>
+		<int name="levelMax" value="100"/>
+	 </imgdir>
+	<imgdir name="event">
+		
+	</imgdir>
+	<int name="timeOut" value="600"/>
+  </imgdir>
+  <imgdir name="npq3">
+	<int name="0" value="889100001"/>
+	<imgdir name="party">
+		<int name="onlyWithParty" value="1"/>
+		<int name="checkPartyOut" value="1"/>
+		<int name="memberMin" value="1"/>
+		<int name="memberMax" value="6"/>
+		<int name="levelMin" value="101"/>
+		<int name="levelMax" value="200"/>
+	 </imgdir>
+	<imgdir name="event">
+		
+	</imgdir>
+	<int name="timeOut" value="600"/>
+  </imgdir>
+  <imgdir name="hw2015_EXTRA_LUDI">
+	<int name="0" value="809050000"/>
+	<imgdir name="party">
+		<int name="onlyWithParty" value="0"/>
+		<int name="checkPartyOut" value="1"/>
+		<int name="memberMin" value="1"/>
+		<int name="memberMax" value="1"/>
+		<int name="levelMin" value="0"/>
+		<int name="levelMax" value="200"/>
+	 </imgdir>
+	<imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="1"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="Elimine as bruxas para passar"/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="10"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="[IMPORTANTE] Ao terminar, fale com o NPC para sair da sala e valir a contagem de monstros"/>
+		</imgdir>
+	</imgdir>
+	<int name="timeOut" value="70"/>
+  </imgdir>
+  <imgdir name="hw2015_30">
+	<int name="0" value="682010100"/>
+	<imgdir name="party">
+		<int name="onlyWithParty" value="0"/>
+		<int name="checkPartyOut" value="1"/>
+		<int name="memberMin" value="1"/>
+		<int name="memberMax" value="1"/>
+		<int name="levelMin" value="0"/>
+		<int name="levelMax" value="200"/>
+	 </imgdir>
+	<imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="1"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="Elimine a Olivia e pegue a boneca com ela"/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="115"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="Entregue a boneca para o túmulo"/>
+		</imgdir>
+	</imgdir>
+	<int name="timeOut" value="120"/>
+  </imgdir>
+  
+  <imgdir name="hw2015_70">
+	<int name="0" value="682010101"/>
+	<imgdir name="party">
+		<int name="onlyWithParty" value="0"/>
+		<int name="checkPartyOut" value="1"/>
+		<int name="memberMin" value="1"/>
+		<int name="memberMax" value="1"/>
+		<int name="levelMin" value="0"/>
+		<int name="levelMax" value="200"/>
+	 </imgdir>
+	<imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="1"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="Elimine a Olivia e pegue a boneca com ela"/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="115"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="Entregue a boneca para o túmulo"/>
+		</imgdir>
+	</imgdir>
+	<int name="timeOut" value="120"/>
+  </imgdir>
+  
+  <imgdir name="hw2015_120">
+	<int name="0" value="682010102"/>
+	<imgdir name="party">
+		<int name="onlyWithParty" value="0"/>
+		<int name="checkPartyOut" value="1"/>
+		<int name="memberMin" value="1"/>
+		<int name="memberMax" value="1"/>
+		<int name="levelMin" value="0"/>
+		<int name="levelMax" value="200"/>
+	 </imgdir>
+	<imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="1"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="Elimine a Olivia e pegue a boneca com ela"/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="115"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="Entregue a boneca para o túmulo"/>
+		</imgdir>
+	</imgdir>
+	<int name="timeOut" value="120"/>
+  </imgdir>
+  <imgdir name="Party1">
+	 <int name="0" value="103000800"/>
+	 <int name="1" value="103000801"/>
+	 <int name="2" value="103000802"/>
+	 <int name="3" value="103000803"/>
+	 <int name="4" value="103000804"/>
+	 <int name="5" value="103000805"/>
+	 <int name="timeOut" value="1800"/>
+	 <imgdir name="party">
+		<int name="onlyWithParty" value="1"/>
+		<int name="checkPartyOut" value="1"/>
+		<int name="memberMin" value="4"/>
+		<int name="memberMax" value="6"/>
+		<int name="levelMin" value="20"/>
+		<int name="levelMax" value="200"/>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="ThirdJob1">
+	 <int name="0" value="108010300"/>
+	 <int name="1" value="108010301"/>
+	 <int name="timeOut" value="1200"/>
+  </imgdir>
+  <imgdir name="ThirdJob2">
+	 <int name="0" value="108010200"/>
+	 <int name="1" value="108010201"/>
+	 <int name="timeOut" value="1200"/>
+  </imgdir>
+  <imgdir name="ThirdJob3">
+	 <int name="0" value="108010100"/>
+	 <int name="1" value="108010101"/>
+	 <int name="timeOut" value="1200"/>
+  </imgdir>
+  <imgdir name="ThirdJob4">
+	 <int name="0" value="108010400"/>
+	 <int name="1" value="108010401"/>
+	 <int name="timeOut" value="1200"/>
+  </imgdir>
+  <imgdir name="Party2">
+	 <int name="timeOut" value="1800"/>
+	 <int name="shuffle" value="1"/>
+	 <int name="0" value="280010000"/>
+	 <int name="1" value="280010010"/>
+	 <int name="2" value="280010011"/>
+	 <int name="3" value="280010020"/>
+	 <int name="4" value="280010030"/>
+	 <int name="5" value="280010031"/>
+	 <int name="6" value="280010040"/>
+	 <int name="7" value="280010041"/>
+	 <int name="8" value="280010050"/>
+	 <int name="9" value="280010060"/>
+	 <int name="10" value="280010070"/>
+	 <int name="11" value="280010071"/>
+	 <int name="12" value="280010080"/>
+	 <int name="13" value="280010081"/>
+	 <int name="14" value="280010090"/>
+	 <int name="15" value="280010091"/>
+	 <int name="16" value="280010100"/>
+	 <int name="17" value="280010101"/>
+	 <int name="18" value="280010110"/>
+	 <int name="19" value="280010120"/>
+	 <int name="20" value="280010130"/>
+	 <int name="21" value="280010140"/>
+	 <int name="22" value="280010150"/>
+	 <int name="23" value="280011000"/>
+	 <int name="24" value="280011001"/>
+	 <int name="25" value="280011002"/>
+	 <int name="26" value="280011003"/>
+	 <int name="27" value="280011004"/>
+	 <int name="28" value="280011005"/>
+	 <int name="29" value="280011006"/>
+  </imgdir>
+  <imgdir name="ZakumBoss">
+	 <int name="0" value="211042300"/>
+	 <int name="1" value="280030000"/>
+	 <imgdir name="action">
+		<imgdir name="1">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="5"/>
+				 <int name="0" value="1"/>
+				 <string name="1" value="Bgm06/FinalFight"/>
+			  </imgdir>
+			  <int name="boss" value="1"/>
+		   </imgdir>
+		   <imgdir name="1">
+			  <imgdir name="info">
+				 <int name="type" value="4"/>
+				 <string name="0" value="boss"/>
+				 <string name="1" value="yes"/>
+			  </imgdir>
+			  <int name="boss" value="1"/>
+		   </imgdir>
+		   <imgdir name="2">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="0"/>
+				 <string name="1" value="gate"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="boss" value="1"/>
+		   </imgdir>
+		   <imgdir name="3">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="0"/>
+				 <string name="1" value="gate"/>
+				 <int name="2" value="0"/>
+			  </imgdir>
+			  <int name="boss" value="0"/>
+		   </imgdir>
+		</imgdir>
+	 </imgdir>
+	 <imgdir name="unaffected">
+		<int name="0" value="1"/>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="ZakumEnter">
+	 <int name="0" value="211042400"/>
+	 <int name="manualstart" value="1"/>
+	 <int name="endfieldset" value="1"/>
+	 <int name="timeOut" value="300"/>
+  </imgdir>
+  <imgdir name="Event1">
+	 <int name="0" value="109030001"/>
+	 <int name="1" value="109030002"/>
+	 <int name="2" value="109030003"/>
+	 <string name="script" value="event_master"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="0"/>
+		   <int name="action" value="2"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="join00"/>
+		   <int name="2" value="1"/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="0"/>
+		   <int name="action" value="1"/>
+		   <int name="0" value="360"/>
+		</imgdir>
+		<imgdir name="2">
+		   <int name="timeAfter" value="1"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="The portal has now opened. Press the up arrow key at the portal to enter."/>
+		</imgdir>
+		<imgdir name="3">
+		   <int name="timeAfter" value="1"/>
+		   <int name="action" value="1"/>
+		   <int name="0" value="0"/>
+		</imgdir>
+		<imgdir name="4">
+		   <int name="timeAfter" value="30"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="Ola Ola consists of 3 levels of stage, and there&apos;s only one portal that&apos;ll take you to the next level. Other portals are either not open, or will take you to a strange place, so you need to be careful choosing the right portal."/>
+		</imgdir>
+		<imgdir name="5">
+		   <int name="timeAfter" value="60"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="Please remember the fake portals; that way you won&apos;t have to go through it again. Good luck!"/>
+		</imgdir>
+		<imgdir name="6">
+		   <int name="timeAfter" value="90"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="Everyone that clears Ola Ola on time wil be given an item, regardless of the order of finish, so just relax, take your time, and select the correct portals."/>
+		</imgdir>
+		<imgdir name="7">
+		   <int name="timeAfter" value="120"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="The number of portals will increase as you move up the level."/>
+		</imgdir>
+		<imgdir name="8">
+		   <int name="timeAfter" value="180"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="We&apos;re halfway through the time-limit. Please carefully choose the correct portal."/>
+		</imgdir>
+		<imgdir name="9">
+		   <int name="timeAfter" value="240"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="You have 2 minutes left. If you&apos;re on level 1, then please hurry!!"/>
+		</imgdir>
+		<imgdir name="10">
+		   <int name="timeAfter" value="300"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="One minute. 1 minute"/>
+		</imgdir>
+		<imgdir name="11">
+		   <int name="timeAfter" value="350"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="You have 10 sec. left. Those of you unable to beat the game, we hope you beat it next time! Great job, everyone!! See you later~"/>
+		</imgdir>
+		<imgdir name="12">
+		   <int name="timeAfter" value="361"/>
+		   <int name="action" value="4"/>
+		</imgdir>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="Event2">
+	 <int name="0" value="109030101"/>
+	 <int name="1" value="109030102"/>
+	 <int name="2" value="109030103"/>
+	 <uol name="event" value="../Event1/event"/>
+  </imgdir>
+  <imgdir name="Event3">
+	 <int name="0" value="109030201"/>
+	 <int name="1" value="109030202"/>
+	 <int name="2" value="109030203"/>
+	 <uol name="event" value="../Event1/event"/>
+  </imgdir>
+  <imgdir name="Event4">
+	 <int name="0" value="109030301"/>
+	 <int name="1" value="109030302"/>
+	 <int name="2" value="109030303"/>
+	 <uol name="event" value="../Event1/event"/>
+  </imgdir>
+  <imgdir name="Event5">
+	 <int name="0" value="109030401"/>
+	 <int name="1" value="109030402"/>
+	 <int name="2" value="109030403"/>
+	 <uol name="event" value="../Event1/event"/>
+  </imgdir>
+  <imgdir name="Event6">
+	 <int name="0" value="109040000"/>
+	 <int name="1" value="109040001"/>
+	 <int name="2" value="109040002"/>
+	 <int name="3" value="109040003"/>
+	 <int name="4" value="109040004"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="0"/>
+		   <int name="action" value="2"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="join00"/>
+		   <int name="2" value="1"/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="0"/>
+		   <int name="action" value="1"/>
+		   <int name="0" value="900"/>
+		</imgdir>
+		<imgdir name="2">
+		   <int name="timeAfter" value="1"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="The portal has now opened. Press the up arrow key at the portal to enter."/>
+		</imgdir>
+		<imgdir name="3">
+		   <int name="timeAfter" value="1"/>
+		   <int name="action" value="1"/>
+		   <int name="0" value="0"/>
+		</imgdir>
+		<imgdir name="4">
+		   <int name="timeAfter" value="30"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="[MapleStory Physical Fitness Test] consists of 4 stages, and if you happen to die during the game, you&apos;ll be eliminated from the game, so please be careful of that."/>
+		</imgdir>
+		<imgdir name="5">
+		   <int name="timeAfter" value="60"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="There may be a heavy lag due to many users being at stage 1 all at once. It won&apos;t be difficult, so please make sure not to fall down because of heavy lag."/>
+		</imgdir>
+		<imgdir name="6">
+		   <int name="timeAfter" value="120"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="Everyone that clears [The Maple Physical Fitness Test] on time will be given an item, regardless of the order of finish, so just relax, take your time, and clear the four stages."/>
+		</imgdir>
+		<imgdir name="7">
+		   <int name="timeAfter" value="200"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="Please remember that if you die during the event, you&apos;ll be eliminated from the game. You still have plenty of time left, so either take a potion or recover HP first before moving on."/>
+		</imgdir>
+		<imgdir name="8">
+		   <int name="timeAfter" value="240"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="The 2nd stage offers monkeys throwing bananas. Please make sure to avoid them by moving along at just the right timing."/>
+		</imgdir>
+		<imgdir name="9">
+		   <int name="timeAfter" value="300"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="The most important thing you&apos;ll need to know to avoid the bananas thrown by the monkeys is &quot;Timing.&quot; Timing is everything in this!"/>
+		</imgdir>
+		<imgdir name="10">
+		   <int name="timeAfter" value="400"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="Please remember that if you die during the event, you&apos;ll be eliminated from the game. If you&apos;re running out of HP, either take a potion or recover HP first before moving on."/>
+		</imgdir>
+		<imgdir name="11">
+		   <int name="timeAfter" value="540"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="For those of you with heavy lags, please make sure to move slowly to avoid falling all the way down because of lags."/>
+		</imgdir>
+		<imgdir name="12">
+		   <int name="timeAfter" value="600"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="The 3rd stage offers traps where you may see them, but you won&apos;t be able step on them. Please be careful of them as you make your way up."/>
+		</imgdir>
+		<imgdir name="13">
+		   <int name="timeAfter" value="660"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="The 4th stage is the last one for [The Maple Physical Fitness Test]. Please don&apos;t give up at the last minute and try your best. The reward is waiting for you at the very top!"/>
+		</imgdir>
+		<imgdir name="14">
+		   <int name="timeAfter" value="800"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="Alright, you don&apos;t have much time remaining. Please hurry up a little!"/>
+		</imgdir>
+		<imgdir name="15">
+		   <int name="timeAfter" value="890"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="You have 10 sec. left. Those of you unable to beat the game, we hope you beat it next time! Great job, everyone!! See you later~"/>
+		</imgdir>
+		<imgdir name="16">
+		   <int name="timeAfter" value="901"/>
+		   <int name="action" value="4"/>
+		</imgdir>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="Event7">
+	 <int name="0" value="109060000"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="0"/>
+		   <int name="action" value="1"/>
+		   <int name="0" value="600"/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="1"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="The Event has been started! You may start hitting on the snowball or the snowman now."/>
+		</imgdir>
+		<imgdir name="2">
+		   <int name="timeAfter" value="1"/>
+		   <int name="action" value="1"/>
+		   <int name="0" value="0"/>
+		</imgdir>
+		<imgdir name="3">
+		   <int name="timeAfter" value="30"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="Please remember that if you die during the event, you&apos;ll be eliminated from the game. You still have plenty of time left, so either take a potion or recover HP first before moving on."/>
+		</imgdir>
+		<imgdir name="4">
+		   <int name="timeAfter" value="60"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="Your attack will not work if you keep attacking while staying at one place. You&apos;ll have to move little by little while attacking the snowman or the snowball."/>
+		</imgdir>
+		<imgdir name="5">
+		   <int name="timeAfter" value="100"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="This is the game where overtaking the lead is very much possible. Please don’t give up now!"/>
+		</imgdir>
+		<imgdir name="6">
+		   <int name="timeAfter" value="160"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="You&apos;ll return to the starting point once touched by the snowball, so please be careful while attacking."/>
+		</imgdir>
+		<imgdir name="7">
+		   <int name="timeAfter" value="180"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="Please beware of the thorns on the ground while attacking the snowball."/>
+		</imgdir>
+		<imgdir name="8">
+		   <int name="timeAfter" value="220"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="You&apos;ll be able to disrupt your opponent&apos;s snowball once you attack the snowman/"/>
+		</imgdir>
+		<imgdir name="9">
+		   <int name="timeAfter" value="260"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="Your HP will decrease if touched by the snowman, so please be careful while attacking."/>
+		</imgdir>
+		<imgdir name="10">
+		   <int name="timeAfter" value="300"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="Please remember that if you die during the event, you&apos;ll be eliminated from the game. You still have plenty of time left, so either take a potion or recover HP first before moving on."/>
+		</imgdir>
+		<imgdir name="11">
+		   <int name="timeAfter" value="360"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="If neither team reaches the finish line on time, then the team who rolls the snowball closest to the end wins, so please don&apos;t give up!"/>
+		</imgdir>
+		<imgdir name="12">
+		   <int name="timeAfter" value="420"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="The huge thorns near the finish line pops up from the ground and takes away a huge chunk of HP, so please beware of it while rolling the snowball."/>
+		</imgdir>
+		<imgdir name="13">
+		   <int name="timeAfter" value="480"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="Your attack will not work if you keep attacking while staying at one place. You&apos;ll have to move little by little while attacking the snowman or the snowball."/>
+		</imgdir>
+		<imgdir name="14">
+		   <int name="timeAfter" value="540"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="You&apos;ll return to the starting point once touched by the snowball, so please be careful while attacking."/>
+		</imgdir>
+		<imgdir name="15">
+		   <int name="timeAfter" value="590"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="You have 3 minutes left. Please don&apos;t give up!"/>
+		</imgdir>
+		<imgdir name="16">
+		   <int name="timeAfter" value="595"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="If neither team reaches the finish line on time, then the team who rolls the snowball closest to the end wins, so please don&apos;t give up!"/>
+		</imgdir>
+		<imgdir name="17">
+		   <int name="timeAfter" value="599"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="You have 1 min. left. If neither team reaches the finish line on time, then the team who rolls the snowball closest to the end wins, so please don&apos;t give up!"/>
+		</imgdir>
+		<imgdir name="18">
+		   <int name="timeAfter" value="600"/>
+		   <int name="action" value="5"/>
+		</imgdir>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="Event8">
+	 <int name="0" value="109010000"/>
+	 <int name="1" value="109010100"/>
+	 <int name="2" value="109010101"/>
+	 <int name="3" value="109010102"/>
+	 <int name="4" value="109010103"/>
+	 <int name="5" value="109010104"/>
+	 <int name="6" value="109010105"/>
+	 <int name="7" value="109010106"/>
+	 <int name="8" value="109010107"/>
+	 <int name="9" value="109010108"/>
+	 <int name="10" value="109010109"/>
+	 <int name="11" value="109010110"/>
+	 <int name="12" value="109010200"/>
+	 <int name="13" value="109010201"/>
+	 <int name="14" value="109010202"/>
+	 <int name="15" value="109010203"/>
+	 <int name="16" value="109010204"/>
+	 <int name="17" value="109010205"/>
+	 <int name="18" value="109010206"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="0"/>
+		   <int name="action" value="2"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="join00"/>
+		   <int name="2" value="1"/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="0"/>
+		   <int name="action" value="1"/>
+		   <int name="0" value="600"/>
+		</imgdir>
+		<imgdir name="2">
+		   <int name="timeAfter" value="1"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="The portal is now open. Please enter."/>
+		</imgdir>
+		<imgdir name="3">
+		   <int name="timeAfter" value="1"/>
+		   <int name="action" value="1"/>
+		   <int name="0" value="0"/>
+		</imgdir>
+		<imgdir name="4">
+		   <int name="timeAfter" value="600"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="The time limit for the Treasure Hunt has passed. The event has ended, and you&apos;ll be sent to a different map. Thank you for participating in this event!"/>
+		</imgdir>
+		<imgdir name="5">
+		   <int name="timeAfter" value="601"/>
+		   <int name="action" value="4"/>
+		</imgdir>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="Ludi020">
+	 <int name="shuffle" value="1"/>
+	 <int name="0" value="922000000"/>
+	 <int name="timeOut" value="1200"/>
+  </imgdir>
+  <imgdir name="Ludi023">
+	 <int name="shuffle" value="1"/>
+	 <int name="0" value="922000010"/>
+	 <int name="timeOut" value="600"/>
+  </imgdir>
+  <imgdir name="Party3">
+	 <int name="0" value="922010100"/>
+	 <int name="1" value="922010200"/>
+	 <int name="2" value="922010201"/>
+	 <int name="3" value="922010300"/>
+	 <int name="4" value="922010400"/>
+	 <int name="5" value="922010401"/>
+	 <int name="6" value="922010402"/>
+	 <int name="7" value="922010403"/>
+	 <int name="8" value="922010404"/>
+	 <int name="9" value="922010405"/>
+	 <int name="10" value="922010500"/>
+	 <int name="11" value="922010501"/>
+	 <int name="12" value="922010502"/>
+	 <int name="13" value="922010503"/>
+	 <int name="14" value="922010504"/>
+	 <int name="15" value="922010505"/>
+	 <int name="16" value="922010506"/>
+	 <int name="17" value="922010600"/>
+	 <int name="18" value="922010700"/>
+	 <int name="19" value="922010800"/>
+	 <int name="20" value="922010900"/>
+	 <int name="timeOut" value="3600"/>
+	 <imgdir name="party">
+		<int name="onlyWithParty" value="1"/>
+		<int name="checkPartyOut" value="1"/>
+		<int name="memberMin" value="6"/>
+		<int name="memberMax" value="6"/>
+		<int name="levelMin" value="35"/>
+		<int name="levelMax" value="50"/>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="Party31">
+	 <int name="0" value="922010100"/>
+	 <int name="1" value="922010200"/>
+	 <int name="2" value="922010201"/>
+	 <int name="3" value="922010300"/>
+	 <int name="4" value="922010400"/>
+	 <int name="5" value="922010401"/>
+	 <int name="6" value="922010402"/>
+	 <int name="7" value="922010403"/>
+	 <int name="8" value="922010404"/>
+	 <int name="9" value="922010405"/>
+	 <int name="10" value="922010500"/>
+	 <int name="11" value="922010501"/>
+	 <int name="12" value="922010502"/>
+	 <int name="13" value="922010503"/>
+	 <int name="14" value="922010504"/>
+	 <int name="15" value="922010505"/>
+	 <int name="16" value="922010506"/>
+	 <int name="17" value="922010600"/>
+	 <int name="18" value="922010700"/>
+	 <int name="19" value="922010800"/>
+	 <int name="20" value="922010900"/>
+	 <int name="timeOut" value="3600"/>
+	 <imgdir name="party">
+		<int name="onlyWithParty" value="1"/>
+		<int name="checkPartyOut" value="1"/>
+		<int name="memberMin" value="6"/>
+		<int name="memberMax" value="6"/>
+		<int name="levelMin" value="51"/>
+		<int name="levelMax" value="70"/>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="Party32">
+	 <int name="0" value="922010100"/>
+	 <int name="1" value="922010200"/>
+	 <int name="2" value="922010201"/>
+	 <int name="3" value="922010300"/>
+	 <int name="4" value="922010400"/>
+	 <int name="5" value="922010401"/>
+	 <int name="6" value="922010402"/>
+	 <int name="7" value="922010403"/>
+	 <int name="8" value="922010404"/>
+	 <int name="9" value="922010405"/>
+	 <int name="10" value="922010500"/>
+	 <int name="11" value="922010501"/>
+	 <int name="12" value="922010502"/>
+	 <int name="13" value="922010503"/>
+	 <int name="14" value="922010504"/>
+	 <int name="15" value="922010505"/>
+	 <int name="16" value="922010506"/>
+	 <int name="17" value="922010600"/>
+	 <int name="18" value="922010700"/>
+	 <int name="19" value="922010800"/>
+	 <int name="20" value="922010900"/>
+	 <int name="timeOut" value="3600"/>
+	 <imgdir name="party">
+		<int name="onlyWithParty" value="1"/>
+		<int name="checkPartyOut" value="1"/>
+		<int name="memberMin" value="6"/>
+		<int name="memberMax" value="6"/>
+		<int name="levelMin" value="71"/>
+		<int name="levelMax" value="120"/>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="Party33">
+	 <int name="0" value="922010100"/>
+	 <int name="1" value="922010200"/>
+	 <int name="2" value="922010201"/>
+	 <int name="3" value="922010300"/>
+	 <int name="4" value="922010400"/>
+	 <int name="5" value="922010401"/>
+	 <int name="6" value="922010402"/>
+	 <int name="7" value="922010403"/>
+	 <int name="8" value="922010404"/>
+	 <int name="9" value="922010405"/>
+	 <int name="10" value="922010500"/>
+	 <int name="11" value="922010501"/>
+	 <int name="12" value="922010502"/>
+	 <int name="13" value="922010503"/>
+	 <int name="14" value="922010504"/>
+	 <int name="15" value="922010505"/>
+	 <int name="16" value="922010506"/>
+	 <int name="17" value="922010600"/>
+	 <int name="18" value="922010700"/>
+	 <int name="19" value="922010800"/>
+	 <int name="20" value="922010900"/>
+	 <int name="timeOut" value="3600"/>
+	 <imgdir name="party">
+		<int name="onlyWithParty" value="1"/>
+		<int name="checkPartyOut" value="1"/>
+		<int name="memberMin" value="6"/>
+		<int name="memberMax" value="6"/>
+		<int name="levelMin" value="121"/>
+		<int name="levelMax" value="200"/>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="Party4">
+	 <int name="0" value="922011000"/>
+	 <int name="timeOut" value="60"/>
+  </imgdir>
+  <imgdir name="MoonRabbit">
+	 <int name="0" value="910010000"/>
+	 <int name="timeOut" value="600"/>
+	 <imgdir name="action">
+		<imgdir name="0">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="0"/>
+				 <string name="1" value="fullmoon"/>
+				 <int name="2" value="-1"/>
+			  </imgdir>
+			  <int name="moonflower1" value="1"/>
+		   </imgdir>
+		   <imgdir name="1">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="0"/>
+				 <string name="1" value="fullmoon"/>
+				 <int name="2" value="-1"/>
+			  </imgdir>
+			  <int name="moonflower2" value="1"/>
+		   </imgdir>
+		   <imgdir name="2">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="0"/>
+				 <string name="1" value="fullmoon"/>
+				 <int name="2" value="-1"/>
+			  </imgdir>
+			  <int name="moonflower3" value="1"/>
+		   </imgdir>
+		   <imgdir name="3">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="0"/>
+				 <string name="1" value="fullmoon"/>
+				 <int name="2" value="-1"/>
+			  </imgdir>
+			  <int name="moonflower4" value="1"/>
+		   </imgdir>
+		   <imgdir name="4">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="0"/>
+				 <string name="1" value="fullmoon"/>
+				 <int name="2" value="-1"/>
+			  </imgdir>
+			  <int name="moonflower5" value="1"/>
+		   </imgdir>
+		   <imgdir name="5">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="0"/>
+				 <string name="1" value="fullmoon"/>
+				 <int name="2" value="-1"/>
+			  </imgdir>
+			  <int name="moonflower6" value="1"/>
+		   </imgdir>
+		</imgdir>
+	 </imgdir>
+	 <string name="script" value="moonrabbit_start"/>
+  </imgdir>
+  <imgdir name="MoonPig">
+	 <int name="0" value="910010200"/>
+	 <int name="timeOut" value="300"/>
+  </imgdir>
+  <imgdir name="Populatus">
+	 <int name="0" value="220080000"/>
+	 <int name="1" value="220080001"/>
+	 <imgdir name="action">
+		<imgdir name="1">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="5"/>
+				 <int name="0" value="1"/>
+				 <string name="1" value="Bgm09/TimeAttack"/>
+			  </imgdir>
+			  <int name="boss" value="1"/>
+		   </imgdir>
+		   <imgdir name="1">
+			  <imgdir name="info">
+				 <int name="type" value="4"/>
+				 <string name="0" value="ludiboss"/>
+				 <string name="1" value="yes"/>
+			  </imgdir>
+			  <int name="boss" value="1"/>
+		   </imgdir>
+		   <imgdir name="2">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="0"/>
+				 <string name="1" value="ludigate1"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="boss" value="1"/>
+		   </imgdir>
+		   <imgdir name="3">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="0"/>
+				 <string name="1" value="ludigate1"/>
+				 <int name="2" value="0"/>
+			  </imgdir>
+			  <int name="boss" value="0"/>
+		   </imgdir>
+		   <imgdir name="4">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="0"/>
+				 <string name="1" value="ludigate2"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="boss" value="1"/>
+		   </imgdir>
+		   <imgdir name="5">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="0"/>
+				 <string name="1" value="ludigate2"/>
+				 <int name="2" value="0"/>
+			  </imgdir>
+			  <int name="boss" value="0"/>
+		   </imgdir>
+		   <imgdir name="6">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="0"/>
+				 <string name="1" value="ludigate3"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="boss" value="1"/>
+		   </imgdir>
+		   <imgdir name="7">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="0"/>
+				 <string name="1" value="ludigate3"/>
+				 <int name="2" value="0"/>
+			  </imgdir>
+			  <int name="boss" value="0"/>
+		   </imgdir>
+		</imgdir>
+	 </imgdir>
+	 <imgdir name="unaffected">
+		<int name="0" value="1"/>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="Pianus">
+	 <int name="0" value="230040420"/>
+  </imgdir>
+  <imgdir name="Guild1">
+	 <int name="0" value="990000000"/>
+	 <int name="1" value="990000100"/>
+	 <int name="2" value="990000200"/>
+	 <int name="3" value="990000300"/>
+	 <int name="4" value="990000301"/>
+	 <int name="5" value="990000400"/>
+	 <int name="6" value="990000401"/>
+	 <int name="7" value="990000410"/>
+	 <int name="8" value="990000420"/>
+	 <int name="9" value="990000430"/>
+	 <int name="10" value="990000431"/>
+	 <int name="11" value="990000440"/>
+	 <int name="12" value="990000500"/>
+	 <int name="13" value="990000501"/>
+	 <int name="14" value="990000502"/>
+	 <int name="15" value="990000600"/>
+	 <int name="16" value="990000610"/>
+	 <int name="17" value="990000611"/>
+	 <int name="18" value="990000620"/>
+	 <int name="19" value="990000630"/>
+	 <int name="20" value="990000631"/>
+	 <int name="21" value="990000640"/>
+	 <int name="22" value="990000641"/>
+	 <int name="23" value="990000700"/>
+	 <int name="24" value="990000800"/>
+	 <int name="25" value="990000900"/>
+	 <int name="timeOut" value="5580"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="1"/>
+		   <int name="action" value="2"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="join00"/>
+		   <int name="2" value="0"/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="1"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="The door to Sharenian will open in 3 minutes. Be prepared to enter the instance."/>
+		</imgdir>
+		<imgdir name="2">
+		   <int name="timeAfter" value="120"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="The door to Sharenian will open in 1 minute. Be prepared to enter the instance."/>
+		</imgdir>
+		<imgdir name="3">
+		   <int name="timeAfter" value="150"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="The door to Sharenian will open in 30 seconds. Be prepared to enter the instance."/>
+		</imgdir>
+		<imgdir name="4">
+		   <int name="timeAfter" value="180"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="The door to Sharenian has opened!"/>
+		</imgdir>
+		<imgdir name="5">
+		   <int name="timeAfter" value="180"/>
+		   <int name="action" value="2"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="join00"/>
+		   <int name="2" value="1"/>
+		</imgdir>
+		<imgdir name="6">
+		   <int name="timeAfter" value="120"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="7"/>
+		   <string name="1" value="#e&lt;Guild Quest Notice&gt;#n\n\nSearch through the remains of the legendary Sharenian empire and find clues on #e#rRubian#k#n and its whereabouts. \n\n1.   The Guild Quest will be canceled if less than #r6#k Guild Members enter the instance before the door to Sharenian opens.\n2.   During the Guild Quest, if the participating members of the guild reach below #r6#k, the quest will end prematurely. Good luck!"/>
+		   <int name="2" value="9040011"/>
+		</imgdir>
+	 </imgdir>
+	 <imgdir name="action">
+		<imgdir name="5">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="4"/>
+				 <string name="0" value="speargateopen"/>
+				 <string name="1" value="yes"/>
+			  </imgdir>
+			  <int name="speargate" value="4"/>
+		   </imgdir>
+		   <imgdir name="1">
+			  <imgdir name="info">
+				 <int name="type" value="4"/>
+				 <string name="0" value="stonegateopen"/>
+				 <string name="1" value="yes"/>
+			  </imgdir>
+			  <int name="stonegate" value="1"/>
+		   </imgdir>
+		   <imgdir name="2">
+			  <imgdir name="info">
+				 <int name="type" value="7"/>
+				 <int name="0" value="0"/>
+				 <int name="1" value="1000"/>
+				 <int name="2" value="5"/>
+				 <int name="3" value="7"/>
+				 <int name="4" value="8"/>
+				 <int name="5" value="9"/>
+				 <int name="6" value="10"/>
+				 <int name="7" value="11"/>
+			  </imgdir>
+			  <int name="speargate" value="4"/>
+		   </imgdir>
+		</imgdir>
+		<imgdir name="9">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="4"/>
+				 <string name="0" value="metalgateopen"/>
+				 <string name="1" value="yes"/>
+			  </imgdir>
+			  <int name="metalgate" value="1"/>
+		   </imgdir>
+		</imgdir>
+		<imgdir name="11">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="5"/>
+				 <string name="1" value="speargate"/>
+				 <int name="2" value="-1"/>
+			  </imgdir>
+			  <int name="spear1" value="1"/>
+		   </imgdir>
+		   <imgdir name="1">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="5"/>
+				 <string name="1" value="speargate"/>
+				 <int name="2" value="-1"/>
+			  </imgdir>
+			  <int name="spear2" value="1"/>
+		   </imgdir>
+		   <imgdir name="2">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="5"/>
+				 <string name="1" value="speargate"/>
+				 <int name="2" value="-1"/>
+			  </imgdir>
+			  <int name="spear3" value="1"/>
+		   </imgdir>
+		   <imgdir name="3">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="5"/>
+				 <string name="1" value="speargate"/>
+				 <int name="2" value="-1"/>
+			  </imgdir>
+			  <int name="spear4" value="1"/>
+		   </imgdir>
+		</imgdir>
+		<imgdir name="12">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="4"/>
+				 <string name="0" value="watergateopen"/>
+				 <string name="1" value="yes"/>
+			  </imgdir>
+			  <int name="watergate" value="1"/>
+		   </imgdir>
+		</imgdir>
+		<imgdir name="16">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="4"/>
+				 <string name="0" value="secretgate1open"/>
+				 <string name="1" value="yes"/>
+			  </imgdir>
+			  <int name="secretgate1" value="1"/>
+		   </imgdir>
+		</imgdir>
+		<imgdir name="19">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="4"/>
+				 <string name="0" value="secretgate2open"/>
+				 <string name="1" value="yes"/>
+			  </imgdir>
+			  <int name="secretgate2" value="1"/>
+		   </imgdir>
+		</imgdir>
+		<imgdir name="21">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="4"/>
+				 <string name="0" value="secretgate3open"/>
+				 <string name="1" value="yes"/>
+			  </imgdir>
+			  <int name="secretgate3" value="1"/>
+		   </imgdir>
+		</imgdir>
+		<imgdir name="24">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="4"/>
+				 <string name="0" value="kinggateopen"/>
+				 <string name="1" value="yes"/>
+			  </imgdir>
+			  <int name="kinggate" value="1"/>
+		   </imgdir>
+		</imgdir>
+		<imgdir name="25">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="5"/>
+				 <int name="0" value="25"/>
+				 <string name="1" value="Bgm10/Eregos"/>
+			  </imgdir>
+			  <int name="boss" value="1"/>
+		   </imgdir>
+		</imgdir>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="Guild1Bonus">
+	 <int name="0" value="990001000"/>
+	 <int name="timeOut" value="40"/>
+  </imgdir>
+  <imgdir name="Party5">
+	 <int name="0" value="920010000"/>
+	 <int name="1" value="920010100"/>
+	 <int name="2" value="920010200"/>
+	 <int name="3" value="920010300"/>
+	 <int name="4" value="920010400"/>
+	 <int name="5" value="920010500"/>
+	 <int name="6" value="920010600"/>
+	 <int name="7" value="920010601"/>
+	 <int name="8" value="920010602"/>
+	 <int name="9" value="920010603"/>
+	 <int name="10" value="920010604"/>
+	 <int name="11" value="920010700"/>
+	 <int name="12" value="920010800"/>
+	 <int name="13" value="920010900"/>
+	 <int name="14" value="920010910"/>
+	 <int name="15" value="920010911"/>
+	 <int name="16" value="920010912"/>
+	 <int name="17" value="920010920"/>
+	 <int name="18" value="920010921"/>
+	 <int name="19" value="920010922"/>
+	 <int name="20" value="920010930"/>
+	 <int name="21" value="920010931"/>
+	 <int name="22" value="920010932"/>
+	 <int name="23" value="920011000"/>
+	 <int name="timeOut" value="3600"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="3"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="7"/>
+		   <string name="1" value="Hi, my name is Eak, the Chamberlain of the Goddess. Don&apos;t be alarmed; you won&apos;t be able to see me right now. Back when the Goddess turned into a block of stone, I simultaneously lost my own power. If you gather up the power of the Magic Cloud of Orbis, however, then I&apos;ll be able to recover my body and re-transform back to my original self. Please collect 20 Magic Clouds and bring them back to me. Right now, you&apos;ll only see me as a tiny, flickering light. "/>
+		   <int name="2" value="2013001"/>
+		</imgdir>
+	 </imgdir>
+	 <imgdir name="action">
+		<imgdir name="1">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="1"/>
+				 <string name="1" value="minerva"/>
+				 <int name="2" value="-1"/>
+			  </imgdir>
+			  <int name="scar1" value="1"/>
+		   </imgdir>
+		   <imgdir name="1">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="1"/>
+				 <string name="1" value="minerva"/>
+				 <int name="2" value="-1"/>
+			  </imgdir>
+			  <int name="scar2" value="1"/>
+		   </imgdir>
+		   <imgdir name="2">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="1"/>
+				 <string name="1" value="minerva"/>
+				 <int name="2" value="-1"/>
+			  </imgdir>
+			  <int name="scar3" value="1"/>
+		   </imgdir>
+		   <imgdir name="3">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="1"/>
+				 <string name="1" value="minerva"/>
+				 <int name="2" value="-1"/>
+			  </imgdir>
+			  <int name="scar4" value="1"/>
+		   </imgdir>
+		   <imgdir name="4">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="1"/>
+				 <string name="1" value="minerva"/>
+				 <int name="2" value="-1"/>
+			  </imgdir>
+			  <int name="scar5" value="1"/>
+		   </imgdir>
+		   <imgdir name="5">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="1"/>
+				 <string name="1" value="minerva"/>
+				 <int name="2" value="-1"/>
+			  </imgdir>
+			  <int name="scar6" value="1"/>
+		   </imgdir>
+		   <imgdir name="6">
+			  <int name="minerva" value="7"/>
+			  <imgdir name="info">
+				 <int name="type" value="8"/>
+				 <int name="0" value="1"/>
+			  </imgdir>
+		   </imgdir>
+		</imgdir>
+		<imgdir name="4">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="5"/>
+				 <int name="0" value="4"/>
+				 <string name="1" value="Bgm04/Shinin&apos;Harbor"/>
+			  </imgdir>
+			  <int name="music" value="0"/>
+		   </imgdir>
+		   <imgdir name="1">
+			  <imgdir name="info">
+				 <int name="type" value="5"/>
+				 <int name="0" value="4"/>
+				 <string name="1" value="Bgm08/ForTheGlory"/>
+			  </imgdir>
+			  <int name="music" value="1"/>
+		   </imgdir>
+		   <imgdir name="2">
+			  <imgdir name="info">
+				 <int name="type" value="5"/>
+				 <int name="0" value="4"/>
+				 <string name="1" value="Bgm11/Aquarium"/>
+			  </imgdir>
+			  <int name="music" value="2"/>
+		   </imgdir>
+		   <imgdir name="3">
+			  <imgdir name="info">
+				 <int name="type" value="5"/>
+				 <int name="0" value="4"/>
+				 <string name="1" value="Bgm06/WelcomeToTheHell"/>
+			  </imgdir>
+			  <int name="music" value="3"/>
+		   </imgdir>
+		   <imgdir name="4">
+			  <imgdir name="info">
+				 <int name="type" value="5"/>
+				 <int name="0" value="4"/>
+				 <string name="1" value="Bgm06/FantasticThinking"/>
+			  </imgdir>
+			  <int name="music" value="4"/>
+		   </imgdir>
+		   <imgdir name="5">
+			  <imgdir name="info">
+				 <int name="type" value="5"/>
+				 <int name="0" value="4"/>
+				 <string name="1" value="Bgm02/EvilEyes"/>
+			  </imgdir>
+			  <int name="music" value="5"/>
+		   </imgdir>
+		   <imgdir name="6">
+			  <imgdir name="info">
+				 <int name="type" value="5"/>
+				 <int name="0" value="4"/>
+				 <string name="1" value="Bgm10/TheWayGrotesque"/>
+			  </imgdir>
+			  <int name="music" value="6"/>
+		   </imgdir>
+		   <imgdir name="7">
+			  <imgdir name="info">
+				 <int name="type" value="5"/>
+				 <int name="0" value="4"/>
+				 <string name="1" value="Bgm01/MoonlightShadow"/>
+			  </imgdir>
+			  <int name="music" value="7"/>
+		   </imgdir>
+		</imgdir>
+		<imgdir name="14">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="14"/>
+				 <string name="1" value="trap1"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever1" value="0"/>
+		   </imgdir>
+		   <imgdir name="1">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="14"/>
+				 <string name="1" value="trap1"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever1" value="1"/>
+		   </imgdir>
+		   <imgdir name="2">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="14"/>
+				 <string name="1" value="trap2"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <string name="lever2" value="0"/>
+		   </imgdir>
+		   <imgdir name="3">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="14"/>
+				 <string name="1" value="trap2"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever2" value="1"/>
+		   </imgdir>
+		   <imgdir name="4">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="14"/>
+				 <string name="1" value="trap3"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever3" value="0"/>
+		   </imgdir>
+		   <imgdir name="5">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="14"/>
+				 <string name="1" value="trap3"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever3" value="1"/>
+		   </imgdir>
+		   <imgdir name="6">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="14"/>
+				 <string name="1" value="trap4"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever4" value="0"/>
+		   </imgdir>
+		   <imgdir name="7">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="14"/>
+				 <string name="1" value="trap4"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever4" value="1"/>
+		   </imgdir>
+		   <imgdir name="8">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="14"/>
+				 <string name="1" value="trap5"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever5" value="0"/>
+		   </imgdir>
+		   <imgdir name="9">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="14"/>
+				 <string name="1" value="trap5"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever5" value="1"/>
+		   </imgdir>
+		   <imgdir name="10">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="14"/>
+				 <string name="1" value="trap6"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever6" value="0"/>
+		   </imgdir>
+		   <imgdir name="11">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="14"/>
+				 <string name="1" value="trap6"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever6" value="1"/>
+		   </imgdir>
+		   <imgdir name="12">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="14"/>
+				 <string name="1" value="trap7"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever7" value="0"/>
+		   </imgdir>
+		   <imgdir name="13">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="14"/>
+				 <string name="1" value="trap7"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever7" value="1"/>
+		   </imgdir>
+		</imgdir>
+		<imgdir name="17">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="17"/>
+				 <string name="1" value="trap1"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever1" value="0"/>
+		   </imgdir>
+		   <imgdir name="1">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="17"/>
+				 <string name="1" value="trap1"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever1" value="1"/>
+		   </imgdir>
+		   <imgdir name="2">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="17"/>
+				 <string name="1" value="trap2"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <string name="lever2" value="0"/>
+		   </imgdir>
+		   <imgdir name="3">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="17"/>
+				 <string name="1" value="trap2"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever2" value="1"/>
+		   </imgdir>
+		   <imgdir name="4">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="17"/>
+				 <string name="1" value="trap3"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever3" value="0"/>
+		   </imgdir>
+		   <imgdir name="5">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="17"/>
+				 <string name="1" value="trap3"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever3" value="1"/>
+		   </imgdir>
+		   <imgdir name="6">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="17"/>
+				 <string name="1" value="trap4"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever4" value="0"/>
+		   </imgdir>
+		   <imgdir name="7">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="17"/>
+				 <string name="1" value="trap4"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever4" value="1"/>
+		   </imgdir>
+		   <imgdir name="8">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="17"/>
+				 <string name="1" value="trap5"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever5" value="0"/>
+		   </imgdir>
+		   <imgdir name="9">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="17"/>
+				 <string name="1" value="trap7"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever5" value="1"/>
+		   </imgdir>
+		   <imgdir name="10">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="17"/>
+				 <string name="1" value="trap8"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever6" value="0"/>
+		   </imgdir>
+		   <imgdir name="11">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="17"/>
+				 <string name="1" value="trap6"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever6" value="1"/>
+		   </imgdir>
+		   <imgdir name="12">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="17"/>
+				 <string name="1" value="trap7"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever7" value="0"/>
+		   </imgdir>
+		   <imgdir name="13">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="17"/>
+				 <string name="1" value="trap7"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever7" value="1"/>
+		   </imgdir>
+		   <imgdir name="14">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="17"/>
+				 <string name="1" value="trap7"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever8" value="0"/>
+		   </imgdir>
+		   <imgdir name="15">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="17"/>
+				 <string name="1" value="trap7"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever8" value="1"/>
+		   </imgdir>
+		</imgdir>
+		<imgdir name="20">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="20"/>
+				 <string name="1" value="trap1"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever1" value="0"/>
+		   </imgdir>
+		   <imgdir name="1">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="20"/>
+				 <string name="1" value="trap2"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever1" value="1"/>
+		   </imgdir>
+		   <imgdir name="2">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="20"/>
+				 <string name="1" value="trap3"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <string name="lever2" value="0"/>
+		   </imgdir>
+		   <imgdir name="3">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="20"/>
+				 <string name="1" value="trap4"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever2" value="1"/>
+		   </imgdir>
+		   <imgdir name="4">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="20"/>
+				 <string name="1" value="trap5"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever3" value="0"/>
+		   </imgdir>
+		   <imgdir name="5">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="20"/>
+				 <string name="1" value="trap7"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever3" value="1"/>
+		   </imgdir>
+		   <imgdir name="6">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="20"/>
+				 <string name="1" value="trap6"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever4" value="0"/>
+		   </imgdir>
+		   <imgdir name="7">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="20"/>
+				 <string name="1" value="trap8"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever4" value="1"/>
+		   </imgdir>
+		   <imgdir name="8">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="20"/>
+				 <string name="1" value="trap9"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever5" value="0"/>
+		   </imgdir>
+		   <imgdir name="9">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="20"/>
+				 <string name="1" value="trap10"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever5" value="1"/>
+		   </imgdir>
+		   <imgdir name="10">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="20"/>
+				 <string name="1" value="trap11"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever6" value="0"/>
+		   </imgdir>
+		   <imgdir name="11">
+			  <imgdir name="info">
+				 <int name="type" value="9"/>
+				 <int name="0" value="20"/>
+				 <string name="1" value="trap12"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="lever6" value="1"/>
+		   </imgdir>
+		</imgdir>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="Party6">
+	 <int name="0" value="920011100"/>
+	 <int name="timeOut" value="60"/>
+  </imgdir>
+  <imgdir name="Crane_MR">
+	 <int name="0" value="200090300"/>
+	 <int name="timeOut" value="60"/>
+  </imgdir>
+  <imgdir name="Crane_SS">
+	 <int name="0" value="200090310"/>
+	 <int name="timeOut" value="60"/>
+  </imgdir>
+  <imgdir name="DavyJohn1">
+	 <int name="0" value="925100000"/>
+	 <int name="timeOut" value="240"/>
+	 <string name="script" value="davy_mSummon1"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="3"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="The Pirate Ship is about to take off. Please defeat all the monsters within the time limit and hop on the ship."/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="280"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="Time&apos;s running out. Quickly dispatch all the monsters and hop on the Pirate Ship."/>
+		</imgdir>
+	 </imgdir>
+	 <int name="startEvent" value="1"/>
+	 <imgdir name="party">
+		<int name="checkPartyOut" value="1"/>
+		<int name="memberMin" value="3"/>
+		<int name="levelMin" value="55"/>
+		<int name="levelMax" value="100"/>
+		<int name="memberMin_t" value="6"/>
+		<int name="levelMin_t" value="55"/>
+		<int name="memberMax_d" value="6"/>
+		<int name="levelMin_d" value="55"/>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="DavyJohn2">
+	 <int name="0" value="925100100"/>
+	 <int name="timeOut" value="360"/>
+	 <string name="script" value="davyJohn2_start"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="10"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="Guon is searching for fellow travelers."/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="340"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="Time&apos;s running out. Quickly complete your mission and move on to the next spot."/>
+		</imgdir>
+	 </imgdir>
+	 <int name="startEvent" value="1"/>
+	 <imgdir name="party">
+		<int name="checkPartyOut" value="1"/>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="DavyJohn3">
+	 <int name="0" value="925100200"/>
+	 <int name="1" value="925100201"/>
+	 <int name="timeOut" value="360"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="10"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="The enraged pirates are looking for strangers intruding the ship. You&apos;ll need to defeat all the pirates and run through the deck."/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="280"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="Time&apos;s running out. Quickly dispatch all the monsters and move on to the next spot."/>
+		</imgdir>
+	 </imgdir>
+	 <string name="script" value="davy_mSummon3"/>
+	 <int name="startEvent" value="1"/>
+	 <imgdir name="party">
+		<int name="checkPartyOut" value="1"/>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="DavyJohn3_hd">
+	 <int name="0" value="925100202"/>
+	 <int name="timeOut" value="60"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="5" value="5"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="The disciples of Lord pirate have arrived, all of them very adept at hiding."/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="50"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="Time&apos;s running out. Please leave this place immediately."/>
+		</imgdir>
+	 </imgdir>
+	 <int name="startEvent" value="1"/>
+	 <imgdir name="party">
+		<int name="checkPartyOut" value="1"/>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="DavyJohn4">
+	 <int name="0" value="925100300"/>
+	 <int name="1" value="925100301"/>
+	 <int name="timeOut" value="360"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="10"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="The enraged pirates are looking for strangers intruding the ship. You&apos;ll need to defeat all the pirates and run through the deck."/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="280"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="Time&apos;s running out. Quickly dispatch all the monsters and move on to the next spot."/>
+		</imgdir>
+	 </imgdir>
+	 <string name="script" value="davy_mSummon4"/>
+	 <int name="startEvent" value="1"/>
+	 <imgdir name="party">
+		<int name="checkPartyOut" value="1"/>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="DavyJohn4_hd">
+	 <int name="0" value="925100302"/>
+	 <int name="timeOut" value="60"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="5" value="5"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="The disciples of Lord pirate have arrived, all of them very adept at hiding."/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="50"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="Time&apos;s running out. Please leave this place immediately."/>
+		</imgdir>
+	 </imgdir>
+	 <int name="startEvent" value="1"/>
+	 <imgdir name="party">
+		<int name="checkPartyOut" value="1"/>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="DavyJohn5">
+	 <int name="0" value="925100400"/>
+	 <int name="timeOut" value="360"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="10"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="Find the key and lock the door of the deck so the pirates won&apos;t be able to escape the place."/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="280"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="Time&apos;s running out. Quickly dispatch all the monsters and move on to the next spot."/>
+		</imgdir>
+	 </imgdir>
+	 <int name="startEvent" value="1"/>
+	 <imgdir name="party">
+		<int name="checkPartyOut" value="1"/>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="DavyJohn6">
+	 <int name="0" value="925100500"/>
+	 <int name="timeOut" value="480"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="10"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="The intimidating presence of the captian of the Pirate Ship, Lord Pirate, can be seen from afar."/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="280"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="Time&apos;s running out. Quickly dispatch all the monsters and move on to the next spot."/>
+		</imgdir>
+	 </imgdir>
+	 <string name="script" value="davy_mSummon6"/>
+  </imgdir>
+  <imgdir name="PartyLudiMaze">
+	 <int name="shuffle" value="1"/>
+	 <int name="0" value="809050000"/>
+	 <int name="1" value="809050001"/>
+	 <int name="2" value="809050002"/>
+	 <int name="3" value="809050003"/>
+	 <int name="4" value="809050004"/>
+	 <int name="5" value="809050005"/>
+	 <int name="6" value="809050006"/>
+	 <int name="7" value="809050007"/>
+	 <int name="8" value="809050008"/>
+	 <int name="9" value="809050009"/>
+	 <int name="10" value="809050010"/>
+	 <int name="11" value="809050011"/>
+	 <int name="12" value="809050012"/>
+	 <int name="13" value="809050013"/>
+	 <int name="14" value="809050014"/>
+	 <int name="15" value="809050015"/>
+	 <int name="timeOut" value="900"/>
+  </imgdir>
+  <imgdir name="PartyAmoria">
+	 <int name="0" value="670010200"/>
+	 <int name="1" value="670010300"/>
+	 <int name="2" value="670010301"/>
+	 <int name="3" value="670010302"/>
+	 <int name="4" value="670010400"/>
+	 <int name="5" value="670010500"/>
+	 <int name="6" value="670010600"/>
+	 <int name="7" value="670010700"/>
+	 <int name="8" value="670010750"/>
+	 <int name="timeOut" value="4500"/>
+	 <imgdir name="event"></imgdir>
+	 <imgdir name="action"></imgdir>
+  </imgdir>
+  <imgdir name="PartyAmoriaBo">
+	 <int name="0" value="670010800"/>
+	 <int name="timeOut" value="60"/>
+  </imgdir>
+  <imgdir name="Wedding1">
+	 <int name="0" value="680000100"/>
+	 <int name="1" value="680000110"/>
+	 <int name="timeOut" value="600"/>
+  </imgdir>
+  <imgdir name="Wedding2">
+	 <int name="0" value="680000200"/>
+	 <int name="1" value="680000210"/>
+	 <int name="timeOut" value="1200"/>
+  </imgdir>
+  <imgdir name="Wedding30">
+	 <int name="0" value="680000300"/>
+	 <int name="timeOut" value="60"/>
+  </imgdir>
+  <imgdir name="Wedding4">
+	 <int name="0" value="680000400"/>
+	 <int name="1" value="680000401"/>
+	 <int name="timeOut" value="600"/>
+  </imgdir>
+  <imgdir name="wxmas">
+	 <int name="0" value="209080100"/>
+  </imgdir>
+  <imgdir name="Event9">
+	 <int name="0" value="109060002"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="0"/>
+		   <int name="action" value="1"/>
+		   <int name="0" value="600"/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="1"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="게임이 시작되었습니다. 눈덩이나 눈사람을 공격해 주세요."/>
+		</imgdir>
+		<imgdir name="2">
+		   <int name="timeAfter" value="1"/>
+		   <int name="action" value="1"/>
+		   <int name="0" value="0"/>
+		</imgdir>
+		<imgdir name="3">
+		   <int name="timeAfter" value="30"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="한 자리에서만 공격을 하면 눈덩이가 굴러가지 않습니다. 조금씩 이동하면서 공격해주세요."/>
+		</imgdir>
+		<imgdir name="4">
+		   <int name="timeAfter" value="60"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="눈사람을 공격하면 상대편의 눈덩이가 굴러가는 것을 방해할 수 있습니다."/>
+		</imgdir>
+		<imgdir name="5">
+		   <int name="timeAfter" value="100"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="눈덩이에 닿으면 3초간 공격과 이동이 되지 않습니다. 닿지 않게 조심하세요."/>
+		</imgdir>
+		<imgdir name="6">
+		   <int name="timeAfter" value="160"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="눈사람에 닿으면 HP가 감소하니 조심해서 공격해 주세요."/>
+		</imgdir>
+		<imgdir name="7">
+		   <int name="timeAfter" value="180"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="캐릭터가 죽게되면 탈락이니 죽지 않게 조심하세요. 물약을 드시거나 HP를 회복한 뒤에 게임에 임해주세요."/>
+		</imgdir>
+		<imgdir name="8">
+		   <int name="timeAfter" value="220"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="눈사람을 공격하면 상대편의 눈덩이가 굴러가는 것을 방해하실 수 있습니다."/>
+		</imgdir>
+		<imgdir name="9">
+		   <int name="timeAfter" value="260"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="제한시간이 지나도 골인하는 팀이 없을 경우 눈덩이를 더 멀리 굴린 팀이 승리하게 되니 끝까지 포기하지 마세요."/>
+		</imgdir>
+		<imgdir name="10">
+		   <int name="timeAfter" value="300"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="3 지점부터는 땅속에 숨었다 공격하는 왕가시가 HP를 많이 감소시키니 잘 피하면서 공격하세요."/>
+		</imgdir>
+		<imgdir name="11">
+		   <int name="timeAfter" value="360"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="눈덩이 굴리기는 역전이 충분히 가능한 게임입니다. 끝까지 포기하지 마세요."/>
+		</imgdir>
+		<imgdir name="12">
+		   <int name="timeAfter" value="420"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="게임 제한시간이 약 3분 남았습니다. 좀 더 힘을 내주세요."/>
+		</imgdir>
+		<imgdir name="13">
+		   <int name="timeAfter" value="480"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="제한시간이 다 지나도 골인하는 팀이 없을 경우에는 눈덩이를 조금이라도 멀리 굴린 팀이 승리하게 되니 끝까지 포기하지 마세요."/>
+		</imgdir>
+		<imgdir name="14">
+		   <int name="timeAfter" value="540"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="게임 제한시간이 약 1분 남았습니다. 좀 더 힘을 내주세요."/>
+		</imgdir>
+		<imgdir name="15">
+		   <int name="timeAfter" value="590"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="게임 제한시간이 약 10초 남았습니다."/>
+		</imgdir>
+		<imgdir name="16">
+		   <int name="timeAfter" value="595"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="승리하지 못하신 분들은 다음 이벤트에서는 꼭 승리하시길 바랍니다. 모두 수고 많으셨습니다."/>
+		</imgdir>
+		<imgdir name="17">
+		   <int name="timeAfter" value="599"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="눈덩이 굴리기 이벤트가 종료 되었습니다. 다음 맵으로 이동됩니다. 잠시만 기다려주세요."/>
+		</imgdir>
+		<imgdir name="18">
+		   <int name="timeAfter" value="600"/>
+		   <int name="action" value="5"/>
+		</imgdir>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="Event10">
+	 <int name="0" value="109060004"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="0"/>
+		   <int name="action" value="1"/>
+		   <int name="0" value="600"/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="1"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="게임이 시작되었습니다. 눈덩이나 눈사람을 공격해 주세요."/>
+		</imgdir>
+		<imgdir name="2">
+		   <int name="timeAfter" value="1"/>
+		   <int name="action" value="1"/>
+		   <int name="0" value="0"/>
+		</imgdir>
+		<imgdir name="3">
+		   <int name="timeAfter" value="30"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="한 자리에서만 공격을 하면 눈덩이가 굴러가지 않습니다. 조금씩 이동하면서 공격해주세요."/>
+		</imgdir>
+		<imgdir name="4">
+		   <int name="timeAfter" value="60"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="눈사람을 공격하면 상대편의 눈덩이가 굴러가는 것을 방해할 수 있습니다."/>
+		</imgdir>
+		<imgdir name="5">
+		   <int name="timeAfter" value="100"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="눈덩이에 닿으면 3초간 공격과 이동이 되지 않습니다. 닿지 않게 조심하세요."/>
+		</imgdir>
+		<imgdir name="6">
+		   <int name="timeAfter" value="160"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="눈사람에 닿으면 HP가 감소하니 조심해서 공격해 주세요."/>
+		</imgdir>
+		<imgdir name="7">
+		   <int name="timeAfter" value="180"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="캐릭터가 죽게되면 탈락이니 죽지 않게 조심하세요. 물약을 드시거나 HP를 회복한 뒤에 게임에 임해주세요."/>
+		</imgdir>
+		<imgdir name="8">
+		   <int name="timeAfter" value="220"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="눈사람을 공격하면 상대편의 눈덩이가 굴러가는 것을 방해하실 수 있습니다."/>
+		</imgdir>
+		<imgdir name="9">
+		   <int name="timeAfter" value="260"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="제한시간이 지나도 골인하는 팀이 없을 경우 눈덩이를 더 멀리 굴린 팀이 승리하게 되니 끝까지 포기하지 마세요."/>
+		</imgdir>
+		<imgdir name="10">
+		   <int name="timeAfter" value="300"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="3 지점부터는 땅속에 숨었다 공격하는 왕가시가 HP를 많이 감소시키니 잘 피하면서 공격하세요."/>
+		</imgdir>
+		<imgdir name="11">
+		   <int name="timeAfter" value="360"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="눈덩이 굴리기는 역전이 충분히 가능한 게임입니다. 끝까지 포기하지 마세요."/>
+		</imgdir>
+		<imgdir name="12">
+		   <int name="timeAfter" value="420"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="게임 제한시간이 약 3분 남았습니다. 좀 더 힘을 내주세요."/>
+		</imgdir>
+		<imgdir name="13">
+		   <int name="timeAfter" value="480"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="제한시간이 다 지나도 골인하는 팀이 없을 경우에는 눈덩이를 조금이라도 멀리 굴린 팀이 승리하게 되니 끝까지 포기하지 마세요."/>
+		</imgdir>
+		<imgdir name="14">
+		   <int name="timeAfter" value="540"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="게임 제한시간이 약 1분 남았습니다. 좀 더 힘을 내주세요."/>
+		</imgdir>
+		<imgdir name="15">
+		   <int name="timeAfter" value="590"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="게임 제한시간이 약 10초 남았습니다."/>
+		</imgdir>
+		<imgdir name="16">
+		   <int name="timeAfter" value="595"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="승리하지 못하신 분들은 다음 이벤트에서는 꼭 승리하시길 바랍니다. 모두 수고 많으셨습니다."/>
+		</imgdir>
+		<imgdir name="17">
+		   <int name="timeAfter" value="599"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="눈덩이 굴리기 이벤트가 종료 되었습니다. 다음 맵으로 이동됩니다. 잠시만 기다려주세요."/>
+		</imgdir>
+		<imgdir name="18">
+		   <int name="timeAfter" value="600"/>
+		   <int name="action" value="5"/>
+		</imgdir>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="Mayong">
+	 <int name="0" value="240020401"/>
+  </imgdir>
+  <imgdir name="MayongT">
+	 <int name="0" value="240020402"/>
+  </imgdir>
+  <imgdir name="Gryphius">
+	 <int name="0" value="240020101"/>
+  </imgdir>
+  <imgdir name="GryphiusT">
+	 <int name="0" value="240020102"/>
+  </imgdir>
+  <imgdir name="Hontale1">
+	 <int name="0" value="240050100"/>
+	 <int name="1" value="240050101"/>
+	 <int name="2" value="240050102"/>
+	 <int name="3" value="240050103"/>
+	 <int name="4" value="240050104"/>
+	 <int name="5" value="240050105"/>
+	 <int name="6" value="240050200"/>
+	 <int name="7" value="240050300"/>
+	 <int name="8" value="240050310"/>
+	 <int name="timeOut" value="1800"/>
+	 <imgdir name="action">
+		<imgdir name="1">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="0"/>
+				 <string name="1" value="keyDrop1"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="passKey1" value="1"/>
+		   </imgdir>
+		</imgdir>
+		<imgdir name="2">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="0"/>
+				 <string name="1" value="keyDrop2"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="passKey2" value="1"/>
+		   </imgdir>
+		</imgdir>
+		<imgdir name="3">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="0"/>
+				 <string name="1" value="keyDrop3"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="passKey3" value="1"/>
+		   </imgdir>
+		</imgdir>
+		<imgdir name="4">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="0"/>
+				 <string name="1" value="keyDrop4"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="passKey4" value="1"/>
+		   </imgdir>
+		</imgdir>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="Hontale2">
+	 <int name="0" value="240050400"/>
+	 <int name="timeOut" value="300"/>
+	 <int name="manualstart" value="1"/>
+	 <int name="endfieldset" value="1"/>
+  </imgdir>
+  <imgdir name="Hontale3">
+	 <int name="0" value="240060000"/>
+	 <int name="1" value="240060100"/>
+	 <int name="2" value="240060200"/>
+	 <imgdir name="action">
+		<imgdir name="0">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="7"/>
+				 <int name="0" value="1"/>
+				 <int name="1" value="200"/>
+				 <int name="2" value="0"/>
+			  </imgdir>
+			  <int name="tremble1" value="1"/>
+		   </imgdir>
+		</imgdir>
+		<imgdir name="1">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="7"/>
+				 <int name="0" value="1"/>
+				 <int name="1" value="200"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="tremble2" value="1"/>
+		   </imgdir>
+		</imgdir>
+		<imgdir name="2">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="5"/>
+				 <int name="0" value="2"/>
+				 <string name="1" value="Bgm14/HonTale"/>
+			  </imgdir>
+			  <int name="boss" value="1"/>
+		   </imgdir>
+		   <imgdir name="1">
+			  <imgdir name="info">
+				 <int name="type" value="7"/>
+				 <int name="0" value="1"/>
+				 <int name="1" value="1000"/>
+				 <int name="2" value="2"/>
+			  </imgdir>
+			  <int name="boss" value="5"/>
+		   </imgdir>
+		</imgdir>
+	 </imgdir>
+	 <int name="timeOut" value="43200"/>
+  </imgdir>
+  <imgdir name="DragonBaby">
+	 <int name="0" value="240040611"/>
+	 <int name="timeOut" value="300"/>
+	 <imgdir name="action">
+		<imgdir name="0">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="0"/>
+				 <string name="1" value="dragonBaby2"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="dragonBaby" value="1"/>
+		   </imgdir>
+		</imgdir>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="S4resurrection1">
+	 <int name="0" value="923000100"/>
+	 <int name="timeOut" value="300"/>
+  </imgdir>
+  <imgdir name="S4resurrection2">
+	 <int name="0" value="922020000"/>
+	 <int name="timeOut" value="1200"/>
+  </imgdir>
+  <imgdir name="S4frame">
+	 <int name="0" value="921100000"/>
+	 <int name="timeOut" value="300"/>
+  </imgdir>
+  <imgdir name="S4freeze">
+	 <int name="0" value="921100100"/>
+	 <int name="timeOut" value="300"/>
+  </imgdir>
+  <imgdir name="S4efreet">
+	 <int name="0" value="922020100"/>
+	 <int name="timeOut" value="1200"/>
+  </imgdir>
+  <imgdir name="S4snipe">
+	 <int name="0" value="910500000"/>
+	 <int name="timeOut" value="1200"/>
+  </imgdir>
+  <imgdir name="S4rush">
+	 <int name="0" value="910500100"/>
+	 <int name="timeOut" value="900"/>
+  </imgdir>
+  <imgdir name="S4blocking">
+	 <int name="0" value="924000001"/>
+	 <int name="timeOut" value="1200"/>
+  </imgdir>
+  <imgdir name="S4berserk">
+	 <int name="0" value="910500200"/>
+	 <int name="timeOut" value="1200"/>
+  </imgdir>
+  <imgdir name="S4ambush">
+	 <int name="0" value="910300000"/>
+	 <int name="timeOut" value="1200"/>
+  </imgdir>
+  <imgdir name="S4hitman">
+	 <int name="0" value="910200000"/>
+	 <int name="1" value="910200001"/>
+	 <int name="2" value="910200002"/>
+	 <int name="timeOut" value="1200"/>
+  </imgdir>
+  <imgdir name="S4common2">
+	 <int name="0" value="923000000"/>
+	 <int name="timeOut" value="300"/>
+  </imgdir>
+  <imgdir name="S4nest">
+	 <int name="0" value="924000100"/>
+	 <int name="timeOut" value="1200"/>
+  </imgdir>
+  <imgdir name="S4common1">
+	 <int name="0" value="921100300"/>
+	 <int name="timeOut" value="480"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="4"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="Please protect Tylus."/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="300"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="You have alomost reached the destination.  Please exit by the portal within the time left."/>
+		</imgdir>
+	 </imgdir>
+	 <imgdir name="party">
+		<int name="onlyWithParty" value="0"/>
+		<int name="checkPartyOut" value="1"/>
+		<int name="memberMin" value="1"/>
+		<int name="memberMax" value="6"/>
+		<int name="levelMin" value="120"/>
+		<int name="levelMax" value="200"/>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="Yoota">
+	 <int name="0" value="900000000"/>
+	 <int name="timeOut" value="600"/>
+  </imgdir>
+  <imgdir name="TamePig">
+	 <int name="0" value="923010000"/>
+	 <int name="timeOut" value="300"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="3"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="Please protect the pig from the aliens!"/>
+		</imgdir>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="FireWork">
+	 <int name="0" value="100000200"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="0"/>
+		   <int name="action" value="7"/>
+		   <string name="0" value="Aramia from Henesys park will shoot up the firecrackers soon!"/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="10"/>
+		   <int name="action" value="10"/>
+		   <int name="0" value="0"/>
+		   <string name="1" value="Aramia"/>
+		   <string name="2" value="act1"/>
+		</imgdir>
+		<imgdir name="2">
+		   <string name="timeAfter" value="20"/>
+		   <int name="action" value="9"/>
+		   <int name="0" value="0"/>
+		   <int name="1" value="5121010"/>
+		   <string name="2" value="Who&apos;s going crazy with the fireworks?"/>
+		</imgdir>
+		<imgdir name="3">
+		   <string name="timeAfter" value="20"/>
+		   <int name="action" value="8"/>
+		   <int name="0" value="0"/>
+		   <int name="1" value="9500168"/>
+		   <int name="2" value="2100"/>
+		   <int name="3" value="510"/>
+		</imgdir>
+		<imgdir name="4">
+		   <string name="timeAfter" value="20"/>
+		   <int name="action" value="8"/>
+		   <int name="0" value="0"/>
+		   <int name="1" value="9500169"/>
+		   <int name="2" value="2605"/>
+		   <int name="3" value="358"/>
+		</imgdir>
+		<imgdir name="5">
+		   <string name="timeAfter" value="20"/>
+		   <int name="action" value="8"/>
+		   <int name="0" value="0"/>
+		   <int name="1" value="9500170"/>
+		   <int name="2" value="1800"/>
+		   <int name="3" value="560"/>
+		</imgdir>
+		<imgdir name="6">
+		   <string name="timeAfter" value="20"/>
+		   <int name="action" value="8"/>
+		   <int name="0" value="0"/>
+		   <int name="1" value="9500171"/>
+		   <int name="2" value="2600"/>
+		   <int name="3" value="270"/>
+		</imgdir>
+		<imgdir name="7">
+		   <string name="timeAfter" value="20"/>
+		   <int name="action" value="8"/>
+		   <int name="0" value="0"/>
+		   <int name="1" value="9500172"/>
+		   <int name="2" value="1170"/>
+		   <int name="3" value="415"/>
+		</imgdir>
+		<imgdir name="8">
+		   <string name="timeAfter" value="20"/>
+		   <int name="action" value="8"/>
+		   <int name="0" value="0"/>
+		   <int name="1" value="9500173"/>
+		   <int name="2" value="3120"/>
+		   <int name="3" value="570"/>
+		</imgdir>
+		<imgdir name="9">
+		   <string name="timeAfter" value="20"/>
+		   <int name="action" value="8"/>
+		   <int name="0" value="0"/>
+		   <int name="1" value="9500174"/>
+		   <int name="2" value="2700"/>
+		   <int name="3" value="570"/>
+		</imgdir>
+		<imgdir name="10">
+		   <string name="timeAfter" value="20"/>
+		   <int name="action" value="8"/>
+		   <int name="0" value="0"/>
+		   <int name="1" value="9500176"/>
+		   <int name="2" value="2062"/>
+		   <int name="3" value="358"/>
+		</imgdir>
+		<imgdir name="11">
+		   <string name="timeAfter" value="20"/>
+		   <int name="action" value="8"/>
+		   <int name="0" value="0"/>
+		   <int name="1" value="9500168"/>
+		   <int name="2" value="960"/>
+		   <int name="3" value="570"/>
+		</imgdir>
+		<imgdir name="12">
+		   <string name="timeAfter" value="20"/>
+		   <int name="action" value="8"/>
+		   <int name="0" value="0"/>
+		   <int name="1" value="9500169"/>
+		   <int name="2" value="1252"/>
+		   <int name="3" value="570"/>
+		</imgdir>
+		<imgdir name="13">
+		   <string name="timeAfter" value="20"/>
+		   <int name="action" value="8"/>
+		   <int name="0" value="0"/>
+		   <int name="1" value="9500170"/>
+		   <int name="2" value="2800"/>
+		   <int name="3" value="570"/>
+		</imgdir>
+		<imgdir name="14">
+		   <string name="timeAfter" value="20"/>
+		   <int name="action" value="8"/>
+		   <int name="0" value="0"/>
+		   <int name="1" value="9500171"/>
+		   <int name="2" value="3100"/>
+		   <int name="3" value="570"/>
+		</imgdir>
+		<imgdir name="15">
+		   <string name="timeAfter" value="20"/>
+		   <int name="action" value="8"/>
+		   <int name="0" value="0"/>
+		   <int name="1" value="9500172"/>
+		   <int name="2" value="2300"/>
+		   <int name="3" value="420"/>
+		</imgdir>
+		<imgdir name="16">
+		   <string name="timeAfter" value="20"/>
+		   <int name="action" value="8"/>
+		   <int name="0" value="0"/>
+		   <int name="1" value="9500173"/>
+		   <int name="2" value="2840"/>
+		   <int name="3" value="570"/>
+		</imgdir>
+		<imgdir name="17">
+		   <string name="timeAfter" value="20"/>
+		   <int name="action" value="8"/>
+		   <int name="0" value="0"/>
+		   <int name="1" value="9500174"/>
+		   <int name="2" value="2700"/>
+		   <int name="3" value="570"/>
+		</imgdir>
+		<imgdir name="18">
+		   <string name="timeAfter" value="20"/>
+		   <int name="action" value="8"/>
+		   <int name="0" value="0"/>
+		   <int name="1" value="9500176"/>
+		   <int name="2" value="878"/>
+		   <int name="3" value="528"/>
+		</imgdir>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="MCarnival100">
+	 <int name="0" value="980000100"/>
+	 <int name="timeOut" value="180"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="3"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="You will receive invitations from other parties for the next 3 minutes."/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="15"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="The team that earns more Carnival Points (CP) in 10 minutes by defeating monsters will win the match."/>
+		</imgdir>
+		<imgdir name="2">
+		   <int name="timeAfter" value="30"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="You may select &quot;Summon Monsters&quot;, &quot;Skill&quot;, or &quot;Protector&quot; as your tactic during the Monster Carnival. Use Tab and F1~F12 for quicker access!"/>
+		</imgdir>
+		<imgdir name="3">
+		   <int name="timeAfter" value="45"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="When in the Monster Carnival, you will not lose EXP upon death."/>
+		</imgdir>
+	 </imgdir>
+	 <int name="startEvent" value="1"/>
+	 <imgdir name="party">
+		<int name="checkPartyOut" value="1"/>
+		<int name="memberMin" value="2"/>
+		<int name="memberMax" value="4"/>
+		<int name="levelMin" value="30"/>
+		<int name="levelMax" value="50"/>
+		<int name="memberMin_t" value="2"/>
+		<int name="memberMax_t" value="4"/>
+		<int name="memberMax_d" value="6"/>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="MCarnival110">
+	 <int name="0" value="980000200"/>
+	 <int name="timeOut" value="180"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="3"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="You will receive invitations from other parties for the next 3 minutes."/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="15"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="The team that earns more Carnival Points (CP) in 10 minutes by defeating monsters will win the match."/>
+		</imgdir>
+		<imgdir name="2">
+		   <int name="timeAfter" value="30"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="You may select &quot;Summon Monsters&quot;, &quot;Skill&quot;, or &quot;Protector&quot; as your tactic during the Monster Carnival. Use Tab and F1~F12 for quicker access!"/>
+		</imgdir>
+		<imgdir name="3">
+		   <int name="timeAfter" value="45"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="When in the Monster Carnival, you will not lose EXP upon death."/>
+		</imgdir>
+	 </imgdir>
+	 <int name="startEvent" value="1"/>
+	 <imgdir name="party">
+		<int name="checkPartyOut" value="1"/>
+		<int name="memberMin" value="2"/>
+		<int name="memberMax" value="4"/>
+		<int name="levelMin" value="30"/>
+		<int name="levelMax" value="50"/>
+		<int name="memberMin_t" value="2"/>
+		<int name="memberMax_t" value="4"/>
+		<int name="memberMax_d" value="6"/>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="MCarnival120">
+	 <int name="0" value="980000300"/>
+	 <int name="timeOut" value="180"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="3"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="You will receive invitations from other parties for the next 3 minutes."/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="15"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="The team that earns more Carnival Points (CP) in 10 minutes by defeating monsters will win the match."/>
+		</imgdir>
+		<imgdir name="2">
+		   <int name="timeAfter" value="30"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="You may select &quot;Summon Monsters&quot;, &quot;Skill&quot;, or &quot;Protector&quot; as your tactic during the Monster Carnival. Use Tab and F1~F12 for quicker access!"/>
+		</imgdir>
+		<imgdir name="3">
+		   <int name="timeAfter" value="45"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="When in the Monster Carnival, you will not lose EXP upon death."/>
+		</imgdir>
+	 </imgdir>
+	 <int name="startEvent" value="1"/>
+	 <imgdir name="party">
+		<int name="checkPartyOut" value="1"/>
+		<int name="memberMin" value="2"/>
+		<int name="memberMax" value="4"/>
+		<int name="levelMin" value="30"/>
+		<int name="levelMax" value="50"/>
+		<int name="memberMin_t" value="2"/>
+		<int name="memberMax_t" value="4"/>
+		<int name="memberMax_d" value="6"/>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="MCarnival130">
+	 <int name="0" value="980000400"/>
+	 <int name="timeOut" value="180"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="3"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="You will receive invitations from other parties for the next 3 minutes."/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="15"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="The team that earns more Carnival Points (CP) in 10 minutes by defeating monsters will win the match."/>
+		</imgdir>
+		<imgdir name="2">
+		   <int name="timeAfter" value="30"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="You may select &quot;Summon Monsters&quot;, &quot;Skill&quot;, or &quot;Protector&quot; as your tactic during the Monster Carnival. Use Tab and F1~F12 for quicker access!"/>
+		</imgdir>
+		<imgdir name="3">
+		   <int name="timeAfter" value="45"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="When in the Monster Carnival, you will not lose EXP upon death."/>
+		</imgdir>
+	 </imgdir>
+	 <int name="startEvent" value="1"/>
+	 <imgdir name="party">
+		<int name="checkPartyOut" value="1"/>
+		<int name="memberMin" value="2"/>
+		<int name="memberMax" value="4"/>
+		<int name="levelMin" value="30"/>
+		<int name="levelMax" value="50"/>
+		<int name="memberMin_t" value="2"/>
+		<int name="memberMax_t" value="4"/>
+		<int name="memberMax_d" value="6"/>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="MCarnival140">
+	 <int name="0" value="980000500"/>
+	 <int name="timeOut" value="180"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="3"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="You will receive invitations from other parties for the next 3 minutes."/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="15"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="The team that earns more Carnival Points (CP) in 10 minutes by defeating monsters will win the match."/>
+		</imgdir>
+		<imgdir name="2">
+		   <int name="timeAfter" value="30"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="You may select &quot;Summon Monsters&quot;, &quot;Skill&quot;, or &quot;Protector&quot; as your tactic during the Monster Carnival. Use Tab and F1~F12 for quicker access!"/>
+		</imgdir>
+		<imgdir name="3">
+		   <int name="timeAfter" value="45"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="When in the Monster Carnival, you will not lose EXP upon death."/>
+		</imgdir>
+	 </imgdir>
+	 <int name="startEvent" value="1"/>
+	 <imgdir name="party">
+		<int name="checkPartyOut" value="1"/>
+		<int name="memberMin" value="3"/>
+		<int name="memberMax" value="6"/>
+		<int name="levelMin" value="30"/>
+		<int name="levelMax" value="50"/>
+		<int name="memberMin_t" value="3"/>
+		<int name="memberMax_t" value="6"/>
+		<int name="memberMax_d" value="6"/>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="MCarnival150">
+	 <int name="0" value="980000600"/>
+	 <int name="timeOut" value="180"/>
+	 <imgdir name="event">
+		<imgdir name="0">
+		   <int name="timeAfter" value="3"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="You will receive invitations from other parties for the next 3 minutes."/>
+		</imgdir>
+		<imgdir name="1">
+		   <int name="timeAfter" value="15"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="The team that earns more Carnival Points (CP) in 10 minutes by defeating monsters will win the match."/>
+		</imgdir>
+		<imgdir name="2">
+		   <int name="timeAfter" value="30"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value="You may select &quot;Summon Monsters&quot;, &quot;Skill&quot;, or &quot;Protector&quot; as your tactic during the Monster Carnival. Use Tab and F1~F12 for quicker access!"/>
+		</imgdir>
+		<imgdir name="3">
+		   <int name="timeAfter" value="45"/>
+		   <int name="action" value="3"/>
+		   <int name="0" value="6"/>
+		   <string name="1" value=" When in the Monster Carnival, you will not lose EXP upon death."/>
+		</imgdir>
+	 </imgdir>
+	 <int name="startEvent" value="1"/>
+	 <imgdir name="party">
+		<int name="checkPartyOut" value="1"/>
+		<int name="memberMin" value="3"/>
+		<int name="memberMax" value="6"/>
+		<int name="levelMin" value="30"/>
+		<int name="levelMax" value="50"/>
+		<int name="memberMin_t" value="3"/>
+		<int name="memberMax_t" value="6"/>
+		<int name="memberMax_d" value="6"/>
+	 </imgdir>
+  </imgdir>
+  <imgdir name="shouwaBoss">
+	 <int name="0" value="801040004"/>
+	 <int name="1" value="801040100"/>
+	 <imgdir name="action">
+		<imgdir name="1">
+		   <imgdir name="0">
+			  <imgdir name="info">
+				 <int name="type" value="5"/>
+				 <int name="0" value="1"/>
+				 <string name="1" value="Bgm06/FinalFight"/>
+			  </imgdir>
+			  <int name="shouwaBoss" value="1"/>
+		   </imgdir>
+		   <imgdir name="1">
+			  <imgdir name="info">
+				 <int name="type" value="4"/>
+				 <string name="0" value="shouwaBoss"/>
+				 <string name="1" value="yes"/>
+			  </imgdir>
+			  <int name="shouwaBoss" value="1"/>
+		   </imgdir>
+		   <imgdir name="2">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="0"/>
+				 <string name="1" value="gate"/>
+				 <int name="2" value="1"/>
+			  </imgdir>
+			  <int name="shouwaBoss" value="1"/>
+		   </imgdir>
+		   <imgdir name="3">
+			  <imgdir name="info">
+				 <int name="type" value="3"/>
+				 <int name="0" value="0"/>
+				 <string name="1" value="gate"/>
+				 <int name="2" value="0"/>
+			  </imgdir>
+			  <int name="shouwaBoss" value="0"/>
+		   </imgdir>
+		</imgdir>
+	 </imgdir>
+	 <imgdir name="unaffected">
+		<int name="0" value="1"/>
+	 </imgdir>
+  </imgdir>
+</imgdir>
