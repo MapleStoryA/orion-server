@@ -2,6 +2,8 @@
 *.class
 launcher/Debug/
 launcher/Release/
+launcher/x64/
+client/x64/
 client/Debug/
 client/Release/
 # Log file

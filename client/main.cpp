@@ -105,71 +105,6 @@ bool Hook_DirectInput8Create(bool bEnable)
 
 	return Hook::SetHook(bEnable, reinterpret_cast<void**>(&_DirectInput8Create), Hook);
 }
-const int width = 1366;
-const int height = 768;
-void resolutionHacks() {
-	// CWvsApp::CreateMainWindow(void *this)
-	*reinterpret_cast<DWORD*>(0x00B51634 + 3) = width;
-	*reinterpret_cast<DWORD*>(0x00B5163B + 3) = height;
-	// CWvsApp::CreateWndManager(_DWORD *this)
-	*reinterpret_cast<DWORD*>(0x00B518F2 + 1) = width;
-	*reinterpret_cast<DWORD*>(0x00B518F7 + 1) = height;
-
-	// 68 58 02 00 00 68 20 03  00 00 push 800 push 600
-	DWORD addies[10] = {
-		0x005837DC,
-		0x0068D406,
-		0x006B222D,
-		0x006B2708,
-		0x006B2AEF,
-		0x006B2D73,
-		0x006B2F8C,
-		0x008C20E9,
-		0x009BC75D,
-		0x00B518F2,
-	};
-
-	for (int i = 0; i < 10; i++) {
-		MemoryEdit::edit((LPVOID*)(addies[i] + 1), 4, [](LPVOID addr) {
-			*reinterpret_cast<DWORD*>(addr) = width;
-		});
-		MemoryEdit::edit((LPVOID*)(addies[i] + 6), 4, [](LPVOID addr) {
-			*reinterpret_cast<DWORD*>(addr) = height;
-		});
-	}
-
-	// CWvsContext::CWvsContext(CWvsContext *this)
-	*reinterpret_cast<DWORD*>(0x0B5FB20 + 6) = width;
-	*reinterpret_cast<DWORD*>(0x00B5FB30 + 6) = height;
-	// unknow
-	*reinterpret_cast<DWORD*>(0x0043D5D2 + 1) = height;
-	*reinterpret_cast<DWORD*>(0x0043D5D8 + 1) = width;
-
-	*reinterpret_cast<DWORD*>(0x0043DA0C + 1) = height;
-	*reinterpret_cast<DWORD*>(0x0043DA12 + 1) = width;
-
-	MemoryEdit::edit((LPVOID*)((0x0058316D + 1)), 4, [](LPVOID addr) {
-		*reinterpret_cast<DWORD*>(addr) = width;
-	});
-
-	MemoryEdit::edit((LPVOID*)((0x00583173 + 1)), 4, [](LPVOID addr) {
-		*reinterpret_cast<DWORD*>(addr) = width;
-	});
-	//??0CUIStatusBar@@QAE@XZ
-	*reinterpret_cast<DWORD*>(0x009E5695 + 1) = width;
-	*reinterpret_cast<BYTE*>(0x009E569A + 1) = 0x68; // UI bar position.
-
-	//?Show@CTemporaryStatView@@QAEXXZ
-	*reinterpret_cast<DWORD*>(0x008898F8 + 1) = 10;
-
-	*reinterpret_cast<DWORD*>(0x009E9B38 + 1) = height; // Grey bar in CUIStatusBar
-	*reinterpret_cast<DWORD*>(0x009E9BAA + 1) = height; // HP / MP bar in CUIStatusBar
-
-	// Client calls this ?raw_Copy@CWzCanvas@@UAGJJJPAUIWzCanvas@@UtagVARIANT@@@Z to position items.
-
-
-
-}
 
 
 void clientPatches() {
@@ -197,7 +132,6 @@ void clientPatches() {
 }
 
 
-const char fake_char = '+';
 BOOL APIENTRY DllMain(HMODULE hModule,
 	DWORD  ul_reason_for_call,
 	LPVOID lpReserved
@@ -213,12 +147,8 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		freopen("CONOUT$", "w", stdout);
 		freopen("CONOUT$", "w", stderr);
 #endif
-		// Allow dinput.dll in maplestory folder.
-		*reinterpret_cast<DWORD*>(0x008647CA + 1) = (DWORD)&fake_char;
-		// Allows client to start in window mode.
-		*reinterpret_cast<DWORD*>(0x00B4F535 + 6) = 0;
 		clientPatches();
-		
+		//Hook_DirectInput8Create(true);
 		Hook_GetModuleFileNameW(true);
 		Hook_SetUnhandledExceptionFilter(true);
 		Hook_CreateWindowExA(true);
