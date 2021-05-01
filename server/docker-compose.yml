@@ -19,6 +19,8 @@ services:
   orion-server:
     container_name: orion-server
     image: orionms
+    extra_hosts:
+      orion-public: 127.0.0.1
     depends_on:
       orion-database:
         condition: service_healthy
@@ -26,4 +28,5 @@ services:
       - ./dist:/orion/dist
     ports:
       - 8484:8484
-      - 8082:8082
+      - 8585-8590:8585-8590
+      - 8799:8799
