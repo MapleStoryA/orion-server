@@ -10,6 +10,11 @@ https://mega.nz/file/qIABEAaa#tber4CWFTLv6iwBf2klEQO1g9rYfFl3EIrNP2BjsyjA
 - Intelij Community Edition
 - Visual Studio 2015
 - Maven installed and available in PATH
+- Docker
+
+# Docker instructions
+
+Check the server folder [read me](server/README.md)
 
 # Installing the database:
 - Download the MySQL Server.
