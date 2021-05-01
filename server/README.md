@@ -77,6 +77,12 @@ docker build -t orionms .
 - Run `docker-compose up`
 - Test the connectivity 
 
+# All in one script
+
+You can also try this script, which will do everything:
+
+[Cloud init example](https://gist.githubusercontent.com/dilsonnn/bd3f66e4fde55b49cef2870d7f89ec28/raw/f83bcf09d89c88ec9ef41a0981a4b03e68c0c799/cloud.init.sh)
+
 # Connect
 
 Run your game client pointing to your server ip on port `8484`
