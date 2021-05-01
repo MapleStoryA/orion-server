@@ -12,10 +12,18 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=orion
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 5s
+      retries: 3
   orion-server:
     container_name: orion-server
     image: orionms
     depends_on:
-      - orion-database
+      orion-database:
+        condition: service_healthy
     volumes:
       - ./dist:/orion/dist
+    ports:
+      - 8484:8484
+      - 8082:8082
