@@ -3,6 +3,10 @@
 ## Installing Docker
 - [Download Docker](https://docs.docker.com/docker-for-windows/install/)
 
+## Set your server database password
+
+For now just change in `docker-compose.yml` and make it's not exposed to the world!
+
 # Building the image:
 ```bash
 docker build -t orionms .
