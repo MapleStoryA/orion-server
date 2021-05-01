@@ -4,10 +4,16 @@ services:
     image: mysql:5.6
     container_name: orion-database
     restart: always
+    command: >
+      bash -c "
+      chmod 644 /etc/mysql/conf.d/*.cnf
+      && /entrypoint.sh mysqld
+      "
     volumes:
+      - ./database/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./database/schema.sql:/docker-entrypoint-initdb.d/0_init.sql
     ports:
-    - 7900:3306
+      - 7900:3306
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=orion
