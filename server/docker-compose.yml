@@ -13,7 +13,7 @@ services:
       - MYSQL_DATABASE=orion
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
-      timeout: 5s
+      timeout: 15s
       retries: 3
   orion-server:
     container_name: orion-server
