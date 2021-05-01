@@ -15,6 +15,7 @@ dist/*.zip
 dist/lib
 *.log
 command.txt
+app/
 
 # Compiled class file
 *.class

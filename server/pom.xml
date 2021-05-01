@@ -84,7 +84,7 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>dist/lib</outputDirectory>
+                            <outputDirectory>app/lib</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>false</overWriteSnapshots>
                             <overWriteIfNewer>true</overWriteIfNewer>
@@ -103,7 +103,7 @@
                             <mainClass>Start</mainClass>
                         </manifest>
                     </archive>
-                    <outputDirectory>dist</outputDirectory>
+                    <outputDirectory>app</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>
