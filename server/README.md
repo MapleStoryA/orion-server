@@ -77,11 +77,15 @@ docker build -t orionms .
 - Run `docker-compose up`
 - Test the connectivity 
 
+# MapleBit
+
+The MapleBit installation will be available at port 8000.
+
 # All in one script
 
 You can also try this script, which will do everything:
 
-[Cloud init example](https://gist.githubusercontent.com/dilsonnn/bd3f66e4fde55b49cef2870d7f89ec28/raw/f83bcf09d89c88ec9ef41a0981a4b03e68c0c799/cloud.init.sh)
+[Cloud init example](https://gist.githubusercontent.com/dilsonnn/bd3f66e4fde55b49cef2870d7f89ec28/raw/3a7c77afcd2688f93509783a3a29edb04ed71d79/cloud.init.sh)
 
 # Connect
 
