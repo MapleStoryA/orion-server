@@ -54,7 +54,7 @@ yum install -y git
 - Clone the repo and enter into server folder:
 
 ```bash
-git clone https://github.com/MapleStoryA/orion-server.git
+git clone --recursive https://github.com/MapleStoryA/orion-server.git
 cd orion-server
 
 ```
