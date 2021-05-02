@@ -6,6 +6,9 @@ services:
     container_name: orion-web
     volumes:
       - ../maplebit/MapleBit/:/var/www/html
+    depends_on:
+      orion-database:
+        condition: service_healthy
     ports:
       - 8000:80
   orion-database:
