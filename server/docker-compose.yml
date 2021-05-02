@@ -13,7 +13,7 @@ services:
       - ./database/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./database/schema.sql:/docker-entrypoint-initdb.d/0_init.sql
     ports:
-      - 7900:3306
+      - 127.0.0.1:7900:3306
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=orion
