@@ -64,14 +64,12 @@ cd orion-server
 docker build -t orionms .
 ```
 
-- Edit `docker-compose.yml` to your public address:
+- Create a `.env` file with your info:
 
-```diff
-     container_name: orion-server
-     image: orionms
-     extra_hosts:
--      orion-public: 127.0.0.1
-+      orion-public:  <vps public ipv4 ip>
+```
+MYSQL_ROOT_PASSWORD=root
+MYSQL_DATABASE=orion
+PUBLIC_IP=51.51.51.51 # Add your server ip here
 ```
 - Change the database password in `docker-compose.yml`
 - Run `docker-compose up`
@@ -80,6 +78,8 @@ docker build -t orionms .
 # MapleBit
 
 The MapleBit installation will be available at port 8000.
+
+To connect please use the host `orion-db` and use `SHA51` as encryption.
 
 # All in one script
 
