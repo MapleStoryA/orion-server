@@ -36,6 +36,8 @@ services:
   orion-server:
     container_name: orion-server
     image: orionms
+    build:
+      context: .
     extra_hosts:
       - orion-public:${PUBLIC_IP}
     depends_on:

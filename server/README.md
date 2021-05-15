@@ -3,21 +3,21 @@
 ## Installing Docker
 - [Download Docker](https://docs.docker.com/docker-for-windows/install/)
 
-## Set your server database password
-
-For now just change in `docker-compose.yml` and make it's not exposed to the world!
-
-# Building the image:
-```bash
-docker build -t orionms .
-```
-
 # Running the server
 
-Configure `docker-compose.yml` `orion-public` to your public ip address(or use 127.0.0.1 for localhost) and run:
+Create a `.env` file with your info:
+
+```
+MYSQL_ROOT_PASSWORD=root
+MYSQL_DATABASE=orion
+PUBLIC_IP=127.0.0.1
+```
+
 ```bash
 docker-compose up
 ```
+
+That's it.
 
 # Running on 1GB RAM vps
 
@@ -50,50 +50,34 @@ chmod +x /usr/local/bin/docker-compose
 yum install -y git
 
 ```
-- Connect to the server through ssh using the new created `server` user.
-- Clone the repo and enter into server folder:
+Connect to the server through ssh using the new created `server` user.
+
+Clone the repo and enter into server folder:
 
 ```bash
 git clone --recursive https://github.com/MapleStoryA/orion-server.git
 cd orion-server
-
-```
-- Build the docker image
-
-```bash
-docker build -t orionms .
 ```
 
-- Create a `.env` file with your info:
+Create a `.env` file with your info:
 
-```
-MYSQL_ROOT_PASSWORD=root
-MYSQL_DATABASE=orion
-PUBLIC_IP=51.51.51.51 # Add your server ip here
-```
-- Change the database password in `docker-compose.yml`
-- Run `docker-compose up`
-- Test the connectivity 
+Run `docker-compose up`
+
+Try to connect using port 8484.
 
 # MapleBit
 
 The MapleBit installation will be available at port 8000.
 
-To connect please use the host `orion-db` and use `SHA51` as encryption.
-
-# All in one script
-
-You can also try this script, which will do everything:
-
-[Cloud init example](https://gist.githubusercontent.com/dilsonnn/bd3f66e4fde55b49cef2870d7f89ec28/raw/3a7c77afcd2688f93509783a3a29edb04ed71d79/cloud.init.sh)
+To connect, please use the host `orion-db` and use `SHA51` as encryption.
 
 # Connect
 
 Run your game client pointing to your server ip on port `8484`
 
-
 # Exposing the server from home
-You can easily expose your server from home, if you have a small cloud server with nginx installed and ssh tunnels, here is an example:
+You can expose your server from home if you have a small cloud server with nginx installed and ssh tunnels, here is an example config:
+
 ```shell
 cat /etc/nginx/nginx.conf
 ```
