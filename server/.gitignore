@@ -8,6 +8,7 @@ target/
 .zip
 .rar
 .jar
+.env
 chatlog.txt
 dist/*.jar
 datadir/*

@@ -31,6 +31,8 @@ services:
   orion-server:
     container_name: orion-server
     image: orionms
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     build:
       context: .
     extra_hosts:

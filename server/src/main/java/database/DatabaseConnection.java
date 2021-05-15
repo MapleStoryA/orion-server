@@ -61,7 +61,10 @@ public class DatabaseConnection {
     }
     String url = ServerProperties.getProperty("url");
     String user = ServerProperties.getProperty("user");
-    String password = ServerProperties.getProperty("password");
+    String password  = System.getenv("MYSQL_ROOT_PASSWORD");
+    if(password == null){
+      throw new DatabaseException("Database password not provide.");
+    }
     pool = new ThreadLocalConnections(url, user, password);
   }
 
