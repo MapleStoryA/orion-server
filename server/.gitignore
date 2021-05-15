@@ -10,7 +10,7 @@ target/
 .jar
 chatlog.txt
 dist/*.jar
-.log
+datadir/*
 dist/*.zip
 dist/lib
 *.log

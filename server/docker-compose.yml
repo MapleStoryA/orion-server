@@ -7,13 +7,13 @@ services:
     volumes:
       - ../maplebit/MapleBit/:/var/www/html
     depends_on:
-      orion-database:
+      orion-db:
         condition: service_healthy
     ports:
-      - 8000:80
-  orion-database:
+      - 127.0.0.1:8000:80
+  orion-db:
     image: mysql:5.6
-    container_name: orion-database
+    container_name: orion-db
     restart: always
     command: >
       bash -c "
@@ -21,13 +21,14 @@ services:
       && /entrypoint.sh mysqld
       "
     volumes:
+      - orion:/var/lib/mysql
       - ./database/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./database/schema.sql:/docker-entrypoint-initdb.d/0_init.sql
     ports:
       - 127.0.0.1:7900:3306
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=orion
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       timeout: 15s
@@ -36,9 +37,9 @@ services:
     container_name: orion-server
     image: orionms
     extra_hosts:
-      orion-public: 127.0.0.1
+      - orion-public:${PUBLIC_IP}
     depends_on:
-      orion-database:
+      orion-db:
         condition: service_healthy
     volumes:
       - ./dist:/orion/dist
@@ -46,3 +47,5 @@ services:
       - 8484:8484
       - 8585-8590:8585-8590
       - 8799:8799
+volumes:
+  orion:
