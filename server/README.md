@@ -90,3 +90,62 @@ You can also try this script, which will do everything:
 # Connect
 
 Run your game client pointing to your server ip on port `8484`
+
+
+# Exposing the server from home
+You can easily expose your server from home, if you have a small cloud server with nginx installed and ssh tunnels, here is an example:
+```shell
+cat /etc/nginx/nginx.conf
+```
+```
+load_module '/usr/lib64/nginx/modules/ngx_stream_module.so';
+user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log;
+
+
+events {
+     worker_connections 1024;
+}
+
+
+stream {
+    server {
+        listen     8484;
+        proxy_pass 127.0.0.1:8485;
+    }
+        server {
+        listen     8585;
+        proxy_pass 127.0.0.1:9585;
+    }
+        server {
+        listen     8586;
+        proxy_pass 127.0.0.1:9586;
+    }
+        server {
+        listen     8587;
+        proxy_pass 127.0.0.1:9587;
+    }
+        server {
+        listen     8588;
+        proxy_pass 127.0.0.1:9588;
+    }
+        server {
+        listen     8589;
+        proxy_pass 127.0.0.1:9589;
+    }
+        server {
+        listen     8590;
+        proxy_pass 127.0.0.1:9589;
+    }
+        server {
+        listen     8799;
+        proxy_pass 127.0.0.1:9799;
+    }
+}
+```
+
+And to create the tunnel: 
+```shell
+ssh <user>@<ip> -i <private key> -R 8485:localhost:8484 -R 9585:localhost:8585 -R 9586:localhost:8586 -R 9587:localhost:8587 -R 9588:localhost:8588 -R 9589:localhost:8589 -R 9590:localhost:8590 -R 9799:localhost:8799
+```
