@@ -15,11 +15,6 @@ services:
     image: mysql:5.6
     container_name: orion-db
     restart: always
-    command: >
-      bash -c "
-      chmod 644 /etc/mysql/conf.d/*.cnf
-      && /entrypoint.sh mysqld
-      "
     volumes:
       - orion:/var/lib/mysql
       - ./database/my.cnf:/etc/mysql/conf.d/my.cnf
