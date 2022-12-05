@@ -1,4 +1,4 @@
-import client.MapleCharacter;
+
 import client.SkillFactory;
 import constants.JobConstants;
 import server.config.ServerConfig;
@@ -44,13 +44,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Start {
+public class GameApp {
 
     public static long startTime = System.currentTimeMillis();
-    public static final Start instance = new Start();
+    public static final GameApp instance = new GameApp();
 
     public static void main(String[] args) throws InterruptedException {
         AutoJCE.removeCryptographyRestrictions();

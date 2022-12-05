@@ -2,7 +2,7 @@
 
 ## Run locally with Intellij
 
-Once the database is started with `docker-compose up orion-db`, the app can be started by running the `Start` class.
+Once the database is started with `docker-compose up orion-db`, the app can be started by running the `GameApp` class.
 
 ## Installing Docker
 

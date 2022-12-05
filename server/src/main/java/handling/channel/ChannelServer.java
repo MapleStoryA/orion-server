@@ -72,9 +72,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ChannelServer implements Serializable {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
     public static long serverStartTime;
     private int expRate, mesoRate, dropRate, cashRate;
