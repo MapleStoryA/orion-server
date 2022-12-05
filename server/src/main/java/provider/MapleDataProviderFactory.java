@@ -27,8 +27,6 @@ import java.io.File;
 
 public class MapleDataProviderFactory {
 
-    private final static String wzPath = "dist/wz";
-
     private static MapleDataProvider getWZ(Object in, boolean provideImages) {
         if (in instanceof File) {
             File fileIn = (File) in;
@@ -46,7 +44,4 @@ public class MapleDataProviderFactory {
         return getWZ(in, true);
     }
 
-    public static File fileInWZPath(String filename) {
-        return new File(wzPath, filename);
-    }
 }

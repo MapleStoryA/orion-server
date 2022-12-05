@@ -1,6 +1,7 @@
 package scripting.v1;
 
 import scripting.v1.dispatch.RealPacketDispatcher;
+import server.config.ServerEnvironment;
 
 public class NpcScriptingManagerSingleton {
 
@@ -8,7 +9,7 @@ public class NpcScriptingManagerSingleton {
 
     public static NpcScriptingManager getInstance() {
         if (instance == null) {
-            instance = new NpcScriptingManager("dist/scripts");
+            instance = new NpcScriptingManager(ServerEnvironment.getConfig().getScriptsPath() + "/");
             instance.setDispatcher(new RealPacketDispatcher());
 
         }

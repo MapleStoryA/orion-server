@@ -48,8 +48,8 @@ public class PortalScriptManager {
         return instance;
     }
 
-    private final PortalScript getPortalScript(final String scriptName) {
-        String path = "dist/scripts/portal/" + scriptName + ".js";
+    private PortalScript getPortalScript(final String scriptName) {
+        String path = ServerEnvironment.getConfig().getScriptsPath() + "/portal/" + scriptName + ".js";
 
         if (!ServerEnvironment.isDebugEnabled()) {
             if (scripts.containsKey(scriptName)) {

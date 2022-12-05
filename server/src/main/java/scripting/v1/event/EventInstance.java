@@ -23,7 +23,6 @@ import java.util.concurrent.TimeUnit;
 
 public class EventInstance {
     private static final Logger LOG = LoggerFactory.getLogger(EventInteraction.class);
-    private static final String SCRIPT_PATH = "dist/scripts/instances";
     private final int channel;
     private final String name;
     private boolean isActive;

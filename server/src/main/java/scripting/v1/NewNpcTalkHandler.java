@@ -4,6 +4,7 @@ import client.MapleClient;
 import org.mozilla.javascript.ContinuationPending;
 import scripting.v1.binding.AskAvatarOperations;
 import scripting.v1.binding.NpcScript;
+import server.config.ServerEnvironment;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 import java.io.File;
@@ -42,12 +43,12 @@ public class NewNpcTalkHandler {
     }
 
     public static boolean isNewNpcScriptAvailable(int npc) {
-        File file = new File("dist/scripts/npcNew/" + npc + ".js");
+        File file = new File(ServerEnvironment.getConfig().getScriptsPath() + "/" + "scripts/npcNew/" + npc + ".js");
         return file.exists();
     }
 
     public static boolean isNewQuestScriptAvailable(int npc) {
-        File file = new File("dist/scripts/questNew/" + npc + ".js");
+        File file = new File(ServerEnvironment.getConfig().getScriptsPath() + "/" + "questNew/" + npc + ".js");
         return file.exists();
     }
 

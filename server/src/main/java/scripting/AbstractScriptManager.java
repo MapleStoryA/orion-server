@@ -28,7 +28,7 @@ public abstract class AbstractScriptManager {
 
     protected Invocable getInvocable(String path, String scriptId, MapleClient c) {
         try {
-            path = "dist/scripts/" + path + "/" + scriptId + ".js";
+            path = ServerEnvironment.getConfig().getScriptsPath() + "/" + path + "/" + scriptId + ".js";
 
             if (isDebugMode) {
                 System.out.println("Loading file " + path);
@@ -41,7 +41,8 @@ public abstract class AbstractScriptManager {
             StringBuilder builder = new StringBuilder();
             builder.append("load('nashorn:mozilla_compat.js');" + System.lineSeparator());
             builder.append("function scriptName(){ return \"$1\"; }".replace("$1", scriptId));
-            builder.append("function getScriptPath(){ return \"dist/scripts\"}");
+            String scriptsPath = ServerEnvironment.getConfig().getScriptsPath();
+            builder.append("function getScriptPath(){ return \"" + scriptsPath + "\" }");
             String content = StringUtil.readFileAsString(path);
             if (content.isEmpty()) {
                 return null;
@@ -65,7 +66,7 @@ public abstract class AbstractScriptManager {
     }
 
     protected void resetContext(String path, MapleClient c) {
-        path = "dist/scripts/" + path;
+        path = ServerEnvironment.getConfig().getScriptsPath() + "/" + path;
         c.removeScriptEngine(path);
     }
 

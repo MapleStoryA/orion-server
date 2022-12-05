@@ -51,4 +51,8 @@ public class ServerConfig {
         });
         return properties;
     }
+
+    public String getScriptsPath() {
+        return new File("config/scripts").toPath().toString();
+    }
 }
