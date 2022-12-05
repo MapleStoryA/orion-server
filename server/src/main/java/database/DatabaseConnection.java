@@ -55,9 +55,9 @@ public class DatabaseConnection {
         } catch (ClassNotFoundException e) {
             throw new SQLException("Unable to find JDBC library. Do you have MySQL Connector/J (if using default JDBC driver)?");
         }
-        String url = config.getProperty("url");
-        String user = config.getProperty("user");
-        String password = config.getProperty("password");
+        String url = config.getProperty("database.url");
+        String user = config.getProperty("database.user");
+        String password = config.getProperty("database.password");
         if (password == null) {
             throw new DatabaseException("Database password not provide.");
         }
