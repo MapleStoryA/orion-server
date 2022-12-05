@@ -18,7 +18,6 @@
 
 package database;
 
-import server.ServerProperties;
 import server.config.ServerConfig;
 import tools.LockableList;
 

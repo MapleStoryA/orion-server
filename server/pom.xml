@@ -112,6 +112,28 @@
                     <outputDirectory>app</outputDirectory>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>2.5.0</version>
+                <configuration>
+                    <to>
+                        <image>orion-ms</image>
+                    </to>
+                    <container>
+                        <ports>
+                            <port>8484</port>
+                            <port>8585</port>
+                            <port>8586</port>
+                            <port>8587</port>
+                            <port>8588</port>
+                            <port>8589</port>
+                            <port>8590</port>
+                            <port>8799</port>
+                        </ports>
+                    </container>
+                </configuration>
+            </plugin>
         </plugins>
 
 

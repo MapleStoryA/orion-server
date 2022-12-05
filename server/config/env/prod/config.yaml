@@ -1,0 +1,32 @@
+database:
+  url: jdbc:mysql://orion-db:3306/orion?autoReconnect=true
+  user: root
+  password: root
+
+login:
+  key: releaselogin
+  host: 127.0.0.1
+  serverName: Scania  # Name of the Server
+  eventMessage: Welcome to Maple Story Global. # Event Message at Channel Selection
+  flag: 3 # Flag at Channel Selection  0: Nothing 1: Event 2: New 3: Hot
+  maxCharacters: 6 # Initial amount of characters per account
+  userlimit: 100 # total user limit of the server
+
+world:
+  # Rates
+  exp: 1
+  meso: 1
+  drop: 1
+  cash: 0
+  admin: false # Admin Only or not
+  flags: 0 # 1 :  Disable PQ 0 :  Enable PQ
+  serverMessage: Maple Story V90 # Server Scrolling Message
+
+channel:
+  net:
+   interface: orion-public
+  # active event scripts
+  events: KerningPQ,Boats
+  count: 2
+  #events: 2xEvent,4jberserk,4jrush,AirPlane,Amoria,Kenta,AriantPQ1,AriantPQ2,AriantPQ3,Boats,BossBalrog_EASY,BossBalrog_NORMAL,BossHunterPQ,BossQuestEASY,BossQuestHARD,BossQuestHELL,BossQuestMed,Brawler,Cabin,CathedralWedding,ChaosHorntail,ChaosZakum,cpq,DollHouse,ElementThanatos,elevator,ElnathPQ,FireDemon,Geenie,Ghost,GuildQuest,Hak,HenesysPQ,HontalePQ,HontaleSquad,HorntailBattle,KerningPQ,KyrinTrainingGroundC,KyrinTrainingGroundV,LudiMazePQ,LudiPQ,LumpEnergy,Olivia,OmegaPQ,OrbisPQ,PigTown,PiratePQ,Ravana_EASY,Ravana_HARD,Ravana_HELL,Ravana_MED,rescueGaga,Rex,ScarTarBattle,ServerMessage,Subway,TimeMachinePart,Trains,WitchTower_EASY,WitchTower_Hard,WitchTower_Med,ZakumAltar,ZakumBattle,ZakumPQ
+
