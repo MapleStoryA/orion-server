@@ -45,7 +45,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-//-Dnet.sf.odinms.wzpath="dist/wz"
 public class Start {
 
     public static long startTime = System.currentTimeMillis();
@@ -76,7 +75,7 @@ public class Start {
             throw new RuntimeException("[EXCEPTION] Please check if the SQL server is active.", ex);
         }
 
-        System.out.println("[" + ServerProperties.getProperty("net.sf.odinms.login.serverName") + "]");
+        System.out.println("[" + ServerProperties.getProperty("login.serverName") + "]");
         World.init();
         WorldTimer.getInstance().start();
         EtcTimer.getInstance().start();

@@ -48,6 +48,7 @@ import server.Timer.EventTimer;
 import server.Timer.MapTimer;
 import server.Timer.MobTimer;
 import server.Timer.WorldTimer;
+import server.config.ServerEnvironment;
 import server.events.MapleEvent;
 import server.events.MapleEventType;
 import server.life.MapleLifeFactory;
@@ -2638,8 +2639,7 @@ public class AdminCommand {
                 String type = splitted[1];
                 String search = StringUtil.joinStringFrom(splitted, 2);
                 MapleData data = null;
-                MapleDataProvider dataProvider = MapleDataProviderFactory
-                        .getDataProvider(new File(System.getProperty("net.sf.odinms.wzpath") + "/" + "String"));
+                MapleDataProvider dataProvider = ServerEnvironment.getConfig().getDataProvider("wz/String");
                 c.getPlayer().dropMessage(6, "<<Type: " + type + " | Search: " + search + ">>");
 
                 if (type.equalsIgnoreCase("NPC")) {
@@ -2755,8 +2755,7 @@ public class AdminCommand {
                         c.getPlayer().dropMessage(6, "No Skills Found");
                     }
                 } else if (type.equalsIgnoreCase("QUEST")) {
-                    MapleDataProvider questProvider = MapleDataProviderFactory
-                            .getDataProvider(new File(System.getProperty("net.sf.odinms.wzpath") + "/" + "Quest"));
+                    MapleDataProvider questProvider = ServerEnvironment.getConfig().getDataProvider("wz/Quest");
                     data = questProvider.getData("QuestInfo.img");
                     for (MapleData node : data.getChildren()) {
                         String name = String.valueOf(node.getChildByPath("name").getData());

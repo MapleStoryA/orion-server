@@ -136,24 +136,24 @@ public class ChannelServer implements Serializable {
     public final void run_startup_configurations() {
         setChannel(channel); //instances.put
         try {
-            expRate = Integer.parseInt(ServerProperties.getProperty("net.sf.odinms.world.exp"));
-            mesoRate = Integer.parseInt(ServerProperties.getProperty("net.sf.odinms.world.meso"));
-            dropRate = Integer.parseInt(ServerProperties.getProperty("net.sf.odinms.world.drop"));
-            cashRate = Integer.parseInt(ServerProperties.getProperty("net.sf.odinms.world.cash"));
+            expRate = Integer.parseInt(ServerProperties.getProperty("world.exp"));
+            mesoRate = Integer.parseInt(ServerProperties.getProperty("world.meso"));
+            dropRate = Integer.parseInt(ServerProperties.getProperty("world.drop"));
+            cashRate = Integer.parseInt(ServerProperties.getProperty("world.cash"));
             System.out.println("Exp:" + expRate);
             System.out.println("Meso:" + mesoRate);
             System.out.println("Drop:" + dropRate);
             System.out.println("Cash:" + cashRate);
-            serverMessage = ServerProperties.getProperty("net.sf.odinms.world.serverMessage");
-            serverName = ServerProperties.getProperty("net.sf.odinms.login.serverName");
-            flags = Integer.parseInt(ServerProperties.getProperty("net.sf.odinms.world.flags", "0"));
-            adminOnly = Boolean.parseBoolean(ServerProperties.getProperty("net.sf.odinms.world.admin", "false"));
-            eventSM = new EventScriptManager(this, ServerProperties.getProperty("net.sf.odinms.channel.events").split(","));
-            port = Short.parseShort(ServerProperties.getProperty("net.sf.odinms.channel.net.port" + channel, String.valueOf(DEFAULT_PORT + channel)));
+            serverMessage = ServerProperties.getProperty("world.serverMessage");
+            serverName = ServerProperties.getProperty("login.serverName");
+            flags = Integer.parseInt(ServerProperties.getProperty("world.flags", "0"));
+            adminOnly = Boolean.parseBoolean(ServerProperties.getProperty("world.admin", "false"));
+            eventSM = new EventScriptManager(this, ServerProperties.getProperty("channel.events").split(","));
+            port = Short.parseShort(ServerProperties.getProperty("channel.net.port" + channel, String.valueOf(DEFAULT_PORT + channel)));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        ip = ServerProperties.getProperty("net.sf.odinms.channel.net.interface") + ":" + port;
+        ip = ServerProperties.getProperty("channel.net.interface") + ":" + port;
 
         ByteBuffer.setUseDirectBuffers(false);
         ByteBuffer.setAllocator(new SimpleByteBufferAllocator());
@@ -312,7 +312,7 @@ public class ChannelServer implements Serializable {
 
     public final void reloadEvents() {
         eventSM.cancel();
-        eventSM = new EventScriptManager(this, ServerProperties.getProperty("net.sf.odinms.channel.events").split(","));
+        eventSM = new EventScriptManager(this, ServerProperties.getProperty("channel.events").split(","));
         eventSM.init();
     }
 
@@ -335,7 +335,7 @@ public class ChannelServer implements Serializable {
     public static final void startChannel_Main() {
         serverStartTime = System.currentTimeMillis();
 
-        for (int i = 0; i < Integer.parseInt(ServerProperties.getProperty("net.sf.odinms.channel.count", "0")); i++) {
+        for (int i = 0; i < Integer.parseInt(ServerProperties.getProperty("channel.count", "0")); i++) {
             newInstance(i + 1).run_startup_configurations();
         }
     }

@@ -99,7 +99,7 @@ public class MaplePacketCreator {
         mplew.writeShort(SendPacketOpcode.SERVER_IP.getValue());
         mplew.writeShort(0);
         try {
-            mplew.write(InetAddress.getByName(ServerProperties.getProperty("net.sf.odinms.channel.net.interface"))
+            mplew.write(InetAddress.getByName(ServerProperties.getProperty("channel.net.interface"))
                     .getAddress());
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -117,7 +117,7 @@ public class MaplePacketCreator {
         mplew.writeShort(SendPacketOpcode.CHANGE_CHANNEL.getValue());
         mplew.write(1);
         try {
-            mplew.write(InetAddress.getByName(ServerProperties.getProperty("net.sf.odinms.channel.net.interface"))
+            mplew.write(InetAddress.getByName(ServerProperties.getProperty("channel.net.interface"))
                     .getAddress());
         } catch (UnknownHostException e) {
             e.printStackTrace();

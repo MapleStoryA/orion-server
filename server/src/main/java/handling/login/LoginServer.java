@@ -57,12 +57,12 @@ public class LoginServer {
     }
 
     public static final void run_startup_configurations() {
-        userLimit = Integer.parseInt(ServerProperties.getProperty("net.sf.odinms.login.userlimit"));
-        serverName = ServerProperties.getProperty("net.sf.odinms.login.serverName");
-        eventMessage = ServerProperties.getProperty("net.sf.odinms.login.eventMessage");
-        flag = Byte.parseByte(ServerProperties.getProperty("net.sf.odinms.login.flag"));
-        adminOnly = Boolean.parseBoolean(ServerProperties.getProperty("net.sf.odinms.world.admin", "false"));
-        maxCharacters = Integer.parseInt(ServerProperties.getProperty("net.sf.odinms.login.maxCharacters"));
+        userLimit = Integer.parseInt(ServerProperties.getProperty("login.userlimit"));
+        serverName = ServerProperties.getProperty("login.serverName");
+        eventMessage = ServerProperties.getProperty("login.eventMessage");
+        flag = Byte.parseByte(ServerProperties.getProperty("login.flag"));
+        adminOnly = Boolean.parseBoolean(ServerProperties.getProperty("world.admin", "false"));
+        maxCharacters = Integer.parseInt(ServerProperties.getProperty("login.maxCharacters"));
 
         ByteBuffer.setUseDirectBuffers(false);
         ByteBuffer.setAllocator(new SimpleByteBufferAllocator());

@@ -25,6 +25,7 @@ import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
+import server.config.ServerEnvironment;
 import tools.Pair;
 import tools.StringUtil;
 
@@ -34,7 +35,7 @@ import java.util.Map;
 
 public class MapleReactorFactory {
 
-    private static final MapleDataProvider data = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("net.sf.odinms.wzpath") + "/Reactor"));
+    private static final MapleDataProvider data = ServerEnvironment.getConfig().getDataProvider("wz/Reactor");
     private static final Map<Integer, MapleReactorStats> reactorStats = new HashMap<Integer, MapleReactorStats>();
 
     public static final MapleReactorStats getReactor(int rid) {

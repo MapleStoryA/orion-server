@@ -12,7 +12,6 @@ import java.util.Properties;
 public class ServerConfig {
 
     private final Environment environment;
-
     private final Path path;
     private final Map<String, String> mergedConfig;
     private final Map<String, Map<String, String>> originalConfig;

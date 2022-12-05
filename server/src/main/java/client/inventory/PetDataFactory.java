@@ -25,6 +25,7 @@ import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
+import server.config.ServerEnvironment;
 import tools.Pair;
 
 import java.io.File;
@@ -33,7 +34,7 @@ import java.util.Map;
 
 public class PetDataFactory {
 
-    private static final MapleDataProvider dataRoot = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("net.sf.odinms.wzpath") + "/Item"));
+    private static final MapleDataProvider dataRoot = ServerEnvironment.getConfig().getDataProvider("wz/Item");
     private static final Map<Pair<Integer, Integer>, PetCommand> petCommands = new HashMap<Pair<Integer, Integer>, PetCommand>();
     private static final Map<Integer, Integer> petHunger = new HashMap<Integer, Integer>();
 

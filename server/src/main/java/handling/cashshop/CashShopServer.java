@@ -45,7 +45,7 @@ public class CashShopServer {
     private static boolean finishedShutdown = false;
 
     public static final void run_startup_configurations() {
-        ip = ServerProperties.getProperty("net.sf.odinms.world.host") + ":" + PORT;
+        ip = ServerProperties.getProperty("world.host") + ":" + PORT;
 
         ByteBuffer.setUseDirectBuffers(false);
         ByteBuffer.setAllocator(new SimpleByteBufferAllocator());

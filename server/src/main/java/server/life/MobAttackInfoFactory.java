@@ -25,6 +25,7 @@ import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
+import server.config.ServerEnvironment;
 import tools.Pair;
 import tools.StringUtil;
 
@@ -35,7 +36,7 @@ import java.util.Map;
 public class MobAttackInfoFactory {
 
     private static final MobAttackInfoFactory instance = new MobAttackInfoFactory();
-    private static final MapleDataProvider dataSource = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("net.sf.odinms.wzpath") + "/Mob"));
+    private static final MapleDataProvider dataSource = ServerEnvironment.getConfig().getDataProvider("wz/Mob");
     private static final Map<Pair<Integer, Integer>, MobAttackInfo> mobAttacks = new HashMap<Pair<Integer, Integer>, MobAttackInfo>();
 
     public static MobAttackInfoFactory getInstance() {

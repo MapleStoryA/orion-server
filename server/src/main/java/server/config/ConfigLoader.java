@@ -22,13 +22,16 @@ public class ConfigLoader {
         {
             var propertiesFileLoader = new PropertiesFileLoader();
             put(propertiesFileLoader.getExtension(), propertiesFileLoader);
+
+            var yamlLoader = new YamlFileLoader();
+            put(yamlLoader.getExtension(), yamlLoader);
         }
     };
 
     public ConfigLoader(Environment environment, Path path) {
         this.environment = environment;
         this.path = path;
-        this.folder = path.toString() + "/env/" + environment;
+        this.folder = path.toString() + "/env/" + environment.toString().toLowerCase();
     }
 
     private static String getExtension(String file) {
@@ -41,6 +44,9 @@ public class ConfigLoader {
     }
 
     public ServerConfig loadServerConfig() {
+        if (!new File(folder).exists()) {
+            throw new RuntimeException("The folder " + folder + " does not exist");
+        }
         final Map<String, Map<String, String>> propertiesMap = new HashMap<>();
         Stream.of(new File(folder).listFiles())
                 .forEach(file -> {
@@ -55,7 +61,7 @@ public class ConfigLoader {
     public static void main(String[] args) {
         var loader = new ConfigLoader(Environment.LOCAL, Paths.get("config").toAbsolutePath());
         ServerConfig serverConfig = loader.loadServerConfig();
-        String config = serverConfig.getProperty("net.sf.odinms.world.host");
+        String config = serverConfig.getProperty("login.host");
         log.info("Loaded config", serverConfig);
     }
 

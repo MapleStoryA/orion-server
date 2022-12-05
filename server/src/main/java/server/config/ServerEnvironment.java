@@ -19,7 +19,8 @@ public class ServerEnvironment {
 
     public static synchronized ServerConfig getConfig() {
         if (config == null) {
-            var loader = new ConfigLoader(Environment.LOCAL, Paths.get("config").toAbsolutePath());
+            Environment environment = Environment.resolve();
+            var loader = new ConfigLoader(environment, Paths.get("config").toAbsolutePath());
             config = loader.loadServerConfig();
         }
         return config;
