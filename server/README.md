@@ -16,4 +16,4 @@ mvn jib:dockerBuild
 
 # Running with docker compose
 
-After building the image with jib, the server should run with `shell docker-compose up`
+After building the image with jib, the server should run with `docker-compose up`
