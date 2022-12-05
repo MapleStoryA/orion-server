@@ -188,8 +188,8 @@ public class LoginPacket {
         mplew.write(serverId); // 0 = Aquilla, 1 = bootes, 2 = cass, 3 = delphinus
         final String worldName = serverName.substring(0, serverName.length() - 3); //remove the SEA
         mplew.writeMapleAsciiString(worldName);
-        mplew.write(LoginServer.getFlag());
-        mplew.writeMapleAsciiString(LoginServer.getEventMessage());
+        mplew.write(LoginServer.getInstance().getFlag());
+        mplew.writeMapleAsciiString(LoginServer.getInstance().getEventMessage());
         mplew.writeShort(100);
         mplew.writeShort(100);
         mplew.write(0);

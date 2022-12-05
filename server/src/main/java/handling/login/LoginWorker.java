@@ -37,7 +37,7 @@ public class LoginWorker {
     private static long lastUpdate = 0;
 
     public static void registerClient(final MapleClient c) {
-        if (LoginServer.isAdminOnly() && !c.isGm()) {
+        if (LoginServer.getInstance().isAdminOnly() && !c.isGm()) {
             c.getSession().write(MaplePacketCreator.serverNotice(1, "The server is currently set to Admin login only.\r\nWe are currently testing some issues.\r\nPlease try again later."));
             c.getSession().write(LoginPacket.getLoginFailed(7));
             return;
@@ -52,12 +52,12 @@ public class LoginWorker {
                 c.getSession().write(LoginPacket.getLoginFailed(7));
                 return;
             }
-            final double loadFactor = 1200 / ((double) LoginServer.getUserLimit() / load.size());
+            final double loadFactor = 1200 / ((double) LoginServer.getInstance().getUserLimit() / load.size());
             for (Entry<Integer, Integer> entry : load.entrySet()) {
                 usersOn += entry.getValue();
                 load.put(entry.getKey(), Math.min(1200, (int) (entry.getValue() * loadFactor)));
             }
-            LoginServer.setLoad(load, usersOn);
+            LoginServer.getInstance().setLoad(load, usersOn);
             lastUpdate = System.currentTimeMillis();
         }
 

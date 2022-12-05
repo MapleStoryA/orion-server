@@ -118,11 +118,6 @@ public class MapleServerHandler extends IoHandlerAdapter {
                 session.close();
                 return;
             }
-        } else {
-            if (LoginServer.isShutdown()) {
-                session.close();
-                return;
-            }
         }
         final byte[] serverRecv = new byte[]{70, 114, 122, (byte) Randomizer.nextInt(255)};
         final byte[] serverSend = new byte[]{82, 48, 120, (byte) Randomizer.nextInt(255)};

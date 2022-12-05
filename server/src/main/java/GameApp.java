@@ -138,7 +138,7 @@ public class GameApp {
 
 
         System.out.println("[Loading Login]");
-        LoginServer.run_startup_configurations();
+        LoginServer.getInstance();
         System.out.println("[Login Initialized]");
 
         System.out.println("[Loading Channel]");
@@ -158,7 +158,6 @@ public class GameApp {
             System.out.println("--MBean server was already active--");
         }
         PlayerNPC.loadAll();
-        LoginServer.setOn();
         System.out.println("[Fully Initialized in " + (System.currentTimeMillis() - startTime) / 1000L + " seconds]");
         RankingWorker.getInstance().run();
 

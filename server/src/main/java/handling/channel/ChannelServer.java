@@ -195,7 +195,7 @@ public class ChannelServer implements Serializable {
 
         //temporary while we dont have !addchannel
         instances.remove(channel);
-        LoginServer.removeChannel(channel);
+        LoginServer.getInstance().removeChannel(channel);
         setFinishShutdown();
     }
 
@@ -284,7 +284,7 @@ public class ChannelServer implements Serializable {
 
     public final void setChannel(final int channel) {
         instances.put(channel, this);
-        LoginServer.addChannel(channel);
+        LoginServer.getInstance().addChannel(channel);
     }
 
     public static final Collection<ChannelServer> getAllInstances() {

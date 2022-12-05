@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package handling.login;
 
+import com.mysql.jdbc.log.Log;
 import handling.MapleServerHandler;
 import handling.PacketProcessor;
 import handling.mina.MapleCodecFactory;
@@ -48,15 +49,9 @@ public class LoginServer {
     private static int maxCharacters, userLimit, usersOn = 0;
     private static boolean finishedShutdown = true, adminOnly = false;
 
-    public static final void addChannel(final int channel) {
-        load.put(channel, 0);
-    }
+    private static LoginServer INSTANCE;
 
-    public static final void removeChannel(final int channel) {
-        load.remove(channel);
-    }
-
-    public static final void run_startup_configurations() {
+    public LoginServer(){
         userLimit = Integer.parseInt(ServerProperties.getProperty("login.userlimit"));
         serverName = ServerProperties.getProperty("login.serverName");
         eventMessage = ServerProperties.getProperty("login.eventMessage");
@@ -82,7 +77,23 @@ public class LoginServer {
         }
     }
 
-    public static final void shutdown() {
+    public static synchronized LoginServer getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new LoginServer();
+        }
+        return INSTANCE;
+    }
+
+
+    public final void addChannel(final int channel) {
+        load.put(channel, 0);
+    }
+
+    public final void removeChannel(final int channel) {
+        load.remove(channel);
+    }
+
+    public void shutdown() {
         if (finishedShutdown) {
             return;
         }
@@ -91,64 +102,57 @@ public class LoginServer {
         finishedShutdown = true; //nothing. lol
     }
 
-    public static final String getServerName() {
+    public final String getServerName() {
         return serverName;
     }
 
-    public static final String getEventMessage() {
+    public final String getEventMessage() {
         return eventMessage;
     }
 
-    public static final byte getFlag() {
+    public final byte getFlag() {
         return flag;
     }
 
-    public static final int getMaxCharacters() {
+    public final int getMaxCharacters() {
         return maxCharacters;
     }
 
-    public static final Map<Integer, Integer> getLoad() {
+    public final Map<Integer, Integer> getLoad() {
         return load;
     }
 
-    public static void setLoad(final Map<Integer, Integer> load_, final int usersOn_) {
+    public void setLoad(final Map<Integer, Integer> load_, final int usersOn_) {
         load = load_;
         usersOn = usersOn_;
     }
 
-    public static final void setEventMessage(final String newMessage) {
+    public final void setEventMessage(final String newMessage) {
         eventMessage = newMessage;
     }
 
-    public static final void setFlag(final byte newflag) {
+    public final void setFlag(final byte newflag) {
         flag = newflag;
     }
 
-    public static final int getUserLimit() {
+    public final int getUserLimit() {
         return userLimit;
     }
 
-    public static final int getUsersOn() {
+    public final int getUsersOn() {
         return usersOn;
     }
 
-    public static final void setUserLimit(final int newLimit) {
+    public final void setUserLimit(final int newLimit) {
         userLimit = newLimit;
     }
 
-    public static final int getNumberOfSessions() {
+    public final int getNumberOfSessions() {
         return acceptor.getManagedSessions(InetSocketadd).size();
     }
 
-    public static final boolean isAdminOnly() {
+    public final boolean isAdminOnly() {
         return adminOnly;
     }
 
-    public static final boolean isShutdown() {
-        return finishedShutdown;
-    }
-
-    public static final void setOn() {
-        finishedShutdown = false;
-    }
 }

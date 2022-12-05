@@ -14,8 +14,8 @@ public class ServerStatusRequestHandler extends AbstractMaplePacketHandler {
         // 1 = "Since there are many users, you may encounter some..."
         // 2 = "The concurrent users in this world have reached the max"
         slea.readShort();
-        final int numPlayer = LoginServer.getUsersOn();
-        final int userLimit = LoginServer.getUserLimit();
+        final int numPlayer = LoginServer.getInstance().getUsersOn();
+        final int userLimit = LoginServer.getInstance().getUserLimit();
         if (numPlayer >= userLimit) {
             c.getSession().write(LoginPacket.getServerStatus(2));
         } else if (numPlayer * 2 >= userLimit) {

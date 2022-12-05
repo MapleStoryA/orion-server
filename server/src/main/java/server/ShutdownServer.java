@@ -68,7 +68,7 @@ public class ShutdownServer implements ShutdownServerMBean {
                         e.printStackTrace();
                     }
                 }
-                LoginServer.shutdown();
+                LoginServer.getInstance().shutdown();
                 CashShopServer.shutdown();
 
                 WorldTimer.getInstance().start();
