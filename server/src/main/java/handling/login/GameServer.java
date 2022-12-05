@@ -15,13 +15,10 @@ import java.net.InetSocketAddress;
 
 public class GameServer {
 
-    private final int port;
-
     protected InetSocketAddress inetSocketAddress;
     protected IoAcceptor acceptor;
 
     public GameServer(int channel, int port, PacketProcessor.Mode mode) {
-        this.port = port;
         ByteBuffer.setUseDirectBuffers(false);
         ByteBuffer.setAllocator(new SimpleByteBufferAllocator());
         acceptor = new SocketAcceptor();

@@ -22,33 +22,31 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package handling.login;
 
 import provider.MapleData;
-import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
 import server.config.ServerEnvironment;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LoginInformationProvider {
 
     private final static LoginInformationProvider instance = new LoginInformationProvider();
-    protected final List<String> ForbiddenName = new ArrayList<String>();
+    protected final List<String> forbiddenName = new ArrayList<>();
 
     public static LoginInformationProvider getInstance() {
         return instance;
     }
 
-    protected LoginInformationProvider() {
+    LoginInformationProvider() {
         System.out.println("Loading LoginInformationProvider :::");
         final MapleData nameData = ServerEnvironment.getConfig().getDataProvider("wz/Etc").getData("ForbiddenName.img");
         for (final MapleData data : nameData.getChildren()) {
-            ForbiddenName.add(MapleDataTool.getString(data));
+            forbiddenName.add(MapleDataTool.getString(data));
         }
     }
 
-    public final boolean isForbiddenName(final String in) {
-        for (final String name : ForbiddenName) {
+    public boolean isForbiddenName(final String in) {
+        for (final String name : forbiddenName) {
             if (in.contains(name)) {
                 return true;
             }
