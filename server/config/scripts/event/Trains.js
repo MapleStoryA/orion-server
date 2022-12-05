@@ -21,24 +21,24 @@
 */
 
 /**
--- Odin JavaScript --------------------------------------------------------------------------------
-	Trains between Orbis and Ludibrium
--- By ---------------------------------------------------------------------------------------------
-	Information
--- Version Info -----------------------------------------------------------------------------------
-        1.6 - Modified for ShootSource (Moogra)
-	1.5 - Fix for infinity looping [Information]
-	1.4 - Ship/boat is now showed
-	    - Removed temp message[Information]
-	    - Credit to Snow/superraz777 for old source
-	    - Credit to Titan/Kool for the ship/boat packet
-	1.3 - Removing some function since is not needed [Information]
-	    - Remove register player menthod [Information]
-	1.2 - It should be 2 ships not 1 [Information]
-	1.1 - Add timer variable for easy edit [Information]
-	1.0 - First Version by Information
----------------------------------------------------------------------------------------------------
-**/
+ -- Odin JavaScript --------------------------------------------------------------------------------
+ Trains between Orbis and Ludibrium
+ -- By ---------------------------------------------------------------------------------------------
+ Information
+ -- Version Info -----------------------------------------------------------------------------------
+ 1.6 - Modified for ShootSource (Moogra)
+ 1.5 - Fix for infinity looping [Information]
+ 1.4 - Ship/boat is now showed
+ - Removed temp message[Information]
+ - Credit to Snow/superraz777 for old source
+ - Credit to Titan/Kool for the ship/boat packet
+ 1.3 - Removing some function since is not needed [Information]
+ - Remove register player menthod [Information]
+ 1.2 - It should be 2 ships not 1 [Information]
+ 1.1 - Add timer variable for easy edit [Information]
+ 1.0 - First Version by Information
+ ---------------------------------------------------------------------------------------------------
+ **/
 load("nashorn:mozilla_compat.js");
 importPackage(Packages.tools);
 
@@ -73,7 +73,7 @@ function scheduleNew() {
 }
 
 function stopEntry() {
-    em.setProperty("entry","false");
+    em.setProperty("entry", "false");
 }
 
 function takeoff() {
@@ -81,22 +81,22 @@ function takeoff() {
     Orbis_Station.setDocked(false);
     Ludibrium_Station.broadcastMessage(MaplePacketCreator.boatPacket(false));
     Orbis_Station.broadcastMessage(MaplePacketCreator.boatPacket(false));
-    em.setProperty("docked","false");
+    em.setProperty("docked", "false");
     var temp1 = Orbis_btf.getCharacters().iterator();
-    while(temp1.hasNext())
+    while (temp1.hasNext())
         temp1.next().changeMap(Train_to_Ludibrium, Train_to_Ludibrium.getPortal(0));
     var temp2 = Ludibrium_btf.getCharacters().iterator();
-    while(temp2.hasNext())
+    while (temp2.hasNext())
         temp2.next().changeMap(Train_to_Orbis, Train_to_Orbis.getPortal(0));
     em.schedule("arrived", 600000);
 }
 
 function arrived() {
     var temp1 = Train_to_Orbis.getCharacters().iterator();
-    while(temp1.hasNext())
+    while (temp1.hasNext())
         temp1.next().changeMap(Orbis_docked, Orbis_docked.getPortal(0));
     var temp2 = Train_to_Ludibrium.getCharacters().iterator();
-    while(temp2.hasNext())
+    while (temp2.hasNext())
         temp2.next().changeMap(Ludibrium_docked, Ludibrium_docked.getPortal(0));
     scheduleNew();
 }

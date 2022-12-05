@@ -2,11 +2,11 @@ function start() {
     if (cm.getPlayer().getMapId() == 970010000) {
         cm.sendYesNo("Would you like to go back to #bHenesys#k now?");
     } else {
-        cm.sendYesNo("Hey, would you like to be warped to the maple hill and donate some suns to #bAramia#k?"); 
+        cm.sendYesNo("Hey, would you like to be warped to the maple hill and donate some suns to #bAramia#k?");
     }
 }
 
-function action(m,t,s) {
+function action(m, t, s) {
     if (m > 0) {
         if (cm.getPlayer().getMapId() == 970010000) {
             cm.warp(100000000)

@@ -21,23 +21,23 @@
 */
 
 /**
--- Odin JavaScript --------------------------------------------------------------------------------
-	Cabin between Orbis and Leafre
--- By ---------------------------------------------------------------------------------------------
-	Information
--- Version Info -----------------------------------------------------------------------------------
-	1.5 - Fix for infinity looping [Information]
-	1.4 - Ship/boat is now showed
-	    - Removed temp message[Information]
-	    - Credit to Snow/superraz777 for old source
-	    - Credit to Titan/Kool for the ship/boat packet
-	1.3 - Removing some function since is not needed [Information]
-	    - Remove register player menthod [Information]
-	1.2 - It should be 2 ships not 1 [Information]
-	1.1 - Add timer variable for easy edit [Information]
-	1.0 - First Version by Information
----------------------------------------------------------------------------------------------------
-**/
+ -- Odin JavaScript --------------------------------------------------------------------------------
+ Cabin between Orbis and Leafre
+ -- By ---------------------------------------------------------------------------------------------
+ Information
+ -- Version Info -----------------------------------------------------------------------------------
+ 1.5 - Fix for infinity looping [Information]
+ 1.4 - Ship/boat is now showed
+ - Removed temp message[Information]
+ - Credit to Snow/superraz777 for old source
+ - Credit to Titan/Kool for the ship/boat packet
+ 1.3 - Removing some function since is not needed [Information]
+ - Remove register player menthod [Information]
+ 1.2 - It should be 2 ships not 1 [Information]
+ 1.1 - Add timer variable for easy edit [Information]
+ 1.0 - First Version by Information
+ ---------------------------------------------------------------------------------------------------
+ **/
 
 load("nashorn:mozilla_compat.js");
 importPackage(Packages.tools);
@@ -77,7 +77,7 @@ function scheduleNew() {
 }
 
 function stopEntry() {
-    em.setProperty("entry","false");
+    em.setProperty("entry", "false");
 }
 
 function takeoff() {
@@ -85,13 +85,13 @@ function takeoff() {
     Orbis_Station.setDocked(false);
     Leafre_Station.broadcastMessage(MaplePacketCreator.boatPacket(false));
     Orbis_Station.broadcastMessage(MaplePacketCreator.boatPacket(false));
-    em.setProperty("docked","false");
+    em.setProperty("docked", "false");
     var temp1 = Orbis_btf.getCharacters().iterator();
-    while(temp1.hasNext()) {
+    while (temp1.hasNext()) {
         temp1.next().changeMap(Cabin_to_Leafre, Cabin_to_Leafre.getPortal(0));
     }
     var temp2 = Leafre_btf.getCharacters().iterator();
-    while(temp2.hasNext()) {
+    while (temp2.hasNext()) {
         temp2.next().changeMap(Cabin_to_Orbis, Cabin_to_Orbis.getPortal(0));
     }
     em.schedule("arrived", rideTime);
@@ -99,12 +99,13 @@ function takeoff() {
 
 function arrived() {
     var temp1 = Cabin_to_Orbis.getCharacters().iterator();
-    while(temp1.hasNext())
+    while (temp1.hasNext())
         temp1.next().changeMap(Orbis_docked, Orbis_docked.getPortal(0));
     var temp2 = Cabin_to_Leafre.getCharacters().iterator();
-    while(temp2.hasNext())
+    while (temp2.hasNext())
         temp2.next().changeMap(Leafre_docked, Leafre_docked.getPortal(0));
     scheduleNew();
 }
+
 function cancelSchedule() {
 }

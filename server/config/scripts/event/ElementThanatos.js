@@ -14,7 +14,7 @@ function setup() {
 
     var map = eim.setInstanceMap(922020100);
     map.respawn(true);
-    
+
     eim.startEventTimer(1200000); // 20 min
 
     return eim;
@@ -37,9 +37,9 @@ function scheduledTimeout(eim) {
 
 function changedMap(eim, player, mapid) {
     if (mapid != 922020100) {
-	eim.unregisterPlayer(player);
+        eim.unregisterPlayer(player);
 
-	eim.disposeIfPlayerBelow(0, 0);
+        eim.disposeIfPlayerBelow(0, 0);
     }
 }
 

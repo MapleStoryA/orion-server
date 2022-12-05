@@ -1,10 +1,9 @@
-
 var status = 0;
 
 function start() {
     if (cm.getMapId() == 951000000) {
-	cm.dispose();
-	return;
+        cm.dispose();
+        return;
     }
     cm.sendYesNo("Would you like to go to the Monster Park?");
 }

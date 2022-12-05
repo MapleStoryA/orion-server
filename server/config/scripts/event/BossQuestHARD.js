@@ -3,18 +3,18 @@ var returnmap = 262000300;
 
 var monster = new Array(
     9420059, // destroyer(visitor)
-	9420062, // commander (visitor)
+    9420062, // commander (visitor)
     8300006, // Dragonica
     8300007, // Dragon Rider
-	9400121, // Female Boss
-	9400405, // Samurai
-	9420067, // ultimate visitor
+    9400121, // Female Boss
+    9400405, // Samurai
+    9420067, // ultimate visitor
     9420549, // furious Scarlion boss
     9420544, // Furious Targa
-	8800000, //zakum
-	8800001, // zakum 2
+    8800000, //zakum
+    8800001, // zakum 2
     8800002 // Zakum 3
-    );
+);
 
 function init() {
 // After loading, ChannelServer
@@ -38,65 +38,66 @@ function setup(partyid) {
 
 function beginQuest(eim) { // Custom function
     if (eim != null) {
-    	eim.startEventTimer(5000); // After 5 seconds -> scheduledTimeout()
+        eim.startEventTimer(5000); // After 5 seconds -> scheduledTimeout()
     }
 }
+
 function monsterSpawn(eim) { // Custom function
     var monsterid = monster[parseInt(eim.getProperty("monster_number"))];
     var mob = em.getMonster(monsterid);
 
     switch (monsterid) {
-	case 8220004: // Dodo
-	case 8220005: // Lillinof
-	case 8220006: // Rakia
-	    var modified = em.newMonsterStats();
-	    modified.setOExp(mob.getMobExp() * 7);
-	    modified.setOHp(mob.getMobMaxHp() * 4);
-	    modified.setOMp(mob.getMobMaxMp());
+        case 8220004: // Dodo
+        case 8220005: // Lillinof
+        case 8220006: // Rakia
+            var modified = em.newMonsterStats();
+            modified.setOExp(mob.getMobExp() * 7);
+            modified.setOHp(mob.getMobMaxHp() * 4);
+            modified.setOMp(mob.getMobMaxMp());
 
-	    mob.setOverrideStats(modified);
-	    break;
-	case 8300006: // Dragonoir
-	    var modified = em.newMonsterStats();
-	    modified.setOExp(mob.getMobExp() * 0.5);
-	    modified.setOHp(mob.getMobMaxHp() * 0.7);
-	    modified.setOMp(mob.getMobMaxMp());
+            mob.setOverrideStats(modified);
+            break;
+        case 8300006: // Dragonoir
+            var modified = em.newMonsterStats();
+            modified.setOExp(mob.getMobExp() * 0.5);
+            modified.setOHp(mob.getMobMaxHp() * 0.7);
+            modified.setOMp(mob.getMobMaxMp());
 
-	    mob.setOverrideStats(modified);
-	    break;
-	case 9400121: // Anego
-	    var modified = em.newMonsterStats();
-	    modified.setOExp(mob.getMobExp() * 1.4);
-	    modified.setOHp(mob.getMobMaxHp() * 2);
-	    modified.setOMp(mob.getMobMaxMp());
+            mob.setOverrideStats(modified);
+            break;
+        case 9400121: // Anego
+            var modified = em.newMonsterStats();
+            modified.setOExp(mob.getMobExp() * 1.4);
+            modified.setOHp(mob.getMobMaxHp() * 2);
+            modified.setOMp(mob.getMobMaxMp());
 
-	    mob.setOverrideStats(modified);
-	    break;
-	case 9400405: // Samurai
-	    var modified = em.newMonsterStats();
-	    modified.setOExp(mob.getMobExp() * 1.4);
-	    modified.setOHp(mob.getMobMaxHp() * 3);
-	    modified.setOMp(mob.getMobMaxMp());
+            mob.setOverrideStats(modified);
+            break;
+        case 9400405: // Samurai
+            var modified = em.newMonsterStats();
+            modified.setOExp(mob.getMobExp() * 1.4);
+            modified.setOHp(mob.getMobMaxHp() * 3);
+            modified.setOMp(mob.getMobMaxMp());
 
-	    mob.setOverrideStats(modified);
-	    break;
-	case 9420549: // Scarlion
-	case 9420544: // Targa
-	    var modified = em.newMonsterStats();
-	    modified.setOExp(mob.getMobExp() * 0.8);
-	    modified.setOHp(mob.getMobMaxHp() * 1.8);
-	    modified.setOMp(mob.getMobMaxMp());
+            mob.setOverrideStats(modified);
+            break;
+        case 9420549: // Scarlion
+        case 9420544: // Targa
+            var modified = em.newMonsterStats();
+            modified.setOExp(mob.getMobExp() * 0.8);
+            modified.setOHp(mob.getMobMaxHp() * 1.8);
+            modified.setOMp(mob.getMobMaxMp());
 
-	    mob.setOverrideStats(modified);
-	    break;
-	case 8800002: // Zakum 3
-	    var modified = em.newMonsterStats();
-	    modified.setOExp(mob.getMobExp() * 1.2);
-	    modified.setOHp(mob.getMobMaxHp() * 3);
-	    modified.setOMp(mob.getMobMaxMp());
+            mob.setOverrideStats(modified);
+            break;
+        case 8800002: // Zakum 3
+            var modified = em.newMonsterStats();
+            modified.setOExp(mob.getMobExp() * 1.2);
+            modified.setOHp(mob.getMobMaxHp() * 3);
+            modified.setOMp(mob.getMobMaxMp());
 
-	    mob.setOverrideStats(modified);
-	    break;
+            mob.setOverrideStats(modified);
+            break;
     }
     eim.registerMonster(mob);
 
@@ -111,19 +112,19 @@ function playerEntry(eim, player) {
 
 function changedMap(eim, player, mapid) {
     if (mapid != eventmapid) {
-	eim.unregisterPlayer(player);
+        eim.unregisterPlayer(player);
 
-	eim.disposeIfPlayerBelow(0, 0);
+        eim.disposeIfPlayerBelow(0, 0);
     }
 }
 
 function scheduledTimeout(eim) {
     var num = parseInt(eim.getProperty("monster_number"));
     if (num < monster.length) {
-	monsterSpawn(eim);
-	eim.setProperty("monster_number", num + 1);
+        monsterSpawn(eim);
+        eim.setProperty("monster_number", num + 1);
     } else {
-	eim.disposeIfPlayerBelow(100, returnmap);
+        eim.disposeIfPlayerBelow(100, returnmap);
     }
 // When event timeout..
 
@@ -142,15 +143,15 @@ function allMonstersDead(eim) {
 
     eim.setProperty("points", totalp);
 
-    eim.broadcastPlayerMsg(5, "Your team've gained "+num+" points! With a total of "+totalp+".");
-    
+    eim.broadcastPlayerMsg(5, "Your team've gained " + num + " points! With a total of " + totalp + ".");
+
     eim.saveBossQuest(num);
 
     if (mobnum < monster.length) {
-	eim.broadcastPlayerMsg(6, "Prepare! The next boss will appear in a glimpse of an eye!");
-} else {
-	eim.saveBossQuest(50000);
-	eim.broadcastPlayerMsg(5, "Your team've beaten the HARD mode and have gained an extra 50,000 points!");
+        eim.broadcastPlayerMsg(6, "Prepare! The next boss will appear in a glimpse of an eye!");
+    } else {
+        eim.saveBossQuest(50000);
+        eim.broadcastPlayerMsg(5, "Your team've beaten the HARD mode and have gained an extra 50,000 points!");
     }
 // When invoking unregisterMonster(MapleMonster mob) OR killed
 // Happens only when size = 0

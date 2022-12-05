@@ -17,10 +17,10 @@ function setup(mapid) {
     var eim = em.newInstance("cpq" + mapid);
     eim.setInstanceMap(980030000); // <exit>
     eim.setInstanceMap(map);
-    eim.setInstanceMap(map+200);
-    eim.setInstanceMap(map+100).resetFully();
-    eim.setInstanceMap(map+300);
-    eim.setInstanceMap(map+400);
+    eim.setInstanceMap(map + 200);
+    eim.setInstanceMap(map + 100).resetFully();
+    eim.setInstanceMap(map + 300);
+    eim.setInstanceMap(map + 400);
     eim.setProperty("forfeit", "false");
     eim.setProperty("blue", "-1");
     eim.setProperty("red", "-1");
@@ -41,11 +41,11 @@ function registerCarnivalParty(eim, carnivalParty) {
     if (eim.getProperty("red").equals("-1")) {
         eim.setProperty("red", carnivalParty.getLeader().getId() + "");
         // display message about recieving invites for next 3 minutes;
-	//eim.restartEventTimer(180000);
+        //eim.restartEventTimer(180000);
         eim.schedule("end", 3 * 60 * 1000); // 3 minutes
     } else {
         eim.setProperty("blue", carnivalParty.getLeader().getId() + "");
-	//eim.restartEventTimer(10000);
+        //eim.restartEventTimer(10000);
         eim.schedule("start", 10000);
     }
 }
@@ -61,21 +61,21 @@ function disbandParty(eim) {
     //if (eim.getProperty("started").equals("true")) {
     //    warpOut(eim);
     //} else {
-	disposeAll(eim);
+    disposeAll(eim);
     //}
 }
 
 function disposeAll(eim) {
-    	var iter = eim.getPlayers().iterator();
-    	while (iter.hasNext()) {
-	    var player = iter.next();
-            eim.unregisterPlayer(player);
-            player.changeMap(eim.getMapInstance(exitMap), eim.getMapInstance(exitMap).getPortal(0));
-	    if (player.getCarnivalParty() != null) {
-            	player.getCarnivalParty().removeMember(player);
-	    }
+    var iter = eim.getPlayers().iterator();
+    while (iter.hasNext()) {
+        var player = iter.next();
+        eim.unregisterPlayer(player);
+        player.changeMap(eim.getMapInstance(exitMap), eim.getMapInstance(exitMap).getPortal(0));
+        if (player.getCarnivalParty() != null) {
+            player.getCarnivalParty().removeMember(player);
         }
-        eim.dispose();
+    }
+    eim.dispose();
 }
 
 function playerExit(eim, player) {
@@ -97,11 +97,11 @@ function removePlayer(eim, player) {
 function getParty(eim, property) {
     var chr = em.getChannelServer().getPlayerStorage().getCharacterById(parseInt(eim.getProperty(property)));
     if (chr == null) {
-	eim.broadcastPlayerMsg(5, "The leader of the party " + property + " was not found.");
-	disposeAll(eim);
-	return null;
+        eim.broadcastPlayerMsg(5, "The leader of the party " + property + " was not found.");
+        disposeAll(eim);
+        return null;
     } else {
-	return chr.getCarnivalParty();
+        return chr.getCarnivalParty();
     }
 }
 
@@ -134,40 +134,40 @@ function end(eim) {
 
 function warpOut(eim) {
     if (!eim.getProperty("started").equals("true")) {
-	if (eim.getProperty("blue").equals("-1")) {
+        if (eim.getProperty("blue").equals("-1")) {
             disposeAll(eim);
-	}
+        }
     } else {
-	var blueParty = getParty(eim, "blue");
-	var redParty = getParty(eim, "red");
-    	if (blueParty.isWinner()) {
-    	    blueParty.warp(eim.getMapInstance(winnerMap), 0);
-    	    redParty.warp(eim.getMapInstance(loserMap), 0);
-    	} else {
-    	    redParty.warp(eim.getMapInstance(winnerMap), 0);
-    	    blueParty.warp(eim.getMapInstance(loserMap), 0);
-    	}
-    	eim.disposeIfPlayerBelow(100,0);
+        var blueParty = getParty(eim, "blue");
+        var redParty = getParty(eim, "red");
+        if (blueParty.isWinner()) {
+            blueParty.warp(eim.getMapInstance(winnerMap), 0);
+            redParty.warp(eim.getMapInstance(loserMap), 0);
+        } else {
+            redParty.warp(eim.getMapInstance(winnerMap), 0);
+            blueParty.warp(eim.getMapInstance(loserMap), 0);
+        }
+        eim.disposeIfPlayerBelow(100, 0);
     }
 }
 
 function scheduledTimeout(eim) {
     eim.stopEventTimer();
     if (!eim.getProperty("started").equals("true")) {
-	if (eim.getProperty("blue").equals("-1")) {
+        if (eim.getProperty("blue").equals("-1")) {
             disposeAll(eim);
-	}
+        }
     } else {
-	var blueParty = getParty(eim, "blue");
-	var redParty = getParty(eim, "red");
-    	if (blueParty.getTotalCP() > redParty.getTotalCP()) {
-        	blueParty.setWinner(true);
-    	} else if (redParty.getTotalCP() > blueParty.getTotalCP()) {
-        	redParty.setWinner(true);
-    	}
-    	blueParty.displayMatchResult();
-    	redParty.displayMatchResult();
-    	eim.schedule("warpOut", 10000);
+        var blueParty = getParty(eim, "blue");
+        var redParty = getParty(eim, "red");
+        if (blueParty.getTotalCP() > redParty.getTotalCP()) {
+            blueParty.setWinner(true);
+        } else if (redParty.getTotalCP() > blueParty.getTotalCP()) {
+            redParty.setWinner(true);
+        }
+        blueParty.displayMatchResult();
+        redParty.displayMatchResult();
+        eim.schedule("warpOut", 10000);
     }
 }
 
@@ -178,10 +178,11 @@ function playerRevive(eim, player) {
     while (iter.hasNext()) {
         iter.next().CPUpdate(true, player.getCarnivalParty().getAvailableCP(), player.getCarnivalParty().getTotalCP(), player.getCarnivalParty().getTeam());
     }
-	player.addHP(50);
-player.changeMap(eim.getMapInstance(reviveMap), eim.getMapInstance(reviveMap).getPortal(0));
-	return true;
+    player.addHP(50);
+    player.changeMap(eim.getMapInstance(reviveMap), eim.getMapInstance(reviveMap).getPortal(0));
+    return true;
 }
+
 function playerDisconnected(eim, player) {
     player.setMap(eim.getMapInstance(exitMap));
     eim.unregisterPlayer(player);
@@ -194,10 +195,10 @@ function onMapLoad(eim, chr) {
     if (!eim.getProperty("started").equals("true")) {
         disposeAll(eim);
     } else if (chr.getCarnivalParty().getTeam() == 0) {
-	var blueParty = getParty(eim, "blue");
+        var blueParty = getParty(eim, "blue");
         chr.startMonsterCarnival(blueParty.getAvailableCP(), blueParty.getTotalCP());
     } else {
-	var redParty = getParty(eim, "red");
+        var redParty = getParty(eim, "red");
         chr.startMonsterCarnival(redParty.getAvailableCP(), redParty.getTotalCP());
     }
 }

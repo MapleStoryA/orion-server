@@ -18,30 +18,30 @@ function start() {
 function action(mode, type, selection) {
     if (mode == -1) //ExitChat
         cm.dispose();
-    else if (mode == 0){//No
+    else if (mode == 0) {//No
         cm.sendOk("OK, Talk to me again if you want to leave here.");
         cm.dispose();
-    }else{		    //Regular Talk
+    } else {		    //Regular Talk
         if (mode == 1)
             status++;
         else
             status--;
-        if(cm.getPlayer().getMap().getId() == 109050001){
-            if(status == 0)
+        if (cm.getPlayer().getMap().getId() == 109050001) {
+            if (status == 0)
                 cm.sendNext("See ya.");
-            else if (status == 1){
+            else if (status == 1) {
                 cm.warp(109060001);
                 cm.dispose();
             }
-        }else{
+        } else {
             if (status == 1)
                 cm.sendNext("Ok, Bye!");
             else if (status == 2) {
                 var eim = cm.getPlayer().getEventInstance();
-                if(eim == null)
+                if (eim == null)
                     cm.sendOk("Wait, Hey! how'd you get here?\r\nOh well you can leave anyways");
                 else {
-                    if(isLeader()){
+                    if (isLeader()) {
                         eim.disbandParty();
                         cm.removeFromParty(4001008, eim.getPlayers());
                     } else {
@@ -65,8 +65,8 @@ function action(mode, type, selection) {
     }
 }
 
-function isLeader(){
-    if(cm.getParty() == null)
+function isLeader() {
+    if (cm.getParty() == null)
         return false;
     return cm.isLeader();
 }

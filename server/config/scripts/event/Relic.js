@@ -1,6 +1,6 @@
 /**
-	4th Job Assassinate quest
-**/
+ 4th Job Assassinate quest
+ **/
 
 function init() {
 }
@@ -38,9 +38,9 @@ function scheduledTimeout(eim) {
 
 function changedMap(eim, player, mapid) {
     if (mapid != 910200000) {
-	eim.unregisterPlayer(player);
+        eim.unregisterPlayer(player);
 
-	eim.disposeIfPlayerBelow(0, 0);
+        eim.disposeIfPlayerBelow(0, 0);
     }
 }
 

@@ -12,22 +12,22 @@ function start() {
 
 function action(mode, type, selection) {
     if (mode == 1) {
-	status++;
+        status++;
     } else {
-	if (status == 1) {
-	    cm.sendNext("If you wish to experience what it's like to be a Bowmen, come see me again.");
-	    cm.dispose();
-	    return;
-	}
-	status--;
+        if (status == 1) {
+            cm.sendNext("If you wish to experience what it's like to be a Bowmen, come see me again.");
+            cm.dispose();
+            return;
+        }
+        status--;
     }
     if (status == 0) {
-	cm.sendNext("Bowmen are blessed with dexterity and power, taking charge of long-distance attacks, providing support for those at the front line of the battle. Very adept at using landscape as part of the arsenal.");
+        cm.sendNext("Bowmen are blessed with dexterity and power, taking charge of long-distance attacks, providing support for those at the front line of the battle. Very adept at using landscape as part of the arsenal.");
     } else if (status == 1) {
-	cm.sendYesNo("Would you like to experience what it's like to be a Bowman?");
+        cm.sendYesNo("Would you like to experience what it's like to be a Bowman?");
     } else if (status == 2) {
-	cm.MovieClipIntroUI(true);
-	cm.warp(1020300, 0); // Effect/Direction3.img/archer/Scene00
-	cm.dispose();
+        cm.MovieClipIntroUI(true);
+        cm.warp(1020300, 0); // Effect/Direction3.img/archer/Scene00
+        cm.dispose();
     }
 }

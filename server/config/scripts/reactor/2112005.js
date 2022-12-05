@@ -2,6 +2,6 @@
 Zakum Party Quest Chest - drops a document
 */
 
-function act(){
-	rm.dropItems();
+function act() {
+    rm.dropItems();
 }

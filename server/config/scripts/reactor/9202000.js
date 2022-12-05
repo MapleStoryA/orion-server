@@ -4,5 +4,5 @@ Drops the Protector Rock earrings necessary (normally) to stay alive in the Guil
 */
 
 function act() {
-	rm.dropItems();
+    rm.dropItems();
 }

@@ -1,11 +1,11 @@
 function init() {
-em.setProperty("state", "0");
-	em.setProperty("leader", "true");
+    em.setProperty("state", "0");
+    em.setProperty("leader", "true");
 }
 
 function setup(eim, leaderid) {
-	em.setProperty("state", "1");
-	em.setProperty("leader", "true");
+    em.setProperty("state", "1");
+    em.setProperty("leader", "true");
     var eim = em.newInstance("nmm" + leaderid);
 
     eim.setProperty("summoned", "0");
@@ -32,19 +32,19 @@ function playerRevive(eim, player) {
 
 function scheduledTimeout(eim) {
     if (eim.disposeIfPlayerBelow(100, 802000112)) {
-		em.setProperty("state", "0");
-		em.setProperty("leader", "true");
-	}
+        em.setProperty("state", "0");
+        em.setProperty("leader", "true");
+    }
 }
 
 function changedMap(eim, player, mapid) {
     if (mapid != 802000111) {
-	eim.unregisterPlayer(player);
+        eim.unregisterPlayer(player);
 
-    if (eim.disposeIfPlayerBelow(0, 0)) {
-	em.setProperty("state", "0");
-		em.setProperty("leader", "true");
-	}
+        if (eim.disposeIfPlayerBelow(0, 0)) {
+            em.setProperty("state", "0");
+            em.setProperty("leader", "true");
+        }
     }
 }
 
@@ -60,15 +60,15 @@ function playerExit(eim, player) {
     eim.unregisterPlayer(player);
 
     if (eim.disposeIfPlayerBelow(0, 0)) {
-	em.setProperty("state", "0");
-		em.setProperty("leader", "true");
-	}
+        em.setProperty("state", "0");
+        em.setProperty("leader", "true");
+    }
 }
 
 function end(eim) {
     eim.disposeIfPlayerBelow(100, 802000112);
-	em.setProperty("state", "0");
-		em.setProperty("leader", "true");
+    em.setProperty("state", "0");
+    em.setProperty("leader", "true");
 }
 
 function clearPQ(eim) {
@@ -79,20 +79,27 @@ function allMonstersDead(eim) {
     var prop = eim.getProperty("summoned");
 
     if (prop.equals("0")) {
-	eim.broadcastPlayerMsg(5, "Free me from Kamuna says Dunas!");
+        eim.broadcastPlayerMsg(5, "Free me from Kamuna says Dunas!");
 
-	eim.setProperty("summoned", "1");
-	var map = eim.getMapInstance(0);
-	var mob = em.getMonster(9400266);
-	eim.registerMonster(mob);
-	map.spawnMonsterOnGroundBelow(mob, new java.awt.Point(334, 45));
+        eim.setProperty("summoned", "1");
+        var map = eim.getMapInstance(0);
+        var mob = em.getMonster(9400266);
+        eim.registerMonster(mob);
+        map.spawnMonsterOnGroundBelow(mob, new java.awt.Point(334, 45));
     } else {
-	var map = eim.getMapInstance(0);
-	map.spawnNpc(9120026, new java.awt.Point(-472, -32));
+        var map = eim.getMapInstance(0);
+        map.spawnNpc(9120026, new java.awt.Point(-472, -32));
     }
 }
 
-function leftParty (eim, player) {}
-function disbandParty (eim) {}
-function playerDead(eim, player) {}
-function cancelSchedule() {}
+function leftParty(eim, player) {
+}
+
+function disbandParty(eim) {
+}
+
+function playerDead(eim, player) {
+}
+
+function cancelSchedule() {
+}

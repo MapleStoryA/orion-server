@@ -21,21 +21,21 @@ importPackage(Packages.server.maps);
 status = -1;
 
 function start() {
-    action(1,0,0);
+    action(1, 0, 0);
 }
 
 function action(mode, type, selection) {
     status++;
-    if(mode != 1){
-        if(mode == 0 && status == 4)
+    if (mode != 1) {
+        if (mode == 0 && status == 4)
             status -= 2;
-        else{
+        else {
             cm.dispose();
             return;
         }
     }
     if (cm.getPlayer().getMapId() == 800000000) {
-        if (status == 0) 
+        if (status == 0)
             cm.sendSimple("How's the traveling? Are you enjoying it?#b\r\n#L0#Yes, I'm done with traveling. Can I go back to #m" + cm.getPlayer().getSavedLocation(SavedLocationType.WORLDTOUR) + "#?\r\n#L1#No, I'd like to continue exploring this place.");
         else if (status == 1) {
             if (selection == 0) {
@@ -52,14 +52,14 @@ function action(mode, type, selection) {
             cm.dispose();
         }
     } else {
-        if (status == 0) 
+        if (status == 0)
             cm.sendNext("If you're tired of the monotonous daily life, how about getting out for a change? there's nothing quite like soaking up a new culture, learning something new by the minute! It's time for you to get out and travel. We, at the Maple Travel Agency recommend you going on a #bWorld Tour#k! Are you worried about the travel expense? You shouldn't be! We, the #bMaple Travel Agency#k, havecarefully come up with a plan to let you travel for ONLY #b3,000 mesos#k!");
-        else if (status == 1) 
+        else if (status == 1)
             cm.sendSimple("We currently offer this place for you traveling pleasure: #bMushroom Shrine of Japan#k. I'll be there serving you as the travel guide. Rest assured, the number of destinations will be increase over time. Now, would you like to head over to the Mushroom Shrine?#b\r\n#L0#Yes, take me to Mushroom Shrine (Japan)");
         else if (status == 2)
             cm.sendNext("Would you like to travel to #bMushroom Shrine of Japan#k? If you desire to feel the essence of Japan, there's nothing like visiting the Shrine, a Japanese cultural melting pot. Mushroom Shrine is a mythical place that serves the incomparable Mushroom God from ancient times.");
         else if (status == 3) {
-            if(cm.getMeso() < 3000){
+            if (cm.getMeso() < 3000) {
                 cm.sendNext("You don't have enough mesos to take the travel.");
                 cm.dispose();
                 return;

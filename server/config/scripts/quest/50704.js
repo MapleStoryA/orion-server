@@ -1,10 +1,11 @@
 var status = -1;
 
 function start(mode, type, selection) {
- 	qm.sendOk("Come to Mu Lung.");
-	qm.forceCompleteQuest();
-	qm.dispose();
+    qm.sendOk("Come to Mu Lung.");
+    qm.forceCompleteQuest();
+    qm.dispose();
 }
+
 function end(mode, type, selection) {
-	qm.dispose();
+    qm.dispose();
 }

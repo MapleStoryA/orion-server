@@ -4,7 +4,7 @@
  */
 
 function act() {
-	if (rm.isCQActive(100003)) {
-		rm.dropSingleItem(4001458);
-	}
+    if (rm.isCQActive(100003)) {
+        rm.dropSingleItem(4001458);
+    }
 }

@@ -1,3 +1,3 @@
 function act() {
-	rm.spawnMonster(9300049);
+    rm.spawnMonster(9300049);
 }

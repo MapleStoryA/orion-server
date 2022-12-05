@@ -21,16 +21,16 @@
 */
 
 /**
--- Odin JavaScript --------------------------------------------------------------------------------
-	Ludibrium Elevator
--- By ---------------------------------------------------------------------------------------------
-	Information
--- Version Info -----------------------------------------------------------------------------------
-	1.2 - Some fixes ^__^ [Sadiq]
-	1.1 - Remove unused statement [Information]
-	1.0 - First Version by Information
----------------------------------------------------------------------------------------------------
-**/
+ -- Odin JavaScript --------------------------------------------------------------------------------
+ Ludibrium Elevator
+ -- By ---------------------------------------------------------------------------------------------
+ Information
+ -- Version Info -----------------------------------------------------------------------------------
+ 1.2 - Some fixes ^__^ [Sadiq]
+ 1.1 - Remove unused statement [Information]
+ 1.0 - First Version by Information
+ ---------------------------------------------------------------------------------------------------
+ **/
 
 
 var elevator_s;
@@ -40,8 +40,8 @@ var arrive;
 
 function init() {
     elevator_m = em.getChannelServer().getMapFactory().getMap(222020211);
-    em.setProperty("isUp","false");
-    em.setProperty("isDown","false");
+    em.setProperty("isUp", "false");
+    em.setProperty("isDown", "false");
     //em.getChannelServer().getMapFactory().getMap(222020200).setReactorState();
     onDown();
 }
@@ -53,13 +53,13 @@ function onDown() {
     warpToD();
     elevator_s = em.getChannelServer().getMapFactory().getMap(222020110);
     elevator_m = em.getChannelServer().getMapFactory().getMap(222020111);
-    em.setProperty("isDown","true");
+    em.setProperty("isDown", "true");
     em.schedule("goingUp", 60000);
 }
 
 function goingUp() {
     warpToM();
-    em.setProperty("isDown","false");
+    em.setProperty("isDown", "false");
     em.schedule("onUp", 50000);
 //em.getChannelServer().getMapFactory().getMap(222020100).setReactorState();
 }
@@ -71,31 +71,31 @@ function onUp() {
     warpToD();
     elevator_s = em.getChannelServer().getMapFactory().getMap(222020210);
     elevator_m = em.getChannelServer().getMapFactory().getMap(222020211);
-    em.setProperty("isUp","true");
+    em.setProperty("isUp", "true");
     em.schedule("goingDown", 60000);
 }
 
 function goingDown() {
     warpToM();
-    em.setProperty("isUp","false");
+    em.setProperty("isUp", "false");
     em.schedule("onDown", 50000);
 //em.getChannelServer().getMapFactory().getMap(222020200).setReactorState();
 }
 
-function warpToD() { 
+function warpToD() {
     var temp1 = elevator_m.getCharacters().iterator();
-    while(temp1.hasNext()) {
+    while (temp1.hasNext()) {
         temp1.next().changeMap(arrive, arrive.getPortal(0));
     }
-} 
+}
 
 
-function warpToM() { 
+function warpToM() {
     var temp1 = elevator_s.getCharacters().iterator();
-    while(temp1.hasNext()) {
+    while (temp1.hasNext()) {
         temp1.next().changeMap(elevator_m, elevator_m.getPortal(0));
     }
-} 
+}
 
 function cancelSchedule() {
 }

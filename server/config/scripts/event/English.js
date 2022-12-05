@@ -18,21 +18,21 @@ function setup(mapid) {
     eim.setInstanceMap(702090101 + (parseInt(mapid) * 100)).resetFully();
     eim.setInstanceMap(702090102 + (parseInt(mapid) * 100)).resetFully();
     eim.setInstanceMap(702090103 + (parseInt(mapid) * 100)).resetFully();
-    
-	eim.setProperty("mode", mapid);
-	if (eim.getProperty("mode").equals("0")) {
-		var ee = java.lang.Math.floor(java.lang.Math.random() * letters0.length);
-		eim.setProperty("question", letters0[ee]);
-		eim.setProperty("answer", answers0[ee]);
-	} else if (eim.getProperty("mode").equals("1")) {
-		var ee = java.lang.Math.floor(java.lang.Math.random() * letters1.length);
-		eim.setProperty("question", letters1[ee]);
-		eim.setProperty("answer", answers1[ee]);
-	} else if (eim.getProperty("mode").equals("2")) {
-		var ee = java.lang.Math.floor(java.lang.Math.random() * letters2.length);
-		eim.setProperty("question", letters2[ee]);
-		eim.setProperty("answer", answers2[ee]);
-	}
+
+    eim.setProperty("mode", mapid);
+    if (eim.getProperty("mode").equals("0")) {
+        var ee = java.lang.Math.floor(java.lang.Math.random() * letters0.length);
+        eim.setProperty("question", letters0[ee]);
+        eim.setProperty("answer", answers0[ee]);
+    } else if (eim.getProperty("mode").equals("1")) {
+        var ee = java.lang.Math.floor(java.lang.Math.random() * letters1.length);
+        eim.setProperty("question", letters1[ee]);
+        eim.setProperty("answer", answers1[ee]);
+    } else if (eim.getProperty("mode").equals("2")) {
+        var ee = java.lang.Math.floor(java.lang.Math.random() * letters2.length);
+        eim.setProperty("question", letters2[ee]);
+        eim.setProperty("answer", answers2[ee]);
+    }
     eim.startEventTimer(300000); //5 mins lol
 
     return eim;
@@ -41,13 +41,13 @@ function setup(mapid) {
 function playerEntry(eim, player) {
     var map = eim.getMapInstance(0);
     player.changeMap(map, map.getPortal(0));
-	if (eim.getProperty("mode").equals("0")) {
-		player.sendEnglishQuiz("What does Alphabet [" + eim.getProperty("question") + "] look like?");
-	} else if (eim.getProperty("mode").equals("1")) {
-		player.sendEnglishQuiz("Please get me all the letters for #i" + parseInt(eim.getProperty("question")) + "#.");
-	} else if (eim.getProperty("mode").equals("2")) {
-		player.sendEnglishQuiz(eim.getProperty("question"));
-	}
+    if (eim.getProperty("mode").equals("0")) {
+        player.sendEnglishQuiz("What does Alphabet [" + eim.getProperty("question") + "] look like?");
+    } else if (eim.getProperty("mode").equals("1")) {
+        player.sendEnglishQuiz("Please get me all the letters for #i" + parseInt(eim.getProperty("question")) + "#.");
+    } else if (eim.getProperty("mode").equals("2")) {
+        player.sendEnglishQuiz(eim.getProperty("question"));
+    }
 }
 
 function playerDead(eim, player) {
@@ -55,16 +55,16 @@ function playerDead(eim, player) {
 
 function changedMap(eim, player, mapid) {
     switch (mapid) {
-	case 702090101: // 1st Stage
-	case 702090102: // 2nd Stage
-	case 702090103: // 3rd Stage
-	case 702090201:
-	case 702090202:
-	case 702090203:
-	case 702090301:
-	case 702090302:
-		case 702090303:
-	    return; // Everything is fine
+        case 702090101: // 1st Stage
+        case 702090102: // 2nd Stage
+        case 702090103: // 3rd Stage
+        case 702090201:
+        case 702090202:
+        case 702090203:
+        case 702090301:
+        case 702090302:
+        case 702090303:
+            return; // Everything is fine
     }
     eim.unregisterPlayer(player);
 
@@ -79,10 +79,10 @@ function playerDisconnected(eim, player) {
     return -2;
 }
 
-function leftParty(eim, player) {			
+function leftParty(eim, player) {
     // If only 2 players are left, uncompletable
     if (!eim.disposeIfPlayerBelow(2, 702090400)) {
-	playerExit(eim, player);
+        playerExit(eim, player);
     }
 }
 

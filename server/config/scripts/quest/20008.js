@@ -33,7 +33,7 @@ var choice1;
 function start(mode, type, selection) {
     if (mode < 1) {
         qm.dispose();
-    } 
+    }
     if (mode > 0)
         status++;
     if (status == 0)

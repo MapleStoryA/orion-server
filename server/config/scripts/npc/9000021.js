@@ -5,6 +5,6 @@
 var status = -1;
 
 function action(mode, type, selection) {
-	cm.sendOk("Hi there!");
-	cm.dispose();
+    cm.sendOk("Hi there!");
+    cm.dispose();
 }

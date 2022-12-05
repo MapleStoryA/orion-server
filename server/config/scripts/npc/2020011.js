@@ -31,7 +31,7 @@ var job;
 
 
 function start() {
-    if (!(cm.getJobId()==410 || cm.getJobId()== 420 || cm.getJobId() == 432)) {
+    if (!(cm.getJobId() == 410 || cm.getJobId() == 420 || cm.getJobId() == 432)) {
         cm.sendOk("May #rOdin#k be with you!");
         cm.dispose();
         return;
@@ -46,11 +46,10 @@ function start() {
     } else if (cm.isQuestActive(100102)) {
         cm.sendOk("Well, well. Now go and see #bthe Dark Lord#k. He will show you the way.");
         cm.dispose();
-    } else if ((cm.getJobId()==410 || cm.getJobId()== 420 || cm.getJobId() == 432) &&
-        cm.getLevel() >= 70 &&  cm.getPlayer().getRemainingSp() <= (cm.getLevel() - 70) * 3) {
+    } else if ((cm.getJobId() == 410 || cm.getJobId() == 420 || cm.getJobId() == 432) &&
+        cm.getLevel() >= 70 && cm.getPlayer().getRemainingSp() <= (cm.getLevel() - 70) * 3) {
         cm.sendNext("#rBy Odin's beard!#k You are a strong one.");
-    }
-    else {
+    } else {
         cm.sendOk("Your time has yet to come...");
         cm.dispose();
     }
@@ -68,22 +67,22 @@ function action(mode, type, selection) {
         status++;
         if (status == 1) {
             if (cm.isQuestComplete(100102)) {
-                if (cm.getJobId()== 410) {
+                if (cm.getJobId() == 410) {
                     cm.changeJobById(411);
                     cm.gainAp(5);
-            		cm.gainSp(1);
+                    cm.gainSp(1);
                     cm.sendOk("You are now a #bHermit#k. May #rOdin#k be with you!");
                     cm.dispose();
-                } else if (cm.getJobId()== 420) {
+                } else if (cm.getJobId() == 420) {
                     cm.changeJobById(421);
                     cm.gainAp(5);
-            		cm.gainSp(1);
+                    cm.gainSp(1);
                     cm.sendOk("You are now a #bChief Bandit#k. May #rOdin#k be with you!");
                     cm.dispose();
-                } else if (cm.getJobId()== 432) {
+                } else if (cm.getJobId() == 432) {
                     cm.changeJobById(433);
                     cm.gainAp(5);
-            		cm.gainSp(1);
+                    cm.gainSp(1);
                     cm.sendOk("You are now a #bBlade Lord#k. May #rOdin#k be with you!");
                     cm.dispose();
                 }

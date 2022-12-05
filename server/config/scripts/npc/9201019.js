@@ -31,20 +31,19 @@ function action(mode, type, selection) {
             if (selection == 1) {
                 facenew = Array();
                 if (cm.getPlayer().getGender() == 0) {
-                    for(var i = 0; i < mface.length; i++) {
+                    for (var i = 0; i < mface.length; i++) {
                         facenew.push(mface[i] + cm.getPlayer().getFace() % 1000 - (cm.getPlayer().getFace() % 100));
                     }
                 }
                 if (cm.getPlayer().getGender() == 1) {
-                    for(var i = 0; i < fface.length; i++) {
+                    for (var i = 0; i < fface.length; i++) {
                         facenew.push(fface[i] + cm.getPlayer().getFace() % 1000 - (cm.getPlayer().getFace() % 100));
                     }
                 }
                 cm.sendYesNo("If you use the regular coupon, your face may transform into a random new look...do you still want to do it using #b#t5152021##k?");
             }
-        }
-        else if (status == 2){                  
-            if (cm.haveItem(5152021) == true){
+        } else if (status == 2) {
+            if (cm.haveItem(5152021) == true) {
                 cm.gainItem(5152021, -1);
                 cm.setFace(facenew[Math.floor(Math.random() * facenew.length)]);
                 cm.sendOk("Enjoy your new and improved face!");

@@ -1,5 +1,5 @@
 function enter(pi) {
-    
-	pi.openNpc(2110005);
+
+    pi.openNpc(2110005);
 
 }

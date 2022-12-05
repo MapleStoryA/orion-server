@@ -36,25 +36,25 @@ function setup() {
     var instanceName = "4jberserk" + instanceId;
 
     var eim = em.newInstance(instanceName);
-	
+
     var mf = eim.getMapFactory();
-	
+
     instanceId++;
-	
+
     var map = mf.getMap(910500200);
-    map.addMapTimer(3*60);
+    map.addMapTimer(3 * 60);
     em.schedule("timeOut", 20 * 60000);
 
     //you can't warp up to the rocks until all rogs are dead, I think?
-    eim.setProperty("canWarp","false");
-	
+    eim.setProperty("canWarp", "false");
+
     return eim;
 }
 
 function playerEntry(eim, player) {
     var map = eim.getMapInstance(910500200);
     player.changeMap(map, map.getPortal(0));
-	
+
 //TODO: hold time across map changes
 //player.getClient().getSession().write(tools.MaplePacketCreator.getClock(1800));
 }
@@ -70,19 +70,19 @@ function playerRevive(eim, player) {
         playerExit(eim, party.get(i));
     }
     eim.dispose();
-/*/}
-	else { //boot dead player
-		// If only 2 players are left, uncompletable:
-		var party = eim.getPlayers();
-		if (party.size() <= minPlayers) {
-			for (var i = 0; i < party.size(); i++) {
-				playerExit(eim,party.get(i));
-			}
-			eim.dispose();
-		}
-		else
-			playerExit(eim, player);
-	}*/
+    /*/}
+        else { //boot dead player
+            // If only 2 players are left, uncompletable:
+            var party = eim.getPlayers();
+            if (party.size() <= minPlayers) {
+                for (var i = 0; i < party.size(); i++) {
+                    playerExit(eim,party.get(i));
+                }
+                eim.dispose();
+            }
+            else
+                playerExit(eim, player);
+        }*/
 }
 
 function playerDisconnected(eim, player) {
@@ -92,37 +92,35 @@ function playerDisconnected(eim, player) {
     for (var i = 0; i < party.size(); i++) {
         if (party.get(i).equals(player)) {
             removePlayer(eim, player);
-        }
-        else {
+        } else {
             playerExit(eim, party.get(i));
         }
     }
     eim.dispose();
-/*/}
-	else { //boot d/ced player
-		// If only 2 players are left, uncompletable:
-		var party = eim.getPlayers();
-		if (party.size() < minPlayers) {
-			for (var i = 0; i < party.size(); i++) {
-				playerExit(eim,party.get(i));
-			}
-			eim.dispose();
-		}
-		else
-			playerExit(eim, player);
-	}*/
+    /*/}
+        else { //boot d/ced player
+            // If only 2 players are left, uncompletable:
+            var party = eim.getPlayers();
+            if (party.size() < minPlayers) {
+                for (var i = 0; i < party.size(); i++) {
+                    playerExit(eim,party.get(i));
+                }
+                eim.dispose();
+            }
+            else
+                playerExit(eim, player);
+        }*/
 }
 
-function leftParty(eim, player) {			
+function leftParty(eim, player) {
     // If only 2 players are left, uncompletable:
     var party = eim.getPlayers();
     if (true) {
         for (var i = 0; i < party.size(); i++) {
-            playerExit(eim,party.get(i));
+            playerExit(eim, party.get(i));
         }
         eim.dispose();
-    }
-    else
+    } else
         playerExit(eim, player);
 }
 
@@ -155,7 +153,7 @@ function clearPQ(eim) {
 }
 
 function allMonstersDead(eim) {
-    eim.setProperty("canWarp","true");
+    eim.setProperty("canWarp", "true");
 }
 
 function cancelSchedule() {

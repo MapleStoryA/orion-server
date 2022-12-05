@@ -3,21 +3,21 @@ var returnmap = 262000300;
 
 var monster = new Array( // revamped
     8220009, // snack bar
-	9300206, // chimera
-	9305303, // blue mushmom
-	9400741, // coco
-	9400549, // headless horseman
-	6090002, // bamboo warrior
-	9305326, // poison golem
-	7220000, // tae roon
-	9800066, // centipede
-	9300479, // master hoblin
-	9300480, // master harp
-	9300481, // master birk
-	9305132, // snowman
-	8220011, // auf haven
-	5250007 // ephenia
-    );
+    9300206, // chimera
+    9305303, // blue mushmom
+    9400741, // coco
+    9400549, // headless horseman
+    6090002, // bamboo warrior
+    9305326, // poison golem
+    7220000, // tae roon
+    9800066, // centipede
+    9300479, // master hoblin
+    9300480, // master harp
+    9300481, // master birk
+    9305132, // snowman
+    8220011, // auf haven
+    5250007 // ephenia
+);
 
 function init() {
 // After loading, ChannelServer
@@ -41,7 +41,7 @@ function setup(partyid) {
 
 function beginQuest(eim) { // Custom function
     if (eim != null) {
-    	eim.startEventTimer(5000); // After 5 seconds -> scheduledTimeout()
+        eim.startEventTimer(5000); // After 5 seconds -> scheduledTimeout()
     }
 }
 
@@ -61,19 +61,19 @@ function playerEntry(eim, player) {
 
 function changedMap(eim, player, mapid) {
     if (mapid != eventmapid) {
-	eim.unregisterPlayer(player);
+        eim.unregisterPlayer(player);
 
-	eim.disposeIfPlayerBelow(0, 0);
+        eim.disposeIfPlayerBelow(0, 0);
     }
 }
 
 function scheduledTimeout(eim) {
     var num = parseInt(eim.getProperty("monster_number"));
     if (num < monster.length) {
-	monsterSpawn(eim);
-	eim.setProperty("monster_number", num + 1);
+        monsterSpawn(eim);
+        eim.setProperty("monster_number", num + 1);
     } else {
-	eim.disposeIfPlayerBelow(100, returnmap);
+        eim.disposeIfPlayerBelow(100, returnmap);
     }
 // When event timeout..
 
@@ -92,15 +92,15 @@ function allMonstersDead(eim) {
 
     eim.setProperty("points", totalp);
 
-    eim.broadcastPlayerMsg(5, "Your team've gained "+num+" points! With a total of "+totalp+".");
+    eim.broadcastPlayerMsg(5, "Your team've gained " + num + " points! With a total of " + totalp + ".");
 
     eim.saveBossQuest(num);
 
     if (mobnum < monster.length) {
-	eim.broadcastPlayerMsg(6, "Prepare! The next boss will appear in a glimpse of an eye!");
-} else {
-	eim.saveBossQuest(7000);
-	eim.broadcastPlayerMsg(5, "Your team've beaten the EASY mode and have gained an extra 7,000 points!");
+        eim.broadcastPlayerMsg(6, "Prepare! The next boss will appear in a glimpse of an eye!");
+    } else {
+        eim.saveBossQuest(7000);
+        eim.broadcastPlayerMsg(5, "Your team've beaten the EASY mode and have gained an extra 7,000 points!");
     }
 // When invoking unregisterMonster(MapleMonster mob) OR killed
 // Happens only when size = 0

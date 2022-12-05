@@ -25,7 +25,7 @@ function playerEntry(eim, player) {
 
 function changedMap(eim, player, mapid) {
     if (mapid != 921100300) {
-	playerExit(eim,player);
+        playerExit(eim, player);
     }
 }
 
@@ -41,7 +41,7 @@ function scheduledTimeout(eim) {
 
 function monsterValue(eim, mobId) {
     if (mobId == 9300093) {
-	allMonstersDead(eim);
+        allMonstersDead(eim);
     }
     return 1;
 }
@@ -50,7 +50,7 @@ function playerExit(eim, player) {
     eim.unregisterPlayer(player);
 
     if (eim.disposeIfPlayerBelow(0, 0)) {
-	em.setProperty("state", "0");
+        em.setProperty("state", "0");
     }
 }
 
@@ -64,8 +64,17 @@ function playerRevive(eim, player) {
     return false;
 }
 
-function clearPQ(eim) {}
-function leftParty (eim, player) {}
-function disbandParty (eim) {}
-function playerDead(eim, player) {}
-function cancelSchedule() {}
+function clearPQ(eim) {
+}
+
+function leftParty(eim, player) {
+}
+
+function disbandParty(eim) {
+}
+
+function playerDead(eim, player) {
+}
+
+function cancelSchedule() {
+}

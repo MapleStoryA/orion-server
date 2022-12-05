@@ -4,9 +4,9 @@
 	Description: 		Unknown
 */
 
-function start(){
-	if (cm.getQuestStatus(2358) == 1) { //too lazy
-		cm.forceCompleteQuest(2358);
-	}
-	cm.dispose();
+function start() {
+    if (cm.getQuestStatus(2358) == 1) { //too lazy
+        cm.forceCompleteQuest(2358);
+    }
+    cm.dispose();
 }

@@ -14,7 +14,7 @@ function setup(eim, leaderid) {
     map.spawnMonsterOnGroundBelow(mob, new java.awt.Point(0, -181));
 
     em.setProperty("state", "1");
-  
+
     eim.startEventTimer(1800000); //30min
     return eim;
 }
@@ -26,11 +26,11 @@ function playerEntry(eim, player) {
 
 function changedMap(eim, player, mapid) {
     if (mapid != 272020200) {
-	eim.unregisterPlayer(player);
-	if (eim.disposeIfPlayerBelow(0, 0)) {
-	    em.setProperty("state", "0");
-	    em.setProperty("leader", "true");
-	}
+        eim.unregisterPlayer(player);
+        if (eim.disposeIfPlayerBelow(0, 0)) {
+            em.setProperty("state", "0");
+            em.setProperty("leader", "true");
+        }
     }
 }
 
@@ -46,8 +46,8 @@ function scheduledTimeout(eim) {
 
 function end(eim) {
     if (eim.disposeIfPlayerBelow(100, 272020110)) {
-	em.setProperty("state", "0");
-	em.setProperty("leader", "true");
+        em.setProperty("state", "0");
+        em.setProperty("leader", "true");
     }
 }
 
@@ -55,15 +55,15 @@ function playerExit(eim, player) {
     eim.unregisterPlayer(player);
 
     if (eim.disposeIfPlayerBelow(0, 0)) {
-	em.setProperty("state", "0");
-	em.setProperty("leader", "true");
+        em.setProperty("state", "0");
+        em.setProperty("leader", "true");
     }
 }
 
 function end(eim) {
     if (eim.disposeIfPlayerBelow(100, 272020110)) {
-	em.setProperty("state", "0");
-	em.setProperty("leader", "true");
+        em.setProperty("state", "0");
+        em.setProperty("leader", "true");
     }
 }
 
@@ -79,8 +79,17 @@ function playerRevive(eim, player) {
     return false;
 }
 
-function allMonstersDead(eim) {}
-function leftParty (eim, player) {}
-function disbandParty (eim) {}
-function playerDead(eim, player) {}
-function cancelSchedule() {}
+function allMonstersDead(eim) {
+}
+
+function leftParty(eim, player) {
+}
+
+function disbandParty(eim) {
+}
+
+function playerDead(eim, player) {
+}
+
+function cancelSchedule() {
+}

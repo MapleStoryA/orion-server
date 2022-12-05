@@ -26,10 +26,10 @@
  */
 
 var exitMap;
- 
+
 
 function init() {
-    em.setProperty("shuffleReactors","false");
+    em.setProperty("shuffleReactors", "false");
 }
 
 function monsterValue(eim, mobId) { //should only trigger on ergoth
@@ -44,27 +44,27 @@ function monsterValue(eim, mobId) { //should only trigger on ergoth
 
 function setup(eim) {
     exitMap = em.getChannelServer().getMapFactory().getMap(990001100); //returning path
-	
+
     //no time limit yet until clock can be visible in all maps
-        
+
     //shuffle reactors in two maps for stage 3
     eim.getMapInstance(990000501).shuffleReactors();
     eim.getMapInstance(990000502).shuffleReactors();
-        
+
     //force no-respawn on certain map reactors
     eim.getMapInstance(990000611).getReactorByName("").setDelay(-1);
     eim.getMapInstance(990000620).getReactorByName("").setDelay(-1);
     eim.getMapInstance(990000631).getReactorByName("").setDelay(-1);
     eim.getMapInstance(990000641).getReactorByName("").setDelay(-1);
-        
+
     //activate three minutes after start
-    eim.setProperty("entryTimestamp",System.currentTimeMillis() + (3 * 60000));
-    eim.setProperty("canEnter","true");
+    eim.setProperty("entryTimestamp", System.currentTimeMillis() + (3 * 60000));
+    eim.setProperty("canEnter", "true");
     eim.schedule("begin", 60000);
 }
 
 function begin(eim) {
-    eim.setProperty("canEnter","false");
+    eim.setProperty("canEnter", "false");
     eim.schedule("earringcheck", 15000);
     var party = eim.getPlayers();
     //if (party.size() < 6) { //not enough to start
@@ -72,7 +72,7 @@ function begin(eim) {
     //} else {
     var iter = party.iterator();
     while (iter.hasNext()) {
-        iter.next().getPlayer().dropMessage(6,"The quest has begun.");
+        iter.next().getPlayer().dropMessage(6, "The quest has begun.");
     }
 //}
 }
@@ -80,9 +80,9 @@ function begin(eim) {
 function playerEntry(eim, player) {
     var map = eim.getMapInstance(990000000);
     player.changeMap(map, map.getPortal(0));
-    em.getClock(player.getClient(),(Long.parseLong(eim.getProperty("entryTimestamp")) - System.currentTimeMillis()) / 1000);
+    em.getClock(player.getClient(), (Long.parseLong(eim.getProperty("entryTimestamp")) - System.currentTimeMillis()) / 1000);
 //    player.getClient().getSession().write(tools.MaplePacketCreator.getClock((Long.parseLong(eim.getProperty("entryTimestamp")) - System.currentTimeMillis()) / 1000));
-	
+
 //TODO: hold time across map changes
 //player.getClient().getSession().write(tools.MaplePacketCreator.getClock(1800));
 }
@@ -108,21 +108,19 @@ function playerDisconnected(eim, player) {
         var iter = party.iterator();
         while (iter.hasNext()) {
             var pl = iter.next();
-            pl.getPlayer().dropMessage(6,"The leader of the instance has disconnected, and the remaining players shall be warped out.");
+            pl.getPlayer().dropMessage(6, "The leader of the instance has disconnected, and the remaining players shall be warped out.");
             if (pl.equals(player)) {
                 removePlayer(eim, pl);
-            }
-            else {
+            } else {
                 eim.unregisterPlayer(pl);
                 pl.changeMap(exitMap, exitMap.getPortal(0));
             }
         }
         eim.dispose();
-    }
-    else { //boot d/ced player and check if enough players left
+    } else { //boot d/ced player and check if enough players left
         removePlayer(eim, player);
         if (party.size() < 6) { //five after player booted
-            end(eim,"There are no longer enough players to continue, and those remaining shall be warped out.");
+            end(eim, "There are no longer enough players to continue, and those remaining shall be warped out.");
         }
     }
 }
@@ -138,7 +136,7 @@ function playerExit(eim, player) {
     player.changeMap(exitMap, exitMap.getPortal(0));
     var party = eim.getPlayers();
     if (party.size() < 6) { //five after player booted
-        end(eim,"There are no longer enough players to continue, and those remaining shall be warped out.");
+        end(eim, "There are no longer enough players to continue, and those remaining shall be warped out.");
     }
 }
 
@@ -146,7 +144,7 @@ function end(eim, msg) {
     var iter = eim.getPlayers().iterator();
     while (iter.hasNext()) {
         var player = iter.next();
-        player.dropMessage(6,msg);
+        player.dropMessage(6, msg);
         eim.unregisterPlayer(player);
         player.changeMap(exitMap, exitMap.getPortal(0));
     }
@@ -190,7 +188,7 @@ function cancelSchedule() {
 }
 
 function timeOut() {
-	
+
 }
 
 function earringcheck(eim, player) {

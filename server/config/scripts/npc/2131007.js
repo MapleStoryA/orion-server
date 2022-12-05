@@ -1,4 +1,4 @@
-var status = -1;    
+var status = -1;
 
 function start() {
     if (cm.getCQInfo(150002) == "01.1") {
@@ -6,7 +6,7 @@ function start() {
             status = 11;
         } else {
             status = 9;
-    }
+        }
     } else if (cm.getCQInfo(150002) == "02") {
         status = 14;
     } else if (cm.getCQInfo(150002) == "03") {
@@ -14,11 +14,11 @@ function start() {
     } else if (cm.getCQInfo(150002) == "04") {
         status = 24;
     }
-    action(1,0,0);
+    action(1, 0, 0);
 }
 
-function action(m,t,s) {
-    if (m > 0 ) {
+function action(m, t, s) {
+    if (m > 0) {
         status++;
     } else {
         cm.dispose();
@@ -39,7 +39,7 @@ function action(m,t,s) {
     } else if (status == 5) {
         cm.startCQ(150001);
         cm.updateCQInfo(150002, "01.1");
-        cm.getPlayer().dropMessage(-1 ,"custom quest #1 started!");
+        cm.getPlayer().dropMessage(-1, "custom quest #1 started!");
         cm.dispose();
     } else if (status == 10) {
         cm.sendOk("#eYou're not #bdone#k yet!");
@@ -59,35 +59,35 @@ function action(m,t,s) {
         if (s == 5) {
             cm.sendOk("#eYou may talk to my brother to learn any information about the occupations!");
             cm.dispose();
-        }else{
+        } else {
             cm.sendYesNo("#eAre you #r#eseriously sure#k you want to select your occupation as a #b#e" + (sel == 0 ? "Gamer" : (sel == 1 ? "NxWhore" : (sel == 2 ? "Huntsman" : (sel == 3 ? "Ninja" : "Vortex")))) + "#k#n?\r\n\r\n#eThis option will greatly dictate your future gameplay!#n");
         }
-	} else if (status == 22) {
-		if (sel == 0) {
-			cm.getPlayer().changeOccupation(201); //Gamer
+    } else if (status == 22) {
+        if (sel == 0) {
+            cm.getPlayer().changeOccupation(201); //Gamer
             cm.updateCQInfo(150002, "04");
-			cm.sendOkS("#eOk, now talk with Utah.", 1);
-			cm.dispose();
-		} else if (sel == 1) {
-			cm.getPlayer().changeOccupation(501); //NxWhore
+            cm.sendOkS("#eOk, now talk with Utah.", 1);
+            cm.dispose();
+        } else if (sel == 1) {
+            cm.getPlayer().changeOccupation(501); //NxWhore
             cm.updateCQInfo(150002, "04");
-			cm.sendOkS("#eOk, now talk with Utah.", 1);
-			cm.dispose();
-		} else if (sel == 2) {
-			cm.getPlayer().changeOccupation(301); //Huntsman
+            cm.sendOkS("#eOk, now talk with Utah.", 1);
+            cm.dispose();
+        } else if (sel == 2) {
+            cm.getPlayer().changeOccupation(301); //Huntsman
             cm.updateCQInfo(150002, "04");
-			cm.sendOkS("#eOk, now talk with Utah.", 1);
-			cm.dispose();
-		} else if (sel == 3) {
-			cm.getPlayer().changeOccupation(101); //Ninja
+            cm.sendOkS("#eOk, now talk with Utah.", 1);
+            cm.dispose();
+        } else if (sel == 3) {
+            cm.getPlayer().changeOccupation(101); //Ninja
             cm.updateCQInfo(150002, "04");
-			cm.sendOkS("#eOk, now talk with Utah.", 1);
-			cm.dispose();
-		} else if (sel == 4) {
-			cm.getPlayer().changeOccupation(401); //Vortex
+            cm.sendOkS("#eOk, now talk with Utah.", 1);
+            cm.dispose();
+        } else if (sel == 4) {
+            cm.getPlayer().changeOccupation(401); //Vortex
             cm.updateCQInfo(150002, "04");
-			cm.sendOkS("#eOk, now talk with Utah.", 1);
-		}
+            cm.sendOkS("#eOk, now talk with Utah.", 1);
+        }
     } else if (status == 23) {
         cm.sendOkS("#eWe're gonna do a trial to test your occupation and if you complete this little trial/test, we will award you with a starter pack.", 1);
         cm.dispose();

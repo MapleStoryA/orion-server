@@ -2,15 +2,16 @@ var status = -1;
 
 function end(mode, type, selection) {
     if (mode == 0) {
-	status--;
+        status--;
     } else {
-	status++;
+        status++;
     }
     if (status == 0) {
-	qm.forceCompleteQuest(3514);
-	qm.dispose();
+        qm.forceCompleteQuest(3514);
+        qm.dispose();
     }
 }
+
 /*  <imgdir name="02022337">
     <imgdir name="info">
       <canvas name="icon" width="26" height="32">

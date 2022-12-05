@@ -4,7 +4,7 @@
 	Description: 		Unknown
 */
 
-function start(){
-	cm.sendNext("You're not ready for this yet.");
-	cm.dispose();
-	}
+function start() {
+    cm.sendNext("You're not ready for this yet.");
+    cm.dispose();
+}

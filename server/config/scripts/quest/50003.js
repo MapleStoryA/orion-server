@@ -6,17 +6,17 @@ var status = -1;
 
 function start(mode, type, selection) {
     if (mode == 1) {
-	status++;
+        status++;
     } else {
-	qm.sendNext("...What is it? Ah, I see that he's coming really close!");
-	qm.dispose();
-	return;
+        qm.sendNext("...What is it? Ah, I see that he's coming really close!");
+        qm.dispose();
+        return;
     }
     if (status == 0) {
-	qm.askAcceptDecline("Watch out, because he seems... much more powerful than before. Do not underestimate him!");
+        qm.askAcceptDecline("Watch out, because he seems... much more powerful than before. Do not underestimate him!");
     } else if (status == 1) {
-	qm.forceStartQuest();
-	qm.dispose();
+        qm.forceStartQuest();
+        qm.dispose();
     }
 }
 

@@ -21,17 +21,17 @@
 */
 
 /**
--- Odin JavaScript --------------------------------------------------------------------------------
-	Subway Train between Kerning City and New Leaf City
--- By ---------------------------------------------------------------------------------------------
-	Information
--- Version Info -----------------------------------------------------------------------------------
-	1.2 - Fix timer map [Information]
-	1.1 - Fix for infinity looping [Information]
-	1.0 - First Version by Information
-	    - Thanks for Shogi for the whole information
----------------------------------------------------------------------------------------------------
-**/
+ -- Odin JavaScript --------------------------------------------------------------------------------
+ Subway Train between Kerning City and New Leaf City
+ -- By ---------------------------------------------------------------------------------------------
+ Information
+ -- Version Info -----------------------------------------------------------------------------------
+ 1.2 - Fix timer map [Information]
+ 1.1 - Fix for infinity looping [Information]
+ 1.0 - First Version by Information
+ - Thanks for Shogi for the whole information
+ ---------------------------------------------------------------------------------------------------
+ **/
 load("nashorn:mozilla_compat.js");
 importPackage(Packages.tools);
 
@@ -60,7 +60,7 @@ function init() {
 function scheduleNew() {
     em.setProperty("docked", "true");
     em.setProperty("entry", "true");
-    if(toggleMsg) {
+    if (toggleMsg) {
         KC_docked.broadcastMessage(MaplePacketCreator.serverNotice(0, "The subway train to NLC has arrived."));
         NLC_docked.broadcastMessage(MaplePacketCreator.serverNotice(0, "The subway train to KC has arrived."));
     }
@@ -69,20 +69,20 @@ function scheduleNew() {
 }
 
 function stopEntry() {
-    em.setProperty("entry","false");
+    em.setProperty("entry", "false");
 }
 
 function takeoff() {
-    em.setProperty("docked","false");
+    em.setProperty("docked", "false");
     var temp1 = KC_Waiting.getCharacters().iterator();
-    while(temp1.hasNext()) {
+    while (temp1.hasNext()) {
         temp1.next().changeMap(Subway_to_NLC, Subway_to_NLC.getPortal(0));
     }
     var temp2 = NLC_Waiting.getCharacters().iterator();
-    while(temp2.hasNext()) {
+    while (temp2.hasNext()) {
         temp2.next().changeMap(Subway_to_KC, Subway_to_KC.getPortal(0));
     }
-    if(toggleMsg) {
+    if (toggleMsg) {
         KC_docked.broadcastMessage(MaplePacketCreator.serverNotice(0, "The subway train to NLC has taken off."));
         NLC_docked.broadcastMessage(MaplePacketCreator.serverNotice(0, "The subway train to KC has taken off."));
     }
@@ -94,11 +94,11 @@ function takeoff() {
 
 function arrived() {
     var temp1 = Subway_to_KC.getCharacters().iterator();
-    while(temp1.hasNext()) {
+    while (temp1.hasNext()) {
         temp1.next().changeMap(KC_docked, KC_docked.getPortal(0));
     }
     var temp2 = Subway_to_NLC.getCharacters().iterator();
-    while(temp2.hasNext()) {
+    while (temp2.hasNext()) {
         temp2.next().changeMap(NLC_docked, NLC_docked.getPortal(0));
     }
     scheduleNew();

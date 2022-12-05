@@ -26,9 +26,9 @@
 
 
 function start() {
-	cm.sendOk ("O que voce esta fazendo aqui? ");
+    cm.sendOk("O que voce esta fazendo aqui? ");
 }
 
 function action() {
-	cm.dispose()
+    cm.dispose()
 }

@@ -45,7 +45,7 @@ function setup() {
     var mf = eim.getMapFactory();
     instanceId++;
     var map = mf.getMap(910500100);
-    map.addMapTimer(20*60);
+    map.addMapTimer(20 * 60);
     em.schedule("timeOut", 20 * 60000);
     return eim;
 }
@@ -71,24 +71,22 @@ function playerDisconnected(eim, player) {
     for (var i = 0; i < party.size(); i++) {
         if (party.get(i).equals(player)) {
             removePlayer(eim, player);
-        }
-        else {
+        } else {
             playerExit(eim, party.get(i));
         }
     }
     eim.dispose();
 }
 
-function leftParty(eim, player) {			
+function leftParty(eim, player) {
     // If only 2 players are left, uncompletable:
     var party = eim.getPlayers();
     if (true) {
         for (var i = 0; i < party.size(); i++) {
-            playerExit(eim,party.get(i));
+            playerExit(eim, party.get(i));
         }
         eim.dispose();
-    }
-    else
+    } else
         playerExit(eim, player);
 }
 

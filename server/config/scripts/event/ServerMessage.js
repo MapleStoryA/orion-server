@@ -24,7 +24,7 @@ function scheduleNew() {
 }
 
 function cancelSchedule() {
-	setupTask.cancel(false);
+    setupTask.cancel(false);
 }
 
 function start() {

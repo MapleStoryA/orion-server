@@ -6,12 +6,12 @@
 var status = 0;
 
 function start() {
-	status = -1;
-	action(1, 0, 0);
+    status = -1;
+    action(1, 0, 0);
 }
 
 function action(mode, type, selection) {
-	cm.sendOk("Hmm ... Eu acho que voce ainda tem coisas a fazer aqui?");
-	cm.dispose();
-	return;
+    cm.sendOk("Hmm ... Eu acho que voce ainda tem coisas a fazer aqui?");
+    cm.dispose();
+    return;
 }

@@ -6,17 +6,17 @@
 
 
 var status = 0;
-var qChars = new Array ("Q1: What EXP is needed to level up from Level 1 to Level 2?#10#12#15#20#3",
+var qChars = new Array("Q1: What EXP is needed to level up from Level 1 to Level 2?#10#12#15#20#3",
     "Q1: At 1st Job Advancement, which of these is the incorrect requirement?#Warrior 35 STR#Thief 20 LUK#Magician 20 INT#Bowman 25 DEX#2",
     "Q1: When attacked by a monster, which is incorrect?#Weakened - Slower Movements#Sealed - Cannot use Skills#Darkness - Reduced Accuracy#Cursed - Reduced Experience#1",
     "Q1: When attacking a monster with skills which is incorrect?#Ice - more damage to Fire based monsters#Fire - more damage to Ice based monsters#Holy - more damage to Undead monsters#Poison - more damage to Boss monsters#4",
     "Q1: At 1st Job Advancement, Which job fully states the requirements?#Warrior#Bowman#Magician#Thief#2");
-var qItems = new Array( "Q2: Which of the following Monster<-->Drop is correct?#Jr Wraith - Wraith Headband#Stirge - Stirge Wing#Slime - Squishy Bubble#Pig - Ribbon#2",
+var qItems = new Array("Q2: Which of the following Monster<-->Drop is correct?#Jr Wraith - Wraith Headband#Stirge - Stirge Wing#Slime - Squishy Bubble#Pig - Ribbon#2",
     "Q2: Which Monster --> Drop is incorrect?#Ribbon Pig - Pig Ribbon#Slime - Slime Bubble#Green Snail - Green Snail Shell#Axe Stump - Tree Branch#4",
     "Q2: Which Potion --> Effect is correct?#White Potion - Recover 250 HP#Mana Elixir - Recover 400 MP#Red Potion - Recover 100 HP#Pizza - Recover 400 HP#4",
     "Q2: Which Potion restores 50% Hp & Mp?#Elixir#Power Elixir#Ginger Ale#Cider#1",
     "Q2: Which Potion --> Effect is incorrect?#Blue Potion - Recover 100 MP#Mana Elixir - Recover 300 MP#Sunodinms Dew - Recover 3000 MP#Red Potion - Recover 50 HP#3");
-var qMobs = new Array(  "Q3: Which of these monsters is the highest level?#Green Mushroom#Tree Stump#Bubbling#Axe Stump#4",
+var qMobs = new Array("Q3: Which of these monsters is the highest level?#Green Mushroom#Tree Stump#Bubbling#Axe Stump#4",
     "Q3: Maple Island does not have which monster?#Ice Sentinel#Green Snail#Blue Snail#Orange Mushroom#1",
     "Q3: Which monster may be seen on the boat from Ellinia to Orbis?#Jr Balrog#Crimson Balrog#Ice Balrog#GateKeepers#2",
     "Q3: Which monster is not on Victoria Island?#Hector#Slime#Dark Axe Stump#Iron Hog#1",
@@ -30,7 +30,7 @@ var qQuests = new Array("Q4: Which Quest requires you to kill 40 Stumps?#Stump H
     "Q4: Which quest requires you to collect eggs?#Mason#Nemi#Alcaster#Arwin#2",
     "Q4: Which of these quest's allows you to gain most fames?#Shumi#Rowan#Alcaster#Arwin#2",
     "Q4: Out of these, which has the highest level requirement?#Mason the Collector#Scadurs New Fur Coat#Trading with Alien Gray#Protect Nero#1");
-var qTowns = new Array( "Q5: Which town has 'Grendel the really old'?#Henesys#Perion#Kerning City#Ellinia#4",
+var qTowns = new Array("Q5: Which town has 'Grendel the really old'?#Henesys#Perion#Kerning City#Ellinia#4",
     "Q5: Where is 'Alcaster' located?#Orbis#Sleepywood#El Nath#Ludibrium#3",
     "Q5: Who makes Shoes in 'El Nath'?#Gordon#Alcaster#Scadur#Maple Administrator#1",
     "Q5: Who makes Arrows in Henesys?#Chief Stan#Mrs Ming Ming#Vicious#Rina#3",
@@ -124,10 +124,11 @@ function action(mode, type, selection) {
         }
     }
 }
-function getQuestion(qSet){
+
+function getQuestion(qSet) {
     var q = qSet.split("#");
     var qLine = q[0] + "\r\n\r\n#L0#" + q[1] + "#l\r\n#L1#" + q[2] + "#l\r\n#L2#" + q[3] + "#l\r\n#L3#" + q[4] + "#l";
-    correctAnswer = parseInt(q[5],10);
+    correctAnswer = parseInt(q[5], 10);
     correctAnswer--;
     return qLine;
 }

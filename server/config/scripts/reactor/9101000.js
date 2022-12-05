@@ -43,8 +43,8 @@ function act() {
 //    eim.registerMonster(bunny);
 //    eim.setProperty("shouldDrop", "true");
 //    rm.getPlayer().getMap().setMonsterRate(1);
-    
-    
+
+
 //    rm.getPlayer().getMap().startMapEffect("Protect the Moon Bunny that's pounding the mill, and gather up 10 Moon Bunny's Rice Cakes!", 5120002, 7000);
 //    rm.getPlayer().getMap().broadcastMessage(MaplePacketCreator.serverNotice(5, "Protect the Moon Bunny!!!")); // not the real packet, but ok
 //    //rm.getClient().getPlayer().getMap().broadcastMessage(MaplePacketCreator.showHPQMoon());

@@ -16,35 +16,35 @@ function start() {
 
 function action(mode, type, selection) {
     if (mode == 0 && status == 0) {
-	cm.dispose();
-	return;
+        cm.dispose();
+        return;
     }
     if (mode == 1)
-	status++;
+        status++;
     else
-	status--;
+        status--;
     if (status == 0) {
-	cm.sendSimple("If you use this regular coupon, your face may transform into a random new look...do you still want to do it using #b#t5152037##k, I will do it anyways for you. But don't forget, it will be random!\r\n\#L2#OK!#l");
+        cm.sendSimple("If you use this regular coupon, your face may transform into a random new look...do you still want to do it using #b#t5152037##k, I will do it anyways for you. But don't forget, it will be random!\r\n\#L2#OK!#l");
     } else if (status == 1) {
-	cm.dispose();
+        cm.dispose();
     } else if (selection == 2) {
-	facenew = Array();
-	if (cm.getChar().getGender() == 0) {
-	    for(var i = 0; i < mface.length; i++) {
-		facenew.push(mface[i] + cm.getChar().getFace() % 1000 - (cm.getChar().getFace() % 100));
-	    }
-	}
-	if (cm.getChar().getGender() == 1) {
-	    for(var i = 0; i < fface.length; i++) {
-		facenew.push(fface[i] + cm.getChar().getFace() % 1000 - (cm.getChar().getFace() % 100));
-	    }
-	}
-	cm.sendYesNo("If you use the regular coupon, your face may transform into a random new look...do you still want to do it using #b#t5152037##k?");
+        facenew = Array();
+        if (cm.getChar().getGender() == 0) {
+            for (var i = 0; i < mface.length; i++) {
+                facenew.push(mface[i] + cm.getChar().getFace() % 1000 - (cm.getChar().getFace() % 100));
+            }
+        }
+        if (cm.getChar().getGender() == 1) {
+            for (var i = 0; i < fface.length; i++) {
+                facenew.push(fface[i] + cm.getChar().getFace() % 1000 - (cm.getChar().getFace() % 100));
+            }
+        }
+        cm.sendYesNo("If you use the regular coupon, your face may transform into a random new look...do you still want to do it using #b#t5152037##k?");
     } else if (status == 2) {
-	if (cm.setAvatar(5152037, facenew[Math.floor(Math.random() * facenew.length)] == 1){
-	    cm.sendOk("Enjoy your new and improved face!");
-	} else {
-	    cm.sendOk("Hmm ... it looks like you don't have the coupon specifically for this place. Sorry to say this, but without the coupon, there's no plastic surgery for you...");
-	}
+        if (cm.setAvatar(5152037, facenew[Math.floor(Math.random() * facenew.length)] == 1){
+            cm.sendOk("Enjoy your new and improved face!");
+        } else {
+            cm.sendOk("Hmm ... it looks like you don't have the coupon specifically for this place. Sorry to say this, but without the coupon, there's no plastic surgery for you...");
+        }
     }
 }

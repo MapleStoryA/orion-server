@@ -46,7 +46,7 @@ var scroll_15 = new Array(
     2044907, // Gun Atk
     2048007, // Pet EQ Speed
     2048009 // Pet EQ Jump
-    );
+);
 
 var scroll_10 = new Array(
     2040002, // Helmet Def
@@ -90,81 +90,81 @@ var scroll_10 = new Array(
     2044902, // Gun Atk
     2048002, // Pet Speed
     2048005 // Pet Jump
-    );
+);
 
 function action(mode, type, selection) {
     if (mode == 1) {
-	status++;
+        status++;
     } else {
-	if (status == 2) {
-	    cm.sendOk("This is a serious matter! Don't bother me if you are unwilling to do it.");
-	    cm.safeDispose();
-	    return;
-	} else if (status == 4) {
-	    cm.dispose();
-	    return;
-	}
-	status--;
+        if (status == 2) {
+            cm.sendOk("This is a serious matter! Don't bother me if you are unwilling to do it.");
+            cm.safeDispose();
+            return;
+        } else if (status == 4) {
+            cm.dispose();
+            return;
+        }
+        status--;
     }
     if (status == 0) {
-	cm.sendNext("Scrolls are always regarded as the important aspect of Mapler's equipment upgrade process. Are you one of those who strive for achieving perfection in the crafted material?");
+        cm.sendNext("Scrolls are always regarded as the important aspect of Mapler's equipment upgrade process. Are you one of those who strive for achieving perfection in the crafted material?");
     } else if (status == 1) {
-	cm.sendNextPrev("(' #bYes I do!!!#k ')");
+        cm.sendNextPrev("(' #bYes I do!!!#k ')");
     } else if (status == 2) {
-	cm.sendYesNo("Oh, hey there. You seems to be more interested than I do. I can always upgrade your scrolls with a little fee and some materials. Are you sure you want to do that? #bThere is a 10% chance that the scroll might be destroyed in the process of the creation.#k")
+        cm.sendYesNo("Oh, hey there. You seems to be more interested than I do. I can always upgrade your scrolls with a little fee and some materials. Are you sure you want to do that? #bThere is a 10% chance that the scroll might be destroyed in the process of the creation.#k")
     } else if (status == 3) {
-	cm.sendNext("Now here's the ingredients for resurrection of the ancient black magic scroll. \n\r #i4011006# #t4011006# x1 \n\r #i4021007# #t4021007# x1 \n\r #i4021008# #t4021008# x1 \n\r Mesos 500,000 \n\r\n\r Lastly, it will also require the 10% scroll.");
+        cm.sendNext("Now here's the ingredients for resurrection of the ancient black magic scroll. \n\r #i4011006# #t4011006# x1 \n\r #i4021007# #t4021007# x1 \n\r #i4021008# #t4021008# x1 \n\r Mesos 500,000 \n\r\n\r Lastly, it will also require the 10% scroll.");
     } else if (status == 4) {
-	var message = "Here's the list of scrolls that are within my powers to be created : \n\r";
-	
-	for (var i = 0; i < scroll_15.length; i++) {
-	    message += " #L"+i+"##i"+scroll_15[i]+"# #t"+scroll_15[i]+"##l \n\r";
-	}
-	cm.sendSimple(message);
+        var message = "Here's the list of scrolls that are within my powers to be created : \n\r";
+
+        for (var i = 0; i < scroll_15.length; i++) {
+            message += " #L" + i + "##i" + scroll_15[i] + "# #t" + scroll_15[i] + "##l \n\r";
+        }
+        cm.sendSimple(message);
     } else if (status == 5) {
-	var prompt = -1;
+        var prompt = -1;
 
-	if (selection >= 0 && selection <= scroll_10.length) {
-	    if (!cm.haveItem(scroll_10[selection])) {
-		prompt = scroll_10[selection];
-	    } else if (cm.getMeso() < 500000) {
-		prompt = -2;
-	    } else if (!cm.haveItem(4011006)) {
-		prompt = 4011006;
-	    } else if (!cm.haveItem(4021008)) {
-		prompt = 4021008;
-	    } else if (!cm.haveItem(4021007)) {
-		prompt = 4021007;
-	    } else if (!cm.canHold(scroll_15[selection], 1)) {
-		prompt = -3;
-	    }
-	} else { // Hack
-	    cm.dispose();
-	    return;
-	}
+        if (selection >= 0 && selection <= scroll_10.length) {
+            if (!cm.haveItem(scroll_10[selection])) {
+                prompt = scroll_10[selection];
+            } else if (cm.getMeso() < 500000) {
+                prompt = -2;
+            } else if (!cm.haveItem(4011006)) {
+                prompt = 4011006;
+            } else if (!cm.haveItem(4021008)) {
+                prompt = 4021008;
+            } else if (!cm.haveItem(4021007)) {
+                prompt = 4021007;
+            } else if (!cm.canHold(scroll_15[selection], 1)) {
+                prompt = -3;
+            }
+        } else { // Hack
+            cm.dispose();
+            return;
+        }
 
-	if (prompt == -1) {
-	    cm.gainMeso(-500000);
-	    cm.gainItem(4011006, -1);
-	    cm.gainItem(4021008, -1);
-	    cm.gainItem(4021007, -1);
-	    cm.gainItem(scroll_10[selection], -1);
-	    if (Math.floor(Math.random() * 100) < 90) {
-		cm.gainItem(scroll_15[selection], 1);
-		cm.sendOk("#i"+scroll_15[selection]+"# #t"+scroll_15[selection]+"# \n\r Handle this with care! It's an ancient scroll with mystical magic powers.");
-	    } else {
-		cm.sendOk("Woops! The scroll is destroyed!")
-	    }
-	    cm.safeDispose();
-	} else {
-	    if (prompt == -2) {
-		cm.sendOk("It appears that you are short of 500,000 mesos.");
-	    } else if (prompt == -3) {
-		cm.sendOk("It seems that you do not have the appropriate USE space.");
-	    } else {
-		cm.sendOk("It appears that you are short of #i"+prompt+"# #t"+prompt+"#.");
-	    }
-	    cm.safeDispose();
-	}
+        if (prompt == -1) {
+            cm.gainMeso(-500000);
+            cm.gainItem(4011006, -1);
+            cm.gainItem(4021008, -1);
+            cm.gainItem(4021007, -1);
+            cm.gainItem(scroll_10[selection], -1);
+            if (Math.floor(Math.random() * 100) < 90) {
+                cm.gainItem(scroll_15[selection], 1);
+                cm.sendOk("#i" + scroll_15[selection] + "# #t" + scroll_15[selection] + "# \n\r Handle this with care! It's an ancient scroll with mystical magic powers.");
+            } else {
+                cm.sendOk("Woops! The scroll is destroyed!")
+            }
+            cm.safeDispose();
+        } else {
+            if (prompt == -2) {
+                cm.sendOk("It appears that you are short of 500,000 mesos.");
+            } else if (prompt == -3) {
+                cm.sendOk("It seems that you do not have the appropriate USE space.");
+            } else {
+                cm.sendOk("It appears that you are short of #i" + prompt + "# #t" + prompt + "#.");
+            }
+            cm.safeDispose();
+        }
     }
 }

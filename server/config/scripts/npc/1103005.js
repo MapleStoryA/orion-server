@@ -19,7 +19,7 @@ function action(mode, type, selection) {
         } else {
             cm.warp(130000000, 0);
         }
-	cm.clearSavedLocation("CYGNUSINTRO");
+        cm.clearSavedLocation("CYGNUSINTRO");
     }
     cm.dispose();
 }

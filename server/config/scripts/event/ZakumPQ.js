@@ -30,8 +30,8 @@ var instanceId;
 
 function init() {
     instanceId = 1;
-    em.setProperty("shuffleReactors","true");
-    em.setProperty("started","false");
+    em.setProperty("shuffleReactors", "true");
+    em.setProperty("started", "false");
 }
 
 function monsterValue(eim, mobId) {
@@ -41,30 +41,30 @@ function monsterValue(eim, mobId) {
 function setup() {
     exitMap = em.getChannelServer().getMapFactory().getMap(280090000); //room of tragedy
     var instanceName = "ZakumPQ" + instanceId;
-	
+
     //ZPQ maps, center area then 1-1 through 16-6 increasing gradually
     //var instanceMaps = new Array(280010000, 280010010, 280010011, 280010020, 280010030, 280010031, 280010040, 280010041, 280010050, 280010060,
     //	280010070, 280010071, 280010080, 280010081, 280010090, 280010091, 280010100, 280010101, 280010110, 280010120, 280010130, 280010140,
     //	280010150, 280011000, 280011001, 280011002, 280011003, 280011004, 280011005, 280011006);
     var eim = em.newInstance(instanceName);
-	
+
     var mf = eim.getMapFactory();
-	
+
     instanceId++;
-	
+
     var map = mf.getMap(280010000);
     map.shuffleReactors();
-	
+
     //no time limit yet until clock can be visible in all maps
     //em.schedule("timeOut", 30 * 60000);
-	
+
     return eim;
 }
 
 function playerEntry(eim, player) {
     var map = eim.getMapInstance(280010000);
     player.changeMap(map, map.getPortal(0));
-	
+
 //TODO: hold time across map changes
 //player.getClient().getSession().write(tools.MaplePacketCreator.getClock(1800));
 }
@@ -77,8 +77,7 @@ function playerRevive(eim, player) {
             playerExit(eim, party.get(i));
         }
         eim.dispose();
-    }
-    else { //boot dead player
+    } else { //boot dead player
         playerExit(eim, player);
     }
     return false; // don't execute the standard reviving code
@@ -94,14 +93,12 @@ function playerDisconnected(eim, player) {
         for (var i = 0; i < party.size(); i++) {
             if (party.get(i).equals(player)) {
                 removePlayer(eim, player);
-            }
-            else {
+            } else {
                 playerExit(eim, party.get(i));
             }
         }
         eim.dispose();
-    }
-    else { //boot d/ced player
+    } else { //boot d/ced player
         removePlayer(eim, player);
     }
 }
@@ -160,6 +157,7 @@ function timeOut() {
         eim.dispose();
     }
 }
-function changedMap(eim, player, mapid){
-	
+
+function changedMap(eim, player, mapid) {
+
 }

@@ -10,511 +10,511 @@ function start() {
 
 function action(mode, type, selection) {
     if (mode == 1) {
-	switch (selection) {
-	    case 0:
-		if (cm.getParty() != null) {
-		if (cm.getDisconnected("BossQuestEASY") != null) {
-			cm.getDisconnected("BossQuestEASY").registerPlayer(cm.getPlayer());
-		 } else if (cm.isLeader()) {
-			var q = cm.getEventManager("BossQuestEASY");
-			if (q == null) {
-			    cm.sendOk("Unknown error occured");
-			} else {
-			    q.startInstance(cm.getParty(), cm.getMap());
-			}
-		    } else {
-			cm.sendOk("You are not the leader of the party, please ask your leader to talk to me.");
-		    }
-		} else {
-		    cm.sendOk("Please form a party first.");
-		}
-		break;
-	    case 1:
-		if (cm.getParty() != null) {
-		if (cm.getDisconnected("BossQuestMed") != null) {
-			cm.getDisconnected("BossQuestMed").registerPlayer(cm.getPlayer());
-		 } else if (cm.isLeader()) {
-			var q = cm.getEventManager("BossQuestMed");
-			if (q == null) {
-			    cm.sendOk("Unknown error occured");
-			} else {
-			    q.startInstance(cm.getParty(), cm.getMap());
-			}
-		    } else {
-			cm.sendOk("You are not the leader of the party, please ask your leader to talk to me.");
-		    }
-		} else {
-		    cm.sendOk("Please form a party first.");
-		}
-		break;
-	    case 2:
-		if (cm.getParty() != null) {
-		if (cm.getDisconnected("BossQuestHARD") != null) {
-			cm.getDisconnected("BossQuestHARD").registerPlayer(cm.getPlayer());
-		 } else if (cm.isLeader()) {
-			var q = cm.getEventManager("BossQuestHARD");
-			if (q == null) {
-			    cm.sendOk("Unknown error occured");
-			} else {
-			    q.startInstance(cm.getParty(), cm.getMap());
-			}
-		    } else {
-			cm.sendOk("You are not the leader of the party, please ask your leader to talk to me.");
-		    }
-		} else {
-		    cm.sendOk("Please form a party first.");
-		}
-		break;
-	    case 28:
-		if (cm.getParty() != null) {
-		if (cm.getDisconnected("BossQuestHELL") != null) {
-			cm.getDisconnected("BossQuestHELL").registerPlayer(cm.getPlayer());
-		 } else if (cm.isLeader()) {
-			var q = cm.getEventManager("BossQuestHELL");
-			if (q == null) {
-			    cm.sendOk("Unknown error occured");
-			} else {
-			    q.startInstance(cm.getParty(), cm.getMap());
-			}
-		    } else {
-			cm.sendOk("You are not the leader of the party, please ask your leader to talk to me.");
-		    }
-		} else {
-		    cm.sendOk("Please form a party first.");
-		}
-		break;
-	    case 3:
-		cm.sendOk("#bCurrent Points : " + points);
-		break;
-	    case 4: // Timeless Blindness
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+        switch (selection) {
+            case 0:
+                if (cm.getParty() != null) {
+                    if (cm.getDisconnected("BossQuestEASY") != null) {
+                        cm.getDisconnected("BossQuestEASY").registerPlayer(cm.getPlayer());
+                    } else if (cm.isLeader()) {
+                        var q = cm.getEventManager("BossQuestEASY");
+                        if (q == null) {
+                            cm.sendOk("Unknown error occured");
+                        } else {
+                            q.startInstance(cm.getParty(), cm.getMap());
+                        }
+                    } else {
+                        cm.sendOk("You are not the leader of the party, please ask your leader to talk to me.");
+                    }
+                } else {
+                    cm.sendOk("Please form a party first.");
+                }
+                break;
+            case 1:
+                if (cm.getParty() != null) {
+                    if (cm.getDisconnected("BossQuestMed") != null) {
+                        cm.getDisconnected("BossQuestMed").registerPlayer(cm.getPlayer());
+                    } else if (cm.isLeader()) {
+                        var q = cm.getEventManager("BossQuestMed");
+                        if (q == null) {
+                            cm.sendOk("Unknown error occured");
+                        } else {
+                            q.startInstance(cm.getParty(), cm.getMap());
+                        }
+                    } else {
+                        cm.sendOk("You are not the leader of the party, please ask your leader to talk to me.");
+                    }
+                } else {
+                    cm.sendOk("Please form a party first.");
+                }
+                break;
+            case 2:
+                if (cm.getParty() != null) {
+                    if (cm.getDisconnected("BossQuestHARD") != null) {
+                        cm.getDisconnected("BossQuestHARD").registerPlayer(cm.getPlayer());
+                    } else if (cm.isLeader()) {
+                        var q = cm.getEventManager("BossQuestHARD");
+                        if (q == null) {
+                            cm.sendOk("Unknown error occured");
+                        } else {
+                            q.startInstance(cm.getParty(), cm.getMap());
+                        }
+                    } else {
+                        cm.sendOk("You are not the leader of the party, please ask your leader to talk to me.");
+                    }
+                } else {
+                    cm.sendOk("Please form a party first.");
+                }
+                break;
+            case 28:
+                if (cm.getParty() != null) {
+                    if (cm.getDisconnected("BossQuestHELL") != null) {
+                        cm.getDisconnected("BossQuestHELL").registerPlayer(cm.getPlayer());
+                    } else if (cm.isLeader()) {
+                        var q = cm.getEventManager("BossQuestHELL");
+                        if (q == null) {
+                            cm.sendOk("Unknown error occured");
+                        } else {
+                            q.startInstance(cm.getParty(), cm.getMap());
+                        }
+                    } else {
+                        cm.sendOk("You are not the leader of the party, please ask your leader to talk to me.");
+                    }
+                } else {
+                    cm.sendOk("Please form a party first.");
+                }
+                break;
+            case 3:
+                cm.sendOk("#bCurrent Points : " + points);
+                break;
+            case 4: // Timeless Blindness
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 120000) {
-		    if (cm.canHold(1492023)) {
-			intPoints -= 120000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(1492023, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;
-	    case 5: // Timeless Lampion
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 120000) {
+                    if (cm.canHold(1492023)) {
+                        intPoints -= 120000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(1492023, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 5: // Timeless Lampion
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 120000) {
-		    if (cm.canHold(1472068)) {
-			intPoints -= 120000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(1472068, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;
-	    case 6: // Timeless Black Beauty
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 120000) {
+                    if (cm.canHold(1472068)) {
+                        intPoints -= 120000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(1472068, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 6: // Timeless Black Beauty
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 120000) {
-		    if (cm.canHold(1462050)) {
-			intPoints -= 120000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(1462050, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;
-	    case 7: // Timeless Engaw
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 120000) {
+                    if (cm.canHold(1462050)) {
+                        intPoints -= 120000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(1462050, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 7: // Timeless Engaw
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 120000) {
-		    if (cm.canHold(1452057)) {
-			intPoints -= 120000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(1452057, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;
-	    case 8: // Timeless Alchupiz
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 120000) {
+                    if (cm.canHold(1452057)) {
+                        intPoints -= 120000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(1452057, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 8: // Timeless Alchupiz
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 120000) {
-		    if (cm.canHold(1432047)) {
-			intPoints -= 120000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(1432047, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;
-	    case 9: // Timeless Aeas Hand
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 120000) {
+                    if (cm.canHold(1432047)) {
+                        intPoints -= 120000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(1432047, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 9: // Timeless Aeas Hand
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 120000) {
-		    if (cm.canHold(1382057)) {
-			intPoints -= 120000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(1382057, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;
-    	    case 10: // Timeless Enreal Tear
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 120000) {
+                    if (cm.canHold(1382057)) {
+                        intPoints -= 120000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(1382057, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 10: // Timeless Enreal Tear
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 120000) {
-		    if (cm.canHold(1372044)) {
-			intPoints -= 120000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(1372044, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;
-  	    case 11: // Timeless Killic
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 120000) {
+                    if (cm.canHold(1372044)) {
+                        intPoints -= 120000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(1372044, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 11: // Timeless Killic
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 120000) {
-		    if (cm.canHold(1332074)) {
-			intPoints -= 120000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(1332074, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;
-	    case 12: // Timeless Pescas
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 120000) {
+                    if (cm.canHold(1332074)) {
+                        intPoints -= 120000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(1332074, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 12: // Timeless Pescas
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 120000) {
-		    if (cm.canHold(1332073)) {
-			intPoints -= 120000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(1332073, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;
-	    case 13: // Timeless Equinox
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 120000) {
+                    if (cm.canHold(1332073)) {
+                        intPoints -= 120000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(1332073, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 13: // Timeless Equinox
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 120000) {
-		    if (cm.canHold(1482023)) {
-			intPoints -= 120000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(1482023, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;
-	    case 14: // Timeless Diesra
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 120000) {
+                    if (cm.canHold(1482023)) {
+                        intPoints -= 120000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(1482023, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 14: // Timeless Diesra
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 120000) {
-		    if (cm.canHold(1442063)) {
-			intPoints -= 120000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(1442063, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;
-	    case 15: // Timeless Bellocce
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 120000) {
+                    if (cm.canHold(1442063)) {
+                        intPoints -= 120000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(1442063, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 15: // Timeless Bellocce
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 120000) {
-		    if (cm.canHold(1422037)) {
-			intPoints -= 120000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(1422037, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;
-	    case 16: // Timeless Tabarzin
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 120000) {
+                    if (cm.canHold(1422037)) {
+                        intPoints -= 120000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(1422037, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 16: // Timeless Tabarzin
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 120000) {
-		    if (cm.canHold(1412033)) {
-			intPoints -= 120000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(1412033, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;
-	    case 17: // Timeless Nibleheim
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 120000) {
+                    if (cm.canHold(1412033)) {
+                        intPoints -= 120000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(1412033, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 17: // Timeless Nibleheim
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 120000) {
-		    if (cm.canHold(1402046)) {
-			intPoints -= 120000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(1402046, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;
-	    case 18: // Timeless Allargando
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 120000) {
+                    if (cm.canHold(1402046)) {
+                        intPoints -= 120000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(1402046, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 18: // Timeless Allargando
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 120000) {
-		    if (cm.canHold(1322060)) {
-			intPoints -= 120000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(1322060, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;
-	    case 19: // Timeless Bardiche
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 120000) {
+                    if (cm.canHold(1322060)) {
+                        intPoints -= 120000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(1322060, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 19: // Timeless Bardiche
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 120000) {
-		    if (cm.canHold(1312037)) {
-			intPoints -= 1312037;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(2049100, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;
-	    case 20: // Timeless Executioners
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 120000) {
+                    if (cm.canHold(1312037)) {
+                        intPoints -= 1312037;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(2049100, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 20: // Timeless Executioners
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 120000) {
-		    if (cm.canHold(1302081)) {
-			intPoints -= 120000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(1302081, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;		
-	    case 21: // Balanced Fury
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 120000) {
+                    if (cm.canHold(1302081)) {
+                        intPoints -= 120000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(1302081, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 21: // Balanced Fury
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 150000) {
-		    if (cm.canHold(2070018)) {
-			intPoints -= 150000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(2070018, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;
-	    case 22: // Fairy Pendant
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 150000) {
+                    if (cm.canHold(2070018)) {
+                        intPoints -= 150000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(2070018, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 22: // Fairy Pendant
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 10000) {
-		    if (cm.canHold(1122017)) {
-			intPoints -= 10000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItemPeriod(1122017, 1, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;
-	    case 23: // Cassandra Reward
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 10000) {
+                    if (cm.canHold(1122017)) {
+                        intPoints -= 10000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItemPeriod(1122017, 1, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 23: // Cassandra Reward
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 2000) {
-		    if (cm.canHold(2022459)) {
-			intPoints -= 2000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(2022459, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;
-	    case 24: // Cassandra Reward
-	    case 25: // Cassandra Reward
-	    case 26: // Cassandra Reward
-	    case 27: // Cassandra Reward
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 2000) {
+                    if (cm.canHold(2022459)) {
+                        intPoints -= 2000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(2022459, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 24: // Cassandra Reward
+            case 25: // Cassandra Reward
+            case 26: // Cassandra Reward
+            case 27: // Cassandra Reward
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 5000) {
-		    if (cm.canHold(2022436 + selection)) {
-			intPoints -= 5000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(2022436 + selection, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;
-	    case 28:
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 5000) {
+                    if (cm.canHold(2022436 + selection)) {
+                        intPoints -= 5000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(2022436 + selection, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 28:
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 100000) {
-		    if (cm.canHold(2340000)) {
-			intPoints -= 100000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(2340000, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;	
-	    case 29:
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 100000) {
+                    if (cm.canHold(2340000)) {
+                        intPoints -= 100000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(2340000, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 29:
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 20000) {
-		    if (cm.canHold(5490001)) {
-			intPoints -= 20000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(5490001, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;	
-	    case 30:
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 20000) {
+                    if (cm.canHold(5490001)) {
+                        intPoints -= 20000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(5490001, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 30:
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 30000) {
-		    if (cm.canHold(5490000)) {
-			intPoints -= 30000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(5490000, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;	
-	    case 31: // Timeless Katara
-		var record = cm.getQuestRecord(150001);
-		var intPoints = parseInt(points);
+                if (intPoints >= 30000) {
+                    if (cm.canHold(5490000)) {
+                        intPoints -= 30000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(5490000, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+            case 31: // Timeless Katara
+                var record = cm.getQuestRecord(150001);
+                var intPoints = parseInt(points);
 
-		if (intPoints >= 120000) {
-		    if (cm.canHold(1342011)) {
-			intPoints -= 120000;
-			record.setCustomData(""+intPoints+"");
-			cm.gainItem(1342011, 1);
-			cm.sendOk("Enjoy your rewards :P");
-		    } else {
-			cm.sendOk("Please check if you have sufficient inventory slot for it.")
-		    }
-		} else {
-		    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
-		}
-		break;	
-	}
+                if (intPoints >= 120000) {
+                    if (cm.canHold(1342011)) {
+                        intPoints -= 120000;
+                        record.setCustomData("" + intPoints + "");
+                        cm.gainItem(1342011, 1);
+                        cm.sendOk("Enjoy your rewards :P");
+                    } else {
+                        cm.sendOk("Please check if you have sufficient inventory slot for it.")
+                    }
+                } else {
+                    cm.sendOk("Please check if you have sufficient points for it, #bCurrent Points : " + points);
+                }
+                break;
+        }
     }
     cm.dispose();
 }

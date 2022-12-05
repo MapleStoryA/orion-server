@@ -9,9 +9,9 @@ function start() {
 
 function action(mode, type, selection) {
     if (mode == 1) {
-	cm.warp(209000000);
+        cm.warp(209000000);
     } else {
-	cm.sendNext("You need more time decorating trees, huh? If you ever feel like leaving this place, feel free to come talk to me~");
+        cm.sendNext("You need more time decorating trees, huh? If you ever feel like leaving this place, feel free to come talk to me~");
     }
     cm.dispose();
 }

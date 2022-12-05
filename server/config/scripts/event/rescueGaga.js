@@ -26,7 +26,7 @@ var fall = 0;
 var eim;
 
 function init() {
-    em.setProperty("rescueGaga", "true"); 
+    em.setProperty("rescueGaga", "true");
 }
 
 function setup(eim) {
@@ -44,7 +44,7 @@ function playerDead(eim, player) {
 function playerDisconnected(eim, player) {
     player.getMap().removePlayer(player);
     player.setMap(exitMap);
-    eim.unregisterPlayer(player); 
+    eim.unregisterPlayer(player);
 }
 
 function playerExit(eim, player) {
@@ -55,9 +55,10 @@ function playerExit(eim, player) {
 function fall(eim, player) {
     fall++;
     if (fall > 3)
-		playerExit(eim, player);
+        playerExit(eim, player);
     else
-		player.changeMap(map);
+        player.changeMap(map);
 }
+
 function timeOut() {
 }

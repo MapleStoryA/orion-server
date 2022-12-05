@@ -11,21 +11,21 @@ function start() {
 
 function action(mode, type, selection) {
     if (mode == 1) {
-	status++;
+        status++;
     } else {
-	cm.dispose();
+        cm.dispose();
     }
     if (status == 0) {
-	if (selection == 0) {
-	    cm.sendNext("I am currently serving the Divine Bird, who's responsible for protecting Queen Cygnus and Erev. The Divine Bird ordered me to take care of the Queen's requests, and that was to guide the souls that have arrived in the world of Maple in search of becoming a Knight of Cygnus. That is why I am here, and I will be with you until you become a knight of your own, or if you reach Level 11. If you have any questions, let me know!");
-	} else if (selection == 12) {
-	    cm.sendOk("The world of Maple had been keeping peace intact for a long time, but I fear that the presence of Black Wizard is slowly creeping back in. In order to stop sinster Black Wizard, the queen decided to form the Knights of cygnus. Once you reach Level 10, you can formally request to become a Knight of Cygnus yourself.");
-	    cm.dispose();
-	} else {
-	    cm.summonMsg(selection);
-	    cm.dispose();
-	}
+        if (selection == 0) {
+            cm.sendNext("I am currently serving the Divine Bird, who's responsible for protecting Queen Cygnus and Erev. The Divine Bird ordered me to take care of the Queen's requests, and that was to guide the souls that have arrived in the world of Maple in search of becoming a Knight of Cygnus. That is why I am here, and I will be with you until you become a knight of your own, or if you reach Level 11. If you have any questions, let me know!");
+        } else if (selection == 12) {
+            cm.sendOk("The world of Maple had been keeping peace intact for a long time, but I fear that the presence of Black Wizard is slowly creeping back in. In order to stop sinster Black Wizard, the queen decided to form the Knights of cygnus. Once you reach Level 10, you can formally request to become a Knight of Cygnus yourself.");
+            cm.dispose();
+        } else {
+            cm.summonMsg(selection);
+            cm.dispose();
+        }
     } else if (status == 1) {
-	cm.sendNext("But you really don't need to try to figure out everything in such a short amount of time. All the information I have here are basic knowledge of the game that you'll learn simply by playing the game. In fact, I feel that you should only ask if you're either at Level 10 but still clueless on what to do, or if you just want to clarify and double-check what you already know. You really don't need to know everything all at once, so relax.");
+        cm.sendNext("But you really don't need to try to figure out everything in such a short amount of time. All the information I have here are basic knowledge of the game that you'll learn simply by playing the game. In fact, I feel that you should only ask if you're either at Level 10 but still clueless on what to do, or if you just want to clarify and double-check what you already know. You really don't need to know everything all at once, so relax.");
     }
 }

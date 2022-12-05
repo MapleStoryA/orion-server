@@ -1,11 +1,11 @@
 function init() {
     em.setProperty("state", "0");
-	em.setProperty("leader", "true");
+    em.setProperty("leader", "true");
 }
 
 function setup(eim, leaderid) {
     em.setProperty("state", "1");
-	em.setProperty("leader", "true");
+    em.setProperty("leader", "true");
 
     var eim = em.newInstance("ChaosHorntail");
     eim.createInstanceMap(240060201).resetFully();
@@ -19,14 +19,14 @@ function playerEntry(eim, player) {
 }
 
 function changedMap(eim, player, mapid) {
-   	if (mapid != 240060201) {
-    eim.unregisterPlayer(player);
+    if (mapid != 240060201) {
+        eim.unregisterPlayer(player);
 
-    if (eim.disposeIfPlayerBelow(0, 0)) {
-	em.setProperty("state", "0");
-		em.setProperty("leader", "true");
+        if (eim.disposeIfPlayerBelow(0, 0)) {
+            em.setProperty("state", "0");
+            em.setProperty("leader", "true");
+        }
     }
-	}
 }
 
 function playerDisconnected(eim, player) {
@@ -36,15 +36,15 @@ function playerDisconnected(eim, player) {
 function scheduledTimeout(eim) {
     eim.disposeIfPlayerBelow(100, 240050400);
     em.setProperty("state", "0");
-		em.setProperty("leader", "true");
+    em.setProperty("leader", "true");
 }
 
 function playerExit(eim, player) {
     eim.unregisterPlayer(player);
 
     if (eim.disposeIfPlayerBelow(0, 0)) {
-	em.setProperty("state", "0");
-		em.setProperty("leader", "true");
+        em.setProperty("state", "0");
+        em.setProperty("leader", "true");
     }
 }
 
@@ -56,9 +56,9 @@ function allMonstersDead(eim) {
     var state = em.getProperty("state");
 
     if (state.equals("1")) {
-	em.setProperty("state", "2");
+        em.setProperty("state", "2");
     } else if (state.equals("2")) {
-	em.setProperty("state", "3");
+        em.setProperty("state", "3");
     }
 }
 
@@ -67,9 +67,17 @@ function playerRevive(eim, player) {
 }
 
 function clearPQ(eim) {
-scheduledTimeout(eim);
+    scheduledTimeout(eim);
 }
-function leftParty (eim, player) {}
-function disbandParty (eim) {}
-function playerDead(eim, player) {}
-function cancelSchedule() {}
+
+function leftParty(eim, player) {
+}
+
+function disbandParty(eim) {
+}
+
+function playerDead(eim, player) {
+}
+
+function cancelSchedule() {
+}

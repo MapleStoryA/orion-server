@@ -26,6 +26,6 @@
  * 
 */
 
-function act(){
-	rm.spawnMonster(9300090);
+function act() {
+    rm.spawnMonster(9300090);
 }

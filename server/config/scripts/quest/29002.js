@@ -45,5 +45,5 @@ function start(mode, type, selection) {
         }
 
     }
-        
+
 }

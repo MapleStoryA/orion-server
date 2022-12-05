@@ -17,9 +17,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 function start() {
-    if(cm.isQuestFinished(6002))
+    if (cm.isQuestFinished(6002))
         cm.sendNext("Thanks for saving the pork.");
-    else if(cm.getClient().getChannelServer().getMapFactory().getMap(923010000).getCharacters().size() > 0)
+    else if (cm.getClient().getChannelServer().getMapFactory().getMap(923010000).getCharacters().size() > 0)
         cm.sendNext("There is currently someone in this map, come back later.");
     else
         cm.warp(923010000);

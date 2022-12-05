@@ -26,22 +26,22 @@ importPackage(Packages.client);
 importPackage(Packages.client.messages);
 importPackage(Packages.server);
 
-function getDefinition () {
-	var ret = java.lang.reflect.Array.newInstance(CommandDefinition, 1);
-	ret[0] = new CommandDefinition("revinfo", "", "Gives information about the most recent revision.", "100"); 
-	return ret;
+function getDefinition() {
+    var ret = java.lang.reflect.Array.newInstance(CommandDefinition, 1);
+    ret[0] = new CommandDefinition("revinfo", "", "Gives information about the most recent revision.", "100");
+    return ret;
 }
 
-function execute (c, mc, splitted) {
-	var file = new File("lastrev.txt");
-	
-	var input =  new BufferedReader(new FileReader(file));
-	try {
-		var line = null;
-		while (( line = input.readLine()) != null) {
-			mc.dropMessage(line);
-        	}
-      	} finally {
-		input.close();
-	}
+function execute(c, mc, splitted) {
+    var file = new File("lastrev.txt");
+
+    var input = new BufferedReader(new FileReader(file));
+    try {
+        var line = null;
+        while ((line = input.readLine()) != null) {
+            mc.dropMessage(line);
+        }
+    } finally {
+        input.close();
+    }
 }

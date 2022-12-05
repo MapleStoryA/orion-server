@@ -3,8 +3,8 @@
  * Summons BodyGuard A
 */
 
-function act(){
+function act() {
     rm.changeMusic("Bgm06/FinalFight");
-	rm.spawnMonster(9400112, 830, 160);
+    rm.spawnMonster(9400112, 830, 160);
     rm.mapMessage("Bodyguard A is summoned.")
 }

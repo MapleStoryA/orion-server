@@ -70,7 +70,7 @@ function setup() {
     instanceId++;
     var map = mf.getMap(910010300);
     map.shuffleReactors();
-    eim.addMapInstance(910010300,map);
+    eim.addMapInstance(910010300, map);
     var firstPortal = eim.getMapInstance(910010000).getPortal("next00");
     firstPortal.setScriptName("hpq1");
     em.schedule("timeOut", 1000 * 60 * 15);
@@ -94,7 +94,7 @@ function playerDead(eim, player) {
             var partyz = eim.getPlayers();
             if (partyz.size() < minPlayers) {
                 for (var j = 0; j < partyz.size(); j++)
-                    playerExit(eim,partyz.get(j));
+                    playerExit(eim, partyz.get(j));
                 eim.dispose();
             } else
                 playerExit(eim, player);
@@ -109,22 +109,19 @@ function playerDisconnected(eim, player) {
         for (var i = 0; i < party.size(); i++) {
             if (party.get(i).equals(player)) {
                 removePlayer(eim, player);
-            }
-            else {
+            } else {
                 playerExit(eim, party.get(i));
             }
         }
         eim.dispose();
-    }
-    else { //boot d/ced player
+    } else { //boot d/ced player
         // If only 2 players are left, uncompletable:
         var partyz = eim.getPlayers();
         if (partyz.size() < minPlayers) {
             for (var j = 0; j < partyz.size(); j++)
-                playerExit(eim,partyz.get(j));
+                playerExit(eim, partyz.get(j));
             eim.dispose();
-        }
-        else
+        } else
             playerExit(eim, player);
     }
 }
@@ -133,10 +130,9 @@ function leftParty(eim, player) {// If only 2 players are left, uncompletable:
     var party = eim.getPlayers();
     if (party.size() < minPlayers) {
         for (var i = 0; i < party.size(); i++)
-            playerExit(eim,party.get(i));
+            playerExit(eim, party.get(i));
         eim.dispose();
-    }
-    else
+    } else
         playerExit(eim, player);
 }
 

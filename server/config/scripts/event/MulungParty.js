@@ -6,15 +6,15 @@ function init() {
 
 function setup(eim, leaderid) {
     for (var i = 925020100; i <= 925020114; i++) {
-	var prop = em.getProperty(String.valueOf(i));
-	if (prop == null || prop.equals("not")) {
-	    em.setProperty("" + i, "entered");
+        var prop = em.getProperty(String.valueOf(i));
+        if (prop == null || prop.equals("not")) {
+            em.setProperty("" + i, "entered");
 
-	    eim = em.newInstance("dojoparty" + leaderid);
+            eim = em.newInstance("dojoparty" + leaderid);
 
-	    eim.setProperty("select", String.valueOf(i));
-	    return eim;
-	}
+            eim.setProperty("select", String.valueOf(i));
+            return eim;
+        }
     }
     eim.disposeIfPlayerBelow(100, 0);
     return eim;

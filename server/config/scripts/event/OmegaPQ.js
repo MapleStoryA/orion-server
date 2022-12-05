@@ -20,15 +20,15 @@
  */
 
 /**
--- Odin JavaScript --------------------------------------------------------------------------------
-	Ludibirum Maze PQ
--- By ---------------------------------------------------------------------------------------------
-	Stereo
--- Version Info -----------------------------------------------------------------------------------
-	1.1 - fixed minor problems
-	1.0 - First Version by Stereo
----------------------------------------------------------------------------------------------------
-**/
+ -- Odin JavaScript --------------------------------------------------------------------------------
+ Ludibirum Maze PQ
+ -- By ---------------------------------------------------------------------------------------------
+ Stereo
+ -- Version Info -----------------------------------------------------------------------------------
+ 1.1 - fixed minor problems
+ 1.0 - First Version by Stereo
+ ---------------------------------------------------------------------------------------------------
+ **/
 
 /*
 INSERT monsterdrops (monsterid,itemid,chance) VALUES (9300001,4001007,5);
@@ -67,22 +67,21 @@ function init() { // Initial loading.
 
 function monsterValue(eim, mobId) { // Killed monster.
 
-    if((!contains(bossid, mobId)) && (mobId != 8500002))  //boss summons and gm summons needn't count & we add an exception for papulatus cause he's cool
-       return;
-    
-    if(mobId == 8500001)     //papulatus clock
-       return;               // they've gotta kill pap yet ;D
+    if ((!contains(bossid, mobId)) && (mobId != 8500002))  //boss summons and gm summons needn't count & we add an exception for papulatus cause he's cool
+        return;
+
+    if (mobId == 8500001)     //papulatus clock
+        return;               // they've gotta kill pap yet ;D
 
     var map = getMap(eim);
     map.broadcastMessage(MaplePacketCreator.serverNotice(6, "[Event] " + "Congratulations on killing " + bossname[stage] + "."));
     stage++;
     if (stage > bossid.length - 1)   //arrays start at 0, length starts at 1
-       finishEvent(eim);
-    else
-    {
-    map.broadcastMessage(MaplePacketCreator.serverNotice(6, "[Event] " + "Next up: " + bossname[stage] + ", spawning in " + monsterdelay / 1000 + " seconds."));
+        finishEvent(eim);
+    else {
+        map.broadcastMessage(MaplePacketCreator.serverNotice(6, "[Event] " + "Next up: " + bossname[stage] + ", spawning in " + monsterdelay / 1000 + " seconds."));
         // spawnNextBoss(eim);
-         eim.schedule("spawnNextBoss", monsterdelay);
+        eim.schedule("spawnNextBoss", monsterdelay);
     }
     return 1;
 }
@@ -99,10 +98,10 @@ function setup() {
     spawnNPC(eim, 1052015, 344, -4717);
 
     var iter = map.getPortals().iterator();    //kills the portals
-    	while (iter.hasNext()) {
-    		var p = iter.next();
-                p.setScriptName("omPQ");
-	}
+    while (iter.hasNext()) {
+        var p = iter.next();
+        p.setScriptName("omPQ");
+    }
 
     eim.schedule("timeOut", eventTime); // invokes "timeOut" in how ever many seconds.
     eim.startEventTimer(eventTime); // Sends a clock packet and tags a timer to the players.
@@ -161,8 +160,8 @@ function playerExit(eim, player) {
     eim.unregisterPlayer(player);
     player.setallowedMapChange(true);
     player.changeMap(exitMap, exitMap.getPortal(0));
-    
-    if(eim.getPlayerCount() == 0)
+
+    if (eim.getPlayerCount() == 0)
         dispose(eim);
 }
 
@@ -171,8 +170,8 @@ function removePlayer(eim, player) {  //for disconnected peeps / peeps who have 
     player.getMap().removePlayer(player);
     player.setMap(exitMap);
     eim.unregisterPlayer(player);
-    
-    if(eim.getPlayerCount() == 0)
+
+    if (eim.getPlayerCount() == 0)
         dispose(eim);
 }
 
@@ -188,7 +187,7 @@ function cancelSchedule() {
 }
 
 function playerMapChange(eim, player) {
-         return player.allowedMapChange();
+    return player.allowedMapChange();
 }
 
 function dispose(eim) {
@@ -213,60 +212,57 @@ function timeOut(eim) {
 }
 
 function spawnNextBoss(eim) {
-         var mob = MapleLifeFactory.getMonster(bossid[stage]);
-         var overrideStats = new MapleMonsterStats();
-         if (bosshp[stage] == -1) {
-            bosshp[stage] = mob.getHp();
-         }
-         overrideStats.setExp(mob.getExp() * 0.8 * (bosshp[stage] / mob.getHp()));  // exp directly proportional to ratio of orig & nerfed HPs
-	 overrideStats.setHp(bosshp[stage]);
-	 overrideStats.setMp(mob.getMaxMp());
-         mob.setOverrideStats(overrideStats);
-	 eim.registerMonster(mob);
-         var map = eim.getMapInstance(221000200, true);
-         map.spawnMonsterOnGroudBelow(mob, new java.awt.Point(bossx[stage], bossy[stage]));
+    var mob = MapleLifeFactory.getMonster(bossid[stage]);
+    var overrideStats = new MapleMonsterStats();
+    if (bosshp[stage] == -1) {
+        bosshp[stage] = mob.getHp();
     }
+    overrideStats.setExp(mob.getExp() * 0.8 * (bosshp[stage] / mob.getHp()));  // exp directly proportional to ratio of orig & nerfed HPs
+    overrideStats.setHp(bosshp[stage]);
+    overrideStats.setMp(mob.getMaxMp());
+    mob.setOverrideStats(overrideStats);
+    eim.registerMonster(mob);
+    var map = eim.getMapInstance(221000200, true);
+    map.spawnMonsterOnGroudBelow(mob, new java.awt.Point(bossx[stage], bossy[stage]));
+}
 
-  function finishEvent(eim) {
+function finishEvent(eim) {
     eim.setProperty("enforceParty", "false");
     eim.setProperty("pqFinished", "true"); // the NPC will take care of the rest
-  }
-  
-  function contains(a, obj) {
-  var i = a.length;
-  while (i--) {
-    if (a[i] === obj) {
-      return true;
+}
+
+function contains(a, obj) {
+    var i = a.length;
+    while (i--) {
+        if (a[i] === obj) {
+            return true;
+        }
     }
-  }
-  return false;
+    return false;
 }
 
-function getMap(eim)
-{
-      return eim.getMapInstance(221000200, true);
+function getMap(eim) {
+    return eim.getMapInstance(221000200, true);
 }
 
-function spawnNPC(eim, npcId, x, y)
-{
-   var point = new java.awt.Point(x, y);
-   var map = getMap(eim);
-   var npc = MapleLifeFactory.getNPC(npcId);
-            if (npc != null) {
-                npc.setPosition(point);
-                npc.setCy(y);
-                npc.setRx0(x);
-                npc.setRx1(x);
-                npc.setFh(map.getFootholds().findBelow(point).getId());
-                map.addMapObject(npc);
-                map.broadcastMessage(MaplePacketCreator.spawnNPC(npc));
-            }
+function spawnNPC(eim, npcId, x, y) {
+    var point = new java.awt.Point(x, y);
+    var map = getMap(eim);
+    var npc = MapleLifeFactory.getNPC(npcId);
+    if (npc != null) {
+        npc.setPosition(point);
+        npc.setCy(y);
+        npc.setRx0(x);
+        npc.setRx1(x);
+        npc.setFh(map.getFootholds().findBelow(point).getId());
+        map.addMapObject(npc);
+        map.broadcastMessage(MaplePacketCreator.spawnNPC(npc));
+    }
 }
 
-function warpPartyOut(eim)
-{
+function warpPartyOut(eim) {
     var party = eim.getPlayers();
     for (var i = 0; i < party.size(); i++) {
         playerExit(eim, party.get(i));
-        }
+    }
 }

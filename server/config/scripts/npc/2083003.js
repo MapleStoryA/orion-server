@@ -23,7 +23,7 @@
  *For Jvlaple's Horntail PQ
  *@author Jvlaple :)
  */
- 
+
 importPackage(Packages.tools);
 importPackage(Packages.client);
 importPackage(Packages.server.maps);
@@ -32,115 +32,113 @@ importPackage(java.lang);
 var curStage;
 
 function start() {
-	status = -1;
-	action(1, 0, 0);
-	//var eim = cm.getPlayer().getEventInstance();
-	//var party = eim.getPlayers();
-	//var 
+    status = -1;
+    action(1, 0, 0);
+    //var eim = cm.getPlayer().getEventInstance();
+    //var party = eim.getPlayers();
+    //var
 }
 
 function action(mode, type, selection) {
-	if (mode == -1) {
-		cm.dispose();
-	} else {
-		if (mode == 0 && status == 0) {
-			cm.dispose();
-			return;
-		}
-		if (mode == 1)
-			status++;
-		else
-			status--;
-		if (status == 0) {
-			var eim = cm.getPlayer().getEventInstance();
-			var party = eim.getPlayers();
-			if (eim.getProperty("theLvl") == null) {
-				eim.setProperty("theLvl", "0");
-			}
-		curStage = parseInt(eim.getProperty("theLvl"));
-			if (curStage == 0) {
-				if (cm.haveItem(4001087, 1)) {
-					cm.sendNext("Great, you brought me the key. The door will now be unlocked.");
-					eim.setProperty("2stageclear", "true");
-					eim.setProperty("theLvl", curStage + 1);
-					var packetef = MaplePacketCreator.showEffect("quest/party/clear");
-					var packetsnd = MaplePacketCreator.playSound("Party1/Clear");
-					var map = eim.getMapInstance(240050101);
-					map.broadcastMessage(packetef);
-					map.broadcastMessage(packetsnd); 
-					cm.gainItem(4001087, -1);
-					cm.dispose();
-				} else {
-					cm.sendNext("Please wait for the key to appear.");
-					cm.dispose();
-				}
-			}
-			
-			if (curStage == 1) {
-				if (cm.haveItem(4001088, 1)) {
-						cm.sendNext("Great, you brought me the key. The door will now be unlocked.");
-						eim.setProperty("3stageclear", "true");
-						eim.setProperty("theLvl", curStage + 1);
-						var packetef = MaplePacketCreator.showEffect("quest/party/clear");
-						var packetsnd = MaplePacketCreator.playSound("Party1/Clear");
-						var map = eim.getMapInstance(240050102);
-						map.broadcastMessage(packetef);
-						map.broadcastMessage(packetsnd); 
-						cm.gainItem(4001088, -1);
-						cm.dispose();
-					} else {
-					cm.sendNext("Please wait for the key to appear.");
-					cm.dispose();
-				}
-			}
-			
-			else if (curStage == 2) {
-				if (cm.haveItem(4001089, 1)) {
-					cm.sendNext("Great, you brought me the key. The door will now be unlocked.");
-					eim.setProperty("4stageclear", "true");
-					eim.setProperty("theLvl", curStage + 1);
-					var packetef = MaplePacketCreator.showEffect("quest/party/clear");
-					var packetsnd = MaplePacketCreator.playSound("Party1/Clear");
-					var map = eim.getMapInstance(240050103);
-					map.broadcastMessage(packetef);
-					map.broadcastMessage(packetsnd); 
-					cm.gainItem(4001089, -1);
-					cm.dispose();
-				} else {
-					cm.sendNext("Please wait for the key to appear.");
-					cm.dispose();
-				}
-			}
-			
-			if (curStage == 3) {
-				if (cm.haveItem(4001090, 1)) {
-					cm.sendNext("Great, you brought me the key. The door will now be unlocked.");
-					eim.setProperty("5stageclear", "true");
-					eim.setProperty("theLvl", curStage + 1);
-					var packetef = MaplePacketCreator.showEffect("quest/party/clear");
-					var packetsnd = MaplePacketCreator.playSound("Party1/Clear");
-					var map = eim.getMapInstance(240050104);
-					map.broadcastMessage(packetef);
-					map.broadcastMessage(packetsnd); 
-					cm.gainItem(4001090, -1);
-					cm.dispose();
-				} else {
-					cm.sendNext("Please wait for the key to appear.");
-					cm.dispose();
-				}
-			}
-			
-			if (curStage == 4) {
-					cm.sendNext("You have cleared the maze, wait for your party leader to appear.");
-					cm.dispose();
-			}
-			
-			if (curStage > 4) {
-					cm.sendNext("wtf");
-					cm.dispose();
-			}
-				
-		}
-	}
+    if (mode == -1) {
+        cm.dispose();
+    } else {
+        if (mode == 0 && status == 0) {
+            cm.dispose();
+            return;
+        }
+        if (mode == 1)
+            status++;
+        else
+            status--;
+        if (status == 0) {
+            var eim = cm.getPlayer().getEventInstance();
+            var party = eim.getPlayers();
+            if (eim.getProperty("theLvl") == null) {
+                eim.setProperty("theLvl", "0");
+            }
+            curStage = parseInt(eim.getProperty("theLvl"));
+            if (curStage == 0) {
+                if (cm.haveItem(4001087, 1)) {
+                    cm.sendNext("Great, you brought me the key. The door will now be unlocked.");
+                    eim.setProperty("2stageclear", "true");
+                    eim.setProperty("theLvl", curStage + 1);
+                    var packetef = MaplePacketCreator.showEffect("quest/party/clear");
+                    var packetsnd = MaplePacketCreator.playSound("Party1/Clear");
+                    var map = eim.getMapInstance(240050101);
+                    map.broadcastMessage(packetef);
+                    map.broadcastMessage(packetsnd);
+                    cm.gainItem(4001087, -1);
+                    cm.dispose();
+                } else {
+                    cm.sendNext("Please wait for the key to appear.");
+                    cm.dispose();
+                }
+            }
+
+            if (curStage == 1) {
+                if (cm.haveItem(4001088, 1)) {
+                    cm.sendNext("Great, you brought me the key. The door will now be unlocked.");
+                    eim.setProperty("3stageclear", "true");
+                    eim.setProperty("theLvl", curStage + 1);
+                    var packetef = MaplePacketCreator.showEffect("quest/party/clear");
+                    var packetsnd = MaplePacketCreator.playSound("Party1/Clear");
+                    var map = eim.getMapInstance(240050102);
+                    map.broadcastMessage(packetef);
+                    map.broadcastMessage(packetsnd);
+                    cm.gainItem(4001088, -1);
+                    cm.dispose();
+                } else {
+                    cm.sendNext("Please wait for the key to appear.");
+                    cm.dispose();
+                }
+            } else if (curStage == 2) {
+                if (cm.haveItem(4001089, 1)) {
+                    cm.sendNext("Great, you brought me the key. The door will now be unlocked.");
+                    eim.setProperty("4stageclear", "true");
+                    eim.setProperty("theLvl", curStage + 1);
+                    var packetef = MaplePacketCreator.showEffect("quest/party/clear");
+                    var packetsnd = MaplePacketCreator.playSound("Party1/Clear");
+                    var map = eim.getMapInstance(240050103);
+                    map.broadcastMessage(packetef);
+                    map.broadcastMessage(packetsnd);
+                    cm.gainItem(4001089, -1);
+                    cm.dispose();
+                } else {
+                    cm.sendNext("Please wait for the key to appear.");
+                    cm.dispose();
+                }
+            }
+
+            if (curStage == 3) {
+                if (cm.haveItem(4001090, 1)) {
+                    cm.sendNext("Great, you brought me the key. The door will now be unlocked.");
+                    eim.setProperty("5stageclear", "true");
+                    eim.setProperty("theLvl", curStage + 1);
+                    var packetef = MaplePacketCreator.showEffect("quest/party/clear");
+                    var packetsnd = MaplePacketCreator.playSound("Party1/Clear");
+                    var map = eim.getMapInstance(240050104);
+                    map.broadcastMessage(packetef);
+                    map.broadcastMessage(packetsnd);
+                    cm.gainItem(4001090, -1);
+                    cm.dispose();
+                } else {
+                    cm.sendNext("Please wait for the key to appear.");
+                    cm.dispose();
+                }
+            }
+
+            if (curStage == 4) {
+                cm.sendNext("You have cleared the maze, wait for your party leader to appear.");
+                cm.dispose();
+            }
+
+            if (curStage > 4) {
+                cm.sendNext("wtf");
+                cm.dispose();
+            }
+
+        }
+    }
 }
 			

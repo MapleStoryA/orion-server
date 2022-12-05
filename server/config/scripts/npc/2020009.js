@@ -27,10 +27,10 @@ function start() {
     } else if (cm.isQuestActive(100102)) {
         cm.sendOk("Well, well. Now go and see #bthe Dark Lord#k. He will show you the way.");
         cm.dispose();
-    }else if (ThirdJobUtils.isSecondJobMage(cm.getPlayer()) &&
-        cm.getLevel() >= 70 &&  cm.getPlayer().getRemainingSp() <= (cm.getLevel() - 70) * 3) {
+    } else if (ThirdJobUtils.isSecondJobMage(cm.getPlayer()) &&
+        cm.getLevel() >= 70 && cm.getPlayer().getRemainingSp() <= (cm.getLevel() - 70) * 3) {
         cm.sendNext("#rBy Odin's beard!#k You are a strong one.");
-    }  else {
+    } else {
         cm.sendOk("Your time has yet to come...");
         cm.dispose();
     }
@@ -48,22 +48,22 @@ function action(mode, type, selection) {
         status++;
         if (status == 1) {
             if (cm.isQuestComplete(100102)) {
-                if (cm.getJobId()==210) {
+                if (cm.getJobId() == 210) {
                     cm.changeJobById(211);
                     cm.gainAp(5);
-            		cm.gainSp(1);
+                    cm.gainSp(1);
                     cm.sendOk("You are now a #bFire/Poison Mage#k. May #rOdin#k be with you!");
                     cm.dispose();
-                } else if (cm.getJobId()==220) {
+                } else if (cm.getJobId() == 220) {
                     cm.changeJobById(221);
                     cm.gainAp(5);
-            		cm.gainSp(1);
+                    cm.gainSp(1);
                     cm.sendOk("You are now a #bIce/Lightning Mage#k. May #rOdin#k be with you!");
                     cm.dispose();
-                } else if (cm.getJobId()==230) {
+                } else if (cm.getJobId() == 230) {
                     cm.changeJobById(231);
                     cm.gainAp(5);
-            		cm.gainSp(1);
+                    cm.gainSp(1);
                     cm.sendOk("You are now a #bPriest#k. May #rOdin#k be with you!");
                     cm.dispose();
                 }

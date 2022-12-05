@@ -1,4 +1,3 @@
-
 var status = 0;
 
 function start() {
@@ -6,8 +5,8 @@ function start() {
 }
 
 function action(mode, type, selection) {
-	if (mode == 1) {
-		cm.warp(889100100);
-	}
+    if (mode == 1) {
+        cm.warp(889100100);
+    }
     cm.dispose();
 }

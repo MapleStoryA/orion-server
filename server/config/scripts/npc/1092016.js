@@ -4,7 +4,7 @@
 	Description: 		Unknown
 */
 
-function start(){
-	cm.sendNext("It's a beautiful, shiny rock. I can feel the mysterious power surrounding it.");
-	cm.dispose();
-	}
+function start() {
+    cm.sendNext("It's a beautiful, shiny rock. I can feel the mysterious power surrounding it.");
+    cm.dispose();
+}

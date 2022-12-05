@@ -1,6 +1,6 @@
 /**
-	Tangyoon - Nautilus Cook
-**/
+ Tangyoon - Nautilus Cook
+ **/
 
 function start() {
     cm.removeAll(4031847);

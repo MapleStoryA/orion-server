@@ -1,15 +1,15 @@
 function init() {
-em.setProperty("state", "0");
-	em.setProperty("leader", "true");
+    em.setProperty("state", "0");
+    em.setProperty("leader", "true");
 }
 
 function setup(eim, leaderid) {
-em.setProperty("state", "1");
-	em.setProperty("leader", "true");
+    em.setProperty("state", "1");
+    em.setProperty("leader", "true");
     var eim = em.newInstance("CoreBlaze" + leaderid);
 
     var map = eim.setInstanceMap(802000803);
-	map.resetFully();
+    map.resetFully();
 
     eim.startEventTimer(14400000); // 4 hrs
     return eim;
@@ -30,14 +30,14 @@ function scheduledTimeout(eim) {
 
 function changedMap(eim, player, mapid) {
     if (mapid != 802000803) {
-	eim.unregisterPlayer(player);
-	var map = em.getChannelServer().getMapFactory().getMap(802000800);
-	player.changeMap(map, map.getPortal(0));
+        eim.unregisterPlayer(player);
+        var map = em.getChannelServer().getMapFactory().getMap(802000800);
+        player.changeMap(map, map.getPortal(0));
 
-	if (eim.disposeIfPlayerBelow(0, 0)) {
-		em.setProperty("state", "0");
-		em.setProperty("leader", "true");
-	}
+        if (eim.disposeIfPlayerBelow(0, 0)) {
+            em.setProperty("state", "0");
+            em.setProperty("leader", "true");
+        }
     }
 }
 
@@ -53,15 +53,15 @@ function playerExit(eim, player) {
     eim.unregisterPlayer(player);
 
     if (eim.disposeIfPlayerBelow(0, 0)) {
-	em.setProperty("state", "0");
-		em.setProperty("leader", "true");
-	}
+        em.setProperty("state", "0");
+        em.setProperty("leader", "true");
+    }
 }
 
 function end(eim) {
     eim.disposeIfPlayerBelow(100, 802000800);
-	em.setProperty("state", "0");
-		em.setProperty("leader", "true");
+    em.setProperty("state", "0");
+    em.setProperty("leader", "true");
 }
 
 function clearPQ(eim) {
@@ -69,10 +69,17 @@ function clearPQ(eim) {
 }
 
 function allMonstersDead(eim) {
-	eim.getMapInstance(0).spawnNpc(9120026, new java.awt.Point(1478, 326));
+    eim.getMapInstance(0).spawnNpc(9120026, new java.awt.Point(1478, 326));
 }
 
-function leftParty (eim, player) {}
-function disbandParty (eim) {}
-function playerDead(eim, player) {}
-function cancelSchedule() {}
+function leftParty(eim, player) {
+}
+
+function disbandParty(eim) {
+}
+
+function playerDead(eim, player) {
+}
+
+function cancelSchedule() {
+}

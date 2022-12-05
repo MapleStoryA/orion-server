@@ -1,16 +1,16 @@
 /**
-  Questions.
--- Original Author --------------------------------------------------------------------------------
-	Jvlaple
--- Modified by -----------------------------------------------------------------------------------
-	XoticMS.
----------------------------------------------------------------------------------------------------
-**/
+ Questions.
+ -- Original Author --------------------------------------------------------------------------------
+ Jvlaple
+ -- Modified by -----------------------------------------------------------------------------------
+ XoticMS.
+ ---------------------------------------------------------------------------------------------------
+ **/
 importPackage(Packages.client);
 importPackage(Packages.server);
 var status;
 var otherChar;
- 
+
 function start() {
     otherChar = cm.getSender();
     status = -1;
@@ -28,11 +28,11 @@ function action(mode, type, selection) {
         cm.dispose();
         return;
     }
-	
+
     if (status == 0) {
         cm.sendNext("Alguem do mundo MapleStory te enviar uma mensagem.");
     } else if (status == 1) {
-        cm.sendYesNo("Voce gostaria de se casar com " + otherChar.getName() + "?") ;
+        cm.sendYesNo("Voce gostaria de se casar com " + otherChar.getName() + "?");
     } else if (status == 2) {
         if (cm.createEngagement(otherChar.getName())) {
             otherChar.dropMessage(1, "Seu parceiro/a aceitou seu pedido, parabens!");

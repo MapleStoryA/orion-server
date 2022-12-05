@@ -1,9 +1,9 @@
 /**
-	Fedro: Pirate 3rd job advancement
-	El Nath: Chief's Residence (211000001)
+ Fedro: Pirate 3rd job advancement
+ El Nath: Chief's Residence (211000001)
 
-	Custom Quest 100100, 100102
-*/
+ Custom Quest 100100, 100102
+ */
 
 var status = 0;
 var job;
@@ -31,10 +31,10 @@ function start() {
     } else if (cm.isQuestActive(100102)) {
         cm.sendOk("Well, well. Now go and see #bthe Dark Lord#k. He will show you the way.");
         cm.dispose();
-    }else if (ThirdJobUtils.isPirateSecondJob(cm.getPlayer()) &&
-        cm.getLevel() >= 70 &&  cm.getPlayer().getRemainingSp() <= (cm.getLevel() - 70) * 3) {
+    } else if (ThirdJobUtils.isPirateSecondJob(cm.getPlayer()) &&
+        cm.getLevel() >= 70 && cm.getPlayer().getRemainingSp() <= (cm.getLevel() - 70) * 3) {
         cm.sendNext("#rBy Odin's beard!#k You are a strong one.");
-    }  else {
+    } else {
         cm.sendOk("Your time has yet to come...");
         cm.dispose();
     }
@@ -52,19 +52,19 @@ function action(mode, type, selection) {
         status++;
         if (status == 1) {
             if (cm.isQuestComplete(100102)) {
-                if (cm.getJobId()==510) {
+                if (cm.getJobId() == 510) {
                     cm.changeJobById(511);
                     cm.gainAp(5);
-            		cm.gainSp(1);
+                    cm.gainSp(1);
                     cm.sendOk("You are now a #bMarauder#k. May #rOdin#k be with you!");
                     cm.dispose();
-                } else if (cm.getJobId()==520) {
+                } else if (cm.getJobId() == 520) {
                     cm.changeJobById(521);
                     cm.gainAp(5);
-            		cm.gainSp(1);
+                    cm.gainSp(1);
                     cm.sendOk("You are now a #bOutlaw#k. May #rOdin#k be with you!");
                     cm.dispose();
-                } 
+                }
             } else if (cm.isQuestComplete(100100))
                 cm.sendAcceptDecline("Is your mind ready to undertake the final test?");
             else

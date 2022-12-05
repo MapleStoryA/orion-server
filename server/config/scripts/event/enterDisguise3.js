@@ -1,6 +1,6 @@
 /**
-	Advancement - Cygnus 3rd job
-**/
+ Advancement - Cygnus 3rd job
+ **/
 
 var instanceId;
 var returnmap;
@@ -38,21 +38,21 @@ function playerExit(eim, player) {
     player.changeMap(exitMap, exitMap.getPortal(0));
 
     if (eim.getPlayerCount() == 0) {
-	eim.dispose();
+        eim.dispose();
     }
 }
 
 function timeOut() {
     var iter = em.getInstances().iterator();
     while (iter.hasNext()) {
-	var eim = iter.next();
-	if (eim.getPlayerCount() > 0) {
-	    var pIter = eim.getPlayers().iterator();
-	    while (pIter.hasNext()) {
-		playerExit(eim, pIter.next());
-	    }
-	}
-	eim.dispose();
+        var eim = iter.next();
+        if (eim.getPlayerCount() > 0) {
+            var pIter = eim.getPlayers().iterator();
+            while (pIter.hasNext()) {
+                playerExit(eim, pIter.next());
+            }
+        }
+        eim.dispose();
     }
 }
 

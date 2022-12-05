@@ -19,16 +19,17 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 /*@author Jvlaple
  *Reactor : LudiPQ Bonus Reactor - 2202004.js
  * Drops all the Bonus Items
  */
- 
+
 function act() {
-	rand = Math.floor(Math.random() * 3);
-	if (rand < 1) rand = 1;
-	//We'll make it drop a lot of crap :D
-	for (var i = 0; i<rand; i++) {
-		rm.dropItems(true, 1, 30, 60, 15);
-	}
+    rand = Math.floor(Math.random() * 3);
+    if (rand < 1) rand = 1;
+    //We'll make it drop a lot of crap :D
+    for (var i = 0; i < rand; i++) {
+        rm.dropItems(true, 1, 30, 60, 15);
+    }
 }

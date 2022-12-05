@@ -26,10 +26,10 @@
  * 
 */
 
-function act(){
-	rm.playerMessage(5,"You have found a secret factory!");
-	if (Math.random() < .5)
-		rm.warp(922000020);
-	else
-		rm.warp(922000021);
+function act() {
+    rm.playerMessage(5, "You have found a secret factory!");
+    if (Math.random() < .5)
+        rm.warp(922000020);
+    else
+        rm.warp(922000021);
 }

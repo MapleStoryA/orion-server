@@ -9,16 +9,16 @@ function playerEntry(eim, player) {
     var map = eim.setInstanceMap(912040005);
     player.changeMap(map, map.getPortal(0));
     player.getClient().getSession().write(tools.MaplePacketCreator.getClock(600));
-    eim.schedule("warpOut", 600000);	
+    eim.schedule("warpOut", 600000);
 }
 
 function warpOut(eim) {
     var map = em.getChannelServer().getMapFactory().getMap(120000101);
     var iter = eim.getPlayers().iterator();
     while (iter.hasNext()) {
-	player = iter.next();
-	player.changeMap(map, map.getPortal(0));
-	eim.unregisterPlayer(player);
+        player = iter.next();
+        player.changeMap(map, map.getPortal(0));
+        eim.unregisterPlayer(player);
     }
     eim.dispose();
 }
@@ -35,7 +35,7 @@ function playerRevive(eim, player) {
     eim.dispose();
 }
 
-function leftParty(eim, player) {			
+function leftParty(eim, player) {
 }
 
 function disbandParty(eim) {

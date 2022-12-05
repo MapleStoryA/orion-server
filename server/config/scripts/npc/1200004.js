@@ -17,16 +17,18 @@ function action(mode) {
             cm.sendNext("Hmm... Are you sure you have #b800#k Mesos? Check your Inventory and make sure you have enough. You must pay the fee or I can't let you get on.");
         } else {
             for (var i = 0; i < 10; i++) {
-                if (cm.getPlayerCount(200090060+i) == 0) {
+                if (cm.getPlayerCount(200090060 + i) == 0) {
                     cm.gainMeso(-800);
                     var duration = 60;
                     cm.getPlayer().setTravelTime(duration);
-                    cm.warp(200090060+i);
+                    cm.warp(200090060 + i);
                     cm.sendClock(duration);
                     cm.dispose();
                     return;
                 }
-            } cm.sendNext("Seems all ships are taken, try again in a bit.");
+            }
+            cm.sendNext("Seems all ships are taken, try again in a bit.");
         }
-    } cm.dispose();
+    }
+    cm.dispose();
 }

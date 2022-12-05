@@ -13,20 +13,20 @@ function start() {
 
 function action(mode, type, selection) {
     if (status >= 1 && mode == 0) {
-	cm.dispose();
-	return;
+        cm.dispose();
+        return;
     }
     if (mode == 1)
-	status++;
+        status++;
     else
-	status--;
-        
+        status--;
+
     if (status == 0) {
-	cm.sendNext("The crumbling statue makes you sad :(");
+        cm.sendNext("The crumbling statue makes you sad :(");
     } else if (status == 1) {
-	cm.sendYesNo("Would you like to escape the sadness?");
+        cm.sendYesNo("Would you like to escape the sadness?");
     } else if (status == 2) {
-	cm.warp(105040300);
-	cm.dispose();
+        cm.warp(105040300);
+        cm.dispose();
     }
 }	

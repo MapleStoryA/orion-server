@@ -1,4 +1,3 @@
-
 var status = 0;
 
 function start() {
@@ -8,7 +7,7 @@ function start() {
 
 function action(mode, type, selection) {
     //cm.sendOk("We must protect the kingdom!");
-    cm.forceStartQuest(2314); 
-    
+    cm.forceStartQuest(2314);
+
     cm.dispose();
 }

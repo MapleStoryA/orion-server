@@ -6,24 +6,24 @@ var status = -1;
 
 function action(mode, type, selection) {
     if (mode == 1) {
-	status++;
+        status++;
     } else {
-	status--;
+        status--;
     }
     if (status == 0) {
-	if (cm.getMapId() == 240050400) {
-	    cm.sendYesNo("Do you want to go back to #m240050000#?");
-	} else {
-	    cm.sendYesNo("Do you want to go back to #m240050400#?");
-	}
+        if (cm.getMapId() == 240050400) {
+            cm.sendYesNo("Do you want to go back to #m240050000#?");
+        } else {
+            cm.sendYesNo("Do you want to go back to #m240050400#?");
+        }
     } else if (status == 1) {
-	if (cm.getMapId() == 240050400) {
-	    cm.warp(240050000, 0);
-	} else {
-		 cm.getMap().resetReactors();
-	    cm.warp(240050400, 0);
-	   
-	}
-	cm.dispose();
+        if (cm.getMapId() == 240050400) {
+            cm.warp(240050000, 0);
+        } else {
+            cm.getMap().resetReactors();
+            cm.warp(240050400, 0);
+
+        }
+        cm.dispose();
     }
 }

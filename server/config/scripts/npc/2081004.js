@@ -4,7 +4,7 @@
 	Description: 		Unknown
 */
 
-function start(){
-	cm.sendOk("Hmmm... baby formula? Don't you think you're past that age?");
-	cm.dispose();
-	}
+function start() {
+    cm.sendOk("Hmmm... baby formula? Don't you think you're past that age?");
+    cm.dispose();
+}

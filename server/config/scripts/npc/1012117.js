@@ -17,133 +17,133 @@ function start() {
 
 function action(mode, type, selection) {
     if (status >= 0 && mode == 0) {
-	cm.dispose();
-	return;
+        cm.dispose();
+        return;
     }
     if (mode == 1)
-	status++;
+        status++;
     else
-	status--;
+        status--;
     if (status == 0) {
-	    cm.sendSimple("Hey there! I could change the way you look! I charge 1,000,000 mesos per change. What would you like to change?\r\n#L0##bSkin#k#l\r\n#L1##bHair#k#l\r\n#L2##bHair Color#k#l\r\n#L3##bFace#k#l\r\n#L4##bEye Color#k#l");
+        cm.sendSimple("Hey there! I could change the way you look! I charge 1,000,000 mesos per change. What would you like to change?\r\n#L0##bSkin#k#l\r\n#L1##bHair#k#l\r\n#L2##bHair Color#k#l\r\n#L3##bFace#k#l\r\n#L4##bEye Color#k#l");
     } else if (status == 1) {
-	if (cm.getPlayerStat("GENDER") == 0) {
-	    if (selection == 0) {
-		beauty = 1;
-		cm.sendStyle("Pick a skin color that you would like.", skin);
-	    } else if (selection == 1) {
-		beauty = 2;
-		hairnew = Array();
-		for (var i = 0; i < mhair.length; i++) {
-		    if (mhair[i] == 30010 || mhair[i] == 30070 || mhair[i] == 30080 || mhair[i] == 30090 || mhair[i] == 33140 || mhair[i] == 33240) {
-			hairnew.push(mhair[i]);
-		    } else {
-			hairnew.push(mhair[i] + parseInt(cm.getPlayerStat("HAIR") % 10));
-		    }
-		}
-		cm.sendStyle("Pick a hairstyle that you would like.", hairnew);
-	    } else if (selection == 2) {
-		beauty = 3;
-		haircolor = Array();
-		var current = parseInt(cm.getPlayerStat("HAIR") / 10) * 10;
-		if (current == 30010 || current == 30070 || current == 30080 || current == 30090 || current == 33140 || current == 33240) {
-		    haircolor.push(current);
-		} else {
-		    for (var i = 0; i < 8; i++) {
-			haircolor.push(current + i);
-		    }
-		}
-		cm.sendStyle("Pick a hair color that you would like.", haircolor);
-	    } else if (selection == 3) {
-		beauty = 4;
-		facenew = Array();
-		for (var i = 0; i < mface.length; i++) {
-		    if (mface[i] == 20025 || mface[i] == 20027 || mface[i] == 20029 || mface[i] == 20031 || mface[i] == 20032) {
-			facenew.push(mface[i]);
-		    } else {
-			facenew.push(mface[i] + cm.getPlayerStat("FACE") % 1000 - (cm.getPlayerStat("FACE") % 100));
-		    }
-		}
-		cm.sendStyle("Pick a new face that you would like.", facenew);
-	    } else if (selection == 4) {
-		beauty = 5;
-		var current = cm.getPlayerStat("FACE") % 100 + 20000;
-		colors = Array();
-		if (current == 20025 || current == 20027 || current == 20029 || current == 20031 || current == 20032) {
-		    colors = Array(current, current + 100, current + 200, current + 300, current + 400, current + 500, current + 600, current + 700);
-		} else {
-		    colors = Array(current, current + 100, current + 200, current + 300, current + 400, current + 500, current + 600, current + 700, current + 800);
-		}
-		cm.sendStyle("Pick a eye color that you would like.", colors);
-	    }
-	} else {
-	    if (selection == 0) {
-		beauty = 1;
-		cm.sendStyle("Pick a skin color that you would like.", skin);
-	    } else if (selection == 1) {
-		beauty = 2;
-		hairnew = Array();
-		for (var i = 0; i < fhair.length; i++) {
-		    if (fhair[i] == 34160) {
-			hairnew.push(fhair[i]);
-		    } else {
-		    	hairnew.push(fhair[i] + parseInt(cm.getPlayerStat("HAIR") % 10));
-		    }
-		}
-		cm.sendStyle("Pick a hairstyle that you would like.", hairnew);
-	    } else if (selection == 2) {
-		beauty = 3;
-		haircolor = Array();
-		var current = parseInt(cm.getPlayerStat("HAIR") / 10) * 10;
-		if (current == 34160) {
-			haircolor.push(current);
-		} else {
-			for (var i = 0; i < 8; i++) {
-		    		haircolor.push(current + i);
-			}
-		}
-		cm.sendStyle("Pick a hair color that you would like.", haircolor);
-	    } else if (selection == 3) {
-		beauty = 4;
-		facenew = Array();
-		for (var i = 0; i < fface.length; i++) {
-		    if (fface[i] == 21027 || fface[i] == 21029 || fface[i] == 21030) {
-			facenew.push(fface[i]);
-		    } else {
-		    	facenew.push(fface[i] + cm.getPlayerStat("FACE") % 1000 - (cm.getPlayerStat("FACE") % 100));
-		    }
-		}
-		cm.sendStyle("Pick new eyes that you would like.", facenew);
-	    } else if (selection == 4) {
-		beauty = 5;
-		var current = cm.getPlayerStat("FACE") % 100 + 21000;
-		colors = Array();
-		if (current == 21027 || current == 21029 || current == 21030) {
-			colors = Array(current, current + 100, current + 200, current + 300, current + 400, current + 500, current + 600, current + 700);
-		} else {
-			colors = Array(current, current + 100, current + 200, current + 300, current + 400, current + 500, current + 600, current + 700, current + 800);
-		}
-		cm.sendStyle("Pick a eye color that you would like.", colors);
-	    }
-	}
+        if (cm.getPlayerStat("GENDER") == 0) {
+            if (selection == 0) {
+                beauty = 1;
+                cm.sendStyle("Pick a skin color that you would like.", skin);
+            } else if (selection == 1) {
+                beauty = 2;
+                hairnew = Array();
+                for (var i = 0; i < mhair.length; i++) {
+                    if (mhair[i] == 30010 || mhair[i] == 30070 || mhair[i] == 30080 || mhair[i] == 30090 || mhair[i] == 33140 || mhair[i] == 33240) {
+                        hairnew.push(mhair[i]);
+                    } else {
+                        hairnew.push(mhair[i] + parseInt(cm.getPlayerStat("HAIR") % 10));
+                    }
+                }
+                cm.sendStyle("Pick a hairstyle that you would like.", hairnew);
+            } else if (selection == 2) {
+                beauty = 3;
+                haircolor = Array();
+                var current = parseInt(cm.getPlayerStat("HAIR") / 10) * 10;
+                if (current == 30010 || current == 30070 || current == 30080 || current == 30090 || current == 33140 || current == 33240) {
+                    haircolor.push(current);
+                } else {
+                    for (var i = 0; i < 8; i++) {
+                        haircolor.push(current + i);
+                    }
+                }
+                cm.sendStyle("Pick a hair color that you would like.", haircolor);
+            } else if (selection == 3) {
+                beauty = 4;
+                facenew = Array();
+                for (var i = 0; i < mface.length; i++) {
+                    if (mface[i] == 20025 || mface[i] == 20027 || mface[i] == 20029 || mface[i] == 20031 || mface[i] == 20032) {
+                        facenew.push(mface[i]);
+                    } else {
+                        facenew.push(mface[i] + cm.getPlayerStat("FACE") % 1000 - (cm.getPlayerStat("FACE") % 100));
+                    }
+                }
+                cm.sendStyle("Pick a new face that you would like.", facenew);
+            } else if (selection == 4) {
+                beauty = 5;
+                var current = cm.getPlayerStat("FACE") % 100 + 20000;
+                colors = Array();
+                if (current == 20025 || current == 20027 || current == 20029 || current == 20031 || current == 20032) {
+                    colors = Array(current, current + 100, current + 200, current + 300, current + 400, current + 500, current + 600, current + 700);
+                } else {
+                    colors = Array(current, current + 100, current + 200, current + 300, current + 400, current + 500, current + 600, current + 700, current + 800);
+                }
+                cm.sendStyle("Pick a eye color that you would like.", colors);
+            }
+        } else {
+            if (selection == 0) {
+                beauty = 1;
+                cm.sendStyle("Pick a skin color that you would like.", skin);
+            } else if (selection == 1) {
+                beauty = 2;
+                hairnew = Array();
+                for (var i = 0; i < fhair.length; i++) {
+                    if (fhair[i] == 34160) {
+                        hairnew.push(fhair[i]);
+                    } else {
+                        hairnew.push(fhair[i] + parseInt(cm.getPlayerStat("HAIR") % 10));
+                    }
+                }
+                cm.sendStyle("Pick a hairstyle that you would like.", hairnew);
+            } else if (selection == 2) {
+                beauty = 3;
+                haircolor = Array();
+                var current = parseInt(cm.getPlayerStat("HAIR") / 10) * 10;
+                if (current == 34160) {
+                    haircolor.push(current);
+                } else {
+                    for (var i = 0; i < 8; i++) {
+                        haircolor.push(current + i);
+                    }
+                }
+                cm.sendStyle("Pick a hair color that you would like.", haircolor);
+            } else if (selection == 3) {
+                beauty = 4;
+                facenew = Array();
+                for (var i = 0; i < fface.length; i++) {
+                    if (fface[i] == 21027 || fface[i] == 21029 || fface[i] == 21030) {
+                        facenew.push(fface[i]);
+                    } else {
+                        facenew.push(fface[i] + cm.getPlayerStat("FACE") % 1000 - (cm.getPlayerStat("FACE") % 100));
+                    }
+                }
+                cm.sendStyle("Pick new eyes that you would like.", facenew);
+            } else if (selection == 4) {
+                beauty = 5;
+                var current = cm.getPlayerStat("FACE") % 100 + 21000;
+                colors = Array();
+                if (current == 21027 || current == 21029 || current == 21030) {
+                    colors = Array(current, current + 100, current + 200, current + 300, current + 400, current + 500, current + 600, current + 700);
+                } else {
+                    colors = Array(current, current + 100, current + 200, current + 300, current + 400, current + 500, current + 600, current + 700, current + 800);
+                }
+                cm.sendStyle("Pick a eye color that you would like.", colors);
+            }
+        }
     } else if (status == 2) {
-	if (cm.getPlayer().getMeso() < 1000000) {
-	    cm.sendNext("You don't have 1,000,000 mesos.");
-	    cm.dispose();
-	    return;
-	}
-	cm.gainMeso(-1000000);
-	if (beauty == 1) {
-	    cm.setSkin(skin[selection]);
-	} else if (beauty == 2) {
-	    cm.setHair(hairnew[selection]);
-	} else if (beauty == 3) {
-	    cm.setHair(haircolor[selection]);
-	} else if (beauty == 4) {
-	    cm.setFace(facenew[selection]);
-	} else if (beauty == 5) {
-	    cm.setFace(colors[selection]);
-	}
-	cm.dispose();
+        if (cm.getPlayer().getMeso() < 1000000) {
+            cm.sendNext("You don't have 1,000,000 mesos.");
+            cm.dispose();
+            return;
+        }
+        cm.gainMeso(-1000000);
+        if (beauty == 1) {
+            cm.setSkin(skin[selection]);
+        } else if (beauty == 2) {
+            cm.setHair(hairnew[selection]);
+        } else if (beauty == 3) {
+            cm.setHair(haircolor[selection]);
+        } else if (beauty == 4) {
+            cm.setFace(facenew[selection]);
+        } else if (beauty == 5) {
+            cm.setFace(colors[selection]);
+        }
+        cm.dispose();
     }
 }

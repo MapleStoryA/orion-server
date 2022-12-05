@@ -7,16 +7,16 @@ text += "\n\r\t\t\t#b3. You must have the Large Model of a Coin.#k";
 
 self.say(text);
 
-if(map.fieldMembersCount() > 0){
+if (map.fieldMembersCount() > 0) {
     self.say("Someone is already inside.");
     return;
 }
 
-if(target.isAnyKindOfThief() && target.nLevel() < 40 && inventory.itemCount(4032485) >= 1){
+if (target.isAnyKindOfThief() && target.nLevel() < 40 && inventory.itemCount(4032485) >= 1) {
     self.say("You are permitted to enter the Demon's Doorway.");
     inventory.exchange(0, 4032485, -1);
     target.registerTransferField(questMap, "out00");
-}else{
+} else {
     self.say("You are not allowed to enter.");
 }
 

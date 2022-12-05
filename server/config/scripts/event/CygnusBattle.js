@@ -36,12 +36,12 @@ function scheduledTimeout(eim) {
 
 function changedMap(eim, player, mapid) {
     if (mapid != 271040100) {
-	eim.unregisterPlayer(player);
+        eim.unregisterPlayer(player);
 
-	if (eim.disposeIfPlayerBelow(0, 0)) {
-	    em.setProperty("state", "0");
+        if (eim.disposeIfPlayerBelow(0, 0)) {
+            em.setProperty("state", "0");
             em.setProperty("leader", "true");
-	}
+        }
     }
 }
 
@@ -59,11 +59,11 @@ function monsterValue(eim, mobId) {
         var mob5 = em.getMonster(8850002);
         eim.registerMonster(mob5);
         map.spawnMonsterOnGroundBelow(mob5, new java.awt.Point(-363, 100));
-     } else if (mobId == 8850002) {
+    } else if (mobId == 8850002) {
         var mob5 = em.getMonster(8850003);
         eim.registerMonster(mob5);
         map.spawnMonsterOnGroundBelow(mob5, new java.awt.Point(-363, 100));
-     } else if (mobId == 8850003) {
+    } else if (mobId == 8850003) {
         var mob5 = em.getMonster(8850004);
         eim.registerMonster(mob5);
         map.spawnMonsterOnGroundBelow(mob5, new java.awt.Point(-363, 100));
@@ -79,15 +79,15 @@ function playerExit(eim, player) {
     eim.unregisterPlayer(player);
 
     if (eim.disposeIfPlayerBelow(0, 0)) {
-	em.setProperty("state", "0");
-		em.setProperty("leader", "true");
+        em.setProperty("state", "0");
+        em.setProperty("leader", "true");
     }
 }
 
 function end(eim) {
     if (eim.disposeIfPlayerBelow(100, 271040210)) {
-	em.setProperty("state", "0");
-		em.setProperty("leader", "true");
+        em.setProperty("state", "0");
+        em.setProperty("leader", "true");
     }
 }
 
@@ -98,7 +98,14 @@ function clearPQ(eim) {
 function allMonstersDead(eim) {
 }
 
-function leftParty (eim, player) {}
-function disbandParty (eim) {}
-function playerDead(eim, player) {}
-function cancelSchedule() {}
+function leftParty(eim, player) {
+}
+
+function disbandParty(eim) {
+}
+
+function playerDead(eim, player) {
+}
+
+function cancelSchedule() {
+}

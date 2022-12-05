@@ -1,3 +1,3 @@
-function act(){
+function act() {
     rm.dropItems();
 }

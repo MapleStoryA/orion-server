@@ -86,8 +86,8 @@ function setup() {
     eim.setProperty("papaSpawned", "no");
     em.schedule("timeOut", 60 * 60000);
     em.schedule("broadcastClock", 1500);
-    eim.setProperty("entryTimestamp",System.currentTimeMillis() + (60 * 60000));
-	
+    eim.setProperty("entryTimestamp", System.currentTimeMillis() + (60 * 60000));
+
     return eim;
 }
 
@@ -113,17 +113,15 @@ function playerRevive(eim, player) {
             playerExit(eim, party.get(i));
         }
         eim.dispose();
-    }
-    else { //boot dead player
+    } else { //boot dead player
         // If only 5 players are left, uncompletable:
         var party = eim.getPlayers();
         if (party.size() <= minPlayers) {
             for (var i = 0; i < party.size(); i++) {
-                playerExit(eim,party.get(i));
+                playerExit(eim, party.get(i));
             }
             eim.dispose();
-        }
-        else
+        } else
             playerExit(eim, player);
     }
 }
@@ -135,37 +133,33 @@ function playerDisconnected(eim, player) {
         for (var i = 0; i < party.size(); i++) {
             if (party.get(i).equals(player)) {
                 removePlayer(eim, player);
-            }
-            else {
+            } else {
                 playerExit(eim, party.get(i));
             }
         }
         eim.dispose();
-    }
-    else { //KICK THE D/CED CUNT
+    } else { //KICK THE D/CED CUNT
         // If only 5 players are left, uncompletable:
         var party = eim.getPlayers();
         if (party.size() < minPlayers) {
             for (var i = 0; i < party.size(); i++) {
-                playerExit(eim,party.get(i));
+                playerExit(eim, party.get(i));
             }
             eim.dispose();
-        }
-        else
+        } else
             playerExit(eim, player);
     }
 }
 
-function leftParty(eim, player) {			
+function leftParty(eim, player) {
     // If only 5 players are left, uncompletable:
     var party = eim.getPlayers();
     if (party.size() <= minPlayers) {
         for (var i = 0; i < party.size(); i++) {
-            playerExit(eim,party.get(i));
+            playerExit(eim, party.get(i));
         }
         eim.dispose();
-    }
-    else
+    } else
         playerExit(eim, player);
 }
 
@@ -198,7 +192,7 @@ function clearPQ(eim) {
     while (iter.hasNext()) {
         var player = iter.next();
         player.changeMap(bonusMap, bonusMap.getPortal(0));
-        eim.setProperty("entryTimestamp",System.currentTimeMillis() + (1 * 60000));
+        eim.setProperty("entryTimestamp", System.currentTimeMillis() + (1 * 60000));
         player.getClient().getSession().write(net.sf.odinms.tools.MaplePacketCreator.getClock(60));
     }
     eim.schedule("finish", 60000)
@@ -237,9 +231,9 @@ function timeOut() {
 }
 
 function playerClocks(eim, player) {
-    if (player.getMap().hasTimer() == false){
+    if (player.getMap().hasTimer() == false) {
         player.getClient().getSession().write(net.sf.odinms.tools.MaplePacketCreator.getClock((Long.parseLong(eim.getProperty("entryTimestamp")) - System.currentTimeMillis()) / 1000));
-    //player.getMap().setTimer(true);
+        //player.getMap().setTimer(true);
     }
 }
 
@@ -260,7 +254,7 @@ function broadcastClock(eim, player) {
                 playerClocks(eim, pIter.next());
             }
         }
-    //em.schedule("broadcastClock", 1600);
+        //em.schedule("broadcastClock", 1600);
     }
     // for (var kkl = 0; kkl < party.size(); kkl++) {
     // party.get(kkl).getMap().setTimer(true);
@@ -275,7 +269,7 @@ function broadcastClock(eim, player) {
                 playerTimer(eim, pIterr.next());
             }
         }
-    //em.schedule("broadcastClock", 1600);
+        //em.schedule("broadcastClock", 1600);
     }
     em.schedule("broadcastClock", 1600);
 }

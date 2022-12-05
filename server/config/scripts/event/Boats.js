@@ -20,25 +20,25 @@
  */
 
 /**
--- Odin JavaScript --------------------------------------------------------------------------------
-	Boats Between Ellinia and Orbis
--- By ---------------------------------------------------------------------------------------------
-	Information
--- Version Info -----------------------------------------------------------------------------------
-	1.6 - Fix for infinity looping [Information]
-	1.5 - Ship/boat is now showed 
-	    - Removed temp message[Information]
-	    - Credit to Snow/superraz777 for old source
-	    - Credit to Titan/Kool for the ship/boat packet
-	1.4 - Fix typo [Information]
-	1.3 - Removing some function since is not needed [Information]
-	    - Remove register player menthod [Information]
-	    - Remove map instance and use reset reactor function [Information]
-	1.2 - Should be 2 ship not 1 [Information]
-	1.1 - Add timer variable for easy edit [Information]
-	1.0 - First Version by Information
----------------------------------------------------------------------------------------------------
-**/
+ -- Odin JavaScript --------------------------------------------------------------------------------
+ Boats Between Ellinia and Orbis
+ -- By ---------------------------------------------------------------------------------------------
+ Information
+ -- Version Info -----------------------------------------------------------------------------------
+ 1.6 - Fix for infinity looping [Information]
+ 1.5 - Ship/boat is now showed
+ - Removed temp message[Information]
+ - Credit to Snow/superraz777 for old source
+ - Credit to Titan/Kool for the ship/boat packet
+ 1.4 - Fix typo [Information]
+ 1.3 - Removing some function since is not needed [Information]
+ - Remove register player menthod [Information]
+ - Remove map instance and use reset reactor function [Information]
+ 1.2 - Should be 2 ship not 1 [Information]
+ 1.1 - Add timer variable for easy edit [Information]
+ 1.0 - First Version by Information
+ ---------------------------------------------------------------------------------------------------
+ **/
 
 load("nashorn:mozilla_compat.js");
 importPackage(Packages.client);
@@ -80,25 +80,25 @@ function scheduleNew() {
     Orbis_Station.broadcastMessage(MaplePacketCreator.boatPacket(true));
     em.setProperty("docked", "true");
     em.setProperty("entry", "true");
-    em.setProperty("haveBalrog","false");
+    em.setProperty("haveBalrog", "false");
     em.schedule("stopentry", closeTime);
     em.schedule("takeoff", beginTime);
 }
 
 function stopentry() {
-    em.setProperty("entry","false");
+    em.setProperty("entry", "false");
     Orbis_Boat_Cabin.resetReactors();
     Ellinia_Boat_Cabin.resetReactors();
 }
 
 function takeoff() {
-    em.setProperty("docked","false");
+    em.setProperty("docked", "false");
     var temp1 = Orbis_btf.getCharacters().iterator();
-    while(temp1.hasNext()) {
+    while (temp1.hasNext()) {
         temp1.next().changeMap(Boat_to_Ellinia, Boat_to_Ellinia.getPortal(0));
     }
     var temp2 = Ellinia_btf.getCharacters().iterator();
-    while(temp2.hasNext()) {
+    while (temp2.hasNext()) {
         temp2.next().changeMap(Boat_to_Orbis, Boat_to_Orbis.getPortal(0));
     }
     Ellinia_docked.setDocked(false);
@@ -111,19 +111,19 @@ function takeoff() {
 
 function arrived() {
     var temp1 = Boat_to_Orbis.getCharacters().iterator();
-    while(temp1.hasNext()) {
+    while (temp1.hasNext()) {
         temp1.next().changeMap(Orbis_docked, Orbis_docked.getPortal(0));
     }
     var temp2 = Orbis_Boat_Cabin.getCharacters().iterator();
-    while(temp2.hasNext()) {
+    while (temp2.hasNext()) {
         temp2.next().changeMap(Orbis_docked, Orbis_docked.getPortal(0));
     }
     var temp3 = Boat_to_Ellinia.getCharacters().iterator();
-    while(temp3.hasNext()) {
+    while (temp3.hasNext()) {
         temp3.next().changeMap(Ellinia_docked, Ellinia_docked.getPortal(0));
     }
     var temp4 = Ellinia_Boat_Cabin.getCharacters().iterator();
-    while(temp4.hasNext()) {
+    while (temp4.hasNext()) {
         temp4.next().changeMap(Ellinia_docked, Ellinia_docked.getPortal(0));
     }
     Boat_to_Orbis.killAllMonsters(true);
@@ -134,12 +134,12 @@ function arrived() {
 function invasion() {
     var numspawn;
     var chance = Math.floor(Math.random() * 10);
-    if(chance <= 5)
+    if (chance <= 5)
         numspawn = 0;
     else
         numspawn = 2;
-    if(numspawn > 0) {
-        for(var i=0; i < numspawn; i++) {
+    if (numspawn > 0) {
+        for (var i = 0; i < numspawn; i++) {
             Boat_to_Orbis.spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(8150000), new java.awt.Point(485, -221));
             Boat_to_Ellinia.spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(8150000), new java.awt.Point(-590, -221));
         }
@@ -149,7 +149,7 @@ function invasion() {
         Boat_to_Ellinia.broadcastMessage(MaplePacketCreator.boatPacket(true));
         Boat_to_Orbis.broadcastMessage(MaplePacketCreator.musicChange("Bgm04/ArabPirate"));
         Boat_to_Ellinia.broadcastMessage(MaplePacketCreator.musicChange("Bgm04/ArabPirate"));
-        em.setProperty("haveBalrog","true");
+        em.setProperty("haveBalrog", "true");
     }
 }
 

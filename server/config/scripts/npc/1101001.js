@@ -1,7 +1,7 @@
- /* 
-	NPC Name: 		Divine Bird
-	Map(s): 		Erev
-	Description: 		Buff
+/*
+   NPC Name: 		Divine Bird
+   Map(s): 		Erev
+   Description: 		Buff
 */
 
 function start() {

@@ -1,3 +1,3 @@
 function act() {
-	rm.forceCompleteQuest(23120);
+    rm.forceCompleteQuest(23120);
 }

@@ -32,34 +32,34 @@ importPackage(Packages.server.life);
 importPackage(java.awt);
 
 var status;
-			
+
 
 function start() {
-	status = -1;
-	action(1, 0, 0);
+    status = -1;
+    action(1, 0, 0);
 }
 
 function action(mode, type, selection) {
-	if (mode == -1) {
-		cm.dispose();
-	} else {
-		if (mode == 0 && status == 0) {
-			cm.dispose();
-			return;
-		}
-		if (mode == 1)
-			status++;
-		else
-			status--;
-		if (status == 0){
-	//var packetef = MaplePacketCreator.showEffect("quest/party/clear");
-	//var packetsnd = MaplePacketCreator.playSound("Party1/Clear");
-	//var packetglow = MaplePacketCreator.environmentChange("gate",2);
-	//var map = eim.getMapInstance(cm.getChar().getMapId());
-	map.broadcastMessage(MaplePacketCreator.showEffect("quest/party/clear"));
-	//map.broadcastMessage(packetsnd);
-	cm.sendOk("Fuck u");
-	cm.dispose();
-}
-}
+    if (mode == -1) {
+        cm.dispose();
+    } else {
+        if (mode == 0 && status == 0) {
+            cm.dispose();
+            return;
+        }
+        if (mode == 1)
+            status++;
+        else
+            status--;
+        if (status == 0) {
+            //var packetef = MaplePacketCreator.showEffect("quest/party/clear");
+            //var packetsnd = MaplePacketCreator.playSound("Party1/Clear");
+            //var packetglow = MaplePacketCreator.environmentChange("gate",2);
+            //var map = eim.getMapInstance(cm.getChar().getMapId());
+            map.broadcastMessage(MaplePacketCreator.showEffect("quest/party/clear"));
+            //map.broadcastMessage(packetsnd);
+            cm.sendOk("Fuck u");
+            cm.dispose();
+        }
+    }
 }

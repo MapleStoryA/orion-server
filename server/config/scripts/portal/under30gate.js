@@ -8,7 +8,7 @@ Save location to return.
 
 function enter(pi) {
     if (pi.getPlayerStat("LVL") <= 30) {
-	pi.playPortalSE();
+        pi.playPortalSE();
         pi.warp(990000640, 1);
         return true;
     } else {

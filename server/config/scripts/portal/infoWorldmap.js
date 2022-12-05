@@ -1,4 +1,4 @@
 function enter(pi) {
-	pi.ShowWZEffect("UI/tutorial.img/26");
-	return true;
+    pi.ShowWZEffect("UI/tutorial.img/26");
+    return true;
 }

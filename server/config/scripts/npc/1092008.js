@@ -4,7 +4,7 @@
 	Description: 		Unknown
 */
 
-function start(){
-	cm.sendOk("What in the world are you talking about?");
-	cm.dispose();
-	}
+function start() {
+    cm.sendOk("What in the world are you talking about?");
+    cm.dispose();
+}

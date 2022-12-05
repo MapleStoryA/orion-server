@@ -1,13 +1,13 @@
 function init() {
     // 0 = Not started, 1 = started, 2 = first head defeated, 3 = second head defeated
     em.setProperty("state", "0");
-	em.setProperty("leader", "true");
+    em.setProperty("leader", "true");
 }
 
 function setup(eim, leaderid) {
     em.setProperty("state", "1");
     em.setProperty("preheadCheck", "0");
-	em.setProperty("leader", "true");
+    em.setProperty("leader", "true");
 
     var eim = em.newInstance("HorntailBattle");
 
@@ -24,14 +24,14 @@ function playerEntry(eim, player) {
 
 function changedMap(eim, player, mapid) {
     switch (mapid) {
-	case 240060200:
-	    return;
+        case 240060200:
+            return;
     }
     eim.unregisterPlayer(player);
 
     if (eim.disposeIfPlayerBelow(0, 0)) {
-	em.setProperty("state", "0");
-		em.setProperty("leader", "true");
+        em.setProperty("state", "0");
+        em.setProperty("leader", "true");
     }
 }
 
@@ -42,15 +42,15 @@ function playerDisconnected(eim, player) {
 function scheduledTimeout(eim) {
     eim.disposeIfPlayerBelow(100, 240050400);
     em.setProperty("state", "0");
-		em.setProperty("leader", "true");
+    em.setProperty("leader", "true");
 }
 
 function playerExit(eim, player) {
     eim.unregisterPlayer(player);
 
     if (eim.disposeIfPlayerBelow(0, 0)) {
-	em.setProperty("state", "0");
-		em.setProperty("leader", "true");
+        em.setProperty("state", "0");
+        em.setProperty("leader", "true");
     }
 }
 
@@ -65,8 +65,17 @@ function playerRevive(eim, player) {
     return false;
 }
 
-function clearPQ(eim) {}
-function leftParty (eim, player) {}
-function disbandParty (eim) {}
-function playerDead(eim, player) {}
-function cancelSchedule() {}
+function clearPQ(eim) {
+}
+
+function leftParty(eim, player) {
+}
+
+function disbandParty(eim) {
+}
+
+function playerDead(eim, player) {
+}
+
+function cancelSchedule() {
+}

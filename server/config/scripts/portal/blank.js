@@ -29,5 +29,5 @@ LudiPQ - 1 - 2 Portal
 */
 
 function enter(pi) {
-	return false;
+    return false;
 }

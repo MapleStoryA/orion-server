@@ -32,157 +32,151 @@ var instanceId;
 var minPlayers = 1;
 
 function init() {
-	instanceId = 1;
+    instanceId = 1;
 }
 
 function monsterValue(eim, mobId) {
-	return 1;
+    return 1;
 }
 
 function setup() {
-	exitMap = em.getChannelServer().getMapFactory().getMap(211042300); // <exit>
-	var instanceName = "ZakumAltar" + instanceId;
+    exitMap = em.getChannelServer().getMapFactory().getMap(211042300); // <exit>
+    var instanceName = "ZakumAltar" + instanceId;
 
-	var eim = em.newInstance(instanceName);
-	
-	var mf = eim.getMapFactory();
-	
-	instanceId++;
-	
-	var map = mf.getMap(280030000);
-	em.schedule("timeOut", 180 * 60000); //Three Hours
-	
-	return eim;
+    var eim = em.newInstance(instanceName);
+
+    var mf = eim.getMapFactory();
+
+    instanceId++;
+
+    var map = mf.getMap(280030000);
+    em.schedule("timeOut", 180 * 60000); //Three Hours
+
+    return eim;
 }
 
 function playerEntry(eim, player) {
-	var map = eim.getMapInstance(280030000);
-	player.changeMap(map, map.getPortal(0));
-	
-	//Timer
-	player.getClient().getSession().write(MaplePacketCreator.getClock(10800));
+    var map = eim.getMapInstance(280030000);
+    player.changeMap(map, map.getPortal(0));
+
+    //Timer
+    player.getClient().getSession().write(MaplePacketCreator.getClock(10800));
 }
 
 function playerDead(eim, player) {
 }
 
 function playerRevive(eim, player) {
-	if (eim.isLeader(player)) { //check for party leader
-		//boot whole party and end
-		var party = eim.getPlayers();
-		eim.getMapInstance(280030000).resetReactors();
-		for (var i = 0; i < party.size(); i++) {
-			playerExit(eim, party.get(i));
-		}
-		eim.dispose();
-	}
-	else { //boot dead player
-		// If only 2 players are left, uncompletable:
-		var party = eim.getPlayers();
-		if (party.size() <= minPlayers) {
-			eim.getMapInstance(280030000).resetReactors();
-			for (var i = 0; i < party.size(); i++) {
-				playerExit(eim,party.get(i));
-			}
-			eim.dispose();
-		}
-		else
-			playerExit(eim, player);
-	}
+    if (eim.isLeader(player)) { //check for party leader
+        //boot whole party and end
+        var party = eim.getPlayers();
+        eim.getMapInstance(280030000).resetReactors();
+        for (var i = 0; i < party.size(); i++) {
+            playerExit(eim, party.get(i));
+        }
+        eim.dispose();
+    } else { //boot dead player
+        // If only 2 players are left, uncompletable:
+        var party = eim.getPlayers();
+        if (party.size() <= minPlayers) {
+            eim.getMapInstance(280030000).resetReactors();
+            for (var i = 0; i < party.size(); i++) {
+                playerExit(eim, party.get(i));
+            }
+            eim.dispose();
+        } else
+            playerExit(eim, player);
+    }
 }
 
 function playerDisconnected(eim, player) {
-	if (eim.isLeader(player)) { //check for party leader
-		//boot whole party and end
-		var party = eim.getPlayers();
-		for (var i = 0; i < party.size(); i++) {
-			eim.getMapInstance(280030000).resetReactors();
-			if (party.get(i).equals(player)) {
-				removePlayer(eim, player);
-			}			
-			else {
-				playerExit(eim, party.get(i));
-			}
-		}
-		eim.dispose();
-	}
-	else { //boot d/ced player
-		// If only 2 players are left, uncompletable:
-		var party = eim.getPlayers();
-		if (party.size() < minPlayers) {
-			eim.getMapInstance(280030000).resetReactors();
-			for (var i = 0; i < party.size(); i++) {
-				playerExit(eim,party.get(i));
-			}
-			eim.dispose();
-		}
-		else
-			playerExit(eim, player);
-	}
+    if (eim.isLeader(player)) { //check for party leader
+        //boot whole party and end
+        var party = eim.getPlayers();
+        for (var i = 0; i < party.size(); i++) {
+            eim.getMapInstance(280030000).resetReactors();
+            if (party.get(i).equals(player)) {
+                removePlayer(eim, player);
+            } else {
+                playerExit(eim, party.get(i));
+            }
+        }
+        eim.dispose();
+    } else { //boot d/ced player
+        // If only 2 players are left, uncompletable:
+        var party = eim.getPlayers();
+        if (party.size() < minPlayers) {
+            eim.getMapInstance(280030000).resetReactors();
+            for (var i = 0; i < party.size(); i++) {
+                playerExit(eim, party.get(i));
+            }
+            eim.dispose();
+        } else
+            playerExit(eim, player);
+    }
 }
 
-function leftParty(eim, player) {			
-	// If only 2 players are left, uncompletable:
-	var party = eim.getPlayers();
-	if (party.size() <= minPlayers) {
-		eim.getMapInstance(280030000).resetReactors();
-		for (var i = 0; i < party.size(); i++) {
-			playerExit(eim,party.get(i));
-		}
-		eim.dispose();
-	}
-	else
-		playerExit(eim, player);
+function leftParty(eim, player) {
+    // If only 2 players are left, uncompletable:
+    var party = eim.getPlayers();
+    if (party.size() <= minPlayers) {
+        eim.getMapInstance(280030000).resetReactors();
+        for (var i = 0; i < party.size(); i++) {
+            playerExit(eim, party.get(i));
+        }
+        eim.dispose();
+    } else
+        playerExit(eim, player);
 }
 
 function disbandParty(eim) {
-	//boot whole party and end
-	var party = eim.getPlayers();
-	eim.getMapInstance(280030000).resetReactors();
-	for (var i = 0; i < party.size(); i++) {
-		playerExit(eim, party.get(i));
-	}
-	eim.dispose();
+    //boot whole party and end
+    var party = eim.getPlayers();
+    eim.getMapInstance(280030000).resetReactors();
+    for (var i = 0; i < party.size(); i++) {
+        playerExit(eim, party.get(i));
+    }
+    eim.dispose();
 }
 
 function playerExit(eim, player) {
-	eim.unregisterPlayer(player);
-	player.changeMap(exitMap, exitMap.getPortal(0));
+    eim.unregisterPlayer(player);
+    player.changeMap(exitMap, exitMap.getPortal(0));
 }
 
 //for offline players
 function removePlayer(eim, player) {
-	eim.unregisterPlayer(player);
-	player.getMap().removePlayer(player);
-	player.setMap(exitMap);
+    eim.unregisterPlayer(player);
+    player.getMap().removePlayer(player);
+    player.setMap(exitMap);
 }
 
 function clearPQ(eim) {
-	//this shouldnt be excecuted,,,
-	var party = eim.getPlayers();
-	for (var i = 0; i < party.size(); i++) {
-		playerExit(eim, party.get(i));
-	}
-	eim.dispose();
+    //this shouldnt be excecuted,,,
+    var party = eim.getPlayers();
+    for (var i = 0; i < party.size(); i++) {
+        playerExit(eim, party.get(i));
+    }
+    eim.dispose();
 }
 
 function allMonstersDead(eim) {
-        //wtf o.O
+    //wtf o.O
 }
 
 function cancelSchedule() {
 }
 
 function timeOut() {
-	var iter = em.getInstances().iterator();
-	while (iter.hasNext()) {
-		var eim = iter.next();
-		if (eim.getPlayerCount() > 0) {
-			var pIter = eim.getPlayers().iterator();
-			while (pIter.hasNext()) {
-				playerExit(eim, pIter.next());
-			}
-		}
-		eim.dispose();
-	}
+    var iter = em.getInstances().iterator();
+    while (iter.hasNext()) {
+        var eim = iter.next();
+        if (eim.getPlayerCount() > 0) {
+            var pIter = eim.getPlayers().iterator();
+            while (pIter.hasNext()) {
+                playerExit(eim, pIter.next());
+            }
+        }
+        eim.dispose();
+    }
 }

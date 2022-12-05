@@ -24,14 +24,14 @@ importPackage(Packages.client.messages);
 importPackage(Packages.server.life);
 importPackage(Packages.server.maps);
 
-function getDefinition () {
-	var ret = java.lang.reflect.Array.newInstance(CommandDefinition, 1);
-	ret[0] = new CommandDefinition("horntail", "", "Spawns horntail", "100"); 
-	return ret;
+function getDefinition() {
+    var ret = java.lang.reflect.Array.newInstance(CommandDefinition, 1);
+    ret[0] = new CommandDefinition("horntail", "", "Spawns horntail", "100");
+    return ret;
 }
 
-function execute (c, mc, splitted) {
-	var ht = MapleLifeFactory.getMonster(8810026);
-	c.getPlayer().getMap().spawnMonsterOnGroundBelow(ht, c.getPlayer().getPosition());
+function execute(c, mc, splitted) {
+    var ht = MapleLifeFactory.getMonster(8810026);
+    c.getPlayer().getMap().spawnMonsterOnGroundBelow(ht, c.getPlayer().getPosition());
 //	c.getPlayer().getMap().killMonster(ht, c.getPlayer(), false);
 }

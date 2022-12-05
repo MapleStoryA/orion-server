@@ -2,5 +2,5 @@
 */
 
 function act() {
-	rm.dropItems();
+    rm.dropItems();
 }

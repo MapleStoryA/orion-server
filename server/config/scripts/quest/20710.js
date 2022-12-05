@@ -27,19 +27,19 @@ var status = -1;
 function start(mode, type, selection) {
     status++;
     if (mode != 1) {
-		if(type == 1 && mode == 0) {
-			qm.dispose();
-			return;
-		}else{
-			qm.dispose();
-			return;
-		}
-	}
-	
-	if (status == 0) {
-		qm.sendAcceptDecline("Honestly I'm not really confident in you... But since you're a Cygnus Knight and all, and since no one else can go on a search right now, I guess I'm only left with you. Okay, let me explain to you what this mission is about.");
-	} else if (status == 1) {
-		qm.forceStartQuest();
-		qm.dispose();
-	}
+        if (type == 1 && mode == 0) {
+            qm.dispose();
+            return;
+        } else {
+            qm.dispose();
+            return;
+        }
+    }
+
+    if (status == 0) {
+        qm.sendAcceptDecline("Honestly I'm not really confident in you... But since you're a Cygnus Knight and all, and since no one else can go on a search right now, I guess I'm only left with you. Okay, let me explain to you what this mission is about.");
+    } else if (status == 1) {
+        qm.forceStartQuest();
+        qm.dispose();
+    }
 }

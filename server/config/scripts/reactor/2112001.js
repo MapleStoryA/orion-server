@@ -3,6 +3,6 @@
  * 2112001.js: Zakum Party Quest Chest - drops an item (fried chicken)
 */
 
-function act(){
+function act() {
     rm.dropItems();
 }

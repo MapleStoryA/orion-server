@@ -41,11 +41,11 @@ function scheduledTimeout(eim) {
 
 function changedMap(eim, player, mapid) {
     if (mapid != 922020000) {
-	eim.unregisterPlayer(player);
+        eim.unregisterPlayer(player);
 
-	if (eim.disposeIfPlayerBelow(0, 0)) {
-	    em.setProperty("started", "false");
-	}
+        if (eim.disposeIfPlayerBelow(0, 0)) {
+            em.setProperty("started", "false");
+        }
     }
 }
 

@@ -8,7 +8,7 @@ function start() {
 
 function action(mode, type, selection) {
     if (mode == 1) {
-	cm.warp(209000006 + selection, 0);
+        cm.warp(209000006 + selection, 0);
     }
     cm.dispose();
 }

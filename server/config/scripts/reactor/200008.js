@@ -1,3 +1,3 @@
 function act() {
-	rm.doHarvest();
+    rm.doHarvest();
 }

@@ -1,3 +1,3 @@
-function act(){
-	rm.killMonster(6090004);
+function act() {
+    rm.killMonster(6090004);
 }

@@ -20,15 +20,15 @@
  */
 
 /**
--- Odin JavaScript --------------------------------------------------------------------------------
-	Ludibirum Maze PQ
--- By ---------------------------------------------------------------------------------------------
-	Stereo
--- Version Info -----------------------------------------------------------------------------------
-	1.1 - fixed minor problems
-	1.0 - First Version by Stereo
----------------------------------------------------------------------------------------------------
-**/
+ -- Odin JavaScript --------------------------------------------------------------------------------
+ Ludibirum Maze PQ
+ -- By ---------------------------------------------------------------------------------------------
+ Stereo
+ -- Version Info -----------------------------------------------------------------------------------
+ 1.1 - fixed minor problems
+ 1.0 - First Version by Stereo
+ ---------------------------------------------------------------------------------------------------
+ **/
 
 /*
 INSERT monsterdrops (monsterid,itemid,chance) VALUES (9300001,4001007,5);
@@ -97,7 +97,7 @@ function leftParty(eim, player) {
     var party = eim.getPlayers();
     if (party.size() < minPlayers) {
         for (var i = 0; i < party.size(); i++)
-            playerExit(eim,party.get(i));
+            playerExit(eim, party.get(i));
         eim.dispose();
     } else
         playerExit(eim, player);

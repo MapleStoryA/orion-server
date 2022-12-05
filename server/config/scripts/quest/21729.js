@@ -27,22 +27,22 @@ var status = -1;
 function start(mode, type, selection) {
     status++;
     if (mode != 1) {
-		if(type == 1 && mode == 0) {
-			qm.dispose();
-			return;
-		}else{
-			qm.dispose();
-			return;
-		}
-	}
-	
-	if (status == 0) {
-		qm.sendAcceptDecline("Come to think of it, I remember seeing that kid scribbling something on the statue. I was about to yell at the kid, but Chrishrama beat me to it. I tried to see what the kid was writing, but I couldn't see it. Do you think it was the #bpassword#k...?");
-	} else if (status == 1) {
-		qm.forceStartQuest();
-		qm.sendNext("That just about does it for eliminating Zombie Mushrooms. I'm sure there are other violent monsters out there, but I'm inspired by your courage. Please give my thanks to Tru as well.");
-	} else if (status == 2) {
-		qm.sendPrev("#b(You think there's the password in Mysterious Statue that leads to the Puppeteer's Cave. Should you attack the puppeteer as soon as you find out the password? No, you'll find out what it is and inform Tru first.)#k");
-		qm.dispose();
-	}
+        if (type == 1 && mode == 0) {
+            qm.dispose();
+            return;
+        } else {
+            qm.dispose();
+            return;
+        }
+    }
+
+    if (status == 0) {
+        qm.sendAcceptDecline("Come to think of it, I remember seeing that kid scribbling something on the statue. I was about to yell at the kid, but Chrishrama beat me to it. I tried to see what the kid was writing, but I couldn't see it. Do you think it was the #bpassword#k...?");
+    } else if (status == 1) {
+        qm.forceStartQuest();
+        qm.sendNext("That just about does it for eliminating Zombie Mushrooms. I'm sure there are other violent monsters out there, but I'm inspired by your courage. Please give my thanks to Tru as well.");
+    } else if (status == 2) {
+        qm.sendPrev("#b(You think there's the password in Mysterious Statue that leads to the Puppeteer's Cave. Should you attack the puppeteer as soon as you find out the password? No, you'll find out what it is and inform Tru first.)#k");
+        qm.dispose();
+    }
 }

@@ -1,6 +1,6 @@
 /**
-	Dark Lord's Practice Field, 4th job Quest
-**/
+ Dark Lord's Practice Field, 4th job Quest
+ **/
 
 function init() {
 }
@@ -36,9 +36,9 @@ function scheduledTimeout(eim) {
 
 function changedMap(eim, player, mapid) {
     if (mapid != 910300000) {
-	eim.unregisterPlayer(player);
+        eim.unregisterPlayer(player);
 
-	eim.disposeIfPlayerBelow(0, 0);
+        eim.disposeIfPlayerBelow(0, 0);
     }
 }
 

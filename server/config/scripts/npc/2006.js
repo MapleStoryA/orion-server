@@ -2,50 +2,50 @@ var itemid = [01702118, 01702119, 1702120, 01702008, 1702071, 01702149, 1000032,
 var fullLine = "______________________________________________";
 var ct = "\t\t\t\t\t\t\t\t";
 var randomColor;
-var randomColorGenerator = Math.floor(Math.random()*4);
+var randomColorGenerator = Math.floor(Math.random() * 4);
 var coconut = 4000465;
 
 function start() {
-    var text = "#eHello, i am #rTienk#k, the rare nx seller! Every items cost 25 coconuts. Would you like to buy anything?\r\n" + "\r\n\r\n"+fullLine+"\r\n\r\n"+ct+"\t\t\t#rWeapons#k\r\n"+fullLine+"";
-        for (i = 0; i < itemid.length; i++) {
-            var itempicture = "#v"+itemid[i]+"#";
-            text += "\r\n"+i+" #L"+i+"#"+itempicture+"\t#t"+itemid[i]+"##l";
-                if (i == 5) {
-                    text += "\r\n\r\n"+fullLine+"\r\n\r\n"+ct+"\t\t\t#rHats#k\r\n"+fullLine+"";
-            } else if (i == 17) {
-                text += "\r\n\r\n"+fullLine+"\r\n\r\n"+ct+"\t\t\t#rTops#k\r\n"+fullLine+"";
-            } else if (i == 23) {            
-                text += "\r\n\r\n"+fullLine+"\r\n\r\n"+ct+"\t\t\t#rBottoms#k\r\n"+fullLine+"";
-            } else if (i == 33) {            
-                text += "\r\n\r\n"+fullLine+"\r\n\r\n"+ct+"\t\t\t#rOveralls#k\r\n"+fullLine+"";
-            } else if (i == 44) {            
-                text += "\r\n\r\n"+fullLine+"\r\n\r\n"+ct+"\t\t\t#rGloves#k\r\n"+fullLine+"";
-            } else if (i == 47) {            
-                text += "\r\n\r\n"+fullLine+"\r\n\r\n"+ct+"\t\t\t#rShoes#k\r\n"+fullLine+"";
-            } else if (i == 66) {            
-                text += "\r\n\r\n"+fullLine+"\r\n\r\n"+ct+"\t\t\t#rCapes#k\r\n"+fullLine+"";
-            } else if (i == 74) {            
-                text += "\r\n\r\n"+fullLine+"\r\n\r\n"+ct+"\t\t\t#rEarrings#k\r\n"+fullLine+"";
-            } else if (i == 75) {            
-                text += "\r\n\r\n"+fullLine+"\r\n\r\n"+ct+"\t\t\t#rFace#k\r\n"+fullLine+"";
-            } 
+    var text = "#eHello, i am #rTienk#k, the rare nx seller! Every items cost 25 coconuts. Would you like to buy anything?\r\n" + "\r\n\r\n" + fullLine + "\r\n\r\n" + ct + "\t\t\t#rWeapons#k\r\n" + fullLine + "";
+    for (i = 0; i < itemid.length; i++) {
+        var itempicture = "#v" + itemid[i] + "#";
+        text += "\r\n" + i + " #L" + i + "#" + itempicture + "\t#t" + itemid[i] + "##l";
+        if (i == 5) {
+            text += "\r\n\r\n" + fullLine + "\r\n\r\n" + ct + "\t\t\t#rHats#k\r\n" + fullLine + "";
+        } else if (i == 17) {
+            text += "\r\n\r\n" + fullLine + "\r\n\r\n" + ct + "\t\t\t#rTops#k\r\n" + fullLine + "";
+        } else if (i == 23) {
+            text += "\r\n\r\n" + fullLine + "\r\n\r\n" + ct + "\t\t\t#rBottoms#k\r\n" + fullLine + "";
+        } else if (i == 33) {
+            text += "\r\n\r\n" + fullLine + "\r\n\r\n" + ct + "\t\t\t#rOveralls#k\r\n" + fullLine + "";
+        } else if (i == 44) {
+            text += "\r\n\r\n" + fullLine + "\r\n\r\n" + ct + "\t\t\t#rGloves#k\r\n" + fullLine + "";
+        } else if (i == 47) {
+            text += "\r\n\r\n" + fullLine + "\r\n\r\n" + ct + "\t\t\t#rShoes#k\r\n" + fullLine + "";
+        } else if (i == 66) {
+            text += "\r\n\r\n" + fullLine + "\r\n\r\n" + ct + "\t\t\t#rCapes#k\r\n" + fullLine + "";
+        } else if (i == 74) {
+            text += "\r\n\r\n" + fullLine + "\r\n\r\n" + ct + "\t\t\t#rEarrings#k\r\n" + fullLine + "";
+        } else if (i == 75) {
+            text += "\r\n\r\n" + fullLine + "\r\n\r\n" + ct + "\t\t\t#rFace#k\r\n" + fullLine + "";
         }
+    }
     cm.sendSimple(text);
 }
 
 function action(mode, type, selection) {
-    if(mode == 1) {
-        if  (cm.haveItem(coconut, 25)) {
-                cm.gainItem(coconut, -25);
-                cm.gainItem(itemid[selection]);
-                cm.sendOk("#eYou have gained your selected equipment\r\n\r\n#v"+itemid[selection]+"# - #t"+itemid[selection]+"#");
-                cm.dispose();
-            } else {
-                cm.sendOk("#eYou do not have enough coconuts to aford this piece of equipment!");
-                cm.dispose();
-            }
-        } else {
-            cm.sendOk("#eCome back later if you'd like to purchase any item!");
+    if (mode == 1) {
+        if (cm.haveItem(coconut, 25)) {
+            cm.gainItem(coconut, -25);
+            cm.gainItem(itemid[selection]);
+            cm.sendOk("#eYou have gained your selected equipment\r\n\r\n#v" + itemid[selection] + "# - #t" + itemid[selection] + "#");
             cm.dispose();
+        } else {
+            cm.sendOk("#eYou do not have enough coconuts to aford this piece of equipment!");
+            cm.dispose();
+        }
+    } else {
+        cm.sendOk("#eCome back later if you'd like to purchase any item!");
+        cm.dispose();
     }
 }

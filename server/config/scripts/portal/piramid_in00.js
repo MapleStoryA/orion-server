@@ -1,4 +1,4 @@
 function enter(pi) {
-	pi.openNpc(2103013);
-	return true;
+    pi.openNpc(2103013);
+    return true;
 }

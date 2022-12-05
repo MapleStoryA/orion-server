@@ -16,17 +16,19 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
-Tombstone (2041024)
-Location: Deep Inside the Clocktower (220080000)
-By: xQuasar
-Function: Trades Etc. drops for Pieces of Cracked Dimension
-*/
+ Tombstone (2041024)
+ Location: Deep Inside the Clocktower (220080000)
+ By: xQuasar
+ Function: Trades Etc. drops for Pieces of Cracked Dimension
+ */
 var status;
+
 function start() {
-        status = -1;
-        action(1,0,0);
+    status = -1;
+    action(1, 0, 0);
 }
-function action(mode,type,selection) {
-	cm.sendSimple("...");
+
+function action(mode, type, selection) {
+    cm.sendSimple("...");
     cm.dispose();
 }

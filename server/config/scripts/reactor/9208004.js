@@ -22,5 +22,5 @@
 // Stage 2 GP for Guild Quest
 
 function act() {
-        rm.gainGP(20);
+    rm.gainGP(20);
 }

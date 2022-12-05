@@ -17,12 +17,12 @@ function start() {
             status = 34;
         }
     } else if (cm.getCQInfo(150002) == "07") {
-    	status = 49;
+        status = 49;
     }
-    action(1,0,0);
+    action(1, 0, 0);
 }
 
-function action(m,t,s) {
+function action(m, t, s) {
     gender = cm.getPlayer().getGender() == 0 ? "guy" : "girl";
     if (m > 0) {
         status++;
@@ -37,7 +37,7 @@ function action(m,t,s) {
     } else if (status == 2) {
         cm.sendNextNPC("#eDude...", 5, 2131007);
     } else if (status == 3) {
-        cm.sendNextS("#eThis "+gender+" is clueless. We are FULL of costum feature here on MapleStory. Let me give you a small glimpse of what you can expect.", 1);
+        cm.sendNextS("#eThis " + gender + " is clueless. We are FULL of costum feature here on MapleStory. Let me give you a small glimpse of what you can expect.", 1);
     } else if (status == 4) {
         cm.sendNextS("#e Entirely customized quest system that can hold custom data\r\n\r\n Exp card that give you exp when collected\r\n\r\n Stability Optimized to the max\r\n\r\n Professionally coded NPC's\r\n\r\n Fully working Evan and Dual Blade\r\n\r\n Fully working Family\r\n\r\n Packet Editing mostly fixed like getting any skill\r\n\r\n Maple Quiz fully working\r\n\r\n Awesome occupation\r\n\r\n Fully working Potion shop discount (not implemented though)\r\n\r\nreporting system for players to report people do @report for more info\r\n\r\n follow system work\r\n\r\n Triple Third Event (Extra exp for all third killed monster after being logged in for 1 hour)\r\n\r\n\r\n\r\nAND ALOT MORE.", 1);
     } else if (status == 5) {
@@ -93,12 +93,12 @@ function action(m,t,s) {
         cm.sendNextS("#eAh. Anyway. As a reward for helping us, i'll give you a little pack with helpful items. Thanks for playing MapleStory. It is still in its very early ages! More feature will be developped soon.", 1);
     } else if (status == 43) {
         cm.getPlayer().dropMessage(1, "Please, if you like the server so far, go register on the forum right now and post an introduction. 'forum.MapleStory.info' or click the forum tab on the site.");
-		cm.getPlayer().dropMessage(1, "Please, if you like the server so far, go register on the forum right now and post an introduction. 'forum.MapleStory.info' or click the forum tab on the site.");
-		cm.warp(100000000, 0)
+        cm.getPlayer().dropMessage(1, "Please, if you like the server so far, go register on the forum right now and post an introduction. 'forum.MapleStory.info' or click the forum tab on the site.");
+        cm.warp(100000000, 0)
         cm.dispose();
     } else if (status == 50) {
-    	cm.warp(100000000);
-    	cm.sendOk("#efuck off. no occupation changing you bitch.")
-    	cm.dispose();
-	}
+        cm.warp(100000000);
+        cm.sendOk("#efuck off. no occupation changing you bitch.")
+        cm.dispose();
+    }
 }

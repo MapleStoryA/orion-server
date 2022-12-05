@@ -1,3 +1,3 @@
 function act() {
-    rm.warpMap(922010201,0);
+    rm.warpMap(922010201, 0);
 }

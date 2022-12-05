@@ -13,24 +13,24 @@ function start() {
 
 function action(mode, type, selection) {
     if (status >= 2 && mode == 0) {
-	cm.dispose();
-	return;
+        cm.dispose();
+        return;
     }
     if (mode == 1) {
-	status++;
+        status++;
     } else {
-	status--;
+        status--;
     }
     if (status == 0) {
-	cm.warp(105040300);
-            
-	if (cm.getMapId() == 105040300) {
-	    if (cm.getQuestStatus(2052) == 1 && !cm.haveItem(4031025)) {
-		cm.gainItem(4031025, 10);
-	    }
-	} else {
-	    cm.gainItem(itemSet[rand], 2);
-	}
-	cm.dispose();
+        cm.warp(105040300);
+
+        if (cm.getMapId() == 105040300) {
+            if (cm.getQuestStatus(2052) == 1 && !cm.haveItem(4031025)) {
+                cm.gainItem(4031025, 10);
+            }
+        } else {
+            cm.gainItem(itemSet[rand], 2);
+        }
+        cm.dispose();
     }
 }

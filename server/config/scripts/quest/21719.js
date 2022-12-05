@@ -2,24 +2,24 @@ var status = -1;
 
 function start(mode, type, selection) {
     if (mode == 1) {
-	status++;
+        status++;
     } else {
-	if (status == 2) {
-	    qm.dispose();
-	    return;
-	}
-	status--;
+        if (status == 2) {
+            qm.dispose();
+            return;
+        }
+        status--;
     }
     if (status == 0) {
-	qm.sendNextS("Aren''t you the one that used to be in #m101000000# until not too long ago? I finally found you! Do you know how long it took for me to finally find you?", 8);
+        qm.sendNextS("Aren''t you the one that used to be in #m101000000# until not too long ago? I finally found you! Do you know how long it took for me to finally find you?", 8);
     } else if (status == 1) {
-	qm.sendNextPrevS("Who are you?", 2);
+        qm.sendNextPrevS("Who are you?", 2);
     } else if (status == 2) {
-	qm.askAcceptDecline("Me? If you want to know, stop by my cave. I'll even send you an invitation. You'll be directly sent to my cave as soon as you accept. Look forward to seeing you there.");
+        qm.askAcceptDecline("Me? If you want to know, stop by my cave. I'll even send you an invitation. You'll be directly sent to my cave as soon as you accept. Look forward to seeing you there.");
     } else if (status == 3) {
-	qm.forceCompleteQuest();
-	qm.warp(910510200, 0);
-	qm.dispose();
+        qm.forceCompleteQuest();
+        qm.warp(910510200, 0);
+        qm.dispose();
     }
 }
 

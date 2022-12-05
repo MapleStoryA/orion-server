@@ -1,6 +1,6 @@
 /**
-	Kyrin's Training Ground, 4th job Quest [Captain]
-**/
+ Kyrin's Training Ground, 4th job Quest [Captain]
+ **/
 
 function init() {
 }
@@ -42,11 +42,11 @@ function scheduledTimeout(eim) {
 
 function changedMap(eim, player, mapid) {
     if (mapid != 912010100) {
-	eim.unregisterPlayer(player);
+        eim.unregisterPlayer(player);
 
-	if (eim.disposeIfPlayerBelow(0, 0)) {
-	    em.setProperty("started", "false");
-	}
+        if (eim.disposeIfPlayerBelow(0, 0)) {
+            em.setProperty("started", "false");
+        }
     }
 }
 

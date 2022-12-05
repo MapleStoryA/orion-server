@@ -9,8 +9,8 @@ function start() {
 
 function action(mode, type, selection) {
     if (mode == 1) {
-	cm.removeNpc(108010620, 1104100);
-	cm.spawnMob(9001009, 263, 88); // Transforming
+        cm.removeNpc(108010620, 1104100);
+        cm.spawnMob(9001009, 263, 88); // Transforming
     }
     cm.dispose();
 }

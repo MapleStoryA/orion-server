@@ -14,7 +14,7 @@ function start() {
 }
 
 function action(mode, type, selection) {
-	cm.PlayerToNpc("Save the princess and retrive back the #b#t4001318##b.");
-	cm.dispose();
+    cm.PlayerToNpc("Save the princess and retrive back the #b#t4001318##b.");
+    cm.dispose();
 }
 			

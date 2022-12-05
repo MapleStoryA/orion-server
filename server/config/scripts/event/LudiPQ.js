@@ -69,29 +69,29 @@ function setup() {
     var map8 = mf.getMap(922010900);
     var map9 = mf.getMap(922011000);
     var map10 = mf.getMap(922011100);
-    eim.addMapInstance(922010100,map0);
-    eim.addMapInstance(922010200,map1);
-    eim.addMapInstance(922010201,map1_1);
-    eim.addMapInstance(922010300,map2);
-    eim.addMapInstance(922010400,map3);
-    eim.addMapInstance(922010401,map3_1);
-    eim.addMapInstance(922010402,map3_2);
-    eim.addMapInstance(922010403,map3_3);
-    eim.addMapInstance(922010404,map3_4);
-    eim.addMapInstance(922010405,map3_5);
-    eim.addMapInstance(922010500,map4);
-    eim.addMapInstance(922010501,map4_1);
-    eim.addMapInstance(922010502,map4_2);
-    eim.addMapInstance(922010503,map4_3);
-    eim.addMapInstance(922010504,map4_4);
-    eim.addMapInstance(922010505,map4_5);
-    eim.addMapInstance(922010506,map4_6);
-    eim.addMapInstance(922010600,map5);
-    eim.addMapInstance(922010700,map6);
-    eim.addMapInstance(922010800,map7);
-    eim.addMapInstance(922010900,map8);
-    eim.addMapInstance(922011000,map9);
-    eim.addMapInstance(922011100,map10);
+    eim.addMapInstance(922010100, map0);
+    eim.addMapInstance(922010200, map1);
+    eim.addMapInstance(922010201, map1_1);
+    eim.addMapInstance(922010300, map2);
+    eim.addMapInstance(922010400, map3);
+    eim.addMapInstance(922010401, map3_1);
+    eim.addMapInstance(922010402, map3_2);
+    eim.addMapInstance(922010403, map3_3);
+    eim.addMapInstance(922010404, map3_4);
+    eim.addMapInstance(922010405, map3_5);
+    eim.addMapInstance(922010500, map4);
+    eim.addMapInstance(922010501, map4_1);
+    eim.addMapInstance(922010502, map4_2);
+    eim.addMapInstance(922010503, map4_3);
+    eim.addMapInstance(922010504, map4_4);
+    eim.addMapInstance(922010505, map4_5);
+    eim.addMapInstance(922010506, map4_6);
+    eim.addMapInstance(922010600, map5);
+    eim.addMapInstance(922010700, map6);
+    eim.addMapInstance(922010800, map7);
+    eim.addMapInstance(922010900, map8);
+    eim.addMapInstance(922011000, map9);
+    eim.addMapInstance(922011100, map10);
     var stage1Portal = eim.getMapInstance(922010100).getPortal("next00");
     stage1Portal.setScriptName("lpq1");
     var stage2Portal = eim.getMapInstance(922010200).getPortal("next00");
@@ -137,8 +137,7 @@ function playerDead(eim, player) {
             for (var i = 0; i < party.size(); i++)
                 playerExit(eim, party.get(i));
             eim.dispose();
-        }
-        else
+        } else
             playerExit(eim, player);
     }
 }
@@ -153,8 +152,7 @@ function playerDisconnected(eim, player) {
             else
                 playerExit(eim, party.get(i));
         eim.dispose();
-    }
-    else
+    } else
         removePlayer(eim, player);
 }
 
@@ -221,7 +219,7 @@ function startBonus() {
         if (eim.getPlayerCount() > 0) {
             var pIter = eim.getPlayers().iterator();
             while (pIter.hasNext())
-                if(pIter.next().getMap().getId() == 922011000)
+                if (pIter.next().getMap().getId() == 922011000)
                     playerFinish(eim, pIter.next());
         }
     }

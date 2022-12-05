@@ -23,8 +23,7 @@
 
 /* Honorable Rock */
 
-function start()
-{
-	cm.displayGuildRanks();
-	cm.dispose();
+function start() {
+    cm.displayGuildRanks();
+    cm.dispose();
 }

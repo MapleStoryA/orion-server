@@ -1,28 +1,27 @@
 songs = [];
-if(songs.length == 0){
-	initArr();
-	
+if (songs.length == 0) {
+    initArr();
+
 }
 let keys = Object.keys(songs);
 
-option = self.askMenu( getFirstMenu() );
+option = self.askMenu(getFirstMenu());
 
 let selectedCategory = keys[option];
 
 let songsOfGivenMusicCategory = songs[selectedCategory];
 
-let option = self.askMenu( getSecondMenu() );
+let option = self.askMenu(getSecondMenu());
 
 let selectedSong = selectedCategory + "/" + songs[selectedCategory][option];
 
 self.sayOk("#rNow playing:\r\n#Wicon8/0# #b" + selectedCategory + " - " + songs[selectedCategory][option] + "");
 
-if(target.isMaster()){
-	field.changeMusic(selectedSong);
-}else{
-	target.changeMusic(selectedSong);
+if (target.isMaster()) {
+    field.changeMusic(selectedSong);
+} else {
+    target.changeMusic(selectedSong);
 }
- 
 
 
 function initArr() {
@@ -54,27 +53,28 @@ function initArr() {
     songs["BgmMY"] = ["KualaLumpur", "Highland"];
     songs["BgmSG"] = ["CBD_town", "CBD_field", "BoatQuay_field", "Ghostship", "BoatQuay_town", "Ulu_field"];
     songs["BgmTH"] = ["goldTempleTownTH", "goldTempleFieldTH", "goldTempleDungeonTH"];
-    
-    if(target.isMaster()){
-    	 songs["MiscSongs"] = ["Harlem Shake", "Katy Perry - I Kissed A Girl", "Marshmello - Alone", "Never gonna give up", "Turn Down For What"];
-    	 songs["TheOffSpring"] = ["The Kids Aren't Alright"];
+
+    if (target.isMaster()) {
+        songs["MiscSongs"] = ["Harlem Shake", "Katy Perry - I Kissed A Girl", "Marshmello - Alone", "Never gonna give up", "Turn Down For What"];
+        songs["TheOffSpring"] = ["The Kids Aren't Alright"];
     }
-   
+
 }
 
 function getFirstMenu() {
-	let text = "Choose your song category: \r\n";
-	let keys = Object.keys(songs);
-	for(var i = 0; i < keys.length; i++){
-		text += "#L" + i + "##Wicon8/0# " + keys[i] + "\r\n";
-	}
-	return text;
+    let text = "Choose your song category: \r\n";
+    let keys = Object.keys(songs);
+    for (var i = 0; i < keys.length; i++) {
+        text += "#L" + i + "##Wicon8/0# " + keys[i] + "\r\n";
+    }
+    return text;
 }
 
-function getSecondMenu(){
-	var textMusics = "Now choose your song. \r\n";;
-	for(var i = 0; i < songsOfGivenMusicCategory.length; i++){
-		textMusics += "#L" + i + "##Wicon8/0# " + songsOfGivenMusicCategory[i] + "\r\n";
-	}
-	return textMusics;
+function getSecondMenu() {
+    var textMusics = "Now choose your song. \r\n";
+    ;
+    for (var i = 0; i < songsOfGivenMusicCategory.length; i++) {
+        textMusics += "#L" + i + "##Wicon8/0# " + songsOfGivenMusicCategory[i] + "\r\n";
+    }
+    return textMusics;
 }

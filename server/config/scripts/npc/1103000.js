@@ -1,4 +1,4 @@
 function action(mode, type, selection) {
-	cm.sendNext("Thank you so much...");
-	cm.safeDispose();
+    cm.sendNext("Thank you so much...");
+    cm.safeDispose();
 }

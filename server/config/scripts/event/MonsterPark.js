@@ -5,14 +5,14 @@ function init() {
 
 function setup(mapid) {
     var eim = em.newInstance("MonsterPark" + mapid);
-	var map = parseInt(mapid);
-	var max = (map / 1000000 == 952 ? 5 : 6);
-	eim.setProperty("max", "" + max);
-	eim.setProperty("boss", "0");
-	for (var i = 0; i < max; i++) {
-            eim.setInstanceMap(map + (i * 100)).resetFully();
-	    eim.setProperty("map" + i, "" + (map + (i * 100)));
-	}
+    var map = parseInt(mapid);
+    var max = (map / 1000000 == 952 ? 5 : 6);
+    eim.setProperty("max", "" + max);
+    eim.setProperty("boss", "0");
+    for (var i = 0; i < max; i++) {
+        eim.setInstanceMap(map + (i * 100)).resetFully();
+        eim.setProperty("map" + i, "" + (map + (i * 100)));
+    }
     eim.startEventTimer(1200000); //20 mins
     return eim;
 }
@@ -31,13 +31,13 @@ function scheduledTimeout(eim) {
 
 function changedMap(eim, player, mapid) {
     for (var i = 0; i < parseInt(eim.getProperty("max")); i++) {
-	if (mapid == parseInt(eim.getProperty("map" + i))) {
-	    return;
-	}
+        if (mapid == parseInt(eim.getProperty("map" + i))) {
+            return;
+        }
     }
-	eim.unregisterPlayer(player);
+    eim.unregisterPlayer(player);
 
-	eim.disposeIfPlayerBelow(0, 0);
+    eim.disposeIfPlayerBelow(0, 0);
 }
 
 function playerDisconnected(eim, player) {
@@ -51,7 +51,7 @@ function monsterValue(eim, mobId) {
 function playerExit(eim, player) {
     eim.unregisterPlayer(player);
 
-	eim.disposeIfPlayerBelow(0, 0);
+    eim.disposeIfPlayerBelow(0, 0);
 }
 
 function end(eim) {
@@ -65,12 +65,17 @@ function clearPQ(eim) {
 function allMonstersDead(eim) {
 }
 
-function leftParty (eim, player) {
+function leftParty(eim, player) {
     // If only 2 players are left, uncompletable:
-	end(eim);
+    end(eim);
 }
-function disbandParty (eim) {
-	end(eim);
+
+function disbandParty(eim) {
+    end(eim);
 }
-function playerDead(eim, player) {}
-function cancelSchedule() {}
+
+function playerDead(eim, player) {
+}
+
+function cancelSchedule() {
+}

@@ -10,21 +10,21 @@ function start() {
 
 function action(mode, type, selection) {
     if (mode == 0) {
-	cm.dispose();
+        cm.dispose();
 
     } else {
-	if (mode == 1)
-	    status++;
-	else
-	    status--;
-		
-	if (status == 0) {
-	    cm.sendNext("See you again~!");
+        if (mode == 1)
+            status++;
+        else
+            status--;
 
-	} else if (status == 1) {
-	    cm.warp(220000000);
-	    cm.removeAll(4001106);
-	    cm.dispose();
-	}
+        if (status == 0) {
+            cm.sendNext("See you again~!");
+
+        } else if (status == 1) {
+            cm.warp(220000000);
+            cm.removeAll(4001106);
+            cm.dispose();
+        }
     }
 }

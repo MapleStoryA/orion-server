@@ -5,11 +5,11 @@ Created by Chestnut @ RZ
 var status = 0;
 
 function start() {
-	status = -1;
-	action(1, 0, 0);
+    status = -1;
+    action(1, 0, 0);
 }
 
 function action(mode, type, selection) {
-	cm.sendNext("Who are you...?");
-	cm.dispose();
+    cm.sendNext("Who are you...?");
+    cm.dispose();
 }

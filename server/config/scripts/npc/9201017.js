@@ -1,4 +1,3 @@
-
 /*
         This file is part of the OdinMS Maple Story Server
     Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
@@ -47,7 +46,7 @@ function action(mode, type, selection) {
         else
             status--;
         if (status == 0) {
-            cm.sendSimple("Hi, there~! I'm Dr.Roberts, in charge of the cosmetic lenses here at the Amoria Plastic Surgery Shop! With #b#t5152025##k or #b#t5152026##k, you can let us take care of the rest and have the kind of beautiful look you've always craved~! Remember, the first thing everyone notices about you is the eyes, and we can help you find the cosmetic lens that most fits you! Now, what would you like to use?\r\n#L0#Cosmetic Lenses: #i5152025##t5152025##l\r\n#L1#Cosmetic Lenses: #i5152026##t5152026##l");                                             
+            cm.sendSimple("Hi, there~! I'm Dr.Roberts, in charge of the cosmetic lenses here at the Amoria Plastic Surgery Shop! With #b#t5152025##k or #b#t5152026##k, you can let us take care of the rest and have the kind of beautiful look you've always craved~! Remember, the first thing everyone notices about you is the eyes, and we can help you find the cosmetic lens that most fits you! Now, what would you like to use?\r\n#L0#Cosmetic Lenses: #i5152025##t5152025##l\r\n#L1#Cosmetic Lenses: #i5152026##t5152026##l");
         } else if (status == 1) {
             if (selection == 0) {
                 beauty = 1;
@@ -58,7 +57,7 @@ function action(mode, type, selection) {
                     var current = cm.getPlayer().getFace() % 100 + 21000;
                 }
                 colors = Array();
-                colors = Array(current , current + 100, current + 200, current + 300, current +400, current + 500, current + 600, current + 700);
+                colors = Array(current, current + 100, current + 200, current + 300, current + 400, current + 500, current + 600, current + 700);
                 cm.sendYesNo("If you use the regular coupon, you'll be awarded a random pair of cosmetic lenses. Are you going to use a #b#t5152025##k and really make the change to your eyes?");
             } else if (selection == 1) {
                 beauty = 2;
@@ -69,13 +68,12 @@ function action(mode, type, selection) {
                     var current = cm.getPlayer().getFace() % 100 + 21000;
                 }
                 colors = Array();
-                colors = Array(current , current + 100, current + 200, current + 300, current +400, current + 500, current + 600, current + 700);
+                colors = Array(current, current + 100, current + 200, current + 300, current + 400, current + 500, current + 600, current + 700);
                 cm.sendStyle("With our specialized machine, you can see yourself after the treatment in advance. What kind of lens would you like to wear? Choose the style of your liking.", colors);
             }
-        }
-        else if (status == 2){
-            if (beauty == 1){
-                if (cm.haveItem(5152025)){
+        } else if (status == 2) {
+            if (beauty == 1) {
+                if (cm.haveItem(5152025)) {
                     cm.gainItem(5152025, -1);
                     cm.setFace(colors[Math.floor(Math.random() * colors.length)]);
                     cm.sendOk("Enjoy your new and improved cosmetic lenses!");
@@ -84,8 +82,8 @@ function action(mode, type, selection) {
                     cm.dispose();
                 }
             }
-            if (beauty == 2){
-                if (cm.haveItem(5152026)){
+            if (beauty == 2) {
+                if (cm.haveItem(5152026)) {
                     cm.gainItem(5152026, -1);
                     cm.setFace(colors[selection]);
                     cm.sendOk("Enjoy your new and improved cosmetic lenses!");
@@ -94,7 +92,7 @@ function action(mode, type, selection) {
                     cm.dispose();
                 }
             }
-            if (beauty == 0){
+            if (beauty == 0) {
                 if (selection == 0 && cm.getMeso() >= regprice) {
                     cm.gainMeso(-regprice);
                     cm.gainItem(5152025, 1);

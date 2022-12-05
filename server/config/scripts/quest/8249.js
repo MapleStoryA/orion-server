@@ -19,7 +19,8 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*	
+
+/*
 	Author : 		Blue
 	NPC Name: 		Maple 7th Day Market Chick
 	Map(s): 		Everywhere
@@ -28,6 +29,6 @@
 */
 
 function start(mode, type, selection) {
-	qm.forceStartQuest();
-	qm.forceCompleteQuest();
+    qm.forceStartQuest();
+    qm.forceCompleteQuest();
 }

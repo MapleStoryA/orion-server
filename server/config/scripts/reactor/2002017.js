@@ -1,5 +1,5 @@
 function act() {
-	rm.givePartyNX(250);
-	rm.dropItems();
-	rm.getMap().setReactorState();
+    rm.givePartyNX(250);
+    rm.dropItems();
+    rm.getMap().setReactorState();
 }

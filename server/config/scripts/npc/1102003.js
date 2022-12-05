@@ -4,7 +4,7 @@
 	Description: 		Welcoming
 */
 
-function start(){
-	cm.sendOk("Welcome to the Hall of Knights.");
-	cm.dispose();
+function start() {
+    cm.sendOk("Welcome to the Hall of Knights.");
+    cm.dispose();
 }

@@ -1,3 +1,3 @@
 function act() {
-	rm.getMap().getReactorByName("jump").forceHitReactor(rm.getReactor().getState());
+    rm.getMap().getReactorByName("jump").forceHitReactor(rm.getReactor().getState());
 }

@@ -9,8 +9,8 @@ function start() {
 
 function action(mode, type, selection) {
     if (mode == 1) {
-	cm.removeNpc(cm.getMapId(), cm.getNpc());
-	cm.spawnMonster(9001009,1); // Transforming
+        cm.removeNpc(cm.getMapId(), cm.getNpc());
+        cm.spawnMonster(9001009, 1); // Transforming
     }
     cm.dispose();
 }

@@ -27,20 +27,20 @@ var status = -1;
 function start(mode, type, selection) {
     status++;
     if (mode != 1) {
-		if(type == 1 && mode == 0) {
-			qm.dispose();
-			return;
-		}else{
-			qm.dispose();
-			return;
-		}
-	}
-	
-	if (status == 0) {
-		qm.sendAcceptDecline("How's the leveling up so far? By this time, you might be able to participate in the Party Quest at #m103000000#. Leveling up is important, yes, but we need you now to take on a mission as a Cygnus Knight. We just received a new information that may help us.");
-	} else if (status == 1) {
-		qm.forceStartQuest();
-		qm.forceCompleteQuest();
-		qm.dispose();
-	}
+        if (type == 1 && mode == 0) {
+            qm.dispose();
+            return;
+        } else {
+            qm.dispose();
+            return;
+        }
+    }
+
+    if (status == 0) {
+        qm.sendAcceptDecline("How's the leveling up so far? By this time, you might be able to participate in the Party Quest at #m103000000#. Leveling up is important, yes, but we need you now to take on a mission as a Cygnus Knight. We just received a new information that may help us.");
+    } else if (status == 1) {
+        qm.forceStartQuest();
+        qm.forceCompleteQuest();
+        qm.dispose();
+    }
 }

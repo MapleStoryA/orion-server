@@ -5,50 +5,50 @@ var hairnew = Array();
 
 function start() {
     status = -1;
-    action(1,0,0);
+    action(1, 0, 0);
 }
 
 function action(mode, type, selection) {
     if (mode == 0 && status == 0) {
-	cm.sendNext("Ok, I'll give you a minute.");
-	cm.dispose();
-	return;
+        cm.sendNext("Ok, I'll give you a minute.");
+        cm.dispose();
+        return;
     }
     if (mode == 1)
-	status++;
+        status++;
     else
-	status--;
+        status--;
     if (status == 0) {
-	if (cm.getQuestStatus(8860) == 2 && !cm.haveItem(4031528)) {
-	    cm.sendNext("I've already done your hair once as a trade-for-services, sport. You'll have to snag an EXP Hair coupon from the Cash Shop if you want to change it again!");
-	    cm.dispose();
-	} else {
-	    cm.sendYesNo("Ready for an awesome hairdo? I think you are! Just say the word, and we'll get started!");
-	}
+        if (cm.getQuestStatus(8860) == 2 && !cm.haveItem(4031528)) {
+            cm.sendNext("I've already done your hair once as a trade-for-services, sport. You'll have to snag an EXP Hair coupon from the Cash Shop if you want to change it again!");
+            cm.dispose();
+        } else {
+            cm.sendYesNo("Ready for an awesome hairdo? I think you are! Just say the word, and we'll get started!");
+        }
     }
     if (status == 1) {
-	hairnew = Array();
-	if (cm.getChar().getGender() == 0) {
-	    for(var i = 0; i < mhair.length; i++) {
-		hairnew.push(mhair[i]);
-	    }
-	}
-	if (cm.getChar().getGender() == 1) {
-	    for(var i = 0; i < fhair.length; i++) {
-		hairnew.push(fhair[i]);
-	    }
-	}
-	cm.sendNext("Here we go!");
+        hairnew = Array();
+        if (cm.getChar().getGender() == 0) {
+            for (var i = 0; i < mhair.length; i++) {
+                hairnew.push(mhair[i]);
+            }
+        }
+        if (cm.getChar().getGender() == 1) {
+            for (var i = 0; i < fhair.length; i++) {
+                hairnew.push(fhair[i]);
+            }
+        }
+        cm.sendNext("Here we go!");
     }
     if (status == 2) {
-	if (cm.haveItem(4031528)) {
-	    cm.gainItem(4031528, -1);
-	    cm.setHair(hairnew[Math.floor(Math.random() * hairnew.length)]);
-	    cm.sendBackNext("Not bad, if I do say so myself! I knew those books I studied would come in handy...");
-	    cm.dispose();
-	} else {
-	    cm.sendNext("Hmmm...are you sure you have our designated free coupon? Sorry but no haircut without it.");
-	    cm.dispose();
-	}
+        if (cm.haveItem(4031528)) {
+            cm.gainItem(4031528, -1);
+            cm.setHair(hairnew[Math.floor(Math.random() * hairnew.length)]);
+            cm.sendBackNext("Not bad, if I do say so myself! I knew those books I studied would come in handy...");
+            cm.dispose();
+        } else {
+            cm.sendNext("Hmmm...are you sure you have our designated free coupon? Sorry but no haircut without it.");
+            cm.dispose();
+        }
     }
 }

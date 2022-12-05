@@ -25,15 +25,15 @@ importPackage(Packages.net.channel);
 importPackage(Packages.server);
 importPackage(Packages.tools);
 
-function getDefinition () {
-	var ret = java.lang.reflect.Array.newInstance(CommandDefinition, 1);
-	ret[0] = new CommandDefinition("showid", "rate", "Sets the experience rate.", "100"); 
-	return ret;
+function getDefinition() {
+    var ret = java.lang.reflect.Array.newInstance(CommandDefinition, 1);
+    ret[0] = new CommandDefinition("showid", "rate", "Sets the experience rate.", "100");
+    return ret;
 }
 
-function execute (c, mc, splitted) {
-	mc.dropMessage(ChannelServer.getInstance(c.getChannel()).getInstanceId());
-	if (c.getPlayer().getEventInstance() != null) {
-		mc.dropMessage(c.getPlayer().getEventInstance().getName());
-	}
+function execute(c, mc, splitted) {
+    mc.dropMessage(ChannelServer.getInstance(c.getChannel()).getInstanceId());
+    if (c.getPlayer().getEventInstance() != null) {
+        mc.dropMessage(c.getPlayer().getEventInstance().getName());
+    }
 }

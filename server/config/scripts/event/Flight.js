@@ -10,7 +10,7 @@ function scheduleNew() {
 }
 
 function stopEntry() {
-    em.setProperty("entry","false");
+    em.setProperty("entry", "false");
 }
 
 function takeoff() {
@@ -18,7 +18,7 @@ function takeoff() {
     em.warpAllPlayer(240000111, 200090210);
     em.broadcastShip(200000131, 3);
     em.broadcastShip(240000110, 3);
-    em.setProperty("docked","false");
+    em.setProperty("docked", "false");
     em.schedule("arrived", 420000); //The time that require move to destination
 }
 

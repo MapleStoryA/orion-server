@@ -26,6 +26,6 @@ importPackage(Packages.server.maps);
 */
 
 function enter(pi) {
-	pi.warp(980000601, 0);
-	return true;
+    pi.warp(980000601, 0);
+    return true;
 }

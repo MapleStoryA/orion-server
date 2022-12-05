@@ -4,7 +4,7 @@
 	Description: 		Unknown
 */
 
-function start(){
-	cm.sendNext("I want to be a human, a human being with a warm heart...so that maybe I can hold her hand. Unfortunately, that's not possible right now.");
-	cm.dispose();
-	}
+function start() {
+    cm.sendNext("I want to be a human, a human being with a warm heart...so that maybe I can hold her hand. Unfortunately, that's not possible right now.");
+    cm.dispose();
+}

@@ -17,113 +17,113 @@ function setup(partyid) {
 
     eim.setProperty("points", 0);
     eim.setProperty("monster_number", 0);
-   eim.setProperty("n_spawn", 0);
-   eim.setProperty("f_spawn", 0);
-   eim.setProperty("c_spawn", 0);
+    eim.setProperty("n_spawn", 0);
+    eim.setProperty("f_spawn", 0);
+    eim.setProperty("c_spawn", 0);
     beginQuest(eim);
     return eim;
 }
 
 function beginQuest(eim) { // Custom function
     if (eim != null) {
-    	eim.startEventTimer(5000); // After 5 seconds -> scheduledTimeout()
+        eim.startEventTimer(5000); // After 5 seconds -> scheduledTimeout()
     }
 }
 
 function monsterSpawn(eim) { // Custom function
     var monsterid = monster[parseInt(eim.getProperty("monster_number"))];
-	if (monsterid == 0) {
-		if (parseInt(eim.getProperty("n_spawn")) == 0) {
-			monsterid = 8820015;
-			eim.setProperty("n_spawn", "1");
-			monsterSpawn(eim); //double spawn
-		} else if (parseInt(eim.getProperty("n_spawn")) == 1) {
-			monsterid = 8820016;
-			eim.setProperty("n_spawn", "2");
-			monsterSpawn(eim); //double spawn
-		} else if (parseInt(eim.getProperty("n_spawn")) == 2) {
-			monsterid = 8820017;
-			eim.setProperty("n_spawn", "3");
-			monsterSpawn(eim); //double spawn
-		} else if (parseInt(eim.getProperty("n_spawn")) == 3) {
-			monsterid = 8820018;
-			eim.setProperty("n_spawn", "4");
-		}
-	} else if (monsterid == 1) {
-		if (parseInt(eim.getProperty("f_spawn")) == 0) {
-			monsterid = 9400590;
-			eim.setProperty("f_spawn", "1");
-			monsterSpawn(eim); //double spawn
-		} else if (parseInt(eim.getProperty("f_spawn")) == 1) {
-			monsterid = 9400591;
-			eim.setProperty("f_spawn", "2");
-			monsterSpawn(eim); //double spawn
-		} else if (parseInt(eim.getProperty("f_spawn")) == 2) {
-			monsterid = 9400592;
-			eim.setProperty("f_spawn", "3");
-			monsterSpawn(eim); //double spawn
-		} else if (parseInt(eim.getProperty("f_spawn")) == 3) {
-			monsterid = 9400593;
-			eim.setProperty("f_spawn", "4");
-			monsterSpawn(eim); //double spawn
-		} else if (parseInt(eim.getProperty("f_spawn")) == 4) {
-			monsterid = 9400589;
-		}
-	} else if (monsterid == 2) {
-		if (parseInt(eim.getProperty("c_spawn")) == 0) {
-			monsterid = 8850005; //stronger versions
-			eim.setProperty("c_spawn", "1");
-			monsterSpawn(eim); //double spawn
-		} else if (parseInt(eim.getProperty("c_spawn")) == 1) {
-			monsterid = 8850006;
-			eim.setProperty("c_spawn", "2");
-			monsterSpawn(eim); //double spawn
-		} else if (parseInt(eim.getProperty("c_spawn")) == 2) {
-			monsterid = 8850007;
-			eim.setProperty("c_spawn", "3");
-			monsterSpawn(eim); //double spawn
-		} else if (parseInt(eim.getProperty("c_spawn")) == 3) {
-			monsterid = 8850008;
-			eim.setProperty("c_spawn", "4");
-			monsterSpawn(eim); //double spawn
-		} else if (parseInt(eim.getProperty("c_spawn")) == 4) {
-			monsterid = 8850009;
-		}
-	}
-    var mob = em.getMonster(monsterid);
-var modified = em.newMonsterStats();
-modified.setOMp(mob.getMobMaxMp());
-    switch (monsterid) {
-	case 7120102:
-	    modified.setOExp(mob.getMobExp() * 1.8);
-	    modified.setOHp(mob.getMobMaxHp() * 3); //1b
-	    break;
-	case 8800100:
-	case 8800101:
-	case 8800102:
-	    modified.setOExp(mob.getMobExp() * 2);
-	    modified.setOHp(mob.getMobMaxHp() * 2.2); //1b
-	    break;
-	case 8840006:
-	    modified.setOExp(mob.getMobExp() * 1.5); //goes stack overflow over 2.1b if too high
-	    modified.setOHp(mob.getMobMaxHp() * 8); //1.2b
-	    break;
-	case 8860000:
-	    modified.setOExp(mob.getMobExp() * 1.1);
-	    modified.setOHp(mob.getMobMaxHp() * 1.2); //1.4b total
-	    break;
-	case 8820001:
-	case 8850011:
-	    modified.setOExp(mob.getMobExp() * 1.1);
-	    modified.setOHp(mob.getMobMaxHp() * 2.3); //1.4b total
-	    break;
-	case 9400409:
-	case 9400408:
-	    modified.setOExp(mob.getMobExp() * 1.1);
-	    modified.setOHp(mob.getMobMaxHp() * 1.9); //1.4b total
- 	    break;
+    if (monsterid == 0) {
+        if (parseInt(eim.getProperty("n_spawn")) == 0) {
+            monsterid = 8820015;
+            eim.setProperty("n_spawn", "1");
+            monsterSpawn(eim); //double spawn
+        } else if (parseInt(eim.getProperty("n_spawn")) == 1) {
+            monsterid = 8820016;
+            eim.setProperty("n_spawn", "2");
+            monsterSpawn(eim); //double spawn
+        } else if (parseInt(eim.getProperty("n_spawn")) == 2) {
+            monsterid = 8820017;
+            eim.setProperty("n_spawn", "3");
+            monsterSpawn(eim); //double spawn
+        } else if (parseInt(eim.getProperty("n_spawn")) == 3) {
+            monsterid = 8820018;
+            eim.setProperty("n_spawn", "4");
+        }
+    } else if (monsterid == 1) {
+        if (parseInt(eim.getProperty("f_spawn")) == 0) {
+            monsterid = 9400590;
+            eim.setProperty("f_spawn", "1");
+            monsterSpawn(eim); //double spawn
+        } else if (parseInt(eim.getProperty("f_spawn")) == 1) {
+            monsterid = 9400591;
+            eim.setProperty("f_spawn", "2");
+            monsterSpawn(eim); //double spawn
+        } else if (parseInt(eim.getProperty("f_spawn")) == 2) {
+            monsterid = 9400592;
+            eim.setProperty("f_spawn", "3");
+            monsterSpawn(eim); //double spawn
+        } else if (parseInt(eim.getProperty("f_spawn")) == 3) {
+            monsterid = 9400593;
+            eim.setProperty("f_spawn", "4");
+            monsterSpawn(eim); //double spawn
+        } else if (parseInt(eim.getProperty("f_spawn")) == 4) {
+            monsterid = 9400589;
+        }
+    } else if (monsterid == 2) {
+        if (parseInt(eim.getProperty("c_spawn")) == 0) {
+            monsterid = 8850005; //stronger versions
+            eim.setProperty("c_spawn", "1");
+            monsterSpawn(eim); //double spawn
+        } else if (parseInt(eim.getProperty("c_spawn")) == 1) {
+            monsterid = 8850006;
+            eim.setProperty("c_spawn", "2");
+            monsterSpawn(eim); //double spawn
+        } else if (parseInt(eim.getProperty("c_spawn")) == 2) {
+            monsterid = 8850007;
+            eim.setProperty("c_spawn", "3");
+            monsterSpawn(eim); //double spawn
+        } else if (parseInt(eim.getProperty("c_spawn")) == 3) {
+            monsterid = 8850008;
+            eim.setProperty("c_spawn", "4");
+            monsterSpawn(eim); //double spawn
+        } else if (parseInt(eim.getProperty("c_spawn")) == 4) {
+            monsterid = 8850009;
+        }
     }
-	mob.setOverrideStats(modified);
+    var mob = em.getMonster(monsterid);
+    var modified = em.newMonsterStats();
+    modified.setOMp(mob.getMobMaxMp());
+    switch (monsterid) {
+        case 7120102:
+            modified.setOExp(mob.getMobExp() * 1.8);
+            modified.setOHp(mob.getMobMaxHp() * 3); //1b
+            break;
+        case 8800100:
+        case 8800101:
+        case 8800102:
+            modified.setOExp(mob.getMobExp() * 2);
+            modified.setOHp(mob.getMobMaxHp() * 2.2); //1b
+            break;
+        case 8840006:
+            modified.setOExp(mob.getMobExp() * 1.5); //goes stack overflow over 2.1b if too high
+            modified.setOHp(mob.getMobMaxHp() * 8); //1.2b
+            break;
+        case 8860000:
+            modified.setOExp(mob.getMobExp() * 1.1);
+            modified.setOHp(mob.getMobMaxHp() * 1.2); //1.4b total
+            break;
+        case 8820001:
+        case 8850011:
+            modified.setOExp(mob.getMobExp() * 1.1);
+            modified.setOHp(mob.getMobMaxHp() * 2.3); //1.4b total
+            break;
+        case 9400409:
+        case 9400408:
+            modified.setOExp(mob.getMobExp() * 1.1);
+            modified.setOHp(mob.getMobMaxHp() * 1.9); //1.4b total
+            break;
+    }
+    mob.setOverrideStats(modified);
     eim.registerMonster(mob);
 
     var map = eim.getMapInstance(0);
@@ -137,19 +137,19 @@ function playerEntry(eim, player) {
 
 function changedMap(eim, player, mapid) {
     if (mapid != eventmapid) {
-	eim.unregisterPlayer(player);
+        eim.unregisterPlayer(player);
 
-	eim.disposeIfPlayerBelow(0, 0);
+        eim.disposeIfPlayerBelow(0, 0);
     }
 }
 
 function scheduledTimeout(eim) {
     var num = parseInt(eim.getProperty("monster_number"));
     if (num < monster.length) {
-	monsterSpawn(eim);
-	eim.setProperty("monster_number", num + 1);
+        monsterSpawn(eim);
+        eim.setProperty("monster_number", num + 1);
     } else {
-	eim.disposeIfPlayerBelow(100, returnmap);
+        eim.disposeIfPlayerBelow(100, returnmap);
     }
 // When event timeout..
 
@@ -168,18 +168,18 @@ function allMonstersDead(eim) {
 
     eim.setProperty("points", totalp);
 
-    eim.broadcastPlayerMsg(5, "Your team've gained "+num+" points! With a total of "+totalp+".");
-    
+    eim.broadcastPlayerMsg(5, "Your team've gained " + num + " points! With a total of " + totalp + ".");
+
     eim.saveBossQuest(num);
 
     if (mobnum < monster.length) {
-	eim.broadcastPlayerMsg(6, "Prepare! The next boss will appear in a glimpse of an eye!");
+        eim.broadcastPlayerMsg(6, "Prepare! The next boss will appear in a glimpse of an eye!");
     } else {
-	eim.saveBossQuest(1200000);
-	eim.saveNX(850000);
-	eim.broadcastPlayerMsg(5, "Your team've beaten the HELL mode and have gained an extra 1,200,000 points and extra 850,000 Cash!");
-	eim.giveAchievement(22);
-	}
+        eim.saveBossQuest(1200000);
+        eim.saveNX(850000);
+        eim.broadcastPlayerMsg(5, "Your team've beaten the HELL mode and have gained an extra 1,200,000 points and extra 850,000 Cash!");
+        eim.giveAchievement(22);
+    }
 // When invoking unregisterMonster(MapleMonster mob) OR killed
 // Happens only when size = 0
 }
@@ -203,7 +203,7 @@ function playerDisconnected(eim, player) {
 
 function monsterValue(eim, mobid) {
     if (mobid == 8820002 || mobid == 8820015 || mobid == 8820016 || mobid == 8820017 || mobid == 8820018) { //ariel
-	eim.getMapInstance(0).killMonster(8820019);
+        eim.getMapInstance(0).killMonster(8820019);
     }
     return 0;
 // Invoked when a monster that's registered has been killed

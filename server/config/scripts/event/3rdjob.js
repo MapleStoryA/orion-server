@@ -22,7 +22,7 @@ function monsterValue(eim, mobId) {
 function setClassVars(player) {
     var returnMapId;
     var monsterId;
-    var mapId;    
+    var mapId;
     if (player.getJobValue().equals(MapleJob.FP_WIZARD) ||
         player.getJobValue().equals(MapleJob.IL_WIZARD) ||
         player.getJobValue().equals(MapleJob.CLERIC)) {
@@ -66,7 +66,7 @@ function playerEntry(eim, player) {
     var map = eim.getMapFactory().getMap(mapId, false, false);
     var fightMap = eim.getMapFactory().getMap(mapId + 1, false, false);
     map.toggleDrops();
-    
+
     player.changeMapScripting(map);
     var mob = MapleLifeFactory.getMonster(monsterId);
     eim.registerMonster(mob);
@@ -119,12 +119,12 @@ function cancelSchedule() {
 
 
 function warpOut(eim) {
-   eim.dispose();
+    eim.dispose();
 }
 
 
 function leftParty(eim, player) {
-    
+
 }
 
 

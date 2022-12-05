@@ -9,6 +9,6 @@ Version 1.0 - Script Done.(11/6/2010)
 */
 
 function start() {
-	cm.sendStorage();
-	cm.dispose();
+    cm.sendStorage();
+    cm.dispose();
 }

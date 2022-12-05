@@ -1,6 +1,6 @@
 /**
-	Warrior Job Instructor - Warrior's Rocky Mountain (108000300)
-**/
+ Warrior Job Instructor - Warrior's Rocky Mountain (108000300)
+ **/
 
 var status = 0;
 
@@ -11,22 +11,22 @@ function start() {
 
 function action(mode, type, selection) {
     if (mode == 1)
-	status++;
+        status++;
     else
-	status--;
+        status--;
     if (status == 0) {
-	if (cm.haveItem(4031013,30)) {
-	    cm.removeAll(4031013);
-	    cm.completeQuest(100004);
-	    cm.forceStartQuest(100005);
-	    cm.sendOk("You're a true hero! Take this and Dances with Balrog will acknowledge you.");
-	} else {
-	    cm.sendOk("You will have to collect me #b30 #t4031013##k. Good luck.")
-	    cm.dispose();
-	}
+        if (cm.haveItem(4031013, 30)) {
+            cm.removeAll(4031013);
+            cm.completeQuest(100004);
+            cm.forceStartQuest(100005);
+            cm.sendOk("You're a true hero! Take this and Dances with Balrog will acknowledge you.");
+        } else {
+            cm.sendOk("You will have to collect me #b30 #t4031013##k. Good luck.")
+            cm.dispose();
+        }
     } else if (status == 1) {
-	cm.gainItem(4031012, 1);
-	cm.warp(102020300, 0);
-	cm.dispose();
+        cm.gainItem(4031012, 1);
+        cm.warp(102020300, 0);
+        cm.dispose();
     }
 }	

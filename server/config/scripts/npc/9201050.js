@@ -20,24 +20,22 @@ function action(mode, type, selection) {
         else
             status--;
         if (status == 0 && mode == 1) {
-            if (cm.getQuestStatus(4900).equals(MapleQuestStatus.Status.NOT_STARTED)){
+            if (cm.getQuestStatus(4900).equals(MapleQuestStatus.Status.NOT_STARTED)) {
                 var selStr = "What up! Name's Icebyrd Slimm, mayor of New Leaf City! Happy to see you accepted my invite. So, what can I do for you?#b"
-                var info = new Array("What is this place?","Who is Professor Foxwit?","What's a Foxwit Door?","Where are the MesoGears?","What is the Krakian Jungle?","What's a Gear Portal?","What do the street signs mean?","What's the deal with Jack Masque?","Lita Lawless looks like a tough cookie, what's her story?","When will new boroughs open up in the city?","I want to take the quiz!");
+                var info = new Array("What is this place?", "Who is Professor Foxwit?", "What's a Foxwit Door?", "Where are the MesoGears?", "What is the Krakian Jungle?", "What's a Gear Portal?", "What do the street signs mean?", "What's the deal with Jack Masque?", "Lita Lawless looks like a tough cookie, what's her story?", "When will new boroughs open up in the city?", "I want to take the quiz!");
                 for (var i = 0; i < info.length; i++)
                     selStr += "\r\n#L" + i + "# " + info[i] + "#l";
                 cm.sendSimple(selStr);
-            }
-            else if (cm.getQuestStatus(4911).equals(MapleQuestStatus.Status.COMPLETED)){
+            } else if (cm.getQuestStatus(4911).equals(MapleQuestStatus.Status.COMPLETED)) {
                 cm.sendNext("Good job! You've solved all of my questions about NLC. Enjoy of your trip!");
                 cm.dispose();
                 return;
-            }
-            else {
+            } else {
                 cm.sendNext("Hey, pay attention, I'm trying to quiz you on another question!");
                 cm.dispose();
                 return;
             }
-        } else if(status == 1 && cm.getQuestStatus(4900).equals(MapleQuestStatus.Status.NOT_STARTED)) {
+        } else if (status == 1 && cm.getQuestStatus(4900).equals(MapleQuestStatus.Status.NOT_STARTED)) {
             switch (selection) {
                 case 0:
                     cm.sendNext("I've always dreamed of building a city. Not just any city, but one where everyone was welcome. I used to live in Kerning City, so I decided to see if I could create a city. As I went along in finding the means to do so, I encountered many people, some of whom I've come to regard as friends. Like Professor Foxwit-he's our resident genius; saved him from a group of man-eating plants. Jack Masque is an old hunting buddy from Amoria-almost too smooth of a talker for his own good. Lita and I are old friends from Kerning City-she's saved me a few times with that weapon of hers; so I figured she was a perfect choice for Town Sheriff. It took a bit of persuasion, but she came to believe her destiny lies here. About our resident explorer, Barricade came searching for something; he agreed to bring whatever he found to the museum. I'd heard stories about him and his brother when I was still in Kerning City. And Elpam...well, let's just say he's not from around here. At all. We've spoken before, and he seems to mean well, so I've allowed him to stay. I just realized that I've rambled quite a bit! What else would you like to know?");
@@ -83,8 +81,7 @@ function action(mode, type, selection) {
                     if (cm.getLevel() >= minlevel) {
                         cm.sendNext("No problem. I'll give you something nice if you answer them correctly!");
                         cm.startQuest(4900);
-                    }
-                    else
+                    } else
                         cm.sendNext("Eager, are we? How about you explore a bit more before I let you take the quiz?");
                     cm.dispose();
                     break;

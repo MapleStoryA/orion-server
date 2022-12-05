@@ -54,7 +54,7 @@ function setup() {
 function playerEntry(eim, player) {
     var map = eim.getMapInstance(809050000);
     player.changeMap(map, map.getPortal(0));
-	
+
 }
 
 function playerDead(eim, player) {
@@ -64,8 +64,7 @@ function playerDead(eim, player) {
             for (var i = 0; i < party.size(); i++)
                 playerExit(eim, party.get(i));
             eim.dispose();
-        }
-        else
+        } else
             playerExit(eim, player);
     }
 }
@@ -80,8 +79,7 @@ function playerDisconnected(eim, player) {
             else
                 playerExit(eim, party.get(i));
         eim.dispose();
-    }
-    else
+    } else
         removePlayer(eim, player);
 }
 
@@ -144,5 +142,5 @@ function timeOut() {
 }
 
 function playerRevive(eim, player) {
-     
+
 }

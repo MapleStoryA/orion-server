@@ -9,11 +9,11 @@ var monster = new Array(
     9500392, // Ravana HARD
     8500001, // Papulatus
     8220003, // Lev
-	9300517, // dodo
-	9300518, // lilynouch
-	9300519, // lyka
-	9305139 // final panda
-    );
+    9300517, // dodo
+    9300518, // lilynouch
+    9300519, // lyka
+    9305139 // final panda
+);
 
 function init() {
 // After loading, ChannelServer
@@ -37,7 +37,7 @@ function setup(partyid) {
 
 function beginQuest(eim) { // Custom function
     if (eim != null) {
-    	eim.startEventTimer(5000); // After 5 seconds -> scheduledTimeout()
+        eim.startEventTimer(5000); // After 5 seconds -> scheduledTimeout()
     }
 }
 
@@ -46,75 +46,75 @@ function monsterSpawn(eim) { // Custom function
     var mob = em.getMonster(monsterid);
 
     switch (monsterid) {
-	case 8180000:
-	case 8180001: //Manon Griffey
-	    var modified = em.newMonsterStats();
-	    modified.setOExp(mob.getMobExp() * 8);
-	    modified.setOHp(mob.getMobMaxHp() * 4);
-	    modified.setOMp(mob.getMobMaxMp() * 1.5);
+        case 8180000:
+        case 8180001: //Manon Griffey
+            var modified = em.newMonsterStats();
+            modified.setOExp(mob.getMobExp() * 8);
+            modified.setOHp(mob.getMobMaxHp() * 4);
+            modified.setOMp(mob.getMobMaxMp() * 1.5);
 
-	    mob.setOverrideStats(modified);
-	    break;
-	case 4130103: // Rombot
-	    var modified = em.newMonsterStats();
-	    modified.setOExp(mob.getMobExp() * 5);
-	    modified.setOHp(mob.getMobMaxHp() * 8);
-	    modified.setOMp(mob.getMobMaxMp() * 1.5);
+            mob.setOverrideStats(modified);
+            break;
+        case 4130103: // Rombot
+            var modified = em.newMonsterStats();
+            modified.setOExp(mob.getMobExp() * 5);
+            modified.setOHp(mob.getMobMaxHp() * 8);
+            modified.setOMp(mob.getMobMaxMp() * 1.5);
 
-	    mob.setOverrideStats(modified);
-	    break;
-	case 8220003: // Lev
-	    var modified = em.newMonsterStats();
-	    modified.setOExp(mob.getMobExp() * 5);
-	    modified.setOHp(mob.getMobMaxHp() * 3);
-	    modified.setOMp(mob.getMobMaxMp() * 1.5);
+            mob.setOverrideStats(modified);
+            break;
+        case 8220003: // Lev
+            var modified = em.newMonsterStats();
+            modified.setOExp(mob.getMobExp() * 5);
+            modified.setOHp(mob.getMobMaxHp() * 3);
+            modified.setOMp(mob.getMobMaxMp() * 1.5);
 
-	    mob.setOverrideStats(modified);
-	    break;
-	case 9300119: // Lord Pirate
-	case 9300152: // Angry Frankenlloyd
-	case 9400549: // Headless Horseman
-	    var modified = em.newMonsterStats();
-	    modified.setOExp(mob.getMobExp() * 3);
-	    modified.setOHp(mob.getMobMaxHp() * 3);
-	    modified.setOMp(mob.getMobMaxMp() * 1.5);
+            mob.setOverrideStats(modified);
+            break;
+        case 9300119: // Lord Pirate
+        case 9300152: // Angry Frankenlloyd
+        case 9400549: // Headless Horseman
+            var modified = em.newMonsterStats();
+            modified.setOExp(mob.getMobExp() * 3);
+            modified.setOHp(mob.getMobMaxHp() * 3);
+            modified.setOMp(mob.getMobMaxMp() * 1.5);
 
-	    mob.setOverrideStats(modified);
-	    break;
-	case 9500392: // Ravana HARD
-	case 9300028: // Ergoth
-	    var modified = em.newMonsterStats();
-	    modified.setOExp(mob.getMobExp() * 3);
-	    modified.setOHp(mob.getMobMaxHp() * 3);
-	    modified.setOMp(mob.getMobMaxMp() * 1.5);
+            mob.setOverrideStats(modified);
+            break;
+        case 9500392: // Ravana HARD
+        case 9300028: // Ergoth
+            var modified = em.newMonsterStats();
+            modified.setOExp(mob.getMobExp() * 3);
+            modified.setOHp(mob.getMobMaxHp() * 3);
+            modified.setOMp(mob.getMobMaxMp() * 1.5);
 
-	    mob.setOverrideStats(modified);
-	    break;
-	case 8500001: // Papulatus
-	    var modified = em.newMonsterStats();
-	    modified.setOExp(mob.getMobExp() * 0.3); //2nd body gives exp as well
-	    modified.setOHp(mob.getMobMaxHp() * 2.5);
-	    modified.setOMp(mob.getMobMaxMp() * 1.5);
+            mob.setOverrideStats(modified);
+            break;
+        case 8500001: // Papulatus
+            var modified = em.newMonsterStats();
+            modified.setOExp(mob.getMobExp() * 0.3); //2nd body gives exp as well
+            modified.setOHp(mob.getMobMaxHp() * 2.5);
+            modified.setOMp(mob.getMobMaxMp() * 1.5);
 
-	    mob.setOverrideStats(modified);
-	    break;
-	case 9400014: // Black Crow
-	case 9300039: // Papa Pixie
-	    var modified = em.newMonsterStats();
-	    modified.setOExp(mob.getMobExp() * 1.5);
-	    modified.setOHp(mob.getMobMaxHp() * 1.5);
-	    modified.setOMp(mob.getMobMaxMp() * 1.5);
+            mob.setOverrideStats(modified);
+            break;
+        case 9400014: // Black Crow
+        case 9300039: // Papa Pixie
+            var modified = em.newMonsterStats();
+            modified.setOExp(mob.getMobExp() * 1.5);
+            modified.setOHp(mob.getMobMaxHp() * 1.5);
+            modified.setOMp(mob.getMobMaxMp() * 1.5);
 
-	    mob.setOverrideStats(modified);
-	    break;
-	case 8210011: // Ani 2
-	    var modified = em.newMonsterStats();
-	    modified.setOExp(mob.getMobExp() * 2.2);
-	    modified.setOHp(mob.getMobMaxHp() * 1.1);
-	    modified.setOMp(mob.getMobMaxMp() * 0.8);
+            mob.setOverrideStats(modified);
+            break;
+        case 8210011: // Ani 2
+            var modified = em.newMonsterStats();
+            modified.setOExp(mob.getMobExp() * 2.2);
+            modified.setOHp(mob.getMobMaxHp() * 1.1);
+            modified.setOMp(mob.getMobMaxMp() * 0.8);
 
-	    mob.setOverrideStats(modified);
-	    break;
+            mob.setOverrideStats(modified);
+            break;
     }
     eim.registerMonster(mob);
 
@@ -129,19 +129,19 @@ function playerEntry(eim, player) {
 
 function changedMap(eim, player, mapid) {
     if (mapid != eventmapid) {
-	eim.unregisterPlayer(player);
+        eim.unregisterPlayer(player);
 
-	eim.disposeIfPlayerBelow(0, 0);
+        eim.disposeIfPlayerBelow(0, 0);
     }
 }
 
 function scheduledTimeout(eim) {
     var num = parseInt(eim.getProperty("monster_number"));
     if (num < monster.length) {
-	monsterSpawn(eim);
-	eim.setProperty("monster_number", num + 1);
+        monsterSpawn(eim);
+        eim.setProperty("monster_number", num + 1);
     } else {
-	eim.disposeIfPlayerBelow(100, returnmap);
+        eim.disposeIfPlayerBelow(100, returnmap);
     }
 // When event timeout..
 
@@ -160,15 +160,15 @@ function allMonstersDead(eim) {
 
     eim.setProperty("points", totalp);
 
-    eim.broadcastPlayerMsg(5, "Your team've gained "+num+" points! With a total of "+totalp+".");
+    eim.broadcastPlayerMsg(5, "Your team've gained " + num + " points! With a total of " + totalp + ".");
 
     eim.saveBossQuest(num);
-    
+
     if (mobnum < monster.length) {
-	eim.broadcastPlayerMsg(6, "Prepare! The next boss will appear in a glimpse of an eye!");
-	} else {
-	eim.saveBossQuest(30000);
-	eim.broadcastPlayerMsg(5, "Your team've beaten the MED mode and have gained an extra 30,000 points!");
+        eim.broadcastPlayerMsg(6, "Prepare! The next boss will appear in a glimpse of an eye!");
+    } else {
+        eim.saveBossQuest(30000);
+        eim.broadcastPlayerMsg(5, "Your team've beaten the MED mode and have gained an extra 30,000 points!");
     }
 // When invoking unregisterMonster(MapleMonster mob) OR killed
 // Happens only when size = 0

@@ -5,7 +5,7 @@ var maxLevel = Array(30, 55, 60, 65, 70, 80, 85, 95, 105, 110, 120, 130, 135, 14
 function start() {
     var selStr = "Which dungeon would you like to enter?\r\n\r\n#b";
     for (var i = 0; i < maps.length; i++) {
-	selStr += "#L" + i + "##m" + maps[i] + "# (Monsters Lv." + minLevel[i] + " - " + maxLevel[i] + ")#l\r\n";
+        selStr += "#L" + i + "##m" + maps[i] + "# (Monsters Lv." + minLevel[i] + " - " + maxLevel[i] + ")#l\r\n";
     }
     cm.sendSimple(selStr);
 }
@@ -13,27 +13,27 @@ function start() {
 function action(mode, type, selection) {
     if (mode == 1 && selection >= 0 && selection < maps.length) {
         if (cm.getParty() == null || !cm.isLeader()) {
-	    cm.sendOk("Please get your leader to walk through.");
-	} else {
-	    var party = cm.getParty().getMembers().iterator();
-	    var next = true;
-	    while (party.hasNext()) {
-		var cPlayer = party.next();
-		if (cPlayer.getLevel() < minLevel[selection] || cPlayer.getLevel() > maxLevel[selection] || cPlayer.getMapid() != cm.getMapId()) {
-		    next = false;
-		} 
-	    }
-	    if (!next) {
-		cm.sendOk("Please make sure all party members are in the map and have correct level requirements.");
-	    } else {
-		var em = cm.getEventManager("MonsterPark");
-		if (em == null || em.getInstance("MonsterPark" + maps[selection]) != null) {
-		    cm.sendOk("Someone is already attempting Monster Park.");
-		} else {
-		    em.startInstance_Party("" + maps[selection], cm.getPlayer());
-		}
-	    }
-	}
+            cm.sendOk("Please get your leader to walk through.");
+        } else {
+            var party = cm.getParty().getMembers().iterator();
+            var next = true;
+            while (party.hasNext()) {
+                var cPlayer = party.next();
+                if (cPlayer.getLevel() < minLevel[selection] || cPlayer.getLevel() > maxLevel[selection] || cPlayer.getMapid() != cm.getMapId()) {
+                    next = false;
+                }
+            }
+            if (!next) {
+                cm.sendOk("Please make sure all party members are in the map and have correct level requirements.");
+            } else {
+                var em = cm.getEventManager("MonsterPark");
+                if (em == null || em.getInstance("MonsterPark" + maps[selection]) != null) {
+                    cm.sendOk("Someone is already attempting Monster Park.");
+                } else {
+                    em.startInstance_Party("" + maps[selection], cm.getPlayer());
+                }
+            }
+        }
     }
     cm.dispose();
 }

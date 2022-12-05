@@ -12,7 +12,7 @@ function start() {
     }
     action(1, 0, 0);
 }
- 
+
 function action(mode, type, selection) {
     if (mode == 1) {
         status++;
@@ -20,8 +20,8 @@ function action(mode, type, selection) {
         status--;
     }
     if (mode == -1) {
-	cm.dispose();
-	return;
+        cm.dispose();
+        return;
     }
     if (status == 0) {
         cm.sendSimple("What would you like to do? If you have never participated in the Monster Carnival, you'll need to know a thing or two about it before joining.\r\n#b#L0# Go to the Monster Carnival Field.#l");
@@ -29,10 +29,10 @@ function action(mode, type, selection) {
         switch (selection) {
             case 0: {
                 var level = cm.getPlayerStat("LVL");
-                if ( level < 30) {
+                if (level < 30) {
                     cm.sendOk("I'm sorry, but only the users Level 30+ may participate in Monster Carnival.");
                 } else {
-                    cm.warp( 980000000, "st00" );
+                    cm.warp(980000000, "st00");
                 }
                 cm.dispose();
             }
@@ -40,7 +40,7 @@ function action(mode, type, selection) {
                 cm.dispose();
                 break;
             }
-            break;
+                break;
         }
     } else if (status == 100) {
         var carnivalparty = cm.getCarnivalParty();
@@ -57,7 +57,7 @@ function action(mode, type, selection) {
             rank = "D";
             exp = 7500;
         }
-	cm.getPlayer().endPartyQuest(1301);
+        cm.getPlayer().endPartyQuest(1301);
         if (carnivalparty.isWinner()) {
             cm.sendOk("You won the battle, despite your amazing performance. Victory is yours. \r\n#bMonster Carnival Rank : " + rank);
         } else {
@@ -65,23 +65,23 @@ function action(mode, type, selection) {
         }
     } else if (status == 101) {
         var carnivalparty = cm.getCarnivalParty();
-	var los = parseInt(cm.getPlayer().getOneInfo(1301, "lose"));
-	var vic = parseInt(cm.getPlayer().getOneInfo(1301, "vic"));
+        var los = parseInt(cm.getPlayer().getOneInfo(1301, "lose"));
+        var vic = parseInt(cm.getPlayer().getOneInfo(1301, "vic"));
         if (carnivalparty.isWinner()) {
-	    vic++;
-	    cm.getPlayer().updateOneInfo(1301, "vic", "" + vic);
+            vic++;
+            cm.getPlayer().updateOneInfo(1301, "vic", "" + vic);
             carnivalparty.removeMember(cm.getChar());
             cm.gainExpR(exp);
         } else {
-	    los++;
-	    cm.getPlayer().updateOneInfo(1301, "lose", "" + los);
+            los++;
+            cm.getPlayer().updateOneInfo(1301, "lose", "" + los);
             carnivalparty.removeMember(cm.getChar());
             cm.gainExpR(exp / 2);
 
         }
-	cm.getPlayer().updateOneInfo(1301, "VR", "" + (java.lang.Math.ceil((vic * 100) / los)));
-            cm.warp(980000000);
-            cm.dispose();
+        cm.getPlayer().updateOneInfo(1301, "VR", "" + (java.lang.Math.ceil((vic * 100) / los)));
+        cm.warp(980000000);
+        cm.dispose();
     }
 
 }
