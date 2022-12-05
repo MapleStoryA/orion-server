@@ -7,9 +7,9 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 public class QuestSummonHandler extends AbstractMaplePacketHandler {
 
-  @Override
-  public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-    c.getSession().write(MaplePacketCreator.sendHint("It supposed to talk to me, right?", 100, 100));
-  }
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        c.getSession().write(MaplePacketCreator.sendHint("It supposed to talk to me, right?", 100, 100));
+    }
 
 }

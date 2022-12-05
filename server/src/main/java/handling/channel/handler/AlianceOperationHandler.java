@@ -7,9 +7,9 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 public class AlianceOperationHandler extends AbstractMaplePacketHandler {
 
-  @Override
-  public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-    AllianceHandlerUtils.HandleAlliance(slea, c, false);
-  }
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        AllianceHandlerUtils.HandleAlliance(slea, c, false);
+    }
 
 }

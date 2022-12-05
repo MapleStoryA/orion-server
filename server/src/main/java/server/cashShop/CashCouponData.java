@@ -23,24 +23,25 @@ package server.cashShop;
  */
 public class CashCouponData {
 
-  private byte type;
-  private int data, quantity;
+    private final byte type;
+    private final int data;
+    private final int quantity;
 
-  public CashCouponData(byte type, int data, int quantity) {
-    this.type = type;
-    this.data = data;
-    this.quantity = quantity;
-  }
+    public CashCouponData(byte type, int data, int quantity) {
+        this.type = type;
+        this.data = data;
+        this.quantity = quantity;
+    }
 
-  public int getData() {
-    return data;
-  }
+    public int getData() {
+        return data;
+    }
 
-  public int getQuantity() {
-    return quantity;
-  }
+    public int getQuantity() {
+        return quantity;
+    }
 
-  public byte getType() {
-    return type;
-  }
+    public byte getType() {
+        return type;
+    }
 }

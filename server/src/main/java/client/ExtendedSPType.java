@@ -11,14 +11,14 @@ package client;
  * We need to think about forward compatibility!
  */
 public enum ExtendedSPType {
-  EVAN, RESISTANCE;
+    EVAN, RESISTANCE;
 
-  public static ExtendedSPType getFromJobID(int jobID) {
-    if (jobID == 2001 || jobID / 100 == 22) {
-      return EVAN;
-    } else if (jobID / 1000 == 3) {
-      return RESISTANCE;
+    public static ExtendedSPType getFromJobID(int jobID) {
+        if (jobID == 2001 || jobID / 100 == 22) {
+            return EVAN;
+        } else if (jobID / 1000 == 3) {
+            return RESISTANCE;
+        }
+        return null;
     }
-    return null;
-  }
 }

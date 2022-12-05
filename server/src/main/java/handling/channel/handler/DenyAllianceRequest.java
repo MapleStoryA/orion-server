@@ -7,10 +7,10 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 public class DenyAllianceRequest extends AbstractMaplePacketHandler {
 
-  @Override
-  public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-    AllianceHandlerUtils.HandleAlliance(slea, c, true);
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        AllianceHandlerUtils.HandleAlliance(slea, c, true);
 
-  }
+    }
 
 }

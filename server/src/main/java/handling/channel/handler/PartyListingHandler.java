@@ -7,11 +7,11 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 public class PartyListingHandler extends AbstractMaplePacketHandler {
 
-  @Override
-  public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-    c.getPlayer().dropMessage(1, "The Party Listing is currently unavailable.");
-    c.getSession().write(MaplePacketCreator.enableActions());
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        c.getPlayer().dropMessage(1, "The Party Listing is currently unavailable.");
+        c.getSession().write(MaplePacketCreator.enableActions());
 
-  }
+    }
 
 }

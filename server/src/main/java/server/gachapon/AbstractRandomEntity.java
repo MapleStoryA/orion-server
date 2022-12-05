@@ -2,55 +2,55 @@ package server.gachapon;
 
 public class AbstractRandomEntity {
 
-  private int idreward;
+    private int idreward;
 
-  private int id;
+    private final int id;
 
-  private int quantity;
+    private final int quantity;
 
-  /**
-   * 100000 = 100%
-   * 10000 = 10 %
-   * 1000 = 1 %
-   * 500  = 0.5 %
-   * 50   = 0.05 %
-   */
-  private double chance;
+    /**
+     * 100000 = 100%
+     * 10000 = 10 %
+     * 1000 = 1 %
+     * 500  = 0.5 %
+     * 50   = 0.05 %
+     */
+    private final double chance;
 
-  private String description;
+    private final String description;
 
-  public AbstractRandomEntity(int idreward, int id, int quantity, double chance, String description) {
-    this.id = id;
-    this.chance = chance;
-    this.quantity = quantity;
-    this.description = description;
-  }
+    public AbstractRandomEntity(int idreward, int id, int quantity, double chance, String description) {
+        this.id = id;
+        this.chance = chance;
+        this.quantity = quantity;
+        this.description = description;
+    }
 
-  public int getId() {
-    return id;
-  }
+    public int getId() {
+        return id;
+    }
 
-  public int getQuantity() {
-    return quantity;
-  }
+    public int getQuantity() {
+        return quantity;
+    }
 
-  public double getChance() {
-    return chance;
-  }
+    public double getChance() {
+        return chance;
+    }
 
-  public String getDescription() {
-    return description;
-  }
+    public String getDescription() {
+        return description;
+    }
 
-  public int getIdreward() {
-    return idreward;
-  }
+    public int getIdreward() {
+        return idreward;
+    }
 
-  @Override
-  public String toString() {
-    return "AbstractRandomEntity [id=" + id + ", quantity=" + quantity + ", chance=" + chance + ", description="
-        + description + "]";
-  }
+    @Override
+    public String toString() {
+        return "AbstractRandomEntity [id=" + id + ", quantity=" + quantity + ", chance=" + chance + ", description="
+                + description + "]";
+    }
 
 
 }

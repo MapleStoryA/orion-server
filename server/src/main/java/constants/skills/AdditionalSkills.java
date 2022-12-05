@@ -23,11 +23,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package constants.skills;
 
 public class AdditionalSkills {
-  public static final int INSTANT_DEATH = 90000000;
-  public static final int KNOCK_DOWN = 90001001;
-  public static final int SLOW = 90001002;
-  public static final int POISON = 90001003;
-  public static final int DARKNESS = 90001004;
-  public static final int SEAL = 90001005;
-  public static final int FREEZE = 90001006;
+    public static final int INSTANT_DEATH = 90000000;
+    public static final int KNOCK_DOWN = 90001001;
+    public static final int SLOW = 90001002;
+    public static final int POISON = 90001003;
+    public static final int DARKNESS = 90001004;
+    public static final int SEAL = 90001005;
+    public static final int FREEZE = 90001006;
 }

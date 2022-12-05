@@ -34,83 +34,83 @@ import java.io.RandomAccessFile;
  */
 public class RandomAccessByteStream implements SeekableInputStreamBytestream {
 
-  private final RandomAccessFile raf;
-  private long read = 0;
+    private final RandomAccessFile raf;
+    private long read = 0;
 
-  /**
-   * Class constructor. Wraps this object around a RandomAccessFile.
-   *
-   * @param raf The RandomAccessFile instance to wrap this around.
-   * @see java.io.RandomAccessFile
-   */
-  public RandomAccessByteStream(final RandomAccessFile raf) {
-    super();
-    this.raf = raf;
-  }
-
-  /**
-   * Reads a byte off of the file.
-   *
-   * @return The byte read as an integer.
-   */
-  @Override
-  public final int readByte() {
-    int temp;
-    try {
-      temp = raf.read();
-      if (temp == -1) {
-        throw new RuntimeException("EOF");
-      }
-      read++;
-      return temp;
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+    /**
+     * Class constructor. Wraps this object around a RandomAccessFile.
+     *
+     * @param raf The RandomAccessFile instance to wrap this around.
+     * @see java.io.RandomAccessFile
+     */
+    public RandomAccessByteStream(final RandomAccessFile raf) {
+        super();
+        this.raf = raf;
     }
-  }
 
-  /**
-   * @see net.sf.odinms.tools.data.input.SeekableInputStreamBytestream#seek(long)
-   */
-  @Override
-  public final void seek(long offset) throws IOException {
-    raf.seek(offset);
-  }
-
-  /**
-   * @see net.sf.odinms.tools.data.input.SeekableInputStreamBytestream#getPosition()
-   */
-  @Override
-  public final long getPosition() throws IOException {
-    return raf.getFilePointer();
-  }
-
-  /**
-   * Get the number of bytes read.
-   *
-   * @return The number of bytes read as a long integer.
-   */
-  @Override
-  public final long getBytesRead() {
-    return read;
-  }
-
-  /**
-   * Get the number of bytes available for reading.
-   *
-   * @return The number of bytes available for reading as a long integer.
-   */
-  @Override
-  public final long available() {
-    try {
-      return raf.length() - raf.getFilePointer();
-    } catch (IOException e) {
-      System.err.println("ERROR" + e);
-      return 0;
+    /**
+     * Reads a byte off of the file.
+     *
+     * @return The byte read as an integer.
+     */
+    @Override
+    public final int readByte() {
+        int temp;
+        try {
+            temp = raf.read();
+            if (temp == -1) {
+                throw new RuntimeException("EOF");
+            }
+            read++;
+            return temp;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
-  }
 
-  @Override
-  public final String toString(final boolean b) { //?
-    return toString();
-  }
+    /**
+     * @see net.sf.odinms.tools.data.input.SeekableInputStreamBytestream#seek(long)
+     */
+    @Override
+    public final void seek(long offset) throws IOException {
+        raf.seek(offset);
+    }
+
+    /**
+     * @see net.sf.odinms.tools.data.input.SeekableInputStreamBytestream#getPosition()
+     */
+    @Override
+    public final long getPosition() throws IOException {
+        return raf.getFilePointer();
+    }
+
+    /**
+     * Get the number of bytes read.
+     *
+     * @return The number of bytes read as a long integer.
+     */
+    @Override
+    public final long getBytesRead() {
+        return read;
+    }
+
+    /**
+     * Get the number of bytes available for reading.
+     *
+     * @return The number of bytes available for reading as a long integer.
+     */
+    @Override
+    public final long available() {
+        try {
+            return raf.length() - raf.getFilePointer();
+        } catch (IOException e) {
+            System.err.println("ERROR" + e);
+            return 0;
+        }
+    }
+
+    @Override
+    public final String toString(final boolean b) { //?
+        return toString();
+    }
 }

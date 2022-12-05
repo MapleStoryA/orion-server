@@ -7,13 +7,13 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 public class UpdateQuestHandler extends AbstractMaplePacketHandler {
 
-  @Override
-  public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-    final MapleQuest quest = MapleQuest.getInstance(slea.readShort());
-    if (quest != null) {
-      c.getPlayer().updateQuest(c.getPlayer().getQuest(quest), true);
-    }
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        final MapleQuest quest = MapleQuest.getInstance(slea.readShort());
+        if (quest != null) {
+            c.getPlayer().updateQuest(c.getPlayer().getQuest(quest), true);
+        }
 
-  }
+    }
 
 }

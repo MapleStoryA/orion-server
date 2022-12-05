@@ -33,37 +33,37 @@ import java.util.concurrent.locks.Lock;
 
 public class MaplePacketEncoder implements ProtocolEncoder {
 
-  @Override
-  public void encode(final IoSession session, final Object message, final ProtocolEncoderOutput out)
-      throws Exception {
-    final MapleClient client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
+    @Override
+    public void encode(final IoSession session, final Object message, final ProtocolEncoderOutput out)
+            throws Exception {
+        final MapleClient client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
 
-    if (client != null) {
-      final MapleAESOFB send_crypto = client.getSendCrypto();
+        if (client != null) {
+            final MapleAESOFB send_crypto = client.getSendCrypto();
 
-      final byte[] inputInitialPacket = ((byte[]) message);
-      final byte[] unencrypted = new byte[inputInitialPacket.length];
-      System.arraycopy(inputInitialPacket, 0, unencrypted, 0, inputInitialPacket.length);
-      final byte[] ret = new byte[unencrypted.length + 4];
-      final Lock mutex = client.getLock();
-      mutex.lock();
-      try {
-        final byte[] header = send_crypto.getPacketHeader(unencrypted.length);
-        MapleCustomEncryption.encryptData(unencrypted);
-        send_crypto.crypt(unencrypted);
-        System.arraycopy(header, 0, ret, 0, 4);
-        System.arraycopy(unencrypted, 0, ret, 4, unencrypted.length);
-        session.write(ByteBuffer.wrap(ret));
-      } finally {
-        mutex.unlock();
-      }
-    } else { // no client object created yet, send unencrypted (hello)
-      out.write(ByteBuffer.wrap(((byte[]) message)));
+            final byte[] inputInitialPacket = ((byte[]) message);
+            final byte[] unencrypted = new byte[inputInitialPacket.length];
+            System.arraycopy(inputInitialPacket, 0, unencrypted, 0, inputInitialPacket.length);
+            final byte[] ret = new byte[unencrypted.length + 4];
+            final Lock mutex = client.getLock();
+            mutex.lock();
+            try {
+                final byte[] header = send_crypto.getPacketHeader(unencrypted.length);
+                MapleCustomEncryption.encryptData(unencrypted);
+                send_crypto.crypt(unencrypted);
+                System.arraycopy(header, 0, ret, 0, 4);
+                System.arraycopy(unencrypted, 0, ret, 4, unencrypted.length);
+                session.write(ByteBuffer.wrap(ret));
+            } finally {
+                mutex.unlock();
+            }
+        } else { // no client object created yet, send unencrypted (hello)
+            out.write(ByteBuffer.wrap(((byte[]) message)));
+        }
     }
-  }
 
-  @Override
-  public void dispose(IoSession session) throws Exception {
-    // nothing to do
-  }
+    @Override
+    public void dispose(IoSession session) throws Exception {
+        // nothing to do
+    }
 }

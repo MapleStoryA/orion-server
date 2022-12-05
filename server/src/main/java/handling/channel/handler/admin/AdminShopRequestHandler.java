@@ -11,8 +11,8 @@ import tools.data.input.SeekableLittleEndianAccessor;
  */
 public class AdminShopRequestHandler extends AbstractMaplePacketHandler {
 
-  @Override
-  public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-    c.enableActions();
-  }
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        c.enableActions();
+    }
 }

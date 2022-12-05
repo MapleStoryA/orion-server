@@ -23,7 +23,7 @@ package handling;
 
 import client.MapleClient;
 import constants.ServerConstants;
-import constants.ServerEnvironment;
+import server.config.ServerEnvironment;
 import handling.cashshop.CashShopServer;
 import handling.cashshop.handler.CashShopOperationUtils;
 import handling.channel.ChannelServer;
@@ -51,217 +51,216 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class MapleServerHandler extends IoHandlerAdapter {
 
-  public static final boolean Log_Packets = true;
-  private int channel = -1;
-  private boolean cs;
-  private boolean login;
-  private final List<String> BlockedIP = new ArrayList<String>();
-  private final Map<String, Pair<Long, Byte>> tracker = new ConcurrentHashMap<String, Pair<Long, Byte>>();
+    public static final boolean Log_Packets = true;
+    private int channel = -1;
+    private final boolean cs;
+    private boolean login;
+    private final List<String> BlockedIP = new ArrayList<String>();
+    private final Map<String, Pair<Long, Byte>> tracker = new ConcurrentHashMap<String, Pair<Long, Byte>>();
 
-  private PacketProcessor processor;
+    private final PacketProcessor processor;
 
-  public MapleServerHandler(final int channel, final boolean cs, PacketProcessor processor) {
-    this.channel = channel;
-    this.cs = cs;
-    this.processor = processor;
-  }
-
-  @Override
-  public void messageSent(final IoSession session, final Object message) throws Exception {
-    super.messageSent(session, message);
-  }
-
-  @Override
-  public void exceptionCaught(final IoSession session, final Throwable cause) throws Exception {
-  }
-
-  @Override
-  public void sessionOpened(final IoSession session) throws Exception {
-    // Start of IP checking
-    final String address = session.getRemoteAddress().toString().split(":")[0];
-
-    if (BlockedIP.contains(address)) {
-      session.close();
-      return;
+    public MapleServerHandler(final int channel, final boolean cs, PacketProcessor processor) {
+        this.channel = channel;
+        this.cs = cs;
+        this.processor = processor;
     }
-    final Pair<Long, Byte> track = tracker.get(address);
 
-    byte count;
-    if (track == null) {
-      count = 1;
-    } else {
-      count = track.right;
-
-      final long difference = System.currentTimeMillis() - track.left;
-      if (difference < 2000) { // Less than 2 sec
-        count++;
-      } else if (difference > 20000) { // Over 20 sec
-        count = 1;
-      }
-      if (count >= 10) {
-        BlockedIP.add(address);
-        tracker.remove(address); // Cleanup
-        session.close();
-        return;
-      }
+    @Override
+    public void messageSent(final IoSession session, final Object message) throws Exception {
+        super.messageSent(session, message);
     }
-    tracker.put(address, new Pair<Long, Byte>(System.currentTimeMillis(), count));
-    // End of IP checking.
 
-    if (channel > -1) {
-      if (ChannelServer.getInstance(channel).isShutdown()) {
-        session.close();
-        return;
-      }
-    } else if (cs) {
-      if (CashShopServer.isShutdown()) {
-        session.close();
-        return;
-      }
-    } else {
-      if (LoginServer.isShutdown()) {
-        session.close();
-        return;
-      }
+    @Override
+    public void exceptionCaught(final IoSession session, final Throwable cause) throws Exception {
     }
-    final byte serverRecv[] = new byte[] {70, 114, 122, (byte) Randomizer.nextInt(255)};
-    final byte serverSend[] = new byte[] {82, 48, 120, (byte) Randomizer.nextInt(255)};
-    final byte ivRecv[] = ServerConstants.Use_Fixed_IV ? new byte[] {9, 0, 0x5, 0x5F} : serverRecv;
-    final byte ivSend[] = ServerConstants.Use_Fixed_IV ? new byte[] {1, 0x5F, 4, 0x3F} : serverSend;
 
-    final MapleClient client = new MapleClient(
-        new MapleAESOFB(ivSend, (short) (0xFFFF - ServerConstants.MAPLE_VERSION)), // Sent
-        // Cypher
-        new MapleAESOFB(ivRecv, ServerConstants.MAPLE_VERSION), // Recv
-        // Cypher
-        session);
-    client.setChannel(channel);
+    @Override
+    public void sessionOpened(final IoSession session) throws Exception {
+        // Start of IP checking
+        final String address = session.getRemoteAddress().toString().split(":")[0];
 
-    MaplePacketDecoder.DecoderState decoderState = new MaplePacketDecoder.DecoderState();
-    session.setAttribute(MaplePacketDecoder.DECODER_STATE_KEY, decoderState);
-
-    session.write(
-        LoginPacket.getHello(ServerConstants.MAPLE_VERSION, ServerConstants.Use_Fixed_IV ? serverSend : ivSend,
-            ServerConstants.Use_Fixed_IV ? serverRecv : ivRecv));
-    session.setAttribute(MapleClient.CLIENT_KEY, client);
-    session.setIdleTime(IdleStatus.READER_IDLE, 60);
-    session.setIdleTime(IdleStatus.WRITER_IDLE, 60);
-
-    StringBuilder sb = new StringBuilder();
-    if (channel > -1) {
-      sb.append("[Channel Server] Channel ").append(channel).append(" : ");
-    } else if (cs) {
-      sb.append("[Cash Server]");
-    } else if (login) {
-      sb.append("[Login Server]");
-    } else {
-      return;
-    }
-    sb.append("IoSession opened ").append(address);
-    System.out.println(sb.toString());
-  }
-
-  @Override
-  public void sessionClosed(final IoSession session) throws Exception {
-    final MapleClient client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
-
-    if (client != null) {
-      try {
-        client.disconnect(true, cs);
-      } finally {
-        session.close();
-        session.removeAttribute(MapleClient.CLIENT_KEY);
-
-      }
-    }
-    super.sessionClosed(session);
-  }
-
-  @Override
-  public void messageReceived(final IoSession session, final Object message) {
-    try {
-      final SeekableLittleEndianAccessor slea = new GenericSeekableLittleEndianAccessor(
-          new ByteArrayByteStream((byte[]) message));
-      if (slea.available() < 2) {
-        return;
-      }
-      final short header_num = slea.readShort();
-      final MapleClient c = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
-      MaplePacketHandler packetHandler = processor.getHandler(header_num);
-      if (ServerEnvironment.isDebugEnabled()) {
-        //System.out.println("Received: " + header_num);
-      }
-      if (ServerEnvironment.isDebugEnabled() && packetHandler != null) {
-       // System.out.println("[" + packetHandler.getClass().getSimpleName() + "]");
-      }
-      if (packetHandler != null && packetHandler.validateState(c)) {
-        packetHandler.handlePacket(slea, c);
-        return;
-      }
-      for (final RecvPacketOpcode recv : RecvPacketOpcode.values()) {
-        if (recv.getValue() == header_num) {
-
-          if (!c.isReceiving()) {
+        if (BlockedIP.contains(address)) {
+            session.close();
             return;
-          }
-          if (recv.NeedsChecking()) {
-            if (!c.isLoggedIn()) {
-              return;
+        }
+        final Pair<Long, Byte> track = tracker.get(address);
+
+        byte count;
+        if (track == null) {
+            count = 1;
+        } else {
+            count = track.right;
+
+            final long difference = System.currentTimeMillis() - track.left;
+            if (difference < 2000) { // Less than 2 sec
+                count++;
+            } else if (difference > 20000) { // Over 20 sec
+                count = 1;
             }
-          }
-          handlePacket(recv, slea, c, cs);
-          return;
+            if (count >= 10) {
+                BlockedIP.add(address);
+                tracker.remove(address); // Cleanup
+                session.close();
+                return;
+            }
         }
-      }
-      System.out.println("Received data: " + HexTool.toString((byte[]) message));
-      System.out.println("Data: " + new String((byte[]) message));
+        tracker.put(address, new Pair<Long, Byte>(System.currentTimeMillis(), count));
+        // End of IP checking.
 
-      if (slea.available() == 0) { // we don't want to log headers only
-        return;
-      }
-
-    } catch (Exception e) {
-      FileoutputUtil.outputFileError(FileoutputUtil.PacketEx_Log, e);
-      e.printStackTrace();
-    }
-
-  }
-
-  @Override
-  public void sessionIdle(final IoSession session, final IdleStatus status) throws Exception {
-    final MapleClient client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
-
-    if (client != null) {
-      client.sendPing();
-    }
-    super.sessionIdle(session, status);
-  }
-
-  public static final void handlePacket(final RecvPacketOpcode header, final SeekableLittleEndianAccessor slea,
-                                        final MapleClient c, final boolean cs) throws Exception {
-    switch (header) {
-      case PLAYER_LOGGEDIN:
-        final int playerid = slea.readInt();
-        if (cs) {
-          CashShopOperationUtils.EnterCS(playerid, c);
+        if (channel > -1) {
+            if (ChannelServer.getInstance(channel).isShutdown()) {
+                session.close();
+                return;
+            }
+        } else if (cs) {
+            if (CashShopServer.isShutdown()) {
+                session.close();
+                return;
+            }
         } else {
-          InterServerHandler.Loggedin(playerid, c);
+            if (LoginServer.isShutdown()) {
+                session.close();
+                return;
+            }
         }
-        break;
-      case CHANGE_MAP:
-        if (cs) {
-          CashShopOperationUtils.LeaveCS(slea, c, c.getPlayer());
+        final byte[] serverRecv = new byte[]{70, 114, 122, (byte) Randomizer.nextInt(255)};
+        final byte[] serverSend = new byte[]{82, 48, 120, (byte) Randomizer.nextInt(255)};
+        final byte[] ivRecv = ServerConstants.Use_Fixed_IV ? new byte[]{9, 0, 0x5, 0x5F} : serverRecv;
+        final byte[] ivSend = ServerConstants.Use_Fixed_IV ? new byte[]{1, 0x5F, 4, 0x3F} : serverSend;
+
+        final MapleClient client = new MapleClient(
+                new MapleAESOFB(ivSend, (short) (0xFFFF - ServerConstants.MAPLE_VERSION)), // Sent
+                // Cypher
+                new MapleAESOFB(ivRecv, ServerConstants.MAPLE_VERSION), // Recv
+                // Cypher
+                session);
+        client.setChannel(channel);
+
+        MaplePacketDecoder.DecoderState decoderState = new MaplePacketDecoder.DecoderState();
+        session.setAttribute(MaplePacketDecoder.DECODER_STATE_KEY, decoderState);
+
+        session.write(
+                LoginPacket.getHello(ServerConstants.MAPLE_VERSION, ServerConstants.Use_Fixed_IV ? serverSend : ivSend,
+                        ServerConstants.Use_Fixed_IV ? serverRecv : ivRecv));
+        session.setAttribute(MapleClient.CLIENT_KEY, client);
+        session.setIdleTime(IdleStatus.READER_IDLE, 60);
+        session.setIdleTime(IdleStatus.WRITER_IDLE, 60);
+
+        StringBuilder sb = new StringBuilder();
+        if (channel > -1) {
+            sb.append("[Channel Server] Channel ").append(channel).append(" : ");
+        } else if (cs) {
+            sb.append("[Cash Server]");
+        } else if (login) {
+            sb.append("[Login Server]");
         } else {
-          PlayerHandler.ChangeMap(slea, c, c.getPlayer());
+            return;
         }
-        break;
-      default:
-        if (slea.available() >= 0) { // we don't want to log headers only
-          FileoutputUtil.logPacket(String.valueOf(header), "[" + header.toString() + "] " + slea.toString());
-          // System.out.println("[UNHANDLED] Recv [" + header.toString() +
-          // "] found");
-        }
-        break;
+        sb.append("IoSession opened ").append(address);
+        System.out.println(sb);
     }
-  }
+
+    @Override
+    public void sessionClosed(final IoSession session) throws Exception {
+        final MapleClient client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
+
+        if (client != null) {
+            try {
+                client.disconnect(true, cs);
+            } finally {
+                session.close();
+                session.removeAttribute(MapleClient.CLIENT_KEY);
+
+            }
+        }
+        super.sessionClosed(session);
+    }
+
+    @Override
+    public void messageReceived(final IoSession session, final Object message) {
+        try {
+            final SeekableLittleEndianAccessor slea = new GenericSeekableLittleEndianAccessor(
+                    new ByteArrayByteStream((byte[]) message));
+            if (slea.available() < 2) {
+                return;
+            }
+            final short header_num = slea.readShort();
+            final MapleClient c = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
+            MaplePacketHandler packetHandler = processor.getHandler(header_num);
+            if (ServerEnvironment.isDebugEnabled()) {
+                //System.out.println("Received: " + header_num);
+            }
+            if (ServerEnvironment.isDebugEnabled() && packetHandler != null) {
+                // System.out.println("[" + packetHandler.getClass().getSimpleName() + "]");
+            }
+            if (packetHandler != null && packetHandler.validateState(c)) {
+                packetHandler.handlePacket(slea, c);
+                return;
+            }
+            for (final RecvPacketOpcode recv : RecvPacketOpcode.values()) {
+                if (recv.getValue() == header_num) {
+
+                    if (!c.isReceiving()) {
+                        return;
+                    }
+                    if (recv.NeedsChecking()) {
+                        if (!c.isLoggedIn()) {
+                            return;
+                        }
+                    }
+                    handlePacket(recv, slea, c, cs);
+                    return;
+                }
+            }
+            System.out.println("Received data: " + HexTool.toString((byte[]) message));
+            System.out.println("Data: " + new String((byte[]) message));
+
+            if (slea.available() == 0) { // we don't want to log headers only
+            }
+
+        } catch (Exception e) {
+            FileoutputUtil.outputFileError(FileoutputUtil.PacketEx_Log, e);
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void sessionIdle(final IoSession session, final IdleStatus status) throws Exception {
+        final MapleClient client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
+
+        if (client != null) {
+            client.sendPing();
+        }
+        super.sessionIdle(session, status);
+    }
+
+    public static final void handlePacket(final RecvPacketOpcode header, final SeekableLittleEndianAccessor slea,
+                                          final MapleClient c, final boolean cs) throws Exception {
+        switch (header) {
+            case PLAYER_LOGGEDIN:
+                final int playerid = slea.readInt();
+                if (cs) {
+                    CashShopOperationUtils.EnterCS(playerid, c);
+                } else {
+                    InterServerHandler.Loggedin(playerid, c);
+                }
+                break;
+            case CHANGE_MAP:
+                if (cs) {
+                    CashShopOperationUtils.LeaveCS(slea, c, c.getPlayer());
+                } else {
+                    PlayerHandler.ChangeMap(slea, c, c.getPlayer());
+                }
+                break;
+            default:
+                if (slea.available() >= 0) { // we don't want to log headers only
+                    FileoutputUtil.logPacket(String.valueOf(header), "[" + header + "] " + slea);
+                    // System.out.println("[UNHANDLED] Recv [" + header.toString() +
+                    // "] found");
+                }
+                break;
+        }
+    }
 }

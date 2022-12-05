@@ -22,11 +22,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package scripting;
 
 import client.MapleClient;
-import constants.ServerEnvironment;
+import server.config.ServerEnvironment;
 import server.MaplePortal;
 import tools.FileoutputUtil;
 
-import javax.script.*;
+import javax.script.Compilable;
+import javax.script.CompiledScript;
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineFactory;
+import javax.script.ScriptEngineManager;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -35,71 +40,71 @@ import java.util.Map;
 
 public class PortalScriptManager {
 
-  private static final PortalScriptManager instance = new PortalScriptManager();
-  private final Map<String, PortalScript> scripts = new HashMap<String, PortalScript>();
-  private final static ScriptEngineFactory sef = new ScriptEngineManager().getEngineByName("javascript").getFactory();
+    private static final PortalScriptManager instance = new PortalScriptManager();
+    private final Map<String, PortalScript> scripts = new HashMap<String, PortalScript>();
+    private final static ScriptEngineFactory sef = new ScriptEngineManager().getEngineByName("javascript").getFactory();
 
-  public final static PortalScriptManager getInstance() {
-    return instance;
-  }
-
-  private final PortalScript getPortalScript(final String scriptName) {
-    String path = "dist/scripts/portal/" + scriptName + ".js";
-
-    if (!ServerEnvironment.isDebugEnabled()) {
-      if (scripts.containsKey(scriptName)) {
-        return scripts.get(scriptName);
-      }
-    } else {
-      System.out.println("Loading script: " + path);
+    public final static PortalScriptManager getInstance() {
+        return instance;
     }
 
+    private final PortalScript getPortalScript(final String scriptName) {
+        String path = "dist/scripts/portal/" + scriptName + ".js";
 
-    final File scriptFile = new File(path);
-    if (!scriptFile.exists()) {
-      scripts.put(scriptName, null);
-      return null;
-    }
-
-    FileReader fr = null;
-    final ScriptEngine portal = sef.getScriptEngine();
-    try {
-      fr = new FileReader(scriptFile);
-      CompiledScript compiled = ((Compilable) portal).compile(fr);
-      compiled.eval();
-    } catch (final Exception e) {
-      System.err.println("Error executing Portalscript: " + scriptName + ":" + e);
-      FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Error executing Portal script. (" + scriptName + ") " + e);
-    } finally {
-      if (fr != null) {
-        try {
-          fr.close();
-        } catch (final IOException e) {
-          System.err.println("ERROR CLOSING" + e);
+        if (!ServerEnvironment.isDebugEnabled()) {
+            if (scripts.containsKey(scriptName)) {
+                return scripts.get(scriptName);
+            }
+        } else {
+            System.out.println("Loading script: " + path);
         }
-      }
+
+
+        final File scriptFile = new File(path);
+        if (!scriptFile.exists()) {
+            scripts.put(scriptName, null);
+            return null;
+        }
+
+        FileReader fr = null;
+        final ScriptEngine portal = sef.getScriptEngine();
+        try {
+            fr = new FileReader(scriptFile);
+            CompiledScript compiled = ((Compilable) portal).compile(fr);
+            compiled.eval();
+        } catch (final Exception e) {
+            System.err.println("Error executing Portalscript: " + scriptName + ":" + e);
+            FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Error executing Portal script. (" + scriptName + ") " + e);
+        } finally {
+            if (fr != null) {
+                try {
+                    fr.close();
+                } catch (final IOException e) {
+                    System.err.println("ERROR CLOSING" + e);
+                }
+            }
+        }
+        final PortalScript script = ((Invocable) portal).getInterface(PortalScript.class);
+        scripts.put(scriptName, script);
+        return script;
     }
-    final PortalScript script = ((Invocable) portal).getInterface(PortalScript.class);
-    scripts.put(scriptName, script);
-    return script;
-  }
 
-  public final void executePortalScript(final MaplePortal portal, final MapleClient c) {
-    final PortalScript script = getPortalScript(portal.getScriptName());
+    public final void executePortalScript(final MaplePortal portal, final MapleClient c) {
+        final PortalScript script = getPortalScript(portal.getScriptName());
 
-    if (script != null) {
-      try {
-        script.enter(new PortalPlayerInteraction(c, portal));
-      } catch (Exception e) {
-        System.err.println("Error entering Portalscript: " + portal.getScriptName() + ":" + e.getMessage());
-      }
-    } else {
-      System.out.println("Unhandled portal script " + portal.getScriptName() + " on map " + c.getPlayer().getMapId());
-      FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Unhandled portal script " + portal.getScriptName() + " on map " + c.getPlayer().getMapId());
+        if (script != null) {
+            try {
+                script.enter(new PortalPlayerInteraction(c, portal));
+            } catch (Exception e) {
+                System.err.println("Error entering Portalscript: " + portal.getScriptName() + ":" + e.getMessage());
+            }
+        } else {
+            System.out.println("Unhandled portal script " + portal.getScriptName() + " on map " + c.getPlayer().getMapId());
+            FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Unhandled portal script " + portal.getScriptName() + " on map " + c.getPlayer().getMapId());
+        }
     }
-  }
 
-  public final void clearScripts() {
-    scripts.clear();
-  }
+    public final void clearScripts() {
+        scripts.clear();
+    }
 }

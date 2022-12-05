@@ -24,25 +24,25 @@ package server.events;
 
 public enum MapleEventType {
 
-  Coconut("coconut", new int[] {109080000}), //just using one
-  Fitness("fitness", new int[] {109040000, 109040001, 109040002, 109040003, 109040004}),
-  OlaOla("ola", new int[] {109030001, 109030002, 109030003}),
-  OxQuiz("ox", new int[] {109020001}),
-  Snowball("snowball", new int[] {109060000}); //just using one
-  public String command;
-  public int[] mapids;
+    Coconut("coconut", new int[]{109080000}), //just using one
+    Fitness("fitness", new int[]{109040000, 109040001, 109040002, 109040003, 109040004}),
+    OlaOla("ola", new int[]{109030001, 109030002, 109030003}),
+    OxQuiz("ox", new int[]{109020001}),
+    Snowball("snowball", new int[]{109060000}); //just using one
+    public String command;
+    public int[] mapids;
 
-  private MapleEventType(String comm, int[] mapids) {
-    this.command = comm;
-    this.mapids = mapids;
-  }
-
-  public static final MapleEventType getByString(final String splitted) {
-    for (MapleEventType t : MapleEventType.values()) {
-      if (t.command.equalsIgnoreCase(splitted)) {
-        return t;
-      }
+    MapleEventType(String comm, int[] mapids) {
+        this.command = comm;
+        this.mapids = mapids;
     }
-    return null;
-  }
+
+    public static final MapleEventType getByString(final String splitted) {
+        for (MapleEventType t : MapleEventType.values()) {
+            if (t.command.equalsIgnoreCase(splitted)) {
+                return t;
+            }
+        }
+        return null;
+    }
 }

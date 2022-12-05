@@ -4,9 +4,9 @@ import client.MapleClient;
 
 public class RealPacketDispatcher implements PacketDispatcher {
 
-  @Override
-  public void dispatch(MapleClient client, byte[] packet) {
-    client.sendPacket(packet);
-  }
+    @Override
+    public void dispatch(MapleClient client, byte[] packet) {
+        client.sendPacket(packet);
+    }
 
 }

@@ -37,57 +37,57 @@ import java.net.InetSocketAddress;
 
 public class CashShopServer {
 
-  private static String ip;
-  private static InetSocketAddress InetSocketadd;
-  private final static int PORT = 8799;
-  private static IoAcceptor acceptor;
-  private static PlayerStorage players;
-  private static boolean finishedShutdown = false;
+    private static String ip;
+    private static InetSocketAddress inetSocketAddr;
+    private final static int PORT = 8799;
+    private static IoAcceptor acceptor;
+    private static PlayerStorage players;
+    private static boolean finishedShutdown = false;
 
-  public static final void run_startup_configurations() {
-    ip = ServerProperties.getProperty("net.sf.odinms.world.host") + ":" + PORT;
+    public static final void run_startup_configurations() {
+        ip = ServerProperties.getProperty("world.host") + ":" + PORT;
 
-    ByteBuffer.setUseDirectBuffers(false);
-    ByteBuffer.setAllocator(new SimpleByteBufferAllocator());
+        ByteBuffer.setUseDirectBuffers(false);
+        ByteBuffer.setAllocator(new SimpleByteBufferAllocator());
 
-    acceptor = new SocketAcceptor();
-    final SocketAcceptorConfig cfg = new SocketAcceptorConfig();
-    cfg.getSessionConfig().setTcpNoDelay(true);
-    cfg.setDisconnectOnUnbind(true);
-    cfg.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MapleCodecFactory()));
-    players = new PlayerStorage(-10);
+        acceptor = new SocketAcceptor();
+        final SocketAcceptorConfig cfg = new SocketAcceptorConfig();
+        cfg.getSessionConfig().setTcpNoDelay(true);
+        cfg.setDisconnectOnUnbind(true);
+        cfg.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MapleCodecFactory()));
+        players = new PlayerStorage(-10);
 
-    try {
-      InetSocketadd = new InetSocketAddress(PORT);
-      acceptor.bind(InetSocketadd, new MapleServerHandler(-1, true, PacketProcessor.CASHSHOP()), cfg);
-      System.out.println("Listening on port " + PORT + ".");
-    } catch (final Exception e) {
-      System.err.println("Binding to port " + PORT + " failed");
-      e.printStackTrace();
-      throw new RuntimeException("Binding failed.", e);
+        try {
+            inetSocketAddr = new InetSocketAddress(PORT);
+            acceptor.bind(inetSocketAddr, new MapleServerHandler(-1, true, PacketProcessor.CASHSHOP()), cfg);
+            System.out.println("Listening on port " + PORT + ".");
+        } catch (final Exception e) {
+            System.err.println("Binding to port " + PORT + " failed");
+            e.printStackTrace();
+            throw new RuntimeException("Binding failed.", e);
+        }
     }
-  }
 
-  public static final String getIP() {
-    return ip;
-  }
-
-  public static final PlayerStorage getPlayerStorage() {
-    return players;
-  }
-
-  public static final void shutdown() {
-    if (finishedShutdown) {
-      return;
+    public static final String getIP() {
+        return ip;
     }
-    System.out.println("Saving all connected clients (CS)...");
-    players.disconnectAll();
-    System.out.println("Shutting down CS...");
-    acceptor.unbindAll();
-    finishedShutdown = true;
-  }
 
-  public static boolean isShutdown() {
-    return finishedShutdown;
-  }
+    public static final PlayerStorage getPlayerStorage() {
+        return players;
+    }
+
+    public static final void shutdown() {
+        if (finishedShutdown) {
+            return;
+        }
+        System.out.println("Saving all connected clients (CS)...");
+        players.disconnectAll();
+        System.out.println("Shutting down CS...");
+        acceptor.unbindAll();
+        finishedShutdown = true;
+    }
+
+    public static boolean isShutdown() {
+        return finishedShutdown;
+    }
 }

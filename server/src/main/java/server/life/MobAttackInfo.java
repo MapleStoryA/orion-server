@@ -23,50 +23,50 @@ package server.life;
 
 public class MobAttackInfo {
 
-  private boolean isDeadlyAttack;
-  private int mpBurn, mpCon;
-  private int diseaseSkill, diseaseLevel;
+    private boolean isDeadlyAttack;
+    private int mpBurn, mpCon;
+    private int diseaseSkill, diseaseLevel;
 
-  public MobAttackInfo() {
-  }
+    public MobAttackInfo() {
+    }
 
-  public void setDeadlyAttack(boolean isDeadlyAttack) {
-    this.isDeadlyAttack = isDeadlyAttack;
-  }
+    public void setDeadlyAttack(boolean isDeadlyAttack) {
+        this.isDeadlyAttack = isDeadlyAttack;
+    }
 
-  public boolean isDeadlyAttack() {
-    return isDeadlyAttack;
-  }
+    public boolean isDeadlyAttack() {
+        return isDeadlyAttack;
+    }
 
-  public void setMpBurn(int mpBurn) {
-    this.mpBurn = mpBurn;
-  }
+    public void setMpBurn(int mpBurn) {
+        this.mpBurn = mpBurn;
+    }
 
-  public int getMpBurn() {
-    return mpBurn;
-  }
+    public int getMpBurn() {
+        return mpBurn;
+    }
 
-  public void setDiseaseSkill(int diseaseSkill) {
-    this.diseaseSkill = diseaseSkill;
-  }
+    public void setDiseaseSkill(int diseaseSkill) {
+        this.diseaseSkill = diseaseSkill;
+    }
 
-  public int getDiseaseSkill() {
-    return diseaseSkill;
-  }
+    public int getDiseaseSkill() {
+        return diseaseSkill;
+    }
 
-  public void setDiseaseLevel(int diseaseLevel) {
-    this.diseaseLevel = diseaseLevel;
-  }
+    public void setDiseaseLevel(int diseaseLevel) {
+        this.diseaseLevel = diseaseLevel;
+    }
 
-  public int getDiseaseLevel() {
-    return diseaseLevel;
-  }
+    public int getDiseaseLevel() {
+        return diseaseLevel;
+    }
 
-  public void setMpCon(int mpCon) {
-    this.mpCon = mpCon;
-  }
+    public void setMpCon(int mpCon) {
+        this.mpCon = mpCon;
+    }
 
-  public int getMpCon() {
-    return mpCon;
-  }
+    public int getMpCon() {
+        return mpCon;
+    }
 }

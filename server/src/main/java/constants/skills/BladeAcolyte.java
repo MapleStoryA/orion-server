@@ -23,8 +23,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package constants.skills;
 
 public class BladeAcolyte {
-  public static final int ENDURE = 4310000;
-  public static final int SELF_HASTE = 4311001;
-  public static final int FATAL_BLOW = 4311002;
-  public static final int SLASH_STORM = 4311003;
+    public static final int ENDURE = 4310000;
+    public static final int SELF_HASTE = 4311001;
+    public static final int FATAL_BLOW = 4311002;
+    public static final int SLASH_STORM = 4311003;
 }

@@ -30,102 +30,103 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class MapleInventoryIdentifier implements Serializable {
 
-  private static final long serialVersionUID = 21830921831301L;
-  private AtomicInteger runningUID;
-  private ReentrantReadWriteLock rwl = new ReentrantReadWriteLock();
-  private Lock readLock = rwl.readLock(), writeLock = rwl.writeLock();
-  private static MapleInventoryIdentifier instance = new MapleInventoryIdentifier();
+    private static final long serialVersionUID = 21830921831301L;
+    private final AtomicInteger runningUID;
+    private final ReentrantReadWriteLock rwl = new ReentrantReadWriteLock();
+    private final Lock readLock = rwl.readLock();
+    private final Lock writeLock = rwl.writeLock();
+    private static final MapleInventoryIdentifier instance = new MapleInventoryIdentifier();
 
-  public MapleInventoryIdentifier() {
-    this.runningUID = new AtomicInteger(0);
-    getNextUniqueId();
-  }
-
-  public static int getInstance() {
-    return instance.getNextUniqueId();
-  }
-
-  public int getNextUniqueId() {
-    if (grabRunningUID() <= 0) {
-      setRunningUID(initUID());
+    public MapleInventoryIdentifier() {
+        this.runningUID = new AtomicInteger(0);
+        getNextUniqueId();
     }
-    incrementRunningUID();
-    return grabRunningUID();
-  }
 
-  public int grabRunningUID() {
-    readLock.lock();
-    try {
-      return runningUID.get();
-    } finally {
-      readLock.unlock();
+    public static int getInstance() {
+        return instance.getNextUniqueId();
     }
-  }
 
-  public void incrementRunningUID() {
-    setRunningUID(grabRunningUID() + 1);
-  }
-
-  public void setRunningUID(int rUID) {
-    if (rUID < grabRunningUID()) {
-      return;
-    }
-    writeLock.lock();
-    try {
-      runningUID.set(rUID);
-    } finally {
-      writeLock.unlock();
-    }
-  }
-
-  public int initUID() {
-    int ret = 0;
-    if (grabRunningUID() > 0) {
-      return grabRunningUID();
-    }
-    try {
-      int[] ids = new int[4];
-      Connection con = DatabaseConnection.getConnection();
-      PreparedStatement ps = con.prepareStatement("SELECT MAX(uniqueid) FROM inventoryitems");
-      ResultSet rs = ps.executeQuery();
-      if (rs.next()) {
-        ids[0] = rs.getInt(1) + 1;
-      }
-      rs.close();
-      ps.close();
-
-      ps = con.prepareStatement("SELECT MAX(petid) FROM pets");
-      rs = ps.executeQuery();
-      if (rs.next()) {
-        ids[1] = rs.getInt(1) + 1;
-      }
-      rs.close();
-      ps.close();
-
-      ps = con.prepareStatement("SELECT MAX(ringid) FROM rings");
-      rs = ps.executeQuery();
-      if (rs.next()) {
-        ids[2] = rs.getInt(1) + 1;
-      }
-      rs.close();
-      ps.close();
-
-      ps = con.prepareStatement("SELECT MAX(partnerringid) FROM rings");
-      rs = ps.executeQuery();
-      if (rs.next()) {
-        ids[3] = rs.getInt(1) + 1;
-      }
-      rs.close();
-      ps.close();
-
-      for (int i = 0; i < ids.length; i++) {
-        if (ids[i] > ret) {
-          ret = ids[i];
+    public int getNextUniqueId() {
+        if (grabRunningUID() <= 0) {
+            setRunningUID(initUID());
         }
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
+        incrementRunningUID();
+        return grabRunningUID();
     }
-    return ret;
-  }
+
+    public int grabRunningUID() {
+        readLock.lock();
+        try {
+            return runningUID.get();
+        } finally {
+            readLock.unlock();
+        }
+    }
+
+    public void incrementRunningUID() {
+        setRunningUID(grabRunningUID() + 1);
+    }
+
+    public void setRunningUID(int rUID) {
+        if (rUID < grabRunningUID()) {
+            return;
+        }
+        writeLock.lock();
+        try {
+            runningUID.set(rUID);
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    public int initUID() {
+        int ret = 0;
+        if (grabRunningUID() > 0) {
+            return grabRunningUID();
+        }
+        try {
+            int[] ids = new int[4];
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT MAX(uniqueid) FROM inventoryitems");
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                ids[0] = rs.getInt(1) + 1;
+            }
+            rs.close();
+            ps.close();
+
+            ps = con.prepareStatement("SELECT MAX(petid) FROM pets");
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                ids[1] = rs.getInt(1) + 1;
+            }
+            rs.close();
+            ps.close();
+
+            ps = con.prepareStatement("SELECT MAX(ringid) FROM rings");
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                ids[2] = rs.getInt(1) + 1;
+            }
+            rs.close();
+            ps.close();
+
+            ps = con.prepareStatement("SELECT MAX(partnerringid) FROM rings");
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                ids[3] = rs.getInt(1) + 1;
+            }
+            rs.close();
+            ps.close();
+
+            for (int i = 0; i < ids.length; i++) {
+                if (ids[i] > ret) {
+                    ret = ids[i];
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
 }

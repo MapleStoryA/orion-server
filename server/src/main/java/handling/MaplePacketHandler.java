@@ -5,8 +5,8 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 public interface MaplePacketHandler {
 
-  void handlePacket(final SeekableLittleEndianAccessor slea, final MapleClient c);
+    void handlePacket(final SeekableLittleEndianAccessor slea, final MapleClient c);
 
-  boolean validateState(MapleClient c);
+    boolean validateState(MapleClient c);
 
 }

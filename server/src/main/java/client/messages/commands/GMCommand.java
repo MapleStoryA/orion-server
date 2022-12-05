@@ -14,16 +14,16 @@ import constants.ServerConstants.PlayerGMRank;
  */
 public class GMCommand {
 
-  public static PlayerGMRank getPlayerLevelRequired() {
-    return PlayerGMRank.GM;
-  }
-
-  public static class Hide extends CommandExecute {
-
-    @Override
-    public int execute(MapleClient c, String[] splitted) {
-      SkillFactory.getSkill(9001004).getEffect(1).applyTo(c.getPlayer());
-      return 0;
+    public static PlayerGMRank getPlayerLevelRequired() {
+        return PlayerGMRank.GM;
     }
-  }
+
+    public static class Hide extends CommandExecute {
+
+        @Override
+        public int execute(MapleClient c, String[] splitted) {
+            SkillFactory.getSkill(9001004).getEffect(1).applyTo(c.getPlayer());
+            return 0;
+        }
+    }
 }

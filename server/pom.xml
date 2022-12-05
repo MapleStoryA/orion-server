@@ -60,6 +60,12 @@
             <version>1.7.7.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.21</version>
+        </dependency>
+
 
     </dependencies>
     <build>
@@ -69,8 +75,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -104,6 +110,28 @@
                         </manifest>
                     </archive>
                     <outputDirectory>app</outputDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>2.5.0</version>
+                <configuration>
+                    <to>
+                        <image>orion-ms</image>
+                    </to>
+                    <container>
+                        <ports>
+                            <port>8484</port>
+                            <port>8585</port>
+                            <port>8586</port>
+                            <port>8587</port>
+                            <port>8588</port>
+                            <port>8589</port>
+                            <port>8590</port>
+                            <port>8799</port>
+                        </ports>
+                    </container>
                 </configuration>
             </plugin>
         </plugins>

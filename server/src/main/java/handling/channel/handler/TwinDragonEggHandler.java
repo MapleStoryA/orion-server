@@ -8,12 +8,12 @@ import tools.packet.MTSCSPacket;
 
 public class TwinDragonEggHandler extends AbstractMaplePacketHandler {
 
-  @Override
-  public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-    final int uniqueId = (int) slea.readLong();
-    c.getSession().write(MTSCSPacket.showTwinDragonEgg(uniqueId));
-    CashShopOperationUtils.doCSPackets(c);
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        final int uniqueId = (int) slea.readLong();
+        c.getSession().write(MTSCSPacket.showTwinDragonEgg(uniqueId));
+        CashShopOperationUtils.doCSPackets(c);
 
-  }
+    }
 
 }

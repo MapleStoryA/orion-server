@@ -7,10 +7,10 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 public class CSUpdateHandler extends AbstractMaplePacketHandler {
 
-  @Override
-  public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-    CashShopOperationUtils.CSUpdate(c);
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        CashShopOperationUtils.CSUpdate(c);
 
-  }
+    }
 
 }

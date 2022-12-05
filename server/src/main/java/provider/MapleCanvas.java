@@ -25,9 +25,9 @@ import java.awt.image.BufferedImage;
 
 public interface MapleCanvas {
 
-  int getHeight();
+    int getHeight();
 
-  int getWidth();
+    int getWidth();
 
-  BufferedImage getImage();
+    BufferedImage getImage();
 }

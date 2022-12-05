@@ -33,203 +33,203 @@ import java.awt.*;
 
 public class MapleSummon extends AbstractAnimatedMapleMapObject {
 
-  private final int ownerid, skillLevel, ownerLevel, skill;
-  private int fh;
-  private MapleMap map; //required for instanceMaps
-  private short hp;
-  private boolean changedMap = false;
-  private SummonMovementType movementType;
-  // Since player can have more than 1 summon [Pirate]
-  // Let's put it here instead of cheat tracker
-  private int lastSummonTickCount;
-  private byte Summon_tickResetCount;
-  private long Server_ClientSummonTickDiff;
+    private final int ownerid, skillLevel, ownerLevel, skill;
+    private int fh;
+    private MapleMap map; //required for instanceMaps
+    private short hp;
+    private boolean changedMap = false;
+    private final SummonMovementType movementType;
+    // Since player can have more than 1 summon [Pirate]
+    // Let's put it here instead of cheat tracker
+    private int lastSummonTickCount;
+    private byte Summon_tickResetCount;
+    private long Server_ClientSummonTickDiff;
 
-  public MapleSummon(final MapleCharacter owner, final MapleStatEffect skill, final Point pos, final SummonMovementType movementType) {
-    super();
-    this.ownerid = owner.getId();
-    this.ownerLevel = owner.getLevel();
-    this.skill = skill.getSourceId();
-    this.map = owner.getMap();
-    this.skillLevel = skill.getLevel();
-    this.movementType = movementType;
-    setPosition(pos);
-    try {
-      this.fh = owner.getMap().getFootholds().findBelow(pos).getId();
-    } catch (NullPointerException e) {
-      this.fh = 0; //lol, it can be fixed by movement
+    public MapleSummon(final MapleCharacter owner, final MapleStatEffect skill, final Point pos, final SummonMovementType movementType) {
+        super();
+        this.ownerid = owner.getId();
+        this.ownerLevel = owner.getLevel();
+        this.skill = skill.getSourceId();
+        this.map = owner.getMap();
+        this.skillLevel = skill.getLevel();
+        this.movementType = movementType;
+        setPosition(pos);
+        try {
+            this.fh = owner.getMap().getFootholds().findBelow(pos).getId();
+        } catch (NullPointerException e) {
+            this.fh = 0; //lol, it can be fixed by movement
+        }
+
+        if (!isPuppet()) { // Safe up 12 bytes of data, since puppet doesn't attack.
+            lastSummonTickCount = 0;
+            Summon_tickResetCount = 0;
+            Server_ClientSummonTickDiff = 0;
+        }
     }
 
-    if (!isPuppet()) { // Safe up 12 bytes of data, since puppet doesn't attack.
-      lastSummonTickCount = 0;
-      Summon_tickResetCount = 0;
-      Server_ClientSummonTickDiff = 0;
+    @Override
+    public final void sendSpawnData(final MapleClient client) {
     }
-  }
 
-  @Override
-  public final void sendSpawnData(final MapleClient client) {
-  }
-
-  @Override
-  public final void sendDestroyData(final MapleClient client) {
-    client.getSession().write(MaplePacketCreator.removeSummon(this, false));
-  }
-
-  public final void updateMap(final MapleMap map) {
-    this.map = map;
-  }
-
-  public final MapleCharacter getOwner() {
-    return map.getCharacterById(ownerid);
-  }
-
-  public final int getFh() {
-    return fh;
-  }
-
-  public final void setFh(final int fh) {
-    this.fh = fh;
-  }
-
-  public final int getOwnerId() {
-    return ownerid;
-  }
-
-  public final int getOwnerLevel() {
-    return ownerLevel;
-  }
-
-  public final int getSkill() {
-    return skill;
-  }
-
-  public final short getHP() {
-    return hp;
-  }
-
-  public final void addHP(final short delta) {
-    this.hp += delta;
-  }
-
-  public final SummonMovementType getMovementType() {
-    return movementType;
-  }
-
-  public final boolean isPuppet() {
-    switch (skill) {
-      case 3111002:
-      case 3211002:
-      case 13111004:
-      case 4341006:
-      case 33111003:
-        return true;
+    @Override
+    public final void sendDestroyData(final MapleClient client) {
+        client.getSession().write(MaplePacketCreator.removeSummon(this, false));
     }
-    return false;
-  }
 
-  public final boolean isGaviota() {
-    return skill == 5211002;
-  }
-
-  public final boolean isBeholder() {
-    return skill == 1321007;
-  }
-
-  public final boolean isMultiSummon() {
-    return skill == 5211002 || skill == 5211001 || skill == 5220002 || skill == 32111006;
-  }
-
-  public final boolean isSummon() {
-    switch (skill) {
-      case 12111004:
-      case 1321007: //beholder
-      case 2311006:
-      case 2321003:
-      case 2121005:
-      case 2221005:
-      case 5211001: // Pirate octopus summon
-      case 5211002:
-      case 5220002: // wrath of the octopi
-      case 13111004:
-      case 11001004:
-      case 12001004:
-      case 13001004:
-      case 14001005:
-      case 15001004:
-      case 33111005:
-      case 35111001:
-      case 35111010:
-      case 35111009:
-      case 35111002: //pre-bb = 35111002, 35111004(amp?), 35111005(accel)
-      case 35111005: //TEMP
-      case 35111004: //TEMP
-        //case 35111011: //TEMP
-      case 35121009:
-        //case 35121010: //TEMP
-      case 35121011:
-        //case 4111007: //TEMP
-      case 32111006:
-        return true;
+    public final void updateMap(final MapleMap map) {
+        this.map = map;
     }
-    return false;
-  }
 
-  public final int getSkillLevel() {
-    return skillLevel;
-  }
-
-  public final int getSummonType() {
-    if (isPuppet()) {
-      return 0;
+    public final MapleCharacter getOwner() {
+        return map.getCharacterById(ownerid);
     }
-    switch (skill) {
-      case 1321007:
-        return 2;
-      case 35111001: //satellite.
-      case 35111009:
-      case 35111010:
-        return 3;
-      case 35121009: //bots n. tots
-        return 4;
-      //case 4111007: //TEMP
-      //	return 6; //TEMP
+
+    public final int getFh() {
+        return fh;
     }
-    return 1;
-  }
 
-  @Override
-  public final MapleMapObjectType getType() {
-    return MapleMapObjectType.SUMMON;
-  }
-
-  public final void CheckSummonAttackFrequency(final MapleCharacter chr, final int tickcount) {
-    final int tickdifference = (tickcount - lastSummonTickCount);
-    if (tickdifference < GameConstants.getSummonAttackDelay(skill)) {
-      chr.getCheatTracker().registerOffense(CheatingOffense.FAST_SUMMON_ATTACK);
+    public final void setFh(final int fh) {
+        this.fh = fh;
     }
-    final long STime_TC = System.currentTimeMillis() - tickcount;
-    final long S_C_Difference = Server_ClientSummonTickDiff - STime_TC;
-    if (S_C_Difference > 200) {
-      chr.getCheatTracker().registerOffense(CheatingOffense.FAST_SUMMON_ATTACK);
+
+    public final int getOwnerId() {
+        return ownerid;
     }
-    Summon_tickResetCount++;
-    if (Summon_tickResetCount > 4) {
-      Summon_tickResetCount = 0;
-      Server_ClientSummonTickDiff = STime_TC;
+
+    public final int getOwnerLevel() {
+        return ownerLevel;
     }
-    lastSummonTickCount = tickcount;
-  }
 
-  public final boolean isChangedMap() {
-    return changedMap;
-  }
+    public final int getSkill() {
+        return skill;
+    }
 
-  public final void setChangedMap(boolean cm) {
-    this.changedMap = cm;
-  }
+    public final short getHP() {
+        return hp;
+    }
 
-  public boolean isMirrorTarget() {
-    return this.skill == BladeMaster.MIRRORED_TARGET;
-  }
+    public final void addHP(final short delta) {
+        this.hp += delta;
+    }
+
+    public final SummonMovementType getMovementType() {
+        return movementType;
+    }
+
+    public final boolean isPuppet() {
+        switch (skill) {
+            case 3111002:
+            case 3211002:
+            case 13111004:
+            case 4341006:
+            case 33111003:
+                return true;
+        }
+        return false;
+    }
+
+    public final boolean isGaviota() {
+        return skill == 5211002;
+    }
+
+    public final boolean isBeholder() {
+        return skill == 1321007;
+    }
+
+    public final boolean isMultiSummon() {
+        return skill == 5211002 || skill == 5211001 || skill == 5220002 || skill == 32111006;
+    }
+
+    public final boolean isSummon() {
+        switch (skill) {
+            case 12111004:
+            case 1321007: //beholder
+            case 2311006:
+            case 2321003:
+            case 2121005:
+            case 2221005:
+            case 5211001: // Pirate octopus summon
+            case 5211002:
+            case 5220002: // wrath of the octopi
+            case 13111004:
+            case 11001004:
+            case 12001004:
+            case 13001004:
+            case 14001005:
+            case 15001004:
+            case 33111005:
+            case 35111001:
+            case 35111010:
+            case 35111009:
+            case 35111002: //pre-bb = 35111002, 35111004(amp?), 35111005(accel)
+            case 35111005: //TEMP
+            case 35111004: //TEMP
+                //case 35111011: //TEMP
+            case 35121009:
+                //case 35121010: //TEMP
+            case 35121011:
+                //case 4111007: //TEMP
+            case 32111006:
+                return true;
+        }
+        return false;
+    }
+
+    public final int getSkillLevel() {
+        return skillLevel;
+    }
+
+    public final int getSummonType() {
+        if (isPuppet()) {
+            return 0;
+        }
+        switch (skill) {
+            case 1321007:
+                return 2;
+            case 35111001: //satellite.
+            case 35111009:
+            case 35111010:
+                return 3;
+            case 35121009: //bots n. tots
+                return 4;
+            //case 4111007: //TEMP
+            //	return 6; //TEMP
+        }
+        return 1;
+    }
+
+    @Override
+    public final MapleMapObjectType getType() {
+        return MapleMapObjectType.SUMMON;
+    }
+
+    public final void CheckSummonAttackFrequency(final MapleCharacter chr, final int tickcount) {
+        final int tickdifference = (tickcount - lastSummonTickCount);
+        if (tickdifference < GameConstants.getSummonAttackDelay(skill)) {
+            chr.getCheatTracker().registerOffense(CheatingOffense.FAST_SUMMON_ATTACK);
+        }
+        final long STime_TC = System.currentTimeMillis() - tickcount;
+        final long S_C_Difference = Server_ClientSummonTickDiff - STime_TC;
+        if (S_C_Difference > 200) {
+            chr.getCheatTracker().registerOffense(CheatingOffense.FAST_SUMMON_ATTACK);
+        }
+        Summon_tickResetCount++;
+        if (Summon_tickResetCount > 4) {
+            Summon_tickResetCount = 0;
+            Server_ClientSummonTickDiff = STime_TC;
+        }
+        lastSummonTickCount = tickcount;
+    }
+
+    public final boolean isChangedMap() {
+        return changedMap;
+    }
+
+    public final void setChangedMap(boolean cm) {
+        this.changedMap = cm;
+    }
+
+    public boolean isMirrorTarget() {
+        return this.skill == BladeMaster.MIRRORED_TARGET;
+    }
 }
