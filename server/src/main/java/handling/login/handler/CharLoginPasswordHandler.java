@@ -3,7 +3,7 @@ package handling.login.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import handling.MaplePacketHandler;
-import handling.login.LoginWorker;
+import handling.login.LoginServer;
 import tools.KoreanDateUtil;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.LoginPacket;
@@ -55,7 +55,7 @@ public class CharLoginPasswordHandler implements MaplePacketHandler {
             }
         } else {
             c.loginAttempt = 0;
-            LoginWorker.registerClient(c);
+            LoginServer.getInstance().registerClient(c);
         }
 
     }

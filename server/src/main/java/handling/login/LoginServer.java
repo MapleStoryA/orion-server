@@ -21,8 +21,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package handling.login;
 
+import client.MapleClient;
 import handling.MapleServerHandler;
 import handling.PacketProcessor;
+import handling.channel.ChannelServer;
 import handling.mina.MapleCodecFactory;
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.IoAcceptor;
@@ -30,8 +32,12 @@ import org.apache.mina.common.SimpleByteBufferAllocator;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.SocketAcceptor;
 import org.apache.mina.transport.socket.nio.SocketAcceptorConfig;
+import server.ClientStorage;
+import server.Timer;
 import server.config.ServerConfig;
 import server.config.ServerEnvironment;
+import tools.MaplePacketCreator;
+import tools.packet.LoginPacket;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -46,8 +52,9 @@ public class LoginServer extends GameServer {
     private byte flag;
     private int userLimit, usersOn = 0;
     private boolean finishedShutdown = true, adminOnly;
-
     private static LoginServer INSTANCE;
+
+    private static long lastUpdate = 0;
 
     public LoginServer(ServerConfig config) {
         super(-1, PORT, PacketProcessor.Mode.LOGINSERVER);
@@ -117,6 +124,40 @@ public class LoginServer extends GameServer {
 
     public final boolean isAdminOnly() {
         return adminOnly;
+    }
+
+    public void registerClient(final MapleClient c) {
+        if (LoginServer.getInstance().isAdminOnly() && !c.isGm()) {
+            c.getSession().write(MaplePacketCreator.serverNotice(1, "The server is currently set to Admin login only.\r\nWe are currently testing some issues.\r\nPlease try again later."));
+            c.getSession().write(LoginPacket.getLoginFailed(7));
+            return;
+        }
+
+        if (System.currentTimeMillis() - lastUpdate > 600000) { // Update once every 10 minutes
+            lastUpdate = System.currentTimeMillis();
+            final Map<Integer, Integer> load = ChannelServer.getChannelLoad();
+            int usersOn = 0;
+            if (load == null || load.size() == 0) { // In an unfortunate event that client logged in before load
+                lastUpdate = 0;
+                c.getSession().write(LoginPacket.getLoginFailed(7));
+                return;
+            }
+            final double loadFactor = 1200 / ((double) LoginServer.getInstance().getUserLimit() / load.size());
+            for (Map.Entry<Integer, Integer> entry : load.entrySet()) {
+                usersOn += entry.getValue();
+                load.put(entry.getKey(), Math.min(1200, (int) (entry.getValue() * loadFactor)));
+            }
+            LoginServer.getInstance().setLoad(load, usersOn);
+            lastUpdate = System.currentTimeMillis();
+        }
+
+        if (c.finishLogin() == 0) {
+            c.getSession().write(LoginPacket.getAuthSuccessRequest(c));
+            ClientStorage.addClient(c);
+            c.setIdleTask(Timer.PingTimer.getInstance().schedule(() -> c.getSession().close(), 10 * 60 * 10000));
+        } else {
+            c.getSession().write(LoginPacket.getLoginFailed(7));
+        }
     }
 
 }
