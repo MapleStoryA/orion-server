@@ -87,14 +87,14 @@ public class ChannelServer implements Serializable {
     private IoAcceptor acceptor;
     private final MapleMapFactory mapFactory;
     private EventScriptManager eventSM;
-    private static final Map<Integer, ChannelServer> instances = new HashMap<Integer, ChannelServer>();
-    private final Map<String, MapleSquad> mapleSquads = new HashMap<String, MapleSquad>();
-    private final Map<Integer, HiredMerchant> merchants = new HashMap<Integer, HiredMerchant>();
-    private final Map<Integer, PlayerNPC> playerNPCs = new HashMap<Integer, PlayerNPC>();
-    private final ReentrantReadWriteLock merchLock = new ReentrantReadWriteLock(); //merchant
-    private final ReentrantReadWriteLock squadLock = new ReentrantReadWriteLock(); //squad
+    private static final Map<Integer, ChannelServer> instances = new HashMap<>();
+    private final Map<String, MapleSquad> mapleSquads = new HashMap<>();
+    private final Map<Integer, HiredMerchant> merchants = new HashMap<>();
+    private final Map<Integer, PlayerNPC> playerNPCs = new HashMap<>();
+    private final ReentrantReadWriteLock merchLock = new ReentrantReadWriteLock();
+    private final ReentrantReadWriteLock squadLock = new ReentrantReadWriteLock();
     private int eventmap = -1;
-    private final Map<MapleEventType, MapleEvent> events = new EnumMap<MapleEventType, MapleEvent>(MapleEventType.class);
+    private final Map<MapleEventType, MapleEvent> events = new EnumMap<>(MapleEventType.class);
 
     private final AramiaFireWorks aramiaEvent;
 
@@ -131,7 +131,7 @@ public class ChannelServer implements Serializable {
     }
 
     public final void run_startup_configurations() {
-        setChannel(channel); //instances.put
+        setChannel(channel);
         try {
             expRate = Integer.parseInt(ServerProperties.getProperty("world.exp"));
             mesoRate = Integer.parseInt(ServerProperties.getProperty("world.meso"));
