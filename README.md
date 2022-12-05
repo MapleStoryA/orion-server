@@ -1,4 +1,4 @@
-# Orion Server V90
+# Orion Server
 A Maple Story V90 Emulator
 
 ## Client file:
