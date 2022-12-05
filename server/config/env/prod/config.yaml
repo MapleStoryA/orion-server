@@ -9,7 +9,6 @@ login:
   serverName: Scania  # Name of the Server
   eventMessage: Welcome to Maple Story Global. # Event Message at Channel Selection
   flag: 3 # Flag at Channel Selection  0: Nothing 1: Event 2: New 3: Hot
-  maxCharacters: 6 # Initial amount of characters per account
   userlimit: 100 # total user limit of the server
 
 world:
@@ -24,7 +23,7 @@ world:
 
 channel:
   net:
-   interface: orion-public
+    interface: orion-public
   # active event scripts
   events: KerningPQ,Boats
   count: 2
