@@ -1,10 +1,10 @@
 # Orion Server V90
 A Maple Story V90 Emulator
 
-# Client file:
+## Client file:
 https://mega.nz/file/qIABEAaa#tber4CWFTLv6iwBf2klEQO1g9rYfFl3EIrNP2BjsyjA
 
-# Required software for development and runtime: 
+## Required software for development and runtime: 
 - JDK 11
 - MySQL 5.6
 - Intellij Community Edition
@@ -12,7 +12,6 @@ https://mega.nz/file/qIABEAaa#tber4CWFTLv6iwBf2klEQO1g9rYfFl3EIrNP2BjsyjA
 - Maven
 - Docker
 
-# Server instructions
-
+## Server instructions
 Check the server folder [read me](server/README.md)
 
