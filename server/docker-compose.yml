@@ -1,16 +1,5 @@
 version: '3.7'
 services:
-  orion-web:
-    build:
-      context: ../maplebit
-    container_name: orion-web
-    volumes:
-      - ../maplebit/MapleBit/:/var/www/html
-    depends_on:
-      orion-db:
-        condition: service_healthy
-    ports:
-      - 127.0.0.1:8000:80
   orion-db:
     image: mysql:5.6
     container_name: orion-db
