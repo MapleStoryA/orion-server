@@ -44,6 +44,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Start {
 
@@ -87,39 +89,53 @@ public class Start {
         PingTimer.getInstance().start();
         TimerManager.getInstance().start();
 
-        printLoad("WorldLoader");
-        MapleGuildRanking.getInstance().getRank();
-        MapleGuild.loadAll();
+        var executorService = Executors.newFixedThreadPool(10);
+        executorService.submit(() -> {
+            printLoad("WorldLoader");
+            MapleGuildRanking.getInstance().getRank();
+            MapleGuild.loadAll();
+        });
 
-        printLoad("QuestLoader");
-        MapleQuest.initQuests();
-        MapleLifeFactory.loadQuestCounts();
+        executorService.submit(() -> {
+            printLoad("QuestLoader");
+            MapleQuest.initQuests();
+            MapleLifeFactory.loadQuestCounts();
+        });
 
+        executorService.submit(() -> {
+            printLoad("ProviderLoader");
+            MapleItemInformationProvider.getInstance().load();
+        });
 
-        printLoad("ProviderLoader");
-        MapleItemInformationProvider.getInstance().load();
+        executorService.submit(() -> {
+            printLoad("MonsterLoader");
+            MapleMonsterInformationProvider.getInstance().load();
+        });
 
-        printLoad("MonsterLoader");
-        MapleMonsterInformationProvider.getInstance().load();
+        executorService.submit(() -> {
+            printLoad("SkillFactoryLoader");
+            SkillFactory.getSkill(99999999);
+            JobConstants.loadAllSkills();
+        });
 
-        printLoad("SkillFactoryLoader");
-        SkillFactory.getSkill(99999999);
-        JobConstants.loadAllSkills();
+        executorService.submit(() -> {
+            printLoad("BasicLoader");
+            LoginInformationProvider.getInstance();
+            RandomRewards.getInstance();
+            MapleOxQuizFactory.getInstance().initialize();
+            MapleCarnivalFactory.getInstance().initialize();
+            SpeedRunner.getInstance().loadSpeedRuns();
+            SpeedQuizFactory.getInstance().initialize();
+            ItemMakerFactory.getInstance();
+            MapleMapFactory.loadCustomLife();
+        });
 
-        printLoad("BasicLoader");
-        LoginInformationProvider.getInstance();
-        RandomRewards.getInstance();
-        MapleOxQuizFactory.getInstance().initialize();
-        MapleCarnivalFactory.getInstance().initialize();
-        SpeedRunner.getInstance().loadSpeedRuns();
-        SpeedQuizFactory.getInstance().initialize();
-        ItemMakerFactory.getInstance();
-        MapleMapFactory.loadCustomLife();
-
-        printLoad("CashItemLoader");
-        if (!ServerEnvironment.isDebugEnabled()) {
-            CashItemFactory.getInstance().loadCashShopData();
-        }
+        executorService.submit(() -> {
+            printLoad("CashItemLoader");
+            if (!ServerEnvironment.isDebugEnabled()) {
+                CashItemFactory.getInstance().loadCashShopData();
+            }
+        });
 
 
         System.out.println("[Loading Login]");
@@ -171,21 +187,7 @@ public class Start {
             String input;
             input = sc.nextLine();
             String command = input;
-            if (command.equalsIgnoreCase("say")) {
-                System.out.println("[console] Your message? write exit to go back to the menu");
-                input = sc.nextLine();
-                String message = input;
-                if (message.equalsIgnoreCase("exit")) {
-                    restartlistener();
-                }
-                for (ChannelServer ch : ChannelServer.getAllInstances()) {
-                    for (MapleCharacter chr : ch.getPlayerStorage().getAllCharacters()) {
-                        chr.dcolormsg(6, "[Console] " + message);
-                    }
-                }
-                System.out.println("[Console] " + message);
-                restartlistener();
-            } else if (command.contains("shutdown")) {
+            if (command.contains("shutdown")) {
                 Thread t = null;
                 if (t == null || !t.isAlive()) {
                     t = new Thread(ShutdownServer.getInstance());
@@ -193,8 +195,7 @@ public class Start {
                     t.start();
                 }
             } else if (command.contains("restart")) {
-                Thread t = null;
-                t = new Thread(ShutdownServer.getInstance());
+                Thread t = new Thread(ShutdownServer.getInstance());
                 ShutdownServer.getInstance().shutdown();
                 t.start();
                 EtcTimer.getInstance().schedule(new Runnable() {
@@ -207,28 +208,9 @@ public class Start {
                         }
                     }
                 }, 3 * 1000);
-            } else if (command.contains("prefixsay")) {
-                StringBuilder sb = new StringBuilder();
-                System.out.println("What would you like the msg prefix to be ?");
-                input = sc.nextLine();
-                String prefix = input;
-                sb.append("[").append(prefix).append("] ");
-                System.out.println("What message to broadcast?");
-                String input2 = sc.nextLine();
-                String message = input2; //?
-                sb.append(message);
-                for (ChannelServer ch : ChannelServer.getAllInstances()) {
-                    for (MapleCharacter plr : ch.getPlayerStorage().getAllCharacters()) {
-                        plr.dcolormsg(5, sb.toString());
-                    }
-                }
-                restartlistener();
             }
         }
 
     }
 
-    public static void restartlistener() {
-        listenCommand();
-    }
 }
