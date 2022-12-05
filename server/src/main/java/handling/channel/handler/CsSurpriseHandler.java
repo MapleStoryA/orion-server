@@ -5,8 +5,8 @@ import client.inventory.IItem;
 import handling.AbstractMaplePacketHandler;
 import handling.cashshop.handler.CashShopOperationUtils;
 import server.RandomRewards;
-import server.cashShop.CashItemFactory;
-import server.cashShop.CashItemInfo;
+import server.cashshop.CashItemFactory;
+import server.cashshop.CashItemInfo;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.MTSCSPacket;
 

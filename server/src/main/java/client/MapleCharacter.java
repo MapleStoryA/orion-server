@@ -74,7 +74,7 @@ import server.Randomizer;
 import server.Timer.BuffTimer;
 import server.Timer.EtcTimer;
 import server.Timer.MapTimer;
-import server.cashShop.CashShop;
+import server.cashshop.CashShop;
 import server.life.MapleMonster;
 import server.life.MobSkill;
 import server.maps.AbstractAnimatedMapleMapObject;

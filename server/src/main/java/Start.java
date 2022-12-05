@@ -31,7 +31,7 @@ import server.Timer.MobTimer;
 import server.Timer.PingTimer;
 import server.Timer.WorldTimer;
 import server.TimerManager;
-import server.cashShop.CashItemFactory;
+import server.cashshop.CashItemFactory;
 import server.events.MapleOxQuizFactory;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonsterInformationProvider;

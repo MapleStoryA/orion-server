@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package server.cashShop;
+package server.cashshop;
 
 import client.inventory.IItem;
 import client.inventory.Item;
