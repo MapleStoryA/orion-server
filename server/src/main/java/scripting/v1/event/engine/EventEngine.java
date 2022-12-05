@@ -7,33 +7,33 @@ import server.maps.MapleMap;
 
 public interface EventEngine {
 
-  void loadScript();
+    void loadScript();
 
-  void onEventStart();
+    void onEventStart();
 
-  void onEventFinish();
+    void onEventFinish();
 
-  void onPlayerDisconnected(TargetScript player);
+    void onPlayerDisconnected(TargetScript player);
 
-  void onPlayerJoin(TargetScript player);
+    void onPlayerJoin(TargetScript player);
 
-  void onPlayerLeave(TargetScript player);
+    void onPlayerLeave(TargetScript player);
 
-  void onPartyDisband(MapleParty party);
+    void onPartyDisband(MapleParty party);
 
-  void onPlayerDied(TargetScript player);
+    void onPlayerDied(TargetScript player);
 
-  void onPlayerExitMap(TargetScript mapleCharacter, MapleMap map);
+    void onPlayerExitMap(TargetScript mapleCharacter, MapleMap map);
 
-  void onMobKilled(TargetScript killer, MapleMonster mob);
+    void onMobKilled(TargetScript killer, MapleMonster mob);
 
-  void addToContext(String key, Object obj);
+    void addToContext(String key, Object obj);
 
-  void removeFromContext(String key);
+    void removeFromContext(String key);
 
-  void invokeAction(String method);
+    void invokeAction(String method);
 
-  String getProperty(String key);
+    String getProperty(String key);
 
 
 }

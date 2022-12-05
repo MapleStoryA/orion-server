@@ -34,123 +34,126 @@ import java.awt.*;
 
 public class MapleMist extends AbstractMapleMapObject {
 
-  private Rectangle mistPosition;
-  private MapleStatEffect source;
-  private MobSkill skill;
-  private boolean isMobMist;
-  private int skillDelay, skilllevel, isPoisonMist, ownerId;
+    private final Rectangle mistPosition;
+    private MapleStatEffect source;
+    private MobSkill skill;
+    private final boolean isMobMist;
+    private final int skillDelay;
+    private final int skilllevel;
+    private int isPoisonMist;
+    private final int ownerId;
 
-  public MapleMist(Rectangle mistPosition, MapleMonster mob, MobSkill skill) {
-    this.mistPosition = mistPosition;
-    this.ownerId = mob.getId();
-    this.skill = skill;
-    this.skilllevel = skill.getSkillLevel();
+    public MapleMist(Rectangle mistPosition, MapleMonster mob, MobSkill skill) {
+        this.mistPosition = mistPosition;
+        this.ownerId = mob.getId();
+        this.skill = skill;
+        this.skilllevel = skill.getSkillLevel();
 
-    isMobMist = true;
-    isPoisonMist = 0;
-    skillDelay = 0;
-  }
-
-  public MapleMist(Rectangle mistPosition, MapleCharacter owner, MapleStatEffect source) {
-    this.mistPosition = mistPosition;
-    this.ownerId = owner.getId();
-    this.source = source;
-    this.skillDelay = 8;
-    this.isMobMist = false;
-    this.skilllevel = owner.getSkillLevel(SkillFactory.getSkill(source.getSourceId()));
-
-    switch (source.getSourceId()) {
-      case 4221006: // Smoke Screen
+        isMobMist = true;
         isPoisonMist = 0;
-        break;
-      case 14111006: // Poison Bomb
-      case 2111003: // FP mist
-      case 12111005: // Flame wizard, [Flame Gear]
-        isPoisonMist = 1;
-        break;
-      case 22161003: //Recovery Aura
-        isPoisonMist = 2;
-        break;
+        skillDelay = 0;
     }
-  }
 
-  //fake
-  public MapleMist(Rectangle mistPosition, MapleCharacter owner) {
-    this.mistPosition = mistPosition;
-    this.ownerId = owner.getId();
-    this.source = new MapleStatEffect();
-    this.source.setSourceId(2111003);
-    this.skilllevel = 30;
-    isMobMist = false;
-    isPoisonMist = 0;
-    skillDelay = 8;
-  }
+    public MapleMist(Rectangle mistPosition, MapleCharacter owner, MapleStatEffect source) {
+        this.mistPosition = mistPosition;
+        this.ownerId = owner.getId();
+        this.source = source;
+        this.skillDelay = 8;
+        this.isMobMist = false;
+        this.skilllevel = owner.getSkillLevel(SkillFactory.getSkill(source.getSourceId()));
 
-  @Override
-  public MapleMapObjectType getType() {
-    return MapleMapObjectType.MIST;
-  }
+        switch (source.getSourceId()) {
+            case 4221006: // Smoke Screen
+                isPoisonMist = 0;
+                break;
+            case 14111006: // Poison Bomb
+            case 2111003: // FP mist
+            case 12111005: // Flame wizard, [Flame Gear]
+                isPoisonMist = 1;
+                break;
+            case 22161003: //Recovery Aura
+                isPoisonMist = 2;
+                break;
+        }
+    }
 
-  @Override
-  public Point getPosition() {
-    return mistPosition.getLocation();
-  }
+    //fake
+    public MapleMist(Rectangle mistPosition, MapleCharacter owner) {
+        this.mistPosition = mistPosition;
+        this.ownerId = owner.getId();
+        this.source = new MapleStatEffect();
+        this.source.setSourceId(2111003);
+        this.skilllevel = 30;
+        isMobMist = false;
+        isPoisonMist = 0;
+        skillDelay = 8;
+    }
 
-  public ISkill getSourceSkill() {
-    return SkillFactory.getSkill(source.getSourceId());
-  }
+    @Override
+    public MapleMapObjectType getType() {
+        return MapleMapObjectType.MIST;
+    }
 
-  public boolean isMobMist() {
-    return isMobMist;
-  }
+    @Override
+    public Point getPosition() {
+        return mistPosition.getLocation();
+    }
 
-  public int isPoisonMist() {
-    return isPoisonMist;
-  }
+    public ISkill getSourceSkill() {
+        return SkillFactory.getSkill(source.getSourceId());
+    }
 
-  public int getSkillDelay() {
-    return skillDelay;
-  }
+    public boolean isMobMist() {
+        return isMobMist;
+    }
 
-  public int getSkillLevel() {
-    return skilllevel;
-  }
+    public int isPoisonMist() {
+        return isPoisonMist;
+    }
 
-  public int getOwnerId() {
-    return ownerId;
-  }
+    public int getSkillDelay() {
+        return skillDelay;
+    }
 
-  public MobSkill getMobSkill() {
-    return this.skill;
-  }
+    public int getSkillLevel() {
+        return skilllevel;
+    }
 
-  public Rectangle getBox() {
-    return mistPosition;
-  }
+    public int getOwnerId() {
+        return ownerId;
+    }
 
-  public MapleStatEffect getSource() {
-    return source;
-  }
+    public MobSkill getMobSkill() {
+        return this.skill;
+    }
 
-  @Override
-  public void setPosition(Point position) {
-  }
+    public Rectangle getBox() {
+        return mistPosition;
+    }
 
-  public byte[] fakeSpawnData(int level) {
-    return MaplePacketCreator.spawnMist(this);
-  }
+    public MapleStatEffect getSource() {
+        return source;
+    }
 
-  @Override
-  public void sendSpawnData(final MapleClient c) {
-    c.getSession().write(MaplePacketCreator.spawnMist(this));
-  }
+    @Override
+    public void setPosition(Point position) {
+    }
 
-  @Override
-  public void sendDestroyData(final MapleClient c) {
-    c.getSession().write(MaplePacketCreator.removeMist(getObjectId()));
-  }
+    public byte[] fakeSpawnData(int level) {
+        return MaplePacketCreator.spawnMist(this);
+    }
 
-  public boolean makeChanceResult() {
-    return source.makeChanceResult();
-  }
+    @Override
+    public void sendSpawnData(final MapleClient c) {
+        c.getSession().write(MaplePacketCreator.spawnMist(this));
+    }
+
+    @Override
+    public void sendDestroyData(final MapleClient c) {
+        c.getSession().write(MaplePacketCreator.removeMist(getObjectId()));
+    }
+
+    public boolean makeChanceResult() {
+        return source.makeChanceResult();
+    }
 }

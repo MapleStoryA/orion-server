@@ -6,9 +6,9 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 public class FamilyOperationHandler extends AbstractMaplePacketHandler {
 
-  @Override
-  public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
 
-  }
+    }
 
 }

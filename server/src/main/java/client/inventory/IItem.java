@@ -23,45 +23,45 @@ package client.inventory;
 
 public interface IItem extends Comparable<IItem> {
 
-  byte getType();
+    byte getType();
 
-  short getPosition();
+    short getPosition();
 
-  byte getFlag();
+    byte getFlag();
 
-  short getQuantity();
+    short getQuantity();
 
-  String getOwner();
+    String getOwner();
 
-  int getItemId();
+    int getItemId();
 
-  MaplePet getPet();
+    MaplePet getPet();
 
-  int getSN();
+    int getSN();
 
-  IItem copy();
+    IItem copy();
 
-  long getExpiration();
+    long getExpiration();
 
-  long getInventoryId();
+    long getInventoryId();
 
-  void setFlag(byte flag);
+    void setFlag(byte flag);
 
-  void setSN(int id);
+    void setSN(int id);
 
-  void setPosition(short position);
+    void setPosition(short position);
 
-  void setExpiration(long expire);
+    void setExpiration(long expire);
 
-  void setInventoryId(long ui);
+    void setInventoryId(long ui);
 
-  void setOwner(String owner);
+    void setOwner(String owner);
 
-  void setQuantity(short quantity);
+    void setQuantity(short quantity);
 
-  void setGiftFrom(String gf);
+    void setGiftFrom(String gf);
 
-  String getGiftFrom();
+    String getGiftFrom();
 
-  MapleRing getRing();
+    MapleRing getRing();
 }

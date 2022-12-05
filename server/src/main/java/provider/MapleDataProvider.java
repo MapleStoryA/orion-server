@@ -23,7 +23,7 @@ package provider;
 
 public interface MapleDataProvider {
 
-  MapleData getData(String path);
+    MapleData getData(String path);
 
-  MapleDataDirectoryEntry getRoot();
+    MapleDataDirectoryEntry getRoot();
 }

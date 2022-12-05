@@ -4,10 +4,10 @@ import client.MapleClient;
 
 public class MockedPacketDispatcher implements PacketDispatcher {
 
-  @Override
-  public void dispatch(MapleClient client, byte[] packet) {
-    System.out.println("Dispatching packet");
+    @Override
+    public void dispatch(MapleClient client, byte[] packet) {
+        System.out.println("Dispatching packet");
 
-  }
+    }
 
 }

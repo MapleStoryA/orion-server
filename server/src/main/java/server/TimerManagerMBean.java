@@ -23,15 +23,15 @@
 package server;
 
 public interface TimerManagerMBean {
-  public boolean isTerminated();
+    boolean isTerminated();
 
-  public boolean isShutdown();
+    boolean isShutdown();
 
-  public long getCompletedTaskCount();
+    long getCompletedTaskCount();
 
-  public long getActiveCount();
+    long getActiveCount();
 
-  public long getTaskCount();
+    long getTaskCount();
 
-  public int getQueuedTasks();
+    int getQueuedTasks();
 }

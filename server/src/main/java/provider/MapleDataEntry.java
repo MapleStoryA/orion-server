@@ -26,11 +26,11 @@ package provider;
  */
 public interface MapleDataEntry extends MapleDataEntity {
 
-  public String getName();
+    String getName();
 
-  public int getSize();
+    int getSize();
 
-  public int getChecksum();
+    int getChecksum();
 
-  public int getOffset();
+    int getOffset();
 }

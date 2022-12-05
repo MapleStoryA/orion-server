@@ -30,41 +30,41 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class CheatingOffensePersister {
 
-  private final static CheatingOffensePersister instance = new CheatingOffensePersister();
-  private final Set<CheatingOffenseEntry> toPersist = new LinkedHashSet<CheatingOffenseEntry>();
-  private final Lock mutex = new ReentrantLock();
+    private final static CheatingOffensePersister instance = new CheatingOffensePersister();
+    private final Set<CheatingOffenseEntry> toPersist = new LinkedHashSet<CheatingOffenseEntry>();
+    private final Lock mutex = new ReentrantLock();
 
-  private CheatingOffensePersister() {
-    CheatTimer.getInstance().register(new PersistingTask(), 61000);
-  }
-
-  public static CheatingOffensePersister getInstance() {
-    return instance;
-  }
-
-  public void persistEntry(CheatingOffenseEntry coe) {
-    mutex.lock();
-    try {
-      toPersist.remove(coe); //equal/hashCode h4x
-      toPersist.add(coe);
-    } finally {
-      mutex.unlock();
+    private CheatingOffensePersister() {
+        CheatTimer.getInstance().register(new PersistingTask(), 61000);
     }
-  }
 
-  public class PersistingTask implements Runnable {
+    public static CheatingOffensePersister getInstance() {
+        return instance;
+    }
 
-    @Override
-    public void run() {
-      //CheatingOffenseEntry[] offenses;
+    public void persistEntry(CheatingOffenseEntry coe) {
+        mutex.lock();
+        try {
+            toPersist.remove(coe); //equal/hashCode h4x
+            toPersist.add(coe);
+        } finally {
+            mutex.unlock();
+        }
+    }
 
-      mutex.lock();
-      try {
-        //offenses = toPersist.toArray(new CheatingOffenseEntry[toPersist.size()]);
-        toPersist.clear();
-      } finally {
-        mutex.unlock();
-      }
+    public class PersistingTask implements Runnable {
+
+        @Override
+        public void run() {
+            //CheatingOffenseEntry[] offenses;
+
+            mutex.lock();
+            try {
+                //offenses = toPersist.toArray(new CheatingOffenseEntry[toPersist.size()]);
+                toPersist.clear();
+            } finally {
+                mutex.unlock();
+            }
 
             /*try {
             Connection con = DatabaseConnection.getConnection();
@@ -97,6 +97,6 @@ public class CheatingOffensePersister {
             } catch (SQLException e) {
             System.err.println("error persisting cheatlog" + e);
             }*/
+        }
     }
-  }
 }

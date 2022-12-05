@@ -36,87 +36,87 @@ import java.util.Map.Entry;
 
 public class MapleKeyLayout implements Serializable {
 
-  private static final long serialVersionUID = 9179541993413738569L;
-  private boolean changed = false;
-  private Map<Integer, Triple<Byte, Integer, Byte>> keymap;
+    private static final long serialVersionUID = 9179541993413738569L;
+    private boolean changed = false;
+    private final Map<Integer, Triple<Byte, Integer, Byte>> keymap;
 
-  public MapleKeyLayout() {
-    keymap = new HashMap<>();
-  }
-
-  public MapleKeyLayout(Map<Integer, Triple<Byte, Integer, Byte>> keys) {
-    keymap = keys;
-  }
-
-  public final Map<Integer, Triple<Byte, Integer, Byte>> Layout() {
-    changed = true;
-    return keymap;
-  }
-
-  public final void writeData(final MaplePacketLittleEndianWriter mplew) {
-    Triple<Byte, Integer, Byte> binding;
-    for (int x = 0; x < 90; x++) {
-      binding = keymap.get(Integer.valueOf(x));
-      if (binding != null) {
-        mplew.write(binding.getLeft());
-        mplew.writeInt(binding.getMid());
-      } else {
-        mplew.write(0);
-        mplew.writeInt(0);
-      }
-    }
-  }
-
-  public final void saveKeys(final int charid, final MapleCharacter chr) throws SQLException {
-    if (!changed || keymap.isEmpty()) {
-      return;
-    }
-    try {
-      Connection con = DatabaseConnection.getConnection();
-      con.setAutoCommit(false);
-      PreparedStatement ps = con.prepareStatement("DELETE FROM keymap WHERE characterid = ?");
-      ps.setInt(1, charid);
-      ps.execute();
-      ps.close();
-
-      boolean first = true;
-      StringBuilder query = new StringBuilder();
-      if (ServerEnvironment.isDebugEnabled()) {
-        // System.out.println("Saving key map...");
-      }
-      for (Entry<Integer, Triple<Byte, Integer, Byte>> keybinding : keymap.entrySet()) {
-        int skill = keybinding.getValue().getMid().intValue();
-        if (ExcludedKeyMap.fromKeyValue(skill) != null) {
-          continue;
-        }
-        if (ServerEnvironment.isDebugEnabled()) {
-          // System.out.println("Entry: " + keybinding.getValue());
-        }
-        if (first) {
-          first = false;
-          query.append("INSERT INTO keymap VALUES (");
-        } else {
-          query.append(",(");
-        }
-        query.append("DEFAULT,");
-        query.append(charid).append(",");
-        query.append(keybinding.getKey().intValue()).append(",");
-        query.append(keybinding.getValue().getLeft().byteValue()).append(",");
-        query.append(skill).append(",");
-        query.append(keybinding.getValue().getRight().byteValue()).append(")");
-      }
-      if (ServerEnvironment.isDebugEnabled()) {
-        // System.out.println(query);
-      }
-      ps = con.prepareStatement(query.toString());
-      ps.execute();
-      con.commit();
-      ps.close();
-    } catch (SQLException ex) {
-      System.out.println("Error while saving key " + ex.getMessage());
-      throw ex;
+    public MapleKeyLayout() {
+        keymap = new HashMap<>();
     }
 
-  }
+    public MapleKeyLayout(Map<Integer, Triple<Byte, Integer, Byte>> keys) {
+        keymap = keys;
+    }
+
+    public final Map<Integer, Triple<Byte, Integer, Byte>> Layout() {
+        changed = true;
+        return keymap;
+    }
+
+    public final void writeData(final MaplePacketLittleEndianWriter mplew) {
+        Triple<Byte, Integer, Byte> binding;
+        for (int x = 0; x < 90; x++) {
+            binding = keymap.get(Integer.valueOf(x));
+            if (binding != null) {
+                mplew.write(binding.getLeft());
+                mplew.writeInt(binding.getMid());
+            } else {
+                mplew.write(0);
+                mplew.writeInt(0);
+            }
+        }
+    }
+
+    public final void saveKeys(final int charid, final MapleCharacter chr) throws SQLException {
+        if (!changed || keymap.isEmpty()) {
+            return;
+        }
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            con.setAutoCommit(false);
+            PreparedStatement ps = con.prepareStatement("DELETE FROM keymap WHERE characterid = ?");
+            ps.setInt(1, charid);
+            ps.execute();
+            ps.close();
+
+            boolean first = true;
+            StringBuilder query = new StringBuilder();
+            if (ServerEnvironment.isDebugEnabled()) {
+                // System.out.println("Saving key map...");
+            }
+            for (Entry<Integer, Triple<Byte, Integer, Byte>> keybinding : keymap.entrySet()) {
+                int skill = keybinding.getValue().getMid().intValue();
+                if (ExcludedKeyMap.fromKeyValue(skill) != null) {
+                    continue;
+                }
+                if (ServerEnvironment.isDebugEnabled()) {
+                    // System.out.println("Entry: " + keybinding.getValue());
+                }
+                if (first) {
+                    first = false;
+                    query.append("INSERT INTO keymap VALUES (");
+                } else {
+                    query.append(",(");
+                }
+                query.append("DEFAULT,");
+                query.append(charid).append(",");
+                query.append(keybinding.getKey().intValue()).append(",");
+                query.append(keybinding.getValue().getLeft().byteValue()).append(",");
+                query.append(skill).append(",");
+                query.append(keybinding.getValue().getRight().byteValue()).append(")");
+            }
+            if (ServerEnvironment.isDebugEnabled()) {
+                // System.out.println(query);
+            }
+            ps = con.prepareStatement(query.toString());
+            ps.execute();
+            con.commit();
+            ps.close();
+        } catch (SQLException ex) {
+            System.out.println("Error while saving key " + ex.getMessage());
+            throw ex;
+        }
+
+    }
 
 }

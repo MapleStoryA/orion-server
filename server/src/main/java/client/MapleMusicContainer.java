@@ -7,24 +7,24 @@ import java.util.HashMap;
  */
 public class MapleMusicContainer {
 
-  private HashMap<Integer, Byte> notecontainer = new HashMap<>();
+    private final HashMap<Integer, Byte> notecontainer = new HashMap<>();
 
-  public void addNote(int songid, byte note) {
-    notecontainer.put(songid, note);
-  }
-
-  public void removeNote(int songid, byte note) {
-    notecontainer.remove(note);
-  }
-
-  public int iterateNote(int songid) {
-    for (Byte i : notecontainer.values()) {
-      if (i.equals(songid)) {
-        return notecontainer.get(i);
-      }
+    public void addNote(int songid, byte note) {
+        notecontainer.put(songid, note);
     }
-    return 0;
-  }
+
+    public void removeNote(int songid, byte note) {
+        notecontainer.remove(note);
+    }
+
+    public int iterateNote(int songid) {
+        for (Byte i : notecontainer.values()) {
+            if (i.equals(songid)) {
+                return notecontainer.get(i);
+            }
+        }
+        return 0;
+    }
 
 
 }

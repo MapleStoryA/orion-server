@@ -26,39 +26,39 @@ import server.life.Element;
 
 public interface ISkill {
 
-  int getId();
+    int getId();
 
-  MapleStatEffect getEffect(int level);
+    MapleStatEffect getEffect(int level);
 
-  byte getMaxLevel();
+    byte getMaxLevel();
 
-  int getAnimationTime();
+    int getAnimationTime();
 
-  boolean canBeLearnedBy(int job);
+    boolean canBeLearnedBy(int job);
 
-  boolean isFourthJob();
+    boolean isFourthJob();
 
-  boolean getAction();
+    boolean getAction();
 
-  boolean isTimeLimited();
+    boolean isTimeLimited();
 
-  int getMasterLevel();
+    int getMasterLevel();
 
-  Element getElement();
+    Element getElement();
 
-  boolean isBeginnerSkill();
+    boolean isBeginnerSkill();
 
-  boolean hasRequiredSkill();
+    boolean hasRequiredSkill();
 
-  boolean isInvisible();
+    boolean isInvisible();
 
-  boolean isChargeSkill();
+    boolean isChargeSkill();
 
-  int getRequiredSkillLevel();
+    int getRequiredSkillLevel();
 
-  int getRequiredSkillId();
+    int getRequiredSkillId();
 
-  String getName();
+    String getName();
 
-  boolean hasMastery();
+    boolean hasMastery();
 }

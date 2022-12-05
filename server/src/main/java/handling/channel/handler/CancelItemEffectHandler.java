@@ -8,15 +8,15 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 public class CancelItemEffectHandler extends AbstractMaplePacketHandler {
 
-  @Override
-  public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-    MapleCharacter chr = c.getPlayer();
-    int id = slea.readInt();
-    if (id == 2211000 || id == 2212000) {
-      chr.setMorphId((byte) 0);
-    }
-    chr.cancelEffect(MapleItemInformationProvider.getInstance().getItemEffect(-id), false, -1);
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        MapleCharacter chr = c.getPlayer();
+        int id = slea.readInt();
+        if (id == 2211000 || id == 2212000) {
+            chr.setMorphId((byte) 0);
+        }
+        chr.cancelEffect(MapleItemInformationProvider.getInstance().getItemEffect(-id), false, -1);
 
-  }
+    }
 
 }

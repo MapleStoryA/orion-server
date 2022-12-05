@@ -7,16 +7,16 @@ import java.util.Map;
 
 public class StructSetItem {
 
-  public byte completeCount, setItemID;
-  public Map<Integer, SetItem> items = new LinkedHashMap<Integer, SetItem>();
-  public List<Integer> itemIDs = new ArrayList<Integer>();
+    public byte completeCount, setItemID;
+    public Map<Integer, SetItem> items = new LinkedHashMap<Integer, SetItem>();
+    public List<Integer> itemIDs = new ArrayList<Integer>();
 
-  public static class SetItem {
+    public static class SetItem {
 
-    public int incPDD, incMDD, incSTR, incDEX, incINT, incLUK, incACC, incPAD, incMAD, incSpeed, incMHP, incMMP;
-  }
+        public int incPDD, incMDD, incSTR, incDEX, incINT, incLUK, incACC, incPAD, incMAD, incSpeed, incMHP, incMMP;
+    }
 
-  public Map<Integer, SetItem> getItems() {
-    return new LinkedHashMap<Integer, SetItem>(items);
-  }
+    public Map<Integer, SetItem> getItems() {
+        return new LinkedHashMap<Integer, SetItem>(items);
+    }
 }

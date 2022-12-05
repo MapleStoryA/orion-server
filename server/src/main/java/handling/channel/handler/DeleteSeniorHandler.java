@@ -6,10 +6,10 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 public class DeleteSeniorHandler extends AbstractMaplePacketHandler {
 
-  @Override
-  public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
 
 
-  }
+    }
 
 }

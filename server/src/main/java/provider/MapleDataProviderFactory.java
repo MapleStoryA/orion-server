@@ -27,26 +27,26 @@ import java.io.File;
 
 public class MapleDataProviderFactory {
 
-  private final static String wzPath = "dist/wz";
+    private final static String wzPath = "dist/wz";
 
-  private static MapleDataProvider getWZ(Object in, boolean provideImages) {
-    if (in instanceof File) {
-      File fileIn = (File) in;
+    private static MapleDataProvider getWZ(Object in, boolean provideImages) {
+        if (in instanceof File) {
+            File fileIn = (File) in;
 
-      return new XMLWZFile(fileIn);
+            return new XMLWZFile(fileIn);
+        }
+        throw new IllegalArgumentException("Can't create data provider for input " + in);
     }
-    throw new IllegalArgumentException("Can't create data provider for input " + in);
-  }
 
-  public static MapleDataProvider getDataProvider(Object in) {
-    return getWZ(in, false);
-  }
+    public static MapleDataProvider getDataProvider(Object in) {
+        return getWZ(in, false);
+    }
 
-  public static MapleDataProvider getImageProvidingDataProvider(Object in) {
-    return getWZ(in, true);
-  }
+    public static MapleDataProvider getImageProvidingDataProvider(Object in) {
+        return getWZ(in, true);
+    }
 
-  public static File fileInWZPath(String filename) {
-    return new File(wzPath, filename);
-  }
+    public static File fileInWZPath(String filename) {
+        return new File(wzPath, filename);
+    }
 }

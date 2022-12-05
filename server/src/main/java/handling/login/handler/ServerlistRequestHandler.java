@@ -10,14 +10,14 @@ import tools.packet.LoginPacket;
 public class ServerlistRequestHandler extends AbstractMaplePacketHandler {
 
 
-  @Override
-  public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-    c.getSession().write(LoginPacket.getServerList(0, LoginServer.getServerName(), LoginServer.getLoad()));
-    c.getSession().write(LoginPacket.getEndOfServerList());
-    c.getSession().write(LoginPacket.getRecommendedWorldMessage(0, ServerConstants.RECOMMENDED_MESSAGE));
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        c.getSession().write(LoginPacket.getServerList(0, LoginServer.getServerName(), LoginServer.getLoad()));
+        c.getSession().write(LoginPacket.getEndOfServerList());
+        c.getSession().write(LoginPacket.getRecommendedWorldMessage(0, ServerConstants.RECOMMENDED_MESSAGE));
 
 
-  }
+    }
 
 
 }

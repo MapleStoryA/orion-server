@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface MapleDropProvider {
 
-  List<MapleDropData> search(MapleMonster monster);
+    List<MapleDropData> search(MapleMonster monster);
 }

@@ -9,15 +9,15 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 public class DisplayNodeHandler extends AbstractMaplePacketHandler {
 
-  @Override
-  public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-    MapleCharacter chr = c.getPlayer();
-    final MapleMonster mob_from = chr.getMap().getMonsterByOid(slea.readInt()); // From
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        MapleCharacter chr = c.getPlayer();
+        final MapleMonster mob_from = chr.getMap().getMonsterByOid(slea.readInt()); // From
 
-    if (mob_from != null) {
-      chr.getClient().getSession().write(MaplePacketCreator.getNodeProperties(mob_from, chr.getMap()));
+        if (mob_from != null) {
+            chr.getClient().getSession().write(MaplePacketCreator.getNodeProperties(mob_from, chr.getMap()));
+        }
+
     }
-
-  }
 
 }

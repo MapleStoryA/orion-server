@@ -6,28 +6,28 @@ import java.awt.*;
 
 public interface MaplePortal {
 
-  public static final int MAP_PORTAL = 2;
-  public static final int DOOR_PORTAL = 6;
+    int MAP_PORTAL = 2;
+    int DOOR_PORTAL = 6;
 
-  int getType();
+    int getType();
 
-  int getId();
+    int getId();
 
-  Point getPosition();
+    Point getPosition();
 
-  String getName();
+    String getName();
 
-  String getTarget();
+    String getTarget();
 
-  String getScriptName();
+    String getScriptName();
 
-  void setScriptName(String newName);
+    void setScriptName(String newName);
 
-  int getTargetMapId();
+    int getTargetMapId();
 
-  void enterPortal(MapleClient c);
+    void enterPortal(MapleClient c);
 
-  void setPortalState(boolean state);
+    void setPortalState(boolean state);
 
-  boolean getPortalState();
+    boolean getPortalState();
 }

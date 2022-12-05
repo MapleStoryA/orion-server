@@ -30,110 +30,110 @@ import java.util.Calendar;
 
 public class FileoutputUtil {
 
-  // Logging output file
-  public static final String Acc_Stuck = "Log_AccountStuck.rtf",
-      Login_Error = "Log_Login_Error.rtf",
-  //Timer_Log = "Log_Timer_Except.rtf",
-  //MapTimer_Log = "Log_MapTimer_Except.rtf",
-  // IP_Log = "Log_AccountIP.rtf",
-  //GMCommand_Log = "Log_GMCommand.rtf",
-  Zakum_Log = "Log_Zakum.rtf",
-      Horntail_Log = "Log_Horntail.rtf",
-      Pinkbean_Log = "Log_Pinkbean.rtf",
-      ScriptEx_Log = "Log_Script_Except.rtf",
-      PacketEx_Log = "Log_Packet_Except.rtf" // I cba looking for every error, adding this back in.
-          + "";
-  // End
-  private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-  private static final SimpleDateFormat sdf_ = new SimpleDateFormat("yyyy-MM-dd");
+    // Logging output file
+    public static final String Acc_Stuck = "Log_AccountStuck.rtf",
+            Login_Error = "Log_Login_Error.rtf",
+    //Timer_Log = "Log_Timer_Except.rtf",
+    //MapTimer_Log = "Log_MapTimer_Except.rtf",
+    // IP_Log = "Log_AccountIP.rtf",
+    //GMCommand_Log = "Log_GMCommand.rtf",
+    Zakum_Log = "Log_Zakum.rtf",
+            Horntail_Log = "Log_Horntail.rtf",
+            Pinkbean_Log = "Log_Pinkbean.rtf",
+            ScriptEx_Log = "Log_Script_Except.rtf",
+            PacketEx_Log = "Log_Packet_Except.rtf" // I cba looking for every error, adding this back in.
+                    + "";
+    // End
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final SimpleDateFormat sdf_ = new SimpleDateFormat("yyyy-MM-dd");
 
-  public static void logPacket(final String file, final String msg) {
-    logETCs(file, msg, true);
-  }
-
-  public static void logUsers(final String file, final String msg) {
-    logETCs(file, msg, false);
-  }
-
-  public static void logETCs(final String file, final String msg, final boolean packet) {
-    FileOutputStream out = null;
-    try {
-      out = new FileOutputStream((packet ? "packet\\" : "users\\") + file + ".rtf", true);
-      out.write(("\n------------------------ " + CurrentReadable_Time() + " ------------------------\n").getBytes());
-      out.write(msg.getBytes());
-    } catch (IOException ess) {
-    } finally {
-      try {
-        if (out != null) {
-          out.close();
-        }
-      } catch (IOException ignore) {
-      }
+    public static void logPacket(final String file, final String msg) {
+        logETCs(file, msg, true);
     }
-  }
 
-  public static void log(final String file, final String msg) {
-    FileOutputStream out = null;
-    try {
-      out = new FileOutputStream(file, true);
-      out.write(("\n------------------------ " + CurrentReadable_Time() + " ------------------------\n").getBytes());
-      out.write(msg.getBytes());
-    } catch (IOException ess) {
-    } finally {
-      try {
-        if (out != null) {
-          out.close();
-        }
-      } catch (IOException ignore) {
-      }
+    public static void logUsers(final String file, final String msg) {
+        logETCs(file, msg, false);
     }
-  }
 
-  public static void outputFileError(final String file, final Throwable t) {
-    FileOutputStream out = null;
-    try {
-      out = new FileOutputStream(file, true);
-      out.write(("\n------------------------ " + CurrentReadable_Time() + " ------------------------\n").getBytes());
-      out.write(getString(t).getBytes());
-    } catch (IOException ess) {
-    } finally {
-      try {
-        if (out != null) {
-          out.close();
+    public static void logETCs(final String file, final String msg, final boolean packet) {
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream((packet ? "packet\\" : "users\\") + file + ".rtf", true);
+            out.write(("\n------------------------ " + CurrentReadable_Time() + " ------------------------\n").getBytes());
+            out.write(msg.getBytes());
+        } catch (IOException ess) {
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException ignore) {
+            }
         }
-      } catch (IOException ignore) {
-      }
     }
-  }
 
-  public static String CurrentReadable_Date() {
-    return sdf_.format(Calendar.getInstance().getTime());
-  }
-
-  public static String CurrentReadable_Time() {
-    return sdf.format(Calendar.getInstance().getTime());
-  }
-
-  public static String getString(final Throwable e) {
-    String retValue = null;
-    StringWriter sw = null;
-    PrintWriter pw = null;
-    try {
-      sw = new StringWriter();
-      pw = new PrintWriter(sw);
-      e.printStackTrace(pw);
-      retValue = sw.toString();
-    } finally {
-      try {
-        if (pw != null) {
-          pw.close();
+    public static void log(final String file, final String msg) {
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(file, true);
+            out.write(("\n------------------------ " + CurrentReadable_Time() + " ------------------------\n").getBytes());
+            out.write(msg.getBytes());
+        } catch (IOException ess) {
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException ignore) {
+            }
         }
-        if (sw != null) {
-          sw.close();
-        }
-      } catch (IOException ignore) {
-      }
     }
-    return retValue;
-  }
+
+    public static void outputFileError(final String file, final Throwable t) {
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(file, true);
+            out.write(("\n------------------------ " + CurrentReadable_Time() + " ------------------------\n").getBytes());
+            out.write(getString(t).getBytes());
+        } catch (IOException ess) {
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException ignore) {
+            }
+        }
+    }
+
+    public static String CurrentReadable_Date() {
+        return sdf_.format(Calendar.getInstance().getTime());
+    }
+
+    public static String CurrentReadable_Time() {
+        return sdf.format(Calendar.getInstance().getTime());
+    }
+
+    public static String getString(final Throwable e) {
+        String retValue = null;
+        StringWriter sw = null;
+        PrintWriter pw = null;
+        try {
+            sw = new StringWriter();
+            pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            retValue = sw.toString();
+        } finally {
+            try {
+                if (pw != null) {
+                    pw.close();
+                }
+                if (sw != null) {
+                    sw.close();
+                }
+            } catch (IOException ignore) {
+            }
+        }
+        return retValue;
+    }
 }

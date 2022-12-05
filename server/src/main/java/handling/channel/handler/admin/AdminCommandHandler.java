@@ -25,23 +25,23 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 public final class AdminCommandHandler extends AbstractMaplePacketHandler {
 
-  @Override
-  public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-    if (!c.getPlayer().isGM()) {// if ( (signed int)CWvsContext::GetAdminLevel((void *)v294) > 2 )
-      return;
-    }
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        if (!c.getPlayer().isGM()) {// if ( (signed int)CWvsContext::GetAdminLevel((void *)v294) > 2 )
+            return;
+        }
 
-    byte mode = slea.readByte();
-    switch (mode) {
-      case 0x00:
-      case 0x02:
-        c.getPlayer().setExp(slea.readInt());
-        break;
-      case 18:
-        c.getPlayer().isHidden();
-    }
+        byte mode = slea.readByte();
+        switch (mode) {
+            case 0x00:
+            case 0x02:
+                c.getPlayer().setExp(slea.readInt());
+                break;
+            case 18:
+                c.getPlayer().isHidden();
+        }
 
-    c.enableActions();
+        c.enableActions();
 		/*byte mode = slea.readByte();
 		String victim;
 		MapleCharacter target;
@@ -162,5 +162,5 @@ public final class AdminCommandHandler extends AbstractMaplePacketHandler {
 			default:
 				break;
 		}*/
-  }
+    }
 }
