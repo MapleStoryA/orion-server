@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package client;
 
-import constants.ServerEnvironment;
+import server.config.ServerEnvironment;
 import database.DatabaseConnection;
 import database.DatabaseException;
 import handling.cashshop.CashShopServer;

@@ -27,6 +27,7 @@ import provider.MapleDataFileEntry;
 import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
+import server.config.ServerEnvironment;
 import tools.StringUtil;
 
 import java.io.File;
@@ -41,14 +42,14 @@ public class SkillFactory {
     private static final Map<Integer, ISkill> skills = new HashMap<Integer, ISkill>();
     private static final Map<Integer, List<Integer>> skillsByJob = new HashMap<Integer, List<Integer>>();
     private static final Map<Integer, SummonSkillEntry> SummonSkillInformation = new HashMap<Integer, SummonSkillEntry>();
-    private final static MapleData stringData = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("net.sf.odinms.wzpath") + "/String")).getData("Skill.img");
+    private final static MapleData stringData = ServerEnvironment.getConfig().getDataProvider("wz/String").getData("Skill.img");
 
     public static final ISkill getSkill(final int id) {
         if (!skills.isEmpty()) {
             return skills.get(Integer.valueOf(id));
         }
         // System.out.println("Loading SkillFactory :::");
-        final MapleDataProvider datasource = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("net.sf.odinms.wzpath") + "/Skill"));
+        final MapleDataProvider datasource = ServerEnvironment.getConfig().getDataProvider("wz/Skill");
         final MapleDataDirectoryEntry root = datasource.getRoot();
 
         int skillid;

@@ -21,6 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package handling;
 
+import server.config.ServerEnvironment;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -237,23 +239,12 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
         return CheckState;
     }
 
-    public static Properties getDefaultProperties() throws IOException {
-        Properties props = new Properties();
-        try (FileInputStream fileInputStream = new FileInputStream("dist/recvops.properties")) {
-            props.load(fileInputStream);
-        }
-        return props;
-    }
 
     static {
         reloadValues();
     }
 
     public static final void reloadValues() {
-        try {
-            ExternalCodeTableGetter.populateValues(getDefaultProperties(), values());
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load recvops", e);
-        }
+        ExternalCodeTableGetter.populateValues(ServerEnvironment.getConfig().getFileAsProperties("recvops.properties"), values());
     }
 }

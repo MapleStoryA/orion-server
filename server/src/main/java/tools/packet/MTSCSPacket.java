@@ -26,7 +26,7 @@ import client.MapleClient;
 import client.inventory.IItem;
 import client.inventory.MaplePet;
 import client.inventory.MapleRing;
-import constants.ServerEnvironment;
+import server.config.ServerEnvironment;
 import handling.SendPacketOpcode;
 import provider.MapleData;
 import server.cashShop.CashItemFactory;

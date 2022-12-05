@@ -23,7 +23,7 @@ package handling;
 
 import client.MapleClient;
 import constants.ServerConstants;
-import constants.ServerEnvironment;
+import server.config.ServerEnvironment;
 import handling.cashshop.CashShopServer;
 import handling.cashshop.handler.CashShopOperationUtils;
 import handling.channel.ChannelServer;

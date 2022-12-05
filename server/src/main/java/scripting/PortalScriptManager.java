@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package scripting;
 
 import client.MapleClient;
-import constants.ServerEnvironment;
+import server.config.ServerEnvironment;
 import server.MaplePortal;
 import tools.FileoutputUtil;
 

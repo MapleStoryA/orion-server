@@ -1,7 +1,8 @@
 import client.MapleCharacter;
 import client.SkillFactory;
 import constants.JobConstants;
-import constants.ServerEnvironment;
+import server.config.ServerConfig;
+import server.config.ServerEnvironment;
 import database.DatabaseConnection;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
@@ -52,14 +53,15 @@ public class Start {
 
     public static void main(String[] args) throws InterruptedException {
         AutoJCE.removeCryptographyRestrictions();
-        ServerEnvironment.loadEnvironment();
+        ServerEnvironment.getConfig();
         instance.run();
     }
 
     public void run() throws InterruptedException {
 
         try {
-            DatabaseConnection.setProps(); // call now
+            ServerConfig config = ServerEnvironment.getConfig();
+            DatabaseConnection.initConfig(config);
         } catch (SQLException ex) {
             throw new RuntimeException("[SQL EXCEPTION] Error connecting to the database.", ex);
         }

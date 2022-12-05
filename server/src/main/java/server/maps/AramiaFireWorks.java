@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package server.maps;
 
 import client.MapleCharacter;
-import constants.ServerEnvironment;
+import server.config.ServerEnvironment;
 import handling.world.World;
 import server.MapleItemInformationProvider;
 import server.Randomizer;

@@ -1,6 +1,6 @@
 package client;
 
-import constants.ServerEnvironment;
+import server.config.ServerEnvironment;
 
 import java.util.HashMap;
 

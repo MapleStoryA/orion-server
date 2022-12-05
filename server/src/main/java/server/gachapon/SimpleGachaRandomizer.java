@@ -1,6 +1,6 @@
 package server.gachapon;
 
-import constants.ServerEnvironment;
+import server.config.ServerEnvironment;
 
 import java.util.ArrayList;
 import java.util.Collections;

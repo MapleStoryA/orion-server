@@ -24,6 +24,7 @@ package handling.login;
 import provider.MapleData;
 import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
+import server.config.ServerEnvironment;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class LoginInformationProvider {
     protected LoginInformationProvider() {
         // System.out.println("Loading LoginInformationProvider :::");
         final String WZpath = System.getProperty("net.sf.odinms.wzpath");
-        final MapleData nameData = MapleDataProviderFactory.getDataProvider(new File(WZpath + "/Etc")).getData("ForbiddenName.img");
+        final MapleData nameData = ServerEnvironment.getConfig().getDataProvider("wz/Etc").getData("ForbiddenName.img");
         for (final MapleData data : nameData.getChildren()) {
             ForbiddenName.add(MapleDataTool.getString(data));
         }

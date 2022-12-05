@@ -27,6 +27,7 @@ import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
 import server.PortalFactory;
+import server.config.ServerEnvironment;
 import server.life.AbstractLoadedMapleLife;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
@@ -51,8 +52,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class MapleMapFactory {
 
-    private static final MapleDataProvider source = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("net.sf.odinms.wzpath") + "/Map"));
-    private static final MapleData nameData = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("net.sf.odinms.wzpath") + "/String")).getData("Map.img");
+    private static final MapleDataProvider source = ServerEnvironment.getConfig().getDataProvider("wz/Map");
+    private static final MapleData nameData = ServerEnvironment.getConfig().getDataProvider("wz/String").getData("Map.img");
     private final Map<Integer, MapleMap> maps = new HashMap<Integer, MapleMap>();
     private final Map<Integer, MapleMap> instanceMap = new HashMap<Integer, MapleMap>();
     private static final Map<Integer, List<AbstractLoadedMapleLife>> customLife = new HashMap<>();

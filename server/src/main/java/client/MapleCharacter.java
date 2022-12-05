@@ -37,7 +37,7 @@ import constants.GameConstants;
 import constants.JobConstants;
 import constants.MapConstants;
 import constants.ServerConstants;
-import constants.ServerEnvironment;
+import server.config.ServerEnvironment;
 import constants.skills.BladeLord;
 import constants.skills.Rogue;
 import database.DatabaseConnection;

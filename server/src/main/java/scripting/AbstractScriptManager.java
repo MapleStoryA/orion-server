@@ -1,7 +1,7 @@
 package scripting;
 
 import client.MapleClient;
-import constants.ServerEnvironment;
+import server.config.ServerEnvironment;
 import tools.StringUtil;
 
 import javax.script.Invocable;

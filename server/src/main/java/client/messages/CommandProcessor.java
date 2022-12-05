@@ -31,7 +31,7 @@ import client.messages.commands.GMCommand;
 import client.messages.commands.PlayerCommand;
 import constants.ServerConstants.CommandType;
 import constants.ServerConstants.PlayerGMRank;
-import constants.ServerEnvironment;
+import server.config.ServerEnvironment;
 import database.DatabaseConnection;
 import tools.FileoutputUtil;
 

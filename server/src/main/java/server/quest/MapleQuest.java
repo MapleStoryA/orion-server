@@ -8,6 +8,7 @@ import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
 import scripting.NPCScriptManager;
+import server.config.ServerEnvironment;
 import tools.FileoutputUtil;
 import tools.MaplePacketCreator;
 import tools.Pair;
@@ -162,7 +163,7 @@ public class MapleQuest implements Serializable {
     }
 
     public static void initQuests() {
-        questData = MapleDataProviderFactory.getDataProvider(new File("dist/wz/Quest"));
+        questData = ServerEnvironment.getConfig().getDataProvider("wz/Quest");
         actions = questData.getData("Act.img");
         requirements = questData.getData("Check.img");
         info = questData.getData("QuestInfo.img");

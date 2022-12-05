@@ -19,6 +19,7 @@
 package database;
 
 import server.ServerProperties;
+import server.config.ServerConfig;
 import tools.LockableList;
 
 import java.sql.Connection;
@@ -48,15 +49,15 @@ public class DatabaseConnection {
         }
     }
 
-    public static void setProps() throws SQLException {
+    public static void initConfig(ServerConfig config) throws SQLException {
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             throw new SQLException("Unable to find JDBC library. Do you have MySQL Connector/J (if using default JDBC driver)?");
         }
-        String url = ServerProperties.getProperty("url");
-        String user = ServerProperties.getProperty("user");
-        String password = System.getenv("MYSQL_ROOT_PASSWORD");
+        String url = config.getProperty("url");
+        String user = config.getProperty("user");
+        String password = config.getProperty("password");
         if (password == null) {
             throw new DatabaseException("Database password not provide.");
         }
@@ -112,13 +113,7 @@ public class DatabaseConnection {
 
         Connection getConnection() throws SQLException;
 
-        void returnConnection(Connection con);
-
         LockableList<Connection> allConnections();
-
-        int connectionsInUse();
-
-        int totalConnections();
     }
 
     private static class ThreadLocalConnections extends ThreadLocal<Connection> implements ConnectionPool {
@@ -176,24 +171,10 @@ public class DatabaseConnection {
         }
 
         @Override
-        public void returnConnection(Connection con) {
-            taken.decrementAndGet();
-        }
-
-        @Override
         public LockableList<Connection> allConnections() {
             return allConnections;
         }
 
-        @Override
-        public int connectionsInUse() {
-            return taken.get();
-        }
-
-        @Override
-        public int totalConnections() {
-            return allConnections.size();
-        }
     }
 }
 

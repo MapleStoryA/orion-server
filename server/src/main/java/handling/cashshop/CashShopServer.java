@@ -38,7 +38,7 @@ import java.net.InetSocketAddress;
 public class CashShopServer {
 
     private static String ip;
-    private static InetSocketAddress InetSocketadd;
+    private static InetSocketAddress inetSocketAddr;
     private final static int PORT = 8799;
     private static IoAcceptor acceptor;
     private static PlayerStorage players;
@@ -58,8 +58,8 @@ public class CashShopServer {
         players = new PlayerStorage(-10);
 
         try {
-            InetSocketadd = new InetSocketAddress(PORT);
-            acceptor.bind(InetSocketadd, new MapleServerHandler(-1, true, PacketProcessor.CASHSHOP()), cfg);
+            inetSocketAddr = new InetSocketAddress(PORT);
+            acceptor.bind(inetSocketAddr, new MapleServerHandler(-1, true, PacketProcessor.CASHSHOP()), cfg);
             System.out.println("Listening on port " + PORT + ".");
         } catch (final Exception e) {
             System.err.println("Binding to port " + PORT + " failed");

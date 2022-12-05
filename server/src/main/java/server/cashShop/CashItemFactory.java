@@ -5,6 +5,7 @@ import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
 import server.cashShop.CashItemInfo.CashModInfo;
+import server.config.ServerEnvironment;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,8 +23,7 @@ public class CashItemFactory {
     private final Map<Integer, CashItemInfo> itemStats = new HashMap<Integer, CashItemInfo>();
     private final Map<Integer, List<CashItemInfo>> itemPackage = new HashMap<Integer, List<CashItemInfo>>();
     private final Map<Integer, CashModInfo> itemMods = new HashMap<Integer, CashModInfo>();
-    public final static MapleDataProvider data = MapleDataProviderFactory
-            .getDataProvider(new File(System.getProperty("net.sf.odinms.wzpath") + "/Etc"));
+    public final static MapleDataProvider data = ServerEnvironment.getConfig().getDataProvider("wz/Etc");
 
     public static final CashItemFactory getInstance() {
         return instance;
