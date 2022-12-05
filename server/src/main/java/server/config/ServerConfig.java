@@ -53,6 +53,6 @@ public class ServerConfig {
     }
 
     public String getScriptsPath() {
-        return new File("config/scripts").toPath().toString();
+        return "config/scripts";
     }
 }

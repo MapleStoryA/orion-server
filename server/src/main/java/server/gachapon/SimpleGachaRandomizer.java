@@ -25,7 +25,7 @@ public class SimpleGachaRandomizer implements RewardRandomizer {
 
             Double chance = d.getChance() / 1000;
             if (!r.containsKey(chance)) {
-                r.put(chance, new ArrayList<AbstractRandomEntity>());
+                r.put(chance, new ArrayList<>());
             }
             if (ServerEnvironment.isDebugEnabled()) {
                 System.out.println("Item: " + d.getId() + " c: " + chance);
