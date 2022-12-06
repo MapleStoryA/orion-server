@@ -136,6 +136,8 @@ public class GameApp {
             }
         });
 
+        executorService.shutdown();
+
 
         System.out.println("[Loading Login]");
         LoginServer.getInstance();
