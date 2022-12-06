@@ -26,6 +26,7 @@ import client.MapleClient;
 import client.inventory.IItem;
 import client.inventory.ItemFlag;
 import handling.channel.ChannelServer;
+import handling.world.WorldServer;
 import server.MapleInventoryManipulator;
 import server.Timer.EtcTimer;
 import server.maps.MapleMapObjectType;
@@ -171,7 +172,7 @@ public class HiredMerchant extends AbstractPlayerStore {
             saveItems();
         }
         if (remove) {
-            ChannelServer.getInstance(channel).removeMerchant(this);
+            WorldServer.getInstance().getChannel(channel).removeMerchant(this);
             getMap().broadcastMessage(PlayerShopPacket.destroyHiredMerchant(getOwnerId()));
         }
         getMap().removeMapObject(this);

@@ -30,6 +30,7 @@ import client.inventory.MaplePet;
 import database.DatabaseConnection;
 import handling.channel.ChannelServer;
 import handling.world.World;
+import handling.world.WorldServer;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
 
@@ -120,21 +121,21 @@ public class PlayerNPC extends MapleNPC {
 
     public static void updateByCharId(MapleCharacter chr) {
         if (World.Find.findChannel(chr.getId()) > 0) { //if character is in cserv
-            for (PlayerNPC npc : ChannelServer.getInstance(World.Find.findChannel(chr.getId())).getAllPlayerNPC()) {
+            for (PlayerNPC npc : WorldServer.getInstance().getChannel(World.Find.findChannel(chr.getId())).getAllPlayerNPC()) {
                 npc.update(chr);
             }
         }
     }
 
     public void addToServer() {
-        for (ChannelServer cserv : ChannelServer.getAllInstances()) {
-            cserv.addPlayerNPC(this);
+        for (ChannelServer channelServer : WorldServer.getInstance().getAllChannels()) {
+            channelServer.addPlayerNPC(this);
         }
     }
 
     public void removeFromServer() {
-        for (ChannelServer cserv : ChannelServer.getAllInstances()) {
-            cserv.removePlayerNPC(this);
+        for (ChannelServer channelServer : WorldServer.getInstance().getAllChannels()) {
+            channelServer.removePlayerNPC(this);
         }
     }
 

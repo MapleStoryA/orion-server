@@ -25,6 +25,7 @@ package server.events;
 import client.MapleCharacter;
 import handling.channel.ChannelServer;
 import handling.world.World;
+import handling.world.WorldServer;
 import server.MapleInventoryManipulator;
 import server.RandomRewards;
 import server.Randomizer;
@@ -53,7 +54,7 @@ public abstract class MapleEvent {
     }
 
     public ChannelServer getChannelServer() {
-        return ChannelServer.getInstance(channel);
+        return WorldServer.getInstance().getChannel(channel);
     }
 
     public void broadcast(final byte[] packet) {
@@ -162,7 +163,7 @@ public abstract class MapleEvent {
             return;
         } //o_o
         for (MapleEventType t : MapleEventType.values()) {
-            final MapleEvent e = ChannelServer.getInstance(channel).getEvent(t);
+            final MapleEvent e = WorldServer.getInstance().getChannel(channel).getEvent(t);
             if (e.isRunning) {
                 if (chr.getMapId() == 109050000) { //finished map
                     e.finished(chr);

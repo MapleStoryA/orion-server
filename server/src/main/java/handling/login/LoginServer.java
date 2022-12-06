@@ -26,6 +26,8 @@ import handling.MapleServerHandler;
 import handling.PacketProcessor;
 import handling.channel.ChannelServer;
 import handling.mina.MapleCodecFactory;
+import handling.world.World;
+import handling.world.WorldServer;
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.IoAcceptor;
 import org.apache.mina.common.SimpleByteBufferAllocator;
@@ -135,7 +137,7 @@ public class LoginServer extends GameServer {
 
         if (System.currentTimeMillis() - lastUpdate > 600000) { // Update once every 10 minutes
             lastUpdate = System.currentTimeMillis();
-            final Map<Integer, Integer> load = ChannelServer.getChannelLoad();
+            final Map<Integer, Integer> load = WorldServer.getInstance().getChannelLoad();
             int usersOn = 0;
             if (load == null || load.size() == 0) { // In an unfortunate event that client logged in before load
                 lastUpdate = 0;

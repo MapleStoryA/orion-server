@@ -1,7 +1,7 @@
 package server;
 
 import client.MapleCharacter;
-import handling.channel.ChannelServer;
+import handling.world.WorldServer;
 import server.Timer.CloneTimer;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
@@ -39,7 +39,7 @@ public class MapleSquad {
     private final String leaderName;
     private final Map<String, String> members = new LinkedHashMap<String, String>();
     private final Map<String, String> bannedMembers = new LinkedHashMap<String, String>();
-    private final int ch;
+    private final int channel;
     private final long startTime;
     private final int expiration;
     private final int beginMapId;
@@ -51,7 +51,7 @@ public class MapleSquad {
         this.leader = new WeakReference<MapleCharacter>(leader);
         this.members.put(leader.getName(), MapleCarnivalChallenge.getJobBasicNameById(leader.getJob()));
         this.leaderName = leader.getName();
-        this.ch = ch;
+        this.channel = ch;
         this.type = type;
         this.squadType = MapleSquadType.valueOf(type.toLowerCase());
         if (this.squadType.queue.get(ch) == null) {
@@ -67,7 +67,7 @@ public class MapleSquad {
     }
 
     public MapleMap getBeginMap() {
-        return ChannelServer.getInstance(ch).getMapFactory().getMap(beginMapId);
+        return WorldServer.getInstance().getChannel(channel).getMapFactory().getMap(beginMapId);
     }
 
     public void clear() {
@@ -79,13 +79,13 @@ public class MapleSquad {
         members.clear();
         bannedMembers.clear();
         leader = null;
-        ChannelServer.getInstance(ch).removeMapleSquad(type);
+        WorldServer.getInstance().getChannel(channel).removeMapleSquad(type);
         this.status = 0;
 
     }
 
     public MapleCharacter getChar(String name) {
-        return ChannelServer.getInstance(ch).getPlayerStorage().getCharacterByName(name);
+        return WorldServer.getInstance().getChannel(channel).getPlayerStorage().getCharacterByName(name);
     }
 
     public long getTimeLeft() {
@@ -316,9 +316,9 @@ public class MapleSquad {
 
     public String getNextPlayer() {
         StringBuilder sb = new StringBuilder("\nQueued members : ");
-        sb.append("#b").append(squadType.queue.get(ch).size()).append(" #k ").append("List of participants : \n\r ");
+        sb.append("#b").append(squadType.queue.get(channel).size()).append(" #k ").append("List of participants : \n\r ");
         int i = 0;
-        for (Pair<String, Long> chr : squadType.queue.get(ch)) {
+        for (Pair<String, Long> chr : squadType.queue.get(channel)) {
             i++;
             sb.append(i).append(" : ").append(chr.left);
             sb.append(" \n\r ");
@@ -329,14 +329,14 @@ public class MapleSquad {
 
     public void setNextPlayer(String i) {
         Pair<String, Long> toRemove = null;
-        for (Pair<String, Long> s : squadType.queue.get(ch)) {
+        for (Pair<String, Long> s : squadType.queue.get(channel)) {
             if (s.left.equals(i)) {
                 toRemove = s;
                 break;
             }
         }
         if (toRemove != null) {
-            squadType.queue.get(ch).remove(toRemove);
+            squadType.queue.get(channel).remove(toRemove);
             return;
         }
         for (ArrayList<Pair<String, Long>> v : squadType.queue.values()) {
@@ -346,10 +346,10 @@ public class MapleSquad {
                 }
             }
         }
-        squadType.queue.get(ch).add(new Pair<>(i, System.currentTimeMillis()));
+        squadType.queue.get(channel).add(new Pair<>(i, System.currentTimeMillis()));
     }
 
     public List<Pair<String, Long>> getAllNextPlayer() {
-        return squadType.queue.get(ch);
+        return squadType.queue.get(channel);
     }
 }

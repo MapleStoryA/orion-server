@@ -5,6 +5,7 @@ import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
 import handling.login.LoginServer;
 import handling.world.World;
+import handling.world.WorldServer;
 import server.Timer.BuffTimer;
 import server.Timer.CloneTimer;
 import server.Timer.EtcTimer;
@@ -42,7 +43,7 @@ public class ShutdownServer implements ShutdownServerMBean {
     public void run() {
         if (this.mode == 0) {
             World.Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(0, "The world is going to shutdown soon. Please log off safely."));
-            for (ChannelServer cs : ChannelServer.getAllInstances()) {
+            for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
                 cs.setShutdown();
                 cs.setServerMessage("The world is going to shutdown soon. Please log off safely.");
                 cs.closeAllMerchant();
@@ -56,21 +57,13 @@ public class ShutdownServer implements ShutdownServerMBean {
 
             try {
                 World.Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(0, "The world is going to shutdown now. Please log off safely."));
-                Integer[] chs = ChannelServer.getAllInstance().toArray(new Integer[0]);
-
-                for (int i : chs) {
-                    try {
-                        ChannelServer cs = ChannelServer.getInstance(i);
-                        synchronized (this) {
-                            cs.shutdown();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
+                    synchronized (this) {
+                        cs.shutdown();
                     }
                 }
                 LoginServer.getInstance().shutdown();
                 CashShopServer.shutdown();
-
                 WorldTimer.getInstance().start();
                 EtcTimer.getInstance().start();
                 MapTimer.getInstance().start();

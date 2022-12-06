@@ -29,6 +29,7 @@ import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import database.DatabaseConnection;
 import handling.channel.ChannelServer;
+import handling.world.WorldServer;
 import server.maps.AbstractMapleMapObject;
 import server.maps.MapleMap;
 import server.maps.MapleMapObjectType;
@@ -362,7 +363,7 @@ public abstract class AbstractPlayerStore extends AbstractMapleMapObject impleme
     }
 
     public MapleMap getMap() {
-        return ChannelServer.getInstance(channel).getMapFactory().getMap(map);
+        return WorldServer.getInstance().getChannel(channel).getMapFactory().getMap(map);
     }
 
     @Override

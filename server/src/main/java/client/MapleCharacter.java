@@ -37,6 +37,7 @@ import constants.GameConstants;
 import constants.JobConstants;
 import constants.MapConstants;
 import constants.ServerConstants;
+import handling.world.WorldServer;
 import server.config.ServerEnvironment;
 import constants.skills.BladeLord;
 import constants.skills.Rogue;
@@ -5906,7 +5907,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             dropMessage(1, "Auto change channel failed.");
             return;
         }
-        changeChannel(this.getClient().getChannel() == ChannelServer.getChannelCount() ? 1
+        changeChannel(this.getClient().getChannel() == WorldServer.getInstance().getChannelCount() ? 1
                 : (this.getClient().getChannel() + 1));
     }
 

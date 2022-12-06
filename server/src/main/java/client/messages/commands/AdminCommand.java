@@ -26,9 +26,9 @@ import handling.RecvPacketOpcode;
 import handling.channel.ChannelServer;
 import handling.world.CheaterData;
 import handling.world.World;
+import handling.world.WorldServer;
 import provider.MapleData;
 import provider.MapleDataProvider;
-import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
 import scripting.EventInstanceManager;
 import scripting.EventManager;
@@ -1164,7 +1164,7 @@ public class AdminCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            for (ChannelServer cserv : ChannelServer.getAllInstances()) {
+            for (ChannelServer cserv : WorldServer.getInstance().getAllChannels()) {
                 for (MapleCharacter victim : cserv.getPlayerStorage().getAllCharacters()) {
                     if (victim.getId() != c.getPlayer().getId()) {
                         victim.getMap().broadcastMessage(MaplePacketCreator.getChatText(victim.getId(),
@@ -1298,19 +1298,6 @@ public class AdminCommand {
             } else {
                 c.getPlayer().dropMessage(6, "Use it like this, !sendallnote <text>");
                 return 0;
-            }
-            return 1;
-        }
-    }
-
-    public static class MesoEveryone extends CommandExecute {
-
-        @Override
-        public int execute(MapleClient c, String[] splitted) {
-            for (ChannelServer cserv : ChannelServer.getAllInstances()) {
-                for (MapleCharacter mch : cserv.getPlayerStorage().getAllCharacters()) {
-                    mch.gainMeso(Integer.parseInt(splitted[1]), true);
-                }
             }
             return 1;
         }
@@ -1785,7 +1772,7 @@ public class AdminCommand {
             if (splitted.length > 1) {
                 final int rate = Integer.parseInt(splitted[1]);
                 if (splitted.length > 2 && splitted[2].equalsIgnoreCase("all")) {
-                    for (ChannelServer cserv : ChannelServer.getAllInstances()) {
+                    for (ChannelServer cserv : WorldServer.getInstance().getAllChannels()) {
                         cserv.setExpRate(rate);
                     }
                 } else {
@@ -1806,7 +1793,7 @@ public class AdminCommand {
             if (splitted.length > 1) {
                 final int rate = Integer.parseInt(splitted[1]);
                 if (splitted.length > 2 && splitted[2].equalsIgnoreCase("all")) {
-                    for (ChannelServer cserv : ChannelServer.getAllInstances()) {
+                    for (ChannelServer cserv : WorldServer.getInstance().getAllChannels()) {
                         cserv.setDropRate(rate);
                     }
                 } else {
@@ -1827,7 +1814,7 @@ public class AdminCommand {
             if (splitted.length > 1) {
                 final int rate = Integer.parseInt(splitted[1]);
                 if (splitted.length > 2 && splitted[2].equalsIgnoreCase("all")) {
-                    for (ChannelServer cserv : ChannelServer.getAllInstances()) {
+                    for (ChannelServer cserv : WorldServer.getInstance().getAllChannels()) {
                         cserv.setMesoRate(rate);
                     }
                 } else {
@@ -1848,7 +1835,7 @@ public class AdminCommand {
             if (splitted.length > 1) {
                 final int rate = Integer.parseInt(splitted[1]);
                 if (splitted.length > 2 && splitted[2].equalsIgnoreCase("all")) {
-                    for (ChannelServer cserv : ChannelServer.getAllInstances()) {
+                    for (ChannelServer cserv : WorldServer.getInstance().getAllChannels()) {
                         cserv.setCashRate(rate);
                     }
                 } else {
@@ -2026,7 +2013,7 @@ public class AdminCommand {
             } else if (range == 1) {
                 c.getChannelServer().getPlayerStorage().disconnectAll(true);
             } else if (range == 2) {
-                for (ChannelServer cserv : ChannelServer.getAllInstances()) {
+                for (ChannelServer cserv : WorldServer.getInstance().getAllChannels()) {
                     cserv.getPlayerStorage().disconnectAll(true);
                 }
             }
@@ -2611,7 +2598,7 @@ public class AdminCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            for (ChannelServer instance : ChannelServer.getAllInstances()) {
+            for (ChannelServer instance : WorldServer.getInstance().getAllChannels()) {
                 instance.reloadEvents();
             }
             return 1;
@@ -2784,7 +2771,7 @@ public class AdminCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            Collection<ChannelServer> cservs = ChannelServer.getAllInstances();
+            Collection<ChannelServer> cservs = WorldServer.getInstance().getAllChannels();
             String outputMessage = StringUtil.joinStringFrom(splitted, 1);
             for (ChannelServer cserv : cservs) {
                 cserv.setServerMessage(outputMessage);
@@ -2849,7 +2836,7 @@ public class AdminCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            for (ChannelServer cserv : ChannelServer.getAllInstances()) {
+            for (ChannelServer cserv : WorldServer.getInstance().getAllChannels()) {
                 cserv.closeAllMerchant();
             }
             return 1;
@@ -2955,7 +2942,7 @@ public class AdminCommand {
             // int key = 0;
 
             StringBuilder sb = new StringBuilder();
-            for (ChannelServer ch : ChannelServer.getAllInstances()) {
+            for (ChannelServer ch : WorldServer.getInstance().getAllChannels()) {
                 for (MapleCharacter chr : ch.getPlayerStorage().getAllCharacters()) {
                     if (chr.getName().toLowerCase().contains(splitted[1].toLowerCase()) && victim == null) {
                         victim = chr;
@@ -3166,14 +3153,14 @@ public class AdminCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             final int mapId = Integer.parseInt(splitted[1]);
-            for (ChannelServer cserv : ChannelServer.getAllInstances()) {
+            for (ChannelServer cserv : WorldServer.getInstance().getAllChannels()) {
                 if (cserv.getMapFactory().isMapLoaded(mapId)
                         && cserv.getMapFactory().getMap(mapId).getCharactersSize() > 0) {
                     c.getPlayer().dropMessage(5, "There exists characters on channel " + cserv.getChannel());
                     return 0;
                 }
             }
-            for (ChannelServer cserv : ChannelServer.getAllInstances()) {
+            for (ChannelServer cserv : WorldServer.getInstance().getAllChannels()) {
                 if (cserv.getMapFactory().isMapLoaded(mapId)) {
                     cserv.getMapFactory().removeMap(mapId);
                 }

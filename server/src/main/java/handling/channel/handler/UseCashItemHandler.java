@@ -17,6 +17,7 @@ import handling.AbstractMaplePacketHandler;
 import handling.channel.ChannelServer;
 import handling.channel.handler.utils.InventoryHandlerUtils;
 import handling.world.World;
+import handling.world.WorldServer;
 import handling.world.party.MaplePartyCharacter;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
@@ -1186,7 +1187,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                 return;
             }
             c.getPlayer().dropMessage(5, "Auto changing channels. Please wait.");
-            c.getPlayer().changeChannel(c.getChannel() == ChannelServer.getChannelCount() ? 1 : (c.getChannel() + 1));
+            c.getPlayer().changeChannel(c.getChannel() == WorldServer.getInstance().getChannelCount() ? 1 : (c.getChannel() + 1));
         }
     }
 

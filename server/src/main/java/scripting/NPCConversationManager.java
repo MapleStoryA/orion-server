@@ -42,6 +42,7 @@ import handling.channel.ChannelServer;
 import handling.channel.MapleGuildRanking;
 import handling.channel.handler.utils.HiredMerchantHandlerUtils;
 import handling.world.World;
+import handling.world.WorldServer;
 import handling.world.guild.MapleGuild;
 import handling.world.guild.MapleGuildAlliance;
 import handling.world.party.MapleParty;
@@ -711,7 +712,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         // of
         // shit..
         for (MaplePartyCharacter chr : getPlayer().getParty().getMembers()) {
-            for (ChannelServer channel : ChannelServer.getAllInstances()) {
+            for (ChannelServer channel : WorldServer.getInstance().getAllChannels()) {
                 MapleCharacter ch = channel.getPlayerStorage().getCharacterById(chr.getId());
                 if (ch != null) { // double check <3
                     chars.add(ch);
@@ -1301,8 +1302,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         if (ii.getItemEffect(buff) != null && getPlayer().getGuildId() > 0) {
             final MapleStatEffect mse = ii.getItemEffect(buff);
-            for (ChannelServer cserv : ChannelServer.getAllInstances()) {
-                for (MapleCharacter chr : cserv.getPlayerStorage().getAllCharacters()) {
+            for (ChannelServer channelServer : WorldServer.getInstance().getAllChannels()) {
+                for (MapleCharacter chr : channelServer.getPlayerStorage().getAllCharacters()) {
                     if (chr.getGuildId() == getPlayer().getGuildId()) {
                         mse.applyTo(chr, chr, true, null, duration);
                         chr.dropMessage(5, "Your guild has gotten a " + msg + " buff.");

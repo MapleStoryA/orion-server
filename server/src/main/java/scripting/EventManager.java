@@ -23,6 +23,7 @@ package scripting;
 
 import client.MapleCharacter;
 import handling.channel.ChannelServer;
+import handling.world.WorldServer;
 import handling.world.party.MapleParty;
 import server.MapleSquad;
 import server.Randomizer;
@@ -405,7 +406,7 @@ public class EventManager {
     }
 
     public void set2xExpEvent(boolean enabled) {
-        for (ChannelServer channel : ChannelServer.getAllInstances()) {
+        for (ChannelServer channel : WorldServer.getInstance().getAllChannels()) {
             if (enabled) {
                 channel.setExpRate(channel.getExpRate() * 2);
             } else {

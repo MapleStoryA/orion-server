@@ -128,7 +128,7 @@ public class World {
     public static String getStatus() throws Exception {
         StringBuilder ret = new StringBuilder();
         int totalUsers = 0;
-        for (ChannelServer cs : ChannelServer.getAllInstances()) {
+        for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
             ret.append("Channel ");
             ret.append(cs.getChannel());
             ret.append(": ");
@@ -146,7 +146,7 @@ public class World {
     public static Map<Integer, Integer> getConnected() {
         Map<Integer, Integer> ret = new HashMap<>();
         int total = 0;
-        for (ChannelServer cs : ChannelServer.getAllInstances()) {
+        for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
             int curConnected = cs.getConnectedClients();
             ret.put(cs.getChannel(), curConnected);
             total += curConnected;
@@ -157,7 +157,7 @@ public class World {
 
     public static List<CheaterData> getCheaters() {
         List<CheaterData> allCheaters = new ArrayList<>();
-        for (ChannelServer cs : ChannelServer.getAllInstances()) {
+        for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
             allCheaters.addAll(cs.getCheaters());
         }
         Collections.sort(allCheaters);
@@ -166,7 +166,7 @@ public class World {
 
     public static List<CheaterData> getReports() {
         List<CheaterData> allCheaters = new ArrayList<>();
-        for (ChannelServer cs : ChannelServer.getAllInstances()) {
+        for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
             allCheaters.addAll(cs.getReports());
         }
         Collections.sort(allCheaters);
@@ -178,7 +178,7 @@ public class World {
     }
 
     public static void toggleMegaphoneMuteState() {
-        for (ChannelServer cs : ChannelServer.getAllInstances()) {
+        for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
             cs.toggleMegaphoneMuteState();
         }
     }
@@ -188,7 +188,7 @@ public class World {
     }
 
     public static boolean isCharacterListConnected(List<String> charName) {
-        for (ChannelServer cs : ChannelServer.getAllInstances()) {
+        for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
             for (final String c : charName) {
                 if (cs.getPlayerStorage().getCharacterByName(c) != null) {
                     return true;
@@ -199,7 +199,7 @@ public class World {
     }
 
     public static boolean hasMerchant(int accountID) {
-        for (ChannelServer cs : ChannelServer.getAllInstances()) {
+        for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
             if (cs.containsMerchant(accountID)) {
                 return true;
             }
@@ -1188,19 +1188,19 @@ public class World {
     public static class Broadcast {
 
         public static void broadcastSmega(byte[] message) {
-            for (ChannelServer cs : ChannelServer.getAllInstances()) {
+            for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
                 cs.broadcastSmega(message);
             }
         }
 
         public static void broadcastGMMessage(byte[] message) {
-            for (ChannelServer cs : ChannelServer.getAllInstances()) {
+            for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
                 cs.broadcastGMMessage(message);
             }
         }
 
         public static void broadcastMessage(byte[] message) {
-            for (ChannelServer cs : ChannelServer.getAllInstances()) {
+            for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
                 cs.broadcastMessage(message);
             }
         }
@@ -1587,7 +1587,7 @@ public class World {
 
 
     public static void registerRespawn() {
-        Integer[] chs = ChannelServer.getAllInstance().toArray(new Integer[0]);
+        Integer[] chs = WorldServer.getInstance().getAllChannelIds().toArray(new Integer[0]);
         for (int i = 0; i < chs.length; i += CHANNELS_PER_THREAD) {
             WorldTimer.getInstance().register(new Respawn(chs, i), 1125); //divisible by 9000 if possible.
         }

@@ -26,6 +26,7 @@ import handling.PacketProcessor;
 import handling.login.GameServer;
 import handling.login.LoginServer;
 import handling.world.CheaterData;
+import handling.world.WorldServer;
 import scripting.EventScriptManager;
 import scripting.v1.event.EventCenter;
 import server.MapleSquad;
@@ -50,13 +51,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ChannelServer extends GameServer {
@@ -71,7 +70,6 @@ public class ChannelServer extends GameServer {
     private PlayerStorage players;
     private final MapleMapFactory mapFactory;
     private EventScriptManager eventSM;
-    private static final Map<Integer, ChannelServer> instances = new HashMap<>();
     private final Map<String, MapleSquad> mapleSquads = new HashMap<>();
     private final Map<Integer, HiredMerchant> merchants = new HashMap<>();
     private final Map<Integer, PlayerNPC> playerNPCs = new HashMap<>();
@@ -103,7 +101,7 @@ public class ChannelServer extends GameServer {
         this.mapFactory.setChannel(channel);
         this.players = new PlayerStorage(channel);
         this.serverStartTime = System.currentTimeMillis();
-        setChannel(channel);
+        LoginServer.getInstance().addChannel(channel);
         scheduleAutoSaver();
         loadEvents();
         eventSM.init();
@@ -114,13 +112,15 @@ public class ChannelServer extends GameServer {
 
     }
 
+    //TODO: Remove this method
+    public static ChannelServer getInstance(int channel) {
+        return WorldServer.getInstance().getChannel(channel);
+    }
+
     private void scheduleAutoSaver() {
         TimerManager.getInstance().register(new AutoSaveRunnable(this), 1000 * 180);
     }
 
-    public static Set<Integer> getAllInstance() {
-        return new HashSet<>(instances.keySet());
-    }
 
     public void loadEvents() {
         if (events.size() != 0) {
@@ -153,7 +153,7 @@ public class ChannelServer extends GameServer {
 
         unbindAcceptor();
 
-        instances.remove(channel);
+        WorldServer.getInstance().removeChannel(channel);
         LoginServer.getInstance().removeChannel(channel);
         setFinishShutdown();
     }
@@ -165,10 +165,6 @@ public class ChannelServer extends GameServer {
 
     public MapleMapFactory getMapFactory() {
         return mapFactory;
-    }
-
-    public static final ChannelServer getInstance(final int channel) {
-        return instances.get(channel);
     }
 
     public void addPlayer(final MapleCharacter chr) {
@@ -228,15 +224,6 @@ public class ChannelServer extends GameServer {
 
     public int getChannel() {
         return channel;
-    }
-
-    public void setChannel(final int channel) {
-        instances.put(channel, this);
-        LoginServer.getInstance().addChannel(channel);
-    }
-
-    public static final Collection<ChannelServer> getAllInstances() {
-        return Collections.unmodifiableCollection(instances.values());
     }
 
     public String getIP() {
@@ -452,10 +439,6 @@ public class ChannelServer extends GameServer {
         return port;
     }
 
-    public static final Set<Integer> getChannelServer() {
-        return new HashSet<>(instances.keySet());
-    }
-
     public void setShutdown() {
         this.shutdown = true;
         System.out.println("Channel " + channel + " has set to shutdown and is closing Hired Merchants...");
@@ -470,21 +453,9 @@ public class ChannelServer extends GameServer {
         return adminOnly;
     }
 
-    public static int getChannelCount() {
-        return instances.size();
-    }
-
 
     public int getTempFlag() {
         return flags;
-    }
-
-    public static Map<Integer, Integer> getChannelLoad() {
-        Map<Integer, Integer> ret = new HashMap<Integer, Integer>();
-        for (ChannelServer cs : instances.values()) {
-            ret.put(cs.getChannel(), cs.getConnectedClients());
-        }
-        return ret;
     }
 
     public int getConnectedClients() {

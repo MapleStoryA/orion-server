@@ -3,6 +3,7 @@ package scripting.v1.event;
 import client.MapleCharacter;
 import handling.channel.ChannelServer;
 import handling.channel.PlayerStorage;
+import handling.world.WorldServer;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import org.slf4j.Logger;
@@ -46,7 +47,7 @@ public class EventCenter {
         }
         EventInstance instance = new EventInstance(key, channel, name, this);
         MapleParty party = player.getParty();
-        PlayerStorage storage = ChannelServer.getInstance(channel).getPlayerStorage();
+        PlayerStorage storage = WorldServer.getInstance().getChannel(channel).getPlayerStorage();
         MapleCharacter leader = storage.getCharacterById(party.getLeader().getId());
         for (MaplePartyCharacter p : party.getMembers()) {
             MapleCharacter member = storage.getCharacterById(p.getId());
