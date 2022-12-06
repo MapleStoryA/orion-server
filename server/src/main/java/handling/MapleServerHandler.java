@@ -23,6 +23,7 @@ package handling;
 
 import client.MapleClient;
 import constants.ServerConstants;
+import handling.world.WorldServer;
 import server.config.ServerEnvironment;
 import handling.cashshop.CashShopServer;
 import handling.cashshop.handler.CashShopOperationUtils;
@@ -109,7 +110,7 @@ public class MapleServerHandler extends IoHandlerAdapter {
         // End of IP checking.
 
         if (channel > -1) {
-            if (ChannelServer.getInstance(channel).isShutdown()) {
+            if (WorldServer.getInstance().getChannel(channel).isShutdown()) {
                 session.close();
                 return;
             }

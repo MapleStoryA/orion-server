@@ -2,6 +2,7 @@ package scripting.v1.event;
 
 import client.MapleCharacter;
 import handling.channel.ChannelServer;
+import handling.world.WorldServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scripting.v1.binding.BindingWrapper;
@@ -65,7 +66,7 @@ public class EventInstance {
     }
 
     public void addEventMap(int eventMap) {
-        MapleMap map = ChannelServer.getInstance(channel).getMapFactory().getMap(eventMap);
+        MapleMap map = WorldServer.getInstance().getChannel(channel).getMapFactory().getMap(eventMap);
         map.setNewEventInstance(this);
         maps.put(eventMap, map);
     }
@@ -79,10 +80,10 @@ public class EventInstance {
         if (!maps.containsKey(eventMap)) {
             addEventMap(eventMap);
         }
-        MapleMap oldMap = ChannelServer.getInstance(channel).getMapFactory().getMap(currentEventMap);
+        MapleMap oldMap = WorldServer.getInstance().getChannel(channel).getMapFactory().getMap(currentEventMap);
         oldMap.setNewEventInstance(null);
         currentEventMap = eventMap;
-        MapleMap map = ChannelServer.getInstance(channel).getMapFactory().getMap(eventMap);
+        MapleMap map = WorldServer.getInstance().getChannel(channel).getMapFactory().getMap(eventMap);
         engine.addToContext("field", map.getField());
 
 

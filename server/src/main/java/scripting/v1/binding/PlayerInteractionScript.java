@@ -2,6 +2,7 @@ package scripting.v1.binding;
 
 import client.MapleClient;
 import handling.channel.ChannelServer;
+import handling.world.WorldServer;
 import scripting.v1.dispatch.PacketDispatcher;
 import tools.MaplePacketCreator;
 
@@ -16,7 +17,7 @@ public class PlayerInteractionScript extends AbstractScript {
     }
 
     protected ChannelServer getChannelServer() {
-        return ChannelServer.getInstance(client.getChannel());
+        return WorldServer.getInstance().getChannel(client.getChannel());
     }
 
     public void debug(String text) {

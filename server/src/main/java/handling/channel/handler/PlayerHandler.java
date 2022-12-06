@@ -30,6 +30,7 @@ import client.SkillFactory;
 import client.inventory.MapleInventoryType;
 import constants.MapConstants;
 import handling.channel.ChannelServer;
+import handling.world.WorldServer;
 import server.AutobanManager;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
@@ -347,7 +348,7 @@ public class PlayerHandler {
                         targetid = 502010000;
                     }
                 }
-                final MapleMap to = ChannelServer.getInstance(c.getChannel()).getMapFactory().getMap(targetid);
+                final MapleMap to = WorldServer.getInstance().getChannel(c.getChannel()).getMapFactory().getMap(targetid);
                 chr.changeMap(to, to.getPortal(0));
 
             } else if (targetid != -1 && !chr.isGM()) {
@@ -430,7 +431,7 @@ public class PlayerHandler {
                     c.getSession().write(MaplePacketCreator.enableActions());
                 }
                 if (warp) {
-                    final MapleMap to = ChannelServer.getInstance(c.getChannel()).getMapFactory().getMap(targetid);
+                    final MapleMap to = WorldServer.getInstance().getChannel(c.getChannel()).getMapFactory().getMap(targetid);
                     chr.changeMap(to, to.getPortal(0));
                 }
             } else {

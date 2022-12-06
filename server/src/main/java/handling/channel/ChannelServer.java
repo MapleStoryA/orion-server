@@ -61,11 +61,13 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class ChannelServer extends GameServer {
 
     public static final short DEFAULT_PORT = 8585;
-    public static long serverStartTime;
+    public long serverStartTime;
     private int expRate, mesoRate, dropRate, cashRate;
     private int running_MerchantID = 0;
     private int flags = 0;
-    private String serverMessage, ip, serverName;
+    private String serverMessage;
+    private final String ip;
+    private String serverName;
     private boolean shutdown = false, finishedShutdown = false, MegaphoneMuteState = false, adminOnly = false;
     private PlayerStorage players;
     private final MapleMapFactory mapFactory;
@@ -109,12 +111,6 @@ public class ChannelServer extends GameServer {
         System.out.println("Meso:" + mesoRate);
         System.out.println("Drop:" + dropRate);
         System.out.println("Cash:" + cashRate);
-
-    }
-
-    //TODO: Remove this method
-    public static ChannelServer getInstance(int channel) {
-        return WorldServer.getInstance().getChannel(channel);
     }
 
     private void scheduleAutoSaver() {

@@ -38,6 +38,7 @@ import database.DatabaseConnection;
 import handling.channel.ChannelServer;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
 import handling.world.World;
+import handling.world.WorldServer;
 import handling.world.party.MaplePartyCharacter;
 import scripting.EventManager;
 import scripting.NPCScriptManager;
@@ -258,7 +259,7 @@ public final class MapleMap {
     }
 
     public MapleMap getReturnMap() {
-        return ChannelServer.getInstance(channel).getMapFactory().getMap(returnMapId);
+        return WorldServer.getInstance().getChannel(channel).getMapFactory().getMap(returnMapId);
     }
 
     public int getReturnMapId() {
@@ -270,7 +271,7 @@ public final class MapleMap {
     }
 
     public MapleMap getForcedReturnMap() {
-        return ChannelServer.getInstance(channel).getMapFactory().getMap(forcedReturnMap);
+        return WorldServer.getInstance().getChannel(channel).getMapFactory().getMap(forcedReturnMap);
     }
 
     public void setForcedReturnMap(final int map) {
@@ -485,7 +486,7 @@ public final class MapleMap {
     }
 
     private void dropFromMonster(final MapleCharacter chr, final MapleMonster mob) {
-        if (mob == null || chr == null || ChannelServer.getInstance(channel) == null || dropsDisabled || mob.dropsDisabled() || chr.getPyramidSubway() != null) { //no drops in pyramid ok? no cash either
+        if (mob == null || chr == null || WorldServer.getInstance().getChannel(channel) == null || dropsDisabled || mob.dropsDisabled() || chr.getPyramidSubway() != null) { //no drops in pyramid ok? no cash either
             return;
         }
 
@@ -501,9 +502,9 @@ public final class MapleMap {
 
         final byte droptype = (byte) (mob.getStats().isExplosiveReward() ? 3 : mob.getStats().isFfaLoot() ? 2 : chr.getParty() != null ? 1 : 0);
         final int mobpos = mob.getPosition().x;
-        final int cmServerrate = ChannelServer.getInstance(channel).getMesoRate();
-        final int chServerrate = ChannelServer.getInstance(channel).getDropRate();
-        final int caServerrate = ChannelServer.getInstance(channel).getCashRate();
+        final int cmServerrate = WorldServer.getInstance().getChannel(channel).getMesoRate();
+        final int chServerrate = WorldServer.getInstance().getChannel(channel).getDropRate();
+        final int caServerrate = WorldServer.getInstance().getChannel(channel).getCashRate();
 
 
         IItem idrop;
@@ -2266,12 +2267,12 @@ public final class MapleMap {
             default:
                 return null;
         }
-        return ChannelServer.getInstance(channel).getMapleSquad(zz);
+        return WorldServer.getInstance().getChannel(channel).getMapleSquad(zz);
     }
 
     public MapleSquad getSquadBegin() {
         if (squad.length() > 0) {
-            return ChannelServer.getInstance(channel).getMapleSquad(squad);
+            return WorldServer.getInstance().getChannel(channel).getMapleSquad(squad);
         }
         return null;
     }
@@ -2329,7 +2330,7 @@ public final class MapleMap {
             default:
                 return null;
         }
-        return ChannelServer.getInstance(channel).getEventSM().getEventManager(em);
+        return WorldServer.getInstance().getChannel(channel).getEventSM().getEventManager(em);
     }
 
     public void removePlayer(final MapleCharacter chr) {

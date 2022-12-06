@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package client;
 
+import handling.world.WorldServer;
 import server.config.ServerEnvironment;
 import database.DatabaseConnection;
 import database.DatabaseException;
@@ -704,7 +705,7 @@ public class MapleClient implements Serializable {
             }
 
             if (!fromCS) {
-                final ChannelServer ch = ChannelServer.getInstance(map == null ? channel : map.getChannel());
+                final ChannelServer ch = WorldServer.getInstance().getChannel(map == null ? channel : map.getChannel());
 
                 try {
                     if (ch == null || ch.isShutdown()) {
@@ -861,7 +862,7 @@ public class MapleClient implements Serializable {
     }
 
     public final ChannelServer getChannelServer() {
-        return ChannelServer.getInstance(channel);
+        return WorldServer.getInstance().getChannel(channel);
     }
 
     public final int deleteCharacter(final int cid) {

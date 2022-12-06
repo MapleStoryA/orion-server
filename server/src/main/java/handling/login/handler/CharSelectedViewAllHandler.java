@@ -3,6 +3,7 @@ package handling.login.handler;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import handling.channel.ChannelServer;
+import handling.world.WorldServer;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -33,7 +34,7 @@ public class CharSelectedViewAllHandler extends AbstractMaplePacketHandler {
         }
         c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION, c.getSessionIPAddress());
         c.getSession().write(MaplePacketCreator.getServerIP(
-                Integer.parseInt(ChannelServer.getInstance(c.getChannel()).getIP().split(":")[1]), charId));
+                Integer.parseInt(WorldServer.getInstance().getChannel(c.getChannel()).getIP().split(":")[1]), charId));
 
     }
 

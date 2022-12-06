@@ -1983,7 +1983,7 @@ public class AdminCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             c.getPlayer().dropMessage(6, "Server has been up for "
-                    + StringUtil.getReadableMillis(ChannelServer.serverStartTime, System.currentTimeMillis()));
+                    + StringUtil.getReadableMillis(WorldServer.getInstance().getServerStartTime(), System.currentTimeMillis()));
             return 1;
         }
     }
@@ -2511,7 +2511,7 @@ public class AdminCommand {
             if (range == 0) {
                 c.getPlayer().getMap().broadcastMessage(packet);
             } else if (range == 1) {
-                ChannelServer.getInstance(c.getChannel()).broadcastPacket(packet);
+                WorldServer.getInstance().getChannel(c.getChannel()).broadcastPacket(packet);
             } else if (range == 2) {
                 World.Broadcast.broadcastMessage(packet);
             }
@@ -2540,7 +2540,7 @@ public class AdminCommand {
             if (range == 0) {
                 c.getPlayer().getMap().broadcastMessage(packet);
             } else if (range == 1) {
-                ChannelServer.getInstance(c.getChannel()).broadcastPacket(packet);
+                WorldServer.getInstance().getChannel(c.getChannel()).broadcastPacket(packet);
             } else if (range == 2) {
                 World.Broadcast.broadcastMessage(packet);
             }
@@ -2958,7 +2958,7 @@ public class AdminCommand {
                         c.getPlayer().changeMap(victim.getMap(),
                                 victim.getMap().findClosestSpawnpoint(victim.getPosition()));
                     } else {
-                        MapleMap target = ChannelServer.getInstance(c.getChannel()).getMapFactory()
+                        MapleMap target = WorldServer.getInstance().getChannel(c.getChannel()).getMapFactory()
                                 .getMap(Integer.parseInt(splitted[2]));
                         victim.changeMap(target, target.getPortal(0));
                     }
@@ -2971,7 +2971,7 @@ public class AdminCommand {
                                     .getMap(Integer.parseInt(splitted[1]));
                             c.getPlayer().changeMap(target, target.getPortal(0));
                         } else {
-                            victim = ChannelServer.getInstance(ch).getPlayerStorage().getCharacterByName(splitted[1]);
+                            victim = WorldServer.getInstance().getChannel(ch).getPlayerStorage().getCharacterByName(splitted[1]);
                             c.getPlayer().dropMessage(6, "Cross changing channel. Please wait.");
                             if (victim.getMapId() != c.getPlayer().getMapId()) {
                                 final MapleMap mapp = c.getChannelServer().getMapFactory().getMap(victim.getMapId());
@@ -3037,7 +3037,7 @@ public class AdminCommand {
                     c.getPlayer().dropMessage(5, "Not found.");
                     return 0;
                 }
-                victim = ChannelServer.getInstance(ch).getPlayerStorage().getCharacterByName(splitted[1]);
+                victim = WorldServer.getInstance().getChannel(ch).getPlayerStorage().getCharacterByName(splitted[1]);
                 c.getPlayer().dropMessage(5, "Victim is cross changing channel.");
                 victim.dropMessage(5, "Cross changing channel.");
                 if (victim.getMapId() != c.getPlayer().getMapId()) {

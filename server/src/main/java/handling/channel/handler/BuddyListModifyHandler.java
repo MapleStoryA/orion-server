@@ -5,6 +5,7 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import handling.channel.ChannelServer;
 import handling.world.World;
+import handling.world.WorldServer;
 import handling.world.buddy.BuddyInvitedEntry;
 import handling.world.buddy.BuddyListEntry;
 import handling.world.buddy.MapleBuddyList;
@@ -68,7 +69,7 @@ public class BuddyListModifyHandler extends AbstractMaplePacketHandler {
                     c.getSession().write(MaplePacketCreator.enableActions());
                     return;
                 }
-                final MapleCharacter otherChar = ChannelServer.getInstance(channel).getPlayerStorage().getCharacterByName(addName);
+                final MapleCharacter otherChar = WorldServer.getInstance().getChannel(channel).getPlayerStorage().getCharacterByName(addName);
                 if (!otherChar.isGM() || c.getPlayer().isGM()) {
                     if (otherChar.getBuddylist().isFull()) {
                         c.getSession().write(MaplePacketCreator.buddylistMessage(THEIR_LIST_FULL));

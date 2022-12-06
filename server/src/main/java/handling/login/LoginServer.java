@@ -50,13 +50,16 @@ public class LoginServer extends GameServer {
 
     public static final int PORT = 8484;
     private Map<Integer, Integer> load = new HashMap<>();
-    private String serverName, eventMessage;
+    private final String serverName;
+    private final String eventMessage;
     private byte flag;
-    private int userLimit, usersOn = 0;
-    private boolean finishedShutdown = true, adminOnly;
+    private final int userLimit;
+    private int usersOn = 0;
+    private boolean finishedShutdown = true;
+    private final boolean adminOnly;
     private static LoginServer INSTANCE;
 
-    private static long lastUpdate = 0;
+    private long lastUpdate = 0;
 
     public LoginServer(ServerConfig config) {
         super(-1, PORT, PacketProcessor.Mode.LOGINSERVER);

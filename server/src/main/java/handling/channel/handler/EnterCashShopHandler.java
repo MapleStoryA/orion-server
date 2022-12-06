@@ -10,6 +10,7 @@ import handling.world.CharacterTransfer;
 import handling.world.MapleMessengerCharacter;
 import handling.world.PlayerBuffStorage;
 import handling.world.World;
+import handling.world.WorldServer;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -26,7 +27,7 @@ public class EnterCashShopHandler extends AbstractMaplePacketHandler {
             return;
         }
 
-        final ChannelServer ch = ChannelServer.getInstance(c.getChannel());
+        final ChannelServer ch = WorldServer.getInstance().getChannel(c.getChannel());
 
         chr.changeRemoval();
 

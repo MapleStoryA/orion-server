@@ -6,6 +6,7 @@ import client.MapleJob;
 import client.Messages;
 import handling.channel.ChannelServer;
 import handling.world.World;
+import handling.world.WorldServer;
 import handling.world.party.MaplePartyCharacter;
 import scripting.v1.dispatch.PacketDispatcher;
 import scripting.v1.event.EventCenter;
@@ -315,7 +316,7 @@ public class TargetScript extends PlayerInteractionScript {
     }
 
     private MapleMap getWarpMap(final int map) {
-        return ChannelServer.getInstance(client.getChannel()).getMapFactory().getMap(map);
+        return WorldServer.getInstance().getChannel(client.getChannel()).getMapFactory().getMap(map);
     }
 
     public FieldScript getMap(final int map) {

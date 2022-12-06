@@ -3,6 +3,7 @@ package handling.channel.handler;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import handling.channel.ChannelServer;
+import handling.world.WorldServer;
 import server.shops.HiredMerchant;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.PlayerShopPacket;
@@ -10,7 +11,7 @@ import tools.packet.PlayerShopPacket;
 public class RemoteStoreHandler extends AbstractMaplePacketHandler {
 
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        ChannelServer ch = ChannelServer.getInstance(c.getChannel());
+        ChannelServer ch = WorldServer.getInstance().getChannel(c.getChannel());
         if (ch == null || c == null || c.getPlayer() == null) {
             return;
         }

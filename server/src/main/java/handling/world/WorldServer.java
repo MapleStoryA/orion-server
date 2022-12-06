@@ -11,9 +11,18 @@ import java.util.concurrent.ConcurrentHashMap;
 //TODO: Will do something with this to manage the server instances
 public class WorldServer {
 
-    private Map<Integer, ChannelServer> channels = new ConcurrentHashMap<>();
+    private final Map<Integer, ChannelServer> channels = new ConcurrentHashMap<>();
 
     private static WorldServer INSTANCE;
+    private final long serverStarTime;
+
+    public WorldServer(){
+        this.serverStarTime = System.currentTimeMillis();
+    }
+
+    public long getServerStartTime() {
+        return serverStarTime;
+    }
 
     public Collection<ChannelServer> getAllChannels() {
         return channels.values();

@@ -3,10 +3,10 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
-import handling.channel.ChannelServer;
 import handling.channel.handler.utils.PartyHandlerUtils;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
 import handling.world.World;
+import handling.world.WorldServer;
 import handling.world.expedition.ExpeditionType;
 import handling.world.expedition.MapleExpedition;
 import handling.world.party.MapleParty;
@@ -15,6 +15,16 @@ import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.MapleUserPackets;
 
 public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
+
+    public static final int CREATING = 0x2D;
+    public static final int INVITE = 0x2E;
+    public static final int RESPONSE = 0x2F;
+
+    public static final int LEAVE = 0x30;
+    public static final int KICK = 0x31;
+    public static final int CHANGE_EXPEDITION_CAPTAIN = 0x32;
+    public static final int CHANGE_PARTY_LEADER = 0x33;
+    public static final int MOVE_TO_NEW_PARTY = 0x34;
 
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
@@ -25,7 +35,7 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
 
         final byte mode = slea.readByte();
         switch (mode) {
-            case 0x2D: // Creating
+            case CREATING:
                 final ExpeditionType et = ExpeditionType.getById(slea.readInt());
                 if (chr.getParty() != null || et == null) {
                     c.getSession().write(MapleUserPackets.partyStatusMessage(PartyHandlerUtils.ALREADY_JOINED));
@@ -41,14 +51,14 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                 c.getSession()
                         .write(MapleUserPackets.showExpedition(World.Party.getExped(party.getExpeditionId()), true, false));
                 break;
-            case 0x2E: // Invite
+            case INVITE:
                 final String name = slea.readMapleAsciiString();
                 int theCh = World.Find.findChannel(name);
                 if (theCh <= 0) {
                     c.getSession().write(MapleUserPackets.expeditionStatusMessage(0, name));
                     return;
                 }
-                final MapleCharacter invited = ChannelServer.getInstance(theCh).getPlayerStorage().getCharacterByName(name);
+                final MapleCharacter invited = WorldServer.getInstance().getChannel(theCh).getPlayerStorage().getCharacterByName(name);
                 if (invited == null) {
                     c.getSession().write(MapleUserPackets.expeditionStatusMessage(0, name));
                     return;
@@ -66,7 +76,7 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                     c.getSession().write(MapleUserPackets.expeditionStatusMessage(3, invited.getName()));
                 }
                 break;
-            case 0x2F: // Response
+            case RESPONSE:
                 final String recvName = slea.readMapleAsciiString();
                 final int action = slea.readInt(); // 7 = send invite, 8 = accept, 9
                 // = deny
@@ -75,7 +85,7 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                 if (theChh <= 0) {
                     break;
                 }
-                final MapleCharacter cfrom = ChannelServer.getInstance(theChh).getPlayerStorage()
+                final MapleCharacter cfrom = WorldServer.getInstance().getChannel(theChh).getPlayerStorage()
                         .getCharacterByName(recvName);
                 if (cfrom == null) {
                     break;
@@ -141,7 +151,7 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                     System.out.println("Unhandled Expedition Operation found: " + slea);
                 }
                 break;
-            case 0x30: // Leave
+            case LEAVE:
                 final MapleParty part = chr.getParty();
                 if (part == null || part.getExpeditionId() <= 0) {
                     c.getSession().write(MapleUserPackets.partyStatusMessage(PartyHandlerUtils.NOT_IN_PARTY));
@@ -177,7 +187,7 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                     chr.setParty(null);
                 }
                 break;
-            case 0x31: // Kick
+            case KICK:
                 final MapleParty currentParty = chr.getParty();
                 if (currentParty == null || currentParty.getExpeditionId() <= 0) {
                     c.getSession().write(MapleUserPackets.partyStatusMessage(PartyHandlerUtils.NOT_IN_PARTY));
@@ -204,7 +214,7 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                     }
                 }
                 break;
-            case 0x32: // Change Expedition Captain
+            case CHANGE_EXPEDITION_CAPTAIN:
                 final MapleParty mparty = chr.getParty();
                 if (mparty == null || mparty.getExpeditionId() <= 0) {
                     break;
@@ -222,7 +232,7 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                     }
                 }
                 break;
-            case 0x33: // Change Party Leader
+            case CHANGE_PARTY_LEADER:
                 final MapleParty mparty1 = chr.getParty();
                 if (mparty1 == null || mparty1.getExpeditionId() <= 0) {
                     break;
@@ -246,8 +256,7 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                     }
                 }
                 break;
-            case 0x34: // Move to new party (got to check this from msea), ask
-                // someone mvoe me to new party
+            case MOVE_TO_NEW_PARTY:
                 final MapleParty oriPart = chr.getParty();
                 if (oriPart == null || oriPart.getExpeditionId() <= 0) {
                     break;

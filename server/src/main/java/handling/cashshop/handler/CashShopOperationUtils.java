@@ -9,6 +9,7 @@ import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
 import handling.world.CharacterTransfer;
 import handling.world.World;
+import handling.world.WorldServer;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.MTSCSPacket;
@@ -23,7 +24,7 @@ public class CashShopOperationUtils {
 
         try {
             World.ChannelChange_Data(new CharacterTransfer(chr), chr.getId(), c.getChannel());
-            c.getSession().write(MaplePacketCreator.getChannelChange(Integer.parseInt(ChannelServer.getInstance(c.getChannel()).getIP().split(":")[1])));
+            c.getSession().write(MaplePacketCreator.getChannelChange(Integer.parseInt(WorldServer.getInstance().getChannel(c.getChannel()).getIP().split(":")[1])));
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         } finally {

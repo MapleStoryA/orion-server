@@ -124,7 +124,7 @@ public class EventManager {
     }
 
     public ChannelServer getChannelServer() {
-        return ChannelServer.getInstance(channel);
+        return WorldServer.getInstance().getChannel(channel);
     }
 
     public EventInstanceManager getInstance(String name) {
@@ -150,7 +150,7 @@ public class EventManager {
             setProperty("leader", "true");
         }
         if (this.name.equals("CWKPQ")) { //hard code it because i said so
-            final MapleSquad squad = ChannelServer.getInstance(channel).getMapleSquad("CWKPQ");//so fkin hacky
+            final MapleSquad squad = WorldServer.getInstance().getChannel(channel).getMapleSquad("CWKPQ");//so fkin hacky
             if (squad != null) {
                 squad.clear();
             }

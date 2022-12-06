@@ -33,6 +33,7 @@ import client.inventory.MaplePet;
 import constants.GameConstants;
 import handling.channel.ChannelServer;
 import handling.world.World;
+import handling.world.WorldServer;
 import handling.world.guild.MapleGuild;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
@@ -187,7 +188,7 @@ public abstract class AbstractPlayerInteraction {
     }
 
     private MapleMap getWarpMap(final int map) {
-        return ChannelServer.getInstance(c.getChannel()).getMapFactory().getMap(map);
+        return WorldServer.getInstance().getChannel(c.getChannel()).getMapFactory().getMap(map);
     }
 
     public final MapleMap getMap() {

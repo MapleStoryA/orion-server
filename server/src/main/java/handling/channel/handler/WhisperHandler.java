@@ -5,6 +5,7 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import handling.channel.ChannelServer;
 import handling.world.World;
+import handling.world.WorldServer;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -31,7 +32,7 @@ public class WhisperHandler extends AbstractMaplePacketHandler {
                 } else { // Not found
                     int ch = World.Find.findChannel(recipient);
                     if (ch > 0) {
-                        player = ChannelServer.getInstance(ch).getPlayerStorage().getCharacterByName(recipient);
+                        player = WorldServer.getInstance().getChannel(ch).getPlayerStorage().getCharacterByName(recipient);
                         if (player == null) {
                             break;
                         }
@@ -65,7 +66,7 @@ public class WhisperHandler extends AbstractMaplePacketHandler {
                 final String text = slea.readMapleAsciiString();
                 final int ch = World.Find.findChannel(recipient);
                 if (ch > 0) {
-                    MapleCharacter player = ChannelServer.getInstance(ch).getPlayerStorage().getCharacterByName(recipient);
+                    MapleCharacter player = WorldServer.getInstance().getChannel(ch).getPlayerStorage().getCharacterByName(recipient);
                     if (player == null) {
                         break;
                     }

@@ -28,6 +28,7 @@ import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import handling.channel.ChannelServer;
+import handling.world.WorldServer;
 import server.MapleCarnivalFactory;
 import server.MapleCarnivalFactory.MCSkill;
 import server.MapleItemInformationProvider;
@@ -103,7 +104,7 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         for (final ReactorDropEntry d : items) {
             if (d.itemId == 0) {
                 range = maxMeso - minMeso;
-                mesoDrop = Randomizer.nextInt(range) + minMeso * ChannelServer.getInstance(getClient().getChannel()).getMesoRate();
+                mesoDrop = Randomizer.nextInt(range) + minMeso * WorldServer.getInstance().getChannel(getClient().getChannel()).getMesoRate();
                 reactor.getMap().spawnMesoDrop(mesoDrop, dropPos, reactor, getPlayer(), false, (byte) 0);
             } else {
                 IItem drop;

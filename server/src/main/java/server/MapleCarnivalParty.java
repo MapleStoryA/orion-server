@@ -2,6 +2,7 @@ package server;
 
 import client.MapleCharacter;
 import handling.channel.ChannelServer;
+import handling.world.WorldServer;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
 
@@ -66,7 +67,7 @@ public class MapleCarnivalParty {
 
     public void warp(final MapleMap map, final String portalname) {
         for (int chr : members) {
-            final MapleCharacter c = ChannelServer.getInstance(channel).getPlayerStorage().getCharacterById(chr);
+            final MapleCharacter c = WorldServer.getInstance().getChannel(channel).getPlayerStorage().getCharacterById(chr);
             if (c != null) {
                 c.changeMap(map, map.getPortal(portalname));
             }
@@ -75,7 +76,7 @@ public class MapleCarnivalParty {
 
     public void warp(final MapleMap map, final int portalid) {
         for (int chr : members) {
-            final MapleCharacter c = ChannelServer.getInstance(channel).getPlayerStorage().getCharacterById(chr);
+            final MapleCharacter c = WorldServer.getInstance().getChannel(channel).getPlayerStorage().getCharacterById(chr);
             if (c != null) {
                 c.changeMap(map, map.getPortal(portalid));
             }
@@ -114,7 +115,7 @@ public class MapleCarnivalParty {
         final String sound = winner ? "MobCarnival/Win" : "MobCarnival/Lose";
         boolean done = false;
         for (int chr : members) {
-            final MapleCharacter c = ChannelServer.getInstance(channel).getPlayerStorage().getCharacterById(chr);
+            final MapleCharacter c = WorldServer.getInstance().getChannel(channel).getPlayerStorage().getCharacterById(chr);
             if (c != null) {
                 c.getClient().getSession().write(MaplePacketCreator.showEffect(effect));
                 c.getClient().getSession().write(MaplePacketCreator.playSound(sound));

@@ -28,7 +28,7 @@ public class ServerConfig {
     }
 
     private void loadConfig(Map<String, String> properties) {
-        properties.forEach((key, value) -> mergedConfig.put(key.toString(), value.toString()));
+        properties.forEach((key, value) -> mergedConfig.put(key, value));
     }
 
     public String getProperty(String key) {

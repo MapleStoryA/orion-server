@@ -36,6 +36,7 @@ import client.status.MonsterStatusEffect;
 import constants.GameConstants;
 import constants.ServerConstants;
 import handling.channel.ChannelServer;
+import handling.world.WorldServer;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import scripting.EventInstanceManager;
@@ -352,9 +353,9 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             }
             exp *= attacker.getEXPMod() * (int) (attacker.getStat().expBuff / 100.0);
             if (attacker.getSubCategoryField() == 1 && attacker.getLevel() >= 10 && attacker.getLevel() < 20) {
-                exp = exp * 3 * ChannelServer.getInstance(map.getChannel()).getExpRate();
+                exp = exp * 3 * WorldServer.getInstance().getChannel(map.getChannel()).getExpRate();
             } else if (attacker.getLevel() >= 10) {
-                exp = Math.min(Integer.MAX_VALUE, (exp * ChannelServer.getInstance(map.getChannel()).getExpRate()));
+                exp = Math.min(Integer.MAX_VALUE, (exp * WorldServer.getInstance().getChannel(map.getChannel()).getExpRate()));
             } else {
                 exp = exp * 2;
             }

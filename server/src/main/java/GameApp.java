@@ -1,4 +1,3 @@
-
 import client.SkillFactory;
 import constants.JobConstants;
 import handling.world.WorldServer;
@@ -153,7 +152,6 @@ public class GameApp {
         System.out.println("say | prefixsay | shutdown | restart");
         listenCommand();
     }
-
 
 
     private static void initDatabase() {

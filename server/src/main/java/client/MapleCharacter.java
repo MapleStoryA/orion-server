@@ -382,7 +382,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         ret.subcategory = ct.subcategory;
 
         if (isChannel) {
-            final MapleMapFactory mapFactory = ChannelServer.getInstance(client.getChannel()).getMapFactory();
+            final MapleMapFactory mapFactory = WorldServer.getInstance().getChannel(client.getChannel()).getMapFactory();
             ret.map = mapFactory.getMap(ret.mapid);
             if (ret.map == null) { // char is on a map that doesn't exist warp
                 // it to henesys
@@ -553,7 +553,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             World.randomWorldStuff.addToLoggedOnSinceLastRestart(ret);
 
             if (channelserver) {
-                MapleMapFactory mapFactory = ChannelServer.getInstance(client.getChannel()).getMapFactory();
+                MapleMapFactory mapFactory = WorldServer.getInstance().getChannel(client.getChannel()).getMapFactory();
                 ret.map = mapFactory.getMap(ret.mapid);
                 if (ret.map == null) { // char is on a map that doesn't exist
                     // warp it to henesys
@@ -5131,7 +5131,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
     }
 
     public void changeChannel(final int channel) {
-        final ChannelServer toch = ChannelServer.getInstance(channel);
+        final ChannelServer toch = WorldServer.getInstance().getChannel(channel);
 
         if (channel == client.getChannel() || toch == null || toch.isShutdown()) {
             client.getSession().write(MaplePacketCreator.serverBlocked(1));
@@ -5139,7 +5139,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         }
         changeRemoval();
 
-        final ChannelServer ch = ChannelServer.getInstance(client.getChannel());
+        final ChannelServer ch = WorldServer.getInstance().getChannel(client.getChannel());
         if (getMessenger() != null) {
             World.Messenger.silentLeaveMessenger(getMessenger().getId(), new MapleMessengerCharacter(this));
         }
@@ -6080,7 +6080,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
     }
 
     public ChannelServer getChannelServer() {
-        return ChannelServer.getInstance(client.getChannel());
+        return WorldServer.getInstance().getChannel(client.getChannel());
     }
 
     @Override
