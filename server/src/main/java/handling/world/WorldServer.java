@@ -13,12 +13,19 @@ public class WorldServer {
     private static WorldServer INSTANCE;
 
 
-    public void registerChannel(int channel, ChannelServer ch) {
-        this.channels.put(channel, ch);
+    public void registerChannel(int channelIndex, ChannelServer ch) {
+        this.channels.put(channelIndex, ch);
     }
 
     public void removeChannel(int channel) {
         this.channels.get(channel);
+    }
+
+    public void shutdown() {
+        channels.values()
+                .stream()
+                .forEach(ChannelServer::shutdown);
+        channels.clear();
     }
 
 

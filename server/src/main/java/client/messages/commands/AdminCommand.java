@@ -2942,20 +2942,6 @@ public class AdminCommand {
         }
     }
 
-    public static class PacketToServer extends CommandExecute {
-
-        @Override
-        public int execute(MapleClient c, String[] splitted) {
-            if (splitted.length > 1) {
-                c.getChannelServer().getServerHandler().messageReceived(c.getSession(),
-                        MaplePacketCreator.getPacketFromHexString(StringUtil.joinStringFrom(splitted, 1)));
-            } else {
-                c.getPlayer().dropMessage(6, "Please enter packet data!");
-            }
-            return 1;
-        }
-    }
-
     public static class Warp extends CommandExecute {
 
         @Override

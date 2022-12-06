@@ -1,6 +1,7 @@
 
 import client.SkillFactory;
 import constants.JobConstants;
+import handling.world.WorldServer;
 import server.config.ServerConfig;
 import server.config.ServerEnvironment;
 import database.DatabaseConnection;
@@ -33,6 +34,7 @@ import server.Timer.WorldTimer;
 import server.TimerManager;
 import server.cashshop.CashItemFactory;
 import server.events.MapleOxQuizFactory;
+import server.gachapon.GachaponFactory;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonsterInformationProvider;
 import server.life.PlayerNPC;
@@ -127,6 +129,7 @@ public class GameApp {
             SpeedQuizFactory.getInstance().initialize();
             ItemMakerFactory.getInstance();
             MapleMapFactory.loadCustomLife();
+            GachaponFactory.getInstance();
         });
 
         executorService.submit(() -> {
@@ -144,7 +147,16 @@ public class GameApp {
         System.out.println("[Login Initialized]");
 
         System.out.println("[Loading Channel]");
-        ChannelServer.startChannel_Main();
+
+        WorldServer worldServer = WorldServer.getInstance();
+
+        for (int i = 0; i < Integer.parseInt(ServerProperties.getProperty("channel.count", "0")); i++) {
+            int channel = i + 1;
+            int port = Short.parseShort(ServerProperties.getProperty("channel.net.port" + channel, String.valueOf(ChannelServer.DEFAULT_PORT + channel)));
+            worldServer.registerChannel(channel, new ChannelServer(channel, port));
+        }
+
+
         System.out.println("[Channel Initialized]");
 
         System.out.println("[Loading CS]");

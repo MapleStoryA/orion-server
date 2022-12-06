@@ -18,7 +18,11 @@ public class GameServer {
     protected InetSocketAddress inetSocketAddress;
     protected IoAcceptor acceptor;
 
+    protected int channel, port;
+
     public GameServer(int channel, int port, PacketProcessor.Mode mode) {
+        this.channel = channel;
+        this.port = port;
         ByteBuffer.setUseDirectBuffers(false);
         ByteBuffer.setAllocator(new SimpleByteBufferAllocator());
         acceptor = new SocketAcceptor();
@@ -34,6 +38,14 @@ public class GameServer {
         } catch (IOException e) {
             System.err.println("Binding to port " + port + " failed" + e);
         }
+    }
+
+    protected void unbindAcceptor() {
+        acceptor.unbindAll();
+        acceptor = null;
+    }
+
+    public void shutdown() {
     }
 
 }

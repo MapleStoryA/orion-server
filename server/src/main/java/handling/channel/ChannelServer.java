@@ -22,17 +22,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package handling.channel;
 
 import client.MapleCharacter;
-import handling.MapleServerHandler;
 import handling.PacketProcessor;
+import handling.login.GameServer;
 import handling.login.LoginServer;
-import handling.mina.MapleCodecFactory;
 import handling.world.CheaterData;
-import org.apache.mina.common.ByteBuffer;
-import org.apache.mina.common.IoAcceptor;
-import org.apache.mina.common.SimpleByteBufferAllocator;
-import org.apache.mina.filter.codec.ProtocolCodecFilter;
-import org.apache.mina.transport.socket.nio.SocketAcceptor;
-import org.apache.mina.transport.socket.nio.SocketAcceptorConfig;
 import scripting.EventScriptManager;
 import scripting.v1.event.EventCenter;
 import server.MapleSquad;
@@ -46,7 +39,6 @@ import server.events.MapleFitness;
 import server.events.MapleOla;
 import server.events.MapleOxQuiz;
 import server.events.MapleSnowball;
-import server.gachapon.GachaponFactory;
 import server.life.PlayerNPC;
 import server.maps.AramiaFireWorks;
 import server.maps.MapleMapFactory;
@@ -54,9 +46,6 @@ import server.shops.HiredMerchant;
 import tools.CollectionUtil;
 import tools.MaplePacketCreator;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.net.InetSocketAddress;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumMap;
@@ -70,21 +59,16 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public class ChannelServer implements Serializable {
+public class ChannelServer extends GameServer {
 
-    private static final long serialVersionUID = 1L;
+    public static final short DEFAULT_PORT = 8585;
     public static long serverStartTime;
     private int expRate, mesoRate, dropRate, cashRate;
-    private short port = 8585;
-    private static final short DEFAULT_PORT = 8585;
-    private final int channel;
     private int running_MerchantID = 0;
     private int flags = 0;
     private String serverMessage, ip, serverName;
     private boolean shutdown = false, finishedShutdown = false, MegaphoneMuteState = false, adminOnly = false;
     private PlayerStorage players;
-    private MapleServerHandler serverHandler;
-    private IoAcceptor acceptor;
     private final MapleMapFactory mapFactory;
     private EventScriptManager eventSM;
     private static final Map<Integer, ChannelServer> instances = new HashMap<>();
@@ -101,14 +85,33 @@ public class ChannelServer implements Serializable {
     private final EventCenter eventCenter;
 
 
-    private ChannelServer(final int channel) {
-        this.channel = channel;
-        mapFactory = new MapleMapFactory();
-        mapFactory.setChannel(channel);
-        GachaponFactory.getInstance();
-        aramiaEvent = new AramiaFireWorks();
-        eventCenter = new EventCenter(channel);
+    public ChannelServer(int channel, int port) {
+        super(channel, port, PacketProcessor.Mode.CHANNELSERVER);
+        this.expRate = Integer.parseInt(ServerProperties.getProperty("world.exp"));
+        this.mesoRate = Integer.parseInt(ServerProperties.getProperty("world.meso"));
+        this.dropRate = Integer.parseInt(ServerProperties.getProperty("world.drop"));
+        this.cashRate = Integer.parseInt(ServerProperties.getProperty("world.cash"));
+        this.serverMessage = ServerProperties.getProperty("world.serverMessage");
+        this.serverName = ServerProperties.getProperty("login.serverName");
+        this.flags = Integer.parseInt(ServerProperties.getProperty("world.flags", "0"));
+        this.adminOnly = Boolean.parseBoolean(ServerProperties.getProperty("world.admin", "false"));
+        this.ip = ServerProperties.getProperty("channel.net.interface") + ":" + port;
+        this.mapFactory = new MapleMapFactory();
+        this.aramiaEvent = new AramiaFireWorks();
+        this.eventCenter = new EventCenter(channel);
+        this.eventSM = new EventScriptManager(this, ServerProperties.getProperty("channel.events").split(","));
+        this.mapFactory.setChannel(channel);
+        this.players = new PlayerStorage(channel);
+        this.serverStartTime = System.currentTimeMillis();
+        setChannel(channel);
         scheduleAutoSaver();
+        loadEvents();
+        eventSM.init();
+        System.out.println("Exp:" + expRate);
+        System.out.println("Meso:" + mesoRate);
+        System.out.println("Drop:" + dropRate);
+        System.out.println("Cash:" + cashRate);
+
     }
 
     private void scheduleAutoSaver() {
@@ -116,10 +119,10 @@ public class ChannelServer implements Serializable {
     }
 
     public static Set<Integer> getAllInstance() {
-        return new HashSet<Integer>(instances.keySet());
+        return new HashSet<>(instances.keySet());
     }
 
-    public final void loadEvents() {
+    public void loadEvents() {
         if (events.size() != 0) {
             return;
         }
@@ -130,50 +133,8 @@ public class ChannelServer implements Serializable {
         events.put(MapleEventType.Snowball, new MapleSnowball(channel, MapleEventType.Snowball.mapids));
     }
 
-    public final void run_startup_configurations() {
-        setChannel(channel);
-        try {
-            expRate = Integer.parseInt(ServerProperties.getProperty("world.exp"));
-            mesoRate = Integer.parseInt(ServerProperties.getProperty("world.meso"));
-            dropRate = Integer.parseInt(ServerProperties.getProperty("world.drop"));
-            cashRate = Integer.parseInt(ServerProperties.getProperty("world.cash"));
-            System.out.println("Exp:" + expRate);
-            System.out.println("Meso:" + mesoRate);
-            System.out.println("Drop:" + dropRate);
-            System.out.println("Cash:" + cashRate);
-            serverMessage = ServerProperties.getProperty("world.serverMessage");
-            serverName = ServerProperties.getProperty("login.serverName");
-            flags = Integer.parseInt(ServerProperties.getProperty("world.flags", "0"));
-            adminOnly = Boolean.parseBoolean(ServerProperties.getProperty("world.admin", "false"));
-            eventSM = new EventScriptManager(this, ServerProperties.getProperty("channel.events").split(","));
-            port = Short.parseShort(ServerProperties.getProperty("channel.net.port" + channel, String.valueOf(DEFAULT_PORT + channel)));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        ip = ServerProperties.getProperty("channel.net.interface") + ":" + port;
-
-        ByteBuffer.setUseDirectBuffers(false);
-        ByteBuffer.setAllocator(new SimpleByteBufferAllocator());
-
-        acceptor = new SocketAcceptor();
-        final SocketAcceptorConfig acceptor_config = new SocketAcceptorConfig();
-        acceptor_config.getSessionConfig().setTcpNoDelay(true);
-        acceptor_config.setDisconnectOnUnbind(true);
-        acceptor_config.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MapleCodecFactory()));
-        players = new PlayerStorage(channel);
-        loadEvents();
-
-        try {
-            this.serverHandler = new MapleServerHandler(channel, false, PacketProcessor.CHANNEL());
-            acceptor.bind(new InetSocketAddress(port), serverHandler, acceptor_config);
-            System.out.println("Channel " + channel + ": Listening on port " + port + "");
-            eventSM.init();
-        } catch (IOException e) {
-            System.out.println("Binding to port " + port + " failed (ch: " + getChannel() + ")" + e);
-        }
-    }
-
-    public final void shutdown() {
+    @Override
+    public void shutdown() {
         if (finishedShutdown) {
             return;
         }
@@ -190,99 +151,86 @@ public class ChannelServer implements Serializable {
 
         System.out.println("Channel " + channel + ", Unbinding...");
 
-        acceptor.unbindAll();
-        acceptor = null;
+        unbindAcceptor();
 
-        //temporary while we dont have !addchannel
         instances.remove(channel);
         LoginServer.getInstance().removeChannel(channel);
         setFinishShutdown();
     }
 
-    public final void unbind() {
-        acceptor.unbindAll();
-    }
 
-    public final boolean hasFinishedShutdown() {
+    public boolean hasFinishedShutdown() {
         return finishedShutdown;
     }
 
-    public final MapleMapFactory getMapFactory() {
+    public MapleMapFactory getMapFactory() {
         return mapFactory;
-    }
-
-    public static final ChannelServer newInstance(final int channel) {
-        return new ChannelServer(channel);
     }
 
     public static final ChannelServer getInstance(final int channel) {
         return instances.get(channel);
     }
 
-    public final void addPlayer(final MapleCharacter chr) {
+    public void addPlayer(final MapleCharacter chr) {
         getPlayerStorage().registerPlayer(chr);
         chr.getClient().getSession().write(MaplePacketCreator.serverMessage(serverMessage));
     }
 
-    public final PlayerStorage getPlayerStorage() {
-        if (players == null) { //wth
-            players = new PlayerStorage(channel); //wthhhh
+    public PlayerStorage getPlayerStorage() {
+        if (players == null) {
+            players = new PlayerStorage(channel);
         }
         return players;
     }
 
-    public final void removePlayer(final MapleCharacter chr) {
+    public void removePlayer(final MapleCharacter chr) {
         getPlayerStorage().deregisterPlayer(chr);
 
     }
 
-    public final void removePlayer(final int idz, final String namez) {
+    public void removePlayer(final int idz, final String namez) {
         getPlayerStorage().deregisterPlayer(idz, namez);
 
     }
 
-    public final String getServerMessage() {
-        return serverMessage;
-    }
-
-    public final void setServerMessage(final String newMessage) {
+    public void setServerMessage(final String newMessage) {
         serverMessage = newMessage;
         broadcastPacket(MaplePacketCreator.serverMessage(serverMessage));
     }
 
-    public final void broadcastPacket(final byte[] data) {
+    public void broadcastPacket(final byte[] data) {
         getPlayerStorage().broadcastPacket(data);
     }
 
-    public final void broadcastSmegaPacket(final byte[] data) {
+    public void broadcastSuperMegaPacket(final byte[] data) {
         getPlayerStorage().broadcastSmegaPacket(data);
     }
 
-    public final void broadcastGMPacket(final byte[] data) {
+    public void broadcastGMPacket(final byte[] data) {
         getPlayerStorage().broadcastGMPacket(data);
     }
 
-    public final int getExpRate() {
+    public int getExpRate() {
         return expRate;
     }
 
-    public final void setExpRate(final int expRate) {
+    public void setExpRate(final int expRate) {
         this.expRate = expRate;
     }
 
-    public final int getCashRate() {
+    public int getCashRate() {
         return cashRate;
     }
 
-    public final void setCashRate(final int cashRate) {
+    public void setCashRate(final int cashRate) {
         this.cashRate = cashRate;
     }
 
-    public final int getChannel() {
+    public int getChannel() {
         return channel;
     }
 
-    public final void setChannel(final int channel) {
+    public void setChannel(final int channel) {
         instances.put(channel, this);
         LoginServer.getInstance().addChannel(channel);
     }
@@ -291,51 +239,44 @@ public class ChannelServer implements Serializable {
         return Collections.unmodifiableCollection(instances.values());
     }
 
-    public final String getIP() {
+    public String getIP() {
         return ip;
     }
 
-    public final boolean isShutdown() {
+    public boolean isShutdown() {
         return shutdown;
     }
 
-    public final int getLoadedMaps() {
+    public int getLoadedMaps() {
         return mapFactory.getLoadedMaps();
     }
 
-    public final EventScriptManager getEventSM() {
+    public EventScriptManager getEventSM() {
         return eventSM;
     }
 
-    public final void reloadEvents() {
+    public void reloadEvents() {
         eventSM.cancel();
         eventSM = new EventScriptManager(this, ServerProperties.getProperty("channel.events").split(","));
         eventSM.init();
     }
 
-    public final int getMesoRate() {
+    public int getMesoRate() {
         return mesoRate;
     }
 
-    public final void setMesoRate(final int mesoRate) {
+    public void setMesoRate(final int mesoRate) {
         this.mesoRate = mesoRate;
     }
 
-    public final int getDropRate() {
+    public int getDropRate() {
         return dropRate;
     }
 
-    public final void setDropRate(final int dropRate) {
+    public void setDropRate(final int dropRate) {
         this.dropRate = dropRate;
     }
 
-    public static final void startChannel_Main() {
-        serverStartTime = System.currentTimeMillis();
-
-        for (int i = 0; i < Integer.parseInt(ServerProperties.getProperty("channel.count", "0")); i++) {
-            newInstance(i + 1).run_startup_configurations();
-        }
-    }
 
     public Map<String, MapleSquad> getAllSquads() {
         squadLock.readLock().lock();
@@ -346,7 +287,7 @@ public class ChannelServer implements Serializable {
         }
     }
 
-    public final MapleSquad getMapleSquad(final String type) {
+    public MapleSquad getMapleSquad(final String type) {
         squadLock.readLock().lock();
         try {
             return mapleSquads.get(type.toLowerCase());
@@ -355,7 +296,7 @@ public class ChannelServer implements Serializable {
         }
     }
 
-    public final boolean addMapleSquad(final MapleSquad squad, final String type) {
+    public boolean addMapleSquad(final MapleSquad squad, final String type) {
         squadLock.writeLock().lock();
         try {
             if (!mapleSquads.containsKey(type.toLowerCase())) {
@@ -368,7 +309,7 @@ public class ChannelServer implements Serializable {
         return false;
     }
 
-    public final boolean removeMapleSquad(final String type) {
+    public boolean removeMapleSquad(final String type) {
         squadLock.writeLock().lock();
         try {
             if (mapleSquads.containsKey(type.toLowerCase())) {
@@ -381,7 +322,7 @@ public class ChannelServer implements Serializable {
         return false;
     }
 
-    public final void closeAllMerchant() {
+    public void closeAllMerchant() {
         merchLock.writeLock().lock();
         try {
             final Iterator<HiredMerchant> merchants_ = merchants.values().iterator();
@@ -394,7 +335,7 @@ public class ChannelServer implements Serializable {
         }
     }
 
-    public final int addMerchant(final HiredMerchant hMerchant) {
+    public int addMerchant(final HiredMerchant hMerchant) {
         merchLock.writeLock().lock();
 
         int runningmer = 0;
@@ -408,7 +349,7 @@ public class ChannelServer implements Serializable {
         return runningmer;
     }
 
-    public final void removeMerchant(final HiredMerchant hMerchant) {
+    public void removeMerchant(final HiredMerchant hMerchant) {
         merchLock.writeLock().lock();
 
         try {
@@ -418,7 +359,7 @@ public class ChannelServer implements Serializable {
         }
     }
 
-    public final boolean containsMerchant(final int accid) {
+    public boolean containsMerchant(final int accountId) {
         boolean contains = false;
 
         merchLock.readLock().lock();
@@ -426,7 +367,7 @@ public class ChannelServer implements Serializable {
             final Iterator<HiredMerchant> itr = merchants.values().iterator();
 
             while (itr.hasNext()) {
-                if (itr.next().getOwnerAccId() == accid) {
+                if (itr.next().getOwnerAccId() == accountId) {
                     contains = true;
                     break;
                 }
@@ -438,7 +379,7 @@ public class ChannelServer implements Serializable {
     }
 
 
-    public final List<HiredMerchant> searchMerchant(final int itemSearch) {
+    public List<HiredMerchant> searchMerchant(final int itemSearch) {
         final List<HiredMerchant> list = new LinkedList<HiredMerchant>();
         merchLock.readLock().lock();
         try {
@@ -456,11 +397,11 @@ public class ChannelServer implements Serializable {
         return list;
     }
 
-    public final void toggleMegaphoneMuteState() {
+    public void toggleMegaphoneMuteState() {
         this.MegaphoneMuteState = !this.MegaphoneMuteState;
     }
 
-    public final boolean getMegaphoneMuteState() {
+    public boolean getMegaphoneMuteState() {
         return MegaphoneMuteState;
     }
 
@@ -468,7 +409,7 @@ public class ChannelServer implements Serializable {
         return eventmap;
     }
 
-    public final void setEvent(final int ze) {
+    public void setEvent(final int ze) {
         this.eventmap = ze;
     }
 
@@ -476,15 +417,15 @@ public class ChannelServer implements Serializable {
         return events.get(t);
     }
 
-    public final Collection<PlayerNPC> getAllPlayerNPC() {
+    public Collection<PlayerNPC> getAllPlayerNPC() {
         return playerNPCs.values();
     }
 
-    public final PlayerNPC getPlayerNPC(final int id) {
+    public PlayerNPC getPlayerNPC(final int id) {
         return playerNPCs.get(id);
     }
 
-    public final void addPlayerNPC(final PlayerNPC npc) {
+    public void addPlayerNPC(final PlayerNPC npc) {
         if (playerNPCs.containsKey(npc.getId())) {
             removePlayerNPC(npc);
         }
@@ -492,52 +433,49 @@ public class ChannelServer implements Serializable {
         getMapFactory().getMap(npc.getMapId()).addMapObject(npc);
     }
 
-    public final void removePlayerNPC(final PlayerNPC npc) {
+    public void removePlayerNPC(final PlayerNPC npc) {
         if (playerNPCs.containsKey(npc.getId())) {
             playerNPCs.remove(npc.getId());
             getMapFactory().getMap(npc.getMapId()).removeMapObject(npc);
         }
     }
 
-    public final String getServerName() {
+    public String getServerName() {
         return serverName;
     }
 
-    public final void setServerName(final String sn) {
+    public void setServerName(final String sn) {
         this.serverName = sn;
     }
 
-    public final int getPort() {
+    public int getPort() {
         return port;
     }
 
     public static final Set<Integer> getChannelServer() {
-        return new HashSet<Integer>(instances.keySet());
+        return new HashSet<>(instances.keySet());
     }
 
-    public final void setShutdown() {
+    public void setShutdown() {
         this.shutdown = true;
         System.out.println("Channel " + channel + " has set to shutdown and is closing Hired Merchants...");
     }
 
-    public final void setFinishShutdown() {
+    public void setFinishShutdown() {
         this.finishedShutdown = true;
         System.out.println("Channel " + channel + " has finished shutdown.");
     }
 
-    public final boolean isAdminOnly() {
+    public boolean isAdminOnly() {
         return adminOnly;
     }
 
-    public final static int getChannelCount() {
+    public static int getChannelCount() {
         return instances.size();
     }
 
-    public final MapleServerHandler getServerHandler() {
-        return serverHandler;
-    }
 
-    public final int getTempFlag() {
+    public int getTempFlag() {
         return flags;
     }
 
@@ -572,7 +510,7 @@ public class ChannelServer implements Serializable {
     }
 
     public void broadcastSmega(byte[] message) {
-        broadcastSmegaPacket(message);
+        broadcastSuperMegaPacket(message);
     }
 
     public void broadcastGMMessage(byte[] message) {
