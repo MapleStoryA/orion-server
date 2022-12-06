@@ -24,7 +24,7 @@ package server.maps;
 import client.MapleCharacter;
 import handling.world.World;
 import server.MapleItemInformationProvider;
-import server.Randomizer;
+import tools.Randomizer;
 import server.Timer.EventTimer;
 import server.config.ServerEnvironment;
 import tools.MaplePacketCreator;

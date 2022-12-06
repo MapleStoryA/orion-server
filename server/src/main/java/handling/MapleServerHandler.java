@@ -32,7 +32,7 @@ import handling.world.WorldServer;
 import org.apache.mina.common.IdleStatus;
 import org.apache.mina.common.IoHandlerAdapter;
 import org.apache.mina.common.IoSession;
-import server.Randomizer;
+import tools.Randomizer;
 import server.config.ServerEnvironment;
 import tools.FileOutputUtil;
 import tools.HexTool;

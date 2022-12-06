@@ -55,7 +55,7 @@ import server.MapleShopFactory;
 import server.MapleSquad;
 import server.MapleStatEffect;
 import server.MerchItemPackage;
-import server.Randomizer;
+import tools.Randomizer;
 import server.SpeedRunner;
 import server.StructPotentialItem;
 import server.Timer.CloneTimer;

@@ -27,7 +27,7 @@ import constants.PlayerGMRanking;
 import constants.ServerConstants;
 import handling.SendPacketOpcode;
 import handling.login.LoginServer;
-import server.Randomizer;
+import tools.Randomizer;
 import tools.HexTool;
 import tools.Triple;
 import tools.data.output.MaplePacketLittleEndianWriter;

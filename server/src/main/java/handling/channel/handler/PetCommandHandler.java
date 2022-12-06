@@ -8,7 +8,7 @@ import client.inventory.PetCommand;
 import client.inventory.PetDataFactory;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
-import server.Randomizer;
+import tools.Randomizer;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.PetPacket;
 

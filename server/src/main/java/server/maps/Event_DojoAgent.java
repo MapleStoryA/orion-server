@@ -24,7 +24,7 @@ package server.maps;
 import client.MapleCharacter;
 import handling.channel.ChannelServer;
 import handling.world.party.MaplePartyCharacter;
-import server.Randomizer;
+import tools.Randomizer;
 import server.Timer.MapTimer;
 import server.life.MapleLifeFactory;
 import tools.MaplePacketCreator;

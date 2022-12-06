@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package server.events;
 
 import client.MapleCharacter;
-import server.Randomizer;
+import tools.Randomizer;
 import server.Timer.EventTimer;
 import tools.MaplePacketCreator;
 

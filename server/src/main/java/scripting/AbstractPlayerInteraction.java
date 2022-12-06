@@ -40,7 +40,7 @@ import handling.world.party.MaplePartyCharacter;
 import lombok.extern.slf4j.Slf4j;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
-import server.Randomizer;
+import tools.Randomizer;
 import server.events.MapleEvent;
 import server.events.MapleEventType;
 import server.life.MapleLifeFactory;

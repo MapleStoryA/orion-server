@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package server.life;
 
-import server.Randomizer;
+import tools.Randomizer;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
 

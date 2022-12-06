@@ -27,7 +27,7 @@ import client.SkillFactory;
 import scripting.EventManager;
 import scripting.NPCScriptManager;
 import server.MapleItemInformationProvider;
-import server.Randomizer;
+import tools.Randomizer;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
 import server.quest.MapleQuest;

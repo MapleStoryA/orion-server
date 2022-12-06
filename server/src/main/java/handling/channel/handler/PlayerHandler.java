@@ -35,7 +35,7 @@ import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MaplePortal;
 import server.MapleStatEffect;
-import server.Randomizer;
+import tools.Randomizer;
 import server.life.MapleMonster;
 import server.life.MobAttackInfo;
 import server.life.MobAttackInfoFactory;

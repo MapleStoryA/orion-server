@@ -18,6 +18,7 @@ import server.cashshop.CashItemFactory;
 import server.cashshop.CashItemInfo;
 import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
+import tools.Randomizer;
 import tools.Triple;
 import tools.packet.MTSCSPacket;
 

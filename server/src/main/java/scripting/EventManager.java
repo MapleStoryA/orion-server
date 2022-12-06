@@ -27,7 +27,7 @@ import handling.world.WorldServer;
 import handling.world.party.MapleParty;
 import lombok.extern.slf4j.Slf4j;
 import server.MapleSquad;
-import server.Randomizer;
+import tools.Randomizer;
 import server.Timer.EventTimer;
 import server.events.MapleEvent;
 import server.events.MapleEventType;

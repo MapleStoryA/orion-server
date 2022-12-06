@@ -35,7 +35,7 @@ import handling.world.party.MaplePartyCharacter;
 import server.AutobanManager;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
-import server.Randomizer;
+import tools.Randomizer;
 import server.StructRewardItem;
 import server.maps.MapleMapItem;
 import server.maps.MapleMapObject;

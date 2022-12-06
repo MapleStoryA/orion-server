@@ -55,7 +55,6 @@ import server.MapleItemInformationProvider;
 import server.MapleShopItem;
 import server.MapleStatEffect;
 import server.MapleTrade;
-import server.Randomizer;
 import server.ServerProperties;
 import server.events.MapleSnowball.MapleSnowballs;
 import server.life.MapleMonster;

@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package client;
 
-import server.Randomizer;
+import tools.Randomizer;
 import tools.data.output.MaplePacketLittleEndianWriter;
 
 @lombok.extern.slf4j.Slf4j

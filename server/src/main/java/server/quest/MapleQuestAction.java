@@ -33,7 +33,7 @@ import provider.MapleData;
 import provider.MapleDataTool;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
-import server.Randomizer;
+import tools.Randomizer;
 import tools.MaplePacketCreator;
 import tools.packet.CWVsContextOnMessagePackets;
 

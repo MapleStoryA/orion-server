@@ -70,7 +70,7 @@ import server.MapleStatEffect;
 import server.MapleStorage;
 import server.MapleTrade;
 import server.RandomRewards;
-import server.Randomizer;
+import tools.Randomizer;
 import server.Timer.BuffTimer;
 import server.Timer.EtcTimer;
 import server.Timer.MapTimer;

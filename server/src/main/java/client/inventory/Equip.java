@@ -23,7 +23,7 @@ package client.inventory;
 
 import constants.GameConstants;
 import server.MapleItemInformationProvider;
-import server.Randomizer;
+import tools.Randomizer;
 
 import java.util.Map;
 

@@ -6,7 +6,7 @@ import client.MapleDisease;
 import handling.AbstractMaplePacketHandler;
 import server.MapleCarnivalFactory;
 import server.MapleCarnivalFactory.MCSkill;
-import server.Randomizer;
+import tools.Randomizer;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
 import tools.MaplePacketCreator;

@@ -2,7 +2,7 @@ package handling.channel.handler;
 
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
-import server.Randomizer;
+import tools.Randomizer;
 import server.maps.MapleReactor;
 import tools.data.input.SeekableLittleEndianAccessor;
 

@@ -3,7 +3,7 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
-import server.Randomizer;
+import tools.Randomizer;
 import server.life.MapleMonster;
 import server.life.MobSkill;
 import server.life.MobSkillFactory;

@@ -33,7 +33,7 @@ import server.ItemMakerFactory.GemCreateEntry;
 import server.ItemMakerFactory.ItemMakerCreateEntry;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
-import server.Randomizer;
+import tools.Randomizer;
 import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
 import tools.Pair;

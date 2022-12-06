@@ -25,7 +25,7 @@ import client.MapleJob;
 import client.inventory.MapleInventoryType;
 import client.inventory.MapleWeaponType;
 import client.status.MonsterStatus;
-import server.Randomizer;
+import tools.Randomizer;
 import server.maps.MapleMapObjectType;
 
 import java.util.Arrays;

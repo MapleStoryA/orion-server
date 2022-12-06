@@ -20,7 +20,7 @@ package client;
 
 import scripting.NPCConversationManager;
 import scripting.NPCScriptManager;
-import server.Randomizer;
+import tools.Randomizer;
 import server.SpeedQuizFactory;
 import server.SpeedQuizFactory.QuizEntry;
 import tools.MaplePacketCreator;

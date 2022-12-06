@@ -24,7 +24,7 @@ package client.inventory;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import database.DatabaseConnection;
-import server.Randomizer;
+import tools.Randomizer;
 import tools.MaplePacketCreator;
 
 import java.io.Serializable;

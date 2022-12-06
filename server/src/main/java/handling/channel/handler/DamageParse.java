@@ -35,7 +35,7 @@ import client.status.MonsterStatusEffect;
 import constants.GameConstants;
 import constants.JobConstants;
 import server.MapleStatEffect;
-import server.Randomizer;
+import tools.Randomizer;
 import server.Timer.MapTimer;
 import server.life.Element;
 import server.life.MapleMonster;

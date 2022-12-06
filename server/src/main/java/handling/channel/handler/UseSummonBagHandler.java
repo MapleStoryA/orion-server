@@ -7,7 +7,7 @@ import client.inventory.MapleInventoryType;
 import handling.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
-import server.Randomizer;
+import tools.Randomizer;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
 import server.maps.FieldLimitType;

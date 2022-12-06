@@ -8,7 +8,7 @@ import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
-import server.Randomizer;
+import tools.Randomizer;
 import server.StructRewardItem;
 import tools.FileOutputUtil;
 import tools.MaplePacketCreator;

@@ -40,7 +40,7 @@ import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import scripting.EventInstanceManager;
 import server.MapleItemInformationProvider;
-import server.Randomizer;
+import tools.Randomizer;
 import server.Timer.MobTimer;
 import server.maps.MapScriptMethods;
 import server.maps.MapleMap;

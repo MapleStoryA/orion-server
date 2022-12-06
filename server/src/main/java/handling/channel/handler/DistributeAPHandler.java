@@ -8,7 +8,7 @@ import client.PlayerStats;
 import client.SkillFactory;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
-import server.Randomizer;
+import tools.Randomizer;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.data.input.SeekableLittleEndianAccessor;

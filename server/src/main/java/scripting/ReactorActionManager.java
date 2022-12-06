@@ -31,7 +31,7 @@ import handling.world.WorldServer;
 import server.MapleCarnivalFactory;
 import server.MapleCarnivalFactory.MCSkill;
 import server.MapleItemInformationProvider;
-import server.Randomizer;
+import tools.Randomizer;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
 import server.maps.MapleReactor;

@@ -25,7 +25,7 @@ import client.MapleCharacter;
 import client.MapleQuestStatus;
 import handling.channel.ChannelServer;
 import handling.world.party.MaplePartyCharacter;
-import server.Randomizer;
+import tools.Randomizer;
 import server.Timer.MapTimer;
 import server.life.MapleLifeFactory;
 import server.quest.MapleQuest;

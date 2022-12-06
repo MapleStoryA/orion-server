@@ -52,7 +52,7 @@ import server.MapleItemInformationProvider;
 import server.MaplePortal;
 import server.MapleSquad;
 import server.MapleStatEffect;
-import server.Randomizer;
+import tools.Randomizer;
 import server.SpeedRunner;
 import server.Timer.MapTimer;
 import server.events.MapleEvent;

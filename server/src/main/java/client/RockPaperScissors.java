@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package client;
 
 import server.MapleInventoryManipulator;
-import server.Randomizer;
+import tools.Randomizer;
 import tools.MaplePacketCreator;
 
 @lombok.extern.slf4j.Slf4j

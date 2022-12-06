@@ -16,6 +16,7 @@ import provider.MapleDataTool;
 import server.StructSetItem.SetItem;
 import server.config.ServerEnvironment;
 import tools.Pair;
+import tools.Randomizer;
 import tools.Triple;
 
 import java.util.ArrayList;

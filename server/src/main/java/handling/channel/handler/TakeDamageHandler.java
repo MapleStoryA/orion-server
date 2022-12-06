@@ -10,7 +10,7 @@ import constants.MapConstants;
 import handling.AbstractMaplePacketHandler;
 import server.AutobanManager;
 import server.MapleStatEffect;
-import server.Randomizer;
+import tools.Randomizer;
 import server.life.MapleMonster;
 import server.life.MobAttackInfo;
 import server.life.MobAttackInfoFactory;

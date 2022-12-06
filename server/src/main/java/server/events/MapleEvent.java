@@ -28,7 +28,7 @@ import handling.world.World;
 import handling.world.WorldServer;
 import server.MapleInventoryManipulator;
 import server.RandomRewards;
-import server.Randomizer;
+import tools.Randomizer;
 import server.Timer.EventTimer;
 import server.maps.MapleMap;
 import server.maps.SavedLocationType;
