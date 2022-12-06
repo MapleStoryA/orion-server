@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.8'
 services:
   orion-db:
     image: mysql:5.6
@@ -7,7 +7,7 @@ services:
     volumes:
       - orion:/var/lib/mysql
       - ./database/my.cnf:/etc/mysql/conf.d/my.cnf
-      - ./database/schema.sql:/docker-entrypoint-initdb.d/0_init.sql
+      - ./database/:/docker-entrypoint-initdb.d/
     ports:
       - 127.0.0.1:7900:3306
     environment:
