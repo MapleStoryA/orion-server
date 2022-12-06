@@ -24,7 +24,7 @@ public class CashShopOperationUtils {
 
         try {
             World.ChannelChange_Data(new CharacterTransfer(chr), chr.getId(), c.getChannel());
-            c.getSession().write(MaplePacketCreator.getChannelChange(Integer.parseInt(WorldServer.getInstance().getChannel(c.getChannel()).getIP().split(":")[1])));
+            c.getSession().write(MaplePacketCreator.getChannelChange(Integer.parseInt(WorldServer.getInstance().getChannel(c.getChannel()).getPublicAddress().split(":")[1])));
         } catch (Exception ex) {
             log.info(ex.getMessage());
         } finally {

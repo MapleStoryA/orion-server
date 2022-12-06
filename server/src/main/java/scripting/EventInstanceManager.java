@@ -27,6 +27,7 @@ import handling.channel.ChannelServer;
 import handling.world.WorldServer;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
+import lombok.extern.slf4j.Slf4j;
 import server.MapleCarnivalParty;
 import server.MapleItemInformationProvider;
 import server.MapleSquad;
@@ -50,14 +51,15 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class EventInstanceManager {
 
     private final EventManager em;
     private final int channel;
     private final String name;
     private final ReentrantReadWriteLock mutex = new ReentrantReadWriteLock();
-    private final Lock rL = mutex.readLock(), wL = mutex.writeLock();
+    private final Lock readLock = mutex.readLock();
+    private final Lock writeLock = mutex.writeLock();
     private List<MapleCharacter> chars = new LinkedList<MapleCharacter>(); //this is messy
     private List<Integer> dced = new LinkedList<Integer>();
     private List<MapleMonster> mobs = new LinkedList<MapleMonster>();
@@ -81,11 +83,11 @@ public class EventInstanceManager {
             return;
         }
         try {
-            wL.lock();
+            writeLock.lock();
             try {
                 chars.add(chr);
             } finally {
-                wL.unlock();
+                writeLock.unlock();
             }
             chr.setEventInstance(this);
             em.getIv().invokeFunction("playerEntry", this, chr);
@@ -190,11 +192,11 @@ public class EventInstanceManager {
             chr.setEventInstance(null);
             return;
         }
-        wL.lock();
+        writeLock.lock();
         try {
             unregisterPlayer_NoLock(chr);
         } finally {
-            wL.unlock();
+            writeLock.unlock();
         }
     }
 
@@ -228,7 +230,7 @@ public class EventInstanceManager {
             map = this.getMapFactory().getMap(towarp);
         }
 
-        wL.lock();
+        writeLock.lock();
         try {
             if (chars.size() <= size) {
                 final List<MapleCharacter> chrs = new LinkedList<MapleCharacter>(chars);
@@ -245,7 +247,7 @@ public class EventInstanceManager {
                 return true;
             }
         } finally {
-            wL.unlock();
+            writeLock.unlock();
         }
         return false;
     }
@@ -269,11 +271,11 @@ public class EventInstanceManager {
         if (disposed) {
             return Collections.emptyList();
         }
-        rL.lock();
+        readLock.lock();
         try {
             return new LinkedList<MapleCharacter>(chars);
         } finally {
-            rL.unlock();
+            readLock.unlock();
         }
     }
 
@@ -351,7 +353,7 @@ public class EventInstanceManager {
             ret = 0;
         }
 
-        wL.lock();
+        writeLock.lock();
         try {
             if (disposed) {
                 return;
@@ -377,7 +379,7 @@ public class EventInstanceManager {
             ex.printStackTrace();
             FileOutputUtil.outputFileError(FileOutputUtil.ScriptEx_Log, ex);
         } finally {
-            wL.unlock();
+            writeLock.unlock();
         }
 
     }
@@ -497,11 +499,11 @@ public class EventInstanceManager {
     }
 
     public void dispose() {
-        wL.lock();
+        writeLock.lock();
         try {
             dispose_NoLock();
         } finally {
-            wL.unlock();
+            writeLock.unlock();
         }
 
     }

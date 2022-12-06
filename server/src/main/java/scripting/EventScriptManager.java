@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package scripting;
 
 import handling.channel.ChannelServer;
+import lombok.extern.slf4j.Slf4j;
 import tools.FileOutputUtil;
 
 import javax.script.Invocable;
@@ -30,21 +31,18 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * @author Matze
- */
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class EventScriptManager extends AbstractScriptManager {
 
     private final Map<String, EventEntry> events = new LinkedHashMap<String, EventEntry>();
     private final AtomicInteger runningInstanceMapId = new AtomicInteger(0);
-    public EventScriptManager(final ChannelServer cserv, final String[] scripts) {
-        super();
+
+    public EventScriptManager(final ChannelServer channelServer, final String[] scripts) {
         for (final String script : scripts) {
             if (!script.equals("")) {
                 final Invocable iv = getInvocable("event", script, null);
                 if (iv != null) {
-                    events.put(script, new EventEntry(script, iv, new EventManager(cserv, iv, script)));
+                    events.put(script, new EventEntry(script, iv, new EventManager(channelServer, iv, script)));
                 }
             }
         }
@@ -85,6 +83,7 @@ public class EventScriptManager extends AbstractScriptManager {
         public String script;
         public Invocable iv;
         public EventManager em;
+
         public EventEntry(final String script, final Invocable iv, final EventManager em) {
             this.script = script;
             this.iv = iv;

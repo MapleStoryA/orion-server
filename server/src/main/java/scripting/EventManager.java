@@ -25,6 +25,7 @@ import client.MapleCharacter;
 import handling.channel.ChannelServer;
 import handling.world.WorldServer;
 import handling.world.party.MapleParty;
+import lombok.extern.slf4j.Slf4j;
 import server.MapleSquad;
 import server.Randomizer;
 import server.Timer.EventTimer;
@@ -52,7 +53,7 @@ import java.util.Properties;
 import java.util.WeakHashMap;
 import java.util.concurrent.ScheduledFuture;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class EventManager {
 
     private static int eventChannel = 1;
@@ -62,9 +63,9 @@ public class EventManager {
     private final Properties props = new Properties();
     private final String name;
 
-    public EventManager(ChannelServer cserv, Invocable iv, String name) {
+    public EventManager(ChannelServer channelServer, Invocable iv, String name) {
         this.iv = iv;
-        this.channel = cserv.getChannel();
+        this.channel = channelServer.getChannel();
         this.name = name;
     }
 

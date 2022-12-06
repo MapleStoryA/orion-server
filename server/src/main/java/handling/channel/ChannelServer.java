@@ -62,7 +62,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class ChannelServer extends GameServer {
 
     public static final short DEFAULT_PORT = 8585;
-    private final String ip;
+    private final String publicAddress;
     private final MapleMapFactory mapFactory;
     private final Map<String, MapleSquad> mapleSquads = new HashMap<>();
     private final Map<Integer, HiredMerchant> merchants = new HashMap<>();
@@ -77,7 +77,6 @@ public class ChannelServer extends GameServer {
     private int running_MerchantID = 0;
     private int flags = 0;
     private String serverMessage;
-    private String serverName;
     private boolean shutdown = false, finishedShutdown = false, MegaphoneMuteState = false, adminOnly = false;
     private PlayerStorage players;
     private EventScriptManager eventSM;
@@ -91,10 +90,9 @@ public class ChannelServer extends GameServer {
         this.dropRate = Integer.parseInt(ServerProperties.getProperty("world.drop"));
         this.cashRate = Integer.parseInt(ServerProperties.getProperty("world.cash"));
         this.serverMessage = ServerProperties.getProperty("world.serverMessage");
-        this.serverName = ServerProperties.getProperty("login.serverName");
         this.flags = Integer.parseInt(ServerProperties.getProperty("world.flags", "0"));
         this.adminOnly = Boolean.parseBoolean(ServerProperties.getProperty("world.admin", "false"));
-        this.ip = ServerProperties.getProperty("channel.net.interface") + ":" + port;
+        this.publicAddress = ServerProperties.getProperty("channel.net.interface") + ":" + port;
         this.mapFactory = new MapleMapFactory();
         this.aramiaEvent = new AramiaFireWorks();
         this.eventCenter = new EventCenter(channel);
@@ -102,6 +100,11 @@ public class ChannelServer extends GameServer {
         this.mapFactory.setChannel(channel);
         this.players = new PlayerStorage(channel);
         this.serverStartTime = System.currentTimeMillis();
+
+    }
+
+    @Override
+    public void onStart() {
         LoginServer.getInstance().addChannel(channel);
         scheduleAutoSaver();
         loadEvents();
@@ -110,10 +113,6 @@ public class ChannelServer extends GameServer {
         log.info("Meso:" + mesoRate);
         log.info("Drop:" + dropRate);
         log.info("Cash:" + cashRate);
-    }
-
-    private void scheduleAutoSaver() {
-        TimerManager.getInstance().register(new AutoSaveRunnable(this), 1000 * 180);
     }
 
 
@@ -221,16 +220,12 @@ public class ChannelServer extends GameServer {
         return channel;
     }
 
-    public String getIP() {
-        return ip;
+    public String getPublicAddress() {
+        return publicAddress;
     }
 
     public boolean isShutdown() {
         return shutdown;
-    }
-
-    public int getLoadedMaps() {
-        return mapFactory.getLoadedMaps();
     }
 
     public EventScriptManager getEventSM() {
@@ -320,15 +315,15 @@ public class ChannelServer extends GameServer {
     public int addMerchant(final HiredMerchant hMerchant) {
         merchLock.writeLock().lock();
 
-        int runningmer = 0;
+        int runningMerchantId = 0;
         try {
-            runningmer = running_MerchantID;
+            runningMerchantId = running_MerchantID;
             merchants.put(running_MerchantID, hMerchant);
             running_MerchantID++;
         } finally {
             merchLock.writeLock().unlock();
         }
-        return runningmer;
+        return runningMerchantId;
     }
 
     public void removeMerchant(final HiredMerchant hMerchant) {
@@ -403,9 +398,6 @@ public class ChannelServer extends GameServer {
         return playerNPCs.values();
     }
 
-    public PlayerNPC getPlayerNPC(final int id) {
-        return playerNPCs.get(id);
-    }
 
     public void addPlayerNPC(final PlayerNPC npc) {
         if (playerNPCs.containsKey(npc.getId())) {
@@ -420,18 +412,6 @@ public class ChannelServer extends GameServer {
             playerNPCs.remove(npc.getId());
             getMapFactory().getMap(npc.getMapId()).removeMapObject(npc);
         }
-    }
-
-    public String getServerName() {
-        return serverName;
-    }
-
-    public void setServerName(final String sn) {
-        this.serverName = sn;
-    }
-
-    public int getPort() {
-        return port;
     }
 
     public void setShutdown() {
@@ -505,5 +485,9 @@ public class ChannelServer extends GameServer {
 
     public EventCenter getEventCenter() {
         return this.eventCenter;
+    }
+
+    private void scheduleAutoSaver() {
+        TimerManager.getInstance().register(new AutoSaveRunnable(this), 1000 * 180);
     }
 }

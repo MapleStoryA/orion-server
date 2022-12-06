@@ -39,6 +39,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @lombok.extern.slf4j.Slf4j
 public class GameApp {
@@ -168,7 +169,7 @@ public class GameApp {
             }
         });
 
-        executorService.shutdown();
+        executorService.awaitTermination(2, TimeUnit.SECONDS);
 
 
         log.info("[Loading Login]");
@@ -182,7 +183,9 @@ public class GameApp {
         for (int i = 0; i < Integer.parseInt(ServerProperties.getProperty("channel.count", "0")); i++) {
             int channel = i + 1;
             int port = Short.parseShort(ServerProperties.getProperty("channel.net.port" + channel, String.valueOf(ChannelServer.DEFAULT_PORT + channel)));
-            worldServer.registerChannel(channel, new ChannelServer(channel, port));
+            ChannelServer ch = new ChannelServer(channel, port);
+            worldServer.registerChannel(channel, ch);
+            ch.onStart();
         }
 
 

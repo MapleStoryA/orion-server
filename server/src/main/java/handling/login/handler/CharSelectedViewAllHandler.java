@@ -34,7 +34,7 @@ public class CharSelectedViewAllHandler extends AbstractMaplePacketHandler {
         }
         c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION, c.getSessionIPAddress());
         c.getSession().write(MaplePacketCreator.getServerIP(
-                Integer.parseInt(WorldServer.getInstance().getChannel(c.getChannel()).getIP().split(":")[1]), charId));
+                Integer.parseInt(WorldServer.getInstance().getChannel(c.getChannel()).getPublicAddress().split(":")[1]), charId));
 
     }
 
