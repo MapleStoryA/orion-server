@@ -1,6 +1,6 @@
-package handling.cashshop.constants;
+package constants;
 
-public enum IconClass {
+public enum CashShopEventIconClass {
     ID_ICON_CLASS_NEW(0x0),
     ID_ICON_CLASS_SALE(0x1),
     ID_ICON_CLASS_HOT(0x2),
@@ -9,7 +9,7 @@ public enum IconClass {
 
     private final int type;
 
-    IconClass(int type) {
+    CashShopEventIconClass(int type) {
         this.type = type;
     }
 

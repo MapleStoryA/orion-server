@@ -23,6 +23,7 @@ package client;
 
 import client.crypto.LoginCrypto;
 import client.crypto.LoginCryptoLegacy;
+import constants.ServerConstants;
 import database.DatabaseConnection;
 import database.DatabaseException;
 import handling.cashshop.CashShopServer;
@@ -114,6 +115,12 @@ public class MapleClient implements Serializable {
         this.receive = receive;
         this.session = session;
     }
+
+    public MapleClient(byte[] ivSend, byte[] ivRecv, IoSession session) {
+        this(new MapleAESOFB(ivSend, (short) (0xFFFF - ServerConstants.MAPLE_VERSION)),
+                new MapleAESOFB(ivRecv, ServerConstants.MAPLE_VERSION), session);
+    }
+
 
     public static final void banMacs(String[] macs) {
         Connection con = DatabaseConnection.getConnection();

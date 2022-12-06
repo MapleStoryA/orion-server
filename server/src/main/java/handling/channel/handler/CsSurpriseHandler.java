@@ -3,7 +3,7 @@ package handling.channel.handler;
 import client.MapleClient;
 import client.inventory.IItem;
 import handling.AbstractMaplePacketHandler;
-import handling.cashshop.handler.CashShopOperationUtils;
+import handling.cashshop.CashShopOperationHandlers;
 import server.RandomRewards;
 import server.cashshop.CashItemFactory;
 import server.cashshop.CashItemInfo;
@@ -17,11 +17,11 @@ public class CsSurpriseHandler extends AbstractMaplePacketHandler {
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         if (c.getPlayer().getCashInventory().getItemsSize() >= 100) {
             c.getSession().write(MTSCSPacket.sendCSFail(0x0A));
-            CashShopOperationUtils.doCSPackets(c);
+            CashShopOperationHandlers.doCSPackets(c);
             return;
         }
         if (slea.available() <= 2) {
-            CashShopOperationUtils.doCSPackets(c);
+            CashShopOperationHandlers.doCSPackets(c);
             return;
         }
         final int uniqueId = (int) slea.readLong();
@@ -51,7 +51,7 @@ public class CsSurpriseHandler extends AbstractMaplePacketHandler {
         } else {
             c.getSession().write(MTSCSPacket.sendCSFail(0));
         }
-        CashShopOperationUtils.doCSPackets(c);
+        CashShopOperationHandlers.doCSPackets(c);
 
     }
 

@@ -299,7 +299,7 @@ public class PlayerHandler {
         }
     }
 
-    public static final void ChangeMap(final SeekableLittleEndianAccessor slea, final MapleClient c,
+    public static final void changeMap(final SeekableLittleEndianAccessor slea, final MapleClient c,
                                        final MapleCharacter chr) {
         if (chr == null) {
             return;

@@ -1,11 +1,10 @@
-package handling.cashshop.handler;
+package handling.cashshop;
 
 import client.MapleCharacter;
 import client.MapleClient;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
-import handling.cashshop.CashShopServer;
 import handling.world.CharacterTransfer;
 import handling.world.World;
 import handling.world.WorldServer;
@@ -16,9 +15,9 @@ import tools.packet.MTSCSPacket;
 import java.util.List;
 
 @lombok.extern.slf4j.Slf4j
-public class CashShopOperationUtils {
+public class CashShopOperationHandlers {
 
-    public static void LeaveCS(final SeekableLittleEndianAccessor slea, final MapleClient c, final MapleCharacter chr) {
+    public static void leaveCashShop(final SeekableLittleEndianAccessor slea, final MapleClient c, final MapleCharacter chr) {
         CashShopServer.getPlayerStorage().deregisterPlayer(chr);
         c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION, c.getSessionIPAddress());
 
@@ -34,7 +33,7 @@ public class CashShopOperationUtils {
         }
     }
 
-    public static void EnterCS(final int playerid, final MapleClient c) {
+    public static void enterCashShop(final int playerid, final MapleClient c) {
         CharacterTransfer transfer = CashShopServer.getPlayerStorage().getPendingCharacter(playerid);
         if (transfer == null) {
             c.getSession().close();

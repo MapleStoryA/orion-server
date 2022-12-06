@@ -3,7 +3,7 @@ package handling.channel.handler;
 import client.MapleClient;
 import client.inventory.IItem;
 import handling.AbstractMaplePacketHandler;
-import handling.cashshop.handler.CashShopOperationUtils;
+import handling.cashshop.CashShopOperationHandlers;
 import server.MapleInventoryManipulator;
 import server.cashshop.CashCouponData;
 import server.cashshop.CashItemFactory;
@@ -26,49 +26,49 @@ public class CouponCodeHandler extends AbstractMaplePacketHandler {
         final boolean gift = slea.readShort() > 0;
         if (gift) {
             c.getSession().write(MTSCSPacket.sendCouponFail(c, 0x30));
-            CashShopOperationUtils.doCSPackets(c);
+            CashShopOperationHandlers.doCSPackets(c);
             return;
         }
         final String code = slea.readMapleAsciiString();
         if (code == null || code.length() < 16 || code.length() > 32) { // Please check and see if the coupon id is correct or not.
             // XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX
             c.getSession().write(MTSCSPacket.sendCouponFail(c, 0x0E));
-            CashShopOperationUtils.doCSPackets(c);
+            CashShopOperationHandlers.doCSPackets(c);
             return;
         }
         final boolean validcode = CashShopCoupon.getCouponCodeValid(code.toUpperCase());
         if (!validcode) {
             c.getSession().write(MTSCSPacket.sendCouponFail(c, 0x0E));
-            CashShopOperationUtils.doCSPackets(c);
+            CashShopOperationHandlers.doCSPackets(c);
             return;
         }
         final List<CashCouponData> rewards = CashShopCoupon.getCcData(code.toUpperCase());
         if (rewards == null) { // Actually impossible
             CashShopCoupon.setCouponCodeUsed("ERROR", code);
             c.getSession().write(MTSCSPacket.sendCouponFail(c, 0x11));
-            CashShopOperationUtils.doCSPackets(c);
+            CashShopOperationHandlers.doCSPackets(c);
             return;
         }
         // maple point, cs item, normal, mesos
         final Pair<Pair<Integer, Integer>, Pair<List<IItem>, Integer>> cscsize = CashShopCoupon.getSize(rewards);
         if ((c.getPlayer().getCSPoints(2) + cscsize.getLeft().getLeft()) < 0) {
             c.getPlayer().dropMessage(1, "You have too much Maple Points.");
-            CashShopOperationUtils.doCSPackets(c);
+            CashShopOperationHandlers.doCSPackets(c);
             return;
         }
         if (c.getPlayer().getCashInventory().getItemsSize() >= (100 - cscsize.getLeft().getRight())) {
             c.getSession().write(MTSCSPacket.sendCSFail(0x0A));
-            CashShopOperationUtils.doCSPackets(c);
+            CashShopOperationHandlers.doCSPackets(c);
             return;
         }
         if (c.getPlayer().getMeso() + cscsize.getRight().getRight() < 0) {
             c.getPlayer().dropMessage(1, "You have too much mesos.");
-            CashShopOperationUtils.doCSPackets(c);
+            CashShopOperationHandlers.doCSPackets(c);
             return;
         }
-        if (!CashShopOperationUtils.haveSpace(c.getPlayer(), cscsize.getRight().getLeft())) {
+        if (!CashShopOperationHandlers.haveSpace(c.getPlayer(), cscsize.getRight().getLeft())) {
             c.getSession().write(MTSCSPacket.sendCSFail(0x19));
-            CashShopOperationUtils.doCSPackets(c);
+            CashShopOperationHandlers.doCSPackets(c);
             return;
         }
 
@@ -117,7 +117,7 @@ public class CouponCodeHandler extends AbstractMaplePacketHandler {
         }
         CashShopCoupon.deleteCouponData(c.getPlayer().getName(), code);
         c.getSession().write(MTSCSPacket.showCouponRedeemedItem(c.getAccID(), MaplePoints, togiveCS, togiveII, mesos));
-        CashShopOperationUtils.doCSPackets(c);
+        CashShopOperationHandlers.doCSPackets(c);
 
     }
 

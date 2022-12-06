@@ -2483,7 +2483,7 @@ public class AdminCommand {
         public int execute(MapleClient c, String[] splitted) {
             try {
                 c.getPlayer().dropMessage(6, "Making playerNPC...");
-                MapleClient cs = new MapleClient(null, null, new MockIOSession());
+                MapleClient cs = new MapleClient(null, new byte[]{}, new MockIOSession());
                 MapleCharacter chhr = MapleCharacter.loadCharFromDB(MapleCharacterUtil.getIdByName(splitted[1]), cs,
                         false);
                 if (chhr == null) {
