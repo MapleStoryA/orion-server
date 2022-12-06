@@ -17,6 +17,15 @@
 
 GRANT ALL ON *.* to root@'%';
 FLUSH PRIVILEGES;
+
+
+DROP TABLE IF EXISTS `maple_var`;
+CREATE TABLE `maple_var` (
+ `character_id` INTEGER UNSIGNED NOT NULL,
+ `maple_key` VARCHAR(50) NOT NULL DEFAULT '',
+ `value` VARCHAR(100) NOT NULL DEFAULT '',
+ PRIMARY KEY(`character_id`, `maple_key`)
+) ENGINE = InnoDB;
 --
 -- Table structure for table `accounts`
 --

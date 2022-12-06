@@ -3,6 +3,7 @@ package server.state;
 
 import client.MapleCharacter;
 import database.DatabaseConnection;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class SimpleMapleVar implements MapleVar {
 
 
