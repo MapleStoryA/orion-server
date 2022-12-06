@@ -48,6 +48,7 @@ public class GameApp {
     public static void main(String[] args) throws InterruptedException {
         AutoJCE.removeCryptographyRestrictions();
         ServerEnvironment.getConfig();
+        System.setProperty("logback.configurationFile", "config/logback.xml");
         instance.run();
         System.out.println("[" + ServerProperties.getProperty("login.serverName") + "]");
     }
