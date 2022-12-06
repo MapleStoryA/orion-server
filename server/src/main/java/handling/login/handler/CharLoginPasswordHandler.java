@@ -10,6 +10,7 @@ import tools.packet.LoginPacket;
 
 import java.util.Calendar;
 
+@lombok.extern.slf4j.Slf4j
 public class CharLoginPasswordHandler implements MaplePacketHandler {
 
     private static final boolean loginFailCount(final MapleClient c) {

@@ -14,7 +14,7 @@ import server.life.MapleMonster;
 import server.maps.MapleMapItem;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
-import tools.FileoutputUtil;
+import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -23,6 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 
+@lombok.extern.slf4j.Slf4j
 public class PetLootHandler extends AbstractMaplePacketHandler {
 
     @Override
@@ -120,7 +121,7 @@ public class PetLootHandler extends AbstractMaplePacketHandler {
                         mapitem.getItem().getQuantity(), mapitem.getItem().getOwner())) {
                     if (mapitem.getItem().getQuantity() >= 50
                             && GameConstants.isUpgradeScroll(mapitem.getItem().getItemId())) {
-                        FileoutputUtil.logUsers(chr.getName(), "Pet picked up " + mapitem.getItem().getQuantity()
+                        FileOutputUtil.logUsers(chr.getName(), "Pet picked up " + mapitem.getItem().getQuantity()
                                 + " of " + mapitem.getItem().getItemId());
                     }
                     if (MapleInventoryManipulator.addFromDrop(c, mapitem.getItem(), true,

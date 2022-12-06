@@ -32,12 +32,13 @@ import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
 import server.quest.MapleQuest;
 import server.quest.MapleQuest.MedalQuest;
-import tools.FileoutputUtil;
+import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
 import tools.packet.UIPacket;
 
 import java.awt.*;
 
+@lombok.extern.slf4j.Slf4j
 public class MapScriptMethods {
 
     private static final Point witchTowerPos = new Point(-60, 184);
@@ -47,138 +48,6 @@ public class MapScriptMethods {
             "I will make sure you will regret taking on Mu Lung Training Tower!",
             "I do like your intestinal fortitude! But don't confuse your courage with recklessness!",
             "If you want to step on the path to failure, by all means to do so!"};
-
-    private enum onFirstUserEnter {
-        summon_pepeking,
-        dojang_Eff,
-        PinkBeen_before,
-        onRewordMap,
-        StageMsg_together,
-        StageMsg_davy,
-        party6weatherMsg,
-        StageMsg_juliet,
-        StageMsg_romio,
-        moonrabbit_mapEnter,
-        astaroth_summon,
-        boss_Ravana,
-        killing_BonusSetting,
-        killing_MapSetting,
-        metro_firstSetting,
-        balog_bonusSetting,
-        balog_summon,
-        easy_balog_summon,
-        Sky_TrapFEnter,
-        shammos_Fenter,
-        lostmine_morphEnter,
-        lostsea_morphEnter,
-        visitorCube_addmobEnter,
-        PRaid_D_Fenter,
-        PRaid_B_Fenter,
-        TD_MC_gasi2,
-        NULL;
-
-        private static onFirstUserEnter fromString(String Str) {
-            try {
-                return valueOf(Str);
-            } catch (IllegalArgumentException ex) {
-                return NULL;
-            }
-        }
-    }
-
-    private enum onUserEnter {
-        babyPigMap,
-        crash_Dragon,
-        evanleaveD,
-        getDragonEgg,
-        meetWithDragon,
-        go1010100,
-        go1010200,
-        go1010300,
-        go1010400,
-        evanPromotion,
-        PromiseDragon,
-        evanTogether,
-        incubation_dragon,
-        TD_MC_Openning,
-        TD_MC_gasi,
-        TD_MC_title,
-        cygnusJobTutorial,
-        cygnusTest,
-        startEreb,
-        dojang_Msg,
-        dojang_1st,
-        reundodraco,
-        undomorphdarco,
-        explorationPoint,
-        goAdventure,
-        go10000,
-        go20000,
-        go30000,
-        go40000,
-        go50000,
-        go1000000,
-        go1010000,
-        go1020000,
-        go2000000,
-        goArcher,
-        goPirate,
-        goRogue,
-        goMagician,
-        goSwordman,
-        goLith,
-        iceCave,
-        mirrorCave,
-        aranDirection,
-        rienArrow,
-        rien,
-        check_count,
-        Massacre_first,
-        Massacre_result,
-        aranTutorAlone,
-        evanAlone,
-        dojang_QcheckSet,
-        Sky_StageEnter,
-        outCase,
-        balog_buff,
-        balog_dateSet,
-        Sky_BossEnter,
-        Sky_GateMapEnter,
-        shammos_Enter,
-        shammos_Result,
-        shammos_Base,
-        dollCave00,
-        dollCave01,
-        Sky_Quest,
-        enterBlackfrog,
-        onSDI,
-        blackSDI,
-        summonIceWall,
-        metro_firstSetting,
-        start_itemTake,
-        VisitorCutScene,
-        VisitorGoReservedField,
-        VisitorleaveDirectionMode,
-        Visitor_Morph_502010300,
-        Visitor_Morph_502010200,
-        visitor_ReviveMap,
-        PRaid_D_Enter,
-        PRaid_B_Enter,
-        PRaid_Revive,
-        PRaid_W_Enter,
-        PRaid_WinEnter,
-        PRaid_FailEnter,
-        TD_MC_gasi2,
-        NULL;
-
-        private static onUserEnter fromString(String Str) {
-            try {
-                return valueOf(Str);
-            } catch (IllegalArgumentException ex) {
-                return NULL;
-            }
-        }
-    }
 
     public static void startScript_FirstUser(MapleClient c, String scriptName) {
         if (c.getPlayer() == null) {
@@ -484,8 +353,8 @@ public class MapScriptMethods {
                 break;
             }
             default: {
-                System.out.println("Unhandled script : " + scriptName + ", type : onFirstUserEnter - MAPID " + c.getPlayer().getMapId());
-                FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Unhandled script : " + scriptName + ", type : onFirstUserEnter - MAPID " + c.getPlayer().getMapId());
+                log.info("Unhandled script : " + scriptName + ", type : onFirstUserEnter - MAPID " + c.getPlayer().getMapId());
+                FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Unhandled script : " + scriptName + ", type : onFirstUserEnter - MAPID " + c.getPlayer().getMapId());
                 break;
             }
         }
@@ -828,8 +697,8 @@ public class MapScriptMethods {
                 }
                 return;
             default: {
-                System.out.println("Unhandled script : " + scriptName + ", type : onUserEnter - MAPID " + c.getPlayer().getMapId());
-                FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Unhandled script : " + scriptName + ", type : onUserEnter - MAPID " + c.getPlayer().getMapId());
+                log.info("Unhandled script : " + scriptName + ", type : onUserEnter - MAPID " + c.getPlayer().getMapId());
+                FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Unhandled script : " + scriptName + ", type : onUserEnter - MAPID " + c.getPlayer().getMapId());
                 break;
             }
         }
@@ -929,5 +798,137 @@ public class MapScriptMethods {
             mob = 9300377;
         }
         map.spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(mob), witchTowerPos);
+    }
+
+    private enum onFirstUserEnter {
+        summon_pepeking,
+        dojang_Eff,
+        PinkBeen_before,
+        onRewordMap,
+        StageMsg_together,
+        StageMsg_davy,
+        party6weatherMsg,
+        StageMsg_juliet,
+        StageMsg_romio,
+        moonrabbit_mapEnter,
+        astaroth_summon,
+        boss_Ravana,
+        killing_BonusSetting,
+        killing_MapSetting,
+        metro_firstSetting,
+        balog_bonusSetting,
+        balog_summon,
+        easy_balog_summon,
+        Sky_TrapFEnter,
+        shammos_Fenter,
+        lostmine_morphEnter,
+        lostsea_morphEnter,
+        visitorCube_addmobEnter,
+        PRaid_D_Fenter,
+        PRaid_B_Fenter,
+        TD_MC_gasi2,
+        NULL;
+
+        private static onFirstUserEnter fromString(String Str) {
+            try {
+                return valueOf(Str);
+            } catch (IllegalArgumentException ex) {
+                return NULL;
+            }
+        }
+    }
+
+    private enum onUserEnter {
+        babyPigMap,
+        crash_Dragon,
+        evanleaveD,
+        getDragonEgg,
+        meetWithDragon,
+        go1010100,
+        go1010200,
+        go1010300,
+        go1010400,
+        evanPromotion,
+        PromiseDragon,
+        evanTogether,
+        incubation_dragon,
+        TD_MC_Openning,
+        TD_MC_gasi,
+        TD_MC_title,
+        cygnusJobTutorial,
+        cygnusTest,
+        startEreb,
+        dojang_Msg,
+        dojang_1st,
+        reundodraco,
+        undomorphdarco,
+        explorationPoint,
+        goAdventure,
+        go10000,
+        go20000,
+        go30000,
+        go40000,
+        go50000,
+        go1000000,
+        go1010000,
+        go1020000,
+        go2000000,
+        goArcher,
+        goPirate,
+        goRogue,
+        goMagician,
+        goSwordman,
+        goLith,
+        iceCave,
+        mirrorCave,
+        aranDirection,
+        rienArrow,
+        rien,
+        check_count,
+        Massacre_first,
+        Massacre_result,
+        aranTutorAlone,
+        evanAlone,
+        dojang_QcheckSet,
+        Sky_StageEnter,
+        outCase,
+        balog_buff,
+        balog_dateSet,
+        Sky_BossEnter,
+        Sky_GateMapEnter,
+        shammos_Enter,
+        shammos_Result,
+        shammos_Base,
+        dollCave00,
+        dollCave01,
+        Sky_Quest,
+        enterBlackfrog,
+        onSDI,
+        blackSDI,
+        summonIceWall,
+        metro_firstSetting,
+        start_itemTake,
+        VisitorCutScene,
+        VisitorGoReservedField,
+        VisitorleaveDirectionMode,
+        Visitor_Morph_502010300,
+        Visitor_Morph_502010200,
+        visitor_ReviveMap,
+        PRaid_D_Enter,
+        PRaid_B_Enter,
+        PRaid_Revive,
+        PRaid_W_Enter,
+        PRaid_WinEnter,
+        PRaid_FailEnter,
+        TD_MC_gasi2,
+        NULL;
+
+        private static onUserEnter fromString(String Str) {
+            try {
+                return valueOf(Str);
+            } catch (IllegalArgumentException ex) {
+                return NULL;
+            }
+        }
     }
 }

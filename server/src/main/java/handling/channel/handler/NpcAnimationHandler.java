@@ -6,6 +6,7 @@ import handling.SendPacketOpcode;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.data.output.MaplePacketLittleEndianWriter;
 
+@lombok.extern.slf4j.Slf4j
 public class NpcAnimationHandler extends AbstractMaplePacketHandler {
 
     @Override

@@ -54,6 +54,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class DamageParse {
 
     private final static int[] charges = {1211005, 1211006};
@@ -203,7 +204,7 @@ public class DamageParse {
                     if (overallAttackCount - 1 == attackCount) { // Is a Shadow partner hit so let's divide it once
                         maxDamagePerHit = (maxDamagePerHit / 100) * ShdowPartnerAttackPercentage;
                     }
-                    //System.out.println("Client damage : " + eachd + " Server : " + maxDamagePerHit);
+                    //log.info("Client damage : " + eachd + " Server : " + maxDamagePerHit);
                     if (fixeddmg != -1) {
                         if (monsterstats.getOnlyNoramlAttack()) {
                             eachd = attack.skill != 0 ? 0 : fixeddmg;
@@ -568,7 +569,7 @@ public class DamageParse {
                         if (monsterstats.getOnlyNoramlAttack()) {
                             eachd = 0; // Magic is always not a normal attack
                         } else if (!player.isGM()) {
-//			    System.out.println("Client damage : " + eachd + " Server : " + MaxDamagePerHit);
+//			    log.info("Client damage : " + eachd + " Server : " + MaxDamagePerHit);
 
                             if (Tempest) { // Buffed with Tempest
                                 // In special case such as Chain lightning, the damage will be reduced from the maxMP.
@@ -950,14 +951,14 @@ public class DamageParse {
     }
 
     public static final AttackInfo parseDmgMa(final LittleEndianAccessor lea) {
-        //System.out.println(lea.toString());
+        //log.info(lea.toString());
         final AttackInfo ret = new AttackInfo();
 
         ret.portals = lea.readByte();
         final boolean unkk = lea.readByte() == -1;
         lea.skip(unkk ? 7 : 8);
         ret.tbyte = lea.readByte();
-        //System.out.println("TBYTE: " + tbyte);
+        //log.info("TBYTE: " + tbyte);
         ret.targets = (byte) ((ret.tbyte >>> 4) & 0xF);
         ret.hits = (byte) (ret.tbyte & 0xF);
         lea.skip(8); //?
@@ -1009,7 +1010,7 @@ public class DamageParse {
     }
 
     public static final AttackInfo parseDmgM(final LittleEndianAccessor lea) {
-        //System.out.println(lea.toString());
+        //log.info(lea.toString());
         final AttackInfo ret = new AttackInfo();
 
 
@@ -1017,7 +1018,7 @@ public class DamageParse {
         final boolean unkk = lea.readByte() == -1;
         lea.skip(unkk ? 7 : 8);
         ret.tbyte = lea.readByte();
-        //System.out.println("TBYTE: " + tbyte);
+        //log.info("TBYTE: " + tbyte);
         ret.targets = (byte) ((ret.tbyte >>> 4) & 0xF);
         ret.hits = (byte) (ret.tbyte & 0xF);
         lea.skip(8);
@@ -1067,7 +1068,7 @@ public class DamageParse {
             for (int j = 0; j < ret.hits; j++) {
 
                 damage = lea.readInt();
-                // System.out.println("Damage: " + damage);
+                // log.info("Damage: " + damage);
                 allDamageNumbers.add(new Pair<Integer, Boolean>(Integer.valueOf(damage), false));
                 if (ret.skill == 21101003) {//Only first damage is valid for body preasure
                     break;
@@ -1086,14 +1087,14 @@ public class DamageParse {
     }
 
     public static final AttackInfo parseDmgR(final LittleEndianAccessor lea) {
-        //System.out.println(lea.toString()); //<-- packet needs revision
+        //log.info(lea.toString()); //<-- packet needs revision
         final AttackInfo ret = new AttackInfo();
 
         ret.portals = lea.readByte();
         final boolean unkk = lea.readByte() == -1;
         lea.skip(unkk ? 7 : 8);
         ret.tbyte = lea.readByte();
-        //System.out.println("TBYTE: " + tbyte);
+        //log.info("TBYTE: " + tbyte);
         ret.targets = (byte) ((ret.tbyte >>> 4) & 0xF);
         ret.hits = (byte) (ret.tbyte & 0xF);
         lea.skip(8);
@@ -1147,7 +1148,7 @@ public class DamageParse {
     }
 
     public static final AttackInfo parseMesoExplosion(final LittleEndianAccessor lea, final AttackInfo ret) {
-        //System.out.println(lea.toString(true));
+        //log.info(lea.toString(true));
         byte bullets;
         if (ret.hits == 0) {
             lea.skip(4);

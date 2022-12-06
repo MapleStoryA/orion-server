@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class WZDirectoryEntry extends WZEntry implements MapleDataDirectoryEntry {
 
     private final List<MapleDataDirectoryEntry> subdirs = new ArrayList<MapleDataDirectoryEntry>();

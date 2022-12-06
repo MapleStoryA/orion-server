@@ -9,43 +9,13 @@ import server.MerchItemPackage;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.PlayerShopPacket;
 
+@lombok.extern.slf4j.Slf4j
 public class MerchantItemStoreHandler extends AbstractMaplePacketHandler {
 
 
     private static final int MERCH_FULL_MESOS = 31;
     private static final int MERCH_FULL_INVENTORY = 34;
     private static final int MERCH_RETRIEVED_ITEM_SUCCESS = 30;
-
-    @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        if (c.getPlayer() == null) {
-            return;
-        }
-        final byte operation = slea.readByte();
-
-        switch (operation) {
-            case 20: {
-                c.getPlayer().dropMessage(1, "An unknown error occured.");
-                break;
-            }
-            case 25: { // Request take out iteme
-                if (c.getPlayer().getConversation() != 3) {
-                    return;
-                }
-                c.getSession().write(PlayerShopPacket.merchItemStore((byte) 0x24));
-                break;
-            }
-            case 26: { // Take out item
-                takeOutMerchantItems(c);
-                break;
-            }
-            case 28: { // Exit
-                c.enableActions();
-                break;
-            }
-        }
-
-    }
 
     public static boolean takeOutMerchantItems(MapleClient c) {
         final MerchItemPackage pack = HiredMerchantHandlerUtils.loadItemFrom_Database(c.getPlayer().getId(), c.getPlayer().getAccountID());
@@ -78,6 +48,37 @@ public class MerchantItemStoreHandler extends AbstractMaplePacketHandler {
         } else {
             c.getPlayer().dropMessage(1, "An unknown error occured.");
             return false;
+        }
+
+    }
+
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        if (c.getPlayer() == null) {
+            return;
+        }
+        final byte operation = slea.readByte();
+
+        switch (operation) {
+            case 20: {
+                c.getPlayer().dropMessage(1, "An unknown error occured.");
+                break;
+            }
+            case 25: { // Request take out iteme
+                if (c.getPlayer().getConversation() != 3) {
+                    return;
+                }
+                c.getSession().write(PlayerShopPacket.merchItemStore((byte) 0x24));
+                break;
+            }
+            case 26: { // Take out item
+                takeOutMerchantItems(c);
+                break;
+            }
+            case 28: { // Exit
+                c.enableActions();
+                break;
+            }
         }
 
     }

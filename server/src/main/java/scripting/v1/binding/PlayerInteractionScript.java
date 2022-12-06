@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+@lombok.extern.slf4j.Slf4j
 public class PlayerInteractionScript extends AbstractScript {
 
     public PlayerInteractionScript(MapleClient client, PacketDispatcher dispatcher) {
@@ -21,7 +22,7 @@ public class PlayerInteractionScript extends AbstractScript {
     }
 
     public void debug(String text) {
-        System.out.println(text);
+        log.info(text);
     }
 
     public void test() {

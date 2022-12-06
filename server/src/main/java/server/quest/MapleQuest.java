@@ -8,7 +8,7 @@ import provider.MapleDataProvider;
 import provider.MapleDataTool;
 import scripting.NPCScriptManager;
 import server.config.ServerEnvironment;
-import tools.FileoutputUtil;
+import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
 import tools.Pair;
 
@@ -19,10 +19,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleQuest implements Serializable {
 
     private static final long serialVersionUID = 9179541993413738569L;
     private static final Map<Integer, MapleQuest> quests = new LinkedHashMap<Integer, MapleQuest>();
+    private static MapleDataProvider questData;
+    private static MapleData actions;
+    private static MapleData requirements;
+    private static MapleData info;
+    private static MapleData pinfo;
     protected int id;
     protected List<MapleQuestRequirement> startReqs;
     protected List<MapleQuestRequirement> completeReqs;
@@ -30,17 +36,12 @@ public class MapleQuest implements Serializable {
     protected List<MapleQuestAction> completeActs;
     protected Map<String, List<Pair<String, Pair<String, Integer>>>> partyQuestInfo; //[rank, [more/less/equal, [property, value]]]
     protected Map<Integer, Integer> relevantMobs;
+    protected String name = "";
     private boolean autoStart = false;
     private boolean autoPreComplete = false;
     private boolean autoComplete;
     private boolean repeatable = false, customend = false;
     private int viewMedalItem = 0, selectedSkillID = 0;
-    protected String name = "";
-    private static MapleDataProvider questData;
-    private static MapleData actions;
-    private static MapleData requirements;
-    private static MapleData info;
-    private static MapleData pinfo;
 
 
     protected MapleQuest(final int id) {
@@ -148,18 +149,6 @@ public class MapleQuest implements Serializable {
         return true;
     }
 
-    public List<Pair<String, Pair<String, Integer>>> getInfoByRank(final String rank) {
-        return partyQuestInfo.get(rank);
-    }
-
-    public final int getSkillID() {
-        return selectedSkillID;
-    }
-
-    public final String getName() {
-        return name;
-    }
-
     public static void initQuests() {
         questData = ServerEnvironment.getConfig().getDataProvider("wz/Quest");
         actions = questData.getData("Act.img");
@@ -182,13 +171,25 @@ public class MapleQuest implements Serializable {
                 quests.put(id, ret);
             } catch (Exception ex) {
                 ex.printStackTrace();
-                FileoutputUtil.outputFileError(FileoutputUtil.ScriptEx_Log, ex);
-                FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Caused by questID " + id);
-                System.out.println("Caused by questID " + id);
+                FileOutputUtil.outputFileError(FileOutputUtil.ScriptEx_Log, ex);
+                FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Caused by questID " + id);
+                log.info("Caused by questID " + id);
                 return null;
             }
         }
         return ret;
+    }
+
+    public List<Pair<String, Pair<String, Integer>>> getInfoByRank(final String rank) {
+        return partyQuestInfo.get(rank);
+    }
+
+    public final int getSkillID() {
+        return selectedSkillID;
+    }
+
+    public final String getName() {
+        return name;
     }
 
     public boolean canStart(MapleCharacter c, Integer npcid) {

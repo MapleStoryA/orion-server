@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleItemInformationProvider {
 
     private final static MapleItemInformationProvider instance = new MapleItemInformationProvider();
@@ -77,7 +78,11 @@ public class MapleItemInformationProvider {
     protected final Map<Integer, Triple<Integer, String, Integer>> replaceItems = new HashMap<Integer, Triple<Integer, String, Integer>>();
 
     protected MapleItemInformationProvider() {
-        //System.out.println("Loading MapleItemInformationProvider :::");
+        //log.info("Loading MapleItemInformationProvider :::");
+    }
+
+    public static final MapleItemInformationProvider getInstance() {
+        return instance;
     }
 
     public final void load() {
@@ -199,10 +204,6 @@ public class MapleItemInformationProvider {
 
     public boolean isEquip(int itemId) {
         return itemId / 1000000 == 1;
-    }
-
-    public static final MapleItemInformationProvider getInstance() {
-        return instance;
     }
 
     public MapleWeaponType getWeaponType(int itemId) {

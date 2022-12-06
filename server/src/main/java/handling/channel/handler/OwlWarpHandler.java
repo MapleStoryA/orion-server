@@ -13,6 +13,7 @@ import tools.packet.PlayerShopPacket;
 
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class OwlWarpHandler extends AbstractMaplePacketHandler {
 
     public static final int OWL_ID = 2; // don't change. 0 = owner ID, 1 = store

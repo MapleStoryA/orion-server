@@ -32,11 +32,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleInventory implements Iterable<IItem>, Serializable {
 
     private final Map<Short, IItem> inventory;
-    private byte slotLimit = 0;
     private final MapleInventoryType type;
+    private byte slotLimit = 0;
 
     /**
      * Creates a new instance of MapleInventory

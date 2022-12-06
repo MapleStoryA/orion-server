@@ -16,6 +16,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 import java.util.Random;
 
+@lombok.extern.slf4j.Slf4j
 public class MonsterBombHandler extends AbstractMaplePacketHandler {
 
     private static final int MONSTER_BOMB_SKILL = 4341003;

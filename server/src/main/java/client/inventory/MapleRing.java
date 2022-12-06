@@ -33,6 +33,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Comparator;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleRing implements Serializable {
 
     private static final long serialVersionUID = 9179541993413738579L;
@@ -137,6 +138,31 @@ public class MapleRing implements Serializable {
         return 1;
     }
 
+    public static void removeRingFromDb(MapleCharacter player) {
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM rings WHERE partnerChrId = ?");
+            ps.setInt(1, player.getId());
+            ResultSet rs = ps.executeQuery();
+            if (!rs.next()) {
+                ps.close();
+                rs.close();
+                return;
+            }
+            int otherId = rs.getInt("partnerRingId");
+            int otherotherId = rs.getInt("ringId");
+            rs.close();
+            ps.close();
+            ps = con.prepareStatement("DELETE FROM rings WHERE ringId = ? OR ringId = ?");
+            ps.setInt(1, otherotherId);
+            ps.setInt(2, otherId);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException sex) {
+            sex.printStackTrace();
+        }
+    }
+
     public int getRingId() {
         return ringId;
     }
@@ -182,31 +208,6 @@ public class MapleRing implements Serializable {
         int hash = 5;
         hash = 53 * hash + this.ringId;
         return hash;
-    }
-
-    public static void removeRingFromDb(MapleCharacter player) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM rings WHERE partnerChrId = ?");
-            ps.setInt(1, player.getId());
-            ResultSet rs = ps.executeQuery();
-            if (!rs.next()) {
-                ps.close();
-                rs.close();
-                return;
-            }
-            int otherId = rs.getInt("partnerRingId");
-            int otherotherId = rs.getInt("ringId");
-            rs.close();
-            ps.close();
-            ps = con.prepareStatement("DELETE FROM rings WHERE ringId = ? OR ringId = ?");
-            ps.setInt(1, otherotherId);
-            ps.setInt(2, otherId);
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException sex) {
-            sex.printStackTrace();
-        }
     }
 
     public static class RingComparator implements Comparator<MapleRing>, Serializable {

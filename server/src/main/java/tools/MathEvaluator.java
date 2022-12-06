@@ -2,12 +2,13 @@ package tools;
 
 import java.util.HashMap;
 
+@lombok.extern.slf4j.Slf4j
 public class MathEvaluator {
 
     protected static Operator[] operators = null;
+    private final HashMap<String, Double> variables = new HashMap<>();
     private Node node = null;
     private String expression = null;
-    private final HashMap<String, Double> variables = new HashMap<>();
 
     public MathEvaluator() {
         init();
@@ -16,37 +17,6 @@ public class MathEvaluator {
     public MathEvaluator(String s) {
         init();
         setExpression(s);
-    }
-
-    private void init() {
-        if (operators == null) {
-            initializeOperators();
-        }
-    }
-
-    public void addVariable(String v, double val) {
-        addVariable(v, new Double(val));
-    }
-
-    public void addVariable(String v, Double val) {
-        variables.put(v, val);
-    }
-
-    private void setExpression(String s) {
-        expression = s;
-    }
-
-    public Double getValue() {
-        if (expression == null) {
-            return null;
-        }
-        try {
-            node = new Node(expression);
-            return evaluate(node);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     private static Double evaluate(Node n) {
@@ -87,6 +57,41 @@ public class MathEvaluator {
         return res;
     }
 
+    protected static void _D(String s) {
+        System.err.println(s);
+    }
+
+    private void init() {
+        if (operators == null) {
+            initializeOperators();
+        }
+    }
+
+    public void addVariable(String v, double val) {
+        addVariable(v, new Double(val));
+    }
+
+    public void addVariable(String v, Double val) {
+        variables.put(v, val);
+    }
+
+    private void setExpression(String s) {
+        expression = s;
+    }
+
+    public Double getValue() {
+        if (expression == null) {
+            return null;
+        }
+        try {
+            node = new Node(expression);
+            return evaluate(node);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private void initializeOperators() {
         operators = new Operator[6];
         operators[0] = new Operator("+", 2, 0);
@@ -123,9 +128,9 @@ public class MathEvaluator {
 
     protected class Operator {
 
-        private String op;
         private final int type;
         private final int priority;
+        private String op;
 
         public Operator(String o, int t, int p) {
             op = o;
@@ -363,11 +368,7 @@ public class MathEvaluator {
             for (int i = 0; i < nLevel; i++) {
                 nbSpaces += "  ";
             }
-            System.out.println(nbSpaces + "|" + s);
+            log.info(nbSpaces + "|" + s);
         }
-    }
-
-    protected static void _D(String s) {
-        System.err.println(s);
     }
 }

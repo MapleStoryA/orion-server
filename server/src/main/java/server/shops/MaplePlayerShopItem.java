@@ -23,6 +23,7 @@ package server.shops;
 
 import client.inventory.IItem;
 
+@lombok.extern.slf4j.Slf4j
 public class MaplePlayerShopItem {
 
     public IItem item;

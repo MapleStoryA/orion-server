@@ -25,6 +25,7 @@ import client.MapleCharacter;
 
 import java.io.Serializable;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleMessengerCharacter implements Serializable {
 
     private static final long serialVersionUID = 6215463252132450750L;

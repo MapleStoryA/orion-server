@@ -10,6 +10,7 @@ import server.MapleInventoryManipulator;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
+@lombok.extern.slf4j.Slf4j
 public class RingActionHandler extends AbstractMaplePacketHandler {
 
     @Override

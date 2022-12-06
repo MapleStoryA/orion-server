@@ -39,38 +39,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 
+@lombok.extern.slf4j.Slf4j
 public class HiredMerchant extends AbstractPlayerStore {
 
-    public ScheduledFuture<?> schedule;
     private final Set<String> blacklist;
     private final List<ChatEntry> chatHistory;
-    private int storeid;
     private final long start;
-
-    class ChatEntry {
-        private final String charName;
-        private final String text;
-
-        public ChatEntry(String charName, String text) {
-            super();
-            this.charName = charName;
-            this.text = text;
-        }
-
-        public String getCharName() {
-            return charName;
-        }
-
-        public String getText() {
-            return text;
-        }
-
-        @Override
-        public String toString() {
-            return getCharName() + " : " + getText();
-        }
-
-    }
+    public ScheduledFuture<?> schedule;
+    private int storeid;
 
     public HiredMerchant(MapleCharacter owner, int itemId, String desc) {
         super(owner, itemId, desc, "", 3);
@@ -84,24 +60,6 @@ public class HiredMerchant extends AbstractPlayerStore {
                 closeShop(true, true);
             }
         }, 1000 * 60 * 60 * 24);
-    }
-
-    public byte getShopType() {
-        return IMaplePlayerShop.HIRED_MERCHANT;
-    }
-
-    public final void setStoreid(final int storeid) {
-        this.storeid = storeid;
-    }
-
-    public List<MaplePlayerShopItem> searchItem(final int itemSearch) {
-        final List<MaplePlayerShopItem> itemz = new LinkedList<MaplePlayerShopItem>();
-        for (MaplePlayerShopItem item : items) {
-            if (item.item.getItemId() == itemSearch && item.bundles > 0) {
-                itemz.add(item);
-            }
-        }
-        return itemz;
     }
 
     private static int getFee(int meso) {
@@ -125,6 +83,24 @@ public class HiredMerchant extends AbstractPlayerStore {
         }
 
         return meso;
+    }
+
+    public byte getShopType() {
+        return IMaplePlayerShop.HIRED_MERCHANT;
+    }
+
+    public final void setStoreid(final int storeid) {
+        this.storeid = storeid;
+    }
+
+    public List<MaplePlayerShopItem> searchItem(final int itemSearch) {
+        final List<MaplePlayerShopItem> itemz = new LinkedList<MaplePlayerShopItem>();
+        for (MaplePlayerShopItem item : items) {
+            if (item.item.getItemId() == itemSearch && item.bundles > 0) {
+                itemz.add(item);
+            }
+        }
+        return itemz;
     }
 
     @Override
@@ -240,5 +216,30 @@ public class HiredMerchant extends AbstractPlayerStore {
 
     public int getMeso() {
         return super.getMesos();
+    }
+
+    class ChatEntry {
+        private final String charName;
+        private final String text;
+
+        public ChatEntry(String charName, String text) {
+            super();
+            this.charName = charName;
+            this.text = text;
+        }
+
+        public String getCharName() {
+            return charName;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        @Override
+        public String toString() {
+            return getCharName() + " : " + getText();
+        }
+
     }
 }

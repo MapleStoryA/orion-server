@@ -8,6 +8,7 @@ import scripting.v1.NewNpcTalkHandler;
 import server.life.MapleNPC;
 import tools.data.input.SeekableLittleEndianAccessor;
 
+@lombok.extern.slf4j.Slf4j
 public class NpcTalkHandler extends AbstractMaplePacketHandler {
 
     @Override

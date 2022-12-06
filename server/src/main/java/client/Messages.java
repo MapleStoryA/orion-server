@@ -2,6 +2,7 @@ package client;
 
 import tools.MaplePacketCreator;
 
+@lombok.extern.slf4j.Slf4j
 public class Messages {
 
     private final MapleClient client;

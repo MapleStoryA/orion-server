@@ -4,6 +4,7 @@ import server.config.ServerEnvironment;
 
 import java.util.HashMap;
 
+@lombok.extern.slf4j.Slf4j
 public class EvanSkillPoints {
     public static final String INSERT_POINTS_QUERY = "INSERT INTO evan_skillpoints (characterid, evan1, evan2, evan3, evan4, evan5, evan6, evan7, evan8, evan9, evan10) VALUES (";
     private final HashMap<Integer, Integer> skillPoints = new HashMap<>(10, 1.0F);
@@ -50,7 +51,7 @@ public class EvanSkillPoints {
         }
         query.append(")");
         if (ServerEnvironment.isDebugEnabled()) {
-            System.out.println("Saving evanskill points: " + query);
+            log.info("Saving evanskill points: " + query);
         }
         return query.toString();
     }

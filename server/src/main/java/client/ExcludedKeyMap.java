@@ -9,10 +9,6 @@ public enum ExcludedKeyMap {
         this.key = key;
     }
 
-    public int getKey() {
-        return this.key;
-    }
-
     public static ExcludedKeyMap fromKeyValue(int key) {
         for (ExcludedKeyMap e : values()) {
             if (e.getKey() == key) {
@@ -20,5 +16,9 @@ public enum ExcludedKeyMap {
             }
         }
         return null;
+    }
+
+    public int getKey() {
+        return this.key;
     }
 }

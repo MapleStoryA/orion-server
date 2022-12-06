@@ -31,10 +31,11 @@ import tools.packet.PlayerShopPacket;
 import java.util.ArrayList;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class MaplePlayerShop extends AbstractPlayerStore {
 
-    private int boughtnumber = 0;
     private final List<String> bannedList = new ArrayList<String>();
+    private int boughtnumber = 0;
 
     public MaplePlayerShop(MapleCharacter owner, int itemId, String desc) {
         super(owner, itemId, desc, "", 3);

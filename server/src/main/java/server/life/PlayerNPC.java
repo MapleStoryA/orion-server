@@ -44,15 +44,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+@lombok.extern.slf4j.Slf4j
 public class PlayerNPC extends MapleNPC {
 
-    private Map<Byte, Integer> equips = new HashMap<Byte, Integer>();
     private final int mapid;
+    private final int charId;
+    private final int[] pets = new int[3];
+    private Map<Byte, Integer> equips = new HashMap<Byte, Integer>();
     private int face;
     private int hair;
-    private final int charId;
     private byte skin, gender;
-    private final int[] pets = new int[3];
 
     public PlayerNPC(ResultSet rs) throws Exception {
         super(rs.getInt("ScriptId"), rs.getString("name"));
@@ -91,15 +92,6 @@ public class PlayerNPC extends MapleNPC {
         update(cid);
     }
 
-    public void setCoords(int x, int y, int f, int fh) {
-        setPosition(new Point(x, y));
-        setCy(y);
-        setRx0(x - 50);
-        setRx1(x + 50);
-        setF(f);
-        setFh(fh);
-    }
-
     public static void loadAll() {
         List<PlayerNPC> toAdd = new ArrayList<PlayerNPC>();
         Connection con = DatabaseConnection.getConnection();
@@ -125,6 +117,15 @@ public class PlayerNPC extends MapleNPC {
                 npc.update(chr);
             }
         }
+    }
+
+    public void setCoords(int x, int y, int f, int fh) {
+        setPosition(new Point(x, y));
+        setCy(y);
+        setRx0(x - 50);
+        setRx1(x + 50);
+        setF(f);
+        setFh(fh);
     }
 
     public void addToServer() {
@@ -238,16 +239,32 @@ public class PlayerNPC extends MapleNPC {
         return skin;
     }
 
+    public void setSkin(byte s) {
+        this.skin = s;
+    }
+
     public int getGender() {
         return gender;
+    }
+
+    public void setGender(int g) {
+        this.gender = (byte) g;
     }
 
     public int getFace() {
         return face;
     }
 
+    public void setFace(int f) {
+        this.face = f;
+    }
+
     public int getHair() {
         return hair;
+    }
+
+    public void setHair(int h) {
+        this.hair = h;
     }
 
     public int getCharId() {
@@ -256,22 +273,6 @@ public class PlayerNPC extends MapleNPC {
 
     public int getMapId() {
         return mapid;
-    }
-
-    public void setSkin(byte s) {
-        this.skin = s;
-    }
-
-    public void setFace(int f) {
-        this.face = f;
-    }
-
-    public void setHair(int h) {
-        this.hair = h;
-    }
-
-    public void setGender(int g) {
-        this.gender = (byte) g;
     }
 
     public int getPet(int i) {

@@ -10,6 +10,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class RepairHandler extends AbstractMaplePacketHandler {
 
     @Override

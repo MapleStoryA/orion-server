@@ -34,12 +34,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleGuildAlliance implements java.io.Serializable {
-
-    private enum GAOp {
-
-        NONE, DISBAND, NEWGUILD
-    }
 
     public static final long serialVersionUID = 24081985245L;
     public static final int CHANGE_CAPACITY_COST = 10000000;
@@ -47,7 +43,6 @@ public class MapleGuildAlliance implements java.io.Serializable {
     private int allianceid, leaderid, capacity; //make SQL for this auto-increment
     private String name, notice;
     private String[] ranks = new String[5];
-
     public MapleGuildAlliance(final int id) {
         super();
 
@@ -101,16 +96,6 @@ public class MapleGuildAlliance implements java.io.Serializable {
         return ret;
     }
 
-    public int getNoGuilds() {
-        int ret = 0;
-        for (int i = 0; i < capacity; i++) {
-            if (guilds[i] > 0) {
-                ret++;
-            }
-        }
-        return ret;
-    }
-
     public static final int createToDb(final int leaderId, final String name, final int guild1, final int guild2) {
         int ret = -1;
         if (name.length() > 12) {
@@ -145,6 +130,16 @@ public class MapleGuildAlliance implements java.io.Serializable {
         } catch (SQLException SE) {
             System.err.println("SQL THROW");
             SE.printStackTrace();
+        }
+        return ret;
+    }
+
+    public int getNoGuilds() {
+        int ret = 0;
+        for (int i = 0; i < capacity; i++) {
+            if (guilds[i] > 0) {
+                ret++;
+            }
         }
         return ret;
     }
@@ -373,6 +368,11 @@ public class MapleGuildAlliance implements java.io.Serializable {
             }
         }
         return false;
+    }
+
+    private enum GAOp {
+
+        NONE, DISBAND, NEWGUILD
     }
 }
 		

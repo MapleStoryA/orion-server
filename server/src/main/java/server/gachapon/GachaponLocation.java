@@ -19,14 +19,6 @@ public enum GachaponLocation {
         this.location = location;
     }
 
-    public int getValue() {
-        return location;
-    }
-
-    public void setLocation(int location) {
-        this.location = location;
-    }
-
     public static GachaponLocation valueOf(int location) {
         for (GachaponLocation l : GachaponLocation.values()) {
             //TODO: Fix remote gachapon for showa town sauna
@@ -39,6 +31,14 @@ public enum GachaponLocation {
         }
         //Default to mushrom shrine
         return GachaponLocation.MUSHROM_SHRINE;
+    }
+
+    public int getValue() {
+        return location;
+    }
+
+    public void setLocation(int location) {
+        this.location = location;
     }
 
 

@@ -2,6 +2,7 @@ package tools.packet.userpool;
 
 import tools.data.output.MaplePacketLittleEndianWriter;
 
+@lombok.extern.slf4j.Slf4j
 public class UserPoolOnCommonPacket {
 
     public static byte[] onADBoard(int charId, String text) {

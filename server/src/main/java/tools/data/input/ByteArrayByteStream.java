@@ -32,11 +32,12 @@ import java.io.IOException;
  * @version 1.0
  * @since Revision 326
  */
+@lombok.extern.slf4j.Slf4j
 public class ByteArrayByteStream implements SeekableInputStreamBytestream {
 
+    private final byte[] arr;
     private int pos = 0;
     private long bytesRead = 0;
-    private final byte[] arr;
 
     /**
      * Class constructor.

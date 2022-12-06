@@ -3,6 +3,7 @@ package tools.packet.userlocal;
 import handling.SendPacketOpcode;
 import tools.data.output.MaplePacketLittleEndianWriter;
 
+@lombok.extern.slf4j.Slf4j
 public class CUserLocalPackets {
 
     public static byte[] onGoToCommoditySN(int sn) {

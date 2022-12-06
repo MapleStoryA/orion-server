@@ -9,15 +9,22 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 //TODO: Will do something with this to manage the server instances
+@lombok.extern.slf4j.Slf4j
 public class WorldServer {
 
-    private final Map<Integer, ChannelServer> channels = new ConcurrentHashMap<>();
-
     private static WorldServer INSTANCE;
+    private final Map<Integer, ChannelServer> channels = new ConcurrentHashMap<>();
     private final long serverStarTime;
 
-    public WorldServer(){
+    public WorldServer() {
         this.serverStarTime = System.currentTimeMillis();
+    }
+
+    public static synchronized WorldServer getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new WorldServer();
+        }
+        return INSTANCE;
     }
 
     public long getServerStartTime() {
@@ -31,7 +38,6 @@ public class WorldServer {
     public Set<Integer> getAllChannelIds() {
         return channels.keySet();
     }
-
 
     public void registerChannel(int channelIndex, ChannelServer ch) {
         this.channels.put(channelIndex, ch);
@@ -60,16 +66,8 @@ public class WorldServer {
         return ret;
     }
 
-
     public ChannelServer getChannel(int ch) {
         return this.channels.get(ch);
-    }
-
-    public static synchronized WorldServer getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new WorldServer();
-        }
-        return INSTANCE;
     }
 
 }

@@ -14,6 +14,7 @@ import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.data.input.SeekableLittleEndianAccessor;
 
+@lombok.extern.slf4j.Slf4j
 public class BuddyListModifyHandler extends AbstractMaplePacketHandler {
 
 
@@ -153,7 +154,7 @@ public class BuddyListModifyHandler extends AbstractMaplePacketHandler {
                 c.getSession().write(MaplePacketCreator.enableActions());
                 break;
             default:
-                System.out.println("Unknown buddylist action: " + slea);
+                log.info("Unknown buddylist action: " + slea);
                 break;
         }
 

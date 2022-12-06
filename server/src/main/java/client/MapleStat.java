@@ -27,10 +27,6 @@ public enum MapleStat {
         this.i = i;
     }
 
-    public int getValue() {
-        return i;
-    }
-
     public static final MapleStat getByValue(final int value) {
         for (final MapleStat stat : MapleStat.values()) {
             if (stat.i == value) {
@@ -38,6 +34,10 @@ public enum MapleStat {
             }
         }
         return null;
+    }
+
+    public int getValue() {
+        return i;
     }
 
     public enum Temp {

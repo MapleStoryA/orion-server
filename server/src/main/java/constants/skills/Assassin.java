@@ -25,6 +25,7 @@ package constants.skills;
 /**
  * @author BubblesDev
  */
+@lombok.extern.slf4j.Slf4j
 public class Assassin {
     public static final int CLAW_MASTERY = 4100000;
     public static final int CRITICAL_THROW = 4100001;

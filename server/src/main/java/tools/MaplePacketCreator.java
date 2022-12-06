@@ -89,6 +89,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+@lombok.extern.slf4j.Slf4j
 public class MaplePacketCreator {
 
     public final static List<Pair<MapleStat, Integer>> EMPTY_STATUPDATE = Collections.emptyList();
@@ -4950,26 +4951,6 @@ public class MaplePacketCreator {
         return packet.getPacket();
     }
 
-    enum GMResulMessages {
-        SUCCESSFULLY_BLOCKED_ACCESS(4),
-        UNBLOCKING_SUCCESSFULL(5),
-        INVALID_CHAR_NAME(6),
-        REMOVED_FROM_RANKS(6),
-        INVISIVLE_GM_MESSAGE_RED(0x3A),
-        INVISIVLE_GM_MESSAGE_LIGHT(0x39);
-
-        int type;
-
-        GMResulMessages(int type) {
-            this.type = type;
-        }
-
-        public int getType() {
-            return type;
-        }
-
-    }
-
     public byte[] blockedAccessGMMessage(boolean blockAccess) {
         MaplePacketLittleEndianWriter packet = new MaplePacketLittleEndianWriter();
         packet.writeShort(159);
@@ -5004,6 +4985,26 @@ public class MaplePacketCreator {
 
         packet.writeMapleAsciiString(msg);
         return packet.getPacket();
+    }
+
+    enum GMResulMessages {
+        SUCCESSFULLY_BLOCKED_ACCESS(4),
+        UNBLOCKING_SUCCESSFULL(5),
+        INVALID_CHAR_NAME(6),
+        REMOVED_FROM_RANKS(6),
+        INVISIVLE_GM_MESSAGE_RED(0x3A),
+        INVISIVLE_GM_MESSAGE_LIGHT(0x39);
+
+        int type;
+
+        GMResulMessages(int type) {
+            this.type = type;
+        }
+
+        public int getType() {
+            return type;
+        }
+
     }
 
 }

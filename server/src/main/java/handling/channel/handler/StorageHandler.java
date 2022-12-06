@@ -14,6 +14,7 @@ import server.MapleStorage;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
+@lombok.extern.slf4j.Slf4j
 public class StorageHandler extends AbstractMaplePacketHandler {
 
     @Override
@@ -142,7 +143,7 @@ public class StorageHandler extends AbstractMaplePacketHandler {
                 break;
             }
             default:
-                System.out.println("Unhandled Storage mode : " + mode);
+                log.info("Unhandled Storage mode : " + mode);
                 break;
         }
 

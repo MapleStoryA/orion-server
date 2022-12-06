@@ -17,6 +17,7 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleQuestRequirement implements Serializable {
 
     private static final long serialVersionUID = 9179541993413738569L;

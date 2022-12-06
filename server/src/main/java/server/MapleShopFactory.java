@@ -3,11 +3,12 @@ package server;
 import java.util.HashMap;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleShopFactory {
 
+    private static final MapleShopFactory instance = new MapleShopFactory();
     private final Map<Integer, MapleShop> shops = new HashMap<Integer, MapleShop>();
     private final Map<Integer, MapleShop> npcShops = new HashMap<Integer, MapleShop>();
-    private static final MapleShopFactory instance = new MapleShopFactory();
 
     public static MapleShopFactory getInstance() {
         return instance;

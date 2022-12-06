@@ -31,6 +31,7 @@ import org.apache.mina.common.ByteBuffer;
  * @version 1.0
  * @since Revision 323
  */
+@lombok.extern.slf4j.Slf4j
 public class ByteBufferLittleEndianWriter extends GenericLittleEndianWriter {
 
     private final ByteBuffer bb;

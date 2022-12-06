@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+@lombok.extern.slf4j.Slf4j
 public class MTSCSPacket {
 
 
@@ -437,7 +438,6 @@ public class MTSCSPacket {
             mplew.write(item.gender);
         }
         if ((flags & 0x400) != 0) {
-            System.out.println(item.showUp);
             mplew.write(item.showUp ? 1 : 0);
         }
         if ((flags & 0x800) != 0) {

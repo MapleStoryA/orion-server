@@ -14,6 +14,7 @@ import server.MapleInventoryManipulator;
 /**
  * @author Oxysoft
  */
+@lombok.extern.slf4j.Slf4j
 public class DonorCommand {
 
     public static PlayerGMRank getPlayerLevelRequired() {

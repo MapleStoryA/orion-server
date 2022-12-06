@@ -5,6 +5,7 @@ import handling.AbstractMaplePacketHandler;
 import server.quest.MapleQuest;
 import tools.data.input.SeekableLittleEndianAccessor;
 
+@lombok.extern.slf4j.Slf4j
 public class UpdateQuestHandler extends AbstractMaplePacketHandler {
 
     @Override

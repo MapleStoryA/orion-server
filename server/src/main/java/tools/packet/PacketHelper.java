@@ -51,12 +51,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+@lombok.extern.slf4j.Slf4j
 public class PacketHelper {
 
-    private static final long FT_UT_OFFSET = 116444592000000000L; // EDT
     public static final long MAX_TIME = 150842304000000000L;
     public static final long ZERO_TIME = 94354848000000000L;
     public static final long PERMANENT = 150841440000000000L;
+    private static final long FT_UT_OFFSET = 116444592000000000L; // EDT
 
     public static final long getKoreanTimestamp(final long realTimestamp) {
         return getTime(realTimestamp);

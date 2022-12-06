@@ -26,10 +26,11 @@ import tools.ArrayMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleAchievements {
 
-    private final Map<Integer, MapleAchievement> achievements = new ArrayMap<Integer, MapleAchievement>();
     private static final MapleAchievements instance = new MapleAchievements();
+    private final Map<Integer, MapleAchievement> achievements = new ArrayMap<Integer, MapleAchievement>();
 
     protected MapleAchievements() {
         achievements.put(1, new MapleAchievement("got their first point", 1000, false));

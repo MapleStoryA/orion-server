@@ -25,6 +25,7 @@ package constants.skills;
 /**
  * @author BubblesDev
  */
+@lombok.extern.slf4j.Slf4j
 public class NightLord {
     public static final int MAPLE_WARRIOR = 4121000;
     public static final int SHADOW_SHIFTER = 4120002;

@@ -14,6 +14,7 @@ import handling.world.party.MaplePartyCharacter;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.MapleUserPackets;
 
+@lombok.extern.slf4j.Slf4j
 public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
 
     public static final int CREATING = 0x2D;
@@ -148,7 +149,7 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                         cfrom.dropMessage(5, "'" + chr.getName() + " has declined the expedition invitation.");
                     }
                 } else {
-                    System.out.println("Unhandled Expedition Operation found: " + slea);
+                    log.info("Unhandled Expedition Operation found: " + slea);
                 }
                 break;
             case LEAVE:

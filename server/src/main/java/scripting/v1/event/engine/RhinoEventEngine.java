@@ -15,13 +15,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+@lombok.extern.slf4j.Slf4j
 public class RhinoEventEngine implements EventEngine {
 
     private static final Logger LOG = LoggerFactory.getLogger(RhinoEventEngine.class);
 
     private static final String SCRIPT_PATH = ServerEnvironment.getConfig().getScriptsPath() + "/" + "instances";
-    private Scriptable globalScope;
     private final String name;
+    private Scriptable globalScope;
 
     public RhinoEventEngine(String name) {
         this.name = name;
@@ -42,7 +43,7 @@ public class RhinoEventEngine implements EventEngine {
         } catch (IOException e) {
             LOG.debug("Error loading instance: {}", file);
         } catch (EvaluatorException e) {
-            System.out.println("Error at line: " + e.lineSource() + " " + e.lineNumber());
+            log.info("Error at line: " + e.lineSource() + " " + e.lineNumber());
 
         } finally {
             Context.exit();

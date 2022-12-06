@@ -45,6 +45,8 @@ public interface IMaplePlayerShop {
 
     boolean isOpen();
 
+    void setOpen(boolean open);
+
     boolean removeItem(int item);
 
     boolean isOwner(MapleCharacter chr);
@@ -59,13 +61,11 @@ public interface IMaplePlayerShop {
 
     int getMesos();
 
+    void setMesos(int meso);
+
     int getOwnerId();
 
     int getOwnerAccId();
-
-    void setOpen(boolean open);
-
-    void setMesos(int meso);
 
     void addItem(MaplePlayerShopItem item);
 
@@ -93,9 +93,9 @@ public interface IMaplePlayerShop {
 
     void update();
 
-    void setAvailable(boolean b);
-
     boolean isAvailable();
+
+    void setAvailable(boolean b);
 
     List<BoughtItem> getBoughtItems();
 

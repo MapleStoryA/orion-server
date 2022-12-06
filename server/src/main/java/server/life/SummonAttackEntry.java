@@ -23,6 +23,7 @@ package server.life;
 
 import java.lang.ref.WeakReference;
 
+@lombok.extern.slf4j.Slf4j
 public class SummonAttackEntry {
 
     private final WeakReference<MapleMonster> mob;

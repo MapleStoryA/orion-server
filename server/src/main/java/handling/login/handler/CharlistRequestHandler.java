@@ -8,6 +8,7 @@ import tools.packet.LoginPacket;
 
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class CharlistRequestHandler extends AbstractMaplePacketHandler {
 
     @Override

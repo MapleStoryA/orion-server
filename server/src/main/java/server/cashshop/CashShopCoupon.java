@@ -33,6 +33,7 @@ import java.util.List;
 /**
  * @author AuroX
  */
+@lombok.extern.slf4j.Slf4j
 public class CashShopCoupon {
 
     public static boolean getCouponCodeValid(String code) {
@@ -48,7 +49,7 @@ public class CashShopCoupon {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Error getting NX Code type " + e);
+            log.info("Error getting NX Code type " + e);
         }
         return validcode;
     }
@@ -69,7 +70,7 @@ public class CashShopCoupon {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Error getting Coupon Data " + e);
+            log.info("Error getting Coupon Data " + e);
         }
         return all;
     }
@@ -83,7 +84,7 @@ public class CashShopCoupon {
                 ps.execute();
             }
         } catch (SQLException e) {
-            System.out.println("Error getting Coupon Data " + e);
+            log.info("Error getting Coupon Data " + e);
         }
     }
 
@@ -95,7 +96,7 @@ public class CashShopCoupon {
                 ps.execute();
             }
         } catch (SQLException e) {
-            System.out.println("Error deleting Coupon Data " + e);
+            log.info("Error deleting Coupon Data " + e);
         }
     }
 

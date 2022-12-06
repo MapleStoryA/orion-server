@@ -38,6 +38,7 @@ import java.util.stream.Collectors;
 /**
  * @author AuroX
  */
+@lombok.extern.slf4j.Slf4j
 public class JobConstants {
 
     public final static int[] evanSkills = {
@@ -100,7 +101,7 @@ public class JobConstants {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Failed to load main skills. Reason: " + e);
+            log.info("Failed to load main skills. Reason: " + e);
         }
 
         int lastId = 0;
@@ -109,7 +110,7 @@ public class JobConstants {
                 lastId = evanSkills[i];
             } else { // Odd (Starts 1st)
                 if (lastId == 0) {
-                    System.out.println("Error in getting evan skills..."); // Shouldn't happen
+                    log.info("Error in getting evan skills..."); // Shouldn't happen
                     continue;
                 }
                 skil = SkillFactory.getSkill(lastId);
@@ -121,7 +122,7 @@ public class JobConstants {
                 lastId = 0;
             }
         }
-        System.out.println("Successfully loaded " + (evanSkillMap.size() + normalSkillMap.size() + gmSkillMap.size()) + " skills.");
+        log.info("Successfully loaded " + (evanSkillMap.size() + normalSkillMap.size() + gmSkillMap.size()) + " skills.");
     }
 
     public static boolean isFixedSkill(final int skillId) {

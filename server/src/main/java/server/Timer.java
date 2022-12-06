@@ -1,6 +1,6 @@
 package server;
 
-import tools.FileoutputUtil;
+import tools.FileOutputUtil;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -9,6 +9,65 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class Timer {
+
+    protected String file, name;
+    private ScheduledThreadPoolExecutor ses;
+
+    public void start() {
+        if (ses != null && !ses.isShutdown() && !ses.isTerminated()) {
+            return;
+        }
+        file = "Log_" + name + "_Except.rtf";
+        final String tname = name + Randomizer.nextInt(); //just to randomize it. nothing too big
+        final ThreadFactory thread = new ThreadFactory() {
+
+            private final AtomicInteger threadNumber = new AtomicInteger(1);
+
+            @Override
+            public Thread newThread(Runnable r) {
+                final Thread t = new Thread(r);
+                t.setName(tname + "-Worker-" + threadNumber.getAndIncrement());
+                return t;
+            }
+        };
+
+        final ScheduledThreadPoolExecutor stpe = new ScheduledThreadPoolExecutor(3, thread);
+        stpe.setKeepAliveTime(10, TimeUnit.MINUTES);
+        stpe.allowCoreThreadTimeOut(true);
+        stpe.setCorePoolSize(4);
+        stpe.setMaximumPoolSize(8);
+        stpe.setContinueExistingPeriodicTasksAfterShutdownPolicy(false);
+        ses = stpe;
+    }
+
+    public void stop() {
+        ses.shutdown();
+    }
+
+    public ScheduledFuture<?> register(Runnable r, long repeatTime, long delay) {
+        if (ses == null) {
+            return null;
+        }
+        return ses.scheduleAtFixedRate(new LoggingSaveRunnable(r, file), delay, repeatTime, TimeUnit.MILLISECONDS);
+    }
+
+    public ScheduledFuture<?> register(Runnable r, long repeatTime) {
+        if (ses == null) {
+            return null;
+        }
+        return ses.scheduleAtFixedRate(new LoggingSaveRunnable(r, file), 0, repeatTime, TimeUnit.MILLISECONDS);
+    }
+
+    public ScheduledFuture<?> schedule(Runnable r, long delay) {
+        if (ses == null) {
+            return null;
+        }
+        return ses.schedule(new LoggingSaveRunnable(r, file), delay, TimeUnit.MILLISECONDS);
+    }
+
+    public ScheduledFuture<?> scheduleAtTimestamp(Runnable r, long timestamp) {
+        return schedule(r, timestamp - System.currentTimeMillis());
+    }
 
     public static class WorldTimer extends Timer {
         private static final WorldTimer instance = new WorldTimer();
@@ -21,7 +80,6 @@ public abstract class Timer {
             return instance;
         }
     }
-
 
     public static class MapTimer extends Timer {
         private static final MapTimer instance = new MapTimer();
@@ -119,66 +177,6 @@ public abstract class Timer {
         }
     }
 
-    private ScheduledThreadPoolExecutor ses;
-    protected String file, name;
-
-    public void start() {
-        if (ses != null && !ses.isShutdown() && !ses.isTerminated()) {
-            return;
-        }
-        file = "Log_" + name + "_Except.rtf";
-        final String tname = name + Randomizer.nextInt(); //just to randomize it. nothing too big
-        final ThreadFactory thread = new ThreadFactory() {
-
-            private final AtomicInteger threadNumber = new AtomicInteger(1);
-
-            @Override
-            public Thread newThread(Runnable r) {
-                final Thread t = new Thread(r);
-                t.setName(tname + "-Worker-" + threadNumber.getAndIncrement());
-                return t;
-            }
-        };
-
-        final ScheduledThreadPoolExecutor stpe = new ScheduledThreadPoolExecutor(3, thread);
-        stpe.setKeepAliveTime(10, TimeUnit.MINUTES);
-        stpe.allowCoreThreadTimeOut(true);
-        stpe.setCorePoolSize(4);
-        stpe.setMaximumPoolSize(8);
-        stpe.setContinueExistingPeriodicTasksAfterShutdownPolicy(false);
-        ses = stpe;
-    }
-
-    public void stop() {
-        ses.shutdown();
-    }
-
-    public ScheduledFuture<?> register(Runnable r, long repeatTime, long delay) {
-        if (ses == null) {
-            return null;
-        }
-        return ses.scheduleAtFixedRate(new LoggingSaveRunnable(r, file), delay, repeatTime, TimeUnit.MILLISECONDS);
-    }
-
-    public ScheduledFuture<?> register(Runnable r, long repeatTime) {
-        if (ses == null) {
-            return null;
-        }
-        return ses.scheduleAtFixedRate(new LoggingSaveRunnable(r, file), 0, repeatTime, TimeUnit.MILLISECONDS);
-    }
-
-
-    public ScheduledFuture<?> schedule(Runnable r, long delay) {
-        if (ses == null) {
-            return null;
-        }
-        return ses.schedule(new LoggingSaveRunnable(r, file), delay, TimeUnit.MILLISECONDS);
-    }
-
-    public ScheduledFuture<?> scheduleAtTimestamp(Runnable r, long timestamp) {
-        return schedule(r, timestamp - System.currentTimeMillis());
-    }
-
     private static class LoggingSaveRunnable implements Runnable {
 
         Runnable r;
@@ -194,7 +192,7 @@ public abstract class Timer {
             try {
                 r.run();
             } catch (Throwable t) {
-                FileoutputUtil.outputFileError(file, t);
+                FileOutputUtil.outputFileError(file, t);
                 //t.printStackTrace(); //mostly this gives un-needed errors... that take up a lot of space
             }
         }

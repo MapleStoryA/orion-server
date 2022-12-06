@@ -25,6 +25,7 @@ import server.MapleInventoryManipulator;
 import server.Randomizer;
 import tools.MaplePacketCreator;
 
+@lombok.extern.slf4j.Slf4j
 public class RockPaperScissors {
 
     private int round = 0;

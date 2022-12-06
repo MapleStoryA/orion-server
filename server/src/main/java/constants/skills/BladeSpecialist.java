@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package constants.skills;
 
+@lombok.extern.slf4j.Slf4j
 public class BladeSpecialist {
     public static final int TORNADO_SPIN = 4321000;
     public static final int TORNADO_SPIN_ATTACK = 4321001;

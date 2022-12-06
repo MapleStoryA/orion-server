@@ -9,6 +9,7 @@ import client.MapleClient;
 import client.SkillFactory;
 import constants.ServerConstants.PlayerGMRank;
 
+@lombok.extern.slf4j.Slf4j
 public class GMCommand {
 
     public static PlayerGMRank getPlayerLevelRequired() {

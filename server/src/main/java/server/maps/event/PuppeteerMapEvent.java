@@ -6,6 +6,7 @@ import tools.MaplePacketCreator;
 
 import java.awt.*;
 
+@lombok.extern.slf4j.Slf4j
 public class PuppeteerMapEvent extends AbstractMapEvent {
 
 

@@ -57,12 +57,13 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+@lombok.extern.slf4j.Slf4j
 public class World {
 
-    private static long startHotTime = 0;
     public static final long HOT_TIME_INTERVAL = 60000; // 1 minute
     private static final List<String> obtainedHotTime = new ArrayList<>();
     private static final int CHANNELS_PER_THREAD = 3;
+    private static long startHotTime = 0;
     private static int playeronlinerecord;
 
     public static boolean startHotTime() {
@@ -225,6 +226,130 @@ public class World {
         Timer.EventTimer.getInstance().start();
         Timer.BuffTimer.getInstance().start();
         Timer.PingTimer.getInstance().start();
+    }
+
+    public static void registerRespawn() {
+        Integer[] chs = WorldServer.getInstance().getAllChannelIds().toArray(new Integer[0]);
+        for (int i = 0; i < chs.length; i += CHANNELS_PER_THREAD) {
+            WorldTimer.getInstance().register(new Respawn(chs, i), 1125); //divisible by 9000 if possible.
+        }
+    }
+
+    public static void handleMap(final MapleMap map, final int numTimes, final int size, final long now, ArrayList<MonsterStatusEffect> effects, ArrayList<MapleMapItem> items, ArrayList<MapleCharacter> chrs, ArrayList<MapleMonster> monsters, ArrayList<MapleDiseaseValueHolder> dis, ArrayList<MapleCoolDownValueHolder> cd, ArrayList<MaplePet> pets) {
+        if (map.getItemsSize() > 0) {
+            items = map.getAllItemsThreadsafe(items);
+            for (MapleMapItem item : items) {
+                if (item.shouldExpire(now)) {
+                    item.expire(map);
+                } else if (item.shouldFFA(now)) {
+                    item.setDropType((byte) 2);
+                }
+            }
+        }
+        if (map.characterSize() > 0) {
+            map.respawn(false, now);
+            boolean hurt = map.canHurt(now);
+            chrs = map.getCharactersThreadsafe(chrs);
+            for (MapleCharacter chr : chrs) {
+                handleCooldowns(chr, numTimes, hurt, now, dis, cd, pets);
+            }
+
+            if (map.getMobsSize() > 0) {
+                monsters = map.getAllMonstersThreadsafe(monsters);
+                for (MapleMonster mons : monsters) {
+                    if (mons.isAlive() && mons.shouldKill(now)) {
+                        map.killMonster(mons);
+                    } else if (mons.isAlive() && mons.shouldDrop(now)) {
+                        mons.doDropItem(now);
+//					} else if (mons.isAlive() && mons.getStatiSize() > 0) {
+//						effects = mons.getAllBuffs(effects);
+//						for (MonsterStatusEffect mse : effects) {
+//							if (mse.shouldCancel(now)) {
+//								mons.cancelSingleStatus(mse);
+//							}
+//						}
+                    }
+                }
+            }
+        }
+    }
+
+    public static void handleCooldowns(final MapleCharacter chr, final int numTimes, final boolean hurt, final long now, ArrayList<MapleDiseaseValueHolder> dis, ArrayList<MapleCoolDownValueHolder> cd, ArrayList<MaplePet> pets) {
+        if (chr.getCooldownSize() > 0) {
+            cd = chr.getCooldowns(cd);
+            for (MapleCoolDownValueHolder m : cd) {
+                if (m.startTime + m.length < now) {
+                    final int skil = m.skillId;
+                    chr.removeCooldown(skil);
+                    chr.getClient().getSession().write(MaplePacketCreator.skillCooldown(skil, 0));
+                }
+            }
+        }
+        if (chr.isAlive()) {
+            if (/*(chr.getJob() == 131 || chr.getJob() == 132) && */chr.canBlood(now)) {
+                chr.doDragonBlood();
+            }
+            if (chr.canRecover(now)) {
+                chr.doRecovery();
+            }
+            if (chr.canFairy(now)) {
+                chr.doFairy();
+            }
+            //if (chr.canFish(now)) { chr.doFish(now); }
+        }
+        if (chr.getDiseaseSize() > 0) {
+            dis = chr.getAllDiseases(dis);
+            for (MapleDiseaseValueHolder m : dis) {
+                if (m.startTime + m.length < now) {
+                    chr.dispelDebuff(m.disease);
+                }
+            }
+        }
+        if (numTimes % 7 == 0 && chr.getMount() != null && chr.getMount().canTire(now)) {
+            chr.getMount().increaseFatigue();
+        }
+        if (numTimes % 13 == 0) { //we're parsing through the characters anyway (:
+            pets = chr.getSummonedPets(pets);
+            for (MaplePet pet : pets) {
+                if (pet.getPetItemId() == 5000054 && pet.getSecondsLeft() > 0) {
+                    pet.setSecondsLeft(pet.getSecondsLeft() - 1);
+                    if (pet.getSecondsLeft() <= 0) {
+                        chr.unequipPet(pet, true, true);
+                        return;
+                    }
+                }
+                int newFullness = pet.getFullness() - PetDataFactory.getHunger(pet.getPetItemId());
+                if (new Random().nextInt(15) > 2) {
+                    continue;
+                }
+                if (newFullness <= 5) {
+                    pet.setFullness(15);
+                    chr.unequipPet(pet, true, true);
+                } else {
+                    pet.setFullness(newFullness);
+                    chr.getClient().getSession().write(PetPacket.updatePet(pet, chr.getInventory(MapleInventoryType.CASH).getItem(pet.getInventoryPosition())));
+                }
+            }
+        }
+        if (hurt && chr.isAlive()) {
+            if (chr.getInventory(MapleInventoryType.EQUIPPED).findById(chr.getMap().getHPDecProtect()) == null) {
+                if (chr.getMapId() == 749040100 && chr.getInventory(MapleInventoryType.CASH).findById(5451000) == null) { //minidungeon
+                    chr.addHP(-chr.getMap().getHPDec());
+                } else if (chr.getMapId() != 749040100) {
+                    chr.addHP(-(chr.getMap().getHPDec() - (chr.getBuffedValue(MapleBuffStat.HP_LOSS_GUARD) == null ? 0 : chr.getBuffedValue(MapleBuffStat.HP_LOSS_GUARD).intValue())));
+                }
+            }
+        }
+        if (isHotTimeStarted(now) && canTakeHotTime(chr.getName(), now) && chr.isAlive()) {
+            if (chr.getLevel() > 30 && chr.getInventory(MapleInventoryType.USE).getNextFreeSlot() > -1 && chr.getConversation() == 0) {
+                if (!chr.haveItem(2022336, 1, false, true)) {
+                    obtainedHotTime.add(chr.getName());
+                    chr.getClient().getSession().write(MaplePacketCreator.getNPCTalk(0, (byte) 0, "You got the Secret Box, right? Click it to see what's inside. Check your Inventory now, if you're curious.", "00 01", (byte) 5, 9010010));
+                    MapleInventoryManipulator.addById(chr.getClient(), 2022336, (short) 1, null, null, 7);
+                    chr.getClient().getSession().write(MaplePacketCreator.getShowItemGain(2022336, (short) 1, true));
+                }
+            }
+        }
     }
 
     public static class Party {
@@ -659,7 +784,7 @@ public class World {
                 ps.close();
                 return 0;
             } catch (SQLException e) {
-                System.out.println("Error deleting buddy id " + myId + ", Owner Id " + delId + " Reason: " + e);
+                log.info("Error deleting buddy id " + myId + ", Owner Id " + delId + " Reason: " + e);
                 return -1;
             }
         }
@@ -884,7 +1009,6 @@ public class World {
         }
     }
 
-
     public static class Guild {
 
         private static final Map<Integer, MapleGuild> guilds = new LinkedHashMap<>();
@@ -1104,7 +1228,7 @@ public class World {
         }
 
         public static void save() {
-            System.out.println("Saving guilds...");
+            log.info("Saving guilds...");
             lock.writeLock().lock();
             try {
                 for (MapleGuild a : guilds.values()) {
@@ -1173,7 +1297,7 @@ public class World {
         public static void setGuildAndRank(int cid, int guildid, int rank, int alliancerank) {
             int ch = Find.findChannel(cid);
             if (ch == -1) {
-                // System.out.println("ERROR: cannot find player in given channel");
+                // log.info("ERROR: cannot find player in given channel");
                 return;
             }
             MapleCharacter mc = getStorage(ch).getCharacterById(cid);
@@ -1350,7 +1474,7 @@ public class World {
         private static final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
         static {
-            System.out.println("[MapleGuildAlliance] Loading GuildAlliances");
+            log.info("[MapleGuildAlliance] Loading GuildAlliances");
             Collection<MapleGuildAlliance> allGuilds = MapleGuildAlliance.loadAll();
             for (MapleGuildAlliance g : allGuilds) {
                 alliances.put(g.getId(), g);
@@ -1585,7 +1709,7 @@ public class World {
         }
 
         public static void save() {
-            System.out.println("Saving alliances...");
+            log.info("Saving alliances...");
             lock.writeLock().lock();
             try {
                 for (MapleGuildAlliance a : alliances.values()) {
@@ -1597,19 +1721,9 @@ public class World {
         }
     }
 
-
-    public static void registerRespawn() {
-        Integer[] chs = WorldServer.getInstance().getAllChannelIds().toArray(new Integer[0]);
-        for (int i = 0; i < chs.length; i += CHANNELS_PER_THREAD) {
-            WorldTimer.getInstance().register(new Respawn(chs, i), 1125); //divisible by 9000 if possible.
-        }
-    }
-
     public static class Respawn implements Runnable {
 
-        private int numTimes = 0;
         private final List<Integer> cservs = new ArrayList<>(CHANNELS_PER_THREAD);
-        private ArrayList<MapleMap> maps = new ArrayList<>();
         private final ArrayList<MonsterStatusEffect> effects = new ArrayList<>();
         private final ArrayList<MapleMapItem> items = new ArrayList<>();
         private final ArrayList<MapleCharacter> chrs = new ArrayList<>();
@@ -1617,6 +1731,8 @@ public class World {
         private final ArrayList<MapleDiseaseValueHolder> dis = new ArrayList<>();
         private final ArrayList<MapleCoolDownValueHolder> cd = new ArrayList<>();
         private final ArrayList<MaplePet> pets = new ArrayList<>();
+        private int numTimes = 0;
+        private ArrayList<MapleMap> maps = new ArrayList<>();
 
         public Respawn(Integer[] chs, int c) {
             StringBuilder s = new StringBuilder("[Respawn Worker] Registered for channels ");
@@ -1624,7 +1740,6 @@ public class World {
                 cservs.add(Integer.valueOf(WorldServer.getInstance().getChannel(c + i).getChannel()));
                 s.append(c + i).append(" ");
             }
-            System.out.println(s);
         }
 
         @Override
@@ -1643,123 +1758,6 @@ public class World {
             }
             if (Buddy.canPrune(now)) {
                 Buddy.prepareRemove();
-            }
-        }
-    }
-
-    public static void handleMap(final MapleMap map, final int numTimes, final int size, final long now, ArrayList<MonsterStatusEffect> effects, ArrayList<MapleMapItem> items, ArrayList<MapleCharacter> chrs, ArrayList<MapleMonster> monsters, ArrayList<MapleDiseaseValueHolder> dis, ArrayList<MapleCoolDownValueHolder> cd, ArrayList<MaplePet> pets) {
-        if (map.getItemsSize() > 0) {
-            items = map.getAllItemsThreadsafe(items);
-            for (MapleMapItem item : items) {
-                if (item.shouldExpire(now)) {
-                    item.expire(map);
-                } else if (item.shouldFFA(now)) {
-                    item.setDropType((byte) 2);
-                }
-            }
-        }
-        if (map.characterSize() > 0) {
-            map.respawn(false, now);
-            boolean hurt = map.canHurt(now);
-            chrs = map.getCharactersThreadsafe(chrs);
-            for (MapleCharacter chr : chrs) {
-                handleCooldowns(chr, numTimes, hurt, now, dis, cd, pets);
-            }
-
-            if (map.getMobsSize() > 0) {
-                monsters = map.getAllMonstersThreadsafe(monsters);
-                for (MapleMonster mons : monsters) {
-                    if (mons.isAlive() && mons.shouldKill(now)) {
-                        map.killMonster(mons);
-                    } else if (mons.isAlive() && mons.shouldDrop(now)) {
-                        mons.doDropItem(now);
-//					} else if (mons.isAlive() && mons.getStatiSize() > 0) {
-//						effects = mons.getAllBuffs(effects);
-//						for (MonsterStatusEffect mse : effects) {
-//							if (mse.shouldCancel(now)) {
-//								mons.cancelSingleStatus(mse);
-//							} 
-//						}
-                    }
-                }
-            }
-        }
-    }
-
-    public static void handleCooldowns(final MapleCharacter chr, final int numTimes, final boolean hurt, final long now, ArrayList<MapleDiseaseValueHolder> dis, ArrayList<MapleCoolDownValueHolder> cd, ArrayList<MaplePet> pets) {
-        if (chr.getCooldownSize() > 0) {
-            cd = chr.getCooldowns(cd);
-            for (MapleCoolDownValueHolder m : cd) {
-                if (m.startTime + m.length < now) {
-                    final int skil = m.skillId;
-                    chr.removeCooldown(skil);
-                    chr.getClient().getSession().write(MaplePacketCreator.skillCooldown(skil, 0));
-                }
-            }
-        }
-        if (chr.isAlive()) {
-            if (/*(chr.getJob() == 131 || chr.getJob() == 132) && */chr.canBlood(now)) {
-                chr.doDragonBlood();
-            }
-            if (chr.canRecover(now)) {
-                chr.doRecovery();
-            }
-            if (chr.canFairy(now)) {
-                chr.doFairy();
-            }
-            //if (chr.canFish(now)) { chr.doFish(now); }
-        }
-        if (chr.getDiseaseSize() > 0) {
-            dis = chr.getAllDiseases(dis);
-            for (MapleDiseaseValueHolder m : dis) {
-                if (m.startTime + m.length < now) {
-                    chr.dispelDebuff(m.disease);
-                }
-            }
-        }
-        if (numTimes % 7 == 0 && chr.getMount() != null && chr.getMount().canTire(now)) {
-            chr.getMount().increaseFatigue();
-        }
-        if (numTimes % 13 == 0) { //we're parsing through the characters anyway (:
-            pets = chr.getSummonedPets(pets);
-            for (MaplePet pet : pets) {
-                if (pet.getPetItemId() == 5000054 && pet.getSecondsLeft() > 0) {
-                    pet.setSecondsLeft(pet.getSecondsLeft() - 1);
-                    if (pet.getSecondsLeft() <= 0) {
-                        chr.unequipPet(pet, true, true);
-                        return;
-                    }
-                }
-                int newFullness = pet.getFullness() - PetDataFactory.getHunger(pet.getPetItemId());
-                if (new Random().nextInt(15) > 2) {
-                    continue;
-                }
-                if (newFullness <= 5) {
-                    pet.setFullness(15);
-                    chr.unequipPet(pet, true, true);
-                } else {
-                    pet.setFullness(newFullness);
-                    chr.getClient().getSession().write(PetPacket.updatePet(pet, chr.getInventory(MapleInventoryType.CASH).getItem(pet.getInventoryPosition())));
-                }
-            }
-        }
-        if (hurt && chr.isAlive()) {
-            if (chr.getInventory(MapleInventoryType.EQUIPPED).findById(chr.getMap().getHPDecProtect()) == null) {
-                if (chr.getMapId() == 749040100 && chr.getInventory(MapleInventoryType.CASH).findById(5451000) == null) { //minidungeon
-                    chr.addHP(-chr.getMap().getHPDec());
-                } else if (chr.getMapId() != 749040100) {
-                    chr.addHP(-(chr.getMap().getHPDec() - (chr.getBuffedValue(MapleBuffStat.HP_LOSS_GUARD) == null ? 0 : chr.getBuffedValue(MapleBuffStat.HP_LOSS_GUARD).intValue())));
-                }
-            }
-        }
-        if (isHotTimeStarted(now) && canTakeHotTime(chr.getName(), now) && chr.isAlive()) {
-            if (chr.getLevel() > 30 && chr.getInventory(MapleInventoryType.USE).getNextFreeSlot() > -1 && chr.getConversation() == 0) {
-                if (!chr.haveItem(2022336, 1, false, true)) {
-                    obtainedHotTime.add(chr.getName());
-                    chr.getClient().getSession().write(MaplePacketCreator.getNPCTalk(0, (byte) 0, "You got the Secret Box, right? Click it to see what's inside. Check your Inventory now, if you're curious.", "00 01", (byte) 5, 9010010));
-                    MapleInventoryManipulator.addById(chr.getClient(), 2022336, (short) 1, null, null, 7);
-                    chr.getClient().getSession().write(MaplePacketCreator.getShowItemGain(2022336, (short) 1, true));
-                }
             }
         }
     }

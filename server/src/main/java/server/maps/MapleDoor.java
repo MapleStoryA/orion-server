@@ -34,15 +34,16 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleDoor extends AbstractMapleMapObject {
 
     private final WeakReference<MapleCharacter> owner;
     private final MapleMap town;
-    private MaplePortal townPortal;
     private final MapleMap target;
     private final int skillId;
     private final int ownerId;
     private final Point targetPosition;
+    private MaplePortal townPortal;
 
     public MapleDoor(final MapleCharacter owner, final Point targetPosition, final int skillId) {
         super();

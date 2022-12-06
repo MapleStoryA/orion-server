@@ -9,10 +9,11 @@ import server.gachapon.RewardsProvider;
 import java.util.ArrayList;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class NlcProvider implements RewardsProvider {
 
     private final GachaponLocation location = GachaponLocation.NLC;
-
+    private final List<AbstractRandomEntity> reward = new ArrayList<>();
     int[] ids = {1472016, 1472006, 1442013, 1332011, 1472029, 1472023, 1472019, 1442017, 1322023, 1152005, 1452023,
             1032008, 1372007, 1462001, 1302004, 1402017, 1442016, 1332079, 1472074, 1402012, 1332031, 1372038, 1372040,
             1372041, 1382005, 1382007, 1332006, 1322051, 1322027, 1332014, 1302049, 1472003, 1462012, 1332019, 1432017,
@@ -24,8 +25,6 @@ public class NlcProvider implements RewardsProvider {
             1032031, 1122011, 1122012, 1002776, 1002777, 2044713, 2044817, 2044910, 2046204, 2046205, 2046206, 5200010
 
     };
-
-    private final List<AbstractRandomEntity> reward = new ArrayList<>();
 
     public NlcProvider() {
 

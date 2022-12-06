@@ -31,14 +31,15 @@ import tools.MaplePacketCreator;
 
 import java.awt.*;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleSummon extends AbstractAnimatedMapleMapObject {
 
     private final int ownerid, skillLevel, ownerLevel, skill;
+    private final SummonMovementType movementType;
     private int fh;
     private MapleMap map; //required for instanceMaps
     private short hp;
     private boolean changedMap = false;
-    private final SummonMovementType movementType;
     // Since player can have more than 1 summon [Pirate]
     // Let's put it here instead of cheat tracker
     private int lastSummonTickCount;

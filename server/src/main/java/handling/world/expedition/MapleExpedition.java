@@ -24,12 +24,13 @@ import handling.world.party.MapleParty;
 import java.util.ArrayList;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleExpedition {
 
     private final List<Integer> parties;
     private final ExpeditionType et;
-    private int leaderId;
     private final int id;
+    private int leaderId;
 
     public MapleExpedition(ExpeditionType ett, int leaderId, int id) {
         this.et = ett;
@@ -44,6 +45,10 @@ public class MapleExpedition {
 
     public int getLeader() {
         return leaderId;
+    }
+
+    public void setLeader(int newLead) {
+        this.leaderId = newLead;
     }
 
     public List<Integer> getParties() {
@@ -89,9 +94,5 @@ public class MapleExpedition {
             }
         }
         return -1;
-    }
-
-    public void setLeader(int newLead) {
-        this.leaderId = newLead;
     }
 }

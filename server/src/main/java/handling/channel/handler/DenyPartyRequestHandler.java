@@ -11,12 +11,13 @@ import handling.world.party.MaplePartyCharacter;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.MapleUserPackets;
 
+@lombok.extern.slf4j.Slf4j
 public class DenyPartyRequestHandler extends AbstractMaplePacketHandler {
 
 
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        // System.out.println("party response..." + slea.toString());
+        // log.info("party response..." + slea.toString());
         final int action = slea.readByte();
         final int partyid = slea.readInt();
         final MapleCharacter chr = c.getPlayer();

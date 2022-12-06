@@ -25,6 +25,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleBBSThread implements java.io.Serializable {
 
     public static final long serialVersionUID = 3565477792085301248L;

@@ -25,6 +25,7 @@ package constants.skills;
 /**
  * @author BubblesDev
  */
+@lombok.extern.slf4j.Slf4j
 public class Shadower {
     public static final int MAPLE_WARRIOR = 4221000;
     public static final int ASSASSINATE = 4221001;

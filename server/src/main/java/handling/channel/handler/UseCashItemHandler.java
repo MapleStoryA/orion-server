@@ -32,7 +32,7 @@ import server.maps.MapleMapObject;
 import server.maps.MapleMist;
 import server.quest.MapleQuest;
 import server.shops.HiredMerchant;
-import tools.FileoutputUtil;
+import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -46,7 +46,86 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 
+@lombok.extern.slf4j.Slf4j
 public class UseCashItemHandler extends AbstractMaplePacketHandler {
+
+    public static void PickupItemAtSpot(final MapleClient c, final MapleCharacter chr, final MapleMapObject ob) {
+        if (ob == null) {
+            c.getSession().write(MaplePacketCreator.enableActions());
+            return;
+        }
+        final MapleMapItem mapitem = (MapleMapItem) ob;
+        final Lock lock = mapitem.getLock();
+        lock.lock();
+        try {
+            if (mapitem.isPickedUp() || !mapitem.canLoot(c)) {
+                c.getSession().write(MaplePacketCreator.enableActions());
+                return;
+            }
+            if (mapitem.getOwner() != chr.getId() && ((!mapitem.isPlayerDrop() && mapitem.getDropType() == 0)
+                    || (mapitem.isPlayerDrop() && chr.getMap().getEverlast()))) {
+                c.getSession().write(MaplePacketCreator.enableActions());
+                return;
+            }
+            if (!mapitem.isPlayerDrop() && mapitem.getDropType() == 1 && mapitem.getOwner() != chr.getId()
+                    && (chr.getParty() == null || chr.getParty().getMemberById(mapitem.getOwner()) == null)) {
+                c.getSession().write(MaplePacketCreator.enableActions());
+                return;
+            }
+            if (mapitem.isPlayerDrop() && mapitem.getOwner() != chr.getId()) { // cannot
+                // vacuum
+                // player
+                // drops
+                c.getSession().write(MaplePacketCreator.enableActions());
+                return;
+            }
+            if (mapitem.getMeso() > 0) {
+                if (chr.getParty() != null && mapitem.getOwner() != chr.getId()) {
+                    final List<MapleCharacter> toGive = new LinkedList<MapleCharacter>();
+                    for (MaplePartyCharacter z : chr.getParty().getMembers()) {
+                        MapleCharacter m = chr.getMap().getCharacterById(z.getId());
+                        if (m != null) {
+                            toGive.add(m);
+                        }
+                    }
+                    for (final MapleCharacter m : toGive) {
+                        m.gainMeso(
+                                mapitem.getMeso() / toGive.size()
+                                        + (m.getStat().hasPartyBonus ? (int) (mapitem.getMeso() / 20.0) : 0),
+                                true, true);
+                    }
+                } else {
+                    chr.gainMeso(mapitem.getMeso(), true, true);
+                }
+                InventoryHandlerUtils.removeItem(chr, mapitem, ob);
+            } else {
+                if (MapleItemInformationProvider.getInstance().isPickupBlocked(mapitem.getItem().getItemId())) {
+                    c.getSession().write(MaplePacketCreator.enableActions());
+                    c.getPlayer().dropMessage(5, "This item cannot be picked up.");
+                } else if (InventoryHandlerUtils.useItem(c, mapitem.getItemId())) {
+                    InventoryHandlerUtils.removeItem(c.getPlayer(), mapitem, ob);
+                } else if (MapleInventoryManipulator.checkSpace(c, mapitem.getItem().getItemId(),
+                        mapitem.getItem().getQuantity(), mapitem.getItem().getOwner())) {
+                    if (mapitem.getItem().getQuantity() >= 50
+                            && GameConstants.isUpgradeScroll(mapitem.getItem().getItemId())) {
+                        FileOutputUtil.logUsers(chr.getName(), "Player picked up " + mapitem.getItem().getQuantity()
+                                + " of " + mapitem.getItem().getItemId());
+                    }
+                    if (MapleInventoryManipulator.addFromDrop(c, mapitem.getItem(), true,
+                            mapitem.getDropper() instanceof MapleMonster)) {
+                        InventoryHandlerUtils.removeItem(chr, mapitem, ob);
+                    }
+                } else {
+                    c.getSession().write(MaplePacketCreator.getInventoryFull());
+                    c.getSession().write(MaplePacketCreator.getShowInventoryFull());
+                    c.getSession().write(MaplePacketCreator.enableActions());
+                }
+            }
+        } finally {
+            lock.unlock();
+        }
+
+    }
 
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, final MapleClient c) {
@@ -546,7 +625,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                                 .broadcastMessage(MaplePacketCreator.getMiracleCubeEffect(c.getPlayer().getId(), true));
                         c.getPlayer().forceReAddItem_NoUpdate(item, MapleInventoryType.EQUIP);
                         MapleInventoryManipulator.addById(c, 2430112, (short) 1,
-                                "Cubed on " + FileoutputUtil.CurrentReadable_Date());
+                                "Cubed on " + FileOutputUtil.CurrentReadable_Date());
                         used = true;
                     } else {
                         c.getPlayer().dropMessage(5, "This item's Potential cannot be reset.");
@@ -1169,8 +1248,8 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                 } else if (itemId / 10000 == 553) {
                     InventoryHandlerUtils.UseRewardItem(slot, itemId, c, c.getPlayer());// this too
                 } else {
-                    System.out.println("Unhandled CS item : " + itemId);
-                    System.out.println(slea.toString(true));
+                    log.info("Unhandled CS item : " + itemId);
+                    log.info(slea.toString(true));
                 }
                 break;
         }
@@ -1188,84 +1267,6 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
             c.getPlayer().dropMessage(5, "Auto changing channels. Please wait.");
             c.getPlayer().changeChannel(c.getChannel() == WorldServer.getInstance().getChannelCount() ? 1 : (c.getChannel() + 1));
         }
-    }
-
-    public static void PickupItemAtSpot(final MapleClient c, final MapleCharacter chr, final MapleMapObject ob) {
-        if (ob == null) {
-            c.getSession().write(MaplePacketCreator.enableActions());
-            return;
-        }
-        final MapleMapItem mapitem = (MapleMapItem) ob;
-        final Lock lock = mapitem.getLock();
-        lock.lock();
-        try {
-            if (mapitem.isPickedUp() || !mapitem.canLoot(c)) {
-                c.getSession().write(MaplePacketCreator.enableActions());
-                return;
-            }
-            if (mapitem.getOwner() != chr.getId() && ((!mapitem.isPlayerDrop() && mapitem.getDropType() == 0)
-                    || (mapitem.isPlayerDrop() && chr.getMap().getEverlast()))) {
-                c.getSession().write(MaplePacketCreator.enableActions());
-                return;
-            }
-            if (!mapitem.isPlayerDrop() && mapitem.getDropType() == 1 && mapitem.getOwner() != chr.getId()
-                    && (chr.getParty() == null || chr.getParty().getMemberById(mapitem.getOwner()) == null)) {
-                c.getSession().write(MaplePacketCreator.enableActions());
-                return;
-            }
-            if (mapitem.isPlayerDrop() && mapitem.getOwner() != chr.getId()) { // cannot
-                // vacuum
-                // player
-                // drops
-                c.getSession().write(MaplePacketCreator.enableActions());
-                return;
-            }
-            if (mapitem.getMeso() > 0) {
-                if (chr.getParty() != null && mapitem.getOwner() != chr.getId()) {
-                    final List<MapleCharacter> toGive = new LinkedList<MapleCharacter>();
-                    for (MaplePartyCharacter z : chr.getParty().getMembers()) {
-                        MapleCharacter m = chr.getMap().getCharacterById(z.getId());
-                        if (m != null) {
-                            toGive.add(m);
-                        }
-                    }
-                    for (final MapleCharacter m : toGive) {
-                        m.gainMeso(
-                                mapitem.getMeso() / toGive.size()
-                                        + (m.getStat().hasPartyBonus ? (int) (mapitem.getMeso() / 20.0) : 0),
-                                true, true);
-                    }
-                } else {
-                    chr.gainMeso(mapitem.getMeso(), true, true);
-                }
-                InventoryHandlerUtils.removeItem(chr, mapitem, ob);
-            } else {
-                if (MapleItemInformationProvider.getInstance().isPickupBlocked(mapitem.getItem().getItemId())) {
-                    c.getSession().write(MaplePacketCreator.enableActions());
-                    c.getPlayer().dropMessage(5, "This item cannot be picked up.");
-                } else if (InventoryHandlerUtils.useItem(c, mapitem.getItemId())) {
-                    InventoryHandlerUtils.removeItem(c.getPlayer(), mapitem, ob);
-                } else if (MapleInventoryManipulator.checkSpace(c, mapitem.getItem().getItemId(),
-                        mapitem.getItem().getQuantity(), mapitem.getItem().getOwner())) {
-                    if (mapitem.getItem().getQuantity() >= 50
-                            && GameConstants.isUpgradeScroll(mapitem.getItem().getItemId())) {
-                        FileoutputUtil.logUsers(chr.getName(), "Player picked up " + mapitem.getItem().getQuantity()
-                                + " of " + mapitem.getItem().getItemId());
-                    }
-                    if (MapleInventoryManipulator.addFromDrop(c, mapitem.getItem(), true,
-                            mapitem.getDropper() instanceof MapleMonster)) {
-                        InventoryHandlerUtils.removeItem(chr, mapitem, ob);
-                    }
-                } else {
-                    c.getSession().write(MaplePacketCreator.getInventoryFull());
-                    c.getSession().write(MaplePacketCreator.getShowInventoryFull());
-                    c.getSession().write(MaplePacketCreator.enableActions());
-                }
-            }
-        } finally {
-            lock.unlock();
-        }
-
     }
 
 }

@@ -10,13 +10,14 @@ import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.Randomizer;
 import server.StructRewardItem;
-import tools.FileoutputUtil;
+import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class RewardItemHandler extends AbstractMaplePacketHandler {
 
     @Override
@@ -47,7 +48,7 @@ public class RewardItemHandler extends AbstractMaplePacketHandler {
                                     }
                                     MapleInventoryManipulator.addbyItem(c, item);
                                 } else {
-                                    MapleInventoryManipulator.addById(c, reward.itemid, reward.quantity, "Reward item: " + itemId + " on " + FileoutputUtil.CurrentReadable_Date());
+                                    MapleInventoryManipulator.addById(c, reward.itemid, reward.quantity, "Reward item: " + itemId + " on " + FileOutputUtil.CurrentReadable_Date());
                                 }
                                 MapleInventoryManipulator.removeById(c, GameConstants.getInventoryType(itemId), itemId,
                                         1, false, false);

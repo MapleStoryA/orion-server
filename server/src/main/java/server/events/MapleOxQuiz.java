@@ -33,6 +33,7 @@ import tools.Pair;
 import java.util.Map.Entry;
 import java.util.concurrent.ScheduledFuture;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleOxQuiz extends MapleEvent {
 
     private ScheduledFuture<?> oxSchedule, oxSchedule2;

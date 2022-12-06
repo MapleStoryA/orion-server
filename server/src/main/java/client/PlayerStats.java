@@ -47,6 +47,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.ReentrantLock;
 
+@lombok.extern.slf4j.Slf4j
 public class PlayerStats implements Serializable {
 
     private static final long serialVersionUID = -679541993413738569L;
@@ -54,13 +55,8 @@ public class PlayerStats implements Serializable {
     private final Map<Integer, Integer> setHandling = new HashMap<Integer, Integer>();
     private final List<Equip> durabilityHandling = new ArrayList<Equip>();
     private final List<Equip> equipLevelHandling = new ArrayList<Equip>();
-    private transient float shouldHealHP, shouldHealMP;
     public short str, dex, luk, int_;
     public int hp, maxhp, mp, maxmp;
-    private transient short passive_sharpeye_percent, localmaxhp, localmaxmp;
-    private transient byte passive_mastery, passive_sharpeye_rate;
-    private transient int localstr, localdex, localluk, localint_;
-    private transient int magic, watk, hands, accuracy;
     public transient boolean equippedWelcomeBackRing, equippedFairy, hasMeso, hasItem, hasIgnore, hasPartyBonus, Berserk = false, isRecalc = false;
     public transient int equipmentBonusExp, expMod, dropMod, cashMod, levelBonus;
     public transient double expBuff, dropBuff, mesoBuff, cashBuff;
@@ -69,10 +65,15 @@ public class PlayerStats implements Serializable {
     public transient double dam_r, bossdam_r;
     public transient int recoverHP, recoverMP, mpconReduce, incMesoProp, incRewardProp, DAMreflect, DAMreflect_rate, mpRestore,
             hpRecover, hpRecoverProp, mpRecover, mpRecoverProp, RecoveryUP, incAllskill;
-    private transient float speedMod, jumpMod, localmaxbasedamage;
     // Elemental properties
     public transient int def, element_ice, element_fire, element_light, element_psn;
     public ReentrantLock lock = new ReentrantLock(); //we're getting concurrentmodificationexceptions, but would this slow things down?
+    private transient float shouldHealHP, shouldHealMP;
+    private transient short passive_sharpeye_percent, localmaxhp, localmaxmp;
+    private transient byte passive_mastery, passive_sharpeye_rate;
+    private transient int localstr, localdex, localluk, localint_;
+    private transient int magic, watk, hands, accuracy;
+    private transient float speedMod, jumpMod, localmaxbasedamage;
 
     public PlayerStats(final MapleCharacter chr) {
         // TODO, move str/dex/int etc here -_-
@@ -90,21 +91,13 @@ public class PlayerStats implements Serializable {
         return str;
     }
 
-    public final short getDex() {
-        return dex;
-    }
-
-    public final short getLuk() {
-        return luk;
-    }
-
-    public final short getInt() {
-        return int_;
-    }
-
     public final void setStr(final short str) {
         this.str = str;
         recalcLocalStats();
+    }
+
+    public final short getDex() {
+        return dex;
     }
 
     public final void setDex(final short dex) {
@@ -112,9 +105,17 @@ public class PlayerStats implements Serializable {
         recalcLocalStats();
     }
 
+    public final short getLuk() {
+        return luk;
+    }
+
     public final void setLuk(final short luk) {
         this.luk = luk;
         recalcLocalStats();
+    }
+
+    public final short getInt() {
+        return int_;
     }
 
     public final void setInt(final short int_) {
@@ -162,16 +163,6 @@ public class PlayerStats implements Serializable {
         return mp != oldMp;
     }
 
-    public final void setMaxHp(final int hp) {
-        this.maxhp = hp;
-        recalcLocalStats();
-    }
-
-    public final void setMaxMp(final int mp) {
-        this.maxmp = mp;
-        recalcLocalStats();
-    }
-
     public final int getHp() {
         return hp;
     }
@@ -180,12 +171,22 @@ public class PlayerStats implements Serializable {
         return maxhp;
     }
 
+    public final void setMaxHp(final int hp) {
+        this.maxhp = hp;
+        recalcLocalStats();
+    }
+
     public final int getMp() {
         return mp;
     }
 
     public final int getMaxMp() {
         return maxmp;
+    }
+
+    public final void setMaxMp(final int mp) {
+        this.maxmp = mp;
+        recalcLocalStats();
     }
 
     public final int getTotalDex() {

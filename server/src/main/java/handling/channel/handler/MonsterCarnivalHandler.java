@@ -16,6 +16,7 @@ import tools.packet.MonsterCarnivalPacket;
 
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class MonsterCarnivalHandler extends AbstractMaplePacketHandler {
 
     @Override

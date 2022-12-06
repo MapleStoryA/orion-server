@@ -4,6 +4,7 @@ import handling.SendPacketOpcode;
 import server.life.MapleNPC;
 import tools.data.output.MaplePacketLittleEndianWriter;
 
+@lombok.extern.slf4j.Slf4j
 public class NpcPoolPackets {
 
 

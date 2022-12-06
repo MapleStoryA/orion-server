@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class RandomRewards {
 
     private final static RandomRewards instance = new RandomRewards();
@@ -18,10 +19,6 @@ public class RandomRewards {
     private List<Integer> compiledEventA = null;
     private List<Integer> compiledCashSurprise = null;
 
-
-    public static RandomRewards getInstance() {
-        return instance;
-    }
 
     protected RandomRewards() {
         // Gold Box
@@ -76,6 +73,10 @@ public class RandomRewards {
         processRewards(returnArray, GameConstants.eventSuperReward);
 
         compiledEvent = returnArray;
+    }
+
+    public static RandomRewards getInstance() {
+        return instance;
     }
 
     private final void processRewards(final List<Integer> returnArray, final int[] list) {

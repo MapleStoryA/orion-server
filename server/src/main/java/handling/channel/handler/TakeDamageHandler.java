@@ -20,11 +20,12 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.MobPacket;
 
+@lombok.extern.slf4j.Slf4j
 public class TakeDamageHandler extends AbstractMaplePacketHandler {
 
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        //System.out.println(slea.toString());
+        //log.info(slea.toString());
         final MapleCharacter chr = c.getPlayer();
         chr.updateTick(slea.readInt());
         final byte type = slea.readByte(); //-4 is mist, -3 and -2 are map damage.

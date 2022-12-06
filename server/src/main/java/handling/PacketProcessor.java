@@ -181,16 +181,13 @@ import handling.login.handler.KeepAliveHandler;
 import handling.login.handler.RelogRequestHandler;
 import handling.login.handler.ServerStatusRequestHandler;
 import handling.login.handler.ServerlistRequestHandler;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public final class PacketProcessor {
-
-    public enum Mode {
-        LOGINSERVER, CHANNELSERVER, CASHSHOP
-    }
 
     private static PacketProcessor instance;
     private final MaplePacketHandler[] handlers;
-
     private PacketProcessor() {
         int maxRecvOp = 0;
         for (RecvPacketOpcode op : RecvPacketOpcode.values()) {
@@ -199,22 +196,6 @@ public final class PacketProcessor {
             }
         }
         handlers = new MaplePacketHandler[maxRecvOp + 1];
-    }
-
-    MaplePacketHandler getHandler(short packetId) {
-        if (packetId > handlers.length) {
-            return null;
-        }
-        MaplePacketHandler handler = handlers[packetId];
-        return handler;
-    }
-
-    public void registerHandler(RecvPacketOpcode code, MaplePacketHandler handler) {
-        try {
-            handlers[code.getValue()] = handler;
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Error registering handler - " + code.name());
-        }
     }
 
     public static PacketProcessor CHANNEL() {
@@ -231,6 +212,22 @@ public final class PacketProcessor {
         }
         instance.reset(mode);
         return instance;
+    }
+
+    MaplePacketHandler getHandler(short packetId) {
+        if (packetId > handlers.length) {
+            return null;
+        }
+        MaplePacketHandler handler = handlers[packetId];
+        return handler;
+    }
+
+    public void registerHandler(RecvPacketOpcode code, MaplePacketHandler handler) {
+        try {
+            handlers[code.getValue()] = handler;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            log.info("Error registering handler - " + code.name());
+        }
     }
 
     public void reset(Mode mode) {
@@ -410,5 +407,9 @@ public final class PacketProcessor {
 
 
         }
+    }
+
+    public enum Mode {
+        LOGINSERVER, CHANNELSERVER, CASHSHOP
     }
 }

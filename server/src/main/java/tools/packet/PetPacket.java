@@ -32,6 +32,7 @@ import tools.data.output.MaplePacketLittleEndianWriter;
 
 import java.awt.*;
 
+@lombok.extern.slf4j.Slf4j
 public class PetPacket {
 
     public final static byte[] ITEM_MAGIC = new byte[]{(byte) 0x80, 5};

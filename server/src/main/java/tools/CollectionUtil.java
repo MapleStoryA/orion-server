@@ -31,6 +31,7 @@ import java.util.List;
  * @version 1.0
  * @since Revision 701
  */
+@lombok.extern.slf4j.Slf4j
 public class CollectionUtil {
 
     /**

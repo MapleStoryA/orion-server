@@ -15,6 +15,7 @@ import tools.packet.MTSCSPacket;
 
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class CashShopOperationUtils {
 
     public static void LeaveCS(final SeekableLittleEndianAccessor slea, final MapleClient c, final MapleCharacter chr) {
@@ -25,7 +26,7 @@ public class CashShopOperationUtils {
             World.ChannelChange_Data(new CharacterTransfer(chr), chr.getId(), c.getChannel());
             c.getSession().write(MaplePacketCreator.getChannelChange(Integer.parseInt(WorldServer.getInstance().getChannel(c.getChannel()).getIP().split(":")[1])));
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            log.info(ex.getMessage());
         } finally {
             chr.saveToDB(false, true);
             c.setPlayer(null);

@@ -4,6 +4,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import scripting.v1.dispatch.PacketDispatcher;
 
+@lombok.extern.slf4j.Slf4j
 public class AbstractScript {
 
 

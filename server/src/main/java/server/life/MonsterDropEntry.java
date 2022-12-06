@@ -21,7 +21,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package server.life;
 
+@lombok.extern.slf4j.Slf4j
 public class MonsterDropEntry {
+
+    public final int itemId, chance, Minimum, Maximum, questid, holdMaximum;
 
     public MonsterDropEntry(int itemId, int chance, int Minimum, int Maximum, int questid, int holdMaximum) {
         this.itemId = itemId;
@@ -31,6 +34,4 @@ public class MonsterDropEntry {
         this.Maximum = Maximum;
         this.holdMaximum = holdMaximum;
     }
-
-    public final int itemId, chance, Minimum, Maximum, questid, holdMaximum;
 }

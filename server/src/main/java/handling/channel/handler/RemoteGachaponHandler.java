@@ -6,6 +6,7 @@ import scripting.NPCScriptManager;
 import server.gachapon.GachaponLocation;
 import tools.data.input.SeekableLittleEndianAccessor;
 
+@lombok.extern.slf4j.Slf4j
 public class RemoteGachaponHandler extends AbstractMaplePacketHandler {
 
     @Override

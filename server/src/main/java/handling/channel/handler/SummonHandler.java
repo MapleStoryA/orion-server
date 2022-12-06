@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package handling.channel.handler;
 
+@lombok.extern.slf4j.Slf4j
 public class SummonHandler {
 
 

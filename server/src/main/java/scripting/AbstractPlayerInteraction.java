@@ -37,6 +37,7 @@ import handling.world.WorldServer;
 import handling.world.guild.MapleGuild;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
+import lombok.extern.slf4j.Slf4j;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.Randomizer;
@@ -59,6 +60,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+@Slf4j
 public abstract class AbstractPlayerInteraction {
 
     private final MapleClient c;
@@ -91,7 +93,7 @@ public abstract class AbstractPlayerInteraction {
     }
 
     public final EventManager getEventManager(final String event) {
-        System.out.println("Getting event from conversation manager " + event);
+        log.info("Getting event from conversation manager " + event);
         return c.getChannelServer().getEventSM().getEventManager(event);
     }
 
@@ -594,7 +596,7 @@ public abstract class AbstractPlayerInteraction {
         Collection<MaplePartyCharacter> members = getPlayer().getParty().getMembers();
         MapleMap map = getMap();
         for (final MaplePartyCharacter chr : members) {
-            System.out.println(chr.getName() + " " + chr.getId());
+            log.info(chr.getName() + " " + chr.getId());
             final MapleCharacter curChar = map.getCharacterById(chr.getId());
             if (curChar != null) {
                 curChar.changeMap(target, target.getPortal(0));
@@ -1079,7 +1081,7 @@ public abstract class AbstractPlayerInteraction {
 
     public void debug(String... messages) {
         for (String message : messages) {
-            System.out.println(message);
+            log.info(message);
         }
     }
 

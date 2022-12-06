@@ -209,19 +209,12 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     ADMIN_COMMAND,
     ADMIN_LOG,
     ADMIN_CHAT;
-    private short code = -2;
-
-    @Override
-    public void setValue(short code) {
-        this.code = code;
-    }
-
-    @Override
-    public final short getValue() {
-        return code;
+    static {
+        reloadValues();
     }
 
     private final boolean CheckState;
+    private short code = -2;
 
     RecvPacketOpcode() {
         this.CheckState = true;
@@ -231,16 +224,21 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
         this.CheckState = CheckState;
     }
 
-    public final boolean NeedsChecking() {
-        return CheckState;
-    }
-
-
-    static {
-        reloadValues();
-    }
-
     public static final void reloadValues() {
         ExternalCodeTableGetter.populateValues(ServerEnvironment.getConfig().getFileAsProperties("recvops.properties"), values());
+    }
+
+    @Override
+    public final short getValue() {
+        return code;
+    }
+
+    @Override
+    public void setValue(short code) {
+        this.code = code;
+    }
+
+    public final boolean NeedsChecking() {
+        return CheckState;
     }
 }

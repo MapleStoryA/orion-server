@@ -25,6 +25,7 @@ package constants.skills;
 /**
  * @author BubblesDev
  */
+@lombok.extern.slf4j.Slf4j
 public class NightWalker {
     public static final int ALCHEMIST = 14110003;
     public static final int DISORDER = 14001002;

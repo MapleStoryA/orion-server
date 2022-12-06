@@ -5,6 +5,7 @@ import handling.AbstractMaplePacketHandler;
 import handling.channel.handler.utils.BBSHandlerUtils;
 import tools.data.input.SeekableLittleEndianAccessor;
 
+@lombok.extern.slf4j.Slf4j
 public class BbsOperationHandler extends AbstractMaplePacketHandler {
 
     @Override

@@ -30,6 +30,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+@lombok.extern.slf4j.Slf4j
 public class XMLWZFile implements MapleDataProvider {
 
     private final File root;

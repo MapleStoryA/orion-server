@@ -29,14 +29,10 @@ import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 import tools.MapleAESOFB;
 import tools.MapleCustomEncryption;
 
+@lombok.extern.slf4j.Slf4j
 public class MaplePacketDecoder extends CumulativeProtocolDecoder {
 
     public static final String DECODER_STATE_KEY = MaplePacketDecoder.class.getName() + ".STATE";
-
-    public static class DecoderState {
-
-        public int packetlength = -1;
-    }
 
     @Override
     protected boolean doDecode(IoSession session, ByteBuffer in, ProtocolDecoderOutput out) throws Exception {
@@ -71,5 +67,10 @@ public class MaplePacketDecoder extends CumulativeProtocolDecoder {
             return true;
         }
         return false;
+    }
+
+    public static class DecoderState {
+
+        public int packetlength = -1;
     }
 }

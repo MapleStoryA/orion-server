@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class EventCenter {
 
     private static final Logger LOG = LoggerFactory.getLogger(EventInteraction.class);

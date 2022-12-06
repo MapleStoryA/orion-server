@@ -14,6 +14,7 @@ import java.util.List;
  *
  * @author Rob
  */
+@lombok.extern.slf4j.Slf4j
 public class MapleCarnivalParty {
 
     private final List<Integer> members = new LinkedList<Integer>();

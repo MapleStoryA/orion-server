@@ -30,6 +30,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * @author GoldenKevin
  */
+@lombok.extern.slf4j.Slf4j
 public class LockableList<T> implements List<T> {
 
     private final List<T> list;

@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package constants.skills;
 
+@lombok.extern.slf4j.Slf4j
 public class BladeAcolyte {
     public static final int ENDURE = 4310000;
     public static final int SELF_HASTE = 4311001;

@@ -32,6 +32,7 @@ import java.io.ByteArrayOutputStream;
  * @version 1.0
  * @since Revision 352
  */
+@lombok.extern.slf4j.Slf4j
 public class MaplePacketLittleEndianWriter extends GenericLittleEndianWriter {
 
     private final ByteArrayOutputStream baos;
@@ -61,7 +62,7 @@ public class MaplePacketLittleEndianWriter extends GenericLittleEndianWriter {
      */
     public final byte[] getPacket() {
         //MaplePacket packet = new ByteArrayMaplePacket(baos.toByteArray());
-        //System.out.println("Packet to be sent:\n" +packet.toString());
+        //log.info("Packet to be sent:\n" +packet.toString());
         return baos.toByteArray();
     }
 

@@ -28,11 +28,12 @@ import tools.MaplePacketCreator;
 /**
  * @author KyleShum
  */
+@lombok.extern.slf4j.Slf4j
 public class MapleAchievement {
 
+    private final boolean notice;
     private String name;
     private int reward;
-    private final boolean notice;
 
     public MapleAchievement(String name, int reward) {
         this.name = name;

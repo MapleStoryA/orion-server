@@ -4,38 +4,8 @@ import tools.data.output.MaplePacketLittleEndianWriter;
 
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class ScriptMan {
-    private static final short ScriptMessage = 0x163;
-
-    private enum ScriptMessageType {
-        Say(0x0),
-        SayImage(0x1),
-        AskYesNo(0x2),
-        AskText(0x3),
-        AskNumber(0x4),
-        AskMenu(0x5),
-        AskQuiz(0x6),
-        AskSpeedQuiz(0x7),
-        AskAvatar(0x8),
-        AskMemberShopAvatar(0x9),
-        AskPet(0xA),
-        AskPetAll(0xB),
-        AskScript(0xC),
-        AskAccept(0xD),
-        AskBoxText(0xE),
-        AskSlideMenu(0xF),
-        AskCenter(0x10);
-        private final int nMsgType;
-
-        ScriptMessageType(int nMsgType) {
-            this.nMsgType = nMsgType;
-        }
-
-        public int getMsgType() {
-            return nMsgType;
-        }
-    }
-
     // InitialQuiz
     public static final int InitialQuizRes_Request = 0x0;
     public static final int InitialQuizRes_Fail = 0x1;
@@ -48,6 +18,7 @@ public class ScriptMan {
     public static final int NpcReplacedByUser = 0x2;
     public static final int NpcReplayedByNpc = 0x4;
     public static final int FlipImage = 0x8;
+    private static final short ScriptMessage = 0x163;
 
     public static byte[] OnSay(int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, String sText, boolean bPrev, boolean bNext) {
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
@@ -185,7 +156,6 @@ public class ScriptMan {
         return mplew.getPacket();
     }
 
-
     public static byte[] OnAskQuiz(int nSpeakerTypeID, int nSpeakerTemplateID, int nResCode, String sTitle, String sProblemText, String sHintText, int nMinInput, int nMaxInput, int tRemainInitialQuiz) {
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
         mplew.writeShort(ScriptMessage);
@@ -234,5 +204,34 @@ public class ScriptMan {
         mplew.writeInt(nIndex);//Dimensional Mirror.. There's also supportF for potions and such in higher versions.
         mplew.writeMapleAsciiString(sMsg);
         return mplew.getPacket();
+    }
+
+    private enum ScriptMessageType {
+        Say(0x0),
+        SayImage(0x1),
+        AskYesNo(0x2),
+        AskText(0x3),
+        AskNumber(0x4),
+        AskMenu(0x5),
+        AskQuiz(0x6),
+        AskSpeedQuiz(0x7),
+        AskAvatar(0x8),
+        AskMemberShopAvatar(0x9),
+        AskPet(0xA),
+        AskPetAll(0xB),
+        AskScript(0xC),
+        AskAccept(0xD),
+        AskBoxText(0xE),
+        AskSlideMenu(0xF),
+        AskCenter(0x10);
+        private final int nMsgType;
+
+        ScriptMessageType(int nMsgType) {
+            this.nMsgType = nMsgType;
+        }
+
+        public int getMsgType() {
+            return nMsgType;
+        }
     }
 }  

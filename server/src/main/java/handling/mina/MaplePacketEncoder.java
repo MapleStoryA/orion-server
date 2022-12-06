@@ -31,6 +31,7 @@ import tools.MapleCustomEncryption;
 
 import java.util.concurrent.locks.Lock;
 
+@lombok.extern.slf4j.Slf4j
 public class MaplePacketEncoder implements ProtocolEncoder {
 
     @Override

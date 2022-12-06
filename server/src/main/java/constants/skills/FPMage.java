@@ -25,6 +25,7 @@ package constants.skills;
 /**
  * @author BubblesDev
  */
+@lombok.extern.slf4j.Slf4j
 public class FPMage {
     public static final int PARTIAL_RESISTANCE = 2110000;
     public static final int ELEMENT_AMPLIFICATION = 2110001;

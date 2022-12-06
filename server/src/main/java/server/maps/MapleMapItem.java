@@ -30,15 +30,16 @@ import java.awt.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleMapItem extends AbstractMapleMapObject {
 
+    private final ReentrantLock lock = new ReentrantLock();
     protected IItem item;
     protected MapleMapObject dropper;
     protected int character_ownerid, meso = 0, questid = -1;
     protected byte type;
     protected boolean pickedUp = false, playerDrop, randDrop = false;
     protected long nextExpiry = 0, nextFFA = 0;
-    private final ReentrantLock lock = new ReentrantLock();
 
     public MapleMapItem(IItem item, Point position, MapleMapObject dropper, MapleCharacter owner, byte type, boolean playerDrop) {
         setPosition(position);

@@ -21,13 +21,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package client.anticheat;
 
+@lombok.extern.slf4j.Slf4j
 public class CheatingOffenseEntry {
 
     private final CheatingOffense offense;
-    private int count = 0;
     private final int characterid;
-    private long lastOffense;
     private final long firstOffense;
+    private int count = 0;
+    private long lastOffense;
     private String param;
     private int dbid = -1;
 

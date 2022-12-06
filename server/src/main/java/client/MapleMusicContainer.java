@@ -5,6 +5,7 @@ import java.util.HashMap;
 /**
  * @author n. martel
  */
+@lombok.extern.slf4j.Slf4j
 public class MapleMusicContainer {
 
     private final HashMap<Integer, Byte> notecontainer = new HashMap<>();

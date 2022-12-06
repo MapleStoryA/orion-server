@@ -58,31 +58,30 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+@lombok.extern.slf4j.Slf4j
 public class ChannelServer extends GameServer {
 
     public static final short DEFAULT_PORT = 8585;
-    public long serverStartTime;
-    private int expRate, mesoRate, dropRate, cashRate;
-    private int running_MerchantID = 0;
-    private int flags = 0;
-    private String serverMessage;
     private final String ip;
-    private String serverName;
-    private boolean shutdown = false, finishedShutdown = false, MegaphoneMuteState = false, adminOnly = false;
-    private PlayerStorage players;
     private final MapleMapFactory mapFactory;
-    private EventScriptManager eventSM;
     private final Map<String, MapleSquad> mapleSquads = new HashMap<>();
     private final Map<Integer, HiredMerchant> merchants = new HashMap<>();
     private final Map<Integer, PlayerNPC> playerNPCs = new HashMap<>();
     private final ReentrantReadWriteLock merchLock = new ReentrantReadWriteLock();
     private final ReentrantReadWriteLock squadLock = new ReentrantReadWriteLock();
-    private int eventmap = -1;
     private final Map<MapleEventType, MapleEvent> events = new EnumMap<>(MapleEventType.class);
-
     private final AramiaFireWorks aramiaEvent;
-
     private final EventCenter eventCenter;
+    public long serverStartTime;
+    private int expRate, mesoRate, dropRate, cashRate;
+    private int running_MerchantID = 0;
+    private int flags = 0;
+    private String serverMessage;
+    private String serverName;
+    private boolean shutdown = false, finishedShutdown = false, MegaphoneMuteState = false, adminOnly = false;
+    private PlayerStorage players;
+    private EventScriptManager eventSM;
+    private int eventmap = -1;
 
 
     public ChannelServer(int channel, int port) {
@@ -107,10 +106,10 @@ public class ChannelServer extends GameServer {
         scheduleAutoSaver();
         loadEvents();
         eventSM.init();
-        System.out.println("Exp:" + expRate);
-        System.out.println("Meso:" + mesoRate);
-        System.out.println("Drop:" + dropRate);
-        System.out.println("Cash:" + cashRate);
+        log.info("Exp:" + expRate);
+        log.info("Meso:" + mesoRate);
+        log.info("Drop:" + dropRate);
+        log.info("Cash:" + cashRate);
     }
 
     private void scheduleAutoSaver() {
@@ -138,14 +137,14 @@ public class ChannelServer extends GameServer {
         // dc all clients by hand so we get sessionClosed...
         shutdown = true;
 
-        System.out.println("Channel " + channel + ", Saving hired merchants...");
+        log.info("Channel " + channel + ", Saving hired merchants...");
         closeAllMerchant();
 
-        System.out.println("Channel " + channel + ", Saving characters...");
+        log.info("Channel " + channel + ", Saving characters...");
 
         getPlayerStorage().disconnectAll();
 
-        System.out.println("Channel " + channel + ", Unbinding...");
+        log.info("Channel " + channel + ", Unbinding...");
 
         unbindAcceptor();
 
@@ -437,12 +436,12 @@ public class ChannelServer extends GameServer {
 
     public void setShutdown() {
         this.shutdown = true;
-        System.out.println("Channel " + channel + " has set to shutdown and is closing Hired Merchants...");
+        log.info("Channel " + channel + " has set to shutdown and is closing Hired Merchants...");
     }
 
     public void setFinishShutdown() {
         this.finishedShutdown = true;
-        System.out.println("Channel " + channel + " has finished shutdown.");
+        log.info("Channel " + channel + " has finished shutdown.");
     }
 
     public boolean isAdminOnly() {

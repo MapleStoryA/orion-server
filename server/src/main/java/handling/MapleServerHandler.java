@@ -34,7 +34,7 @@ import org.apache.mina.common.IoHandlerAdapter;
 import org.apache.mina.common.IoSession;
 import server.Randomizer;
 import server.config.ServerEnvironment;
-import tools.FileoutputUtil;
+import tools.FileOutputUtil;
 import tools.HexTool;
 import tools.MapleAESOFB;
 import tools.Pair;
@@ -48,21 +48,49 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleServerHandler extends IoHandlerAdapter {
 
     public static final boolean Log_Packets = true;
-    private int channel = -1;
     private final boolean cs;
-    private boolean login;
     private final List<String> BlockedIP = new ArrayList<String>();
     private final Map<String, Pair<Long, Byte>> tracker = new ConcurrentHashMap<String, Pair<Long, Byte>>();
-
     private final PacketProcessor processor;
+    private int channel = -1;
+    private boolean login;
 
     public MapleServerHandler(final int channel, final boolean cs, PacketProcessor processor) {
         this.channel = channel;
         this.cs = cs;
         this.processor = processor;
+    }
+
+    public static final void handlePacket(final RecvPacketOpcode header, final SeekableLittleEndianAccessor slea,
+                                          final MapleClient c, final boolean cs) throws Exception {
+        switch (header) {
+            case PLAYER_LOGGEDIN:
+                final int playerid = slea.readInt();
+                if (cs) {
+                    CashShopOperationUtils.EnterCS(playerid, c);
+                } else {
+                    InterServerHandler.Loggedin(playerid, c);
+                }
+                break;
+            case CHANGE_MAP:
+                if (cs) {
+                    CashShopOperationUtils.LeaveCS(slea, c, c.getPlayer());
+                } else {
+                    PlayerHandler.ChangeMap(slea, c, c.getPlayer());
+                }
+                break;
+            default:
+                if (slea.available() >= 0) { // we don't want to log headers only
+                    FileOutputUtil.logPacket(String.valueOf(header), "[" + header + "] " + slea);
+                    // log.info("[UNHANDLED] Recv [" + header.toString() +
+                    // "] found");
+                }
+                break;
+        }
     }
 
     @Override
@@ -152,7 +180,7 @@ public class MapleServerHandler extends IoHandlerAdapter {
             return;
         }
         sb.append("IoSession opened ").append(address);
-        System.out.println(sb);
+        log.info(sb.toString());
     }
 
     @Override
@@ -183,10 +211,10 @@ public class MapleServerHandler extends IoHandlerAdapter {
             final MapleClient c = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
             MaplePacketHandler packetHandler = processor.getHandler(header_num);
             if (ServerEnvironment.isDebugEnabled()) {
-                //System.out.println("Received: " + header_num);
+                //log.info("Received: " + header_num);
             }
             if (ServerEnvironment.isDebugEnabled() && packetHandler != null) {
-                // System.out.println("[" + packetHandler.getClass().getSimpleName() + "]");
+                // log.info("[" + packetHandler.getClass().getSimpleName() + "]");
             }
             if (packetHandler != null && packetHandler.validateState(c)) {
                 packetHandler.handlePacket(slea, c);
@@ -207,14 +235,14 @@ public class MapleServerHandler extends IoHandlerAdapter {
                     return;
                 }
             }
-            System.out.println("Received data: " + HexTool.toString((byte[]) message));
-            System.out.println("Data: " + new String((byte[]) message));
+            log.info("Received data: " + HexTool.toString((byte[]) message));
+            log.info("Data: " + new String((byte[]) message));
 
             if (slea.available() == 0) { // we don't want to log headers only
             }
 
         } catch (Exception e) {
-            FileoutputUtil.outputFileError(FileoutputUtil.PacketEx_Log, e);
+            FileOutputUtil.outputFileError(FileOutputUtil.PacketEx_Log, e);
             e.printStackTrace();
         }
 
@@ -228,33 +256,5 @@ public class MapleServerHandler extends IoHandlerAdapter {
             client.sendPing();
         }
         super.sessionIdle(session, status);
-    }
-
-    public static final void handlePacket(final RecvPacketOpcode header, final SeekableLittleEndianAccessor slea,
-                                          final MapleClient c, final boolean cs) throws Exception {
-        switch (header) {
-            case PLAYER_LOGGEDIN:
-                final int playerid = slea.readInt();
-                if (cs) {
-                    CashShopOperationUtils.EnterCS(playerid, c);
-                } else {
-                    InterServerHandler.Loggedin(playerid, c);
-                }
-                break;
-            case CHANGE_MAP:
-                if (cs) {
-                    CashShopOperationUtils.LeaveCS(slea, c, c.getPlayer());
-                } else {
-                    PlayerHandler.ChangeMap(slea, c, c.getPlayer());
-                }
-                break;
-            default:
-                if (slea.available() >= 0) { // we don't want to log headers only
-                    FileoutputUtil.logPacket(String.valueOf(header), "[" + header + "] " + slea);
-                    // System.out.println("[UNHANDLED] Recv [" + header.toString() +
-                    // "] found");
-                }
-                break;
-        }
     }
 }

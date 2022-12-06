@@ -18,32 +18,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleDropCreator {
     private static final int COMMON_ETC_RATE = 600000; // 60% Rate
     private static final int SUPER_BOSS_ITEM_RATE = 300000; // 30% Rate
     private static final int POTION_RATE = 20000;
     private static final int ARROWS_RATE = 25000;
     private static final int lastmonstercardid = 2388070;
-    private static boolean addFlagData = false; // There isn't any flag on my source .. so.
     protected static String monsterQueryData = "drop_data"; // Modify this to suite your source
     protected static List<Pair<Integer, String>> itemNameCache = new ArrayList<Pair<Integer, String>>();
     protected static List<Pair<Integer, MobInfo>> mobCache = new ArrayList<Pair<Integer, MobInfo>>();
     protected static Map<Integer, Boolean> bossCache = new HashMap<Integer, Boolean>();
+    private static boolean addFlagData = false; // There isn't any flag on my source .. so.
 
     public static void main(String[] args) throws IOException, NotBoundException, InstanceAlreadyExistsException, MBeanRegistrationException, NotCompliantMBeanException, MalformedObjectNameException {
         MapleData data = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/String")).getData("MonsterBook.img");
 
-        System.out.println("Warning : Use this only at your own risk!");
-        System.out.println("Press any key to continue...");
+        log.info("Warning : Use this only at your own risk!");
+        log.info("Press any key to continue...");
         //System.console().readLine();
-        System.out.println("As you wish.\n\n\n\n");
+        log.info("As you wish.\n\n\n\n");
 
         long currtime = System.currentTimeMillis();
         addFlagData = Boolean.parseBoolean(args[0]);
 
-        System.out.println("Loading : Item name string.");
+        log.info("Loading : Item name string.");
         getAllItems();
-        System.out.println("Loading : Mob data.");
+        log.info("Loading : Mob data.");
         getAllMobs();
 
         boolean first;
@@ -104,7 +105,7 @@ public class MapleDropCreator {
         }
 
         // MonsterBook
-        System.out.println("Loading : Drops from String.wz/MonsterBook.img.");
+        log.info("Loading : Drops from String.wz/MonsterBook.img.");
         for (MapleData dataz : data.getChildren()) {
             int monsterId = Integer.parseInt(dataz.getName());
             int idtoLog = monsterId;
@@ -195,7 +196,7 @@ public class MapleDropCreator {
             sb.delete(0, 2147483647); // ;P wild guess LOL
         }
 
-        System.out.println("Loading : MonsterBook drops.");
+        log.info("Loading : MonsterBook drops.");
         StringBuilder SQL = new StringBuilder();
         StringBuilder bookName = new StringBuilder();
         for (Pair<Integer, String> Pair : itemNameCache) {
@@ -230,7 +231,7 @@ public class MapleDropCreator {
                 bookName.delete(0, 2147483647); // ;P wild guess LOL
             }
         }
-        System.out.println("Loading : Monster Card Data.");
+        log.info("Loading : Monster Card Data.");
         SQL.append("\n");
         int i = 1;
         int lastmonsterbookid = 0;
@@ -265,7 +266,7 @@ public class MapleDropCreator {
         long time = System.currentTimeMillis() - currtime;
         time /= 1000;
 
-        System.out.println("Time taken : " + time);
+        log.info("Time taken : " + time);
     }
 
     private static void retriveNLogItemName(final StringBuilder sb, final int id) {
@@ -632,7 +633,7 @@ public class MapleDropCreator {
                 }
                 return 2000;
         }
-        System.out.println("Unhandled item chance, ID : " + id);
+        log.info("Unhandled item chance, ID : " + id);
         return 999999;
     }
 

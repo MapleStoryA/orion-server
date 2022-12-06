@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package client;
 
+@lombok.extern.slf4j.Slf4j
 public class SummonSkillEntry {
 
     public byte type;

@@ -15,6 +15,7 @@ import server.quest.MapleQuest;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.LoginPacket;
 
+@lombok.extern.slf4j.Slf4j
 public class CreateCharHandler extends AbstractMaplePacketHandler {
 
     private static final int[] IDs = {1302000, 1312004, 1322005, 1442079, 1302132, // weapons

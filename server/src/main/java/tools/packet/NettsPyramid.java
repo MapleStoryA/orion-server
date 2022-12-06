@@ -5,14 +5,6 @@ import tools.data.output.MaplePacketLittleEndianWriter;
 
 public final class NettsPyramid {
 
-    public enum NettsInfoType {
-        COOL,
-        KILL,
-        MISS,
-        BUFFS
-    }
-
-
     private NettsPyramid() {
     }
 
@@ -34,6 +26,13 @@ public final class NettsPyramid {
 
     private static String getTypeValue(NettsInfoType type) {
         return "massacre_" + (type == NettsInfoType.COOL ? "cool" : type == NettsInfoType.KILL ? "hit" : "miss");
+    }
+
+    public enum NettsInfoType {
+        COOL,
+        KILL,
+        MISS,
+        BUFFS
     }
 
 }

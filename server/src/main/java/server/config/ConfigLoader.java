@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+@lombok.extern.slf4j.Slf4j
 public class ConfigLoader {
 
     private static final Logger log = LoggerFactory.getLogger(ConfigLoader.class);
@@ -43,6 +44,13 @@ public class ConfigLoader {
         return extension;
     }
 
+    public static void main(String[] args) {
+        var loader = new ConfigLoader(Environment.LOCAL, Paths.get("config").toAbsolutePath());
+        ServerConfig serverConfig = loader.loadServerConfig();
+        String config = serverConfig.getProperty("login.host");
+        log.info("Loaded config", serverConfig);
+    }
+
     public ServerConfig loadServerConfig() {
         if (!new File(folder).exists()) {
             throw new RuntimeException("The folder " + folder + " does not exist");
@@ -56,13 +64,6 @@ public class ConfigLoader {
                     }
                 });
         return new ServerConfig(environment, path, propertiesMap);
-    }
-
-    public static void main(String[] args) {
-        var loader = new ConfigLoader(Environment.LOCAL, Paths.get("config").toAbsolutePath());
-        ServerConfig serverConfig = loader.loadServerConfig();
-        String config = serverConfig.getProperty("login.host");
-        log.info("Loaded config", serverConfig);
     }
 
 }

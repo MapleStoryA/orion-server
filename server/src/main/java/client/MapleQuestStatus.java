@@ -29,6 +29,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleQuestStatus implements Serializable {
 
     private static final long serialVersionUID = 91795419934134L;
@@ -187,11 +188,11 @@ public class MapleQuestStatus implements Serializable {
         }
     }
 
-    public final void setCustomData(final String customData) {
-        this.customData = customData;
-    }
-
     public final String getCustomData() {
         return customData;
+    }
+
+    public final void setCustomData(final String customData) {
+        this.customData = customData;
     }
 }

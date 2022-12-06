@@ -39,11 +39,11 @@ public enum SavedLocationType {
         this.index = index;
     }
 
-    public int getValue() {
-        return index;
-    }
-
     public static SavedLocationType fromString(String Str) {
         return valueOf(Str);
+    }
+
+    public int getValue() {
+        return index;
     }
 }

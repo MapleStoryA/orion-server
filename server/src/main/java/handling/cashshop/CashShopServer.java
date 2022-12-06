@@ -35,11 +35,12 @@ import server.ServerProperties;
 
 import java.net.InetSocketAddress;
 
+@lombok.extern.slf4j.Slf4j
 public class CashShopServer {
 
+    private final static int PORT = 8799;
     private static String ip;
     private static InetSocketAddress inetSocketAddr;
-    private final static int PORT = 8799;
     private static IoAcceptor acceptor;
     private static PlayerStorage players;
     private static boolean finishedShutdown = false;
@@ -60,7 +61,7 @@ public class CashShopServer {
         try {
             inetSocketAddr = new InetSocketAddress(PORT);
             acceptor.bind(inetSocketAddr, new MapleServerHandler(-1, true, PacketProcessor.CASHSHOP()), cfg);
-            System.out.println("Listening on port " + PORT + ".");
+            log.info("Listening on port " + PORT + ".");
         } catch (final Exception e) {
             System.err.println("Binding to port " + PORT + " failed");
             e.printStackTrace();
@@ -80,9 +81,9 @@ public class CashShopServer {
         if (finishedShutdown) {
             return;
         }
-        System.out.println("Saving all connected clients (CS)...");
+        log.info("Saving all connected clients (CS)...");
         players.disconnectAll();
-        System.out.println("Shutting down CS...");
+        log.info("Shutting down CS...");
         acceptor.unbindAll();
         finishedShutdown = true;
     }

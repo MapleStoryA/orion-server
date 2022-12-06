@@ -16,6 +16,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
 import java.util.ArrayList;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class DistributeAPHandler extends AbstractMaplePacketHandler {
 
     @Override

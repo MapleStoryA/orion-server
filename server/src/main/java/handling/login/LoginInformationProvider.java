@@ -28,21 +28,22 @@ import server.config.ServerEnvironment;
 import java.util.ArrayList;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class LoginInformationProvider {
 
     private final static LoginInformationProvider instance = new LoginInformationProvider();
     protected final List<String> forbiddenName = new ArrayList<>();
 
-    public static LoginInformationProvider getInstance() {
-        return instance;
-    }
-
     LoginInformationProvider() {
-        System.out.println("Loading LoginInformationProvider :::");
+        log.info("Loading LoginInformationProvider :::");
         final MapleData nameData = ServerEnvironment.getConfig().getDataProvider("wz/Etc").getData("ForbiddenName.img");
         for (final MapleData data : nameData.getChildren()) {
             forbiddenName.add(MapleDataTool.getString(data));
         }
+    }
+
+    public static LoginInformationProvider getInstance() {
+        return instance;
     }
 
     public boolean isForbiddenName(final String in) {

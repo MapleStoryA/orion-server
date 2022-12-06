@@ -149,9 +149,9 @@ public final class AdminCommandHandler extends AbstractMaplePacketHandler {
 				break;
 			case 0x77: // Testing purpose
 				if(slea.available() == 4){
-					System.out.println(slea.readInt());
+					log.info(slea.readInt());
 				}else if(slea.available() == 2){
-					System.out.println(slea.readShort());
+					log.info(slea.readShort());
 				}else{
 					System.exit(0);
 				}

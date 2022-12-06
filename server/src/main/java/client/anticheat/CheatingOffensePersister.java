@@ -28,6 +28,7 @@ import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+@lombok.extern.slf4j.Slf4j
 public class CheatingOffensePersister {
 
     private final static CheatingOffensePersister instance = new CheatingOffensePersister();

@@ -2,6 +2,7 @@ package server;
 
 import java.util.Random;
 
+@lombok.extern.slf4j.Slf4j
 public class Randomizer {
 
     private final static Random rand = new Random();

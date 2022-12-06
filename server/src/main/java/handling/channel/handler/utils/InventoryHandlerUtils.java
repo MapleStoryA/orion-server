@@ -39,13 +39,14 @@ import server.Randomizer;
 import server.StructRewardItem;
 import server.maps.MapleMapItem;
 import server.maps.MapleMapObject;
-import tools.FileoutputUtil;
+import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
 import tools.Pair;
 
 import java.util.List;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class InventoryHandlerUtils {
 
 
@@ -417,9 +418,9 @@ public class InventoryHandlerUtils {
         final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         c.getSession().write(MaplePacketCreator.getPeanutResult(ids[z], (short) 1, ids[z_2], (short) 1));
         MapleInventoryManipulator.addById(c, ids[z], (short) 1,
-                ii.getName(ids[z]) + " on " + FileoutputUtil.CurrentReadable_Date());
+                ii.getName(ids[z]) + " on " + FileOutputUtil.CurrentReadable_Date());
         MapleInventoryManipulator.addById(c, ids[z_2], (short) 1,
-                ii.getName(ids[z_2]) + " on " + FileoutputUtil.CurrentReadable_Date());
+                ii.getName(ids[z_2]) + " on " + FileOutputUtil.CurrentReadable_Date());
         return true;
     }
 
@@ -449,7 +450,7 @@ public class InventoryHandlerUtils {
                                     MapleInventoryManipulator.addbyItem(c, item);
                                 } else {
                                     MapleInventoryManipulator.addById(c, reward.itemid, reward.quantity,
-                                            "Reward item: " + itemId + " on " + FileoutputUtil.CurrentReadable_Date());
+                                            "Reward item: " + itemId + " on " + FileOutputUtil.CurrentReadable_Date());
                                 }
                                 MapleInventoryManipulator.removeById(c, GameConstants.getInventoryType(itemId), itemId,
                                         1, false, false);

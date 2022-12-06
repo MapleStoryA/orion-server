@@ -24,13 +24,14 @@ package provider.WzXML;
 import provider.MapleDataEntity;
 import provider.MapleDataEntry;
 
+@lombok.extern.slf4j.Slf4j
 public class WZEntry implements MapleDataEntry {
 
     private final String name;
     private final int size;
     private final int checksum;
-    private int offset;
     private final MapleDataEntity parent;
+    private int offset;
 
     public WZEntry(String name, int size, int checksum, MapleDataEntity parent) {
         super();

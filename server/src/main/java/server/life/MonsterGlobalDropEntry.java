@@ -21,8 +21,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package server.life;
 
+@lombok.extern.slf4j.Slf4j
 public class MonsterGlobalDropEntry {
 
+    public byte dropType;
+    public int itemId, chance, Minimum, Maximum, continent, questid;
+    public boolean onlySelf = false;
     public MonsterGlobalDropEntry(int itemId, int chance, int continent, byte dropType, int Minimum, int Maximum, int questid) {
         this.itemId = itemId;
         this.chance = chance;
@@ -32,7 +36,6 @@ public class MonsterGlobalDropEntry {
         this.Minimum = Minimum;
         this.Maximum = Maximum;
     }
-
     public MonsterGlobalDropEntry(int itemId, int chance, int continent, byte dropType, int Minimum, int Maximum, int questid, boolean onlySelf) {
         this.itemId = itemId;
         this.chance = chance;
@@ -43,8 +46,4 @@ public class MonsterGlobalDropEntry {
         this.Maximum = Maximum;
         this.onlySelf = onlySelf;
     }
-
-    public byte dropType;
-    public int itemId, chance, Minimum, Maximum, continent, questid;
-    public boolean onlySelf = false;
 }

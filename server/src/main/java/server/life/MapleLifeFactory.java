@@ -37,6 +37,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleLifeFactory {
 
     private static final MapleDataProvider data = ServerEnvironment.getConfig().getDataProvider("wz/Mob");
@@ -86,7 +87,7 @@ public class MapleLifeFactory {
                         }
                         questCount.put(id, z);
                     } else {
-                        System.out.println("null questcountgroup");
+                        log.info("null questcountgroup");
                     }
                 }
             }

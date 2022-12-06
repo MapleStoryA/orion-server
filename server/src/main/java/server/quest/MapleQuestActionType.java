@@ -30,10 +30,6 @@ public enum MapleQuestActionType {
         this.type = (byte) type;
     }
 
-    public byte getType() {
-        return type;
-    }
-
     public static MapleQuestActionType getByType(byte type) {
         for (MapleQuestActionType l : MapleQuestActionType.values()) {
             if (l.getType() == type) {
@@ -49,5 +45,9 @@ public enum MapleQuestActionType {
         } catch (IllegalArgumentException ex) {
             return UNDEFINED;
         }
+    }
+
+    public byte getType() {
+        return type;
     }
 }

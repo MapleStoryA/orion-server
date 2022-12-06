@@ -33,16 +33,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleMount implements Serializable {
 
     private static final long serialVersionUID = 9179541993413738569L;
-    private int itemid;
     private final int skillid;
+    private final transient WeakReference<MapleCharacter> owner;
+    private int itemid;
     private int exp;
     private byte fatigue, level;
     private transient boolean changed = false;
     private long lastFatigue = 0;
-    private final transient WeakReference<MapleCharacter> owner;
 
     public MapleMount(MapleCharacter owner, int id, int skillid, byte fatigue, byte level, int exp) {
         this.itemid = id;
@@ -71,25 +72,17 @@ public class MapleMount implements Serializable {
         return itemid;
     }
 
+    public void setItemId(int c) {
+        changed = true;
+        this.itemid = c;
+    }
+
     public int getSkillId() {
         return skillid;
     }
 
     public byte getFatigue() {
         return fatigue;
-    }
-
-    public int getExp() {
-        return exp;
-    }
-
-    public byte getLevel() {
-        return level;
-    }
-
-    public void setItemId(int c) {
-        changed = true;
-        this.itemid = c;
     }
 
     public void setFatigue(byte amount) {
@@ -100,9 +93,17 @@ public class MapleMount implements Serializable {
         }
     }
 
+    public int getExp() {
+        return exp;
+    }
+
     public void setExp(int c) {
         changed = true;
         this.exp = c;
+    }
+
+    public byte getLevel() {
+        return level;
     }
 
     public void setLevel(byte c) {

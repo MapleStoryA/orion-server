@@ -9,6 +9,7 @@ import scripting.v1.dispatch.PacketDispatcher;
 import server.life.MapleNPC;
 import tools.packet.npcpool.NpcPoolPackets;
 
+@lombok.extern.slf4j.Slf4j
 public class NpcScript extends PlayerInteractionScript {
 
     private final int npc;
@@ -29,12 +30,12 @@ public class NpcScript extends PlayerInteractionScript {
         }
     }
 
-    public void setContinuation(Object continuation) {
-        this.continuation = continuation;
-    }
-
     public Object getContinuation() {
         return continuation;
+    }
+
+    public void setContinuation(Object continuation) {
+        this.continuation = continuation;
     }
 
     public void resume(Object obj) {

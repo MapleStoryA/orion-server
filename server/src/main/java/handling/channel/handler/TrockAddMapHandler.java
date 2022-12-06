@@ -10,6 +10,7 @@ import tools.packet.MTSCSPacket;
 import java.util.ArrayList;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class TrockAddMapHandler extends AbstractMaplePacketHandler {
     private static final List<Integer> blockedMaps;
 

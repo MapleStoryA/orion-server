@@ -42,9 +42,25 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class CharacterTransfer implements Externalizable {
 
     private static final long serialVersionUID = 3189097216195936864L;
+    public final List<Integer> finishedAchievements = new ArrayList<>(), famedcharacters = new ArrayList<>();
+    public final List<BuddyListEntry> buddies = new ArrayList<>();
+    public final Map<Integer, Object> Quest = new LinkedHashMap<>(); // Questid
+    // instead
+    // of
+    // MapleQuest,
+    // as
+    // it's
+    // huge.
+    // Cant
+    // be
+    // transporting
+    // MapleQuest.java
+    public final Map<Integer, Object> customQuests = new LinkedHashMap<>();
+    public final Map<Integer, SkillEntry> Skills = new LinkedHashMap<>(); // Skillid
     public int characterid, accountid, exp, meso, hair, face, mapid, guildid, partyid, messengerid, mBookCover, dojo,
             nxCredit, MaplePoints, mount_itemid, mount_exp, points, marriageId, battleshipHP, reborns,
             remainingAp, maxhp, maxmp, hp, mp;
@@ -60,22 +76,7 @@ public class CharacterTransfer implements Externalizable {
     public Map<Integer, Integer> mbook = new LinkedHashMap<>();
     public Map<Byte, Integer> reports = new LinkedHashMap<>();
     public Map<Integer, Triple<Byte, Integer, Byte>> keymap = new LinkedHashMap<>();
-    public final List<Integer> finishedAchievements = new ArrayList<>(), famedcharacters = new ArrayList<>();
-    public final List<BuddyListEntry> buddies = new ArrayList<>();
-    public final Map<Integer, Object> Quest = new LinkedHashMap<>(); // Questid
-    // instead
-    // of
-    // MapleQuest,
-    // as
-    // it's
-    // huge.
-    // Cant
-    // be
-    // transporting
-    // MapleQuest.java
-    public final Map<Integer, Object> customQuests = new LinkedHashMap<>();
     public Map<Integer, String> InfoQuest = new LinkedHashMap<>();
-    public final Map<Integer, SkillEntry> Skills = new LinkedHashMap<>(); // Skillid
     // instead
     // of
     // Skill.java,

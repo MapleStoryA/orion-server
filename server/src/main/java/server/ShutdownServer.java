@@ -12,6 +12,7 @@ import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
 
+@lombok.extern.slf4j.Slf4j
 public class ShutdownServer implements ShutdownServerMBean {
 
     public static ShutdownServer instance;
@@ -23,7 +24,7 @@ public class ShutdownServer implements ShutdownServerMBean {
             instance = new ShutdownServer();
             mBeanServer.registerMBean(instance, new ObjectName("server:type=ShutdownServer"));
         } catch (Exception e) {
-            System.out.println("Error registering Shutdown MBean");
+            log.info("Error registering Shutdown MBean");
             e.printStackTrace();
         }
     }
@@ -45,7 +46,7 @@ public class ShutdownServer implements ShutdownServerMBean {
             this.mode += 1;
         } else if (this.mode == 1) {
             this.mode += 1;
-            System.out.println("Shutdown 2 commencing...");
+            log.info("Shutdown 2 commencing...");
 
             try {
                 World.Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(0, "The world is going to shutdown now. Please log off safely."));
@@ -58,13 +59,13 @@ public class ShutdownServer implements ShutdownServerMBean {
                 CashShopServer.shutdown();
                 World.initTimers();
             } catch (Exception e) {
-                System.out.println("Failed to shutdown..." + e);
+                log.info("Failed to shutdown..." + e);
             }
 
-            System.out.println("Shutdown 2 has finished.");
+            log.info("Shutdown 2 has finished.");
             DatabaseConnection.closeAll();
             this.mode = 0;
-            System.out.println("Done.");
+            log.info("Done.");
         }
     }
 

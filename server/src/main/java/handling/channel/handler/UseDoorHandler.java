@@ -7,6 +7,7 @@ import server.maps.MapleDoor;
 import server.maps.MapleMapObject;
 import tools.data.input.SeekableLittleEndianAccessor;
 
+@lombok.extern.slf4j.Slf4j
 public class UseDoorHandler extends AbstractMaplePacketHandler {
 
     @Override

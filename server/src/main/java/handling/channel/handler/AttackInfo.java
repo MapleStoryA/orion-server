@@ -32,6 +32,7 @@ import tools.AttackPair;
 import java.awt.*;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class AttackInfo {
 
 

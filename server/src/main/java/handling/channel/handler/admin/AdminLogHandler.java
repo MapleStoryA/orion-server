@@ -28,8 +28,6 @@ public final class AdminLogHandler extends AbstractMaplePacketHandler {
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         if (!c.getPlayer().isGM()) {// if ( (signed int)CWvsContext::GetAdminLevel((void *)v294) > 2 )
-            return;
         }
-        System.out.println("AdminLog: " + slea.toString());
     }
 }

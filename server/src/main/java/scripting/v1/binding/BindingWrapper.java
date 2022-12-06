@@ -6,6 +6,7 @@ import scripting.v1.dispatch.RealPacketDispatcher;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@lombok.extern.slf4j.Slf4j
 public class BindingWrapper {
 
     public static TargetScript wrapCharacter(MapleCharacter player) {

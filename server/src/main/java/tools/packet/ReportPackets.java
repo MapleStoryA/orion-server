@@ -3,6 +3,7 @@ package tools.packet;
 import handling.SendPacketOpcode;
 import tools.data.output.MaplePacketLittleEndianWriter;
 
+@lombok.extern.slf4j.Slf4j
 public class ReportPackets {
 
     public static byte[] enableReport() {

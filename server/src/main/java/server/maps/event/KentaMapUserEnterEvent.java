@@ -7,6 +7,7 @@ import server.life.MapleMonster;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
 
+@lombok.extern.slf4j.Slf4j
 public class KentaMapUserEnterEvent implements MapEvent {
 
     public static final int HOG_ID = 9300101;

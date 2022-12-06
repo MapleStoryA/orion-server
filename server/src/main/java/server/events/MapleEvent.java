@@ -32,7 +32,7 @@ import server.Randomizer;
 import server.Timer.EventTimer;
 import server.maps.MapleMap;
 import server.maps.SavedLocationType;
-import tools.FileoutputUtil;
+import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
 
 public abstract class MapleEvent {
@@ -43,95 +43,6 @@ public abstract class MapleEvent {
     public MapleEvent(final int channel, final int[] mapid) {
         this.channel = channel;
         this.mapid = mapid;
-    }
-
-    public boolean isRunning() {
-        return isRunning;
-    }
-
-    public MapleMap getMap(final int i) {
-        return getChannelServer().getMapFactory().getMap(mapid[i]);
-    }
-
-    public ChannelServer getChannelServer() {
-        return WorldServer.getInstance().getChannel(channel);
-    }
-
-    public void broadcast(final byte[] packet) {
-        for (int i = 0; i < mapid.length; i++) {
-            getMap(i).broadcastMessage(packet);
-        }
-    }
-
-    public void givePrize(final MapleCharacter chr) {
-        final int reward = RandomRewards.getInstance().getEventReward();
-        if (reward == 0) {
-            final int mes = Randomizer.nextInt(9000000) + 1000000;
-            chr.gainMeso(mes, true, false, false);
-            chr.dropMessage(5, "You gained " + mes + " Mesos.");
-        } else if (reward == 1) {
-            final int cs = Randomizer.nextInt(4000) + 1000;
-            chr.modifyCSPoints(1, cs, true);
-            chr.dropMessage(5, "You gained " + cs + " cash.");
-
-        } else if (reward == 3) {
-            chr.addFame(10);
-            chr.dropMessage(5, "You gained 10 Fame.");
-        } else {
-            int max_quantity = 1;
-            switch (reward) {
-                case 5062000:
-                    max_quantity = 3;
-                    break;
-                case 5220000:
-                    max_quantity = 25;
-                    break;
-                case 4031307:
-                case 5050000:
-                    max_quantity = 5;
-                    break;
-                case 2022121:
-                    max_quantity = 10;
-                    break;
-            }
-            final int quantity = (max_quantity > 1 ? Randomizer.nextInt(max_quantity) : 0) + 1;
-            if (MapleInventoryManipulator.checkSpace(chr.getClient(), reward, quantity, "")) {
-                MapleInventoryManipulator.addById(chr.getClient(), reward, (short) quantity, "Event prize on " + FileoutputUtil.CurrentReadable_Date());
-            } else {
-                givePrize(chr); //do again until they get
-            }
-            //5062000 = 1-3
-            //5220000 = 1-25
-            //5050000 = 1-5
-            //2022121 = 1-10
-            //4031307 = 1-5
-        }
-    }
-
-    public void finished(MapleCharacter chr) { //most dont do shit here
-    }
-
-    public void onMapLoad(MapleCharacter chr) { //most dont do shit here
-    }
-
-    public void startEvent() {
-    }
-
-    public void warpBack(MapleCharacter chr) {
-        int map = chr.getSavedLocation(SavedLocationType.EVENT);
-        if (map <= -1) {
-            map = 104000000;
-        }
-        final MapleMap mapp = chr.getClient().getChannelServer().getMapFactory().getMap(map);
-        chr.changeMap(mapp, mapp.getPortal(0));
-    }
-
-    public void reset() {
-        isRunning = true;
-    }
-
-    public void unreset() {
-        isRunning = false;
     }
 
     public static final void setEvent(final ChannelServer cserv, final boolean auto) {
@@ -204,5 +115,94 @@ public abstract class MapleEvent {
         cserv.getEvent(event).reset();
         World.Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(0, "Hello! Let's play a " + event + " event in channel " + cserv.getChannel() + "! Change to channel " + cserv.getChannel() + " and use @event command!"));
         return "";
+    }
+
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    public MapleMap getMap(final int i) {
+        return getChannelServer().getMapFactory().getMap(mapid[i]);
+    }
+
+    public ChannelServer getChannelServer() {
+        return WorldServer.getInstance().getChannel(channel);
+    }
+
+    public void broadcast(final byte[] packet) {
+        for (int i = 0; i < mapid.length; i++) {
+            getMap(i).broadcastMessage(packet);
+        }
+    }
+
+    public void givePrize(final MapleCharacter chr) {
+        final int reward = RandomRewards.getInstance().getEventReward();
+        if (reward == 0) {
+            final int mes = Randomizer.nextInt(9000000) + 1000000;
+            chr.gainMeso(mes, true, false, false);
+            chr.dropMessage(5, "You gained " + mes + " Mesos.");
+        } else if (reward == 1) {
+            final int cs = Randomizer.nextInt(4000) + 1000;
+            chr.modifyCSPoints(1, cs, true);
+            chr.dropMessage(5, "You gained " + cs + " cash.");
+
+        } else if (reward == 3) {
+            chr.addFame(10);
+            chr.dropMessage(5, "You gained 10 Fame.");
+        } else {
+            int max_quantity = 1;
+            switch (reward) {
+                case 5062000:
+                    max_quantity = 3;
+                    break;
+                case 5220000:
+                    max_quantity = 25;
+                    break;
+                case 4031307:
+                case 5050000:
+                    max_quantity = 5;
+                    break;
+                case 2022121:
+                    max_quantity = 10;
+                    break;
+            }
+            final int quantity = (max_quantity > 1 ? Randomizer.nextInt(max_quantity) : 0) + 1;
+            if (MapleInventoryManipulator.checkSpace(chr.getClient(), reward, quantity, "")) {
+                MapleInventoryManipulator.addById(chr.getClient(), reward, (short) quantity, "Event prize on " + FileOutputUtil.CurrentReadable_Date());
+            } else {
+                givePrize(chr); //do again until they get
+            }
+            //5062000 = 1-3
+            //5220000 = 1-25
+            //5050000 = 1-5
+            //2022121 = 1-10
+            //4031307 = 1-5
+        }
+    }
+
+    public void finished(MapleCharacter chr) { //most dont do shit here
+    }
+
+    public void onMapLoad(MapleCharacter chr) { //most dont do shit here
+    }
+
+    public void startEvent() {
+    }
+
+    public void warpBack(MapleCharacter chr) {
+        int map = chr.getSavedLocation(SavedLocationType.EVENT);
+        if (map <= -1) {
+            map = 104000000;
+        }
+        final MapleMap mapp = chr.getClient().getChannelServer().getMapFactory().getMap(map);
+        chr.changeMap(mapp, mapp.getPortal(0));
+    }
+
+    public void reset() {
+        isRunning = true;
+    }
+
+    public void unreset() {
+        isRunning = false;
     }
 }

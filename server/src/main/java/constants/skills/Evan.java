@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package constants.skills;
 
+@lombok.extern.slf4j.Slf4j
 public class Evan {
     // EVAN1 \\
     public static final int BLESSING_OF_THE_FAIRY = 20010012;

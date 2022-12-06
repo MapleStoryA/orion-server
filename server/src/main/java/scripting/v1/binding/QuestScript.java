@@ -4,6 +4,7 @@ import client.MapleClient;
 import scripting.v1.dispatch.PacketDispatcher;
 import server.quest.MapleQuest;
 
+@lombok.extern.slf4j.Slf4j
 public class QuestScript extends PlayerInteractionScript {
 
     private static final int COMPLETE_QUEST = 2;

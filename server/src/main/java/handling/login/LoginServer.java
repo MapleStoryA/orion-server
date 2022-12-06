@@ -34,19 +34,19 @@ import tools.packet.LoginPacket;
 import java.util.HashMap;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class LoginServer extends GameServer {
 
     public static final int PORT = 8484;
-    private Map<Integer, Integer> load = new HashMap<>();
+    private static LoginServer INSTANCE;
     private final String serverName;
     private final String eventMessage;
-    private byte flag;
     private final int userLimit;
+    private final boolean adminOnly;
+    private Map<Integer, Integer> load = new HashMap<>();
+    private byte flag;
     private int usersOn = 0;
     private boolean finishedShutdown = true;
-    private final boolean adminOnly;
-    private static LoginServer INSTANCE;
-
     private long lastUpdate = 0;
 
     public LoginServer(ServerConfig config) {
@@ -77,7 +77,7 @@ public class LoginServer extends GameServer {
         if (finishedShutdown) {
             return;
         }
-        System.out.println("Shutting down login...");
+        log.info("Shutting down login...");
         acceptor.unbindAll();
         finishedShutdown = true;
     }

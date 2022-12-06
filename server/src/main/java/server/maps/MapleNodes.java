@@ -31,6 +31,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleNodes {
 
     private final Map<Integer, MapleNodeInfo> nodes; //used for HOB pq.
@@ -40,9 +41,9 @@ public class MapleNodes {
     private final List<Integer> skillIds;
     private final List<Pair<Integer, Integer>> mobsToSpawn;
     private final List<Pair<Point, Integer>> guardiansToSpawn;
+    private final int mapid;
     private int nodeStart = -1;
     private int nodeEnd = -1;
-    private final int mapid;
     private boolean firstHighest = true;
 
     public MapleNodes(final int mapid) {
@@ -62,21 +63,6 @@ public class MapleNodes {
 
     public void setNodeEnd(final int ns) {
         this.nodeEnd = ns;
-    }
-
-    public static class MapleNodeInfo {
-
-        public int node, key, x, y, attr;
-        public List<Integer> edge;
-
-        public MapleNodeInfo(int node, int key, int x, int y, int attr, List<Integer> edge) {
-            this.node = node;
-            this.key = key;
-            this.x = x;
-            this.y = y;
-            this.attr = attr;
-            this.edge = edge;
-        }
     }
 
     public void addNode(final MapleNodeInfo mni) {
@@ -109,7 +95,7 @@ public class MapleNodes {
         for (int i : mni.edge) {
         b.append(i + ", ");
         }
-        System.out.println(b.toString());
+        log.info(b.toString());
         FileoutputUtil.log(FileoutputUtil.PacketEx_Log, b.toString());*/
         // output part end
 
@@ -158,44 +144,12 @@ public class MapleNodes {
         return getAreas().get(index);
     }
 
-    public static class MaplePlatform {
-
-        public String name;
-        public int start, speed, x1, y1, x2, y2, r;
-        public List<Integer> SN;
-
-        public MaplePlatform(String name, int start, int speed, int x1, int y1, int x2, int y2, int r, List<Integer> SN) {
-            this.name = name;
-            this.start = start;
-            this.speed = speed;
-            this.x1 = x1;
-            this.y1 = y1;
-            this.x2 = x2;
-            this.y2 = y2;
-            this.r = r;
-            this.SN = SN;
-        }
-    }
-
     public final void addPlatform(final MaplePlatform mp) {
         this.platforms.add(mp);
     }
 
     public final List<MaplePlatform> getPlatforms() {
         return new ArrayList<MaplePlatform>(platforms);
-    }
-
-    public static class MonsterPoint {
-
-        public int x, y, fh, cy, team;
-
-        public MonsterPoint(int x, int y, int fh, int cy, int team) {
-            this.x = x;
-            this.y = y;
-            this.fh = fh;
-            this.cy = cy;
-            this.team = team;
-        }
     }
 
     public final List<MonsterPoint> getMonsterPoints() {
@@ -228,5 +182,52 @@ public class MapleNodes {
 
     public final void addSkillId(int z) {
         this.skillIds.add(z);
+    }
+
+    public static class MapleNodeInfo {
+
+        public int node, key, x, y, attr;
+        public List<Integer> edge;
+
+        public MapleNodeInfo(int node, int key, int x, int y, int attr, List<Integer> edge) {
+            this.node = node;
+            this.key = key;
+            this.x = x;
+            this.y = y;
+            this.attr = attr;
+            this.edge = edge;
+        }
+    }
+
+    public static class MaplePlatform {
+
+        public String name;
+        public int start, speed, x1, y1, x2, y2, r;
+        public List<Integer> SN;
+
+        public MaplePlatform(String name, int start, int speed, int x1, int y1, int x2, int y2, int r, List<Integer> SN) {
+            this.name = name;
+            this.start = start;
+            this.speed = speed;
+            this.x1 = x1;
+            this.y1 = y1;
+            this.x2 = x2;
+            this.y2 = y2;
+            this.r = r;
+            this.SN = SN;
+        }
+    }
+
+    public static class MonsterPoint {
+
+        public int x, y, fh, cy, team;
+
+        public MonsterPoint(int x, int y, int fh, int cy, int team) {
+            this.x = x;
+            this.y = y;
+            this.fh = fh;
+            this.cy = cy;
+            this.team = team;
+        }
     }
 }

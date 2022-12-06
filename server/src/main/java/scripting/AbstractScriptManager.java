@@ -14,12 +14,10 @@ import javax.script.ScriptException;
  */
 public abstract class AbstractScriptManager {
 
-    protected ScriptEngine engine;
-    private final ScriptEngineManager sem;
-
-    private static boolean isDebugMode;
-
     protected static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AbstractScriptManager.class);
+    private static boolean isDebugMode;
+    private final ScriptEngineManager sem;
+    protected ScriptEngine engine;
 
     protected AbstractScriptManager() {
         isDebugMode = ServerEnvironment.isDebugEnabled();
@@ -31,7 +29,7 @@ public abstract class AbstractScriptManager {
             path = ServerEnvironment.getConfig().getScriptsPath() + "/" + path + "/" + scriptId + ".js";
 
             if (isDebugMode) {
-                System.out.println("Loading file " + path);
+                log.info("Loading file " + path);
             }
 
             engine = sem.getEngineByName("nashorn");
@@ -54,12 +52,12 @@ public abstract class AbstractScriptManager {
             return (Invocable) engine;
         } catch (ScriptException e) {
             log.error("Error executing script " + path, e);
-            System.out.println("Error executing script " + path + e.getMessage() + " line: " + e.getLineNumber()
+            log.info("Error executing script " + path + e.getMessage() + " line: " + e.getLineNumber()
                     + " column: " + e.getColumnNumber());
             return null;
         } catch (Exception ex) {
             log.error("Error executing script " + path, ex);
-            System.out.println("Error executing script " + path);
+            log.info("Error executing script " + path);
             return null;
         }
 

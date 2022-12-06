@@ -5,7 +5,7 @@ import client.MapleClient;
 import client.MapleStat;
 import client.PlayerStats;
 import handling.AbstractMaplePacketHandler;
-import tools.FileoutputUtil;
+import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -13,6 +13,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
 import java.util.ArrayList;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class AutoAssignAPHandler extends AbstractMaplePacketHandler {
 
     @Override
@@ -21,8 +22,8 @@ public class AutoAssignAPHandler extends AbstractMaplePacketHandler {
         chr.updateTick(slea.readInt());
         slea.skip(4);
         if (slea.available() < 16) {
-            System.out.println("AutoAssignAP : \n" + slea.toString(true));
-            FileoutputUtil.log(FileoutputUtil.PacketEx_Log, "AutoAssignAP : \n" + slea.toString(true));
+            log.info("AutoAssignAP : \n" + slea.toString(true));
+            FileOutputUtil.log(FileOutputUtil.PacketEx_Log, "AutoAssignAP : \n" + slea.toString(true));
             return;
         }
         final int PrimaryStat = slea.readInt();

@@ -3,6 +3,7 @@ package server.gachapon;
 import java.util.HashMap;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class SimpleGachaponMachine implements GachaponMachine {
 
 

@@ -36,6 +36,7 @@ import java.util.Random;
  * @author Nol888
  * @version 0.1
  */
+@lombok.extern.slf4j.Slf4j
 public class LoginCryptoLegacy {
 
     /**

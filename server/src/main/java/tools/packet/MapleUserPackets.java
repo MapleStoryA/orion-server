@@ -34,6 +34,7 @@ import java.util.List;
 /**
  * Store packets for Buddy, Party, Expedition, Guild and Alliance
  */
+@lombok.extern.slf4j.Slf4j
 public class MapleUserPackets {
 
     public static byte[] partyCreated(final int partyid) {

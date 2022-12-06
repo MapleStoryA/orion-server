@@ -12,6 +12,7 @@ import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class SpeedRunner {
 
     private static final SpeedRunner instance = new SpeedRunner();
@@ -67,7 +68,7 @@ public class SpeedRunner {
                 speedRunData.put(type, new Pair<String, Map<Integer, String>>(ret.toString(), rett));
             }
         } catch (SQLException e) {
-            System.out.println("Failed to load speed runs.." + e);
+            log.info("Failed to load speed runs.." + e);
         }
     }
 

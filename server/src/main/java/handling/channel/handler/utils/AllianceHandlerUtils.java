@@ -29,6 +29,7 @@ import handling.world.guild.MapleGuild;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
+@lombok.extern.slf4j.Slf4j
 public class AllianceHandlerUtils {
 
     public static final void HandleAlliance(final SeekableLittleEndianAccessor slea, final MapleClient c, boolean denied) {
@@ -41,7 +42,7 @@ public class AllianceHandlerUtils {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
         }
-        //System.out.println("Unhandled GuildAlliance \n" + slea.toString());
+        //log.info("Unhandled GuildAlliance \n" + slea.toString());
         byte op = slea.readByte();
         if (c.getPlayer().getGuildRank() != 1 && op != 1) { //only updating doesn't need guild leader
             return;
@@ -145,7 +146,7 @@ public class AllianceHandlerUtils {
                 }
                 break;
             default:
-                System.out.println("Unhandled GuildAlliance op: " + op + ", \n" + slea);
+                log.info("Unhandled GuildAlliance op: " + op + ", \n" + slea);
                 break;
         }
         //c.getSession().write(MaplePacketCreator.enableActions());

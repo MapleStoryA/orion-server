@@ -30,14 +30,15 @@ import server.life.Element;
 import java.util.ArrayList;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class Skill implements ISkill {
 
+    private final List<MapleStatEffect> effects = new ArrayList<MapleStatEffect>();
+    private final int id;
     //public static final int[] skills = new int[]{4311003, 4321000, 4331002, 4331005, 4341004, 4341007};
     private String name = "";
-    private final List<MapleStatEffect> effects = new ArrayList<MapleStatEffect>();
     private Element element;
     private byte level;
-    private final int id;
     private int animationTime;
     private int requiredSkill;
     private int masterLevel;
@@ -46,20 +47,6 @@ public class Skill implements ISkill {
     public Skill(final int id) {
         super();
         this.id = id;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    @Override
-    public int getId() {
-        return id;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     public static final Skill loadFromData(final int id, final MapleData data) {
@@ -234,6 +221,20 @@ public class Skill implements ISkill {
             }
         }
         return ret;
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
     }
 
     @Override

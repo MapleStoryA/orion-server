@@ -9,38 +9,8 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 import java.io.File;
 
+@lombok.extern.slf4j.Slf4j
 public class NewNpcTalkHandler {
-
-    enum Talk {
-        SAY(0x00),
-        ASK_YES_NO(0x02),
-        ASK_TEXT(0x03),
-        ASK_NUMBER(0x01),
-        ASK_MENU(0x04),
-        ASK_QUESTION(0x05),
-        ASK_QUIZ(0x06),
-        ASK_AVATAR(0x08),
-        ASK_PET(0x09),
-        ASK_ACCEPT(0x0C),
-        ASK_ACCEPT_NO_ESC(0x0D),
-        ASK_BOX_TEXT(0x0E),
-        UNDEFINED(-0xF);
-
-        public int value;
-
-        Talk(int value) {
-            this.value = value;
-        }
-
-        public static Talk from(int value) {
-            for (Talk talk : Talk.values()) {
-                if (talk.value == value) {
-                    return talk;
-                }
-            }
-            return UNDEFINED;
-        }
-    }
 
     public static boolean isNewNpcScriptAvailable(int npc) {
         File file = new File(ServerEnvironment.getConfig().getScriptsPath() + "/" + "scripts/npcNew/" + npc + ".js");
@@ -51,7 +21,6 @@ public class NewNpcTalkHandler {
         File file = new File(ServerEnvironment.getConfig().getScriptsPath() + "/" + "questNew/" + npc + ".js");
         return file.exists();
     }
-
 
     public static void startConversation(int npc, MapleClient client) {
         NpcScriptingManager manager = NpcScriptingManagerSingleton.getInstance();
@@ -70,7 +39,6 @@ public class NewNpcTalkHandler {
             client.getNpcScript().setContinuation(pending.getContinuation());
         }
     }
-
 
     public static void proceedConversation(SeekableLittleEndianAccessor slea, MapleClient client) {
         int talk = slea.readByte();
@@ -142,6 +110,38 @@ public class NewNpcTalkHandler {
             case UNDEFINED:
             default:
                 break;
+        }
+    }
+
+
+    enum Talk {
+        SAY(0x00),
+        ASK_YES_NO(0x02),
+        ASK_TEXT(0x03),
+        ASK_NUMBER(0x01),
+        ASK_MENU(0x04),
+        ASK_QUESTION(0x05),
+        ASK_QUIZ(0x06),
+        ASK_AVATAR(0x08),
+        ASK_PET(0x09),
+        ASK_ACCEPT(0x0C),
+        ASK_ACCEPT_NO_ESC(0x0D),
+        ASK_BOX_TEXT(0x0E),
+        UNDEFINED(-0xF);
+
+        public int value;
+
+        Talk(int value) {
+            this.value = value;
+        }
+
+        public static Talk from(int value) {
+            for (Talk talk : Talk.values()) {
+                if (talk.value == value) {
+                    return talk;
+                }
+            }
+            return UNDEFINED;
         }
     }
 

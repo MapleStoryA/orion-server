@@ -12,10 +12,11 @@ import scripting.NPCScriptManager;
 import server.MapleInventoryManipulator;
 import server.maps.MapleMap;
 import server.maps.SavedLocationType;
-import tools.FileoutputUtil;
+import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
+@lombok.extern.slf4j.Slf4j
 public class UseScriptedNpcItemHandler extends AbstractMaplePacketHandler {
 
     @Override
@@ -43,7 +44,7 @@ public class UseScriptedNpcItemHandler extends AbstractMaplePacketHandler {
                         // Letter
                         // "West"
                         MapleInventoryManipulator.addById(c, 2430008, (short) 1,
-                                "Scripted item: " + itemId + " on " + FileoutputUtil.CurrentReadable_Date()); // Gold
+                                "Scripted item: " + itemId + " on " + FileOutputUtil.CurrentReadable_Date()); // Gold
                         // Compass
                         MapleInventoryManipulator.removeById(c, MapleInventoryType.SETUP, 3994102, 20, false, false);
                         MapleInventoryManipulator.removeById(c, MapleInventoryType.SETUP, 3994103, 20, false, false);
@@ -51,7 +52,7 @@ public class UseScriptedNpcItemHandler extends AbstractMaplePacketHandler {
                         MapleInventoryManipulator.removeById(c, MapleInventoryType.SETUP, 3994105, 20, false, false);
                     } else {
                         MapleInventoryManipulator.addById(c, 2430007, (short) 1,
-                                "Scripted item: " + itemId + " on " + FileoutputUtil.CurrentReadable_Date()); // Blank
+                                "Scripted item: " + itemId + " on " + FileOutputUtil.CurrentReadable_Date()); // Blank
                         // Compass
                     }
                     NPCScriptManager.getInstance().start(c, 2084001);
@@ -84,7 +85,7 @@ public class UseScriptedNpcItemHandler extends AbstractMaplePacketHandler {
                             if (MapleInventoryManipulator.checkSpace(c, 2049400, 1, "") && MapleInventoryManipulator
                                     .removeById(c, MapleInventoryType.USE, 2430112, 25, true, false)) {
                                 MapleInventoryManipulator.addById(c, 2049400, (short) 1,
-                                        "Scripted item: " + itemId + " on " + FileoutputUtil.CurrentReadable_Date());
+                                        "Scripted item: " + itemId + " on " + FileOutputUtil.CurrentReadable_Date());
                             } else {
                                 c.getPlayer().dropMessage(5, "Please make some space.");
                             }
@@ -92,7 +93,7 @@ public class UseScriptedNpcItemHandler extends AbstractMaplePacketHandler {
                             if (MapleInventoryManipulator.checkSpace(c, 2049400, 1, "") && MapleInventoryManipulator
                                     .removeById(c, MapleInventoryType.USE, 2430112, 10, true, false)) {
                                 MapleInventoryManipulator.addById(c, 2049401, (short) 1,
-                                        "Scripted item: " + itemId + " on " + FileoutputUtil.CurrentReadable_Date());
+                                        "Scripted item: " + itemId + " on " + FileOutputUtil.CurrentReadable_Date());
                             } else {
                                 c.getPlayer().dropMessage(5, "Please make some space.");
                             }

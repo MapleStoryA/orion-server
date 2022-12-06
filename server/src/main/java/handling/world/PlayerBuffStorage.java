@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@lombok.extern.slf4j.Slf4j
 public class PlayerBuffStorage implements Serializable {
 
     /**

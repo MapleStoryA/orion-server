@@ -32,16 +32,17 @@ import tools.MaplePacketCreator;
 
 import java.awt.*;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleMist extends AbstractMapleMapObject {
 
     private final Rectangle mistPosition;
-    private MapleStatEffect source;
-    private MobSkill skill;
     private final boolean isMobMist;
     private final int skillDelay;
     private final int skilllevel;
-    private int isPoisonMist;
     private final int ownerId;
+    private MapleStatEffect source;
+    private MobSkill skill;
+    private int isPoisonMist;
 
     public MapleMist(Rectangle mistPosition, MapleMonster mob, MobSkill skill) {
         this.mistPosition = mistPosition;
@@ -99,6 +100,10 @@ public class MapleMist extends AbstractMapleMapObject {
         return mistPosition.getLocation();
     }
 
+    @Override
+    public void setPosition(Point position) {
+    }
+
     public ISkill getSourceSkill() {
         return SkillFactory.getSkill(source.getSourceId());
     }
@@ -133,10 +138,6 @@ public class MapleMist extends AbstractMapleMapObject {
 
     public MapleStatEffect getSource() {
         return source;
-    }
-
-    @Override
-    public void setPosition(Point position) {
     }
 
     public byte[] fakeSpawnData(int level) {

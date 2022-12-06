@@ -27,7 +27,7 @@ import constants.GameConstants;
 import handling.world.World;
 import server.AutobanManager;
 import server.Timer.CheatTimer;
-import tools.FileoutputUtil;
+import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
 import tools.StringUtil;
 
@@ -43,6 +43,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+@lombok.extern.slf4j.Slf4j
 public class CheatTracker {
 
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
@@ -91,7 +92,7 @@ public class CheatTracker {
         // For lagging, it isn't an issue since TIME is running simotaniously, client
         // will be sending values of older time
 
-//	System.out.println("Delay [" + skillId + "] = " + (tickcount - lastAttackTickCount) + ", " + (Server_ClientAtkTickDiff - STime_TC));
+//	log.info("Delay [" + skillId + "] = " + (tickcount - lastAttackTickCount) + ", " + (Server_ClientAtkTickDiff - STime_TC));
         Attack_tickResetCount++; // Without this, the difference will always be at 100
         if (Attack_tickResetCount >= (AtkDelay <= 200 ? 2 : 4)) {
             Attack_tickResetCount = 0;
@@ -105,9 +106,9 @@ public class CheatTracker {
         numSequentialDamage++;
         lastDamageTakenTime = System.currentTimeMillis();
 
-        // System.out.println("tb" + timeBetweenDamage);
-        // System.out.println("ns" + numSequentialDamage);
-        // System.out.println(timeBetweenDamage / 1500 + "(" + timeBetweenDamage / numSequentialDamage + ")");
+        // log.info("tb" + timeBetweenDamage);
+        // log.info("ns" + numSequentialDamage);
+        // log.info(timeBetweenDamage / 1500 + "(" + timeBetweenDamage / numSequentialDamage + ")");
 
         if (lastDamageTakenTime - takingDamageSince / 500 < numSequentialDamage) {
             registerOffense(CheatingOffense.FAST_TAKE_DAMAGE);
@@ -167,7 +168,7 @@ public class CheatTracker {
     public final boolean checkSummonAttack() {
         numSequentialSummonAttack++;
         //estimated
-        // System.out.println(numMPRegens + "/" + allowedRegens);
+        // log.info(numMPRegens + "/" + allowedRegens);
         if ((System.currentTimeMillis() - summonSummonTime) / (2000 + 1) < numSequentialSummonAttack) {
             registerOffense(CheatingOffense.FAST_SUMMON_ATTACK);
             return false;
@@ -186,7 +187,7 @@ public class CheatTracker {
                 if (dc) {
                     chr.get().getClient().getSession().close();
                 } else {
-                    FileoutputUtil.logUsers(chr.get().getName(), "Check Drop method hack");
+                    FileOutputUtil.logUsers(chr.get().getName(), "Check Drop method hack");
                 }
             }
         } else {

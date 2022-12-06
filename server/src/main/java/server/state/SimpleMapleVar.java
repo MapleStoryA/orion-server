@@ -11,15 +11,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@lombok.extern.slf4j.Slf4j
 public class SimpleMapleVar implements MapleVar {
 
 
     private static final Logger logger = LoggerFactory.getLogger(SimpleMapleVar.class);
-
-    private final MapleCharacter player;
     private static final String UPDATE = "UPDATE maple_var SET value = ? WHERE maple_key = ? AND character_id = ?";
     private static final String INSERT = "INSERT INTO maple_var(character_id, maple_key, value) VALUES(?, ?, ?);";
     private static final String SELECT = "SELECT maple_key, value FROM maple_var WHERE character_id = ? AND maple_key = ?";
+    private final MapleCharacter player;
 
     public SimpleMapleVar(MapleCharacter player) {
         super();

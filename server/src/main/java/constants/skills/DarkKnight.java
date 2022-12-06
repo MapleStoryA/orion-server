@@ -25,6 +25,7 @@ package constants.skills;
 /**
  * @author BubblesDev
  */
+@lombok.extern.slf4j.Slf4j
 public class DarkKnight {
     public static final int MAPLE_WARRIOR = 1321000;
     public static final int MONSTER_MAGNET = 1321001;

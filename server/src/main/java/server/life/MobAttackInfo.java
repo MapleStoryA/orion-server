@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package server.life;
 
+@lombok.extern.slf4j.Slf4j
 public class MobAttackInfo {
 
     private boolean isDeadlyAttack;
@@ -30,43 +31,43 @@ public class MobAttackInfo {
     public MobAttackInfo() {
     }
 
-    public void setDeadlyAttack(boolean isDeadlyAttack) {
-        this.isDeadlyAttack = isDeadlyAttack;
-    }
-
     public boolean isDeadlyAttack() {
         return isDeadlyAttack;
     }
 
-    public void setMpBurn(int mpBurn) {
-        this.mpBurn = mpBurn;
+    public void setDeadlyAttack(boolean isDeadlyAttack) {
+        this.isDeadlyAttack = isDeadlyAttack;
     }
 
     public int getMpBurn() {
         return mpBurn;
     }
 
-    public void setDiseaseSkill(int diseaseSkill) {
-        this.diseaseSkill = diseaseSkill;
+    public void setMpBurn(int mpBurn) {
+        this.mpBurn = mpBurn;
     }
 
     public int getDiseaseSkill() {
         return diseaseSkill;
     }
 
-    public void setDiseaseLevel(int diseaseLevel) {
-        this.diseaseLevel = diseaseLevel;
+    public void setDiseaseSkill(int diseaseSkill) {
+        this.diseaseSkill = diseaseSkill;
     }
 
     public int getDiseaseLevel() {
         return diseaseLevel;
     }
 
-    public void setMpCon(int mpCon) {
-        this.mpCon = mpCon;
+    public void setDiseaseLevel(int diseaseLevel) {
+        this.diseaseLevel = diseaseLevel;
     }
 
     public int getMpCon() {
         return mpCon;
+    }
+
+    public void setMpCon(int mpCon) {
+        this.mpCon = mpCon;
     }
 }

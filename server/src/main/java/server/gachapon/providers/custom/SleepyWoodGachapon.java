@@ -9,10 +9,11 @@ import server.gachapon.RewardsProvider;
 import java.util.ArrayList;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class SleepyWoodGachapon implements RewardsProvider {
 
     private final GachaponLocation location = GachaponLocation.SLEEPYWOOD;
-
+    private final List<AbstractRandomEntity> reward = new ArrayList<>();
     int[] ids = {
 
             2022130, 4000585, 2000005, 2022113, 1032032, 1442018, 2041008, 2041010, 2044701, 2044702, 2044602, 2040101,
@@ -24,8 +25,6 @@ public class SleepyWoodGachapon implements RewardsProvider {
             1302028, 1152007, 1302006, 2022195, 5200010
 
     };
-
-    private final List<AbstractRandomEntity> reward = new ArrayList<>();
 
     public SleepyWoodGachapon() {
 

@@ -25,6 +25,7 @@ package constants.skills;
 /**
  * @author BubblesDev
  */
+@lombok.extern.slf4j.Slf4j
 public class Buccaneer {
     public static final int MAPLE_WARRIOR = 5121000;
     public static final int DRAGON_STRIKE = 5121001;

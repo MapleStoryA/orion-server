@@ -25,6 +25,7 @@ package constants.skills;
 /**
  * @author BubblesDev
  */
+@lombok.extern.slf4j.Slf4j
 public class Spearman {
     public static final int SPEAR_MASTERY = 1300000;
     public static final int POLEARM_MASTERY = 1300001;

@@ -16,7 +16,7 @@ import constants.GameConstants;
 import constants.MapConstants;
 import server.cashshop.CashItemFactory;
 import server.cashshop.CashItemInfo;
-import tools.FileoutputUtil;
+import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
 import tools.Triple;
 import tools.packet.MTSCSPacket;
@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleInventoryManipulator {
 
     public static void addRing(MapleCharacter chr, int itemId, int ringId, int sn, String partner) {
@@ -407,7 +408,7 @@ public class MapleInventoryManipulator {
             }
         }
         if (item.getQuantity() >= 50 && GameConstants.isUpgradeScroll(item.getItemId())) {
-            FileoutputUtil.logUsers(c.getPlayer().getName(), "[MapleInventoryManipulator] " + item.getQuantity() + " of " + item.getItemId() + " was added to inventory.");
+            FileOutputUtil.logUsers(c.getPlayer().getName(), "[MapleInventoryManipulator] " + item.getQuantity() + " of " + item.getItemId() + " was added to inventory.");
         }
 
         c.getPlayer().havePartyQuest(item.getItemId());

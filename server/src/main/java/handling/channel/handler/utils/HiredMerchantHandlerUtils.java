@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class HiredMerchantHandlerUtils {
 
 
@@ -99,7 +100,7 @@ public class HiredMerchantHandlerUtils {
             ItemLoader.HIRED_MERCHANT.saveItems(null, packageid, accid, charid);
             return true;
         } catch (SQLException e) {
-            System.out.println("Error while deleting the package" + e.getMessage());
+            log.info("Error while deleting the package" + e.getMessage());
             return false;
         }
     }

@@ -6,6 +6,7 @@ import org.apache.mina.common.IoSession;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@lombok.extern.slf4j.Slf4j
 public class ClientStorage {
 
     private static final Map<Integer, MapleClient> clients = new ConcurrentHashMap<>();

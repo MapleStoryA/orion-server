@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+@lombok.extern.slf4j.Slf4j
 public class PropertiesFileLoader implements FileLoader {
     @Override
     public String getExtension() {

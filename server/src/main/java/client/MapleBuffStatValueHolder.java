@@ -25,6 +25,7 @@ import server.MapleStatEffect;
 
 import java.util.concurrent.ScheduledFuture;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleBuffStatValueHolder {
 
     public MapleStatEffect effect;

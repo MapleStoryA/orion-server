@@ -119,10 +119,6 @@ public enum MapleJob {
         this.name = name;
     }
 
-    public int getId() {
-        return jobid;
-    }
-
     public static MapleJob getById(int id) {
         for (MapleJob l : MapleJob.values()) {
             if (l.getId() == id) {
@@ -163,20 +159,24 @@ public enum MapleJob {
         }
     }
 
-    public boolean isA(MapleJob basejob) {
-        return getId() >= basejob.getId() && getId() / 100 == basejob.getId() / 100;
-    }
-
-    public boolean isAnEvan() {
-        return getId() == 2001 || getId() / 100 == 22;
-    }
-
     public static boolean isExtendSPJob(int jobId) {
         return jobId / 1000 == 3 || jobId / 100 == 22 || jobId == 2001;
     }
 
     public static boolean isExtendSPJob(MapleJob job) {
         return isExtendSPJob(job.getId());
+    }
+
+    public int getId() {
+        return jobid;
+    }
+
+    public boolean isA(MapleJob basejob) {
+        return getId() >= basejob.getId() && getId() / 100 == basejob.getId() / 100;
+    }
+
+    public boolean isAnEvan() {
+        return getId() == 2001 || getId() / 100 == 22;
     }
 
     public String getName() {

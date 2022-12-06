@@ -6,6 +6,7 @@ import client.inventory.IItem;
 import handling.AbstractMaplePacketHandler;
 import tools.data.input.SeekableLittleEndianAccessor;
 
+@lombok.extern.slf4j.Slf4j
 public class NoteActionHandler extends AbstractMaplePacketHandler {
 
     @Override
@@ -41,7 +42,7 @@ public class NoteActionHandler extends AbstractMaplePacketHandler {
                 }
                 break;
             default:
-                System.out.println("Unhandled note action, " + type + "");
+                log.info("Unhandled note action, " + type + "");
         }
 
     }

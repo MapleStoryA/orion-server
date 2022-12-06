@@ -39,14 +39,6 @@ public enum MapleInventoryType {
         this.type = (byte) type;
     }
 
-    public byte getType() {
-        return type;
-    }
-
-    public short getBitfieldEncoding() {
-        return (short) (2 << type);
-    }
-
     public static MapleInventoryType getByType(byte type) {
         for (MapleInventoryType l : MapleInventoryType.values()) {
             if (l.getType() == type) {
@@ -69,5 +61,13 @@ public enum MapleInventoryType {
             return CASH;
         }
         return UNDEFINED;
+    }
+
+    public byte getType() {
+        return type;
+    }
+
+    public short getBitfieldEncoding() {
+        return (short) (2 << type);
     }
 }

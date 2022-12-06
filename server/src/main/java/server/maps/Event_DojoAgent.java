@@ -31,6 +31,7 @@ import tools.MaplePacketCreator;
 
 import java.awt.*;
 
+@lombok.extern.slf4j.Slf4j
 public class Event_DojoAgent {
 
     private final static int baseAgentMapId = 970030000; // 9500337 = mano

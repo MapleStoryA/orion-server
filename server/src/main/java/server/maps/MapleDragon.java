@@ -33,11 +33,12 @@ import tools.MaplePacketCreator;
 
 import java.awt.*;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleDragon extends AbstractAnimatedMapleMapObject {
 
+    private final Point position = new Point();
     private int owner;
     private int jobid;
-    private final Point position = new Point();
 
     public MapleDragon(int owner, int jobid) {
         this.owner = owner;

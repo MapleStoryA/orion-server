@@ -88,18 +88,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+@lombok.extern.slf4j.Slf4j
 public class NPCConversationManager extends AbstractPlayerInteraction {
 
     private final MapleClient c;
     private final int npc;
     private final int questid;
-    private String getText, fileName = null;
     private final byte type; // -1 = NPC, 0 = start quest, 1 = end quest
-    private byte lastMsg = -1;
-    public boolean pendingDisposal = false;
     private final Invocable iv;
-
     private final HashMap<String, String> properties = new HashMap<>();
+    public boolean pendingDisposal = false;
+    private String getText, fileName = null;
+    private byte lastMsg = -1;
 
     public NPCConversationManager(MapleClient c, int npc, int questid, byte type, Invocable iv) {
         super(c, npc, questid);
@@ -118,6 +118,12 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         this.type = type;
         this.iv = iv;
         this.fileName = fileName;
+    }
+
+    private static boolean isFullInventory(MapleInventory mi, List<IItem> list) {
+        int total = (mi.getSlotLimit() - mi.getNumFreeSlot()) + list.size();
+        boolean v = total > mi.getSlotLimit();
+        return v;
     }
 
     public String getFileName() {
@@ -157,7 +163,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public void debug(String message) {
-        System.out.println(message);
+        log.info(message);
     }
 
     public void sendNext(String text) {
@@ -1034,12 +1040,6 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
     public int getCurrentMesos() {
         return this.getPlayer().getMeso();
-    }
-
-    private static boolean isFullInventory(MapleInventory mi, List<IItem> list) {
-        int total = (mi.getSlotLimit() - mi.getNumFreeSlot()) + list.size();
-        boolean v = total > mi.getSlotLimit();
-        return v;
     }
 
     public void openFredrick() {
@@ -1961,7 +1961,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             sb.append("\r\n\r\n Reached end of table");
             return sb.toString();
         } catch (SQLException e) {
-            System.out.println(e);
+            log.error("Error feedbacklist", e);
         }
         return "failed to generate feedback list";
     }

@@ -10,6 +10,7 @@ import java.security.PermissionCollection;
 import java.util.Map;
 
 
+@lombok.extern.slf4j.Slf4j
 public class AutoJCE {
 
     public static final Logger LOG = LoggerFactory.getLogger(AutoJCE.class);
@@ -20,7 +21,7 @@ public class AutoJCE {
      */
     public static void removeCryptographyRestrictions() {
         if (!isRestrictedCryptography()) {
-            System.out.println("Cryptography restrictions removal not needed");
+            log.info("Cryptography restrictions removal not needed");
             return;
         }
         try {
@@ -49,7 +50,7 @@ public class AutoJCE {
             final Field instance = cryptoAllPermission.getDeclaredField("INSTANCE");
             instance.setAccessible(true);
             defaultPolicy.add((Permission) instance.get(null));
-            System.out.println("Successfully removed cryptography restrictions");
+            log.info("Successfully removed cryptography restrictions");
         } catch (final Exception e) {
             System.err.println("Failed to remove cryptography restrictions");
             LOG.info("Error removing restrictions", e);

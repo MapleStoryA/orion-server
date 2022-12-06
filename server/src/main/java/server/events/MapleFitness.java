@@ -28,6 +28,7 @@ import tools.MaplePacketCreator;
 
 import java.util.concurrent.ScheduledFuture;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleFitness extends MapleEvent {
 
     private static final long serialVersionUID = 845748950824L;

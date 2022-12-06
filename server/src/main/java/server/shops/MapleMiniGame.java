@@ -32,20 +32,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleMiniGame extends AbstractPlayerStore {
 
     private final static int slots = 2; //change?!
     private final boolean[] exitAfter;
     private final boolean[] ready;
     private final int[] points;
-    private int GameType = 0;
-    private int[][] piece = new int[15][15];
     private final List<Integer> matchcards = new ArrayList<Integer>();
     int loser = 0;
     int turn = 1;
     int piecetype = 0;
     int firstslot = 0;
     int tie = -1;
+    private int GameType = 0;
+    private int[][] piece = new int[15][15];
 
     public MapleMiniGame(MapleCharacter owner, int itemId, String description, String pass, int GameType) {
         super(owner, itemId, description, pass, slots - 1); //?
@@ -64,17 +65,12 @@ public class MapleMiniGame extends AbstractPlayerStore {
         }
     }
 
-    public void setFirstSlot(int type) {
-        firstslot = type;
-    }
-
     public int getFirstSlot() {
         return firstslot;
     }
 
-    public void setPoints(int slot) {
-        points[slot]++;
-        checkWin();
+    public void setFirstSlot(int type) {
+        firstslot = type;
     }
 
     public int getPoints() {
@@ -83,6 +79,11 @@ public class MapleMiniGame extends AbstractPlayerStore {
             ret += points[i];
         }
         return ret;
+    }
+
+    public void setPoints(int slot) {
+        points[slot]++;
+        checkWin();
     }
 
     public void checkWin() {
@@ -111,12 +112,12 @@ public class MapleMiniGame extends AbstractPlayerStore {
         return points[slot];
     }
 
-    public void setPieceType(int type) {
-        piecetype = type;
-    }
-
     public int getPieceType() {
         return piecetype;
+    }
+
+    public void setPieceType(int type) {
+        piecetype = type;
     }
 
     public void setGameType() {
@@ -145,12 +146,12 @@ public class MapleMiniGame extends AbstractPlayerStore {
         return (getPieceType() == 0 ? 6 : (getPieceType() == 1 ? 10 : 15));
     }
 
-    public void setLoser(int type) {
-        loser = type;
-    }
-
     public int getLoser() {
         return loser;
+    }
+
+    public void setLoser(int type) {
+        loser = type;
     }
 
     public void send(MapleClient c) {

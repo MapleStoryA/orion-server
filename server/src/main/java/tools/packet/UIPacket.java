@@ -25,6 +25,7 @@ import handling.SendPacketOpcode;
 import tools.MaplePacketCreator;
 import tools.data.output.MaplePacketLittleEndianWriter;
 
+@lombok.extern.slf4j.Slf4j
 public class UIPacket {
 
     public static final byte[] EarnTitleMsg(final String msg) {

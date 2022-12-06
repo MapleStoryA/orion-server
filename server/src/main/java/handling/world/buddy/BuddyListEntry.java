@@ -18,11 +18,12 @@
 
 package handling.world.buddy;
 
+@lombok.extern.slf4j.Slf4j
 public class BuddyListEntry {
 
     private final String name;
-    private String group;
     private final int cid;
+    private String group;
     private int channel;
 
     public BuddyListEntry(final String name, final int characterId, final String group, final int channel) {

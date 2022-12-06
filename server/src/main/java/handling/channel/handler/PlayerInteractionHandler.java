@@ -18,7 +18,7 @@ import server.shops.IMaplePlayerShop;
 import server.shops.MapleMiniGame;
 import server.shops.MaplePlayerShop;
 import server.shops.MaplePlayerShopItem;
-import tools.FileoutputUtil;
+import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.PlayerShopPacket;
@@ -26,6 +26,7 @@ import tools.packet.PlayerShopPacket;
 import java.util.Arrays;
 import java.util.Iterator;
 
+@lombok.extern.slf4j.Slf4j
 public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
 
     public static final byte CREATE = 0x00,
@@ -389,7 +390,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                             }
                         }
                         if (bundles_perbundle >= 50 && GameConstants.isUpgradeScroll(ivItem.getItemId())) {
-                            FileoutputUtil.logUsers(chr.getName(), "[PLAYER_SHOP_ADD_ITEM / ADD_ITEM] Placed "
+                            FileOutputUtil.logUsers(chr.getName(), "[PLAYER_SHOP_ADD_ITEM / ADD_ITEM] Placed "
                                     + bundles_perbundle + " of " + ivItem.getItemId());
                         }
                         if (GameConstants.isThrowingStar(ivItem.getItemId())
@@ -457,7 +458,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     return;
                 }
                 if (quantity >= 50 && GameConstants.isUpgradeScroll(tobuy.item.getItemId())) {
-                    FileoutputUtil.logUsers(chr.getName(),
+                    FileOutputUtil.logUsers(chr.getName(),
                             "[BUY_ITEM_PLAYER_SHOP / BUY_ITEM_STORE | BUY_ITEM_HIREDMERCHANT] Placed " + quantity + " of "
                                     + tobuy.item.getItemId());
                 }
@@ -490,7 +491,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                         }
                         item_get.setQuantity((short) check);
                         if (item_get.getQuantity() >= 50 && GameConstants.isUpgradeScroll(item.item.getItemId())) {
-                            FileoutputUtil.logUsers(chr.getName(),
+                            FileOutputUtil.logUsers(chr.getName(),
                                     "[REMOVE_ITEM] Removed " + item_get.getQuantity() + " of " + item.item.getItemId());
                         }
                         if (MapleInventoryManipulator.checkSpace(c, item_get.getItemId(), item_get.getQuantity(),
@@ -788,7 +789,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             }
             default: {
                 // some idiots try to send huge amounts of data to this (:
-                // System.out.println("Unhandled interaction action by " +
+                // log.info("Unhandled interaction action by " +
                 // chr.getName() + " : " + action + ", " + slea.toString());
                 // 19 (0x13) - 00 OR 01 -> itemid(maple leaf) ? who knows what this
                 // is

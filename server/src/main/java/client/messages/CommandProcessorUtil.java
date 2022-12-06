@@ -2,6 +2,7 @@ package client.messages;
 
 import tools.StringUtil;
 
+@lombok.extern.slf4j.Slf4j
 public class CommandProcessorUtil {
 
     public static String joinAfterString(String[] splitted, String str) {

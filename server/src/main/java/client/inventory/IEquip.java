@@ -23,11 +23,6 @@ package client.inventory;
 
 public interface IEquip extends IItem {
 
-    enum ScrollResult {
-
-        SUCCESS, FAIL, CURSE
-    }
-
     int ARMOR_RATIO = 350000;
     int WEAPON_RATIO = 700000;
 
@@ -108,4 +103,9 @@ public interface IEquip extends IItem {
     short getRequiredDex();
 
     short getRequiredFame();
+
+    enum ScrollResult {
+
+        SUCCESS, FAIL, CURSE
+    }
 }

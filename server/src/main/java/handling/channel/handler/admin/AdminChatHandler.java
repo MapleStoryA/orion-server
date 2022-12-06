@@ -8,6 +8,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
 /**
  * @author kevintjuh93
  */
+@lombok.extern.slf4j.Slf4j
 public class AdminChatHandler extends AbstractMaplePacketHandler {
 
     @Override

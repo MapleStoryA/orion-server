@@ -14,6 +14,7 @@ import java.util.Collection;
 /**
  * Implements the interaction API.
  */
+@lombok.extern.slf4j.Slf4j
 public class EventInteraction {
 
     private static final Logger LOG = LoggerFactory.getLogger(EventInteraction.class);
@@ -77,7 +78,7 @@ public class EventInteraction {
 
 
     public void log(String message) {
-        System.out.println(message);
+        log.info(message);
     }
 
     public void clear() {

@@ -6,6 +6,7 @@ import handling.AbstractMaplePacketHandler;
 import server.MapleItemInformationProvider;
 import tools.data.input.SeekableLittleEndianAccessor;
 
+@lombok.extern.slf4j.Slf4j
 public class CancelItemEffectHandler extends AbstractMaplePacketHandler {
 
     @Override

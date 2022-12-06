@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class BuyCSItemHandler extends AbstractMaplePacketHandler {
 
     @Override
@@ -356,7 +357,7 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
             c.getSession().write(MTSCSPacket.getOneDayPacket(60 * 60, sn));
             c.getSession().write(MTSCSPacket.redeemResponse(slea.readInt()));
         } else {
-            System.out.println("Unhandled operation found. Remaining: " + slea);
+            log.info("Unhandled operation found. Remaining: " + slea);
             c.getSession().write(MTSCSPacket.sendCSFail(0));
         }
         CashShopOperationUtils.doCSPackets(c);

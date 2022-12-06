@@ -28,6 +28,7 @@ import tools.MaplePacketCreator;
 
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class BBSHandlerUtils {
 
     public static final String correctLength(final String in, final int maxSize) {

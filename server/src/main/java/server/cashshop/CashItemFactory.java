@@ -12,27 +12,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class CashItemFactory {
 
+    public final static MapleDataProvider data = ServerEnvironment.getConfig().getDataProvider("wz/Etc");
     private final static CashItemFactory instance = new CashItemFactory();
     private final static int[] bestItems = new int[]{10002819, 50100010, 50200001, 10002147, 60000073};
-    private boolean initialized = false;
     private final Map<Integer, Integer> itemSn = new HashMap<>(); // itemid, sn
     private final Map<Integer, CashItemInfo> itemStats = new HashMap<Integer, CashItemInfo>();
     private final Map<Integer, List<CashItemInfo>> itemPackage = new HashMap<Integer, List<CashItemInfo>>();
     private final Map<Integer, CashModInfo> itemMods = new HashMap<Integer, CashModInfo>();
-    public final static MapleDataProvider data = ServerEnvironment.getConfig().getDataProvider("wz/Etc");
+    private boolean initialized = false;
+
+    protected CashItemFactory() {
+    }
 
     public static final CashItemFactory getInstance() {
         return instance;
     }
 
-    protected CashItemFactory() {
-    }
-
     private void initialize() {
         long start = System.currentTimeMillis();
-        System.out.println("Loading CashItemFactory :::");
+        log.info("Loading CashItemFactory :::");
         final List<Integer> itemids = new ArrayList<Integer>();
         for (MapleData field : data.getData("Commodity.img").getChildren()) {
 
@@ -66,7 +67,7 @@ public class CashItemFactory {
 
 
         long finish = System.currentTimeMillis();
-        System.out.println("Finished loading basic cashshop in : " + (finish - start) / 1000);
+        log.info("Finished loading basic cashshop in : " + (finish - start) / 1000);
 
         initialized = true;
     }

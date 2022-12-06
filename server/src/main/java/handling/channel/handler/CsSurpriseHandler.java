@@ -10,6 +10,7 @@ import server.cashshop.CashItemInfo;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.MTSCSPacket;
 
+@lombok.extern.slf4j.Slf4j
 public class CsSurpriseHandler extends AbstractMaplePacketHandler {
 
     @Override

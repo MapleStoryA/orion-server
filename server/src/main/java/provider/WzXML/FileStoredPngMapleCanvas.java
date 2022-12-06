@@ -28,6 +28,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+@lombok.extern.slf4j.Slf4j
 public class FileStoredPngMapleCanvas implements MapleCanvas {
 
     private final File file;

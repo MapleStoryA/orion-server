@@ -7,6 +7,7 @@ import tools.MaplePacketCreator;
 import java.awt.*;
 import java.util.Collection;
 
+@lombok.extern.slf4j.Slf4j
 public class FieldScript {
 
     private final MapleMap map;

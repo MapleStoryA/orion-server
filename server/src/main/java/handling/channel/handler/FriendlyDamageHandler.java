@@ -8,6 +8,7 @@ import server.life.MapleMonster;
 import server.maps.MapleMap;
 import tools.data.input.SeekableLittleEndianAccessor;
 
+@lombok.extern.slf4j.Slf4j
 public class FriendlyDamageHandler extends AbstractMaplePacketHandler {
 
     @Override

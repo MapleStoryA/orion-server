@@ -25,12 +25,13 @@ import server.life.MobSkill;
 
 import java.util.concurrent.ScheduledFuture;
 
+@lombok.extern.slf4j.Slf4j
 public class MonsterStatusEffect {
 
-    private MonsterStatus stati;
     private final int skill;
     private final MobSkill mobskill;
     private final boolean monsterSkill;
+    private MonsterStatus stati;
     private Integer x;
     private ScheduledFuture<?> cancelTask;
     private ScheduledFuture<?> poisonSchedule;

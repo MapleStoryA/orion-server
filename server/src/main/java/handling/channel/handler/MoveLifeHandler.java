@@ -15,6 +15,7 @@ import tools.packet.MobPacket;
 
 import java.awt.*;
 
+@lombok.extern.slf4j.Slf4j
 public class MoveLifeHandler extends AbstractMaplePacketHandler {
 
     @Override

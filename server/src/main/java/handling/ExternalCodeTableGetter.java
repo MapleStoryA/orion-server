@@ -30,6 +30,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
 
+@lombok.extern.slf4j.Slf4j
 public class ExternalCodeTableGetter {
 
     final Properties props;
@@ -45,6 +46,30 @@ public class ExternalCodeTableGetter {
             }
         }
         return null;
+    }
+
+    public final static <T extends Enum<? extends WritableIntValueHolder> & WritableIntValueHolder> String getOpcodeTable(T[] enumeration) {
+        StringBuilder enumVals = new StringBuilder();
+        List<T> all = new ArrayList<T>(); // need a mutable list plawks
+        all.addAll(Arrays.asList(enumeration));
+        Collections.sort(all, (Comparator<WritableIntValueHolder>) (o1, o2) -> Short.valueOf(o1.getValue()).compareTo(o2.getValue()));
+        for (T code : all) {
+            enumVals.append(code.name());
+            enumVals.append(" = ");
+            enumVals.append("0x");
+            enumVals.append(HexTool.toString(code.getValue()));
+            enumVals.append(" (");
+            enumVals.append(code.getValue());
+            enumVals.append(")\n");
+        }
+        return enumVals.toString();
+    }
+
+    public final static <T extends Enum<? extends WritableIntValueHolder> & WritableIntValueHolder> void populateValues(Properties properties, T[] values) {
+        ExternalCodeTableGetter exc = new ExternalCodeTableGetter(properties);
+        for (T code : values) {
+            code.setValue(exc.getValue(code.name(), values, (short) -2));
+        }
     }
 
     private final <T extends Enum<? extends WritableIntValueHolder> & WritableIntValueHolder> short getValue(final String name, T[] values, final short def) {
@@ -70,29 +95,5 @@ public class ExternalCodeTableGetter {
             }
         }
         return def;
-    }
-
-    public final static <T extends Enum<? extends WritableIntValueHolder> & WritableIntValueHolder> String getOpcodeTable(T[] enumeration) {
-        StringBuilder enumVals = new StringBuilder();
-        List<T> all = new ArrayList<T>(); // need a mutable list plawks
-        all.addAll(Arrays.asList(enumeration));
-        Collections.sort(all, (Comparator<WritableIntValueHolder>) (o1, o2) -> Short.valueOf(o1.getValue()).compareTo(o2.getValue()));
-        for (T code : all) {
-            enumVals.append(code.name());
-            enumVals.append(" = ");
-            enumVals.append("0x");
-            enumVals.append(HexTool.toString(code.getValue()));
-            enumVals.append(" (");
-            enumVals.append(code.getValue());
-            enumVals.append(")\n");
-        }
-        return enumVals.toString();
-    }
-
-    public final static <T extends Enum<? extends WritableIntValueHolder> & WritableIntValueHolder> void populateValues(Properties properties, T[] values) {
-        ExternalCodeTableGetter exc = new ExternalCodeTableGetter(properties);
-        for (T code : values) {
-            code.setValue(exc.getValue(code.name(), values, (short) -2));
-        }
     }
 }

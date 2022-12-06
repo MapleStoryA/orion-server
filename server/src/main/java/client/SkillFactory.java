@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class SkillFactory {
 
     private static final Map<Integer, ISkill> skills = new HashMap<Integer, ISkill>();
@@ -46,7 +47,7 @@ public class SkillFactory {
         if (!skills.isEmpty()) {
             return skills.get(Integer.valueOf(id));
         }
-        // System.out.println("Loading SkillFactory :::");
+        // log.info("Loading SkillFactory :::");
         final MapleDataProvider datasource = ServerEnvironment.getConfig().getDataProvider("wz/Skill");
         final MapleDataDirectoryEntry root = datasource.getRoot();
 

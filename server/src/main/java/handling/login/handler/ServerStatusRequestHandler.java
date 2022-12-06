@@ -6,6 +6,7 @@ import handling.login.LoginServer;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.LoginPacket;
 
+@lombok.extern.slf4j.Slf4j
 public class ServerStatusRequestHandler extends AbstractMaplePacketHandler {
 
     @Override

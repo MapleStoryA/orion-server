@@ -30,6 +30,7 @@ import tools.Pair;
 import java.util.HashMap;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class PetDataFactory {
 
     private static final MapleDataProvider dataRoot = ServerEnvironment.getConfig().getDataProvider("wz/Item");

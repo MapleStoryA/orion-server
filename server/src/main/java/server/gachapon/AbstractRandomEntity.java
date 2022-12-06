@@ -1,13 +1,10 @@
 package server.gachapon;
 
+@lombok.extern.slf4j.Slf4j
 public class AbstractRandomEntity {
 
-    private int idreward;
-
     private final int id;
-
     private final int quantity;
-
     /**
      * 100000 = 100%
      * 10000 = 10 %
@@ -16,8 +13,8 @@ public class AbstractRandomEntity {
      * 50   = 0.05 %
      */
     private final double chance;
-
     private final String description;
+    private int idreward;
 
     public AbstractRandomEntity(int idreward, int id, int quantity, double chance, String description) {
         this.id = id;

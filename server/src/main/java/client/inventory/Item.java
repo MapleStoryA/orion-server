@@ -23,9 +23,11 @@ package client.inventory;
 
 import constants.GameConstants;
 
+@lombok.extern.slf4j.Slf4j
 public class Item implements IItem {
 
     private final int id;
+    protected MapleRing ring = null;
     private short position;
     private short quantity;
     private byte flag;
@@ -34,7 +36,6 @@ public class Item implements IItem {
     private int uniqueid = -1;
     private String owner = "";
     private String giftFrom = "";
-    protected MapleRing ring = null;
 
     public Item(final int id, final short position, final short quantity, final byte flag, final int uniqueid) {
         super();
@@ -69,18 +70,6 @@ public class Item implements IItem {
         return ret;
     }
 
-    public final void setPosition(final short position) {
-        this.position = position;
-
-        if (pet != null) {
-            pet.setInventoryPosition(position);
-        }
-    }
-
-    public void setQuantity(final short quantity) {
-        this.quantity = quantity;
-    }
-
     @Override
     public final int getItemId() {
         return id;
@@ -91,14 +80,30 @@ public class Item implements IItem {
         return position;
     }
 
+    public final void setPosition(final short position) {
+        this.position = position;
+
+        if (pet != null) {
+            pet.setInventoryPosition(position);
+        }
+    }
+
     @Override
     public final byte getFlag() {
         return flag;
     }
 
+    public final void setFlag(final byte flag) {
+        this.flag = flag;
+    }
+
     @Override
     public final short getQuantity() {
         return quantity;
+    }
+
+    public void setQuantity(final short quantity) {
+        this.quantity = quantity;
     }
 
     @Override
@@ -113,10 +118,6 @@ public class Item implements IItem {
 
     public final void setOwner(final String owner) {
         this.owner = owner;
-    }
-
-    public final void setFlag(final byte flag) {
-        this.flag = flag;
     }
 
     @Override
@@ -147,13 +148,13 @@ public class Item implements IItem {
     }
 
     @Override
-    public void setGiftFrom(String gf) {
-        this.giftFrom = gf;
+    public String getGiftFrom() {
+        return giftFrom;
     }
 
     @Override
-    public String getGiftFrom() {
-        return giftFrom;
+    public void setGiftFrom(String gf) {
+        this.giftFrom = gf;
     }
 
     @Override

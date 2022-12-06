@@ -32,6 +32,7 @@ import java.io.Serializable;
  * @version 1.0
  * @since Revision 333
  */
+@lombok.extern.slf4j.Slf4j
 public class Pair<E, F> implements Serializable {
 
     private static final long serialVersionUID = 9179541993413738569L;

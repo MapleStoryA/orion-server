@@ -25,6 +25,7 @@ import client.MapleClient;
 import scripting.EventManager;
 import tools.MaplePacketCreator;
 
+@lombok.extern.slf4j.Slf4j
 public class UserInterfaceHandlerUtils {
 
     public static final void ShipObjectRequest(final int mapid, final MapleClient c) {
@@ -73,7 +74,7 @@ public class UserInterfaceHandlerUtils {
                 }
                 break;
             default:
-                System.out.println("Unhandled ship object, MapID : " + mapid);
+                log.info("Unhandled ship object, MapID : " + mapid);
                 break;
         }
         c.getSession().write(MaplePacketCreator.boatPacket(effect));

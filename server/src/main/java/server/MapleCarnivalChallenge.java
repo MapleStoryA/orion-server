@@ -15,6 +15,7 @@ import java.lang.ref.WeakReference;
  *
  * @author Rob
  */
+@lombok.extern.slf4j.Slf4j
 public class MapleCarnivalChallenge {
 
     WeakReference<MapleCharacter> challenger;
@@ -30,14 +31,6 @@ public class MapleCarnivalChallenge {
             }
         }
         challengeinfo += "#k";
-    }
-
-    public MapleCharacter getChallenger() {
-        return challenger.get();
-    }
-
-    public String getChallengeInfo() {
-        return challengeinfo;
     }
 
     public static final String getJobNameById(int job) {
@@ -338,5 +331,13 @@ public class MapleCarnivalChallenge {
             default:
                 return "Unknown Job";
         }
+    }
+
+    public MapleCharacter getChallenger() {
+        return challenger.get();
+    }
+
+    public String getChallengeInfo() {
+        return challengeinfo;
     }
 }

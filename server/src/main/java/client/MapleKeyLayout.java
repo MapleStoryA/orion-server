@@ -34,11 +34,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleKeyLayout implements Serializable {
 
     private static final long serialVersionUID = 9179541993413738569L;
-    private boolean changed = false;
     private final Map<Integer, Triple<Byte, Integer, Byte>> keymap;
+    private boolean changed = false;
 
     public MapleKeyLayout() {
         keymap = new HashMap<>();
@@ -82,7 +83,7 @@ public class MapleKeyLayout implements Serializable {
             boolean first = true;
             StringBuilder query = new StringBuilder();
             if (ServerEnvironment.isDebugEnabled()) {
-                // System.out.println("Saving key map...");
+                // log.info("Saving key map...");
             }
             for (Entry<Integer, Triple<Byte, Integer, Byte>> keybinding : keymap.entrySet()) {
                 int skill = keybinding.getValue().getMid().intValue();
@@ -90,7 +91,7 @@ public class MapleKeyLayout implements Serializable {
                     continue;
                 }
                 if (ServerEnvironment.isDebugEnabled()) {
-                    // System.out.println("Entry: " + keybinding.getValue());
+                    // log.info("Entry: " + keybinding.getValue());
                 }
                 if (first) {
                     first = false;
@@ -106,14 +107,14 @@ public class MapleKeyLayout implements Serializable {
                 query.append(keybinding.getValue().getRight().byteValue()).append(")");
             }
             if (ServerEnvironment.isDebugEnabled()) {
-                // System.out.println(query);
+                // log.info(query);
             }
             ps = con.prepareStatement(query.toString());
             ps.execute();
             con.commit();
             ps.close();
         } catch (SQLException ex) {
-            System.out.println("Error while saving key " + ex.getMessage());
+            log.info("Error while saving key " + ex.getMessage());
             throw ex;
         }
 

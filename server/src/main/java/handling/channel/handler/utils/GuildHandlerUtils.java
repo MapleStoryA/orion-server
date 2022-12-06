@@ -24,8 +24,12 @@ package handling.channel.handler.utils;
 import client.MapleCharacter;
 import tools.MaplePacketCreator;
 
+@lombok.extern.slf4j.Slf4j
 public class GuildHandlerUtils {
 
+
+    public static final java.util.List<Invited> invited = new java.util.LinkedList<Invited>();
+    public static long nextPruneTime = System.currentTimeMillis() + 20 * 60 * 1000;
 
     public static final boolean isGuildNameAcceptable(final String name) {
         if (name.length() < 3 || name.length() > 12) {
@@ -68,9 +72,6 @@ public class GuildHandlerUtils {
             return (gid == oth.gid && name.equals(oth.name));
         }
     }
-
-    public static final java.util.List<Invited> invited = new java.util.LinkedList<Invited>();
-    public static long nextPruneTime = System.currentTimeMillis() + 20 * 60 * 1000;
 
 
 }

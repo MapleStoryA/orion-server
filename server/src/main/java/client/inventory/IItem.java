@@ -27,11 +27,19 @@ public interface IItem extends Comparable<IItem> {
 
     short getPosition();
 
+    void setPosition(short position);
+
     byte getFlag();
+
+    void setFlag(byte flag);
 
     short getQuantity();
 
+    void setQuantity(short quantity);
+
     String getOwner();
+
+    void setOwner(String owner);
 
     int getItemId();
 
@@ -39,29 +47,21 @@ public interface IItem extends Comparable<IItem> {
 
     int getSN();
 
+    void setSN(int id);
+
     IItem copy();
 
     long getExpiration();
 
-    long getInventoryId();
-
-    void setFlag(byte flag);
-
-    void setSN(int id);
-
-    void setPosition(short position);
-
     void setExpiration(long expire);
+
+    long getInventoryId();
 
     void setInventoryId(long ui);
 
-    void setOwner(String owner);
-
-    void setQuantity(short quantity);
+    String getGiftFrom();
 
     void setGiftFrom(String gf);
-
-    String getGiftFrom();
 
     MapleRing getRing();
 }

@@ -25,7 +25,7 @@ import client.MapleClient;
 import database.DatabaseConnection;
 import server.maps.MapleReactor;
 import server.maps.ReactorDropEntry;
-import tools.FileoutputUtil;
+import tools.FileOutputUtil;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -38,6 +38,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class ReactorScriptManager extends AbstractScriptManager {
 
     private static final ReactorScriptManager instance = new ReactorScriptManager();
@@ -61,7 +62,7 @@ public class ReactorScriptManager extends AbstractScriptManager {
             iv.invokeFunction("act");
         } catch (Exception e) {
             System.err.println("Error executing reactor script. ReactorID: " + reactor.getReactorId() + ", ReactorName: " + reactor.getName() + ":" + e);
-            FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Error executing reactor script. ReactorID: " + reactor.getReactorId() + ", ReactorName: " + reactor.getName() + ":" + e);
+            FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Error executing reactor script. ReactorID: " + reactor.getReactorId() + ", ReactorName: " + reactor.getName() + ":" + e);
         }
     }
 

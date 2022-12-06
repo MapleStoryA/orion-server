@@ -28,7 +28,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import provider.MapleData;
 import provider.MapleDataEntity;
-import tools.FileoutputUtil;
+import tools.FileOutputUtil;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class XMLDomMapleData implements MapleData, Serializable {
 
     /**
@@ -92,7 +93,7 @@ public class XMLDomMapleData implements MapleData, Serializable {
                         break;
                     }
                 } catch (NullPointerException e) {
-                    FileoutputUtil.outputFileError(FileoutputUtil.PacketEx_Log, e); //ugh.
+                    FileOutputUtil.outputFileError(FileOutputUtil.PacketEx_Log, e); //ugh.
                 }
             }
             if (!foundChild) {

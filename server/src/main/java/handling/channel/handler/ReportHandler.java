@@ -6,6 +6,7 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.ReportPackets;
 
+@lombok.extern.slf4j.Slf4j
 public class ReportHandler extends AbstractMaplePacketHandler {
 
     @Override

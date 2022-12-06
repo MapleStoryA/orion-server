@@ -29,6 +29,7 @@ import tools.MaplePacketCreator;
 
 import java.util.concurrent.ScheduledFuture;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleOla extends MapleEvent {
 
     private static final long serialVersionUID = 845748150824L;

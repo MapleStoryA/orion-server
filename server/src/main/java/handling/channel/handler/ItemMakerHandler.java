@@ -34,7 +34,7 @@ import server.ItemMakerFactory.ItemMakerCreateEntry;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.Randomizer;
-import tools.FileoutputUtil;
+import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class ItemMakerHandler extends AbstractMaplePacketHandler {
 
     private static final int getCreateCrystal(final int etc) {
@@ -250,7 +251,7 @@ public class ItemMakerHandler extends AbstractMaplePacketHandler {
                     }
                     c.getPlayer().gainMeso(-gem.getCost(), false);
                     MapleInventoryManipulator.addById(c, randGemGiven, (byte) (taken == randGemGiven ? 9 : 1),
-                            "Made by Gem " + toCreate + " on " + FileoutputUtil.CurrentReadable_Date()); // Gem
+                            "Made by Gem " + toCreate + " on " + FileOutputUtil.CurrentReadable_Date()); // Gem
                     // is
                     // always
                     // 1
@@ -283,7 +284,7 @@ public class ItemMakerHandler extends AbstractMaplePacketHandler {
                         final IItem ee = MapleItemInformationProvider.getInstance().getEquipById(toCreate);
                         MapleInventoryManipulator.addbyItem(c, ee);
                     } else {
-                        MapleInventoryManipulator.addById(c, toCreate, (byte) 1, "Made by Gem " + toCreate + " on " + FileoutputUtil.CurrentReadable_Date());
+                        MapleInventoryManipulator.addById(c, toCreate, (byte) 1, "Made by Gem " + toCreate + " on " + FileOutputUtil.CurrentReadable_Date());
                     }
 
                     c.getSession().write(MaplePacketCreator.ItemMaker_Success(true));
@@ -346,7 +347,7 @@ public class ItemMakerHandler extends AbstractMaplePacketHandler {
                 final int etc = slea.readInt(); // todo success rate?
                 if (c.getPlayer().haveItem(etc, 100, false, true)) {
                     MapleInventoryManipulator.addById(c, getCreateCrystal(etc), (short) 1,
-                            "Made by Maker " + etc + " on " + FileoutputUtil.CurrentReadable_Date());
+                            "Made by Maker " + etc + " on " + FileOutputUtil.CurrentReadable_Date());
                     MapleInventoryManipulator.removeById(c, MapleInventoryType.ETC, etc, 100, false, false);
 
                     c.getSession().write(MaplePacketCreator.ItemMaker_Success(true));
@@ -369,7 +370,7 @@ public class ItemMakerHandler extends AbstractMaplePacketHandler {
                 if (!ii.isDropRestricted(itemId) && !ii.isAccountShared(itemId)) {
                     final int[] toGive = getCrystal(itemId, ii.getReqLevel(itemId));
                     MapleInventoryManipulator.addById(c, toGive[0], (byte) toGive[1],
-                            "Made by disassemble " + itemId + " on " + FileoutputUtil.CurrentReadable_Date());
+                            "Made by disassemble " + itemId + " on " + FileOutputUtil.CurrentReadable_Date());
                     MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.EQUIP, slot, (byte) 1, false);
                 }
                 c.getSession().write(MaplePacketCreator.ItemMaker_Success(true));

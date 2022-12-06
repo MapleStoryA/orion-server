@@ -26,6 +26,7 @@ import server.MapleShopFactory;
 import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleNPC extends AbstractLoadedMapleLife {
 
     private String name = "MISSINGNO";

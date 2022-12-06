@@ -17,25 +17,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ScheduledFuture;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleSquad {
 
 
-    public enum MapleSquadType {
-
-        bossbalrog(2), zak(2), chaoszak(3), horntail(2), chaosht(3), pinkbean(2), nmm_squad(2), vergamot(2), dunas(2), nibergen_squad(2), dunas2(2), core_blaze(2), aufheben(2), cwkpq(3), tokyo_2095(2), vonleon(3), scartar(2), cygnus(3), hilla(2), darkhilla(2), arkarium(3);
-
-        MapleSquadType(int i) {
-            this.i = i;
-        }
-
-        public int i;
-        public HashMap<Integer, ArrayList<Pair<String, String>>> queuedPlayers = new HashMap<>();
-        public HashMap<Integer, ArrayList<Pair<String, Long>>> queue = new HashMap<>();
-    }
-
     private final MapleSquadType squadType;
-
-    private WeakReference<MapleCharacter> leader;
     private final String leaderName;
     private final Map<String, String> members = new LinkedHashMap<String, String>();
     private final Map<String, String> bannedMembers = new LinkedHashMap<String, String>();
@@ -44,9 +30,9 @@ public class MapleSquad {
     private final int expiration;
     private final int beginMapId;
     private final String type;
+    private WeakReference<MapleCharacter> leader;
     private byte status = 0;
     private ScheduledFuture<?> removal;
-
     public MapleSquad(final int ch, final String type, final MapleCharacter leader, final int expiration) {
         this.leader = new WeakReference<MapleCharacter>(leader);
         this.members.put(leader.getName(), MapleCarnivalChallenge.getJobBasicNameById(leader.getJob()));
@@ -210,16 +196,16 @@ public class MapleSquad {
         }
     }
 
+    public int getStatus() {
+        return status;
+    }
+
     public void setStatus(byte status) {
         this.status = status;
         if (status == 2 && removal != null) {
             removal.cancel(false);
             removal = null;
         }
-    }
-
-    public int getStatus() {
-        return status;
     }
 
     public int getBannedMemberSize() {
@@ -351,5 +337,17 @@ public class MapleSquad {
 
     public List<Pair<String, Long>> getAllNextPlayer() {
         return squadType.queue.get(channel);
+    }
+
+    public enum MapleSquadType {
+
+        bossbalrog(2), zak(2), chaoszak(3), horntail(2), chaosht(3), pinkbean(2), nmm_squad(2), vergamot(2), dunas(2), nibergen_squad(2), dunas2(2), core_blaze(2), aufheben(2), cwkpq(3), tokyo_2095(2), vonleon(3), scartar(2), cygnus(3), hilla(2), darkhilla(2), arkarium(3);
+
+        public int i;
+        public HashMap<Integer, ArrayList<Pair<String, String>>> queuedPlayers = new HashMap<>();
+        public HashMap<Integer, ArrayList<Pair<String, Long>>> queue = new HashMap<>();
+        MapleSquadType(int i) {
+            this.i = i;
+        }
     }
 }

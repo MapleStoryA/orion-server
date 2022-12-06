@@ -31,15 +31,18 @@ import tools.MaplePacketCreator;
 
 import java.awt.*;
 
+@lombok.extern.slf4j.Slf4j
 public class AramiaFireWorks {
 
     public final static int MAX_SUN = 2500;
-    private short sunshines = 0;
     private final static int MAPLE_LEAF = 4001126;
-
     private static final int[] REWARDS = {2022176, 1092030, 2022175, 2000002, 2000002, 2002001, 2002002, 2002003,
             2002004, 2002005, 2050004, 1012098, 1012101, 1012102, 1012103};
-
+    private static final int[] array_X = {720, 180, 630, 270, 360, 540, 450, 142, 142, 218, 772, 810, 848, 232, 308,
+            142};
+    private static final int[] array_Y = {1234, 1234, 1174, 1234, 1174, 1174, 1174, 1260, 1234, 1234, 1234, 1234, 1234,
+            1114, 1114, 1140};
+    private short sunshines = 0;
 
     private final void broadcastServer(final MapleCharacter c, final int itemid) {
         World.Broadcast
@@ -60,7 +63,7 @@ public class AramiaFireWorks {
         }
         int currentState = (sunshines / 500);
         if (ServerEnvironment.isDebugEnabled()) {
-            System.out.println("Current tree state: " + currentState);
+            log.info("Current tree state: " + currentState);
         }
         while (reactor.getState() < currentState) {
             reactor.setState((byte) (reactor.getState() + 1));
@@ -111,11 +114,6 @@ public class AramiaFireWorks {
             }, 1000 + (i * 10000));
         }
     }
-
-    private static final int[] array_X = {720, 180, 630, 270, 360, 540, 450, 142, 142, 218, 772, 810, 848, 232, 308,
-            142};
-    private static final int[] array_Y = {1234, 1234, 1174, 1234, 1174, 1174, 1174, 1260, 1234, 1234, 1234, 1234, 1234,
-            1114, 1114, 1140};
 
     private final void spawnItem(final MapleMap map) {
         Point pos;

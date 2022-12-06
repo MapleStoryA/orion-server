@@ -2,6 +2,7 @@ package client;
 
 import client.inventory.IItem;
 
+@lombok.extern.slf4j.Slf4j
 public class JobUtils {
 
     public static final int MASTERY_BOOK_DB_START = 5620000;

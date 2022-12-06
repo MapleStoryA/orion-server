@@ -12,6 +12,7 @@ import handling.world.party.MaplePartyCharacter;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.MapleUserPackets;
 
+@lombok.extern.slf4j.Slf4j
 public class PartyOperationHandler extends AbstractMaplePacketHandler {
 
     @Override
@@ -189,7 +190,7 @@ public class PartyOperationHandler extends AbstractMaplePacketHandler {
                 }
                 break;
             default:
-                System.out.println("Unhandled Party function." + operation);
+                log.info("Unhandled Party function." + operation);
                 break;
         }
 

@@ -35,45 +35,15 @@ import java.awt.*;
 import java.util.Random;
 import java.util.concurrent.ScheduledFuture;
 
+@lombok.extern.slf4j.Slf4j
 public class Event_PyramidSubway {
 
+    //type: -1 = subway, 0-3 = difficulty of nett's pyramid.
+    private final Difficulty type;
     private int kill = 0, cool = 0, miss = 0, skill = 0, energybar = 100;
     private boolean broaded = false;
     private ScheduledFuture<?> energyBarDecrease, timerSchedule, yetiSchedule;
-    //type: -1 = subway, 0-3 = difficulty of nett's pyramid.
-    private final Difficulty type;
     private long startTime;
-
-    public enum Difficulty {
-        EASY(0),
-        NORMAL(1),
-        HARD(2),
-        HELL(3),
-        OTHER(-1);
-
-        private final int type;
-
-        Difficulty(int type) {
-            this.type = type;
-        }
-
-        public int getType() {
-            return type;
-        }
-
-
-        public static Difficulty fromInt(int i) {
-            for (Difficulty d : Difficulty.values()) {
-                if (d.type == i) {
-                    return d;
-                }
-            }
-            System.out.println("Not expected difficulty value");
-            return Difficulty.EASY;
-        }
-
-    }
-
 
     public Event_PyramidSubway(final MapleCharacter c) {
         resetStartTime();
@@ -83,7 +53,7 @@ public class Event_PyramidSubway {
         } else {
             type = Difficulty.fromInt(mapid % 10000 / 1000);
         }
-        System.out.println("Type: " + type);
+        log.info("Type: " + type);
         if (c.getParty() == null || c.getParty().getLeader().equals(new MaplePartyCharacter(c))) {
             commenceTimerNextMap(c, 1);
             energyBarDecrease = MapTimer.getInstance().register(new Runnable() {
@@ -102,6 +72,160 @@ public class Event_PyramidSubway {
                 }
             }, 1000);
         }
+    }
+
+    public static boolean warpStartSubway(final MapleCharacter c) {
+        final int mapid = 910320100;
+
+        final ChannelServer ch = c.getClient().getChannelServer();
+        for (int i = 0; i < 5; i++) {
+            final MapleMap map = ch.getMapFactory().getMap(mapid + i);
+            if (map.getCharactersSize() == 0) {
+                clearMap(map, false);
+                changeMap(c, map, 25, 30);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean warpBonusSubway(final MapleCharacter c) {
+        final int mapid = 910320010;
+
+        final ChannelServer ch = c.getClient().getChannelServer();
+        for (int i = 0; i < 20; i++) {
+            final MapleMap map = ch.getMapFactory().getMap(mapid + i);
+            if (map.getCharactersSize() == 0) {
+                clearMap(map, false);
+                c.changeMap(map, map.getPortal(0));//solo
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean warpNextMap_Subway(final MapleCharacter c) {
+        final int currentmap = c.getMapId();
+        final int thisStage = (currentmap - 910320100) / 100;
+
+        MapleMap map = c.getMap();
+        clearMap(map, true);
+        final ChannelServer ch = c.getClient().getChannelServer();
+        if (thisStage >= 2) {
+            map = ch.getMapFactory().getMap(910330001);
+            changeMap(c, map, 1, 200, 1);
+            return true;
+        }
+        final int nextmapid = 910320100 + ((thisStage + 1) * 100);
+        for (int i = 0; i < 5; i++) {
+            map = ch.getMapFactory().getMap(nextmapid + i);
+            if (map.getCharactersSize() == 0) {
+                clearMap(map, false);
+                changeMap(c, map, 1, 200, 1); //any level because they could level
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean warpStartPyramid(final MapleCharacter c, final int difficulty) {
+        final int mapid = 926010100 + (difficulty * 1000);
+        int minLevel = 40, maxLevel = 60;
+        switch (difficulty) {
+            case 1:
+                minLevel = 45;
+                break;
+            case 2:
+                minLevel = 50;
+                break;
+            case 3:
+                minLevel = 61;
+                maxLevel = 200;
+                break;
+        }
+        final ChannelServer ch = c.getClient().getChannelServer();
+        for (int i = 0; i < 5; i++) {
+            final MapleMap map = ch.getMapFactory().getMap(mapid + i);
+            if (map.getCharactersSize() == 0) {
+                clearMap(map, false);
+                changeMap(c, map, minLevel, maxLevel);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean warpBonusPyramid(final MapleCharacter c, final int difficulty) {
+        final int mapid = 926010010 + (difficulty * 20);
+
+        final ChannelServer ch = c.getClient().getChannelServer();
+        for (int i = 0; i < 20; i++) {
+            final MapleMap map = ch.getMapFactory().getMap(mapid + i);
+            if (map.getCharactersSize() == 0) {
+                clearMap(map, false);
+                c.changeMap(map, map.getPortal(0));//solo
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean warpNextMap_Pyramid(final MapleCharacter c, Difficulty difficulty) {
+        final int currentmap = c.getMapId();
+        final int thisStage = (currentmap - (926010100 + (difficulty.getType() * 1000))) / 100;
+
+        MapleMap map = c.getMap();
+        clearMap(map, true);
+        final ChannelServer ch = c.getClient().getChannelServer();
+        if (thisStage >= 4) {
+            map = ch.getMapFactory().getMap(926020001 + difficulty.getType());
+            changeMap(c, map, 1, 200, 1);
+            return true;
+        }
+        final int nextmapid = 926010100 + ((thisStage + 1) * 100) + (difficulty.getType() * 1000);
+        for (int i = 0; i < 5; i++) {
+            map = ch.getMapFactory().getMap(nextmapid + i);
+            if (map.getCharactersSize() == 0) {
+                clearMap(map, false);
+                changeMap(c, map, 1, 200, 1); //any level because they could level
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static final void changeMap(final MapleCharacter c, final MapleMap map, final int minLevel, final int maxLevel) {
+        changeMap(c, map, minLevel, maxLevel, 0);
+    }
+
+    private static final void changeMap(final MapleCharacter c, final MapleMap map, final int minLevel, final int maxLevel, final int clear) {
+        final MapleMap oldMap = c.getMap();
+        if (c.getParty() != null && c.getParty().getMembers().size() > 1) {
+            for (MaplePartyCharacter mpc : c.getParty().getMembers()) {
+                final MapleCharacter chr = oldMap.getCharacterById(mpc.getId());
+                if (chr != null && chr.getId() != c.getId() && chr.getLevel() >= minLevel && chr.getLevel() <= maxLevel) {
+                    if (clear == 1) {
+                        chr.getClient().getSession().write(MaplePacketCreator.showEffect("killing/clear"));
+                    } else if (clear == 2) {
+                        chr.getClient().getSession().write(MaplePacketCreator.showEffect("killing/fail"));
+                    }
+                    chr.changeMap(map, map.getPortal(0));
+                }
+            }
+        }
+        if (clear == 1) {
+            c.getClient().getSession().write(MaplePacketCreator.showEffect("killing/clear"));
+        } else if (clear == 2) {
+            c.getClient().getSession().write(MaplePacketCreator.showEffect("killing/fail"));
+        }
+        c.changeMap(map, map.getPortal(0));
+    }
+
+    private static final void clearMap(final MapleMap map, final boolean check) {
+        if (check && map.getCharactersSize() > 0) {
+            return;
+        }
+        map.resetFully(false);
     }
 
     public final void fullUpdate(final MapleCharacter c, final int stage) {
@@ -196,7 +320,7 @@ public class Event_PyramidSubway {
             broadcastEnergy(c, "massacre_cool", cool);
         }
         energybar += 5;
-        System.out.println("Energy bar: " + energybar);
+        log.info("Energy bar: " + energybar);
         if (energybar > getMaxEneryBar()) {
             energybar = getMaxEneryBar(); //rofl
         }
@@ -438,157 +562,32 @@ public class Event_PyramidSubway {
         c.getClient().getSession().write(MaplePacketCreator.sendPyramidEnergy(type, String.valueOf(amount)));
     }
 
-    public static boolean warpStartSubway(final MapleCharacter c) {
-        final int mapid = 910320100;
+    public enum Difficulty {
+        EASY(0),
+        NORMAL(1),
+        HARD(2),
+        HELL(3),
+        OTHER(-1);
 
-        final ChannelServer ch = c.getClient().getChannelServer();
-        for (int i = 0; i < 5; i++) {
-            final MapleMap map = ch.getMapFactory().getMap(mapid + i);
-            if (map.getCharactersSize() == 0) {
-                clearMap(map, false);
-                changeMap(c, map, 25, 30);
-                return true;
-            }
+        private final int type;
+
+        Difficulty(int type) {
+            this.type = type;
         }
-        return false;
-    }
 
-    public static boolean warpBonusSubway(final MapleCharacter c) {
-        final int mapid = 910320010;
-
-        final ChannelServer ch = c.getClient().getChannelServer();
-        for (int i = 0; i < 20; i++) {
-            final MapleMap map = ch.getMapFactory().getMap(mapid + i);
-            if (map.getCharactersSize() == 0) {
-                clearMap(map, false);
-                c.changeMap(map, map.getPortal(0));//solo
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static boolean warpNextMap_Subway(final MapleCharacter c) {
-        final int currentmap = c.getMapId();
-        final int thisStage = (currentmap - 910320100) / 100;
-
-        MapleMap map = c.getMap();
-        clearMap(map, true);
-        final ChannelServer ch = c.getClient().getChannelServer();
-        if (thisStage >= 2) {
-            map = ch.getMapFactory().getMap(910330001);
-            changeMap(c, map, 1, 200, 1);
-            return true;
-        }
-        final int nextmapid = 910320100 + ((thisStage + 1) * 100);
-        for (int i = 0; i < 5; i++) {
-            map = ch.getMapFactory().getMap(nextmapid + i);
-            if (map.getCharactersSize() == 0) {
-                clearMap(map, false);
-                changeMap(c, map, 1, 200, 1); //any level because they could level
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static boolean warpStartPyramid(final MapleCharacter c, final int difficulty) {
-        final int mapid = 926010100 + (difficulty * 1000);
-        int minLevel = 40, maxLevel = 60;
-        switch (difficulty) {
-            case 1:
-                minLevel = 45;
-                break;
-            case 2:
-                minLevel = 50;
-                break;
-            case 3:
-                minLevel = 61;
-                maxLevel = 200;
-                break;
-        }
-        final ChannelServer ch = c.getClient().getChannelServer();
-        for (int i = 0; i < 5; i++) {
-            final MapleMap map = ch.getMapFactory().getMap(mapid + i);
-            if (map.getCharactersSize() == 0) {
-                clearMap(map, false);
-                changeMap(c, map, minLevel, maxLevel);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static boolean warpBonusPyramid(final MapleCharacter c, final int difficulty) {
-        final int mapid = 926010010 + (difficulty * 20);
-
-        final ChannelServer ch = c.getClient().getChannelServer();
-        for (int i = 0; i < 20; i++) {
-            final MapleMap map = ch.getMapFactory().getMap(mapid + i);
-            if (map.getCharactersSize() == 0) {
-                clearMap(map, false);
-                c.changeMap(map, map.getPortal(0));//solo
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static boolean warpNextMap_Pyramid(final MapleCharacter c, Difficulty difficulty) {
-        final int currentmap = c.getMapId();
-        final int thisStage = (currentmap - (926010100 + (difficulty.getType() * 1000))) / 100;
-
-        MapleMap map = c.getMap();
-        clearMap(map, true);
-        final ChannelServer ch = c.getClient().getChannelServer();
-        if (thisStage >= 4) {
-            map = ch.getMapFactory().getMap(926020001 + difficulty.getType());
-            changeMap(c, map, 1, 200, 1);
-            return true;
-        }
-        final int nextmapid = 926010100 + ((thisStage + 1) * 100) + (difficulty.getType() * 1000);
-        for (int i = 0; i < 5; i++) {
-            map = ch.getMapFactory().getMap(nextmapid + i);
-            if (map.getCharactersSize() == 0) {
-                clearMap(map, false);
-                changeMap(c, map, 1, 200, 1); //any level because they could level
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static final void changeMap(final MapleCharacter c, final MapleMap map, final int minLevel, final int maxLevel) {
-        changeMap(c, map, minLevel, maxLevel, 0);
-    }
-
-    private static final void changeMap(final MapleCharacter c, final MapleMap map, final int minLevel, final int maxLevel, final int clear) {
-        final MapleMap oldMap = c.getMap();
-        if (c.getParty() != null && c.getParty().getMembers().size() > 1) {
-            for (MaplePartyCharacter mpc : c.getParty().getMembers()) {
-                final MapleCharacter chr = oldMap.getCharacterById(mpc.getId());
-                if (chr != null && chr.getId() != c.getId() && chr.getLevel() >= minLevel && chr.getLevel() <= maxLevel) {
-                    if (clear == 1) {
-                        chr.getClient().getSession().write(MaplePacketCreator.showEffect("killing/clear"));
-                    } else if (clear == 2) {
-                        chr.getClient().getSession().write(MaplePacketCreator.showEffect("killing/fail"));
-                    }
-                    chr.changeMap(map, map.getPortal(0));
+        public static Difficulty fromInt(int i) {
+            for (Difficulty d : Difficulty.values()) {
+                if (d.type == i) {
+                    return d;
                 }
             }
+            log.info("Not expected difficulty value");
+            return Difficulty.EASY;
         }
-        if (clear == 1) {
-            c.getClient().getSession().write(MaplePacketCreator.showEffect("killing/clear"));
-        } else if (clear == 2) {
-            c.getClient().getSession().write(MaplePacketCreator.showEffect("killing/fail"));
-        }
-        c.changeMap(map, map.getPortal(0));
-    }
 
-    private static final void clearMap(final MapleMap map, final boolean check) {
-        if (check && map.getCharactersSize() > 0) {
-            return;
+        public int getType() {
+            return type;
         }
-        map.resetFully(false);
+
     }
 }

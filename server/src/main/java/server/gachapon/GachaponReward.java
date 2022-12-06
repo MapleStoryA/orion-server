@@ -1,12 +1,11 @@
 package server.gachapon;
 
+@lombok.extern.slf4j.Slf4j
 public class GachaponReward extends AbstractRandomEntity {
 
-    private GachaponLocation location;
-
-    private RewardSource source;
-
     public static final String DEFAULT_DESC = "";
+    private GachaponLocation location;
+    private RewardSource source;
 
     public GachaponReward(int idreward,
                           int id,

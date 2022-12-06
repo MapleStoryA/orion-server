@@ -40,17 +40,74 @@ import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 
+@lombok.extern.slf4j.Slf4j
 public class GameApp {
 
-    public static long startTime = System.currentTimeMillis();
     public static final GameApp instance = new GameApp();
+    public static long startTime = System.currentTimeMillis();
 
     public static void main(String[] args) throws InterruptedException {
         AutoJCE.removeCryptographyRestrictions();
         ServerEnvironment.getConfig();
         System.setProperty("logback.configurationFile", "config/logback.xml");
         instance.run();
-        System.out.println("[" + ServerProperties.getProperty("login.serverName") + "]");
+        log.info("[" + ServerProperties.getProperty("login.serverName") + "]");
+    }
+
+    private static void initDatabase() {
+        try {
+            ServerConfig config = ServerEnvironment.getConfig();
+            DatabaseConnection.initConfig(config);
+        } catch (SQLException ex) {
+            throw new RuntimeException("[SQL EXCEPTION] Error connecting to the database.", ex);
+        }
+    }
+
+    private static void setAccountsAsLoggedOff() {
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("UPDATE accounts SET loggedin = 0");
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (SQLException ex) {
+            throw new RuntimeException("[EXCEPTION] Please check if the SQL server is active.", ex);
+        }
+    }
+
+    private static void printLoad(String thread) {
+        log.info("[Loading Completed] " + thread + " | Completed in " + (System.currentTimeMillis() - startTime) + " Milliseconds.");
+    }
+
+    public static void listenCommand() {
+        try (Scanner sc = new Scanner(System.in)) {
+            String input;
+            input = sc.nextLine();
+            String command = input;
+            if (command.contains("shutdown")) {
+                Thread t = null;
+                if (t == null || !t.isAlive()) {
+                    t = new Thread(ShutdownServer.getInstance());
+                    ShutdownServer.getInstance().shutdown();
+                    t.start();
+                }
+            } else if (command.contains("restart")) {
+                Thread t = new Thread(ShutdownServer.getInstance());
+                ShutdownServer.getInstance().shutdown();
+                t.start();
+                EtcTimer.getInstance().schedule(new Runnable() {
+                    public void run() {
+                        String[] args = {"restart"};
+                        try {
+                            main(args);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, 3 * 1000);
+            }
+        }
+
     }
 
     public void run() throws InterruptedException {
@@ -114,11 +171,11 @@ public class GameApp {
         executorService.shutdown();
 
 
-        System.out.println("[Loading Login]");
+        log.info("[Loading Login]");
         LoginServer.getInstance();
-        System.out.println("[Login Initialized]");
+        log.info("[Login Initialized]");
 
-        System.out.println("[Loading Channel]");
+        log.info("[Loading Channel]");
 
         WorldServer worldServer = WorldServer.getInstance();
 
@@ -129,11 +186,11 @@ public class GameApp {
         }
 
 
-        System.out.println("[Channel Initialized]");
+        log.info("[Channel Initialized]");
 
-        System.out.println("[Loading CS]");
+        log.info("[Loading CS]");
         CashShopServer.run_startup_configurations();
-        System.out.println("[CS Initialized]");
+        log.info("[CS Initialized]");
 
         CheatTimer.getInstance().register(AutobanManager.getInstance(), 60000);
         Runtime.getRuntime().addShutdownHook(new Thread(new Shutdown()));
@@ -141,43 +198,17 @@ public class GameApp {
         if (ShutdownServer.getInstance() == null) {
             ShutdownServer.registerMBean();
         } else {
-            System.out.println("--MBean server was already active--");
+            log.info("--MBean server was already active--");
         }
         PlayerNPC.loadAll();
-        System.out.println("[Fully Initialized in " + (System.currentTimeMillis() - startTime) / 1000L + " seconds]");
+        log.info("[Fully Initialized in " + (System.currentTimeMillis() - startTime) / 1000L + " seconds]");
         RankingWorker.getInstance().run();
 
 
-        System.out.println("[/////////////////////////////////////////////////]");
-        System.out.println("Console Commands: ");
-        System.out.println("say | prefixsay | shutdown | restart");
+        log.info("[/////////////////////////////////////////////////]");
+        log.info("Console Commands: ");
+        log.info("say | prefixsay | shutdown | restart");
         listenCommand();
-    }
-
-
-    private static void initDatabase() {
-        try {
-            ServerConfig config = ServerEnvironment.getConfig();
-            DatabaseConnection.initConfig(config);
-        } catch (SQLException ex) {
-            throw new RuntimeException("[SQL EXCEPTION] Error connecting to the database.", ex);
-        }
-    }
-
-    private static void setAccountsAsLoggedOff() {
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("UPDATE accounts SET loggedin = 0");
-            ps.executeUpdate();
-            ps.close();
-
-        } catch (SQLException ex) {
-            throw new RuntimeException("[EXCEPTION] Please check if the SQL server is active.", ex);
-        }
-    }
-
-    private static void printLoad(String thread) {
-        System.out.println("[Loading Completed] " + thread + " | Completed in " + (System.currentTimeMillis() - startTime) + " Milliseconds.");
     }
 
     public static class Shutdown implements Runnable {
@@ -186,37 +217,6 @@ public class GameApp {
         public void run() {
             ShutdownServer.getInstance().run();
         }
-    }
-
-    public static void listenCommand() {
-        try (Scanner sc = new Scanner(System.in)) {
-            String input;
-            input = sc.nextLine();
-            String command = input;
-            if (command.contains("shutdown")) {
-                Thread t = null;
-                if (t == null || !t.isAlive()) {
-                    t = new Thread(ShutdownServer.getInstance());
-                    ShutdownServer.getInstance().shutdown();
-                    t.start();
-                }
-            } else if (command.contains("restart")) {
-                Thread t = new Thread(ShutdownServer.getInstance());
-                ShutdownServer.getInstance().shutdown();
-                t.start();
-                EtcTimer.getInstance().schedule(new Runnable() {
-                    public void run() {
-                        String[] args = {"restart"};
-                        try {
-                            main(args);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, 3 * 1000);
-            }
-        }
-
     }
 
 }

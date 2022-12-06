@@ -62,6 +62,45 @@ public enum ItemLoader {
         this.arg = Arrays.asList(arg);
     }
 
+    private static MerchItemPackage loadItemFrom_Database(final int accountid) {
+        final Connection con = DatabaseConnection.getConnection();
+
+        try {
+            ResultSet rs;
+
+            final int packageid;
+            final MerchItemPackage pack;
+            try (PreparedStatement ps = con.prepareStatement("SELECT * from hiredmerch where accountid = ?")) {
+                ps.setInt(1, accountid);
+                rs = ps.executeQuery();
+                if (!rs.next()) {
+                    ps.close();
+                    rs.close();
+                    return null;
+                }
+                packageid = rs.getInt("PackageId");
+                pack = new MerchItemPackage();
+                pack.setPackageid(packageid);
+                pack.setMesos(rs.getInt("Mesos"));
+                pack.setSentTime(rs.getLong("time"));
+            }
+            rs.close();
+
+            Map<Integer, Pair<IItem, MapleInventoryType>> items = ItemLoader.HIRED_MERCHANT.loadItems(false, packageid);
+            if (items != null) {
+                List<IItem> iters = new ArrayList<>();
+                for (Pair<IItem, MapleInventoryType> z : items.values()) {
+                    iters.add(z.left);
+                }
+                pack.setItems(iters);
+            }
+
+            return pack;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
     public int getValue() {
         return value;
     }
@@ -285,45 +324,6 @@ public enum ItemLoader {
         }
         pse.close();
         ps.close();
-    }
-
-    private static MerchItemPackage loadItemFrom_Database(final int accountid) {
-        final Connection con = DatabaseConnection.getConnection();
-
-        try {
-            ResultSet rs;
-
-            final int packageid;
-            final MerchItemPackage pack;
-            try (PreparedStatement ps = con.prepareStatement("SELECT * from hiredmerch where accountid = ?")) {
-                ps.setInt(1, accountid);
-                rs = ps.executeQuery();
-                if (!rs.next()) {
-                    ps.close();
-                    rs.close();
-                    return null;
-                }
-                packageid = rs.getInt("PackageId");
-                pack = new MerchItemPackage();
-                pack.setPackageid(packageid);
-                pack.setMesos(rs.getInt("Mesos"));
-                pack.setSentTime(rs.getLong("time"));
-            }
-            rs.close();
-
-            Map<Integer, Pair<IItem, MapleInventoryType>> items = ItemLoader.HIRED_MERCHANT.loadItems(false, packageid);
-            if (items != null) {
-                List<IItem> iters = new ArrayList<>();
-                for (Pair<IItem, MapleInventoryType> z : items.values()) {
-                    iters.add(z.left);
-                }
-                pack.setItems(iters);
-            }
-
-            return pack;
-        } catch (SQLException e) {
-            return null;
-        }
     }
 
 }

@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package server;
 
 import database.DatabaseConnection;
-import tools.FileoutputUtil;
+import tools.FileOutputUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -33,11 +33,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class RankingWorker {
 
+    private static RankingWorker instance;
     private final Map<Integer, List<RankingInformation>> rankings = new HashMap<>();
     private final Map<String, Integer> jobCommands = new HashMap<>();
-    private static RankingWorker instance;
 
     public static RankingWorker getInstance() {
         if (instance == null) {
@@ -59,17 +60,17 @@ public class RankingWorker {
     }
 
     public final void run() {
-        System.out.println("Loading Rankings::");
+        log.info("Loading Rankings::");
         loadJobCommands();
         try {
             Connection con = DatabaseConnection.getConnection();
             updateRanking(con);
         } catch (Exception ex) {
             ex.printStackTrace();
-            FileoutputUtil.outputFileError("Log_Script_Except.rtf", ex);
+            FileOutputUtil.outputFileError("Log_Script_Except.rtf", ex);
             System.err.println("Could not update rankings");
         }
-        System.out.println("Done loading Rankings :::"); //keep
+        log.info("Done loading Rankings :::"); //keep
     }
 
     private void updateRanking(Connection con) throws Exception {

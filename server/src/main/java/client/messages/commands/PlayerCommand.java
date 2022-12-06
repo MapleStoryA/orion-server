@@ -12,6 +12,7 @@ import scripting.NPCScriptManager;
 import scripting.v1.NewNpcTalkHandler;
 import tools.MaplePacketCreator;
 
+@lombok.extern.slf4j.Slf4j
 public class PlayerCommand {
 
     public static PlayerGMRank getPlayerLevelRequired() {
@@ -48,8 +49,8 @@ public class PlayerCommand {
 
     public abstract static class DistributeStatCommands extends CommandExecute {
 
-        protected MapleStat stat = null;
         private static final int statLim = 30000;
+        protected MapleStat stat = null;
 
         private void setStat(MapleCharacter player, int amount) {
             switch (stat) {
@@ -123,10 +124,10 @@ public class PlayerCommand {
 
     public abstract static class OpenNPCCommand extends CommandExecute {
 
-        protected int npc = -1;
         private static final int[] npcs = { // Ish yur job to make sure these are in
                 // order and correct ;(
                 9270035, 9010017, 9000000, 1013105, 1011101, 9000020, 1012117};
+        protected int npc = -1;
 
         @Override
         public int execute(MapleClient c, String[] splitted) {

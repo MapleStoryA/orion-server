@@ -27,7 +27,7 @@ public interface MaplePortal {
 
     void enterPortal(MapleClient c);
 
-    void setPortalState(boolean state);
-
     boolean getPortalState();
+
+    void setPortalState(boolean state);
 }

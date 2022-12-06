@@ -99,10 +99,88 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ScheduledFuture;
 
+@lombok.extern.slf4j.Slf4j
 public class AdminCommand {
 
     public static PlayerGMRank getPlayerLevelRequired() {
         return PlayerGMRank.ADMIN;
+    }
+
+    public static boolean MapChecks(final MapleClient c, final MapleCharacter other) {
+        for (int i : GameConstants.blockedMaps) {
+            if (other.getMapId() == i) {
+                c.getPlayer().dropMessage(5, "You may not use this command here.");
+                return false;
+            }
+        }
+        if (other.getLevel() < 10) {
+            c.getPlayer().dropMessage(5, "You must be over level 10 to use this command.");
+            return false;
+        }
+        if (other.getMap().getSquadByMap() != null || other.getEventInstance() != null
+                || other.getMap().getEMByMap() != null || MapConstants.isStorylineMap(other.getMapId())) {
+            c.getPlayer().dropMessage(5, "You may not use this command here.");
+            return false;
+        }
+        if ((other.getMapId() >= 680000210 && other.getMapId() <= 680000502)
+                || (other.getMapId() / 1000 == 980000 && other.getMapId() != 980000000)
+                || (other.getMapId() / 100 == 1030008) || (other.getMapId() / 100 == 922010)
+                || (other.getMapId() / 10 == 13003000) || (other.getMapId() >= 990000000)) {
+            c.getPlayer().dropMessage(5, "You may not use this command here.");
+            return false;
+        }
+        return true;
+    }
+
+    public void removeLineFromFile(String file, String lineToRemove) {
+
+        try {
+
+            File inFile = new File(file);
+
+            if (!inFile.isFile()) {
+                log.info("Parameter is not an existing file");
+                return;
+            }
+
+            // Construct the new file that will later be renamed to the original
+            // filename.
+            File tempFile = new File(inFile.getAbsolutePath() + ".tmp");
+
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
+
+            String line = null;
+
+            // Read from the original file and write to the new
+            // unless content matches data to be removed.
+            while ((line = br.readLine()) != null) {
+
+                if (!line.trim().equals(lineToRemove)) {
+
+                    pw.println(line);
+                    pw.flush();
+                }
+            }
+            pw.close();
+            br.close();
+
+            // Delete the original file
+            if (!inFile.delete()) {
+                log.info("Could not delete file");
+                return;
+            }
+
+            // Rename the new file to the filename the original file had.
+            if (!tempFile.renameTo(inFile)) {
+                log.info("Could not rename file");
+            }
+
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public static class LowHP extends CommandExecute {
@@ -529,7 +607,6 @@ public class AdminCommand {
         }
     }
 
-
     public static class LevelUp extends CommandExecute {
 
         @Override
@@ -865,7 +942,7 @@ public class AdminCommand {
             String splitString = StringUtil.joinStringFrom(splitted, 2);
             List<Integer> chars = new ArrayList<Integer>();
             splitString = splitString.toUpperCase();
-            // System.out.println(splitString);
+            // log.info(splitString);
             for (int i = 0; i < splitString.length(); i++) {
                 char chr = splitString.charAt(i);
                 if (chr == ' ') {
@@ -988,7 +1065,6 @@ public class AdminCommand {
             return 1;
         }
     }
-
 
     public static class StartEvent extends CommandExecute {
 
@@ -2999,7 +3075,7 @@ public class AdminCommand {
                 }
                 c.getPlayer().dcolormsg(5, "Every player in your channel have been warped here");
             } catch (Exception e) {
-                System.out.println("Something went wrong: " + e);
+                log.info("Something went wrong: " + e);
             }
             return 0;
         }
@@ -3096,7 +3172,6 @@ public class AdminCommand {
             return 1;
         }
     }
-
 
     public static class ReloadMap extends CommandExecute {
 
@@ -3318,7 +3393,6 @@ public class AdminCommand {
         }
     }
 
-
     public abstract static class TestTimer extends CommandExecute {
 
         protected Timer toTest = null;
@@ -3461,7 +3535,6 @@ public class AdminCommand {
         }
     }
 
-
     public static class lifeoverride extends CommandExecute {
 
         @Override
@@ -3482,37 +3555,37 @@ public class AdminCommand {
 
             File f = new File("wz/Map.wz/Map/Map" + String.valueOf(c.getPlayer().getMapId()).charAt(0) + "/"
                     + c.getPlayer().getMapId() + ".img.xml");
-            System.out.println("Map loaded! Ready for clearing life image diretory");
+            log.info("Map loaded! Ready for clearing life image diretory");
             // file reading
             try {
                 br = new BufferedReader(new FileReader(f)); // 0.1
-                System.out.println("executing 0.1");
+                log.info("executing 0.1");
                 bw = new BufferedWriter(new FileWriter(f)); // 0.2 //new
                 // File(f.getAbsolutePath())));
-                System.out.println("executing 0.2");
+                log.info("executing 0.2");
                 br.readLine();
                 while (br.readLine() != null) {
-                    System.out.println("reading lines");
+                    log.info("reading lines");
                     while (clearing) { // clear the content of life
 
                     }
                     if (br.readLine().contains("<imgdir name=\"life\">")) { // 1
-                        System.out.println("executing 1");
+                        log.info("executing 1");
                         isLife = true;
                     }
                     if (br.readLine().contains("<imgdir name=") && isLife) { // 2
-                        System.out.println("executing 2");
+                        log.info("executing 2");
                         clearing = true;
                         toggle = true;
                     }
                     if (br.readLine().contains("</imgdir>")) { // 3
-                        System.out.println("executing 3");
+                        log.info("executing 3");
                         if (toggle) { // 4
-                            System.out.println("executing 4");
+                            log.info("executing 4");
                             toggle = false;
                         }
                         if (!toggle) { // 5
-                            System.out.println("executing 5");
+                            log.info("executing 5");
                             c.getPlayer().dropMessage(6, "Life cleaned for map " + c.getPlayer().getMapId()
                                     + ". Please reload map to see changes.");
                             clearing = false;
@@ -3539,84 +3612,6 @@ public class AdminCommand {
             return 1;
         }
     }
-
-    public void removeLineFromFile(String file, String lineToRemove) {
-
-        try {
-
-            File inFile = new File(file);
-
-            if (!inFile.isFile()) {
-                System.out.println("Parameter is not an existing file");
-                return;
-            }
-
-            // Construct the new file that will later be renamed to the original
-            // filename.
-            File tempFile = new File(inFile.getAbsolutePath() + ".tmp");
-
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
-
-            String line = null;
-
-            // Read from the original file and write to the new
-            // unless content matches data to be removed.
-            while ((line = br.readLine()) != null) {
-
-                if (!line.trim().equals(lineToRemove)) {
-
-                    pw.println(line);
-                    pw.flush();
-                }
-            }
-            pw.close();
-            br.close();
-
-            // Delete the original file
-            if (!inFile.delete()) {
-                System.out.println("Could not delete file");
-                return;
-            }
-
-            // Rename the new file to the filename the original file had.
-            if (!tempFile.renameTo(inFile)) {
-                System.out.println("Could not rename file");
-            }
-
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public static boolean MapChecks(final MapleClient c, final MapleCharacter other) {
-        for (int i : GameConstants.blockedMaps) {
-            if (other.getMapId() == i) {
-                c.getPlayer().dropMessage(5, "You may not use this command here.");
-                return false;
-            }
-        }
-        if (other.getLevel() < 10) {
-            c.getPlayer().dropMessage(5, "You must be over level 10 to use this command.");
-            return false;
-        }
-        if (other.getMap().getSquadByMap() != null || other.getEventInstance() != null
-                || other.getMap().getEMByMap() != null || MapConstants.isStorylineMap(other.getMapId())) {
-            c.getPlayer().dropMessage(5, "You may not use this command here.");
-            return false;
-        }
-        if ((other.getMapId() >= 680000210 && other.getMapId() <= 680000502)
-                || (other.getMapId() / 1000 == 980000 && other.getMapId() != 980000000)
-                || (other.getMapId() / 100 == 1030008) || (other.getMapId() / 100 == 922010)
-                || (other.getMapId() / 10 == 13003000) || (other.getMapId() >= 990000000)) {
-            c.getPlayer().dropMessage(5, "You may not use this command here.");
-            return false;
-        }
-        return true;
-    }
-
 
     public static class finddrop extends CommandExecute {
 

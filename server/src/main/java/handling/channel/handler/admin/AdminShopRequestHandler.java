@@ -9,6 +9,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
  * @Website http://Vertisy.ca/
  * @since Aug 24, 2017
  */
+@lombok.extern.slf4j.Slf4j
 public class AdminShopRequestHandler extends AbstractMaplePacketHandler {
 
     @Override

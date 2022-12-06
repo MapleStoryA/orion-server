@@ -32,6 +32,7 @@ import java.nio.file.Paths;
  * @version 1.0
  * @since Revision 336
  */
+@lombok.extern.slf4j.Slf4j
 public class StringUtil {
 
     /**
@@ -228,7 +229,7 @@ public class StringUtil {
             }
             return builder.toString();
         } catch (IOException e) {
-            System.out.println("Error while loading file " + path + " " + e.getMessage());
+            log.info("Error while loading file " + path + " " + e.getMessage());
         }
         return "";
     }

@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package constants.skills;
 
+@lombok.extern.slf4j.Slf4j
 public class BladeLord {
     public static final int ADVANCED_DARK_SIGHT = 4330001;
     public static final int BLOODY_STORM = 4331000;

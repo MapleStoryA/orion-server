@@ -14,6 +14,7 @@ import scripting.v1.dispatch.PacketDispatcher;
 import server.quest.MapleQuest;
 import tools.StringUtil;
 
+@lombok.extern.slf4j.Slf4j
 public class NpcScriptingManager {
 
     private final String scriptPath;
@@ -92,7 +93,7 @@ public class NpcScriptingManager {
         } catch (ContinuationPending ex) {
             throw ex;
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            log.info(ex.getMessage());
         } finally {
             Context.exit();
         }

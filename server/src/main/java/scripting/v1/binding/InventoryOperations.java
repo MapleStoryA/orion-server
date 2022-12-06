@@ -8,6 +8,7 @@ import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
 
+@lombok.extern.slf4j.Slf4j
 public class InventoryOperations {
 
     public static final int gainItem(final int id, final short quantity, final boolean randomStats, final long period,

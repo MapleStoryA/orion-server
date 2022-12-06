@@ -25,6 +25,7 @@ package constants.skills;
 /**
  * @author BubblesDev
  */
+@lombok.extern.slf4j.Slf4j
 public class Corsair {
     public static final int MAPLE_WARRIOR = 5221000;
     public static final int ELEMENTAL_BOOST = 5220001;

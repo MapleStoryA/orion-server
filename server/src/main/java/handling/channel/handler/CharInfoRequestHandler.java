@@ -7,6 +7,7 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.PetPacket;
 
+@lombok.extern.slf4j.Slf4j
 public class CharInfoRequestHandler extends AbstractMaplePacketHandler {
 
     @Override

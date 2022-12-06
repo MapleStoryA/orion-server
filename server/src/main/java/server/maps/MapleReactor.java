@@ -29,6 +29,7 @@ import tools.Pair;
 
 import java.awt.*;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleReactor extends AbstractMapleMapObject {
 
     private final int rid;
@@ -49,24 +50,24 @@ public class MapleReactor extends AbstractMapleMapObject {
         return stats.getFacingDirection();
     }
 
-    public void setTimerActive(boolean active) {
-        this.timerActive = active;
-    }
-
     public boolean isTimerActive() {
         return timerActive;
+    }
+
+    public void setTimerActive(boolean active) {
+        this.timerActive = active;
     }
 
     public int getReactorId() {
         return rid;
     }
 
-    public void setState(byte state) {
-        this.state = state;
-    }
-
     public byte getState() {
         return state;
+    }
+
+    public void setState(byte state) {
+        this.state = state;
     }
 
     public boolean isAlive() {
@@ -77,12 +78,12 @@ public class MapleReactor extends AbstractMapleMapObject {
         this.alive = alive;
     }
 
-    public void setDelay(int delay) {
-        this.delay = delay;
-    }
-
     public int getDelay() {
         return delay;
+    }
+
+    public void setDelay(int delay) {
+        this.delay = delay;
     }
 
     @Override
@@ -94,12 +95,12 @@ public class MapleReactor extends AbstractMapleMapObject {
         return stats.getType(state);
     }
 
-    public void setMap(MapleMap map) {
-        this.map = map;
-    }
-
     public MapleMap getMap() {
         return map;
+    }
+
+    public void setMap(MapleMap map) {
+        this.map = map;
     }
 
     public Pair<Integer, Integer> getReactItem() {

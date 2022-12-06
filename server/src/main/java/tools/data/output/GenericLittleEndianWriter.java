@@ -32,6 +32,7 @@ import java.nio.charset.StandardCharsets;
  * @version 1.0
  * @since Revision 323
  */
+@lombok.extern.slf4j.Slf4j
 public class GenericLittleEndianWriter implements LittleEndianWriter {
 
     // See http://java.sun.com/j2se/1.4.2/docs/api/java/nio/charset/Charset.html
@@ -46,20 +47,20 @@ public class GenericLittleEndianWriter implements LittleEndianWriter {
     }
 
     /**
-     * Sets the byte-output stream for this instance of the object.
-     *
-     * @param bos The new output stream to set.
-     */
-    protected void setByteOutputStream(final ByteOutputStream bos) {
-        this.bos = bos;
-    }
-
-    /**
      * Class constructor - only this one can be used.
      *
      * @param bos The stream to wrap this objecr around.
      */
     public GenericLittleEndianWriter(final ByteOutputStream bos) {
+        this.bos = bos;
+    }
+
+    /**
+     * Sets the byte-output stream for this instance of the object.
+     *
+     * @param bos The new output stream to set.
+     */
+    protected void setByteOutputStream(final ByteOutputStream bos) {
         this.bos = bos;
     }
 

@@ -47,25 +47,20 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleGuild implements java.io.Serializable {
-
-    private enum BCOp {
-
-        NONE, DISBAND, EMBELMCHANGE, NAMECHANGE
-    }
 
     public static final long serialVersionUID = 6322150443228168192L;
     private final List<MapleGuildCharacter> members = new CopyOnWriteArrayList<MapleGuildCharacter>();
     private final String[] rankTitles = new String[5]; // 1 = master, 2 = jr, 5 = lowest member
+    private final Map<Integer, MapleBBSThread> bbs = new HashMap<Integer, MapleBBSThread>();
+    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    private final Lock rL = lock.readLock(), wL = lock.writeLock();
     private String name, notice;
     private int id, gp, logo, logoColor, leader, capacity, logoBG, logoBGColor, signature;
     private boolean bDirty = true, proper = true;
     private int allianceid = 0, invitedid = 0;
-    private final Map<Integer, MapleBBSThread> bbs = new HashMap<Integer, MapleBBSThread>();
-    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-    private final Lock rL = lock.readLock(), wL = lock.writeLock();
     private boolean init = false;
-
     public MapleGuild(final int guildid) {
         super();
 
@@ -155,10 +150,6 @@ public class MapleGuild implements java.io.Serializable {
         }
     }
 
-    public boolean isProper() {
-        return proper;
-    }
-
     public static final void loadAll() {
         MapleGuild g;
         try {
@@ -177,6 +168,81 @@ public class MapleGuild implements java.io.Serializable {
             System.err.println("unable to read guild information from sql");
             se.printStackTrace();
         }
+    }
+
+    // function to create guild, returns the guild id if successful, 0 if not
+    public static final int createGuild(final int leaderId, final String name) {
+        if (name.length() > 12) {
+            return 0;
+        }
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT guildid FROM guilds WHERE name = ?");
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.first()) {// name taken
+                rs.close();
+                ps.close();
+                return 0;
+            }
+            ps.close();
+            rs.close();
+
+            ps = con.prepareStatement("INSERT INTO guilds (`leader`, `name`, `signature`, `alliance`) VALUES (?, ?, ?, 0)", Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, leaderId);
+            ps.setString(2, name);
+            ps.setInt(3, (int) (System.currentTimeMillis() / 1000));
+            ps.execute();
+            rs = ps.getGeneratedKeys();
+            int ret = 0;
+            if (rs.next()) {
+                ret = rs.getInt(1);
+            }
+            rs.close();
+            ps.close();
+            return ret;
+        } catch (SQLException se) {
+            System.err.println("SQL THROW");
+            se.printStackTrace();
+            return 0;
+        }
+    }
+
+    // null indicates successful invitation being sent
+    // keep in mind that this will be called by a handler most of the time
+    // so this will be running mostly on a channel server, unlike the rest
+    // of the class
+    public static final MapleGuildResponse sendInvite(final MapleClient c, final String targetName) {
+        final MapleCharacter mc = c.getChannelServer().getPlayerStorage().getCharacterByName(targetName);
+        if (mc == null) {
+            return MapleGuildResponse.NOT_IN_CHANNEL;
+        }
+        if (mc.getGuildId() > 0) {
+            return MapleGuildResponse.ALREADY_IN_GUILD;
+        }
+        mc.getClient().getSession().write(MaplePacketCreator.guildInvite(c.getPlayer().getGuildId(), c.getPlayer().getName(), c.getPlayer().getLevel(), c.getPlayer().getJob()));
+        return null;
+    }
+
+    public static void setOfflineGuildStatus(int guildid, byte guildrank, byte alliancerank, int cid) {
+        try {
+            java.sql.Connection con = DatabaseConnection.getConnection();
+            java.sql.PreparedStatement ps = con.prepareStatement("UPDATE characters SET guildid = ?, guildrank = ?, alliancerank = ? WHERE id = ?");
+            ps.setInt(1, guildid);
+            ps.setInt(2, guildrank);
+            ps.setInt(3, alliancerank);
+            ps.setInt(4, cid);
+            ps.execute();
+            ps.close();
+        } catch (SQLException se) {
+            log.info("SQLException: " + se.getLocalizedMessage());
+            se.printStackTrace();
+        }
+    }
+
+    public boolean isProper() {
+        return proper;
     }
 
     public final void writeToDB(final boolean bDisband) {
@@ -454,14 +520,6 @@ public class MapleGuild implements java.io.Serializable {
         return this.allianceid;
     }
 
-    public int getInvitedId() {
-        return this.invitedid;
-    }
-
-    public void setInvitedId(int iid) {
-        this.invitedid = iid;
-    }
-
     public void setAllianceId(int a) {
         this.allianceid = a;
         try {
@@ -476,43 +534,12 @@ public class MapleGuild implements java.io.Serializable {
         }
     }
 
-    // function to create guild, returns the guild id if successful, 0 if not
-    public static final int createGuild(final int leaderId, final String name) {
-        if (name.length() > 12) {
-            return 0;
-        }
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("SELECT guildid FROM guilds WHERE name = ?");
-            ps.setString(1, name);
-            ResultSet rs = ps.executeQuery();
+    public int getInvitedId() {
+        return this.invitedid;
+    }
 
-            if (rs.first()) {// name taken
-                rs.close();
-                ps.close();
-                return 0;
-            }
-            ps.close();
-            rs.close();
-
-            ps = con.prepareStatement("INSERT INTO guilds (`leader`, `name`, `signature`, `alliance`) VALUES (?, ?, ?, 0)", Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, leaderId);
-            ps.setString(2, name);
-            ps.setInt(3, (int) (System.currentTimeMillis() / 1000));
-            ps.execute();
-            rs = ps.getGeneratedKeys();
-            int ret = 0;
-            if (rs.next()) {
-                ret = rs.getInt(1);
-            }
-            rs.close();
-            ps.close();
-            return ret;
-        } catch (SQLException se) {
-            System.err.println("SQL THROW");
-            se.printStackTrace();
-            return 0;
-        }
+    public void setInvitedId(int iid) {
+        this.invitedid = iid;
     }
 
     public final int addGuildMember(final MapleGuildCharacter mgc) {
@@ -647,11 +674,6 @@ public class MapleGuild implements java.io.Serializable {
         System.err.println("INFO: unable to find the correct id for changeRank({" + cid + "}, {" + newRank + "})");
     }
 
-    public final void setGuildNotice(final String notice) {
-        this.notice = notice;
-        broadcast(MaplePacketCreator.guildNotice(id, notice));
-    }
-
     
     /* 
     public final void memberLevelJobUpdate(final MapleGuildCharacter mgc) {
@@ -679,6 +701,11 @@ public class MapleGuild implements java.io.Serializable {
         }
     }*/
     //fucking annoying notice when someone in the guild level up
+
+    public final void setGuildNotice(final String notice) {
+        this.notice = notice;
+        broadcast(MaplePacketCreator.guildNotice(id, notice));
+    }
 
     public final void changeRankTitle(final String[] ranks) {
         System.arraycopy(ranks, 0, rankTitles, 0, 5);
@@ -794,22 +821,6 @@ public class MapleGuild implements java.io.Serializable {
         }
     }
 
-    // null indicates successful invitation being sent
-    // keep in mind that this will be called by a handler most of the time
-    // so this will be running mostly on a channel server, unlike the rest
-    // of the class
-    public static final MapleGuildResponse sendInvite(final MapleClient c, final String targetName) {
-        final MapleCharacter mc = c.getChannelServer().getPlayerStorage().getCharacterByName(targetName);
-        if (mc == null) {
-            return MapleGuildResponse.NOT_IN_CHANNEL;
-        }
-        if (mc.getGuildId() > 0) {
-            return MapleGuildResponse.ALREADY_IN_GUILD;
-        }
-        mc.getClient().getSession().write(MaplePacketCreator.guildInvite(c.getPlayer().getGuildId(), c.getPlayer().getName(), c.getPlayer().getLevel(), c.getPlayer().getJob()));
-        return null;
-    }
-
     public java.util.Collection<MapleGuildCharacter> getMembers() {
         return java.util.Collections.unmodifiableCollection(members);
     }
@@ -862,22 +873,6 @@ public class MapleGuild implements java.io.Serializable {
         }
     }
 
-    public static void setOfflineGuildStatus(int guildid, byte guildrank, byte alliancerank, int cid) {
-        try {
-            java.sql.Connection con = DatabaseConnection.getConnection();
-            java.sql.PreparedStatement ps = con.prepareStatement("UPDATE characters SET guildid = ?, guildrank = ?, alliancerank = ? WHERE id = ?");
-            ps.setInt(1, guildid);
-            ps.setInt(2, guildrank);
-            ps.setInt(3, alliancerank);
-            ps.setInt(4, cid);
-            ps.execute();
-            ps.close();
-        } catch (SQLException se) {
-            System.out.println("SQLException: " + se.getLocalizedMessage());
-            se.printStackTrace();
-        }
-    }
-
     public final void memberLevelJobUpdate(final MapleGuildCharacter mgc) {
         for (final MapleGuildCharacter member : members) {
             if (member.getId() == mgc.getId()) {
@@ -901,6 +896,11 @@ public class MapleGuild implements java.io.Serializable {
                 break;
             }
         }
+    }
+
+    private enum BCOp {
+
+        NONE, DISBAND, EMBELMCHANGE, NAMECHANGE
     }
 
 }

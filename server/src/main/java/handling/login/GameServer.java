@@ -13,6 +13,7 @@ import org.apache.mina.transport.socket.nio.SocketAcceptorConfig;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
+@lombok.extern.slf4j.Slf4j
 public class GameServer {
 
     protected InetSocketAddress inetSocketAddress;
@@ -34,7 +35,7 @@ public class GameServer {
         try {
             inetSocketAddress = new InetSocketAddress(port);
             acceptor.bind(inetSocketAddress, new MapleServerHandler(channel, false, PacketProcessor.getProcessor(mode)), cfg);
-            System.out.println("Listening on port " + port + ".");
+            log.info("Listening on port " + port + ".");
         } catch (IOException e) {
             System.err.println("Binding to port " + port + " failed" + e);
         }

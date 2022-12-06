@@ -37,6 +37,7 @@ import tools.data.output.MaplePacketLittleEndianWriter;
 
 import java.util.Set;
 
+@lombok.extern.slf4j.Slf4j
 public class PlayerShopPacket {
 
     private static final int BLACK_LIST_SHOP_WINDOW_MAGIC_INT = 47;

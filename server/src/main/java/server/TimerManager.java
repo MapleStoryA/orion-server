@@ -31,6 +31,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@lombok.extern.slf4j.Slf4j
 public class TimerManager implements TimerManagerMBean {
     private static final TimerManager instance = new TimerManager();
     private ScheduledThreadPoolExecutor ses;

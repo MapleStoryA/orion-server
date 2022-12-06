@@ -9,6 +9,7 @@ import tools.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class DropDataProvider implements MapleDropProvider {
 
     private final MapleMonsterInformationProvider mi = MapleMonsterInformationProvider.getInstance();

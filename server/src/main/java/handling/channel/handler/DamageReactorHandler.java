@@ -6,6 +6,7 @@ import server.Randomizer;
 import server.maps.MapleReactor;
 import tools.data.input.SeekableLittleEndianAccessor;
 
+@lombok.extern.slf4j.Slf4j
 public class DamageReactorHandler extends AbstractMaplePacketHandler {
 
     @Override

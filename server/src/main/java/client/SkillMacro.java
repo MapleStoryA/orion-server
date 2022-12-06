@@ -23,6 +23,7 @@ package client;
 
 import java.io.Serializable;
 
+@lombok.extern.slf4j.Slf4j
 public class SkillMacro implements Serializable {
 
     private static final long serialVersionUID = -63413738569L;
@@ -47,52 +48,52 @@ public class SkillMacro implements Serializable {
         return macroId;
     }
 
-    public int getSkill1() {
-        return skill1;
-    }
-
-    public int getSkill2() {
-        return skill2;
-    }
-
-    public int getSkill3() {
-        return skill3;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getShout() {
-        return shout;
-    }
-
-    public int getPosition() {
-        return position;
-    }
-
     public void setMacroId(int macroId) {
         this.macroId = macroId;
+    }
+
+    public int getSkill1() {
+        return skill1;
     }
 
     public void setSkill1(int skill1) {
         this.skill1 = skill1;
     }
 
+    public int getSkill2() {
+        return skill2;
+    }
+
     public void setSkill2(int skill2) {
         this.skill2 = skill2;
+    }
+
+    public int getSkill3() {
+        return skill3;
     }
 
     public void setSkill3(int skill3) {
         this.skill3 = skill3;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
+    public int getShout() {
+        return shout;
+    }
+
     public void setShout(int shout) {
         this.shout = shout;
+    }
+
+    public int getPosition() {
+        return position;
     }
 
     public void setPosition(int position) {

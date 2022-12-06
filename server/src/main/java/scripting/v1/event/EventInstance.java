@@ -21,21 +21,22 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+@lombok.extern.slf4j.Slf4j
 public class EventInstance {
     private static final Logger LOG = LoggerFactory.getLogger(EventInteraction.class);
     private final int channel;
     private final String name;
-    private boolean isActive;
     private final EventEngine engine;
-    private MapleCharacter leader;
     private final EventCenter eventCenter;
     private final Map<String, String> attributes = new HashMap<>();
     private final Map<String, ScheduledFuture<?>> schedules = new HashMap<>();
     private final Map<Integer, MapleMap> maps = new HashMap<>();
     private final Map<String, MapleCharacter> members = new HashMap<>();
     private final ScheduledThreadPoolExecutor pool;
-    private int currentEventMap;
     private final String key;
+    private boolean isActive;
+    private MapleCharacter leader;
+    private int currentEventMap;
 
     public EventInstance(String key, int channel, String name, EventCenter eventCenter) {
         super();
@@ -51,13 +52,6 @@ public class EventInstance {
         engine.addToContext("channel", channel);
         engine.addToContext("name", name);
         engine.addToContext("field", name);
-    }
-
-    public void setLeader(MapleCharacter player) {
-        this.leader = player;
-        this.members.put(player.getName(), player);
-        engine.removeFromContext(key);
-        engine.addToContext("leader", getLeader());
     }
 
     public boolean isActive() {
@@ -96,7 +90,7 @@ public class EventInstance {
                     engine.invokeAction(method);
 
                 } catch (Exception ex) {
-                    System.out.println(ex.getMessage());
+                    log.info(ex.getMessage());
                 }
             }
         }, seconds, TimeUnit.SECONDS);
@@ -187,6 +181,13 @@ public class EventInstance {
 
     public TargetScript getLeader() {
         return new TargetScript(leader.getClient(), new RealPacketDispatcher());
+    }
+
+    public void setLeader(MapleCharacter player) {
+        this.leader = player;
+        this.members.put(player.getName(), player);
+        engine.removeFromContext(key);
+        engine.addToContext("leader", getLeader());
     }
 
     public void onPlayerExitMap(MapleCharacter mapleCharacter, MapleMap map) {

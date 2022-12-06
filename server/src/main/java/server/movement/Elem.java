@@ -8,12 +8,13 @@ import tools.data.output.LittleEndianWriter;
  * @Website http://Vertisy.ca/
  * @since Jun 22, 2017
  */
+@lombok.extern.slf4j.Slf4j
 public class Elem {
 
-    byte type;
     public byte bMoveAction, bStat;
     public short x, y, vx, vy, fh, fhFallStart, xOffset, yOffset;
     public short tElapse;
+    byte type;
 
     public void decode(SeekableLittleEndianAccessor lea) {
         type = lea.readByte();// nAttr

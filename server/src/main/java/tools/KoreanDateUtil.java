@@ -31,6 +31,7 @@ import java.util.SimpleTimeZone;
  * @version 1.0
  * @since Revision 746
  */
+@lombok.extern.slf4j.Slf4j
 public class KoreanDateUtil {
 
     private final static int ITEM_YEAR2000 = -1085019342;

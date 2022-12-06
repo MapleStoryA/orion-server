@@ -29,6 +29,7 @@ import tools.MaplePacketCreator;
 import java.util.LinkedList;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleCoconut extends MapleEvent {
 
     private final List<MapleCoconuts> coconuts = new LinkedList<MapleCoconuts>();

@@ -21,14 +21,14 @@ public abstract class CommandExecute {
     //1 = Success
     //0 = Something Went Wrong
 
+    public CommandType getType() {
+        return CommandType.NORMAL;
+    }
+
     enum ReturnValue {
 
         DONT_LOG,
         LOG
-    }
-
-    public CommandType getType() {
-        return CommandType.NORMAL;
     }
 
     public static abstract class TradeExecute extends CommandExecute {

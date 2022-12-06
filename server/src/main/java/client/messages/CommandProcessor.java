@@ -33,7 +33,7 @@ import constants.ServerConstants.CommandType;
 import constants.ServerConstants.PlayerGMRank;
 import database.DatabaseConnection;
 import server.config.ServerEnvironment;
-import tools.FileoutputUtil;
+import tools.FileOutputUtil;
 
 import java.lang.reflect.Modifier;
 import java.sql.PreparedStatement;
@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+@lombok.extern.slf4j.Slf4j
 public class CommandProcessor {
 
     private final static HashMap<String, CommandObject> commands = new HashMap<String, CommandObject>();
@@ -75,14 +76,14 @@ public class CommandProcessor {
                         }
                     } catch (Exception ex) {
                         //ex.printStackTrace();
-                        FileoutputUtil.outputFileError(FileoutputUtil.ScriptEx_Log, ex);
+                        FileOutputUtil.outputFileError(FileOutputUtil.ScriptEx_Log, ex);
                     }
                 }
                 Collections.sort(cL);
                 commandList.put(rankNeeded.getLevel(), cL);
             } catch (Exception ex) {
                 //ex.printStackTrace();
-                FileoutputUtil.outputFileError(FileoutputUtil.ScriptEx_Log, ex);
+                FileOutputUtil.outputFileError(FileOutputUtil.ScriptEx_Log, ex);
             }
         }
     }
@@ -159,7 +160,7 @@ public class CommandProcessor {
             ps.setInt(3, player.getMap().getId());
             ps.executeUpdate();
         } catch (SQLException ex) {
-            FileoutputUtil.outputFileError(FileoutputUtil.PacketEx_Log, ex);
+            FileOutputUtil.outputFileError(FileOutputUtil.PacketEx_Log, ex);
             //ex.printStackTrace();
         } finally {
             try {

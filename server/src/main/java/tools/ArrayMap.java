@@ -38,104 +38,12 @@ import java.util.Set;
  * @version 1.0
  * @since Revision 589
  */
+@lombok.extern.slf4j.Slf4j
 public class ArrayMap<K, V> extends AbstractMap<K, V> implements Serializable {
 
     public static final long serialVersionUID = 9179541993413738569L;
-
-    /**
-     * Provides a strongly typed mapping of a key to a value.
-     *
-     * @param <K> The type of the key.
-     * @param <V> The type of the value.
-     * @author Frz
-     * @version 1.0
-     * @since Revision 589
-     */
-    public static class Entry<K, V> implements Map.Entry<K, V>, Serializable {
-
-        public static final long serialVersionUID = 9179541993413738569L;
-        protected K key;
-        protected V value;
-
-        /**
-         * Class constructor
-         *
-         * @param key   Name of the key
-         * @param value The value.
-         */
-        public Entry(K key, V value) {
-            this.key = key;
-            this.value = value;
-        }
-
-        /**
-         * Gets the key.
-         *
-         * @return The key.
-         */
-        public K getKey() {
-            return key;
-        }
-
-        /**
-         * Gets the value.
-         *
-         * @return The value.
-         */
-        public V getValue() {
-            return value;
-        }
-
-        /**
-         * Sets a new value.
-         *
-         * @return The old value.
-         */
-        public V setValue(V newValue) {
-            V oldValue = value;
-            value = newValue;
-            return oldValue;
-        }
-
-        /**
-         * Compares two Entries for equality.
-         *
-         * @return <code>True</code> if the two Entries are equal,
-         * <code>False</code> otherwise.
-         */
-        @Override
-        public boolean equals(Object o) {
-            if (!(o instanceof Map.Entry)) {
-                return false;
-            }
-            @SuppressWarnings("rawtypes")
-            Map.Entry e = (Map.Entry) o;
-            return (key == null ? e.getKey() == null : key.equals(e.getKey())) &&
-                    (value == null ? e.getValue() == null : value.equals(e.getValue()));
-        }
-
-        /**
-         * @see java.lang.Object#hashCode()
-         */
-        @Override
-        public int hashCode() {
-            int keyHash = (key == null ? 0 : key.hashCode());
-            int valueHash = (value == null ? 0 : value.hashCode());
-            return keyHash ^ valueHash;
-        }
-
-        /**
-         * @see java.lang.Object#toString()
-         */
-        @Override
-        public String toString() {
-            return key + "=" + value;
-        }
-    }
-
-    private transient Set<? extends java.util.Map.Entry<K, V>> entries = null;
     private final ArrayList<Entry<K, V>> list;
-
+    private transient Set<? extends java.util.Map.Entry<K, V>> entries = null;
     /**
      * Class constructor
      */
@@ -229,5 +137,96 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Serializable {
             list.add(new Entry<K, V>(key, value));
         }
         return oldValue;
+    }
+
+    /**
+     * Provides a strongly typed mapping of a key to a value.
+     *
+     * @param <K> The type of the key.
+     * @param <V> The type of the value.
+     * @author Frz
+     * @version 1.0
+     * @since Revision 589
+     */
+    public static class Entry<K, V> implements Map.Entry<K, V>, Serializable {
+
+        public static final long serialVersionUID = 9179541993413738569L;
+        protected K key;
+        protected V value;
+
+        /**
+         * Class constructor
+         *
+         * @param key   Name of the key
+         * @param value The value.
+         */
+        public Entry(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        /**
+         * Gets the key.
+         *
+         * @return The key.
+         */
+        public K getKey() {
+            return key;
+        }
+
+        /**
+         * Gets the value.
+         *
+         * @return The value.
+         */
+        public V getValue() {
+            return value;
+        }
+
+        /**
+         * Sets a new value.
+         *
+         * @return The old value.
+         */
+        public V setValue(V newValue) {
+            V oldValue = value;
+            value = newValue;
+            return oldValue;
+        }
+
+        /**
+         * Compares two Entries for equality.
+         *
+         * @return <code>True</code> if the two Entries are equal,
+         * <code>False</code> otherwise.
+         */
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof Map.Entry)) {
+                return false;
+            }
+            @SuppressWarnings("rawtypes")
+            Map.Entry e = (Map.Entry) o;
+            return (key == null ? e.getKey() == null : key.equals(e.getKey())) &&
+                    (value == null ? e.getValue() == null : value.equals(e.getValue()));
+        }
+
+        /**
+         * @see java.lang.Object#hashCode()
+         */
+        @Override
+        public int hashCode() {
+            int keyHash = (key == null ? 0 : key.hashCode());
+            int valueHash = (value == null ? 0 : value.hashCode());
+            return keyHash ^ valueHash;
+        }
+
+        /**
+         * @see java.lang.Object#toString()
+         */
+        @Override
+        public String toString() {
+            return key + "=" + value;
+        }
     }
 }

@@ -10,19 +10,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class ItemMakerFactory {
 
     private final static ItemMakerFactory instance = new ItemMakerFactory();
     protected Map<Integer, ItemMakerCreateEntry> createCache = new HashMap<Integer, ItemMakerCreateEntry>();
     protected Map<Integer, GemCreateEntry> gemCache = new HashMap<Integer, GemCreateEntry>();
 
-    public static ItemMakerFactory getInstance() {
-        // DO ItemMakerFactory.getInstance() on ChannelServer startup.
-        return instance;
-    }
-
     protected ItemMakerFactory() {
-        //System.out.println("Loading ItemMakerFactory :::");
+        //log.info("Loading ItemMakerFactory :::");
         // 0 = Item upgrade crystals
         // 1 / 2/ 4/ 8 = Item creation
 
@@ -88,6 +84,11 @@ public class ItemMakerFactory {
                 }
             }
         }
+    }
+
+    public static ItemMakerFactory getInstance() {
+        // DO ItemMakerFactory.getInstance() on ChannelServer startup.
+        return instance;
     }
 
     public GemCreateEntry getGemInfo(int itemid) {

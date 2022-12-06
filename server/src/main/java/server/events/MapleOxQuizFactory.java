@@ -34,11 +34,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleOxQuizFactory {
 
-    private boolean initialized = false;
-    private final Map<Pair<Integer, Integer>, MapleOxQuizEntry> questionCache;
     private static final MapleOxQuizFactory instance = new MapleOxQuizFactory();
+    private final Map<Pair<Integer, Integer>, MapleOxQuizEntry> questionCache;
+    private boolean initialized = false;
 
     public MapleOxQuizFactory() {
         questionCache = new HashMap<Pair<Integer, Integer>, MapleOxQuizEntry>();
@@ -46,6 +47,14 @@ public class MapleOxQuizFactory {
 
     public static MapleOxQuizFactory getInstance() {
         return instance;
+    }
+
+    public static MapleOxQuizEntry getOxEntry(int questionSet, int questionId) {
+        return getInstance().getOxQuizEntry(new Pair<Integer, Integer>(questionSet, questionId));
+    }
+
+    public static MapleOxQuizEntry getOxEntry(Pair<Integer, Integer> pair) {
+        return getInstance().getOxQuizEntry(pair);
     }
 
     public boolean hasInitialized() {
@@ -67,7 +76,7 @@ public class MapleOxQuizFactory {
         if (initialized) {
             return;
         }
-        //System.out.println("Loading OX Quiz...");
+        //log.info("Loading OX Quiz...");
         try {
             Connection con = DatabaseConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("SELECT * FROM wz_oxdata");
@@ -99,14 +108,6 @@ public class MapleOxQuizFactory {
             e.printStackTrace();
         }
         return ret;
-    }
-
-    public static MapleOxQuizEntry getOxEntry(int questionSet, int questionId) {
-        return getInstance().getOxQuizEntry(new Pair<Integer, Integer>(questionSet, questionId));
-    }
-
-    public static MapleOxQuizEntry getOxEntry(Pair<Integer, Integer> pair) {
-        return getInstance().getOxQuizEntry(pair);
     }
 
     public MapleOxQuizEntry getOxQuizEntry(Pair<Integer, Integer> pair) {

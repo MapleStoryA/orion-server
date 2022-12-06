@@ -7,6 +7,7 @@ import server.MapleInventoryManipulator;
 
 import java.util.Random;
 
+@lombok.extern.slf4j.Slf4j
 public class AskAvatarOperations {
 
     public static boolean IsValidHairID(int nID, int nGender) {

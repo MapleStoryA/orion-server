@@ -5,6 +5,7 @@ import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import scripting.v1.dispatch.PacketDispatcher;
 
+@lombok.extern.slf4j.Slf4j
 public class InventoryScript extends PlayerInteractionScript {
 
     public InventoryScript(MapleClient client, PacketDispatcher dispatcher) {

@@ -1,5 +1,6 @@
 package client;
 
+@lombok.extern.slf4j.Slf4j
 public class ThirdJobUtils {
 
     public static int getMapIdForJob(MapleCharacter player) {

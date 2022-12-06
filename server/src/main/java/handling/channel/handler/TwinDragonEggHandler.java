@@ -6,6 +6,7 @@ import handling.cashshop.handler.CashShopOperationUtils;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.MTSCSPacket;
 
+@lombok.extern.slf4j.Slf4j
 public class TwinDragonEggHandler extends AbstractMaplePacketHandler {
 
     @Override

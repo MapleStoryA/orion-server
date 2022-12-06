@@ -30,12 +30,13 @@ import tools.MaplePacketCreator;
 
 import java.awt.*;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleGenericPortal implements MaplePortal {
 
+    private final int type;
     private String name, target, scriptName;
     private Point position;
     private int targetmap;
-    private final int type;
     private int id;
     private boolean portalState = true;
 
@@ -57,9 +58,17 @@ public class MapleGenericPortal implements MaplePortal {
         return name;
     }
 
+    public final void setName(final String name) {
+        this.name = name;
+    }
+
     @Override
     public final Point getPosition() {
         return position;
+    }
+
+    public final void setPosition(final Point position) {
+        this.position = position;
     }
 
     @Override
@@ -67,9 +76,17 @@ public class MapleGenericPortal implements MaplePortal {
         return target;
     }
 
+    public final void setTarget(final String target) {
+        this.target = target;
+    }
+
     @Override
     public final int getTargetMapId() {
         return targetmap;
+    }
+
+    public final void setTargetMapId(final int targetmapid) {
+        this.targetmap = targetmapid;
     }
 
     @Override
@@ -80,22 +97,6 @@ public class MapleGenericPortal implements MaplePortal {
     @Override
     public final String getScriptName() {
         return scriptName;
-    }
-
-    public final void setName(final String name) {
-        this.name = name;
-    }
-
-    public final void setPosition(final Point position) {
-        this.position = position;
-    }
-
-    public final void setTarget(final String target) {
-        this.target = target;
-    }
-
-    public final void setTargetMapId(final int targetmapid) {
-        this.targetmap = targetmapid;
     }
 
     @Override

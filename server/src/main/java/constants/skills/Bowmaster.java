@@ -25,6 +25,7 @@ package constants.skills;
 /**
  * @author BubblesDev
  */
+@lombok.extern.slf4j.Slf4j
 public class Bowmaster {
     public static final int MAPLE_WARRIOR = 3121000;
     public static final int SHARP_EYES = 3121002;

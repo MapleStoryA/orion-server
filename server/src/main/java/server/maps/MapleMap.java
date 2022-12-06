@@ -39,6 +39,7 @@ import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
 import handling.world.World;
 import handling.world.WorldServer;
 import handling.world.party.MaplePartyCharacter;
+import lombok.extern.slf4j.Slf4j;
 import scripting.EventManager;
 import scripting.NPCScriptManager;
 import scripting.ReactorScriptManager;
@@ -72,7 +73,7 @@ import server.maps.event.KentaMapUserEnterEvent;
 import server.maps.event.MapEvent;
 import server.maps.event.PuppeteerMapEvent;
 import server.maps.event.SimpleQuestMapEvent;
-import tools.FileoutputUtil;
+import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.StringUtil;
@@ -101,7 +102,12 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+@Slf4j
 public final class MapleMap {
+    public static final int KENTA_MAP_ID = 923010000;
+    public static final int PUPPETER_MAP_ID = 910050300;
+    public static final int ARCHER_ARAN_QUEST_MAP = 910050000;
+    public static final int ARAN_3TH_JOB_YET_THIEF_MAP = 108010702;
     /*
      * Holds mappings of OID -> MapleMapObject separated by MapleMapObjectType.
      * Please acquire the appropriate lock when reading and writing to the LinkedHashMaps.
@@ -111,21 +117,25 @@ public final class MapleMap {
     private final Map<MapleMapObjectType, ReentrantReadWriteLock> mapobjectlocks;
     private final List<MapleCharacter> characters = new ArrayList<MapleCharacter>();
     private final ReentrantReadWriteLock charactersLock = new ReentrantReadWriteLock();
-    private int runningOid = 1000000; //100000 in aurasea
     private final Lock runningOidLock = new ReentrantLock(); //running oid lock used to improve concurrency
     private final List<Spawns> monsterSpawn = new ArrayList<Spawns>();
     private final AtomicInteger spawnedMonstersOnMap = new AtomicInteger(0);
     private final Map<Integer, MaplePortal> portals = new HashMap<Integer, MaplePortal>();
-    private MapleFootholdTree footholds = null;
     private final float monsterRate;
+    private final byte channel;
+    private final int mapid;
+    private final List<Integer> dced = new ArrayList<Integer>();
+    private final Map<String, Integer> environment = new LinkedHashMap<String, Integer>();
+    private final HashMap<String, String> properties = new HashMap<>();
+    private final List<MapEvent> mapEvents = new ArrayList<>();
+    private int runningOid = 1000000; //100000 in aurasea
+    private MapleFootholdTree footholds = null;
     private float recoveryRate;
     private MapleMapEffect mapEffect;
-    private final byte channel;
     private short decHP = 0, createMobInterval = 9000;
     private int consumeItemCoolTime = 0;
     private int protectItem = 0;
     private int decHPInterval = 10000;
-    private final int mapid;
     private int returnMapId;
     private int timeLimit;
     private int fieldLimit;
@@ -138,20 +148,11 @@ public final class MapleMap {
     private boolean town, clock, personalShop, everlast = false, dropsDisabled = false, gDropsDisabled = false,
             soaring = false, squadTimer = false, isSpawns = true;
     private String mapName, streetName, onUserEnter, onFirstUserEnter, speedRunLeader = "", squad = "";
-    private final List<Integer> dced = new ArrayList<Integer>();
     private ScheduledFuture<?> squadSchedule;
     private long speedRunStart = 0, lastSpawnTime = 0, lastHurtTime = 0;
     private MapleNodes nodes;
-    private final Map<String, Integer> environment = new LinkedHashMap<String, Integer>();
     private boolean docked;
-    private final HashMap<String, String> properties = new HashMap<>();
-    private final List<MapEvent> mapEvents = new ArrayList<>();
     private EventInstance eventInstance;
-
-    public static final int KENTA_MAP_ID = 923010000;
-    public static final int PUPPETER_MAP_ID = 910050300;
-    public static final int ARCHER_ARAN_QUEST_MAP = 910050000;
-    public static final int ARAN_3TH_JOB_YET_THIEF_MAP = 108010702;
 
 
     public MapleMap(final int mapid, final int channel, final int returnMapId, final float monsterRate) {
@@ -200,37 +201,32 @@ public final class MapleMap {
         }
     }
 
+    public boolean getSpawns() {
+        return isSpawns;
+    }
 
     public void setSpawns(final boolean fm) {
         this.isSpawns = fm;
-    }
-
-    public boolean getSpawns() {
-        return isSpawns;
     }
 
     public void setFixedMob(int fm) {
         this.fixedMob = fm;
     }
 
-    public void setForceMove(int fm) {
-        this.lvForceMove = fm;
-    }
-
     public int getForceMove() {
         return lvForceMove;
     }
 
-    public void setLevelLimit(int fm) {
-        this.lvLimit = fm;
+    public void setForceMove(int fm) {
+        this.lvForceMove = fm;
     }
 
     public int getLevelLimit() {
         return lvLimit;
     }
 
-    public void setReturnMapId(int rmi) {
-        this.returnMapId = rmi;
+    public void setLevelLimit(int fm) {
+        this.lvLimit = fm;
     }
 
     public void setSoaring(boolean b) {
@@ -263,6 +259,10 @@ public final class MapleMap {
 
     public int getReturnMapId() {
         return returnMapId;
+    }
+
+    public void setReturnMapId(int rmi) {
+        this.returnMapId = rmi;
     }
 
     public int getForcedReturnId() {
@@ -301,16 +301,20 @@ public final class MapleMap {
         this.timeLimit = timeLimit;
     }
 
-    public void setMapName(final String mapName) {
-        this.mapName = mapName;
-    }
-
     public String getMapName() {
         return mapName;
     }
 
+    public void setMapName(final String mapName) {
+        this.mapName = mapName;
+    }
+
     public String getStreetName() {
         return streetName;
+    }
+
+    public void setStreetName(final String streetName) {
+        this.streetName = streetName;
     }
 
     public void setFirstUserEnter(final String onFirstUserEnter) {
@@ -345,16 +349,12 @@ public final class MapleMap {
         this.personalShop = personalShop;
     }
 
-    public void setStreetName(final String streetName) {
-        this.streetName = streetName;
+    public boolean getEverlast() {
+        return everlast;
     }
 
     public void setEverlast(final boolean everlast) {
         this.everlast = everlast;
-    }
-
-    public boolean getEverlast() {
-        return everlast;
     }
 
     public int getHPDec() {
@@ -709,7 +709,7 @@ public final class MapleMap {
             for (MapleCharacter c : getCharactersThreadsafe()) {
                 c.finishAchievement(16);
             }
-            FileoutputUtil.log(FileoutputUtil.Horntail_Log, MapDebug_Log());
+            FileOutputUtil.log(FileOutputUtil.Horntail_Log, MapDebug_Log());
             if (speedRunStart > 0) {
                 type = SpeedRunType.Horntail;
             }
@@ -721,7 +721,7 @@ public final class MapleMap {
             for (MapleCharacter c : getCharactersThreadsafe()) {
                 c.finishAchievement(24);
             }
-            FileoutputUtil.log(FileoutputUtil.Horntail_Log, MapDebug_Log());
+            FileOutputUtil.log(FileOutputUtil.Horntail_Log, MapDebug_Log());
             if (speedRunStart > 0) {
                 type = SpeedRunType.ChaosHT;
             }
@@ -801,12 +801,12 @@ public final class MapleMap {
             if (sqd != null) {
                 doShrine(true);
             }
-            FileoutputUtil.log(FileoutputUtil.Pinkbean_Log, MapDebug_Log());
+            FileOutputUtil.log(FileOutputUtil.PinkBean_Log, MapDebug_Log());
         } else if (mobid == 8800002 && mapid == 280030000) {
             for (MapleCharacter c : getCharactersThreadsafe()) {
                 c.finishAchievement(15);
             }
-            FileoutputUtil.log(FileoutputUtil.Zakum_Log, MapDebug_Log());
+            FileOutputUtil.log(FileOutputUtil.Zakum_Log, MapDebug_Log());
             if (speedRunStart > 0) {
                 type = SpeedRunType.Zakum;
             }
@@ -817,7 +817,7 @@ public final class MapleMap {
             for (MapleCharacter c : getCharactersThreadsafe()) {
                 c.finishAchievement(23);
             }
-            FileoutputUtil.log(FileoutputUtil.Zakum_Log, MapDebug_Log());
+            FileOutputUtil.log(FileOutputUtil.Zakum_Log, MapDebug_Log());
             if (speedRunStart > 0) {
                 type = SpeedRunType.Chaos_Zakum;
             }
@@ -1001,7 +1001,7 @@ public final class MapleMap {
 
     private String MapDebug_Log() {
         final StringBuilder sb = new StringBuilder("Defeat time : ");
-        sb.append(FileoutputUtil.CurrentReadable_Time());
+        sb.append(FileOutputUtil.CurrentReadable_Time());
 
         sb.append(" | Mapid : ").append(this.mapid);
 
@@ -2556,12 +2556,12 @@ public final class MapleMap {
         }
     }
 
-    public void setFootholds(final MapleFootholdTree footholds) {
-        this.footholds = footholds;
-    }
-
     public MapleFootholdTree getFootholds() {
         return footholds;
+    }
+
+    public void setFootholds(final MapleFootholdTree footholds) {
+        this.footholds = footholds;
     }
 
     public void loadMonsterRate(final boolean first) {
@@ -2625,7 +2625,7 @@ public final class MapleMap {
             pos3.y -= 1;
         }
         if (pos1 == null && pos2 == null && pos3 == null) {
-            System.out.println("WARNING: mapid " + mapid + ", monster " + monster.getId() + " could not be spawned.");
+            log.info("WARNING: mapid " + mapid + ", monster " + monster.getId() + " could not be spawned.");
 
             return;
         } else if (pos1 != null) {
@@ -2832,49 +2832,6 @@ public final class MapleMap {
         return spawnedMonstersOnMap.get();
     }
 
-    private class ActivateItemReactor implements Runnable {
-
-        private final MapleMapItem mapitem;
-        private final MapleReactor reactor;
-        private final MapleClient c;
-
-        public ActivateItemReactor(MapleMapItem mapitem, MapleReactor reactor, MapleClient c) {
-            this.mapitem = mapitem;
-            this.reactor = reactor;
-            this.c = c;
-        }
-
-        @Override
-        public void run() {
-            if (mapitem != null && mapitem == getMapObject(mapitem.getObjectId(), mapitem.getType())) {
-                if (mapitem.isPickedUp() || !mapitem.canLoot(c)) {
-                    reactor.setTimerActive(false);
-                    return;
-                }
-                mapitem.expire(MapleMap.this);
-                if (reactor.getReactorId() == 5022000) {
-                    destroyReactor(reactor.getObjectId());
-                    ReactorScriptManager.getInstance().act(c, reactor);
-                } else {
-                    reactor.hitReactor(c);
-                }
-                reactor.setTimerActive(false);
-
-                if (reactor.getDelay() > 0) {
-                    MapTimer.getInstance().schedule(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            reactor.forceHitReactor((byte) 0);
-                        }
-                    }, reactor.getDelay());
-                }
-            } else {
-                reactor.setTimerActive(false);
-            }
-        }
-    }
-
     public void respawn(boolean force) {
         respawn(force, System.currentTimeMillis());
     }
@@ -2912,16 +2869,6 @@ public final class MapleMap {
                 }
             }
         }
-    }
-
-    private interface DelayedPacketCreation {
-
-        void sendPackets(MapleClient c);
-    }
-
-    private interface SpawnCondition {
-
-        boolean canSpawn(MapleCharacter chr);
     }
 
     public String getSnowballPortal() {
@@ -3222,12 +3169,12 @@ public final class MapleMap {
         this.consumeItemCoolTime = ciit;
     }
 
-    public void setPermanentWeather(int pw) {
-        this.permanentWeather = pw;
-    }
-
     public int getPermanentWeather() {
         return permanentWeather;
+    }
+
+    public void setPermanentWeather(int pw) {
+        this.permanentWeather = pw;
     }
 
     public void checkStates(final String chr) {
@@ -3264,16 +3211,16 @@ public final class MapleMap {
         }
     }
 
-    public void setNodes(final MapleNodes mn) {
-        this.nodes = mn;
-    }
-
     public List<MaplePlatform> getPlatforms() {
         return nodes.getPlatforms();
     }
 
     public Collection<MapleNodeInfo> getNodes() {
         return nodes.getNodes();
+    }
+
+    public void setNodes(final MapleNodes mn) {
+        this.nodes = mn;
     }
 
     public MapleNodeInfo getNode(final int index) {
@@ -3464,6 +3411,59 @@ public final class MapleMap {
 
     public void clearEventInstance() {
         eventInstance.clear();
+    }
+
+    private interface DelayedPacketCreation {
+
+        void sendPackets(MapleClient c);
+    }
+
+    private interface SpawnCondition {
+
+        boolean canSpawn(MapleCharacter chr);
+    }
+
+    private class ActivateItemReactor implements Runnable {
+
+        private final MapleMapItem mapitem;
+        private final MapleReactor reactor;
+        private final MapleClient c;
+
+        public ActivateItemReactor(MapleMapItem mapitem, MapleReactor reactor, MapleClient c) {
+            this.mapitem = mapitem;
+            this.reactor = reactor;
+            this.c = c;
+        }
+
+        @Override
+        public void run() {
+            if (mapitem != null && mapitem == getMapObject(mapitem.getObjectId(), mapitem.getType())) {
+                if (mapitem.isPickedUp() || !mapitem.canLoot(c)) {
+                    reactor.setTimerActive(false);
+                    return;
+                }
+                mapitem.expire(MapleMap.this);
+                if (reactor.getReactorId() == 5022000) {
+                    destroyReactor(reactor.getObjectId());
+                    ReactorScriptManager.getInstance().act(c, reactor);
+                } else {
+                    reactor.hitReactor(c);
+                }
+                reactor.setTimerActive(false);
+
+                if (reactor.getDelay() > 0) {
+                    MapTimer.getInstance().schedule(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            reactor.forceHitReactor((byte) 0);
+                        }
+                    }, reactor.getDelay());
+                }
+            } else {
+                reactor.setTimerActive(false);
+            }
+        }
     }
 
 }

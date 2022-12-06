@@ -42,6 +42,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class ReactorActionManager extends AbstractPlayerInteraction {
 
     private final MapleReactor reactor;

@@ -6,6 +6,7 @@ import scripting.ReactorScriptManager;
 import server.maps.MapleReactor;
 import tools.data.input.SeekableLittleEndianAccessor;
 
+@lombok.extern.slf4j.Slf4j
 public class TouchReactorHandler extends AbstractMaplePacketHandler {
 
     @Override

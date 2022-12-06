@@ -29,6 +29,7 @@ import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import database.DatabaseConnection;
 import handling.world.WorldServer;
+import lombok.extern.slf4j.Slf4j;
 import server.maps.AbstractMapleMapObject;
 import server.maps.MapleMap;
 import server.maps.MapleMapObjectType;
@@ -47,6 +48,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Slf4j
 public abstract class AbstractPlayerStore extends AbstractMapleMapObject implements IMaplePlayerShop {
 
     protected boolean open = false, available = false;
@@ -123,13 +125,13 @@ public abstract class AbstractPlayerStore extends AbstractMapleMapObject impleme
     }
 
     @Override
-    public void setOpen(boolean open) {
-        this.open = open;
+    public boolean isOpen() {
+        return open;
     }
 
     @Override
-    public boolean isOpen() {
-        return open;
+    public void setOpen(boolean open) {
+        this.open = open;
     }
 
     public boolean saveItems() {
@@ -302,7 +304,7 @@ public abstract class AbstractPlayerStore extends AbstractMapleMapObject impleme
 
     @Override
     public void addItem(MaplePlayerShopItem item) {
-        //System.out.println("Adding item ... 2");
+        //log.info("Adding item ... 2");
         items.add(item);
     }
 

@@ -14,6 +14,7 @@ import server.events.MapleSnowball.MapleSnowballs;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
+@lombok.extern.slf4j.Slf4j
 public class CloseRangeDamageHandler extends AbstractMaplePacketHandler {
 
     private final boolean energy;
@@ -21,11 +22,6 @@ public class CloseRangeDamageHandler extends AbstractMaplePacketHandler {
     public CloseRangeDamageHandler(boolean energy) {
         this.energy = energy;
     }
-
-    private int calculateCountDown(int coolDown) {
-        return (55 - (coolDown / 6) * 5) * 1000;
-    }
-
 
     private static boolean isFinisher(final int skillid) {
         switch (skillid) {
@@ -38,6 +34,10 @@ public class CloseRangeDamageHandler extends AbstractMaplePacketHandler {
                 return true;
         }
         return false;
+    }
+
+    private int calculateCountDown(int coolDown) {
+        return (55 - (coolDown / 6) * 5) * 1000;
     }
 
     @Override

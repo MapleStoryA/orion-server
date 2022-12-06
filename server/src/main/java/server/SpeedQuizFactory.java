@@ -32,6 +32,7 @@ import java.util.Map.Entry;
 /**
  * @author AuroX
  */
+@lombok.extern.slf4j.Slf4j
 public class SpeedQuizFactory {
 
     private final static SpeedQuizFactory instance = new SpeedQuizFactory();
@@ -48,7 +49,7 @@ public class SpeedQuizFactory {
         if (!quiz.isEmpty()) {
             return;
         }
-        System.out.println("Loading Speed Quiz Data...");
+        log.info("Loading Speed Quiz Data...");
         try {
             Connection con = DatabaseConnection.getConnection();
             try (PreparedStatement ps = con.prepareStatement("SELECT * FROM `wz_speedquiz`"); ResultSet rs = ps.executeQuery()) {

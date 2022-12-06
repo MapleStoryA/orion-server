@@ -9,10 +9,11 @@ import server.gachapon.RewardsProvider;
 import java.util.ArrayList;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class HenesysProvider implements RewardsProvider {
 
     private final GachaponLocation location = GachaponLocation.HENESYS;
-
+    private final List<AbstractRandomEntity> reward = new ArrayList<>();
     int[] ids = {3012005, 1462003, 1432009, 1302022, 3010013, 1051063, 1002060, 1002159, 1061051, 1002214, 1102030,
             1412006, 1002167, 1002162, 1040070, 1040073, 1002211, 1002042, 1040092, 1050018, 1102027, 1082147, 1152005,
             1002169, 1002164, 1041045, 1041082, 1082149, 1452023, 1462018, 2049100, 1050091, 1002170, 1002165, 2044504,
@@ -27,8 +28,6 @@ public class HenesysProvider implements RewardsProvider {
             2040429, 2040542, 2040543, 2040629, 5200010
 
     };
-
-    private final List<AbstractRandomEntity> reward = new ArrayList<>();
 
     public HenesysProvider() {
 

@@ -30,18 +30,19 @@ import tools.MaplePacketCreator;
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@lombok.extern.slf4j.Slf4j
 public class SpawnPoint extends Spawns {
 
     private final MapleMonster monster;
     private final Point pos;
-    private long nextPossibleSpawn;
     private final int mobTime;
-    private int carnival = -1;
     private final AtomicInteger spawnedMonsters = new AtomicInteger(0);
     private final boolean immobile;
     private final String msg;
     private final byte carnivalTeam;
     private final MapleMap map;
+    private long nextPossibleSpawn;
+    private int carnival = -1;
 
     public SpawnPoint(final MapleMonster monster, MapleMap map, final Point pos, final int mobTime, final byte carnivalTeam, final String msg) {
         this.monster = monster;

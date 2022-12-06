@@ -10,6 +10,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 import java.awt.*;
 
+@lombok.extern.slf4j.Slf4j
 public class MoveDragonHandler extends AbstractMaplePacketHandler {
 
     @Override

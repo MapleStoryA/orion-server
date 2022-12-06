@@ -30,23 +30,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleBuddyList implements Serializable {
-
-    public enum BuddyAddResult {
-
-        BUDDYLIST_FULL, ALREADY_ON_LIST, OK, NOT_FOUND
-    }
-
-    public enum BuddyDelResult {
-
-        NOT_ON_LIST, IN_CASH_SHOP, OK, ERROR
-    }
 
     //
     private static final long serialVersionUID = 1413738569L;
     private final Map<Integer, BuddyListEntry> buddies;
     private byte capacity;
-
     public MapleBuddyList(byte capacity) {
         this.capacity = capacity;
         this.buddies = new LinkedHashMap<>();
@@ -119,5 +109,15 @@ public class MapleBuddyList implements Serializable {
         }
         rs.close();
         ps.close();
+    }
+
+    public enum BuddyAddResult {
+
+        BUDDYLIST_FULL, ALREADY_ON_LIST, OK, NOT_FOUND
+    }
+
+    public enum BuddyDelResult {
+
+        NOT_ON_LIST, IN_CASH_SHOP, OK, ERROR
     }
 }

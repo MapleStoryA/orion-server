@@ -3,6 +3,7 @@ package server.autosave;
 import client.MapleCharacter;
 import handling.channel.ChannelServer;
 
+@lombok.extern.slf4j.Slf4j
 public class AutoSaver {
 
     private static AutoSaver instance;

@@ -28,6 +28,7 @@ package tools;
  * @version 1.0
  * @since Revision 206
  */
+@lombok.extern.slf4j.Slf4j
 public class BitTools {
 
     /**

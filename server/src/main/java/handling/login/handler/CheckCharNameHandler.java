@@ -7,6 +7,7 @@ import handling.login.LoginInformationProvider;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.LoginPacket;
 
+@lombok.extern.slf4j.Slf4j
 public class CheckCharNameHandler extends AbstractMaplePacketHandler {
 
     @Override

@@ -20,6 +20,7 @@ import java.awt.*;
 import java.util.Collections;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class SpecialMoveHandler extends AbstractMaplePacketHandler {
 
     @Override

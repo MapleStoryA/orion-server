@@ -23,6 +23,7 @@ package client;
 
 import java.io.Serializable;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleDiseaseValueHolder implements Serializable {
 
     private static final long serialVersionUID = 9179541993413738569L;

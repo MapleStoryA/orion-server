@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@lombok.extern.slf4j.Slf4j
 public class LoginPacket {
 
     public static final byte[] getHello(final short mapleVersion, final byte[] sendIv, final byte[] recvIv) {

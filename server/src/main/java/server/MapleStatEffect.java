@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleStatEffect implements Serializable {
 
     private static final long serialVersionUID = 9179541993413738569L;
@@ -732,6 +733,49 @@ public class MapleStatEffect implements Serializable {
         return ret;
     }
 
+    public static final int parseMountInfo(final MapleCharacter player, final int skillid) {
+        switch (skillid) {
+            case 1004: // Monster riding
+            case 10001004:
+            case 20001004:
+            case 20011004:
+            case 30001004:
+                //if (player.getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -118) != null) {
+                //    return player.getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -118).getItemId();
+                //}
+                if (player.getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -18) != null) {
+                    return player.getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -18).getItemId();
+                }
+                return 0;
+            default:
+                return GameConstants.getMountItem(skillid);
+        }
+    }
+
+    private static final int makeHealHP(double rate, double stat, double lowerfactor, double upperfactor) {
+        return (int) ((Math.random() * ((int) (stat * upperfactor * rate) - (int) (stat * lowerfactor * rate) + 1)) + (int) (stat * lowerfactor * rate));
+    }
+
+    private static final int getElementalAmp(final int job) {
+        switch (job) {
+            case 211:
+            case 212:
+                return 2110001;
+            case 221:
+            case 222:
+                return 2210001;
+            case 1211:
+            case 1212:
+                return 12110001;
+            case 2215:
+            case 2216:
+            case 2217:
+            case 2218:
+                return 22150000;
+        }
+        return -1;
+    }
+
     /**
      * @param applyto
      * @param obj
@@ -1129,10 +1173,6 @@ public class MapleStatEffect implements Serializable {
         return bounds;
     }
 
-    public final void setDuration(int d) {
-        this.duration = d;
-    }
-
     public final void silentApplyBuff(final MapleCharacter chr, final long starttime) {
         final int localDuration = alchemistModifyVal(chr, duration, false);
         chr.registerEffect(this, starttime, BuffTimer.getInstance().schedule(new CancelEffectAction(chr, this, starttime),
@@ -1363,28 +1403,9 @@ public class MapleStatEffect implements Serializable {
         }
         final long starttime = System.currentTimeMillis();
         final CancelEffectAction cancelAction = new CancelEffectAction(applyto, this, starttime);
-        //System.out.println("Started effect " + sourceid + ". Duration: " + localDuration + ", Actual Duration: " + (((starttime + localDuration) - System.currentTimeMillis())));
+        //log.info("Started effect " + sourceid + ". Duration: " + localDuration + ", Actual Duration: " + (((starttime + localDuration) - System.currentTimeMillis())));
         final ScheduledFuture<?> schedule = BuffTimer.getInstance().schedule(cancelAction, ((starttime + localDuration) - System.currentTimeMillis()));
         applyto.registerEffect(this, starttime, schedule, localstatups);
-    }
-
-    public static final int parseMountInfo(final MapleCharacter player, final int skillid) {
-        switch (skillid) {
-            case 1004: // Monster riding
-            case 10001004:
-            case 20001004:
-            case 20011004:
-            case 30001004:
-                //if (player.getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -118) != null) {
-                //    return player.getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -118).getItemId();
-                //}
-                if (player.getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -18) != null) {
-                    return player.getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -18).getItemId();
-                }
-                return 0;
-            default:
-                return GameConstants.getMountItem(skillid);
-        }
     }
 
     private final int calcHPChange(final MapleCharacter applyfrom, final boolean primary) {
@@ -1423,30 +1444,6 @@ public class MapleStatEffect implements Serializable {
             hpchange += makeHealHP(getY() / 100.0, applyfrom.getStat().getTotalLuk(), 2.3, 3.5);
         }
         return hpchange;
-    }
-
-    private static final int makeHealHP(double rate, double stat, double lowerfactor, double upperfactor) {
-        return (int) ((Math.random() * ((int) (stat * upperfactor * rate) - (int) (stat * lowerfactor * rate) + 1)) + (int) (stat * lowerfactor * rate));
-    }
-
-    private static final int getElementalAmp(final int job) {
-        switch (job) {
-            case 211:
-            case 212:
-                return 2110001;
-            case 221:
-            case 222:
-                return 2210001;
-            case 1211:
-            case 1212:
-                return 12110001;
-            case 2215:
-            case 2216:
-            case 2217:
-            case 2218:
-                return 22150000;
-        }
-        return -1;
     }
 
     private final int calcMPChange(final MapleCharacter applyfrom, final boolean primary) {
@@ -1528,10 +1525,6 @@ public class MapleStatEffect implements Serializable {
         return null;
     }
 
-    public final void setSourceId(final int newid) {
-        sourceid = newid;
-    }
-
     private final boolean isGmBuff() {
         switch (sourceid) {
             case 1005: // echo of hero acts like a gm buff
@@ -1582,10 +1575,6 @@ public class MapleStatEffect implements Serializable {
         return false;
     }
 
-    public final void setPartyBuff(boolean pb) {
-        this.partyBuff = pb;
-    }
-
     private final boolean isPartyBuff() {
         if (lt == null || rb == null || !partyBuff) {
             return isSoulStone();
@@ -1605,6 +1594,10 @@ public class MapleStatEffect implements Serializable {
                 return false;
         }
         return true;
+    }
+
+    public final void setPartyBuff(boolean pb) {
+        this.partyBuff = pb;
     }
 
     public final boolean isHeal() {
@@ -1669,6 +1662,10 @@ public class MapleStatEffect implements Serializable {
 
     public final int getDuration() {
         return duration;
+    }
+
+    public final void setDuration(int d) {
+        this.duration = d;
     }
 
     public final boolean isOverTime() {
@@ -1995,6 +1992,10 @@ public class MapleStatEffect implements Serializable {
 
     public final int getSourceId() {
         return sourceid;
+    }
+
+    public final void setSourceId(final int newid) {
+        sourceid = newid;
     }
 
     public final boolean isSoaring() {

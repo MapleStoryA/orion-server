@@ -1,9 +1,7 @@
 package constants;
 
+@lombok.extern.slf4j.Slf4j
 public final class GameUI {
-    private GameUI() {
-    }
-
     public static final int EQUIPAMENT_WINDOW = 0x1;
     public static final int CHARACTER_STAT_WINDOW = 0x2;
     public static final int SKILL_WINDOW = 0x3;
@@ -13,4 +11,6 @@ public final class GameUI {
     public static final int MONSTER_BOOK_WINDOW = 0x9;
     public static final int USER_INFO_WINDOW = 0xA;
     public static final int REPAIR_WINDOW = 0x21;
+    private GameUI() {
+    }
 }

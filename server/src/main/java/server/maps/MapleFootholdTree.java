@@ -26,18 +26,19 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleFootholdTree {
 
-    private MapleFootholdTree nw = null;
-    private MapleFootholdTree ne = null;
-    private MapleFootholdTree sw = null;
-    private MapleFootholdTree se = null;
+    private static final byte maxDepth = 8;
     private final List<MapleFoothold> footholds = new LinkedList<MapleFoothold>();
     private final Point p1;
     private final Point p2;
     private final Point center;
+    private MapleFootholdTree nw = null;
+    private MapleFootholdTree ne = null;
+    private MapleFootholdTree sw = null;
+    private MapleFootholdTree se = null;
     private int depth = 0;
-    private static final byte maxDepth = 8;
     private int maxDropX;
     private int minDropX;
 
@@ -113,7 +114,7 @@ public class MapleFootholdTree {
     private final MapleFoothold findWallR(final Point p1, final Point p2) {
         MapleFoothold ret;
         for (final MapleFoothold f : footholds) {
-            //if (f.isWall()) System.out.println(f.getX1() + " " + f.getX2());
+            //if (f.isWall()) log.info(f.getX1() + " " + f.getX2());
             if (f.isWall() && f.getX1() >= p1.x && f.getX1() <= p2.x && f.getY1() >= p1.y && f.getY2() <= p1.y) {
                 return f;
             }
@@ -167,7 +168,7 @@ public class MapleFootholdTree {
                     return false;
                 }
                 if (!(fhdata.getId() == fh2.getId() || fh2.getId() == fhdata.getNext() || fh2.getId() == fhdata.getPrev())) {
-                    System.out.println("Couldn't find the correct pos for next/prev");
+                    log.info("Couldn't find the correct pos for next/prev");
                     return false;
                 }
                 return true;

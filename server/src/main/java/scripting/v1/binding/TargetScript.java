@@ -17,6 +17,7 @@ import tools.packet.CWVsContextOnMessagePackets;
 
 import java.awt.*;
 
+@lombok.extern.slf4j.Slf4j
 public class TargetScript extends PlayerInteractionScript {
 
     private static final int COMPLETE_QUEST = 2;

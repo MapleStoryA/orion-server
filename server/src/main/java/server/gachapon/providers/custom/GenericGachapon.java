@@ -9,10 +9,11 @@ import server.gachapon.RewardsProvider;
 import java.util.ArrayList;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class GenericGachapon implements RewardsProvider {
 
     private final GachaponLocation location = GachaponLocation.GENERIC;
-
+    private final List<AbstractRandomEntity> reward = new ArrayList<>();
     int[] ids = {
 
             1002130, 1060033, 1082147, 1152005, 1002392, 1082149, 1072321, 2049100, 5010034, 2049003, 3010099, 1472017,
@@ -26,9 +27,6 @@ public class GenericGachapon implements RewardsProvider {
             1082235, 2046207, 2046304, 2046305, 2046306, 2046307, 5200010
 
     };
-
-
-    private final List<AbstractRandomEntity> reward = new ArrayList<>();
 
     public GenericGachapon() {
 

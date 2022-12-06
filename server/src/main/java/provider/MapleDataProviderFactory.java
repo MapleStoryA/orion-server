@@ -25,6 +25,7 @@ import provider.WzXML.XMLWZFile;
 
 import java.io.File;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleDataProviderFactory {
 
     private static MapleDataProvider getWZ(Object in, boolean provideImages) {

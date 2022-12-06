@@ -23,16 +23,17 @@ package handling.world.guild;
 
 import client.MapleCharacter;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleGuildCharacter implements java.io.Serializable { // alias for a character
 
     public static final long serialVersionUID = 2058609046116597760L;
+    private final int id;
+    private final String name;
     private byte channel = -1, guildrank, allianceRank;
     private short level;
-    private final int id;
     private int jobid;
     private int guildid;
     private boolean online;
-    private final String name;
 
     // either read from active character...
     // if it's online
@@ -75,12 +76,12 @@ public class MapleGuildCharacter implements java.io.Serializable { // alias for 
         return id;
     }
 
-    public void setChannel(byte ch) {
-        channel = ch;
-    }
-
     public int getChannel() {
         return channel;
+    }
+
+    public void setChannel(byte ch) {
+        channel = ch;
     }
 
     public int getJobId() {
@@ -99,31 +100,31 @@ public class MapleGuildCharacter implements java.io.Serializable { // alias for 
         guildid = gid;
     }
 
-    public void setGuildRank(byte rank) {
-        guildrank = rank;
-    }
-
     public byte getGuildRank() {
         return guildrank;
+    }
+
+    public void setGuildRank(byte rank) {
+        guildrank = rank;
     }
 
     public boolean isOnline() {
         return online;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public void setOnline(boolean f) {
         online = f;
     }
 
-    public void setAllianceRank(byte rank) {
-        allianceRank = rank;
+    public String getName() {
+        return name;
     }
 
     public byte getAllianceRank() {
         return allianceRank;
+    }
+
+    public void setAllianceRank(byte rank) {
+        allianceRank = rank;
     }
 }

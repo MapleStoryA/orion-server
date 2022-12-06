@@ -17,6 +17,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class UseSummonBagHandler extends AbstractMaplePacketHandler {
 
     @Override

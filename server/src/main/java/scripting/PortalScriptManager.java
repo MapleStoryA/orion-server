@@ -24,7 +24,7 @@ package scripting;
 import client.MapleClient;
 import server.MaplePortal;
 import server.config.ServerEnvironment;
-import tools.FileoutputUtil;
+import tools.FileOutputUtil;
 
 import javax.script.Compilable;
 import javax.script.CompiledScript;
@@ -38,11 +38,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class PortalScriptManager {
 
     private static final PortalScriptManager instance = new PortalScriptManager();
-    private final Map<String, PortalScript> scripts = new HashMap<String, PortalScript>();
     private final static ScriptEngineFactory sef = new ScriptEngineManager().getEngineByName("javascript").getFactory();
+    private final Map<String, PortalScript> scripts = new HashMap<String, PortalScript>();
 
     public final static PortalScriptManager getInstance() {
         return instance;
@@ -56,7 +57,7 @@ public class PortalScriptManager {
                 return scripts.get(scriptName);
             }
         } else {
-            System.out.println("Loading script: " + path);
+            log.info("Loading script: " + path);
         }
 
 
@@ -74,7 +75,7 @@ public class PortalScriptManager {
             compiled.eval();
         } catch (final Exception e) {
             System.err.println("Error executing Portalscript: " + scriptName + ":" + e);
-            FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Error executing Portal script. (" + scriptName + ") " + e);
+            FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Error executing Portal script. (" + scriptName + ") " + e);
         } finally {
             if (fr != null) {
                 try {
@@ -99,8 +100,8 @@ public class PortalScriptManager {
                 System.err.println("Error entering Portalscript: " + portal.getScriptName() + ":" + e.getMessage());
             }
         } else {
-            System.out.println("Unhandled portal script " + portal.getScriptName() + " on map " + c.getPlayer().getMapId());
-            FileoutputUtil.log(FileoutputUtil.ScriptEx_Log, "Unhandled portal script " + portal.getScriptName() + " on map " + c.getPlayer().getMapId());
+            log.info("Unhandled portal script " + portal.getScriptName() + " on map " + c.getPlayer().getMapId());
+            FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Unhandled portal script " + portal.getScriptName() + " on map " + c.getPlayer().getMapId());
         }
     }
 

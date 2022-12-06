@@ -9,6 +9,7 @@ import constants.ServerConstants.CommandType;
  *
  * @author Emilyx3
  */
+@lombok.extern.slf4j.Slf4j
 public class CommandObject {
 
     /**

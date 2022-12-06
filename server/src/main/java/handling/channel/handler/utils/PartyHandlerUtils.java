@@ -18,12 +18,8 @@
 
 package handling.channel.handler.utils;
 
+@lombok.extern.slf4j.Slf4j
 public class PartyHandlerUtils {
-
-    public enum PartyOperation {
-
-        JOIN, LEAVE, MOVE_MEMBER, EXPEL, DISBAND, DISBAND_IN_EXPEDITION, SILENT_UPDATE, LOG_ONOFF, CHANGE_LEADER, CHANGE_LEADER_DC
-    }
 
     public static final byte // Party actions
             BEGINNER_NO_PARTY = 0x0A, // A beginner can't create a party.
@@ -38,6 +34,11 @@ public class PartyHandlerUtils {
             NOT_SAME_MAP1 = 0x22, // You may only change with the party member that's on the same channel. | You can only hand over to the party member within the same map.
             NO_GM_CREATES = 0x24, // As a GM, you're forbidden from creating a party.
             NON_EXISTANT = 0x25; // Unable to find the character.
+
+    public enum PartyOperation {
+
+        JOIN, LEAVE, MOVE_MEMBER, EXPEL, DISBAND, DISBAND_IN_EXPEDITION, SILENT_UPDATE, LOG_ONOFF, CHANGE_LEADER, CHANGE_LEADER_DC
+    }
 
 
 }

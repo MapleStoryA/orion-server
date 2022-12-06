@@ -6,6 +6,7 @@ import handling.world.WorldServer;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
+@lombok.extern.slf4j.Slf4j
 public class CharSelectedHandler extends AbstractMaplePacketHandler {
 
 
@@ -20,8 +21,8 @@ public class CharSelectedHandler extends AbstractMaplePacketHandler {
         final int charId = slea.readInt();
         String hardwareID = slea.readMapleAsciiString();
         String macAddress = slea.readMapleAsciiString();
-        System.out.println("HardwareID: " + macAddress);
-        System.out.println("MAC: " + hardwareID);
+        log.info("HardwareID: " + macAddress);
+        log.info("MAC: " + hardwareID);
         if (loginFailCount(c) || !c.login_Auth(charId)) { // This should not happen unlessplayer is hacking
             c.getSession().close();
             return;

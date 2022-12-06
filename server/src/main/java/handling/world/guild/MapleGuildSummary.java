@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package handling.world.guild;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleGuildSummary implements java.io.Serializable {
 
     public static final long serialVersionUID = 3565477792085301248L;

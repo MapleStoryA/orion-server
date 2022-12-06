@@ -9,10 +9,11 @@ import server.gachapon.RewardsProvider;
 import java.util.ArrayList;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class PerionProvider implements RewardsProvider {
 
     private final GachaponLocation location = GachaponLocation.PERION;
-
+    private final List<AbstractRandomEntity> reward = new ArrayList<>();
     int[] ids = {1472016, 1472006, 1442013, 1332011, 1472029, 1472023, 1472019, 1442017, 1322023, 1152005, 1452023,
             1032008, 1372007, 1462001, 1302004, 1402017, 1442016, 1332079, 1472074, 1402012, 1332031, 2022130, 1312007,
             1332009, 1422005, 1312012, 1312010, 1422001, 1442000, 2000005, 2022113, 1302012, 1942003, 1952003, 1972003,
@@ -24,8 +25,6 @@ public class PerionProvider implements RewardsProvider {
             2040833, 2040834, 2040922, 2040943, 2041068, 2041069, 5200010
 
     };
-
-    private final List<AbstractRandomEntity> reward = new ArrayList<>();
 
     public PerionProvider() {
 

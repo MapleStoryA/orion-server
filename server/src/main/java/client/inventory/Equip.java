@@ -27,6 +27,7 @@ import server.Randomizer;
 
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class Equip extends Item implements IEquip {
 
     private byte upgradeSlots = 0, level = 0, vicioushammer = 0, enhance = 0;
@@ -119,79 +120,13 @@ public class Equip extends Item implements IEquip {
         return upgradeSlots;
     }
 
+    public void setUpgradeSlots(byte upgradeSlots) {
+        this.upgradeSlots = upgradeSlots;
+    }
+
     @Override
     public short getStr() {
         return str;
-    }
-
-    @Override
-    public short getDex() {
-        return dex;
-    }
-
-    @Override
-    public short getInt() {
-        return _int;
-    }
-
-    @Override
-    public short getLuk() {
-        return luk;
-    }
-
-    @Override
-    public short getHp() {
-        return hp;
-    }
-
-    @Override
-    public short getMp() {
-        return mp;
-    }
-
-    @Override
-    public short getWatk() {
-        return watk;
-    }
-
-    @Override
-    public short getMatk() {
-        return matk;
-    }
-
-    @Override
-    public short getWdef() {
-        return wdef;
-    }
-
-    @Override
-    public short getMdef() {
-        return mdef;
-    }
-
-    @Override
-    public short getAcc() {
-        return acc;
-    }
-
-    @Override
-    public short getAvoid() {
-        return avoid;
-    }
-
-    @Override
-    public short getHands() {
-        return hands;
-    }
-
-    @Override
-    public short getSpeed() {
-        return speed;
-    }
-
-    @Override
-    public short getJump() {
-        return jump;
     }
 
     public void setStr(short str) {
@@ -201,11 +136,21 @@ public class Equip extends Item implements IEquip {
         this.str = str;
     }
 
+    @Override
+    public short getDex() {
+        return dex;
+    }
+
     public void setDex(short dex) {
         if (dex < 0) {
             dex = 0;
         }
         this.dex = dex;
+    }
+
+    @Override
+    public short getInt() {
+        return _int;
     }
 
     public void setInt(short _int) {
@@ -215,11 +160,21 @@ public class Equip extends Item implements IEquip {
         this._int = _int;
     }
 
+    @Override
+    public short getLuk() {
+        return luk;
+    }
+
     public void setLuk(short luk) {
         if (luk < 0) {
             luk = 0;
         }
         this.luk = luk;
+    }
+
+    @Override
+    public short getHp() {
+        return hp;
     }
 
     public void setHp(short hp) {
@@ -229,11 +184,21 @@ public class Equip extends Item implements IEquip {
         this.hp = hp;
     }
 
+    @Override
+    public short getMp() {
+        return mp;
+    }
+
     public void setMp(short mp) {
         if (mp < 0) {
             mp = 0;
         }
         this.mp = mp;
+    }
+
+    @Override
+    public short getWatk() {
+        return watk;
     }
 
     public void setWatk(short watk) {
@@ -243,11 +208,21 @@ public class Equip extends Item implements IEquip {
         this.watk = watk;
     }
 
+    @Override
+    public short getMatk() {
+        return matk;
+    }
+
     public void setMatk(short matk) {
         if (matk < 0) {
             matk = 0;
         }
         this.matk = matk;
+    }
+
+    @Override
+    public short getWdef() {
+        return wdef;
     }
 
     public void setWdef(short wdef) {
@@ -257,11 +232,21 @@ public class Equip extends Item implements IEquip {
         this.wdef = wdef;
     }
 
+    @Override
+    public short getMdef() {
+        return mdef;
+    }
+
     public void setMdef(short mdef) {
         if (mdef < 0) {
             mdef = 0;
         }
         this.mdef = mdef;
+    }
+
+    @Override
+    public short getAcc() {
+        return acc;
     }
 
     public void setAcc(short acc) {
@@ -271,11 +256,21 @@ public class Equip extends Item implements IEquip {
         this.acc = acc;
     }
 
+    @Override
+    public short getAvoid() {
+        return avoid;
+    }
+
     public void setAvoid(short avoid) {
         if (avoid < 0) {
             avoid = 0;
         }
         this.avoid = avoid;
+    }
+
+    @Override
+    public short getHands() {
+        return hands;
     }
 
     public void setHands(short hands) {
@@ -285,6 +280,11 @@ public class Equip extends Item implements IEquip {
         this.hands = hands;
     }
 
+    @Override
+    public short getSpeed() {
+        return speed;
+    }
+
     public void setSpeed(short speed) {
         if (speed < 0) {
             speed = 0;
@@ -292,15 +292,16 @@ public class Equip extends Item implements IEquip {
         this.speed = speed;
     }
 
+    @Override
+    public short getJump() {
+        return jump;
+    }
+
     public void setJump(short jump) {
         if (jump < 0) {
             jump = 0;
         }
         this.jump = jump;
-    }
-
-    public void setUpgradeSlots(byte upgradeSlots) {
-        this.upgradeSlots = upgradeSlots;
     }
 
     @Override

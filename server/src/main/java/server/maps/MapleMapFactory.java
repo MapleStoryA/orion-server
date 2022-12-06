@@ -48,14 +48,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleMapFactory {
 
     private static final MapleDataProvider source = ServerEnvironment.getConfig().getDataProvider("wz/Map");
     private static final MapleData nameData = ServerEnvironment.getConfig().getDataProvider("wz/String").getData("Map.img");
-    private final Map<Integer, MapleMap> maps = new HashMap<Integer, MapleMap>();
-    private final Map<Integer, MapleMap> instanceMap = new HashMap<Integer, MapleMap>();
     private static final Map<Integer, List<AbstractLoadedMapleLife>> customLife = new HashMap<>();
     private static final Map<Integer, MapleNodes> mapInfos = new HashMap<Integer, MapleNodes>();
+    private final Map<Integer, MapleMap> maps = new HashMap<Integer, MapleMap>();
+    private final Map<Integer, MapleMap> instanceMap = new HashMap<Integer, MapleMap>();
     private final ReentrantLock lock = new ReentrantLock();
     private int channel;
 
@@ -86,11 +87,29 @@ public class MapleMapFactory {
             rs.close();
             ps.close();
             return customLife.size();
-            //System.out.println("Successfully loaded " + customLife.size() + " maps with custom life.");
+            //log.info("Successfully loaded " + customLife.size() + " maps with custom life.");
         } catch (SQLException e) {
-            System.out.println("Error loading custom life..." + e);
+            log.info("Error loading custom life..." + e);
         }
         return -1;
+    }
+
+    private static AbstractLoadedMapleLife loadLife(int id, int f, boolean hide, int fh, int cy, int rx0, int rx1, int x, int y, String type, int mtime) {
+        final AbstractLoadedMapleLife myLife = MapleLifeFactory.getLife(id, type);
+        if (myLife == null) {
+            log.info("Custom npc " + id + " is null...");
+            return null;
+        }
+        myLife.setCy(cy);
+        myLife.setF(f);
+        myLife.setFh(fh);
+        myLife.setRx0(rx0);
+        myLife.setRx1(rx1);
+        myLife.setPosition(new Point(x, y));
+        myLife.setHide(hide);
+        myLife.setMTime(mtime);
+        myLife.setCType(type);
+        return myLife;
     }
 
     public final MapleMap getMap(final int mapid) {
@@ -475,24 +494,6 @@ public class MapleMapFactory {
 
     public Collection<MapleMap> getAllInstanceMaps() {
         return instanceMap.values();
-    }
-
-    private static AbstractLoadedMapleLife loadLife(int id, int f, boolean hide, int fh, int cy, int rx0, int rx1, int x, int y, String type, int mtime) {
-        final AbstractLoadedMapleLife myLife = MapleLifeFactory.getLife(id, type);
-        if (myLife == null) {
-            System.out.println("Custom npc " + id + " is null...");
-            return null;
-        }
-        myLife.setCy(cy);
-        myLife.setF(f);
-        myLife.setFh(fh);
-        myLife.setRx0(rx0);
-        myLife.setRx1(rx1);
-        myLife.setPosition(new Point(x, y));
-        myLife.setHide(hide);
-        myLife.setMTime(mtime);
-        myLife.setCType(type);
-        return myLife;
     }
 
     private AbstractLoadedMapleLife loadLife(MapleData life, String id, String type) {

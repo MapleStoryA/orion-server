@@ -4,6 +4,7 @@ import client.MapleCharacter;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
 
+@lombok.extern.slf4j.Slf4j
 public class SimpleQuestMapEvent extends AbstractMapEvent {
 
     public SimpleQuestMapEvent(MapleMap map) {

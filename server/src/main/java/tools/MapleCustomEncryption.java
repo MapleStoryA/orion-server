@@ -28,6 +28,7 @@ package tools;
  * @version 1.0
  * @since Revision 211
  */
+@lombok.extern.slf4j.Slf4j
 public class MapleCustomEncryption {
 
     /**
@@ -68,7 +69,7 @@ public class MapleCustomEncryption {
                     data[i] = cur;
                 }
             }
-            //System.out.println("enc after iteration " + j + ": " + HexTool.toString(data) + " al: " + al);
+            //log.info("enc after iteration " + j + ": " + HexTool.toString(data) + " al: " + al);
         }
         return data;
     }
@@ -113,7 +114,7 @@ public class MapleCustomEncryption {
                     dataLength--;
                 }
             }
-            //System.out.println("dec after iteration " + j + ": " + HexTool.toString(data));
+            //log.info("dec after iteration " + j + ": " + HexTool.toString(data));
         }
         return data;
     }

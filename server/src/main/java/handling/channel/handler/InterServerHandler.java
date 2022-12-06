@@ -41,7 +41,7 @@ import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import server.ClientStorage;
 import server.quest.MapleQuest;
-import tools.FileoutputUtil;
+import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
 import tools.packet.MapleUserPackets;
 import tools.packet.ReportPackets;
@@ -49,6 +49,7 @@ import tools.packet.ReportPackets;
 import java.util.ArrayList;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class InterServerHandler {
 
 
@@ -157,7 +158,7 @@ public class InterServerHandler {
 
 
         } catch (Exception e) {
-            FileoutputUtil.outputFileError(FileoutputUtil.Login_Error, e);
+            FileOutputUtil.outputFileError(FileOutputUtil.Login_Error, e);
         }
         player.sendMacros();
         player.showNote();

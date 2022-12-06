@@ -9,10 +9,11 @@ import server.gachapon.RewardsProvider;
 import java.util.ArrayList;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class KerningProvider implements RewardsProvider {
 
     private final GachaponLocation location = GachaponLocation.KERNING;
-
+    private final List<AbstractRandomEntity> reward = new ArrayList<>();
     int[] ids = {12022130, 1472026, 2049100, 4130014, 2043305, 1332015, 2000004, 1472003, 1322008, 1002005, 1002023,
             2290156, 2290153, 2290159, 2290161, 1002085, 1472009, 1302021, 2000005, 2022113, 1322022, 1002212, 1002117,
             2430118, 1302013, 1012200, 1952003, 1972003, 2040201, 2040402, 1092018, 1332017, 3010119, 1332003, 1322010,
@@ -22,8 +23,6 @@ public class KerningProvider implements RewardsProvider {
             2044513, 2044613, 5200010
 
     };
-
-    private final List<AbstractRandomEntity> reward = new ArrayList<>();
 
     public KerningProvider() {
 

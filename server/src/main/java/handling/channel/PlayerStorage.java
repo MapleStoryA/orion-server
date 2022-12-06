@@ -38,6 +38,7 @@ import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+@lombok.extern.slf4j.Slf4j
 public class PlayerStorage {
 
     private final ReentrantReadWriteLock mutex = new ReentrantReadWriteLock();

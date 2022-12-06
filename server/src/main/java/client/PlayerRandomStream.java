@@ -24,6 +24,7 @@ package client;
 import server.Randomizer;
 import tools.data.output.MaplePacketLittleEndianWriter;
 
+@lombok.extern.slf4j.Slf4j
 public class PlayerRandomStream {
 
     private transient long seed1, seed2, seed3;

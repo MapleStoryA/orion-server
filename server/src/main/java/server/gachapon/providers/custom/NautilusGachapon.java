@@ -9,10 +9,11 @@ import server.gachapon.RewardsProvider;
 import java.util.ArrayList;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class NautilusGachapon implements RewardsProvider {
 
     private final GachaponLocation location = GachaponLocation.NAUTILUS;
-
+    private final List<AbstractRandomEntity> reward = new ArrayList<>();
     int[] ids = {
 
             2022195, 1102082, 1102081, 1052122, 1962003, 3010119, 3010108, 1012199, 1942003, 1382010, 3010069, 1152006,
@@ -25,8 +26,6 @@ public class NautilusGachapon implements RewardsProvider {
             1152007, 1302006, 5200010
 
     };
-
-    private final List<AbstractRandomEntity> reward = new ArrayList<>();
 
     public NautilusGachapon() {
 

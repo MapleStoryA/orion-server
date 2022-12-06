@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class ItemGatherHandler extends AbstractMaplePacketHandler {
 
     private static final List<IItem> sortItems(final List<IItem> passedMap) {

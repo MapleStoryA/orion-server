@@ -48,6 +48,7 @@ import tools.packet.MTSCSPacket;
 import tools.packet.MobPacket;
 import tools.packet.UIPacket;
 
+@lombok.extern.slf4j.Slf4j
 public class PlayerHandler {
 
 
@@ -64,7 +65,7 @@ public class PlayerHandler {
 
     public static final void TakeDamage(final SeekableLittleEndianAccessor slea, final MapleClient c,
                                         final MapleCharacter chr) {
-        // System.out.println(slea.toString());
+        // log.info(slea.toString());
         chr.updateTick(slea.readInt());
         final byte type = slea.readByte(); // -4 is mist, -3 and -2 are map
         // damage.

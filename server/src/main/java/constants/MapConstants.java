@@ -1,5 +1,6 @@
 package constants;
 
+@lombok.extern.slf4j.Slf4j
 public class MapConstants {
 
     public static boolean isStartingEventMap(final int mapid) {

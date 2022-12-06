@@ -26,6 +26,7 @@ import handling.SendPacketOpcode;
 import server.MapleCarnivalParty;
 import tools.data.output.MaplePacketLittleEndianWriter;
 
+@lombok.extern.slf4j.Slf4j
 public class MonsterCarnivalPacket {
 
     public static byte[] startMonsterCarnival(final MapleCharacter chr, final int enemyavailable, final int enemytotal) {
@@ -44,9 +45,6 @@ public class MonsterCarnivalPacket {
         mplew.writeShort(0);
 
 
-        System.out.println(mplew);
-
-
         return mplew.getPacket();
     }
 
@@ -54,7 +52,7 @@ public class MonsterCarnivalPacket {
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
         mplew.writeShort(SendPacketOpcode.MONSTER_CARNIVAL_DIED.getValue());
-        mplew.write(team); //team
+        mplew.write(team);
         mplew.writeMapleAsciiString(name);
         mplew.write(lostCP);
 

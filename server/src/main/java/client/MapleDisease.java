@@ -59,14 +59,6 @@ public enum MapleDisease implements Serializable {
         this.first = first;
     }
 
-    public boolean isFirst() {
-        return first;
-    }
-
-    public long getValue() {
-        return i;
-    }
-
     public static final MapleDisease getRandom() {
         while (true) {
             for (MapleDisease dis : MapleDisease.values()) {
@@ -144,5 +136,13 @@ public enum MapleDisease implements Serializable {
             default:
         }
         return 0;
+    }
+
+    public boolean isFirst() {
+        return first;
+    }
+
+    public long getValue() {
+        return i;
     }
 }

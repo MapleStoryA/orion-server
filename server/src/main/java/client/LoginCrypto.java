@@ -28,6 +28,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
+@lombok.extern.slf4j.Slf4j
 public class LoginCrypto {
 
     protected final static int extralength = 6;

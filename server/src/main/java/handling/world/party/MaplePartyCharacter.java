@@ -28,6 +28,7 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class MaplePartyCharacter implements Serializable {
 
     private static final long serialVersionUID = 6215463252132450750L;

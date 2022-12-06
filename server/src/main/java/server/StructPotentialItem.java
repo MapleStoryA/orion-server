@@ -1,5 +1,6 @@
 package server;
 
+@lombok.extern.slf4j.Slf4j
 public class StructPotentialItem {
 
     public byte incSTR, incDEX, incINT, incLUK, incACC, incEVA, incSpeed, incJump,

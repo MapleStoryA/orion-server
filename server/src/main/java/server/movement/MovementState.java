@@ -36,6 +36,13 @@ public enum MovementState {
         this.state = state;
     }
 
+    public static MovementState getStateByID(int state) {
+        for (MovementState ms : values()) {
+            if (ms.state == state) return ms;
+        }
+        return DEFAULT;
+    }
+
     public MovementState getOppositeDirection() {
         return MovementState.valueOf(oppositeDirection);
     }
@@ -50,12 +57,5 @@ public enum MovementState {
 
     public boolean isState(int state) {
         return this.state == state || getOppositeDirection().state == state;
-    }
-
-    public static MovementState getStateByID(int state) {
-        for (MovementState ms : values()) {
-            if (ms.state == state) return ms;
-        }
-        return DEFAULT;
     }
 }

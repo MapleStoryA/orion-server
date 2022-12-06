@@ -10,6 +10,7 @@ import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
+@lombok.extern.slf4j.Slf4j
 public class QuestionActionHandler extends AbstractMaplePacketHandler {
 
     public static final int RESTORE_LOST_ITEM = 0;

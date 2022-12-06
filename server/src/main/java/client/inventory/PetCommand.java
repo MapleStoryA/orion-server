@@ -24,6 +24,7 @@ package client.inventory;
 /**
  * @author Danny (Leifde)
  */
+@lombok.extern.slf4j.Slf4j
 public class PetCommand {
 
     private final int petId;

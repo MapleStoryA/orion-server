@@ -30,6 +30,7 @@ import java.awt.*;
  * @version 1.0
  * @since Revision 323
  */
+@lombok.extern.slf4j.Slf4j
 public class GenericLittleEndianAccessor implements LittleEndianAccessor {
 
     private final ByteInputStream bs;

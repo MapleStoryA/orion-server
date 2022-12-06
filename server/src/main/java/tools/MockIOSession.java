@@ -46,6 +46,7 @@ import java.net.SocketAddress;
  * @version 1.0
  * @since Revision 518
  */
+@lombok.extern.slf4j.Slf4j
 public class MockIOSession extends BaseIoSession {
 
     /**

@@ -5,6 +5,7 @@ import handling.AbstractMaplePacketHandler;
 import scripting.NPCScriptManager;
 import tools.data.input.SeekableLittleEndianAccessor;
 
+@lombok.extern.slf4j.Slf4j
 public class CygnusSummonHandler extends AbstractMaplePacketHandler {
 
     @Override

@@ -2,6 +2,7 @@ package client;
 
 import org.apache.mina.common.IoSession;
 
+@lombok.extern.slf4j.Slf4j
 public class PingThread implements Runnable {
 
     private final MapleClient client;

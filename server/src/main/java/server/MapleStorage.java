@@ -23,16 +23,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+@lombok.extern.slf4j.Slf4j
 public class MapleStorage implements Serializable {
 
     private static final long serialVersionUID = 9179541993413738569L;
     private final int id;
     private final int accountId;
     private final List<IItem> items;
+    private final Map<MapleInventoryType, List<IItem>> typeItems = new EnumMap<MapleInventoryType, List<IItem>>(MapleInventoryType.class);
     private int meso;
     private byte slots;
     private boolean changed = false;
-    private final Map<MapleInventoryType, List<IItem>> typeItems = new EnumMap<MapleInventoryType, List<IItem>>(MapleInventoryType.class);
 
     private MapleStorage(int id, byte slots, int meso, int accountId) {
         this.id = id;
@@ -199,6 +200,14 @@ public class MapleStorage implements Serializable {
         return meso;
     }
 
+    public void setMeso(int meso) {
+        if (meso < 0) {
+            return;
+        }
+        changed = true;
+        this.meso = meso;
+    }
+
     public IItem findById(int itemId) {
         for (IItem item : items) {
             if (item.getItemId() == itemId) {
@@ -206,14 +215,6 @@ public class MapleStorage implements Serializable {
             }
         }
         return null;
-    }
-
-    public void setMeso(int meso) {
-        if (meso < 0) {
-            return;
-        }
-        changed = true;
-        this.meso = meso;
     }
 
     public void sendMeso(MapleClient c) {
@@ -228,14 +229,14 @@ public class MapleStorage implements Serializable {
         return slots;
     }
 
-    public void increaseSlots(byte gain) {
-        changed = true;
-        this.slots += gain;
-    }
-
     public void setSlots(byte set) {
         changed = true;
         this.slots = set;
+    }
+
+    public void increaseSlots(byte gain) {
+        changed = true;
+        this.slots += gain;
     }
 
     public void close() {

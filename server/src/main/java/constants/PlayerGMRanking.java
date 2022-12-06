@@ -42,14 +42,6 @@ public enum PlayerGMRanking {
         this.subGrade = (byte) subGrade;
     }
 
-    public int getLevel() {
-        return level;
-    }
-
-    public byte getSubGrade() {
-        return subGrade;
-    }
-
     public static PlayerGMRanking getByLevel(int level) {
         for (PlayerGMRanking pgr : values()) {
             if (pgr.getLevel() == level) {
@@ -57,5 +49,13 @@ public enum PlayerGMRanking {
             }
         }
         return NORMAL;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public byte getSubGrade() {
+        return subGrade;
     }
 }

@@ -37,12 +37,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+@lombok.extern.slf4j.Slf4j
 public class MonsterBook implements Serializable {
 
     private static final long serialVersionUID = 7179541993413738569L;
+    private final Map<Integer, Integer> cards;
     private boolean changed = false;
     private int SpecialCard = 0, NormalCard = 0, BookLevel = 1;
-    private final Map<Integer, Integer> cards;
 
     public MonsterBook(Map<Integer, Integer> cards) {
         this.cards = cards;
@@ -58,18 +59,6 @@ public class MonsterBook implements Serializable {
         calculateLevel();
     }
 
-    public Map<Integer, Integer> getCards() {
-        return cards;
-    }
-
-    public final int getTotalCards() {
-        return SpecialCard + NormalCard;
-    }
-
-    public final int getLevelByCard(final int cardid) {
-        return cards.get(cardid) == null ? 0 : cards.get(cardid);
-    }
-
     public final static MonsterBook loadCards(final int charid) throws SQLException {
         final PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT * FROM monsterbook WHERE charid = ? ORDER BY cardid ASC");
         ps.setInt(1, charid);
@@ -83,6 +72,18 @@ public class MonsterBook implements Serializable {
         rs.close();
         ps.close();
         return new MonsterBook(cards);
+    }
+
+    public Map<Integer, Integer> getCards() {
+        return cards;
+    }
+
+    public final int getTotalCards() {
+        return SpecialCard + NormalCard;
+    }
+
+    public final int getLevelByCard(final int cardid) {
+        return cards.get(cardid) == null ? 0 : cards.get(cardid);
     }
 
     public final void saveCards(final int charid) throws SQLException {

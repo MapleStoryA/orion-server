@@ -7,6 +7,7 @@ import server.maps.MapleMapPortal;
 
 import java.awt.*;
 
+@lombok.extern.slf4j.Slf4j
 public class PortalFactory {
 
     private int nextDoorPortal = 0x80;

@@ -8,6 +8,7 @@ import server.shops.HiredMerchant;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.PlayerShopPacket;
 
+@lombok.extern.slf4j.Slf4j
 public class RemoteStoreHandler extends AbstractMaplePacketHandler {
 
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {

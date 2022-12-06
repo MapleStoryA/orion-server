@@ -12,6 +12,7 @@ import java.util.HashMap;
 /**
  * @author Simon
  */
+@lombok.extern.slf4j.Slf4j
 public class ExtendedSPTable {
 
     private final ExtendedSPType SPType; // since resistance etc use this too, future compat

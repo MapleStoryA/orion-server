@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@lombok.extern.slf4j.Slf4j
 public class DbRewardProvider implements RewardsProvider {
 
     public final String BASIC_QUERY = "SELECT idreward, id, chance, description, location, source from reward_item where enabled = 1";

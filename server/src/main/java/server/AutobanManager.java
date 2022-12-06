@@ -12,39 +12,14 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.locks.ReentrantLock;
 
+@lombok.extern.slf4j.Slf4j
 public class AutobanManager implements Runnable {
 
-    private static class ExpirationEntry implements Comparable<ExpirationEntry> {
-
-        public long time;
-        public int acc;
-        public int points;
-
-        public ExpirationEntry(long time, int acc, int points) {
-            this.time = time;
-            this.acc = acc;
-            this.points = points;
-        }
-
-        public int compareTo(AutobanManager.ExpirationEntry o) {
-            return (int) (time - o.time);
-        }
-
-        @Override
-        public boolean equals(Object oth) {
-            if (!(oth instanceof AutobanManager.ExpirationEntry)) {
-                return false;
-            }
-            final AutobanManager.ExpirationEntry ee = (AutobanManager.ExpirationEntry) oth;
-            return (time == ee.time && points == ee.points && acc == ee.acc);
-        }
-    }
-
+    private static final int AUTOBAN_POINTS = 5000;
+    private static final AutobanManager instance = new AutobanManager();
     private final Map<Integer, Integer> points = new HashMap<Integer, Integer>();
     private final Map<Integer, List<String>> reasons = new HashMap<Integer, List<String>>();
     private final Set<ExpirationEntry> expirations = new TreeSet<ExpirationEntry>();
-    private static final int AUTOBAN_POINTS = 5000;
-    private static final AutobanManager instance = new AutobanManager();
     private final ReentrantLock lock = new ReentrantLock(true);
 
     public static final AutobanManager getInstance() {
@@ -118,6 +93,32 @@ public class AutobanManager implements Runnable {
             } else {
                 return;
             }
+        }
+    }
+
+    private static class ExpirationEntry implements Comparable<ExpirationEntry> {
+
+        public long time;
+        public int acc;
+        public int points;
+
+        public ExpirationEntry(long time, int acc, int points) {
+            this.time = time;
+            this.acc = acc;
+            this.points = points;
+        }
+
+        public int compareTo(AutobanManager.ExpirationEntry o) {
+            return (int) (time - o.time);
+        }
+
+        @Override
+        public boolean equals(Object oth) {
+            if (!(oth instanceof AutobanManager.ExpirationEntry)) {
+                return false;
+            }
+            final AutobanManager.ExpirationEntry ee = (AutobanManager.ExpirationEntry) oth;
+            return (time == ee.time && points == ee.points && acc == ee.acc);
         }
     }
 }

@@ -2,6 +2,7 @@ package scripting.v1.dispatch;
 
 import client.MapleClient;
 
+@lombok.extern.slf4j.Slf4j
 public class RealPacketDispatcher implements PacketDispatcher {
 
     @Override

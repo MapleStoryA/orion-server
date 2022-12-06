@@ -32,6 +32,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@lombok.extern.slf4j.Slf4j
 public class DatabaseConnection {
 
     public static final int RETURN_GENERATED_KEYS = 1;
@@ -42,7 +43,7 @@ public class DatabaseConnection {
         try {
             return pool.getConnection();
         } catch (SQLException e) {
-            System.out.println("Could not get connection. Error: " + e);
+            log.info("Could not get connection. Error: " + e);
             e.printStackTrace();
             return null;
         }

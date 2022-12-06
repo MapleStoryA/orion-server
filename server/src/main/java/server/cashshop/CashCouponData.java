@@ -21,6 +21,7 @@ package server.cashshop;
 /**
  * @author AuroX
  */
+@lombok.extern.slf4j.Slf4j
 public class CashCouponData {
 
     private final byte type;

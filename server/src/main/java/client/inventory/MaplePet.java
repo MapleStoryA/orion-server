@@ -35,14 +35,15 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@lombok.extern.slf4j.Slf4j
 public class MaplePet implements Serializable {
 
     private static final long serialVersionUID = 9179541993413738569L;
+    private final int petitemid;
     private String name;
     private int Fh = 0;
     private int stance = 0;
     private int uniqueid;
-    private final int petitemid;
     private int secondsLeft = 0;
     private Point pos;
     private byte fullness = 100, level = 1;
@@ -92,25 +93,6 @@ public class MaplePet implements Serializable {
         }
     }
 
-    public final void saveToDb() {
-        try {
-            final PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE pets SET name = ?, level = ?, closeness = ?, fullness = ?, seconds = ?, summoned = ? WHERE petid = ?");
-            ps.setString(1, name); // Set name
-            ps.setByte(2, level); // Set Level
-            ps.setShort(3, closeness); // Set Closeness
-            ps.setByte(4, fullness); // Set Fullness
-            ps.setInt(5, secondsLeft);
-            ps.setBoolean(6, summoned);
-            ps.setInt(7, uniqueid); // Set ID
-
-            ps.executeUpdate(); // Execute statement
-
-            ps.close();
-        } catch (final SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
     public static MaplePet createPet(final int itemid, final int uniqueid) {
         return createPet(itemid, MapleItemInformationProvider.getInstance().getName(itemid), 1, 0, 100, uniqueid, itemid == 5000054 ? 18000 : 0);
     }
@@ -142,6 +124,25 @@ public class MaplePet implements Serializable {
         pet.setSecondsLeft(secondsLeft);
 
         return pet;
+    }
+
+    public final void saveToDb() {
+        try {
+            final PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE pets SET name = ?, level = ?, closeness = ?, fullness = ?, seconds = ?, summoned = ? WHERE petid = ?");
+            ps.setString(1, name); // Set name
+            ps.setByte(2, level); // Set Level
+            ps.setShort(3, closeness); // Set Closeness
+            ps.setByte(4, fullness); // Set Fullness
+            ps.setInt(5, secondsLeft);
+            ps.setBoolean(6, summoned);
+            ps.setInt(7, uniqueid); // Set ID
+
+            ps.executeUpdate(); // Execute statement
+
+            ps.close();
+        } catch (final SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public final String getName() {

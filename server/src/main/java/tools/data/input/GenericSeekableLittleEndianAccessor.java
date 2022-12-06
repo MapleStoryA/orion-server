@@ -32,6 +32,7 @@ import java.io.IOException;
  * @see net.sf.odinms.tools.data.input.GenericLittleEndianAccessor
  * @since Revision 323
  */
+@lombok.extern.slf4j.Slf4j
 public class GenericSeekableLittleEndianAccessor extends GenericLittleEndianAccessor implements SeekableLittleEndianAccessor {
 
     private final SeekableInputStreamBytestream bs;

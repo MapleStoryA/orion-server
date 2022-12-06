@@ -6,16 +6,8 @@ import handling.SendPacketOpcode;
 import tools.data.output.MaplePacketLittleEndianWriter;
 
 
+@lombok.extern.slf4j.Slf4j
 public class CWVsContextOnMessagePackets {
-
-    static final class MessageTypes {
-        public static final byte OnQuestRecordMessage = 0x01;
-        public static final byte OnIncSPMessage = 0x4;
-        public static final byte OnIncPOPMessage = 0x5;
-        public static final byte OnIncGPMessage = 0x7;
-        public static final byte OnOnGiveBuffMessage = 0x8;
-
-    }
 
     public static byte[] onQuestRecordMessage(final MapleQuestStatus quest) {
         final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
@@ -39,7 +31,6 @@ public class CWVsContextOnMessagePackets {
         return mplew.getPacket();
     }
 
-
     public static byte[] onIncGPMessage(int points) {
         final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
         mplew.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
@@ -49,7 +40,6 @@ public class CWVsContextOnMessagePackets {
         return mplew.getPacket();
     }
 
-
     public static byte[] onGiveBuffMessage(int itemId) {
         final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
         mplew.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
@@ -58,7 +48,6 @@ public class CWVsContextOnMessagePackets {
 
         return mplew.getPacket();
     }
-
 
     public static byte[] onIncSpMessage(MapleJob job, int amount) {
         final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
@@ -81,6 +70,15 @@ public class CWVsContextOnMessagePackets {
         mplew.write(MessageTypes.OnIncPOPMessage);
         mplew.writeInt(amount);
         return mplew.getPacket();
+    }
+
+    static final class MessageTypes {
+        public static final byte OnQuestRecordMessage = 0x01;
+        public static final byte OnIncSPMessage = 0x4;
+        public static final byte OnIncPOPMessage = 0x5;
+        public static final byte OnIncGPMessage = 0x7;
+        public static final byte OnOnGiveBuffMessage = 0x8;
+
     }
 
 

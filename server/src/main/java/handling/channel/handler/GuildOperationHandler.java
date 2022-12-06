@@ -12,6 +12,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 import java.util.Iterator;
 
+@lombok.extern.slf4j.Slf4j
 public class GuildOperationHandler extends AbstractMaplePacketHandler {
 
     @Override

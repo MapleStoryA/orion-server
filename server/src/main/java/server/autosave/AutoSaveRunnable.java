@@ -2,6 +2,7 @@ package server.autosave;
 
 import handling.channel.ChannelServer;
 
+@lombok.extern.slf4j.Slf4j
 public class AutoSaveRunnable implements Runnable {
 
     private final ChannelServer channel;

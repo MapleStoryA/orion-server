@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+@lombok.extern.slf4j.Slf4j
 public class ServerConfig {
 
     private final Environment environment;

@@ -27,6 +27,7 @@ import scripting.v1.event.EventInstance;
 import server.MaplePortal;
 import server.quest.MapleQuest;
 
+@lombok.extern.slf4j.Slf4j
 public class PortalPlayerInteraction extends AbstractPlayerInteraction {
 
     private final MaplePortal portal;

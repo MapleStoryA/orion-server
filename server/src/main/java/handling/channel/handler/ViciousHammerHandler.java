@@ -5,6 +5,7 @@ import handling.AbstractMaplePacketHandler;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.MTSCSPacket;
 
+@lombok.extern.slf4j.Slf4j
 public class ViciousHammerHandler extends AbstractMaplePacketHandler {
 
     @Override

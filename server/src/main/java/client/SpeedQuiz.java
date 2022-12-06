@@ -30,6 +30,7 @@ import java.util.List;
 /**
  * @author AuroX
  */
+@lombok.extern.slf4j.Slf4j
 public class SpeedQuiz {
 
     private final int INITIAL_QUESTION = 50; // Default 50 questions.
@@ -67,7 +68,7 @@ public class SpeedQuiz {
     private void getNewQuestion(final MapleClient c, final int questionNo) {
         final NPCConversationManager cm = NPCScriptManager.getInstance().getCM(c);
         if (cm.getNpc() != npc) {
-            //System.out.println("NPC ID IS DIFFERENT");
+            //log.info("NPC ID IS DIFFERENT");
             return;
         }
 
@@ -75,7 +76,7 @@ public class SpeedQuiz {
         final QuizEntry random = entries.get(Randomizer.nextInt(entries.size()));
 
         this.answer = random.getAnswer();
-        //System.out.println(answer);
+        //log.info(answer);
 
         c.getSession().write(MaplePacketCreator.getSpeedQuiz(npc, random.getType(), random.getObjectId(), points, questionNo, TIME));
         cm.setLastMsg((byte) 7);
