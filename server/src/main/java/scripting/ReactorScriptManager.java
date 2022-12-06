@@ -71,7 +71,7 @@ public class ReactorScriptManager extends AbstractScriptManager {
         if (ret != null) {
             return ret;
         }
-        ret = new LinkedList<ReactorDropEntry>();
+        ret = new LinkedList<>();
 
         PreparedStatement ps = null;
         ResultSet rs = null;
