@@ -22,7 +22,6 @@ import constants.GameConstants;
 import constants.MapConstants;
 import constants.ServerConstants.PlayerGMRank;
 import database.DatabaseConnection;
-import handling.RecvPacketOpcode;
 import handling.channel.ChannelServer;
 import handling.world.CheaterData;
 import handling.world.World;
@@ -2625,16 +2624,6 @@ public class AdminCommand {
     }
 
     public static class Y extends Yellow {
-    }
-
-    public static class ReloadOps extends CommandExecute {
-
-        @Override
-        public int execute(MapleClient c, String[] splitted) {
-            // SendPacketOpcode.reloadValues();
-            RecvPacketOpcode.reloadValues();
-            return 1;
-        }
     }
 
     public static class ReloadDrops extends CommandExecute {

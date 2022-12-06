@@ -160,7 +160,7 @@ public class MapleServerHandler extends IoHandlerAdapter {
                     if (!client.isReceiving()) {
                         return;
                     }
-                    if (recv.NeedsChecking()) {
+                    if (recv.needsChecking()) {
                         if (!client.isLoggedIn()) {
                             return;
                         }
@@ -174,7 +174,6 @@ public class MapleServerHandler extends IoHandlerAdapter {
 
         } catch (Exception e) {
             FileOutputUtil.outputFileError(FileOutputUtil.PacketEx_Log, e);
-            e.printStackTrace();
         }
 
     }
