@@ -8,7 +8,7 @@
     </appender>
 
     <logger name="org.apache.mina" level="warn"/>
-    <root level="info">
+    <root level="TRACE">
         <appender-ref ref="CONSOLE"/>
     </root>
 </configuration>

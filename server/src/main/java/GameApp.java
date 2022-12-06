@@ -1,3 +1,4 @@
+import ch.qos.logback.classic.ClassicConstants;
 import client.SkillFactory;
 import constants.JobConstants;
 import database.DatabaseConnection;
@@ -9,6 +10,8 @@ import handling.login.LoginServer;
 import handling.world.World;
 import handling.world.WorldServer;
 import handling.world.guild.MapleGuild;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import server.AutobanManager;
 import server.ItemMakerFactory;
 import server.MapleCarnivalFactory;
@@ -39,19 +42,23 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
-@lombok.extern.slf4j.Slf4j
+
 public class GameApp {
 
-    public static final GameApp instance = new GameApp();
-    public static long startTime = System.currentTimeMillis();
+    static {
+        System.setProperty(ClassicConstants.CONFIG_FILE_PROPERTY, "config/logback.xml");
+    }
+
+    private static final Logger log = LoggerFactory.getLogger(GameApp.class);
+
+    private static long startTime = System.currentTimeMillis();
 
     public static void main(String[] args) throws InterruptedException {
-        AutoJCE.removeCryptographyRestrictions();
         ServerEnvironment.getConfig();
-        System.setProperty("logback.configurationFile", "config/logback.xml");
-        instance.run();
+        AutoJCE.removeCryptographyRestrictions();
+        GameApp server = new GameApp();
+        server.start();
         log.info("[" + ServerProperties.getProperty("login.serverName") + "]");
     }
 
@@ -111,7 +118,7 @@ public class GameApp {
 
     }
 
-    public void run() throws InterruptedException {
+    public void start() throws InterruptedException {
         initDatabase();
         setAccountsAsLoggedOff();
 
@@ -169,7 +176,7 @@ public class GameApp {
             }
         });
 
-        executorService.awaitTermination(2, TimeUnit.SECONDS);
+        executorService.shutdown();
 
 
         log.info("[Loading Login]");
