@@ -1,10 +1,11 @@
 package scripting;
 
+import lombok.extern.slf4j.Slf4j;
 import tools.data.output.MaplePacketLittleEndianWriter;
 
 import java.util.List;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class ScriptMan {
     // InitialQuiz
     public static final int InitialQuizRes_Request = 0x0;

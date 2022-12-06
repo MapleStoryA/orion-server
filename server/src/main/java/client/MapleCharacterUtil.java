@@ -21,6 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package client;
 
+import client.crypto.LoginCrypto;
+import client.crypto.LoginCryptoLegacy;
 import constants.GameConstants;
 import database.DatabaseConnection;
 import tools.Triple;

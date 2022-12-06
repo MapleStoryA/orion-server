@@ -35,7 +35,6 @@ import server.life.MapleMonsterInformationProvider;
 import server.life.PlayerNPC;
 import server.maps.MapleMapFactory;
 import server.quest.MapleQuest;
-import tools.AutoJCE;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -56,7 +55,6 @@ public class GameApp {
 
     public static void main(String[] args) throws InterruptedException {
         ServerEnvironment.getConfig();
-        AutoJCE.removeCryptographyRestrictions();
         GameApp server = new GameApp();
         server.start();
         log.info("[" + ServerProperties.getProperty("login.serverName") + "]");
