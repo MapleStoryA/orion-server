@@ -11,7 +11,6 @@ public class RelogRequestHandler extends AbstractMaplePacketHandler {
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         c.getSession().write(LoginPacket.getRelogResponse());
-
     }
 
 }

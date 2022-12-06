@@ -3,13 +3,14 @@ package handling.login.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
+import lombok.extern.slf4j.Slf4j;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.LoginPacket;
 
 import java.util.List;
 
-@lombok.extern.slf4j.Slf4j
-public class CharlistRequestHandler extends AbstractMaplePacketHandler {
+@Slf4j
+public class CharListRequestHandler extends AbstractMaplePacketHandler {
 
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
@@ -22,7 +23,8 @@ public class CharlistRequestHandler extends AbstractMaplePacketHandler {
 
         final List<MapleCharacter> chars = c.loadCharacters(server);
         if (chars != null) {
-            c.getSession().write(LoginPacket.getCharList(c.getSecondPassword() != null, chars, c.getCharacterSlots()));
+            var secondPassword = c.getSecondPassword() != null;
+            c.getSession().write(LoginPacket.getCharList(secondPassword, chars, c.getCharacterSlots()));
         } else {
             c.getSession().close();
         }

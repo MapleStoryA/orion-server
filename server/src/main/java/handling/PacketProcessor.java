@@ -171,7 +171,7 @@ import handling.login.handler.AfterLoginHandler;
 import handling.login.handler.CharLoginPasswordHandler;
 import handling.login.handler.CharSelectedHandler;
 import handling.login.handler.CharSelectedViewAllHandler;
-import handling.login.handler.CharlistRequestHandler;
+import handling.login.handler.CharListRequestHandler;
 import handling.login.handler.CharlistViewAllHandler;
 import handling.login.handler.CheckCharNameHandler;
 import handling.login.handler.CreateCharHandler;
@@ -239,7 +239,7 @@ public final class PacketProcessor {
             registerHandler(RecvPacketOpcode.SERVERLIST_REQUEST, new ServerlistRequestHandler());
             //registerHandler(RecvPacketOpcode.SERVERLIST_REQUEST_2, new ServerlistRequestHandler());
             registerHandler(RecvPacketOpcode.SERVERLIST_REQUEST_3, new ServerlistRequestHandler());
-            registerHandler(RecvPacketOpcode.CHARLIST_REQUEST, new CharlistRequestHandler());
+            registerHandler(RecvPacketOpcode.CHARLIST_REQUEST, new CharListRequestHandler());
             registerHandler(RecvPacketOpcode.SERVERSTATUS_REQUEST, new ServerStatusRequestHandler());
             registerHandler(RecvPacketOpcode.CHECK_CHAR_NAME, new CheckCharNameHandler());
             registerHandler(RecvPacketOpcode.CREATE_CHAR, new CreateCharHandler());

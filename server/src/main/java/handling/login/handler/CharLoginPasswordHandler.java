@@ -4,13 +4,14 @@ import client.MapleCharacter;
 import client.MapleClient;
 import handling.MaplePacketHandler;
 import handling.login.LoginServer;
+import lombok.extern.slf4j.Slf4j;
 import tools.KoreanDateUtil;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.LoginPacket;
 
 import java.util.Calendar;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class CharLoginPasswordHandler implements MaplePacketHandler {
 
     private static final boolean loginFailCount(final MapleClient c) {

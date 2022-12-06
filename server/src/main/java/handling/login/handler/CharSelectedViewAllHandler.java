@@ -9,14 +9,13 @@ import tools.data.input.SeekableLittleEndianAccessor;
 @lombok.extern.slf4j.Slf4j
 public class CharSelectedViewAllHandler extends AbstractMaplePacketHandler {
 
-    private static final boolean loginFailCount(final MapleClient c) {
+    private static boolean loginFailCount(final MapleClient c) {
         c.loginAttempt++;
         return c.loginAttempt > 5;
     }
 
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        //slea.readMapleAsciiString();
         int charId = slea.readInt();
         slea.readInt();
         c.setWorld(0); // world
