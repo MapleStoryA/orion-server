@@ -64,8 +64,9 @@ public class SimpleMapleVar implements MapleVar {
             st.setString(2, key);
             ResultSet rs = st.executeQuery();
             //it will never return more than one, since key is a PK.
-            rs.next();
-            return rs.getString("value");
+            if (rs.next()) {
+                return rs.getString("value");
+            }
         } catch (SQLException ex) {
             logger.info("Error setting maple var", ex);
         }

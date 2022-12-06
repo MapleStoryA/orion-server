@@ -7,6 +7,7 @@ import client.Messages;
 import handling.world.World;
 import handling.world.WorldServer;
 import handling.world.party.MaplePartyCharacter;
+import lombok.extern.slf4j.Slf4j;
 import scripting.v1.dispatch.PacketDispatcher;
 import scripting.v1.event.EventCenter;
 import scripting.v1.event.EventInstance;
@@ -17,7 +18,7 @@ import tools.packet.CWVsContextOnMessagePackets;
 
 import java.awt.*;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class TargetScript extends PlayerInteractionScript {
 
     private static final int COMPLETE_QUEST = 2;
