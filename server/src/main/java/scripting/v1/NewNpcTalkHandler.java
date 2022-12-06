@@ -1,6 +1,7 @@
 package scripting.v1;
 
 import client.MapleClient;
+import lombok.extern.slf4j.Slf4j;
 import org.mozilla.javascript.ContinuationPending;
 import scripting.v1.binding.AskAvatarOperations;
 import scripting.v1.binding.NpcScript;
@@ -9,21 +10,28 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 import java.io.File;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class NewNpcTalkHandler {
 
+
+    class ChatAction {
+        public static final int ACTION_END_CHAT = -1;
+        public static final int ACTION_BACK_OR_NO = 0;
+        public static final int ACTION_NEXT = 1;
+    }
+
     public static boolean isNewNpcScriptAvailable(int npc) {
-        File file = new File(ServerEnvironment.getConfig().getScriptsPath() + "/" + "scripts/npcNew/" + npc + ".js");
+        var file = new File(ServerEnvironment.getConfig().getScriptsPath() + "/npcNew/" + npc + ".js");
         return file.exists();
     }
 
     public static boolean isNewQuestScriptAvailable(int npc) {
-        File file = new File(ServerEnvironment.getConfig().getScriptsPath() + "/" + "questNew/" + npc + ".js");
+        var file = new File(ServerEnvironment.getConfig().getScriptsPath() + "/" + "questNew/" + npc + ".js");
         return file.exists();
     }
 
     public static void startConversation(int npc, MapleClient client) {
-        NpcScriptingManager manager = NpcScriptingManagerSingleton.getInstance();
+        var manager = NpcScriptingManagerSingleton.getInstance();
         try {
             manager.runScript(npc, client);
         } catch (ContinuationPending pending) {
@@ -32,7 +40,7 @@ public class NewNpcTalkHandler {
     }
 
     public static void startQuestConversation(int npc, int quest, MapleClient client) {
-        NpcScriptingManager manager = NpcScriptingManagerSingleton.getInstance();
+        var manager = NpcScriptingManagerSingleton.getInstance();
         try {
             manager.runQuestScript(npc, quest, client);
         } catch (ContinuationPending pending) {
@@ -52,11 +60,10 @@ public class NewNpcTalkHandler {
         switch (type) {
             case SAY: {
                 switch (action) {
-                    case -1:// end_chat
+                    case ChatAction.ACTION_END_CHAT:
+                    case ChatAction.ACTION_BACK_OR_NO:
                         break;
-                    case 0:// back
-                        break;
-                    case 1:// next
+                    case ChatAction.ACTION_NEXT:
                         script.resume(1);
                 }
                 break;
@@ -65,17 +72,17 @@ public class NewNpcTalkHandler {
             case ASK_ACCEPT:
             case ASK_YES_NO:
                 switch (action) {
-                    case 0:// No
-                    case 1:// Yes
+                    case ChatAction.ACTION_BACK_OR_NO:
+                    case ChatAction.ACTION_NEXT:
                         script.resume(action);
                         break;
-                    case -1:// end chat
+                    case ChatAction.ACTION_END_CHAT:
                 }
                 break;
             case ASK_AVATAR:
                 switch (action) {
-                    case 0:
-                    case 1:
+                    case ChatAction.ACTION_BACK_OR_NO:
+                    case ChatAction.ACTION_NEXT:
                         int result = AskAvatarOperations.processAskAvatar(client.getPlayer(), slea.readByte(), false);
                         script.resume(result);
                 }
@@ -83,26 +90,26 @@ public class NewNpcTalkHandler {
             case ASK_MENU:
             case ASK_QUESTION:
                 switch (action) {
-                    case 1:
+                    case ChatAction.ACTION_NEXT:
                         script.resume(Integer.valueOf(slea.readInt()));
-                    case 0:
+                    case ChatAction.ACTION_BACK_OR_NO:
                         break;
                 }
                 break;
             case ASK_NUMBER: {
                 switch (action) {
-                    case 1:
+                    case ChatAction.ACTION_NEXT:
                         script.resume(slea.readInt());
-                    case 0:
+                    case ChatAction.ACTION_BACK_OR_NO:
                         break;
                 }
                 break;
             }
             case ASK_TEXT: {
                 switch (action) {
-                    case 1:
+                    case ChatAction.ACTION_NEXT:
                         script.resume(slea.readMapleAsciiString());
-                    case 0:
+                    case ChatAction.ACTION_BACK_OR_NO:
                         break;
                 }
                 break;

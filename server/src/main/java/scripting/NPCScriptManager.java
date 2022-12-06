@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package scripting;
 
 import client.MapleClient;
+import lombok.extern.slf4j.Slf4j;
 import server.quest.MapleQuest;
 import tools.FileOutputUtil;
 
@@ -31,11 +32,11 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.locks.Lock;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class NPCScriptManager extends AbstractScriptManager {
 
     private static final NPCScriptManager instance = new NPCScriptManager();
-    private final Map<MapleClient, NPCConversationManager> cms = new WeakHashMap<MapleClient, NPCConversationManager>();
+    private final Map<MapleClient, NPCConversationManager> cms = new WeakHashMap<>();
 
     public static final NPCScriptManager getInstance() {
         return instance;
