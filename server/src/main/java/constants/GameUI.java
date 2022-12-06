@@ -1,4 +1,4 @@
-package server;
+package constants;
 
 public final class GameUI {
     private GameUI() {

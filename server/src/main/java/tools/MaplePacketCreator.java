@@ -50,7 +50,7 @@ import handling.world.guild.MapleBBSThread.MapleBBSReply;
 import handling.world.guild.MapleGuild;
 import handling.world.guild.MapleGuildAlliance;
 import handling.world.guild.MapleGuildCharacter;
-import server.GameUI;
+import constants.GameUI;
 import server.MapleItemInformationProvider;
 import server.MapleShopItem;
 import server.MapleStatEffect;

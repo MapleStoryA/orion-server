@@ -67,7 +67,6 @@ import server.maps.MapleReactorFactory;
 import server.maps.MapleReactorStats;
 import server.quest.MapleQuest;
 import tools.ArrayMap;
-import tools.CPUSampler;
 import tools.MaplePacketCreator;
 import tools.MockIOSession;
 import tools.Pair;
@@ -99,6 +98,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ScheduledFuture;
+
 public class AdminCommand {
 
     public static PlayerGMRank getPlayerLevelRequired() {
@@ -3097,51 +3097,6 @@ public class AdminCommand {
         }
     }
 
-    public static class StartProfiling extends CommandExecute {
-
-        @Override
-        public int execute(MapleClient c, String[] splitted) {
-            CPUSampler sampler = CPUSampler.getInstance();
-            sampler.addIncluded("client");
-            sampler.addIncluded("constants"); // or should we do
-            // Packages.constants etc.?
-            sampler.addIncluded("database");
-            sampler.addIncluded("handling");
-            sampler.addIncluded("provider");
-            sampler.addIncluded("scripting");
-            sampler.addIncluded("server");
-            sampler.addIncluded("tools");
-            sampler.start();
-            return 1;
-        }
-    }
-
-    public static class StopProfiling extends CommandExecute {
-
-        @Override
-        public int execute(MapleClient c, String[] splitted) {
-            CPUSampler sampler = CPUSampler.getInstance();
-            try {
-                String filename = "odinprofile.txt";
-                if (splitted.length > 1) {
-                    filename = splitted[1];
-                }
-                File file = new File(filename);
-                if (file.exists()) {
-                    c.getPlayer().dropMessage(6, "The entered filename already exists, choose a different one");
-                    return 0;
-                }
-                sampler.stop();
-                FileWriter fw = new FileWriter(file);
-                sampler.save(fw, 1, 10);
-                fw.close();
-            } catch (IOException e) {
-                System.err.println("Error saving profile" + e);
-            }
-            sampler.reset();
-            return 1;
-        }
-    }
 
     public static class ReloadMap extends CommandExecute {
 
