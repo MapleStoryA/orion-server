@@ -3,13 +3,11 @@ package server;
 import client.MapleDisease;
 import provider.MapleData;
 import provider.MapleDataProvider;
-import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
 import server.config.ServerEnvironment;
 import server.life.MobSkill;
 import server.life.MobSkillFactory;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 

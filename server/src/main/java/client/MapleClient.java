@@ -21,8 +21,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package client;
 
-import handling.world.WorldServer;
-import server.config.ServerEnvironment;
 import database.DatabaseConnection;
 import database.DatabaseException;
 import handling.cashshop.CashShopServer;
@@ -30,6 +28,7 @@ import handling.channel.ChannelServer;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
 import handling.world.MapleMessengerCharacter;
 import handling.world.World;
+import handling.world.WorldServer;
 import handling.world.buddy.MapleBuddyList;
 import handling.world.guild.MapleGuildCharacter;
 import handling.world.party.MapleParty;
@@ -40,6 +39,7 @@ import org.slf4j.LoggerFactory;
 import scripting.v1.binding.NpcScript;
 import server.ClientStorage;
 import server.Timer.PingTimer;
+import server.config.ServerEnvironment;
 import server.maps.MapleMap;
 import server.quest.MapleQuest;
 import server.shops.IMaplePlayerShop;

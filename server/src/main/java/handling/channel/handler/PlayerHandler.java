@@ -29,7 +29,6 @@ import client.PlayerStats;
 import client.SkillFactory;
 import client.inventory.MapleInventoryType;
 import constants.MapConstants;
-import handling.channel.ChannelServer;
 import handling.world.WorldServer;
 import server.AutobanManager;
 import server.MapleInventoryManipulator;

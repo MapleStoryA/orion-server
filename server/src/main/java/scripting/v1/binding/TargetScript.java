@@ -4,7 +4,6 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleJob;
 import client.Messages;
-import handling.channel.ChannelServer;
 import handling.world.World;
 import handling.world.WorldServer;
 import handling.world.party.MaplePartyCharacter;

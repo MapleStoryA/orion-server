@@ -21,8 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package client;
 
-import server.config.ServerEnvironment;
 import database.DatabaseConnection;
+import server.config.ServerEnvironment;
 import tools.Triple;
 import tools.data.output.MaplePacketLittleEndianWriter;
 

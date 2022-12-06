@@ -5,7 +5,6 @@ import client.MapleQuestStatus;
 import constants.GameConstants;
 import provider.MapleData;
 import provider.MapleDataProvider;
-import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
 import scripting.NPCScriptManager;
 import server.config.ServerEnvironment;
@@ -13,7 +12,6 @@ import tools.FileoutputUtil;
 import tools.MaplePacketCreator;
 import tools.Pair;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

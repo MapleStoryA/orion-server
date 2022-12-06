@@ -1,7 +1,6 @@
 package server;
 
 import client.MapleCharacter;
-import handling.channel.ChannelServer;
 import handling.world.WorldServer;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;

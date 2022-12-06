@@ -15,7 +15,6 @@ import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
 import constants.GameConstants;
 import constants.skills.Evan;
-import handling.channel.ChannelServer;
 import handling.world.WorldServer;
 import provider.MapleData;
 import provider.MapleDataTool;

@@ -22,8 +22,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package scripting;
 
 import client.MapleClient;
-import server.config.ServerEnvironment;
 import server.MaplePortal;
+import server.config.ServerEnvironment;
 import tools.FileoutputUtil;
 
 import javax.script.Compilable;

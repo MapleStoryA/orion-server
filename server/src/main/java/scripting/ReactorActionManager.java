@@ -27,7 +27,6 @@ import client.inventory.IItem;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
-import handling.channel.ChannelServer;
 import handling.world.WorldServer;
 import server.MapleCarnivalFactory;
 import server.MapleCarnivalFactory.MCSkill;

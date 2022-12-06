@@ -2,7 +2,6 @@ package handling.login.handler;
 
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
-import handling.channel.ChannelServer;
 import handling.world.WorldServer;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;

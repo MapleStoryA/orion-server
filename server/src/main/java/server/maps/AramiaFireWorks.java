@@ -22,11 +22,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package server.maps;
 
 import client.MapleCharacter;
-import server.config.ServerEnvironment;
 import handling.world.World;
 import server.MapleItemInformationProvider;
 import server.Randomizer;
 import server.Timer.EventTimer;
+import server.config.ServerEnvironment;
 import tools.MaplePacketCreator;
 
 import java.awt.*;

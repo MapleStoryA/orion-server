@@ -23,13 +23,11 @@ package server.life;
 
 import provider.MapleData;
 import provider.MapleDataProvider;
-import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
 import server.config.ServerEnvironment;
 import tools.Pair;
 
 import java.awt.*;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

@@ -23,7 +23,6 @@ package server.maps;
 
 import client.MapleClient;
 import client.anticheat.CheatingOffense;
-import handling.channel.ChannelServer;
 import handling.world.WorldServer;
 import scripting.PortalScriptManager;
 import server.MaplePortal;

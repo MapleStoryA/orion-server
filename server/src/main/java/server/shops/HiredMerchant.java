@@ -25,7 +25,6 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.inventory.IItem;
 import client.inventory.ItemFlag;
-import handling.channel.ChannelServer;
 import handling.world.WorldServer;
 import server.MapleInventoryManipulator;
 import server.Timer.EtcTimer;

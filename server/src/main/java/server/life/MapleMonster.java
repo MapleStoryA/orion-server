@@ -35,7 +35,6 @@ import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
 import constants.GameConstants;
 import constants.ServerConstants;
-import handling.channel.ChannelServer;
 import handling.world.WorldServer;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;

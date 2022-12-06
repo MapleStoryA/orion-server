@@ -1,7 +1,6 @@
 package scripting.v1.event;
 
 import client.MapleCharacter;
-import handling.channel.ChannelServer;
 import handling.channel.PlayerStorage;
 import handling.world.WorldServer;
 import handling.world.party.MapleParty;

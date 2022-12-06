@@ -3,7 +3,6 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
-import handling.channel.ChannelServer;
 import handling.world.World;
 import handling.world.WorldServer;
 import tools.MaplePacketCreator;

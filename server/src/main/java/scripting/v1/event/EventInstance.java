@@ -1,7 +1,6 @@
 package scripting.v1.event;
 
 import client.MapleCharacter;
-import handling.channel.ChannelServer;
 import handling.world.WorldServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

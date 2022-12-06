@@ -23,10 +23,6 @@ package handling;
 
 import server.config.ServerEnvironment;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
-
 public enum RecvPacketOpcode implements WritableIntValueHolder {
     // GENERIC
 

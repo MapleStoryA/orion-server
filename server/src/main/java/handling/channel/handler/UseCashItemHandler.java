@@ -14,7 +14,6 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
-import handling.channel.ChannelServer;
 import handling.channel.handler.utils.InventoryHandlerUtils;
 import handling.world.World;
 import handling.world.WorldServer;

@@ -28,7 +28,6 @@ import client.inventory.ItemLoader;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import database.DatabaseConnection;
-import handling.channel.ChannelServer;
 import handling.world.WorldServer;
 import server.maps.AbstractMapleMapObject;
 import server.maps.MapleMap;
