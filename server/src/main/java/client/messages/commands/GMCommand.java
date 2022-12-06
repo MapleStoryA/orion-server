@@ -9,9 +9,6 @@ import client.MapleClient;
 import client.SkillFactory;
 import constants.ServerConstants.PlayerGMRank;
 
-/**
- * @author Emilyx3
- */
 public class GMCommand {
 
     public static PlayerGMRank getPlayerLevelRequired() {

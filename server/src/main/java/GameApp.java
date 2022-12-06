@@ -22,15 +22,8 @@ import server.ServerProperties;
 import server.ShutdownServer;
 import server.SpeedQuizFactory;
 import server.SpeedRunner;
-import server.Timer.BuffTimer;
 import server.Timer.CheatTimer;
-import server.Timer.CloneTimer;
 import server.Timer.EtcTimer;
-import server.Timer.EventTimer;
-import server.Timer.MapTimer;
-import server.Timer.MobTimer;
-import server.Timer.PingTimer;
-import server.Timer.WorldTimer;
 import server.TimerManager;
 import server.cashshop.CashItemFactory;
 import server.events.MapleOxQuizFactory;
@@ -57,37 +50,16 @@ public class GameApp {
         AutoJCE.removeCryptographyRestrictions();
         ServerEnvironment.getConfig();
         instance.run();
+        System.out.println("[" + ServerProperties.getProperty("login.serverName") + "]");
     }
 
     public void run() throws InterruptedException {
+        initDatabase();
+        setAccountsAsLoggedOff();
 
-        try {
-            ServerConfig config = ServerEnvironment.getConfig();
-            DatabaseConnection.initConfig(config);
-        } catch (SQLException ex) {
-            throw new RuntimeException("[SQL EXCEPTION] Error connecting to the database.", ex);
-        }
 
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("UPDATE accounts SET loggedin = 0");
-            ps.executeUpdate();
-            ps.close();
-
-        } catch (SQLException ex) {
-            throw new RuntimeException("[EXCEPTION] Please check if the SQL server is active.", ex);
-        }
-
-        System.out.println("[" + ServerProperties.getProperty("login.serverName") + "]");
         World.init();
-        WorldTimer.getInstance().start();
-        EtcTimer.getInstance().start();
-        MapTimer.getInstance().start();
-        MobTimer.getInstance().start();
-        CloneTimer.getInstance().start();
-        EventTimer.getInstance().start();
-        BuffTimer.getInstance().start();
-        PingTimer.getInstance().start();
+        World.initTimers();
         TimerManager.getInstance().start();
 
         var executorService = Executors.newFixedThreadPool(10);
@@ -180,6 +152,29 @@ public class GameApp {
         System.out.println("Console Commands: ");
         System.out.println("say | prefixsay | shutdown | restart");
         listenCommand();
+    }
+
+
+
+    private static void initDatabase() {
+        try {
+            ServerConfig config = ServerEnvironment.getConfig();
+            DatabaseConnection.initConfig(config);
+        } catch (SQLException ex) {
+            throw new RuntimeException("[SQL EXCEPTION] Error connecting to the database.", ex);
+        }
+    }
+
+    private static void setAccountsAsLoggedOff() {
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("UPDATE accounts SET loggedin = 0");
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (SQLException ex) {
+            throw new RuntimeException("[EXCEPTION] Please check if the SQL server is active.", ex);
+        }
     }
 
     private static void printLoad(String thread) {

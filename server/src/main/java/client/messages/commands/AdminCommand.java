@@ -99,11 +99,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ScheduledFuture;
-
-/**
- * @author Emilyx3
- */
-
 public class AdminCommand {
 
     public static PlayerGMRank getPlayerLevelRequired() {

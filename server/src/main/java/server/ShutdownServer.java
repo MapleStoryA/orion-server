@@ -6,14 +6,6 @@ import handling.channel.ChannelServer;
 import handling.login.LoginServer;
 import handling.world.World;
 import handling.world.WorldServer;
-import server.Timer.BuffTimer;
-import server.Timer.CloneTimer;
-import server.Timer.EtcTimer;
-import server.Timer.EventTimer;
-import server.Timer.MapTimer;
-import server.Timer.MobTimer;
-import server.Timer.PingTimer;
-import server.Timer.WorldTimer;
 import tools.MaplePacketCreator;
 
 import javax.management.MBeanServer;
@@ -64,14 +56,7 @@ public class ShutdownServer implements ShutdownServerMBean {
                 }
                 LoginServer.getInstance().shutdown();
                 CashShopServer.shutdown();
-                WorldTimer.getInstance().start();
-                EtcTimer.getInstance().start();
-                MapTimer.getInstance().start();
-                MobTimer.getInstance().start();
-                CloneTimer.getInstance().start();
-                EventTimer.getInstance().start();
-                BuffTimer.getInstance().start();
-                PingTimer.getInstance().start();
+                World.initTimers();
             } catch (Exception e) {
                 System.out.println("Failed to shutdown..." + e);
             }

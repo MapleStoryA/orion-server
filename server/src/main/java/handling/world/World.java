@@ -30,6 +30,7 @@ import handling.world.guild.MapleGuildSummary;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import server.MapleInventoryManipulator;
+import server.Timer;
 import server.Timer.WorldTimer;
 import server.life.MapleMonster;
 import server.maps.MapleMap;
@@ -213,6 +214,17 @@ public class World {
             return CashShopServer.getPlayerStorage();
         }
         return ChannelServer.getInstance(channel).getPlayerStorage();
+    }
+
+    public static void initTimers() {
+        WorldTimer.getInstance().start();
+        Timer.EtcTimer.getInstance().start();
+        Timer.MapTimer.getInstance().start();
+        Timer.MobTimer.getInstance().start();
+        Timer.CloneTimer.getInstance().start();
+        Timer.EventTimer.getInstance().start();
+        Timer.BuffTimer.getInstance().start();
+        Timer.PingTimer.getInstance().start();
     }
 
     public static class Party {

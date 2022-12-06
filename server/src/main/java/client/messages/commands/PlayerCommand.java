@@ -12,9 +12,6 @@ import scripting.NPCScriptManager;
 import scripting.v1.NewNpcTalkHandler;
 import tools.MaplePacketCreator;
 
-/**
- * @author Emilyx3
- */
 public class PlayerCommand {
 
     public static PlayerGMRank getPlayerLevelRequired() {
