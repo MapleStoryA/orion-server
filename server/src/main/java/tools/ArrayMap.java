@@ -44,6 +44,7 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Serializable {
     public static final long serialVersionUID = 9179541993413738569L;
     private final ArrayList<Entry<K, V>> list;
     private transient Set<? extends java.util.Map.Entry<K, V>> entries = null;
+
     /**
      * Class constructor
      */

@@ -67,7 +67,6 @@ import server.maps.MapleReactorStats;
 import server.quest.MapleQuest;
 import tools.ArrayMap;
 import tools.MaplePacketCreator;
-import tools.MockIOSession;
 import tools.Pair;
 import tools.StringUtil;
 import tools.packet.MobPacket;
@@ -2476,30 +2475,7 @@ public class AdminCommand {
         }
     }
 
-    public static class MakeOfflineP extends CommandExecute {
 
-        @Override
-        public int execute(MapleClient c, String[] splitted) {
-            try {
-                c.getPlayer().dropMessage(6, "Making playerNPC...");
-                MapleClient cs = new MapleClient(null, new byte[]{}, new MockIOSession());
-                MapleCharacter chhr = MapleCharacter.loadCharFromDB(MapleCharacterUtil.getIdByName(splitted[1]), cs,
-                        false);
-                if (chhr == null) {
-                    c.getPlayer().dropMessage(6, splitted[1] + " does not exist");
-                    return 0;
-                }
-                PlayerNPC npc = new PlayerNPC(chhr, Integer.parseInt(splitted[2]), c.getPlayer().getMap(),
-                        c.getPlayer());
-                npc.addToServer();
-                c.getPlayer().dropMessage(6, "Done");
-            } catch (Exception e) {
-                c.getPlayer().dropMessage(6, "NPC failed... : " + e.getMessage());
-                e.printStackTrace();
-            }
-            return 1;
-        }
-    }
 
     public static class DestroyPNPC extends CommandExecute {
 
