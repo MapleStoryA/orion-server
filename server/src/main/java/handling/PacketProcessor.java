@@ -134,10 +134,10 @@ import handling.channel.handler.SpecialMoveHandler;
 import handling.channel.handler.StorageHandler;
 import handling.channel.handler.SummonAttackHandler;
 import handling.channel.handler.TakeDamageHandler;
+import handling.channel.handler.TeleportRockAddMapHandler;
 import handling.channel.handler.ThrowSkillHandler;
 import handling.channel.handler.TouchReactorHandler;
 import handling.channel.handler.TransformPlayerHandler;
-import handling.channel.handler.TrockAddMapHandler;
 import handling.channel.handler.TwinDragonEggHandler;
 import handling.channel.handler.UpdateCharacterHandler;
 import handling.channel.handler.UpdateQuestHandler;
@@ -168,10 +168,10 @@ import handling.channel.handler.admin.AdminChatHandler;
 import handling.channel.handler.admin.AdminCommandHandler;
 import handling.channel.handler.admin.AdminLogHandler;
 import handling.login.handler.AfterLoginHandler;
+import handling.login.handler.CharListRequestHandler;
 import handling.login.handler.CharLoginPasswordHandler;
 import handling.login.handler.CharSelectedHandler;
 import handling.login.handler.CharSelectedViewAllHandler;
-import handling.login.handler.CharListRequestHandler;
 import handling.login.handler.CharlistViewAllHandler;
 import handling.login.handler.CheckCharNameHandler;
 import handling.login.handler.CreateCharHandler;
@@ -188,6 +188,7 @@ public final class PacketProcessor {
 
     private static PacketProcessor instance;
     private final MaplePacketHandler[] handlers;
+
     private PacketProcessor() {
         int maxRecvOp = 0;
         for (RecvPacketOpcode op : RecvPacketOpcode.values()) {
@@ -196,14 +197,6 @@ public final class PacketProcessor {
             }
         }
         handlers = new MaplePacketHandler[maxRecvOp + 1];
-    }
-
-    public static PacketProcessor CHANNEL() {
-        return getProcessor(Mode.CHANNELSERVER);
-    }
-
-    public static PacketProcessor CASHSHOP() {
-        return getProcessor(Mode.CASHSHOP);
     }
 
     public synchronized static PacketProcessor getProcessor(Mode mode) {
@@ -237,7 +230,7 @@ public final class PacketProcessor {
             registerHandler(RecvPacketOpcode.LOGIN_PASSWORD, new CharLoginPasswordHandler());
             registerHandler(RecvPacketOpcode.AFTER_LOGIN, new AfterLoginHandler());
             registerHandler(RecvPacketOpcode.SERVERLIST_REQUEST, new ServerlistRequestHandler());
-            //registerHandler(RecvPacketOpcode.SERVERLIST_REQUEST_2, new ServerlistRequestHandler());
+            registerHandler(RecvPacketOpcode.SERVERLIST_REQUEST_2, new ServerlistRequestHandler());
             registerHandler(RecvPacketOpcode.SERVERLIST_REQUEST_3, new ServerlistRequestHandler());
             registerHandler(RecvPacketOpcode.CHARLIST_REQUEST, new CharListRequestHandler());
             registerHandler(RecvPacketOpcode.SERVERSTATUS_REQUEST, new ServerStatusRequestHandler());
@@ -252,7 +245,6 @@ public final class PacketProcessor {
             registerHandler(RecvPacketOpcode.RELOG, new RelogRequestHandler());
             registerHandler(RecvPacketOpcode.VIEW_ALL_CHAR, new CharlistViewAllHandler());
         } else if (mode == Mode.CHANNELSERVER) {
-
             registerHandler(RecvPacketOpcode.CHANGE_CHANNEL, new ChangeChannelHandler());
             registerHandler(RecvPacketOpcode.ENTER_CASH_SHOP, new EnterCashShopHandler());
             registerHandler(RecvPacketOpcode.ENTER_MTS, new EnterMTSHandler());
@@ -284,7 +276,7 @@ public final class PacketProcessor {
             registerHandler(RecvPacketOpcode.SKILL_MACRO, new ChangeSkillMacroHandler());
             registerHandler(RecvPacketOpcode.QUICK_SLOT, new QuickSlotHandler());
             registerHandler(RecvPacketOpcode.UPDATE_CHARACTER, new UpdateCharacterHandler());
-            registerHandler(RecvPacketOpcode.TROCK_ADD_MAP, new TrockAddMapHandler());
+            registerHandler(RecvPacketOpcode.TELEPORT_ROCK_ADD_MAP, new TeleportRockAddMapHandler());
             registerHandler(RecvPacketOpcode.ARAN_COMBO, new AranComboHandler());
             registerHandler(RecvPacketOpcode.GIVE_FAME, new GiveFameHandler());
             registerHandler(RecvPacketOpcode.TRANSFORM_PLAYER, new TransformPlayerHandler());
@@ -400,16 +392,15 @@ public final class PacketProcessor {
             registerHandler(RecvPacketOpcode.WHISPER, new WhisperHandler());
             registerHandler(RecvPacketOpcode.GENERAL_CHAT, new GeneralChatHandler());
             registerHandler(RecvPacketOpcode.REPORT, new ReportHandler());
-
             registerHandler(RecvPacketOpcode.ADMIN_CHAT, new AdminChatHandler());
             registerHandler(RecvPacketOpcode.ADMIN_COMMAND, new AdminCommandHandler());
             registerHandler(RecvPacketOpcode.ADMIN_LOG, new AdminLogHandler());
-
-
         }
     }
 
     public enum Mode {
-        LOGINSERVER, CHANNELSERVER, CASHSHOP
+        LOGINSERVER,
+        CHANNELSERVER,
+        CASHSHOP
     }
 }

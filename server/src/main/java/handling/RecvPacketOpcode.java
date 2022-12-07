@@ -106,7 +106,7 @@ public enum RecvPacketOpcode {
     CANCEL_DEBUFF(110),
     CHANGE_MAP_SPECIAL(111),
     USE_INNER_PORTAL(112),
-    TROCK_ADD_MAP(113),
+    TELEPORT_ROCK_ADD_MAP(113),
     QUEST_ACTION(118),
     //119 : Skills with buffstats
 // skill with actions?

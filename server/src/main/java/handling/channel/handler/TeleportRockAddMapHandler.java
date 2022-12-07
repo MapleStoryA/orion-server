@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @lombok.extern.slf4j.Slf4j
-public class TrockAddMapHandler extends AbstractMaplePacketHandler {
+public class TeleportRockAddMapHandler extends AbstractMaplePacketHandler {
     private static final List<Integer> blockedMaps;
 
     static {

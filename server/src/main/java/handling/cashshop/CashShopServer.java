@@ -60,7 +60,8 @@ public class CashShopServer {
 
         try {
             inetSocketAddr = new InetSocketAddress(PORT);
-            acceptor.bind(inetSocketAddr, new MapleServerHandler(-1, true, PacketProcessor.CASHSHOP()), cfg);
+            acceptor.bind(inetSocketAddr, new MapleServerHandler(-1, true,
+                    PacketProcessor.getProcessor(PacketProcessor.Mode.CASHSHOP)), cfg);
             log.info("Listening on port " + PORT + ".");
         } catch (final Exception e) {
             System.err.println("Binding to port " + PORT + " failed");
