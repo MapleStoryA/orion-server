@@ -1,5 +1,6 @@
-package client;
+package scripting.v1;
 
+import client.MapleClient;
 import tools.MaplePacketCreator;
 
 @lombok.extern.slf4j.Slf4j

@@ -3,7 +3,7 @@ package scripting.v1.binding;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleJob;
-import client.Messages;
+import scripting.v1.Messages;
 import handling.world.World;
 import handling.world.WorldServer;
 import handling.world.party.MaplePartyCharacter;
@@ -353,7 +353,7 @@ public class TargetScript extends PlayerInteractionScript {
     }
 
     public Messages messages() {
-        return player.getMessages();
+        return new Messages(client);
     }
 
 }

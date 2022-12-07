@@ -6089,9 +6089,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         this.newEventInstance = instance;
     }
 
-    public Messages getMessages() {
-        return new Messages(client);
-    }
 
     public enum FameStatus {
 
