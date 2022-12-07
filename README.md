@@ -2,6 +2,7 @@
 A Maple Story V90 Emulator
 
 [![Build](https://github.com/MapleStoryA/orion-server/actions/workflows/build.yml/badge.svg)](https://github.com/MapleStoryA/orion-server/actions/workflows/build.yml)
+[![CodeQL](https://github.com/MapleStoryA/orion-server/actions/workflows/codeql.yml/badge.svg)](https://github.com/MapleStoryA/orion-server/actions/workflows/codeql.yml)
 
 ## Client file
 https://mega.nz/file/hpEywRYJ#EdEjnyfV6jiZf0Kfa5jHZq5CPJ3CzdNQunq4Y8ZeP5M
