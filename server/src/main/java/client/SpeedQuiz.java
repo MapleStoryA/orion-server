@@ -20,10 +20,10 @@ package client;
 
 import scripting.NPCConversationManager;
 import scripting.NPCScriptManager;
-import tools.Randomizer;
 import server.SpeedQuizFactory;
 import server.SpeedQuizFactory.QuizEntry;
 import tools.MaplePacketCreator;
+import tools.Randomizer;
 
 import java.util.List;
 

@@ -18,8 +18,8 @@
 
 package handling.world.expedition;
 
-import handling.world.World;
 import handling.world.party.MapleParty;
+import handling.world.party.PartyManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +62,7 @@ public class MapleExpedition {
     public int getAllMembers() {
         int ret = 0;
         for (int i = 0; i < parties.size(); i++) {
-            MapleParty pp = World.Party.getParty(parties.get(i));
+            MapleParty pp = PartyManager.getParty(parties.get(i));
             if (pp == null) {
                 parties.remove(i);
             } else {
@@ -74,7 +74,7 @@ public class MapleExpedition {
 
     public int getFreeParty() {
         for (int i = 0; i < parties.size(); i++) {
-            MapleParty pp = World.Party.getParty(parties.get(i));
+            MapleParty pp = PartyManager.getParty(parties.get(i));
             if (pp == null) {
                 parties.remove(i);
             } else if (pp.getMembers().size() < 6) {

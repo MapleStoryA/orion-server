@@ -8,9 +8,9 @@ import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
-import tools.Randomizer;
 import server.StructPotentialItem;
 import tools.MaplePacketCreator;
+import tools.Randomizer;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 import java.util.LinkedList;

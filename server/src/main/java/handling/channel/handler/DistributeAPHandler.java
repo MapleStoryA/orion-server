@@ -8,9 +8,9 @@ import client.PlayerStats;
 import client.SkillFactory;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
-import tools.Randomizer;
 import tools.MaplePacketCreator;
 import tools.Pair;
+import tools.Randomizer;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 import java.util.ArrayList;

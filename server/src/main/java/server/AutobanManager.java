@@ -1,7 +1,7 @@
 package server;
 
 import client.MapleClient;
-import handling.world.World;
+import handling.world.helper.BroadcastHelper;
 import tools.MaplePacketCreator;
 
 import java.util.HashMap;
@@ -69,7 +69,7 @@ public class AutobanManager implements Runnable {
                     sb.append(s);
                     sb.append(", ");
                 }
-                World.Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(0, "[Autoban] " + c.getPlayer().getName() + " banned by the system (Last reason: " + reason + ")"));
+                BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(0, "[Autoban] " + c.getPlayer().getName() + " banned by the system (Last reason: " + reason + ")"));
 //		Calendar cal = Calendar.getInstance();
 //		cal.add(Calendar.DATE, 60);
 //		c.getPlayer().tempban(sb.toString(), cal, 1, false);

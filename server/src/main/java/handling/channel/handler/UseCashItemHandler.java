@@ -15,13 +15,12 @@ import client.inventory.MaplePet;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import handling.channel.handler.utils.InventoryHandlerUtils;
-import handling.world.World;
 import handling.world.WorldServer;
+import handling.world.helper.BroadcastHelper;
 import handling.world.party.MaplePartyCharacter;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MapleShopFactory;
-import tools.Randomizer;
 import server.Timer.MapTimer;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
@@ -35,6 +34,7 @@ import server.shops.HiredMerchant;
 import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
 import tools.Pair;
+import tools.Randomizer;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.MTSCSPacket;
 import tools.packet.PetPacket;
@@ -864,7 +864,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                     }
                     final boolean ear = slea.readByte() > 0;
 
-                    World.Broadcast.broadcastSmega(MaplePacketCreator.tripleSmega(messages, ear, c.getChannel()));
+                    BroadcastHelper.broadcastSmega(MaplePacketCreator.tripleSmega(messages, ear, c.getChannel()));
                     used = true;
                 } else {
                     c.getPlayer().dropMessage(5, "The usage of Megaphone is currently disabled.");
@@ -890,7 +890,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
 
                     final boolean ear = slea.readByte() != 0;
 
-                    World.Broadcast.broadcastSmega(MaplePacketCreator.serverNotice(20, c.getChannel(), sb.toString(), ear));
+                    BroadcastHelper.broadcastSmega(MaplePacketCreator.serverNotice(20, c.getChannel(), sb.toString(), ear));
                     used = true;
                 } else {
                     c.getPlayer().dropMessage(5, "The usage of Megaphone is currently disabled.");
@@ -916,7 +916,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
 
                     final boolean ear = slea.readByte() != 0;
 
-                    World.Broadcast.broadcastSmega(MaplePacketCreator.serverNotice(3, c.getChannel(), sb.toString(), ear));
+                    BroadcastHelper.broadcastSmega(MaplePacketCreator.serverNotice(3, c.getChannel(), sb.toString(), ear));
                     used = true;
                 } else {
                     c.getPlayer().dropMessage(5, "The usage of Megaphone is currently disabled.");
@@ -951,7 +951,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                         }
                         item = c.getPlayer().getInventory(MapleInventoryType.getByType(invType)).getItem((byte) pos);
                     }
-                    World.Broadcast
+                    BroadcastHelper
                             .broadcastSmega(MaplePacketCreator.itemMegaphone(sb.toString(), ear, c.getChannel(), item));
                     used = true;
                 } else {
@@ -998,7 +998,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                     break;
                 }
                 String message = slea.readMapleAsciiString();
-                World.Broadcast.broadcastSmega(
+                BroadcastHelper.broadcastSmega(
                         MaplePacketCreator.serverNotice(3, c.getChannel(), c.getPlayer().getName() + " : " + message, ear));
                 used = true;
                 break;
@@ -1167,7 +1167,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                     // break;
                     // }
                     final boolean ear = slea.readByte() != 0;
-                    World.Broadcast.broadcastSmega(
+                    BroadcastHelper.broadcastSmega(
                             MaplePacketCreator.getAvatarMega(c.getPlayer(), c.getChannel(), itemId, lines, ear));
                     used = true;
                 } else {
@@ -1225,7 +1225,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                         c.getPlayer().removeItem(itemId, -1);
                         c.getPlayer().modifyCSPoints(2, totalMaplePoints, false);
                         c.getPlayer().dropMessage(1, "You've gained " + totalMaplePoints + " maple points");
-                        World.Broadcast
+                        BroadcastHelper
                                 .broadcastMessage(MaplePacketCreator.serverNotice(6, itemId, "A lucky person just used a {"
                                         + MapleItemInformationProvider.getInstance().getName(itemId) + "}"));
                         c.enableActions();

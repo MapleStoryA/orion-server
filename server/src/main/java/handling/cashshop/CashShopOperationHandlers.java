@@ -5,9 +5,8 @@ import client.MapleClient;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
-import handling.world.CharacterTransfer;
-import handling.world.World;
 import handling.world.WorldServer;
+import handling.world.helper.CharacterTransfer;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.MTSCSPacket;
@@ -22,7 +21,7 @@ public class CashShopOperationHandlers {
         c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION, c.getSessionIPAddress());
 
         try {
-            World.ChannelChange_Data(new CharacterTransfer(chr), chr.getId(), c.getChannel());
+            WorldServer.getInstance().getChangeChannelData(new CharacterTransfer(chr), chr.getId(), c.getChannel());
             c.getSession().write(MaplePacketCreator.getChannelChange(Integer.parseInt(WorldServer.getInstance().getChannel(c.getChannel()).getPublicAddress().split(":")[1])));
         } catch (Exception ex) {
             log.info(ex.getMessage());
@@ -52,7 +51,7 @@ public class CashShopOperationHandlers {
         final int state = c.getLoginState();
         boolean allowLogin = false;
         if (state == MapleClient.LOGIN_SERVER_TRANSITION || state == MapleClient.CHANGE_CHANNEL) {
-            if (!World.isCharacterListConnected(c.loadCharacterNames(c.getWorld()))) {
+            if (!WorldServer.getInstance().isCharacterListConnected(c.loadCharacterNames(c.getWorld()))) {
                 allowLogin = true;
             }
         }

@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package handling.world.guild;
 
 import database.DatabaseConnection;
-import handling.world.World;
+import handling.world.alliance.AllianceManager;
 import tools.MaplePacketCreator;
 
 import java.sql.Connection;
@@ -43,6 +43,7 @@ public class MapleGuildAlliance implements java.io.Serializable {
     private int allianceid, leaderid, capacity; //make SQL for this auto-increment
     private String name, notice;
     private String[] ranks = new String[5];
+
     public MapleGuildAlliance(final int id) {
         super();
 
@@ -176,11 +177,11 @@ public class MapleGuildAlliance implements java.io.Serializable {
 
     public final void broadcast(final byte[] packet, final int exceptionId, final GAOp op, final boolean expelled) {
         if (op == GAOp.DISBAND) {
-            World.Alliance.setOldAlliance(exceptionId, expelled, allianceid); //-1 = alliance gone, exceptionId = guild left/expelled
+            AllianceManager.setOldAlliance(exceptionId, expelled, allianceid); //-1 = alliance gone, exceptionId = guild left/expelled
         } else if (op == GAOp.NEWGUILD) {
-            World.Alliance.setNewAlliance(exceptionId, allianceid); //exceptionId = guild that just joined
+            AllianceManager.setNewAlliance(exceptionId, allianceid); //exceptionId = guild that just joined
         } else {
-            World.Alliance.sendGuild(packet, exceptionId, allianceid); //exceptionId = guild to broadcast to only
+            AllianceManager.sendGuild(packet, exceptionId, allianceid); //exceptionId = guild to broadcast to only
         }
 
     }
@@ -315,7 +316,7 @@ public class MapleGuildAlliance implements java.io.Serializable {
         int g = -1; //this shall be leader
         String leaderName = null;
         for (int i = 0; i < getNoGuilds(); i++) {
-            MapleGuild g_ = World.Guild.getGuild(guilds[i]);
+            MapleGuild g_ = GuildManager.getGuild(guilds[i]);
             if (g_ != null) {
                 MapleGuildCharacter newLead = g_.getMGC(c);
                 MapleGuildCharacter oldLead = g_.getMGC(leaderid);
@@ -355,7 +356,7 @@ public class MapleGuildAlliance implements java.io.Serializable {
             return false;
         }
         for (int i = 0; i < getNoGuilds(); i++) {
-            MapleGuild g_ = World.Guild.getGuild(guilds[i]);
+            MapleGuild g_ = GuildManager.getGuild(guilds[i]);
             if (g_ != null) {
                 MapleGuildCharacter chr = g_.getMGC(cid);
                 if (chr != null && chr.getAllianceRank() > 2) {

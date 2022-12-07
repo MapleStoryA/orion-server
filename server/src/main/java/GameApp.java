@@ -7,9 +7,10 @@ import handling.channel.ChannelServer;
 import handling.channel.MapleGuildRanking;
 import handling.login.LoginInformationProvider;
 import handling.login.LoginServer;
-import handling.world.World;
+import handling.world.helper.WorldInitHelper;
 import handling.world.WorldServer;
 import handling.world.guild.MapleGuild;
+import handling.world.respawn.RespawnWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import server.AutobanManager;
@@ -22,6 +23,7 @@ import server.ServerProperties;
 import server.ShutdownServer;
 import server.SpeedQuizFactory;
 import server.SpeedRunner;
+import server.Timer;
 import server.Timer.CheatTimer;
 import server.Timer.EtcTimer;
 import server.TimerManager;
@@ -41,6 +43,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
+
+import static handling.world.respawn.RespawnWorker.CHANNELS_PER_THREAD;
 
 
 public class GameApp {
@@ -121,8 +125,8 @@ public class GameApp {
         setAccountsAsLoggedOff();
 
 
-        World.init();
-        World.initTimers();
+        WorldInitHelper.initCommunity();
+        WorldInitHelper.initTimers();
         TimerManager.getInstance().start();
 
         var executorService = Executors.newFixedThreadPool(10);
@@ -202,7 +206,12 @@ public class GameApp {
 
         CheatTimer.getInstance().register(AutobanManager.getInstance(), 60000);
         Runtime.getRuntime().addShutdownHook(new Thread(new Shutdown()));
-        World.registerRespawn();
+
+        Integer[] chs = WorldServer.getInstance().getAllChannelIds().toArray(new Integer[0]);
+        for (int i = 0; i < chs.length; i += CHANNELS_PER_THREAD) {
+            Timer.WorldTimer.getInstance().register(new RespawnWorker(chs, i), 1125); //divisible by 9000 if possible.
+        }
+
         if (ShutdownServer.getInstance() == null) {
             ShutdownServer.registerMBean();
         } else {

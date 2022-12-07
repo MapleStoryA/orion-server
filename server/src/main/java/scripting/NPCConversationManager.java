@@ -41,10 +41,12 @@ import database.DatabaseConnection;
 import handling.channel.ChannelServer;
 import handling.channel.MapleGuildRanking;
 import handling.channel.handler.utils.HiredMerchantHandlerUtils;
-import handling.world.World;
 import handling.world.WorldServer;
+import handling.world.alliance.AllianceManager;
+import handling.world.guild.GuildManager;
 import handling.world.guild.MapleGuild;
 import handling.world.guild.MapleGuildAlliance;
+import handling.world.helper.BroadcastHelper;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import server.MapleCarnivalChallenge;
@@ -55,7 +57,6 @@ import server.MapleShopFactory;
 import server.MapleSquad;
 import server.MapleStatEffect;
 import server.MerchItemPackage;
-import tools.Randomizer;
 import server.SpeedRunner;
 import server.StructPotentialItem;
 import server.Timer.CloneTimer;
@@ -70,6 +71,7 @@ import server.maps.SpeedRunType;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
 import tools.Pair;
+import tools.Randomizer;
 import tools.Triple;
 import tools.packet.CWVsContextOnMessagePackets;
 import tools.packet.PlayerShopPacket;
@@ -531,10 +533,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         c.getSession().write(MaplePacketCreator.getShowItemGain(item.getItemId(), (short) reward.getQuantity(), true));
         if (reward.isRare()) {
             if (isRemote) {
-                World.Broadcast.broadcastMessage(MaplePacketCreator
+                BroadcastHelper.broadcastMessage(MaplePacketCreator
                         .getGachaponMega(c.getPlayer().getName(), "Remote", item, (byte) 0));
             } else {
-                World.Broadcast.broadcastMessage(
+                BroadcastHelper.broadcastMessage(
                         MaplePacketCreator.getGachaponMega(c.getPlayer().getName(), c.getPlayer().getMap().getMapName(), item, (byte) 0));
             }
 
@@ -559,7 +561,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             final byte rareness = GameConstants.gachaponRareItem(item.getItemId());
             if (rareness >= 0) {
                 String title = "[" + c.getPlayer().getName() + "] ";
-                World.Broadcast.broadcastMessage(MaplePacketCreator.getGachaponMega(title, msg, item, rareness));
+                BroadcastHelper.broadcastMessage(MaplePacketCreator.getGachaponMega(title, msg, item, rareness));
             }
             return item.getItemId();
         } catch (Exception e) {
@@ -874,7 +876,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         if (gid <= 0 || c.getPlayer().getGuildRank() != 1) {
             return;
         }
-        World.Guild.disbandGuild(gid);
+        GuildManager.disbandGuild(gid);
     }
 
     public void increaseGuildCapacity() {
@@ -886,7 +888,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         if (gid <= 0) {
             return;
         }
-        World.Guild.increaseGuildCapacity(gid);
+        GuildManager.increaseGuildCapacity(gid);
         c.getPlayer().gainMeso(-5000000, true, false, true);
     }
 
@@ -1035,7 +1037,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public boolean hasMerchantExistance() {
-        return World.hasMerchant(c.getPlayer().getAccountID());
+        return WorldServer.getInstance().hasMerchant(c.getPlayer().getAccountID());
     }
 
     public int getCurrentMesos() {
@@ -1321,7 +1323,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             return false;
         }
         try {
-            return World.Alliance.createAlliance(alliancename, c.getPlayer().getId(), otherChar.getId(),
+            return AllianceManager.createAlliance(alliancename, c.getPlayer().getId(), otherChar.getId(),
                     c.getPlayer().getGuildId(), otherChar.getGuildId());
         } catch (Exception re) {
             re.printStackTrace();
@@ -1331,10 +1333,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
     public boolean addCapacityToAlliance() {
         try {
-            final MapleGuild gs = World.Guild.getGuild(c.getPlayer().getGuildId());
+            final MapleGuild gs = GuildManager.getGuild(c.getPlayer().getGuildId());
             if (gs != null && c.getPlayer().getGuildRank() == 1 && c.getPlayer().getAllianceRank() == 1) {
-                if (World.Alliance.getAllianceLeader(gs.getAllianceId()) == c.getPlayer().getId()
-                        && World.Alliance.changeAllianceCapacity(gs.getAllianceId())) {
+                if (AllianceManager.getAllianceLeader(gs.getAllianceId()) == c.getPlayer().getId()
+                        && AllianceManager.changeAllianceCapacity(gs.getAllianceId())) {
                     gainMeso(-MapleGuildAlliance.CHANGE_CAPACITY_COST);
                     return true;
                 }
@@ -1347,10 +1349,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
     public boolean disbandAlliance() {
         try {
-            final MapleGuild gs = World.Guild.getGuild(c.getPlayer().getGuildId());
+            final MapleGuild gs = GuildManager.getGuild(c.getPlayer().getGuildId());
             if (gs != null && c.getPlayer().getGuildRank() == 1 && c.getPlayer().getAllianceRank() == 1) {
-                if (World.Alliance.getAllianceLeader(gs.getAllianceId()) == c.getPlayer().getId()
-                        && World.Alliance.disbandAlliance(gs.getAllianceId())) {
+                if (AllianceManager.getAllianceLeader(gs.getAllianceId()) == c.getPlayer().getId()
+                        && AllianceManager.disbandAlliance(gs.getAllianceId())) {
                     return true;
                 }
             }
@@ -1469,11 +1471,11 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                     getMap().startExtendedMapEffect("You may now kiss the bride, " + getPlayer().getName() + "!",
                             5120006);
                     if (chr.getGuildId() > 0) {
-                        World.Guild.guildPacket(chr.getGuildId(),
+                        GuildManager.guildPacket(chr.getGuildId(),
                                 MaplePacketCreator.sendMarriage(false, chr.getName()));
                     }
                     if (getPlayer().getGuildId() > 0) {
-                        World.Guild.guildPacket(getPlayer().getGuildId(),
+                        GuildManager.guildPacket(getPlayer().getGuildId(),
                                 MaplePacketCreator.sendMarriage(false, getPlayer().getName()));
                     }
                 }
@@ -1600,7 +1602,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public void changeGuildName(final String name) {
-        World.Guild.setGuildName(getPlayer().getGuildId(), name);
+        GuildManager.setGuildName(getPlayer().getGuildId(), name);
         if (getPlayer().getMap() == null) {
             return;
         }
@@ -1697,7 +1699,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public void worldNotice(int type, String Header, String msg) {
-        World.Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(type, "[" + Header + "] " + msg + ""));
+        BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(type, "[" + Header + "] " + msg + ""));
     }
 
     public short getJobId() {
@@ -1879,15 +1881,15 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public void dropMessage(String text) {
-        World.Broadcast.broadcastMessage(MaplePacketCreator.getGameMessage(5, text));
+        BroadcastHelper.broadcastMessage(MaplePacketCreator.getGameMessage(5, text));
     }
 
     public void dropColorMessage(int id, String text) {
-        World.Broadcast.broadcastMessage(MaplePacketCreator.getGameMessage(id, text));
+        BroadcastHelper.broadcastMessage(MaplePacketCreator.getGameMessage(id, text));
     }
 
     public void showEffect(int effect) {
-        World.Broadcast.broadcastMessage(MaplePacketCreator.showSpecialEffect_(effect));
+        BroadcastHelper.broadcastMessage(MaplePacketCreator.showSpecialEffect_(effect));
     }
 
     public void setstat(byte stats, short newval) {
@@ -1918,7 +1920,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     public void worldmessage(byte type, String message) {
         for (@SuppressWarnings("unused")
         MapleCharacter chr : c.getChannelServer().getPlayerStorage().getAllCharacters()) {
-            World.Broadcast.broadcastMessage(MaplePacketCreator.getGameMessage(type, message));
+            BroadcastHelper.broadcastMessage(MaplePacketCreator.getGameMessage(type, message));
         }
     }
 
@@ -1967,7 +1969,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public void sendBrowser(String site) {
-        World.Broadcast.broadcastMessage(MaplePacketCreator.sendBrowser(site));
+        BroadcastHelper.broadcastMessage(MaplePacketCreator.sendBrowser(site));
     }
 
     public void addNote(int songid, byte note) {

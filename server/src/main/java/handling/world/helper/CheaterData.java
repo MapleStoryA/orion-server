@@ -19,21 +19,42 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package handling.world;
-
-import server.MapleStatEffect;
+package handling.world.helper;
 
 import java.io.Serializable;
 
 @lombok.extern.slf4j.Slf4j
-public class PlayerBuffValueHolder implements Serializable {
+public class CheaterData implements Serializable, Comparable<CheaterData> {
 
-    private static final long serialVersionUID = 9179541993413738569L;
-    public long startTime;
-    public MapleStatEffect effect;
+    private static final long serialVersionUID = -8733673311051249885L;
+    private final int points;
+    private final String info;
 
-    public PlayerBuffValueHolder(final long startTime, final MapleStatEffect effect) {
-        this.startTime = startTime;
-        this.effect = effect;
+    public CheaterData(int points, String info) {
+        this.points = points;
+        this.info = info;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public int compareTo(CheaterData o) {
+        int thisVal = getPoints();
+        int anotherVal = o.getPoints();
+        return (thisVal < anotherVal ? 1 : (thisVal == anotherVal ? 0 : -1));
+    }
+
+    @Override
+    public boolean equals(Object oth) {
+        if (!(oth instanceof CheaterData)) {
+            return false;
+        }
+        final CheaterData obj = (CheaterData) oth;
+        return obj.points == this.points && obj.info.equals(this.info);
     }
 }

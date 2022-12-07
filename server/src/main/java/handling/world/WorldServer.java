@@ -1,9 +1,18 @@
 package handling.world;
 
+import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
+import handling.channel.PlayerStorage;
+import handling.world.helper.CharacterTransfer;
+import handling.world.helper.CheaterData;
+import handling.world.helper.FindCommand;
+import tools.CollectionUtil;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -69,5 +78,77 @@ public class WorldServer {
     public ChannelServer getChannel(int ch) {
         return this.channels.get(ch);
     }
+
+    public Map<Integer, Integer> getConnected() {
+        Map<Integer, Integer> ret = new HashMap<>();
+        int total = 0;
+        for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
+            int curConnected = cs.getConnectedClients();
+            ret.put(cs.getChannel(), curConnected);
+            total += curConnected;
+        }
+        ret.put(0, total);
+        return ret;
+    }
+
+    public List<CheaterData> getCheaters() {
+        List<CheaterData> allCheaters = new ArrayList<>();
+        for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
+            allCheaters.addAll(cs.getCheaters());
+        }
+        Collections.sort(allCheaters);
+        return CollectionUtil.copyFirst(allCheaters, 20);
+    }
+
+    public List<CheaterData> getReports() {
+        List<CheaterData> allCheaters = new ArrayList<>();
+        for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
+            allCheaters.addAll(cs.getReports());
+        }
+        Collections.sort(allCheaters);
+        return CollectionUtil.copyFirst(allCheaters, 20);
+    }
+
+    public boolean hasMerchant(int accountID) {
+        for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
+            if (cs.containsMerchant(accountID)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isCharacterListConnected(List<String> charName) {
+        for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
+            for (final String c : charName) {
+                if (cs.getPlayerStorage().getCharacterByName(c) != null) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isConnected(String charName) {
+        return FindCommand.findChannel(charName) > 0;
+    }
+
+    public void getChangeChannelData(CharacterTransfer Data, int characterid, int toChannel) {
+        getStorage(toChannel).registerPendingPlayer(Data, characterid);
+    }
+
+    public PlayerStorage getStorage(int channel) {
+        if (channel == -10) {
+            return CashShopServer.getPlayerStorage();
+        }
+        return WorldServer.getInstance().getChannel(channel).getPlayerStorage();
+    }
+
+    public void toggleMegaphoneMuteState() {
+        for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
+            cs.toggleMegaphoneMuteState();
+        }
+    }
+
 
 }

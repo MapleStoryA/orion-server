@@ -23,9 +23,10 @@ import constants.MapConstants;
 import constants.ServerConstants.PlayerGMRank;
 import database.DatabaseConnection;
 import handling.channel.ChannelServer;
-import handling.world.CheaterData;
-import handling.world.World;
 import handling.world.WorldServer;
+import handling.world.helper.BroadcastHelper;
+import handling.world.helper.CheaterData;
+import handling.world.helper.FindCommand;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
@@ -893,7 +894,7 @@ public class AdminCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             c.getPlayer().dropMessage(6, "Total amount of players connected to server:");
-            c.getPlayer().dropMessage(6, "" + World.getConnected() + "");
+            c.getPlayer().dropMessage(6, "" + WorldServer.getInstance().getConnected() + "");
             c.getPlayer().dropMessage(6, "Characters connected to channel " + c.getChannel() + ":");
             c.getPlayer().dropMessage(6, c.getChannelServer().getPlayerStorage().getOnlinePlayers(true));
             return 0;
@@ -909,7 +910,7 @@ public class AdminCommand {
                         c.getPlayer().getName() +
                         "] " +
                         StringUtil.joinStringFrom(splitted, 1);
-                World.Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(6, sb));
+                BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(6, sb));
             } else {
                 c.getPlayer().dropMessage(6, "Syntax: !say <message>");
                 return 0;
@@ -1176,7 +1177,7 @@ public class AdminCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
-            World.Broadcast
+            BroadcastHelper
                     .broadcastSmega(MaplePacketCreator.serverNotice(3,
                             victim == null ? c.getChannel() : victim.getClient().getChannel(), victim == null
                                     ? splitted[1] : victim.getName() + " : " + StringUtil.joinStringFrom(splitted, 2),
@@ -1500,7 +1501,7 @@ public class AdminCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            List<CheaterData> cheaters = World.getCheaters();
+            List<CheaterData> cheaters = WorldServer.getInstance().getCheaters();
             if (cheaters.isEmpty()) {
                 c.getPlayer().dropMessage(6, "There are no cheaters at the moment.");
                 return 0;
@@ -1517,7 +1518,7 @@ public class AdminCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            List<CheaterData> cheaters = World.getReports();
+            List<CheaterData> cheaters = WorldServer.getInstance().getReports();
             if (cheaters.isEmpty()) {
                 c.getPlayer().dropMessage(6, "There are no reports at the moment.");
                 return 0;
@@ -1563,7 +1564,7 @@ public class AdminCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            java.util.Map<Integer, Integer> connected = World.getConnected();
+            java.util.Map<Integer, Integer> connected = WorldServer.getInstance().getConnected();
             StringBuilder conStr = new StringBuilder("Connected Clients: ");
             boolean first = true;
             for (int i : connected.keySet()) {
@@ -1758,7 +1759,7 @@ public class AdminCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            World.toggleMegaphoneMuteState();
+            WorldServer.getInstance().toggleMegaphoneMuteState();
             c.getPlayer().dropMessage(6,
                     "Megaphone state : " + (c.getChannelServer().getMegaphoneMuteState() ? "Enabled" : "Disabled"));
             return 1;
@@ -2476,7 +2477,6 @@ public class AdminCommand {
     }
 
 
-
     public static class DestroyPNPC extends CommandExecute {
 
         @Override
@@ -2564,7 +2564,7 @@ public class AdminCommand {
             } else if (range == 1) {
                 WorldServer.getInstance().getChannel(c.getChannel()).broadcastPacket(packet);
             } else if (range == 2) {
-                World.Broadcast.broadcastMessage(packet);
+                BroadcastHelper.broadcastMessage(packet);
             }
             return 1;
         }
@@ -2593,7 +2593,7 @@ public class AdminCommand {
             } else if (range == 1) {
                 WorldServer.getInstance().getChannel(c.getChannel()).broadcastPacket(packet);
             } else if (range == 2) {
-                World.Broadcast.broadcastMessage(packet);
+                BroadcastHelper.broadcastMessage(packet);
             }
             return 1;
         }
@@ -2836,7 +2836,7 @@ public class AdminCommand {
                             AdminCommand.ShutdownTime.ts.cancel(false);
                             return;
                         }
-                        World.Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(0,
+                        BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(0,
                                 "The server will shutdown in " + AdminCommand.ShutdownTime.this.minutesLeft
                                         + " minutes. Please log off safely."));
                         AdminCommand.ShutdownTime.this.minutesLeft--;
@@ -3006,7 +3006,7 @@ public class AdminCommand {
                 } else {
                     try {
                         victim = c.getPlayer();
-                        int ch = World.Find.findChannel(splitted[1]);
+                        int ch = FindCommand.findChannel(splitted[1]);
                         if (ch < 0) {
                             MapleMap target = c.getChannelServer().getMapFactory()
                                     .getMap(Integer.parseInt(splitted[1]));
@@ -3073,7 +3073,7 @@ public class AdminCommand {
                 victim.changeMap(c.getPlayer().getMap(),
                         c.getPlayer().getMap().findClosestSpawnpoint(c.getPlayer().getPosition()));
             } else {
-                int ch = World.Find.findChannel(splitted[1]);
+                int ch = FindCommand.findChannel(splitted[1]);
                 if (ch < 0) {
                     c.getPlayer().dropMessage(5, "Not found.");
                     return 0;
@@ -3177,62 +3177,6 @@ public class AdminCommand {
         }
     }
 
-    public static class startHotTime extends CommandExecute {
-
-        @Override
-        public int execute(MapleClient c, String[] splitted) {
-            final long now = System.currentTimeMillis();
-            if (!World.startHotTime()) {
-                c.getPlayer().dropMessage(5, "The Hot Time Event was already started and have "
-                        + World.getHotTimeLeft(now) + " seconds left.");
-                return 0;
-            }
-            c.getPlayer().dropMessage(5,
-                    "The Hot Time Event was started and will end in " + (World.HOT_TIME_INTERVAL / 1000) + " seconds.");
-            return 1;
-        }
-    }
-
-    public static class endHotTime extends CommandExecute {
-
-        @Override
-        public int execute(MapleClient c, String[] splitted) {
-            final long now = System.currentTimeMillis();
-            if (!World.isHotTimeStarted(now)) {
-                c.getPlayer().dropMessage(5, "The Hot Time Event is currently inactive.");
-                return 0;
-            }
-            World.endHotTime();
-            c.getPlayer().dropMessage(5, "The Hot Time Event has been stopped.");
-            return 1;
-        }
-    }
-
-    public static class hotTimeStatus extends CommandExecute {
-
-        @Override
-        public int execute(MapleClient c, String[] splitted) {
-            final long now = System.currentTimeMillis();
-            if (!World.isHotTimeStarted(now)) {
-                c.getPlayer().dropMessage(5, "The Hot Time Event is currently inactive.");
-                return 0;
-            }
-            c.getPlayer().dropMessage(5,
-                    "The Hot Time Event was already started and have " + World.getHotTimeLeft(now) + " seconds left.");
-            return 1;
-        }
-    }
-
-    public static class hotTimeList extends CommandExecute {
-
-        @Override
-        public int execute(MapleClient c, String[] splitted) {
-            final String list = World.getHotTimeList();
-            c.getPlayer().dropMessage(6, "Characters obtained items :");
-            c.getPlayer().dropMessage(6, list == null ? "<None>" : list);
-            return 1;
-        }
-    }
 
     public static class PNPC extends CommandExecute {
 

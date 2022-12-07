@@ -43,22 +43,26 @@ import database.DatabaseConnection;
 import database.DatabaseException;
 import handling.channel.ChannelServer;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
-import handling.world.CharacterTransfer;
-import handling.world.MapleMessenger;
-import handling.world.MapleMessengerCharacter;
-import handling.world.PlayerBuffStorage;
-import handling.world.PlayerBuffValueHolder;
-import handling.world.World;
 import handling.world.WorldServer;
 import handling.world.buddy.BuddyListEntry;
 import handling.world.buddy.MapleBuddyList;
+import handling.world.guild.GuildManager;
 import handling.world.guild.MapleGuild;
 import handling.world.guild.MapleGuildCharacter;
+import handling.world.helper.BroadcastHelper;
+import handling.world.helper.CharacterTransfer;
+import handling.world.helper.MapleMessenger;
+import handling.world.helper.MapleMessengerCharacter;
+import handling.world.helper.PlayerBuffStorage;
+import handling.world.helper.PlayerBuffValueHolder;
+import handling.world.messenger.MessengerManager;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
+import handling.world.party.PartyManager;
 import scripting.EventInstanceManager;
 import scripting.NPCScriptManager;
 import scripting.v1.event.EventInstance;
+import scripting.v1.game.helper.ScriptingApi;
 import server.MapleAchievements;
 import server.MapleCarnivalChallenge;
 import server.MapleCarnivalParty;
@@ -70,7 +74,6 @@ import server.MapleStatEffect;
 import server.MapleStorage;
 import server.MapleTrade;
 import server.RandomRewards;
-import tools.Randomizer;
 import server.Timer.BuffTimer;
 import server.Timer.EtcTimer;
 import server.Timer.MapTimer;
@@ -98,7 +101,7 @@ import tools.ConcurrentEnumMap;
 import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
 import tools.Pair;
-import scripting.v1.game.helper.ScriptingApi;
+import tools.Randomizer;
 import tools.StringUtil;
 import tools.Triple;
 import tools.packet.CWVsContextOnMessagePackets;
@@ -403,7 +406,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
 
             final int messengerid = ct.messengerid;
             if (messengerid > 0) {
-                ret.messenger = World.Messenger.getMessenger(messengerid);
+                ret.messenger = MessengerManager.getMessenger(messengerid);
             }
         } else {
 
@@ -411,7 +414,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         }
         int partyid = ct.partyid;
         if (partyid >= 0) {
-            MapleParty party = World.Party.getParty(partyid);
+            MapleParty party = PartyManager.getParty(partyid);
             if (party != null && party.getMemberById(ret.id) != null) {
                 ret.party = party;
             }
@@ -549,8 +552,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             loadEvanSkills(ret);
             //
 
-            // random new stuff
-            World.randomWorldStuff.addToLoggedOnSinceLastRestart(ret);
 
             if (channelserver) {
                 MapleMapFactory mapFactory = WorldServer.getInstance().getChannel(client.getChannel()).getMapFactory();
@@ -571,7 +572,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
 
                 int partyid = rs.getInt("party");
                 if (partyid >= 0) {
-                    MapleParty party = World.Party.getParty(partyid);
+                    MapleParty party = PartyManager.getParty(partyid);
                     if (party != null && party.getMemberById(ret.id) != null) {
                         ret.party = party;
                     }
@@ -2665,7 +2666,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             return;
         }
         String str = "[Lv. %s] Congratulations to %s on becoming a %s!";
-        World.Broadcast.broadcastMessage(
+        BroadcastHelper.broadcastMessage(
                 MaplePacketCreator.serverNotice(6, String.format(str, level, name, this.getJobValue().getName())));
     }
 
@@ -2843,7 +2844,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
 
     public void silentPartyUpdate() {
         if (party != null) {
-            World.Party.updateParty(party.getId(), PartyOperation.SILENT_UPDATE, new MaplePartyCharacter(this));
+            PartyManager.updateParty(party.getId(), PartyOperation.SILENT_UPDATE, new MaplePartyCharacter(this));
         }
     }
 
@@ -3606,7 +3607,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             }
             sb.append(getName());
             sb.append(" has achieved Level " + level + ". Let us Celebrate Maplers!");
-            World.Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(6, sb.toString()));
+            BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(6, sb.toString()));
         }
     }
 
@@ -3847,7 +3848,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         map.broadcastMessage(this, MaplePacketCreator.updateCharLook(this), false);
         stats.recalcLocalStats();
         if (getMessenger() != null) {
-            World.Messenger.updateMessenger(getMessenger().getId(), getName(), client.getChannel());
+            MessengerManager.updateMessenger(getMessenger().getId(), getName(), client.getChannel());
         }
     }
 
@@ -4155,7 +4156,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         if (getGuildId() <= 0) {
             return null;
         }
-        return World.Guild.getGuild(getGuildId());
+        return GuildManager.getGuild(getGuildId());
     }
 
     public void guildUpdate() {
@@ -4164,7 +4165,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         }
         mgc.setLevel(level);
         mgc.setJobId(job);
-        World.Guild.memberLevelJobUpdate(mgc);
+        GuildManager.memberLevelJobUpdate(mgc);
     }
 
     public void saveGuildStatus() {
@@ -5163,12 +5164,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
 
         final ChannelServer ch = WorldServer.getInstance().getChannel(client.getChannel());
         if (getMessenger() != null) {
-            World.Messenger.silentLeaveMessenger(getMessenger().getId(), new MapleMessengerCharacter(this));
+            MessengerManager.silentLeaveMessenger(getMessenger().getId(), new MapleMessengerCharacter(this));
         }
         PlayerBuffStorage.addBuffsToStorage(getId(), getAllBuffs());
         PlayerBuffStorage.addCooldownsToStorage(getId(), getCooldowns());
         PlayerBuffStorage.addDiseaseToStorage(getId(), getAllDiseases());
-        World.ChannelChange_Data(new CharacterTransfer(this), getId(), channel);
+        WorldServer.getInstance().getChangeChannelData(new CharacterTransfer(this), getId(), channel);
         ch.removePlayer(this);
         client.updateLoginState(MapleClient.CHANGE_CHANNEL, client.getSessionIPAddress());
         client.getSession().write(MaplePacketCreator.getChannelChange(Integer.parseInt(toch.getPublicAddress().split(":")[1])));

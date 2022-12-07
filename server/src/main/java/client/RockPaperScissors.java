@@ -22,8 +22,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package client;
 
 import server.MapleInventoryManipulator;
-import tools.Randomizer;
 import tools.MaplePacketCreator;
+import tools.Randomizer;
 
 @lombok.extern.slf4j.Slf4j
 public class RockPaperScissors {

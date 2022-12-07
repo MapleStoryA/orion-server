@@ -21,9 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package server.life;
 
-import tools.Randomizer;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
+import tools.Randomizer;
 
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicBoolean;

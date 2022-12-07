@@ -6,11 +6,11 @@ import client.MapleDisease;
 import handling.AbstractMaplePacketHandler;
 import server.MapleCarnivalFactory;
 import server.MapleCarnivalFactory.MCSkill;
-import tools.Randomizer;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
 import tools.MaplePacketCreator;
 import tools.Pair;
+import tools.Randomizer;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.MonsterCarnivalPacket;
 

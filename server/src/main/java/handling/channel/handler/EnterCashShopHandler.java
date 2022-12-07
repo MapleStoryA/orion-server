@@ -6,11 +6,11 @@ import constants.MapConstants;
 import handling.AbstractMaplePacketHandler;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
-import handling.world.CharacterTransfer;
-import handling.world.MapleMessengerCharacter;
-import handling.world.PlayerBuffStorage;
-import handling.world.World;
 import handling.world.WorldServer;
+import handling.world.helper.CharacterTransfer;
+import handling.world.helper.MapleMessengerCharacter;
+import handling.world.helper.PlayerBuffStorage;
+import handling.world.messenger.MessengerManager;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -34,12 +34,12 @@ public class EnterCashShopHandler extends AbstractMaplePacketHandler {
 
         if (chr.getMessenger() != null) {
             MapleMessengerCharacter messengerplayer = new MapleMessengerCharacter(chr);
-            World.Messenger.leaveMessenger(chr.getMessenger().getId(), messengerplayer);
+            MessengerManager.leaveMessenger(chr.getMessenger().getId(), messengerplayer);
         }
         PlayerBuffStorage.addBuffsToStorage(chr.getId(), chr.getAllBuffs());
         PlayerBuffStorage.addCooldownsToStorage(chr.getId(), chr.getCooldowns());
         PlayerBuffStorage.addDiseaseToStorage(chr.getId(), chr.getAllDiseases());
-        World.ChannelChange_Data(new CharacterTransfer(chr), chr.getId(), -10);
+        WorldServer.getInstance().getChangeChannelData(new CharacterTransfer(chr), chr.getId(), -10);
         ch.removePlayer(chr);
         c.updateLoginState(MapleClient.CHANGE_CHANNEL, c.getSessionIPAddress());
         chr.saveToDB(false, false);

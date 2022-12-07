@@ -4,8 +4,11 @@ import database.DatabaseConnection;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
 import handling.login.LoginServer;
-import handling.world.World;
+import handling.world.helper.WorldInitHelper;
 import handling.world.WorldServer;
+import handling.world.alliance.AllianceManager;
+import handling.world.guild.GuildManager;
+import handling.world.helper.BroadcastHelper;
 import tools.MaplePacketCreator;
 
 import javax.management.MBeanServer;
@@ -35,21 +38,21 @@ public class ShutdownServer implements ShutdownServerMBean {
 
     public void run() {
         if (this.mode == 0) {
-            World.Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(0, "The world is going to shutdown soon. Please log off safely."));
+            BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(0, "The world is going to shutdown soon. Please log off safely."));
             for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
                 cs.setShutdown();
                 cs.setServerMessage("The world is going to shutdown soon. Please log off safely.");
                 cs.closeAllMerchant();
             }
-            World.Guild.save();
-            World.Alliance.save();
+            GuildManager.save();
+            AllianceManager.save();
             this.mode += 1;
         } else if (this.mode == 1) {
             this.mode += 1;
             log.info("Shutdown 2 commencing...");
 
             try {
-                World.Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(0, "The world is going to shutdown now. Please log off safely."));
+                BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(0, "The world is going to shutdown now. Please log off safely."));
                 for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
                     synchronized (this) {
                         cs.shutdown();
@@ -57,7 +60,7 @@ public class ShutdownServer implements ShutdownServerMBean {
                 }
                 LoginServer.getInstance().shutdown();
                 CashShopServer.shutdown();
-                World.initTimers();
+                WorldInitHelper.initTimers();
             } catch (Exception e) {
                 log.info("Failed to shutdown..." + e);
             }

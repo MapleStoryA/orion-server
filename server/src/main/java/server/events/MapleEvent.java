@@ -24,16 +24,16 @@ package server.events;
 
 import client.MapleCharacter;
 import handling.channel.ChannelServer;
-import handling.world.World;
 import handling.world.WorldServer;
+import handling.world.helper.BroadcastHelper;
 import server.MapleInventoryManipulator;
 import server.RandomRewards;
-import tools.Randomizer;
 import server.Timer.EventTimer;
 import server.maps.MapleMap;
 import server.maps.SavedLocationType;
 import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
+import tools.Randomizer;
 
 public abstract class MapleEvent {
     protected int[] mapid;
@@ -113,7 +113,7 @@ public abstract class MapleEvent {
         }
         cserv.setEvent(cserv.getEvent(event).mapid[0]);
         cserv.getEvent(event).reset();
-        World.Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(0, "Hello! Let's play a " + event + " event in channel " + cserv.getChannel() + "! Change to channel " + cserv.getChannel() + " and use @event command!"));
+        BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(0, "Hello! Let's play a " + event + " event in channel " + cserv.getChannel() + "! Change to channel " + cserv.getChannel() + " and use @event command!"));
         return "";
     }
 

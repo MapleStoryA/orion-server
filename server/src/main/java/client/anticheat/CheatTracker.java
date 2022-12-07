@@ -24,7 +24,7 @@ package client.anticheat;
 import client.MapleCharacter;
 import client.MapleCharacterUtil;
 import constants.GameConstants;
-import handling.world.World;
+import handling.world.helper.BroadcastHelper;
 import server.AutobanManager;
 import server.Timer.CheatTimer;
 import tools.FileOutputUtil;
@@ -274,7 +274,7 @@ public class CheatTracker {
             case SAME_DAMAGE:
                 gm_message--;
                 if (gm_message == 0) {
-                    World.Broadcast.broadcastGMMessage(MaplePacketCreator.serverNotice(6, "[GM Message] " + MapleCharacterUtil.makeMapleReadable(chrhardref.getName()) + " suspected of hacking! " + StringUtil.makeEnumHumanReadable(offense.name()) + (param == null ? "" : (" - " + param))));
+                    BroadcastHelper.broadcastGMMessage(MaplePacketCreator.serverNotice(6, "[GM Message] " + MapleCharacterUtil.makeMapleReadable(chrhardref.getName()) + " suspected of hacking! " + StringUtil.makeEnumHumanReadable(offense.name()) + (param == null ? "" : (" - " + param))));
                     gm_message = 100;
                 }
                 break;

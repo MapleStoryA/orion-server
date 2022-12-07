@@ -22,12 +22,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package server.maps;
 
 import client.MapleCharacter;
-import handling.world.World;
+import handling.world.helper.BroadcastHelper;
 import server.MapleItemInformationProvider;
-import tools.Randomizer;
 import server.Timer.EventTimer;
 import server.config.ServerEnvironment;
 import tools.MaplePacketCreator;
+import tools.Randomizer;
 
 import java.awt.*;
 
@@ -45,7 +45,7 @@ public class AramiaFireWorks {
     private short sunshines = 0;
 
     private final void broadcastServer(final MapleCharacter c, final int itemid) {
-        World.Broadcast
+        BroadcastHelper
                 .broadcastMessage(MaplePacketCreator.serverNotice(6, itemid,
                         "<Channel " + c.getClient().getChannel() + "> " + c.getMap().getMapName() + " : The amount of {"
                                 + MapleItemInformationProvider.getInstance().getName(itemid)

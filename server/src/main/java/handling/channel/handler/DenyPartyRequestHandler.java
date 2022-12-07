@@ -5,9 +5,9 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import handling.channel.handler.utils.PartyHandlerUtils;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
-import handling.world.World;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
+import handling.world.party.PartyManager;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.MapleUserPackets;
 
@@ -26,7 +26,7 @@ public class DenyPartyRequestHandler extends AbstractMaplePacketHandler {
             return;
         }
 
-        final MapleParty party = World.Party.getParty(partyid);
+        final MapleParty party = PartyManager.getParty(partyid);
         if (party == null) {
             if (action == 0x1B) {
                 chr.dropMessage(5, "The party you are trying to join does not exist.");
@@ -40,7 +40,7 @@ public class DenyPartyRequestHandler extends AbstractMaplePacketHandler {
         if (action == 0x1B) { // Accept
             if (party.getMembers().size() < 6) {
                 chr.setParty(party);
-                World.Party.updateParty(partyid, PartyOperation.JOIN, new MaplePartyCharacter(chr));
+                PartyManager.updateParty(partyid, PartyOperation.JOIN, new MaplePartyCharacter(chr));
                 chr.receivePartyMemberHP();
                 chr.updatePartyMemberHP();
             } else {

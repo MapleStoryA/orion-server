@@ -29,13 +29,17 @@ import database.DatabaseException;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
-import handling.world.MapleMessengerCharacter;
-import handling.world.World;
 import handling.world.WorldServer;
+import handling.world.buddy.BuddyManager;
 import handling.world.buddy.MapleBuddyList;
+import handling.world.guild.GuildManager;
 import handling.world.guild.MapleGuildCharacter;
+import handling.world.helper.FindCommand;
+import handling.world.helper.MapleMessengerCharacter;
+import handling.world.messenger.MessengerManager;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
+import handling.world.party.PartyManager;
 import org.apache.mina.common.IoSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -877,12 +881,12 @@ public class MapleClient implements Serializable {
                         return;//no idea
                     }
                     if (messengerid > 0) {
-                        World.Messenger.leaveMessenger(messengerid, chrm);
+                        MessengerManager.leaveMessenger(messengerid, chrm);
                     }
 
                     if (party != null) {
                         chrp.setOnline(false);
-                        World.Party.updateParty(party.getId(), PartyOperation.LOG_ONOFF, chrp);
+                        PartyManager.updateParty(party.getId(), PartyOperation.LOG_ONOFF, chrp);
                         if (map != null && party.getLeader().getId() == player.getId()) {
                             MaplePartyCharacter lchr = null;
                             for (final MaplePartyCharacter pchr : party.getMembers()) {
@@ -892,7 +896,7 @@ public class MapleClient implements Serializable {
                             }
                             if (party.getMembers().size() > 0) {
                                 if (lchr != null) {
-                                    World.Party.updateParty(party.getId(), PartyOperation.CHANGE_LEADER_DC, lchr);
+                                    PartyManager.updateParty(party.getId(), PartyOperation.CHANGE_LEADER_DC, lchr);
                                 } else {
                                     for (MaplePartyCharacter partychar : party.getMembers()) {
                                         if (partychar.getChannel() == getChannel()) {
@@ -908,13 +912,13 @@ public class MapleClient implements Serializable {
                     }
                     if (bl != null) {
                         if (!serverTransition && isLoggedIn()) {
-                            World.Buddy.loggedOff(namez, idz, channel, bl.getBuddyIds(), gmLevel, hidden);
+                            BuddyManager.loggedOff(namez, idz, channel, bl.getBuddyIds(), gmLevel, hidden);
                         } else { // Change channel
-                            World.Buddy.loggedOn(namez, idz, channel, bl.getBuddyIds(), gmLevel, hidden);
+                            BuddyManager.loggedOn(namez, idz, channel, bl.getBuddyIds(), gmLevel, hidden);
                         }
                     }
                     if (gid > 0) {
-                        World.Guild.setGuildMemberOnline(chrg, false, -1);
+                        GuildManager.setGuildMemberOnline(chrg, false, -1);
                     }
                 } catch (final Exception e) {
                     e.printStackTrace();
@@ -927,7 +931,7 @@ public class MapleClient implements Serializable {
                     player = null;
                 }
             } else {
-                final int ch = World.Find.findChannel(idz);
+                final int ch = FindCommand.findChannel(idz);
                 if (ch > 0) {
                     disconnect(RemoveInChannelServer, false);//u lie
                     return;
@@ -935,15 +939,15 @@ public class MapleClient implements Serializable {
                 try {
                     if (party != null) {
                         chrp.setOnline(false);
-                        World.Party.updateParty(party.getId(), PartyOperation.LOG_ONOFF, chrp);
+                        PartyManager.updateParty(party.getId(), PartyOperation.LOG_ONOFF, chrp);
                     }
                     if (!serverTransition && isLoggedIn()) {
-                        World.Buddy.loggedOff(namez, idz, channel, bl.getBuddyIds(), gmLevel, hidden);
+                        BuddyManager.loggedOff(namez, idz, channel, bl.getBuddyIds(), gmLevel, hidden);
                     } else { // Change channel
-                        World.Buddy.loggedOn(namez, idz, channel, bl.getBuddyIds(), gmLevel, hidden);
+                        BuddyManager.loggedOn(namez, idz, channel, bl.getBuddyIds(), gmLevel, hidden);
                     }
                     if (gid > 0) {
-                        World.Guild.setGuildMemberOnline(chrg, false, -1);
+                        GuildManager.setGuildMemberOnline(chrg, false, -1);
                     }
                     if (player != null) {
                         player.setMessenger(null);
@@ -1051,7 +1055,7 @@ public class MapleClient implements Serializable {
                     ps.close();
                     return 22;
                 }
-                World.Guild.deleteGuildCharacter(rs.getInt("guildid"), cid);
+                GuildManager.deleteGuildCharacter(rs.getInt("guildid"), cid);
             }
 
             final String name = rs.getString("name");

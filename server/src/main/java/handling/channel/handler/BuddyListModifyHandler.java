@@ -3,13 +3,14 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
-import handling.world.World;
 import handling.world.WorldServer;
 import handling.world.buddy.BuddyInvitedEntry;
 import handling.world.buddy.BuddyListEntry;
+import handling.world.buddy.BuddyManager;
 import handling.world.buddy.MapleBuddyList;
 import handling.world.buddy.MapleBuddyList.BuddyAddResult;
 import handling.world.buddy.MapleBuddyList.BuddyDelResult;
+import handling.world.helper.FindCommand;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -54,7 +55,7 @@ public class BuddyListModifyHandler extends AbstractMaplePacketHandler {
                     }
                     return;
                 }
-                boolean isOnPending = World.Buddy.isBuddyPending(new BuddyInvitedEntry(addName, c.getPlayer().getId()));
+                boolean isOnPending = BuddyManager.isBuddyPending(new BuddyInvitedEntry(addName, c.getPlayer().getId()));
                 if (isOnPending) { // Already Added
                     c.getSession().write(MaplePacketCreator.buddylistMessage(ALREADY_FRIEND_REQUEST));
                     return;
@@ -63,7 +64,7 @@ public class BuddyListModifyHandler extends AbstractMaplePacketHandler {
                     c.getSession().write(MaplePacketCreator.buddylistMessage(YOUR_LIST_FULL));
                     return;
                 }
-                final int channel = World.Find.findChannel(addName);
+                final int channel = FindCommand.findChannel(addName);
                 if (channel <= 0) { // Not found
                     c.getPlayer().dropMessage(5, "The character is not registered or not in game.");
                     c.getSession().write(MaplePacketCreator.enableActions());
@@ -76,7 +77,7 @@ public class BuddyListModifyHandler extends AbstractMaplePacketHandler {
                         return;
                     }
                     // This function will do the adding player into other's list + Add into pending list
-                    final BuddyAddResult buddyAddResult = World.Buddy.requestBuddyAdd(addName, c.getPlayer());
+                    final BuddyAddResult buddyAddResult = BuddyManager.requestBuddyAdd(addName, c.getPlayer());
                     if (buddyAddResult == BuddyAddResult.BUDDYLIST_FULL) {
                         c.getSession().write(MaplePacketCreator.buddylistMessage(THEIR_LIST_FULL));
                         return;
@@ -99,12 +100,12 @@ public class BuddyListModifyHandler extends AbstractMaplePacketHandler {
                 break;
             case 2: // Accept
                 final int otherCid = slea.readInt();
-                boolean isOnPending_ = World.Buddy.isBuddyPending(new BuddyInvitedEntry(c.getPlayer().getName(), otherCid));
+                boolean isOnPending_ = BuddyManager.isBuddyPending(new BuddyInvitedEntry(c.getPlayer().getName(), otherCid));
                 if (!isOnPending_) {
                     c.getSession().write(MaplePacketCreator.buddylistMessage(DENY_ERROR));
                     return;
                 }
-                final Pair<BuddyAddResult, String> bal = World.Buddy.acceptToInvite(c.getPlayer(), otherCid);
+                final Pair<BuddyAddResult, String> bal = BuddyManager.acceptToInvite(c.getPlayer(), otherCid);
                 if (bal.getLeft() == BuddyAddResult.NOT_FOUND) {
                     c.getSession().write(MaplePacketCreator.buddylistMessage(DENY_ERROR));
                     return;
@@ -121,9 +122,9 @@ public class BuddyListModifyHandler extends AbstractMaplePacketHandler {
                 break;
             case 3: // Delete / Deny
                 final int otherCID = slea.readInt();
-                boolean isInvited = World.Buddy.isBuddyPending(new BuddyInvitedEntry(c.getPlayer().getName(), otherCID));
+                boolean isInvited = BuddyManager.isBuddyPending(new BuddyInvitedEntry(c.getPlayer().getName(), otherCID));
                 if (isInvited) {
-                    c.getPlayer().dropMessage(5, World.Buddy.denyToInvite(c.getPlayer(), otherCID));
+                    c.getPlayer().dropMessage(5, BuddyManager.denyToInvite(c.getPlayer(), otherCID));
                     c.getSession().write(MaplePacketCreator.updateBuddylist(REMOVE, buddylist.getBuddies()));
                     c.getSession().write(MaplePacketCreator.enableActions());
                     return;
@@ -134,7 +135,7 @@ public class BuddyListModifyHandler extends AbstractMaplePacketHandler {
                     c.getSession().write(MaplePacketCreator.enableActions());
                     return;
                 }
-                final BuddyDelResult bdr = World.Buddy.DeleteBuddy(c.getPlayer(), otherCID);
+                final BuddyDelResult bdr = BuddyManager.DeleteBuddy(c.getPlayer(), otherCID);
                 if (bdr == BuddyDelResult.NOT_ON_LIST) {
                     c.getPlayer().dropMessage(5, "An error has occured. The character is not on your buddy list.");
                     c.getSession().write(MaplePacketCreator.enableActions());

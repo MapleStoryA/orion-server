@@ -3,9 +3,9 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
-import tools.Randomizer;
 import server.life.MapleMonster;
 import server.maps.MapleMap;
+import tools.Randomizer;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 @lombok.extern.slf4j.Slf4j

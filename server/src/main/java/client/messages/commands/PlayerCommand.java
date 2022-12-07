@@ -7,7 +7,7 @@ import client.anticheat.ReportType;
 import constants.GameConstants;
 import constants.MapConstants;
 import constants.ServerConstants.PlayerGMRank;
-import handling.world.World;
+import handling.world.WorldServer;
 import scripting.NPCScriptManager;
 import scripting.v1.game.helper.NpcTalkHelper;
 import tools.MaplePacketCreator;
@@ -253,7 +253,7 @@ public class PlayerCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             c.getPlayer().dropMessage(6, "Total amount of players connected to er:");
-            c.getPlayer().dropMessage(6, "" + World.getConnected() + "");
+            c.getPlayer().dropMessage(6, "" + WorldServer.getInstance().getConnected() + "");
             c.getPlayer().dropMessage(6, "Characters connected to channel " + c.getChannel() + ":");
             c.getPlayer().dropMessage(6, c.getChannelServer().getPlayerStorage().getOnlinePlayers(true));
             return 0;

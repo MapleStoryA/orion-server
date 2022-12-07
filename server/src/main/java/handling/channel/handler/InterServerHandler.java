@@ -28,17 +28,23 @@ import client.SkillFactory;
 import constants.ServerConstants;
 import handling.channel.ChannelServer;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
-import handling.world.CharacterIdChannelPair;
-import handling.world.CharacterTransfer;
-import handling.world.MapleMessenger;
-import handling.world.MapleMessengerCharacter;
-import handling.world.PlayerBuffStorage;
-import handling.world.World;
+import handling.world.WorldServer;
+import handling.world.alliance.AllianceManager;
 import handling.world.buddy.BuddyListEntry;
+import handling.world.buddy.BuddyManager;
 import handling.world.expedition.MapleExpedition;
+import handling.world.guild.GuildManager;
 import handling.world.guild.MapleGuild;
+import handling.world.helper.CharacterIdChannelPair;
+import handling.world.helper.CharacterTransfer;
+import handling.world.helper.FindCommand;
+import handling.world.helper.MapleMessenger;
+import handling.world.helper.MapleMessengerCharacter;
+import handling.world.helper.PlayerBuffStorage;
+import handling.world.messenger.MessengerManager;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
+import handling.world.party.PartyManager;
 import server.ClientStorage;
 import server.quest.MapleQuest;
 import tools.FileOutputUtil;
@@ -77,7 +83,7 @@ public class InterServerHandler {
         boolean allowLogin = false;
 
         if (state == MapleClient.LOGIN_SERVER_TRANSITION || state == MapleClient.CHANGE_CHANNEL) {
-            if (!World.isCharacterListConnected(c.loadCharacterNames(c.getWorld()))) {
+            if (!WorldServer.getInstance().isCharacterListConnected(c.loadCharacterNames(c.getWorld()))) {
                 allowLogin = true;
             }
         }
@@ -105,21 +111,21 @@ public class InterServerHandler {
 
             // Start of buddylist
             final int[] buddyIds = player.getBuddylist().getBuddyIds();
-            World.Buddy.loggedOn(player.getName(), player.getId(), c.getChannel(), buddyIds, player.getGMLevel(), player.isHidden());
+            BuddyManager.loggedOn(player.getName(), player.getId(), c.getChannel(), buddyIds, player.getGMLevel(), player.isHidden());
             if (player.getParty() != null) {
                 player.receivePartyMemberHP();
                 player.updatePartyMemberHP();
 
                 final MapleParty party = player.getParty();
-                World.Party.updateParty(party.getId(), PartyOperation.LOG_ONOFF, new MaplePartyCharacter(player));
+                PartyManager.updateParty(party.getId(), PartyOperation.LOG_ONOFF, new MaplePartyCharacter(player));
                 if (party != null && party.getExpeditionId() > 0) {
-                    MapleExpedition me = World.Party.getExped(party.getExpeditionId());
+                    MapleExpedition me = PartyManager.getExped(party.getExpeditionId());
                     if (me != null) {
                         c.getSession().write(MapleUserPackets.showExpedition(me, false, true));
                     }
                 }
             }
-            final CharacterIdChannelPair[] onlineBuddies = World.Find.multiBuddyFind(player.getId(), buddyIds);
+            final CharacterIdChannelPair[] onlineBuddies = FindCommand.multiBuddyFind(player.getId(), buddyIds);
             for (CharacterIdChannelPair onlineBuddy : onlineBuddies) {
                 final BuddyListEntry ble = player.getBuddylist().get(onlineBuddy.getCharacterId());
                 ble.setChannel(onlineBuddy.getChannel());
@@ -130,17 +136,17 @@ public class InterServerHandler {
             // Start of Messenger
             final MapleMessenger messenger = player.getMessenger();
             if (messenger != null) {
-                World.Messenger.silentJoinMessenger(messenger.getId(), new MapleMessengerCharacter(c.getPlayer()));
-                World.Messenger.updateMessenger(messenger.getId(), c.getPlayer().getName(), c.getChannel());
+                MessengerManager.silentJoinMessenger(messenger.getId(), new MapleMessengerCharacter(c.getPlayer()));
+                MessengerManager.updateMessenger(messenger.getId(), c.getPlayer().getName(), c.getChannel());
             }
 
             // Start of Guild and alliance
             if (player.getGuildId() > 0) {
-                World.Guild.setGuildMemberOnline(player.getMGC(), true, c.getChannel());
+                GuildManager.setGuildMemberOnline(player.getMGC(), true, c.getChannel());
                 c.getSession().write(MaplePacketCreator.showGuildInfo(player));
-                final MapleGuild gs = World.Guild.getGuild(player.getGuildId());
+                final MapleGuild gs = GuildManager.getGuild(player.getGuildId());
                 if (gs != null) {
-                    final List<byte[]> packetList = World.Alliance.getAllianceInfo(gs.getAllianceId(), true);
+                    final List<byte[]> packetList = AllianceManager.getAllianceInfo(gs.getAllianceId(), true);
                     if (packetList != null) {
                         for (byte[] pack : packetList) {
                             if (pack != null) {

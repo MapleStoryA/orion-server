@@ -23,9 +23,9 @@ package handling.channel;
 
 import client.MapleCharacter;
 import client.MapleCharacterUtil;
-import handling.world.CharacterTransfer;
-import handling.world.CheaterData;
-import handling.world.World;
+import handling.world.helper.CharacterTransfer;
+import handling.world.helper.CheaterData;
+import handling.world.helper.FindCommand;
 import server.Timer.PingTimer;
 
 import java.util.ArrayList;
@@ -74,7 +74,7 @@ public class PlayerStorage {
         } finally {
             wL.unlock();
         }
-        World.Find.register(chr.getId(), chr.getName(), channel);
+        FindCommand.register(chr.getId(), chr.getName(), channel);
     }
 
     public final void registerPendingPlayer(final CharacterTransfer chr, final int playerid) {
@@ -94,7 +94,7 @@ public class PlayerStorage {
         } finally {
             wL.unlock();
         }
-        World.Find.forceDeregister(chr.getId(), chr.getName());
+        FindCommand.forceDeregister(chr.getId(), chr.getName());
     }
 
     public final void deregisterPlayer(final int idz, final String namez) {
@@ -105,7 +105,7 @@ public class PlayerStorage {
         } finally {
             wL.unlock();
         }
-        World.Find.forceDeregister(idz, namez);
+        FindCommand.forceDeregister(idz, namez);
     }
 
     public final void deregisterPendingPlayer(final int charid) {
@@ -208,7 +208,7 @@ public class PlayerStorage {
                 if (!chr.isGM() || !checkGM) {
                     chr.getClient().disconnect(false, false, true);
                     chr.getClient().getSession().close();
-                    World.Find.forceDeregister(chr.getId(), chr.getName());
+                    FindCommand.forceDeregister(chr.getId(), chr.getName());
                     itr.remove();
                 }
             }

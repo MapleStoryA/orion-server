@@ -44,8 +44,9 @@ import constants.GameUI;
 import handling.SendPacketOpcode;
 import handling.channel.MapleGuildRanking.GuildRankingInfo;
 import handling.channel.handler.PlayerInteractionHandler;
-import handling.world.World;
+import handling.world.alliance.AllianceManager;
 import handling.world.buddy.BuddyListEntry;
+import handling.world.guild.GuildManager;
 import handling.world.guild.MapleBBSThread;
 import handling.world.guild.MapleBBSThread.MapleBBSReply;
 import handling.world.guild.MapleGuild;
@@ -848,7 +849,7 @@ public class MaplePacketCreator {
             mplew.writeInt(0);
             mplew.writeInt(0);
         } else {
-            final MapleGuild gs = World.Guild.getGuild(chr.getGuildId());
+            final MapleGuild gs = GuildManager.getGuild(chr.getGuildId());
             if (gs != null) {
                 mplew.writeMapleAsciiString(gs.getName());
                 mplew.writeShort(gs.getLogoBG());
@@ -1734,11 +1735,11 @@ public class MaplePacketCreator {
             mplew.writeMapleAsciiString("-");
             mplew.writeMapleAsciiString("");
         } else {
-            final MapleGuild gs = World.Guild.getGuild(chr.getGuildId());
+            final MapleGuild gs = GuildManager.getGuild(chr.getGuildId());
             if (gs != null) {
                 mplew.writeMapleAsciiString(gs.getName());
                 if (gs.getAllianceId() > 0) {
-                    final MapleGuildAlliance allianceName = World.Alliance.getAlliance(gs.getAllianceId());
+                    final MapleGuildAlliance allianceName = AllianceManager.getAlliance(gs.getAllianceId());
                     if (allianceName != null) {
                         mplew.writeMapleAsciiString(allianceName.getName());
                     } else {
@@ -3079,7 +3080,7 @@ public class MaplePacketCreator {
             mplew.write(0);
             return mplew.getPacket();
         }
-        MapleGuild g = World.Guild.getGuild(c.getGuildId());
+        MapleGuild g = GuildManager.getGuild(c.getGuildId());
         if (g == null) { // failed to read from DB - don't show a guild
             mplew.write(0);
             return mplew.getPacket();
@@ -3291,7 +3292,7 @@ public class MaplePacketCreator {
         final int noGuilds = alliance.getNoGuilds();
         MapleGuild[] g = new MapleGuild[noGuilds];
         for (int i = 0; i < noGuilds; i++) {
-            g[i] = World.Guild.getGuild(alliance.getGuildId(i));
+            g[i] = GuildManager.getGuild(alliance.getGuildId(i));
             if (g[i] == null) {
                 return enableActions();
             }
@@ -3380,7 +3381,7 @@ public class MaplePacketCreator {
         final int noGuilds = alliance.getNoGuilds();
         MapleGuild[] g = new MapleGuild[noGuilds];
         for (int i = 0; i < alliance.getNoGuilds(); i++) {
-            g[i] = World.Guild.getGuild(alliance.getGuildId(i));
+            g[i] = GuildManager.getGuild(alliance.getGuildId(i));
             if (g[i] == null) {
                 return enableActions();
             }
@@ -3424,7 +3425,7 @@ public class MaplePacketCreator {
         final int noGuilds = alliance.getNoGuilds();
         MapleGuild[] g = new MapleGuild[noGuilds];
         for (int i = 0; i < alliance.getNoGuilds(); i++) {
-            g[i] = World.Guild.getGuild(alliance.getGuildId(i));
+            g[i] = GuildManager.getGuild(alliance.getGuildId(i));
             if (g[i] == null) {
                 return enableActions();
             }
@@ -4721,7 +4722,7 @@ public class MaplePacketCreator {
         if (chr.getGuildId() <= 0) {
             mplew.writeShort(0);
         } else {
-            final MapleGuild gs = World.Guild.getGuild(chr.getGuildId());
+            final MapleGuild gs = GuildManager.getGuild(chr.getGuildId());
             mplew.writeMapleAsciiString(gs != null ? gs.getName() : "");
         }
 
@@ -4737,7 +4738,7 @@ public class MaplePacketCreator {
         if (chr.getGuildId() <= 0) {
             mplew.writeZeroBytes(6);
         } else {
-            final MapleGuild gs = World.Guild.getGuild(chr.getGuildId());
+            final MapleGuild gs = GuildManager.getGuild(chr.getGuildId());
             if (gs != null) {
                 mplew.writeShort(gs.getLogoBG());
                 mplew.write(gs.getLogoBGColor());

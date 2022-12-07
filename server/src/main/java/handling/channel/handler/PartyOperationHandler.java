@@ -5,10 +5,10 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import handling.channel.handler.utils.PartyHandlerUtils;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
-import handling.world.World;
 import handling.world.expedition.MapleExpedition;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
+import handling.world.party.PartyManager;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.MapleUserPackets;
 
@@ -30,7 +30,7 @@ public class PartyOperationHandler extends AbstractMaplePacketHandler {
                     return;
                 }
                 if (chr.getParty() == null) {
-                    party = World.Party.createParty(partyplayer);
+                    party = PartyManager.createParty(partyplayer);
                     if (party == null) {
                         c.getSession().write(MapleUserPackets.partyStatusMessage(PartyHandlerUtils.NOT_IN_PARTY));
                         return;
@@ -54,11 +54,11 @@ public class PartyOperationHandler extends AbstractMaplePacketHandler {
             case 2: // Leave
                 if (party != null) {
                     if (party.getExpeditionId() > 0) {
-                        final MapleExpedition exped1 = World.Party.getExped(party.getExpeditionId());
+                        final MapleExpedition exped1 = PartyManager.getExped(party.getExpeditionId());
                         if (exped1 != null) {
                             if (exped1.getLeader() == chr.getId()) {
-                                World.Party.expedPacket(exped1.getId(), MapleUserPackets.removeExpedition(64), null);
-                                World.Party.disbandExped(exped1.getId());
+                                PartyManager.expedPacket(exped1.getId(), MapleUserPackets.removeExpedition(64), null);
+                                PartyManager.disbandExped(exped1.getId());
                                 if (chr.getEventInstance() != null) {
                                     chr.getEventInstance().disbandParty();
                                     chr.getNewEventInstance().onPartyDisband(chr);
@@ -66,16 +66,16 @@ public class PartyOperationHandler extends AbstractMaplePacketHandler {
                                 }
                             } else {
                                 if (party.getLeader().getId() == chr.getId()) {
-                                    World.Party.updateParty(party.getId(), PartyOperation.DISBAND_IN_EXPEDITION,
+                                    PartyManager.updateParty(party.getId(), PartyOperation.DISBAND_IN_EXPEDITION,
                                             new MaplePartyCharacter(chr));
                                     if (chr.getEventInstance() != null) {
                                         chr.getEventInstance().disbandParty();
                                         chr.getNewEventInstance().onPartyDisband(chr);
                                     }
-                                    World.Party.expedPacket(exped1.getId(),
+                                    PartyManager.expedPacket(exped1.getId(),
                                             MapleUserPackets.showExpedition(exped1, false, true), null);
                                 } else {
-                                    World.Party.updateParty(party.getId(), PartyOperation.LEAVE,
+                                    PartyManager.updateParty(party.getId(), PartyOperation.LEAVE,
                                             new MaplePartyCharacter(chr));
                                     if (chr.getEventInstance() != null) {
                                         chr.getEventInstance().leftParty(chr);
@@ -89,7 +89,7 @@ public class PartyOperationHandler extends AbstractMaplePacketHandler {
                         }
                     } else {
                         if (partyplayer.equals(party.getLeader())) { // disband
-                            World.Party.updateParty(party.getId(), PartyOperation.DISBAND, partyplayer);
+                            PartyManager.updateParty(party.getId(), PartyOperation.DISBAND, partyplayer);
                             if (chr.getEventInstance() != null) {
                                 chr.getEventInstance().disbandParty();
                             }
@@ -97,7 +97,7 @@ public class PartyOperationHandler extends AbstractMaplePacketHandler {
                                 chr.getPyramidSubway().fail(chr);
                             }
                         } else {
-                            World.Party.updateParty(party.getId(), PartyOperation.LEAVE, partyplayer);
+                            PartyManager.updateParty(party.getId(), PartyOperation.LEAVE, partyplayer);
                             if (chr.getEventInstance() != null) {
                                 chr.getEventInstance().leftParty(chr);
                             }
@@ -153,7 +153,7 @@ public class PartyOperationHandler extends AbstractMaplePacketHandler {
                 }
                 final MaplePartyCharacter expelled = party.getMemberById(cid);
                 if (expelled != null) { // todo: add map field limit check
-                    World.Party.updateParty(party.getId(), PartyOperation.EXPEL, expelled);
+                    PartyManager.updateParty(party.getId(), PartyOperation.EXPEL, expelled);
                     if (chr.getEventInstance() != null && expelled.isOnline()) {
                         chr.getEventInstance().disbandParty();
                     }
@@ -184,7 +184,7 @@ public class PartyOperationHandler extends AbstractMaplePacketHandler {
                     // field
                     // limit
                     // check
-                    World.Party.updateParty(party.getId(), PartyOperation.CHANGE_LEADER, newLeadr);
+                    PartyManager.updateParty(party.getId(), PartyOperation.CHANGE_LEADER, newLeadr);
                 } else {
                     chr.dropMessage(5, "The Party Leader can only be handed over to the party member in the same map.");
                 }

@@ -21,10 +21,10 @@ package tools.packet;
 import client.MapleCharacter;
 import handling.SendPacketOpcode;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
-import handling.world.World;
 import handling.world.expedition.MapleExpedition;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
+import handling.world.party.PartyManager;
 import tools.data.output.MaplePacketLittleEndianWriter;
 
 import java.awt.*;
@@ -256,7 +256,7 @@ public class MapleUserPackets {
         mplew.writeInt(0);
         for (int i = 0; i < 5; i++) {
             if (i < me.getParties().size()) {
-                final MapleParty party = World.Party.getParty(me.getParties().get(i));
+                final MapleParty party = PartyManager.getParty(me.getParties().get(i));
                 if (party != null) {
                     addPartyStatus(-1, party, mplew, false, true);
                 } else {

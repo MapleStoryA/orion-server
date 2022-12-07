@@ -37,6 +37,7 @@ public class MapleBuddyList implements Serializable {
     private static final long serialVersionUID = 1413738569L;
     private final Map<Integer, BuddyListEntry> buddies;
     private byte capacity;
+
     public MapleBuddyList(byte capacity) {
         this.capacity = capacity;
         this.buddies = new LinkedHashMap<>();

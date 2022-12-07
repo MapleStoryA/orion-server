@@ -5,12 +5,13 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import handling.channel.handler.utils.PartyHandlerUtils;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
-import handling.world.World;
 import handling.world.WorldServer;
 import handling.world.expedition.ExpeditionType;
 import handling.world.expedition.MapleExpedition;
+import handling.world.helper.FindCommand;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
+import handling.world.party.PartyManager;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.MapleUserPackets;
 
@@ -46,15 +47,15 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                     c.getSession().write(MapleUserPackets.expeditionStatusMessage(3, chr.getName()));
                     return;
                 }
-                final MapleParty party = World.Party.createParty(new MaplePartyCharacter(chr), et.exped);
+                final MapleParty party = PartyManager.createParty(new MaplePartyCharacter(chr), et.exped);
                 chr.setParty(party);
                 c.getSession().write(MapleUserPackets.partyCreated(party.getId()));
                 c.getSession()
-                        .write(MapleUserPackets.showExpedition(World.Party.getExped(party.getExpeditionId()), true, false));
+                        .write(MapleUserPackets.showExpedition(PartyManager.getExped(party.getExpeditionId()), true, false));
                 break;
             case INVITE:
                 final String name = slea.readMapleAsciiString();
-                int theCh = World.Find.findChannel(name);
+                int theCh = FindCommand.findChannel(name);
                 if (theCh <= 0) {
                     c.getSession().write(MapleUserPackets.expeditionStatusMessage(0, name));
                     return;
@@ -69,7 +70,7 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                     c.getSession().write(MapleUserPackets.expeditionStatusMessage(2, name));
                     return;
                 }
-                final MapleExpedition me = World.Party.getExped(partyI.getExpeditionId());
+                final MapleExpedition me = PartyManager.getExped(partyI.getExpeditionId());
                 if (me != null && me.getAllMembers() < me.getType().maxMembers
                         && invited.getLevel() <= me.getType().maxLevel && invited.getLevel() >= me.getType().minLevel) {
                     invited.getClient().getSession().write(MapleUserPackets.expeditionInvite(chr, me.getType().exped));
@@ -82,7 +83,7 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                 final int action = slea.readInt(); // 7 = send invite, 8 = accept, 9
                 // = deny
 
-                int theChh = World.Find.findChannel(recvName);
+                int theChh = FindCommand.findChannel(recvName);
                 if (theChh <= 0) {
                     break;
                 }
@@ -109,7 +110,7 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                         return;
                     }
                     MapleParty partyN = cfrom.getParty();
-                    final MapleExpedition exped = World.Party.getExped(partyN.getExpeditionId());
+                    final MapleExpedition exped = PartyManager.getExped(partyN.getExpeditionId());
                     if (action == 8) {
                         if (exped == null || chr.getParty() != null) {
                             if (chr.getParty() != null) {
@@ -125,21 +126,21 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                             if (partyId < 0) {
                                 c.getSession().write(MapleUserPackets.partyStatusMessage(PartyHandlerUtils.PARTY_FULL));
                             } else if (partyId == 0) {
-                                partyN = World.Party.createPartyAndAdd(new MaplePartyCharacter(chr), exped.getId());
+                                partyN = PartyManager.createPartyAndAdd(new MaplePartyCharacter(chr), exped.getId());
                                 chr.setParty(partyN);
                                 c.getSession().write(MapleUserPackets.partyCreated(partyN.getId()));
                                 c.getSession().write(MapleUserPackets.showExpedition(exped, false, false));
-                                World.Party.expedPacket(exped.getId(), MapleUserPackets.expeditionNotice(56, chr.getName()),
+                                PartyManager.expedPacket(exped.getId(), MapleUserPackets.expeditionNotice(56, chr.getName()),
                                         new MaplePartyCharacter(chr));
-                                World.Party.expedPacket(exped.getId(),
+                                PartyManager.expedPacket(exped.getId(),
                                         MapleUserPackets.expeditionUpdate(exped.getIndex(partyN.getId()), partyN), null);
                             } else {
-                                chr.setParty(World.Party.getParty(partyId));
-                                World.Party.updateParty(partyId, PartyOperation.JOIN, new MaplePartyCharacter(chr));
+                                chr.setParty(PartyManager.getParty(partyId));
+                                PartyManager.updateParty(partyId, PartyOperation.JOIN, new MaplePartyCharacter(chr));
                                 chr.receivePartyMemberHP();
                                 chr.updatePartyMemberHP();
                                 c.getSession().write(MapleUserPackets.showExpedition(exped, false, false));
-                                World.Party.expedPacket(exped.getId(), MapleUserPackets.expeditionNotice(56, chr.getName()),
+                                PartyManager.expedPacket(exped.getId(), MapleUserPackets.expeditionNotice(56, chr.getName()),
                                         new MaplePartyCharacter(chr));
                             }
                         } else {
@@ -158,25 +159,25 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                     c.getSession().write(MapleUserPackets.partyStatusMessage(PartyHandlerUtils.NOT_IN_PARTY));
                     break;
                 }
-                MapleExpedition exped1 = World.Party.getExped(part.getExpeditionId());
+                MapleExpedition exped1 = PartyManager.getExped(part.getExpeditionId());
                 if (exped1 != null) {
                     if (exped1.getLeader() == chr.getId()) {
-                        World.Party.expedPacket(exped1.getId(), MapleUserPackets.removeExpedition(64), null);
-                        World.Party.disbandExped(exped1.getId());
+                        PartyManager.expedPacket(exped1.getId(), MapleUserPackets.removeExpedition(64), null);
+                        PartyManager.disbandExped(exped1.getId());
                         if (chr.getEventInstance() != null) {
                             chr.getEventInstance().disbandParty();
                         }
                     } else {
                         if (part.getLeader().getId() == chr.getId()) {
-                            World.Party.updateParty(part.getId(), PartyOperation.DISBAND_IN_EXPEDITION,
+                            PartyManager.updateParty(part.getId(), PartyOperation.DISBAND_IN_EXPEDITION,
                                     new MaplePartyCharacter(chr));
                             if (chr.getEventInstance() != null) {
                                 chr.getEventInstance().disbandParty();
                             }
-                            World.Party.expedPacket(exped1.getId(), MapleUserPackets.showExpedition(exped1, false, true),
+                            PartyManager.expedPacket(exped1.getId(), MapleUserPackets.showExpedition(exped1, false, true),
                                     null);
                         } else {
-                            World.Party.updateParty(part.getId(), PartyOperation.LEAVE, new MaplePartyCharacter(chr));
+                            PartyManager.updateParty(part.getId(), PartyOperation.LEAVE, new MaplePartyCharacter(chr));
                             if (chr.getEventInstance() != null) {
                                 chr.getEventInstance().leftParty(chr);
                             }
@@ -194,15 +195,15 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                     c.getSession().write(MapleUserPackets.partyStatusMessage(PartyHandlerUtils.NOT_IN_PARTY));
                     break;
                 }
-                final MapleExpedition currexped = World.Party.getExped(currentParty.getExpeditionId());
+                final MapleExpedition currexped = PartyManager.getExped(currentParty.getExpeditionId());
                 if (currexped != null && currexped.getLeader() == chr.getId()) {
                     final int toKick = slea.readInt();
                     for (Integer i : currexped.getParties()) {
-                        final MapleParty partyy = World.Party.getParty(i);
+                        final MapleParty partyy = PartyManager.getParty(i);
                         if (partyy != null) {
                             MaplePartyCharacter expelled = partyy.getMemberById(toKick);
                             if (expelled != null) {
-                                World.Party.updateParty(i, PartyOperation.EXPEL, expelled);
+                                PartyManager.updateParty(i, PartyOperation.EXPEL, expelled);
                                 if (chr.getEventInstance() != null && expelled.isOnline()) {
                                     chr.getEventInstance().disbandParty();
                                 }
@@ -220,14 +221,14 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                 if (mparty == null || mparty.getExpeditionId() <= 0) {
                     break;
                 }
-                final MapleExpedition expedd = World.Party.getExped(mparty.getExpeditionId());
+                final MapleExpedition expedd = PartyManager.getExped(mparty.getExpeditionId());
                 if (expedd != null && expedd.getLeader() == chr.getId()) {
                     final int cid = slea.readInt();
                     final MaplePartyCharacter newleader = mparty.getMemberById(cid);
                     if (newleader != null) {
-                        World.Party.updateParty(mparty.getId(), PartyOperation.CHANGE_LEADER, newleader);
+                        PartyManager.updateParty(mparty.getId(), PartyOperation.CHANGE_LEADER, newleader);
                         expedd.setLeader(newleader.getId());
-                        World.Party.expedPacket(expedd.getId(), MapleUserPackets.changeExpeditionLeader(0), null);
+                        PartyManager.expedPacket(expedd.getId(), MapleUserPackets.changeExpeditionLeader(0), null);
                     } else {
                         chr.dropMessage(5, "You only can perform this action when the character is in the same party.");
                     }
@@ -238,16 +239,16 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                 if (mparty1 == null || mparty1.getExpeditionId() <= 0) {
                     break;
                 }
-                MapleExpedition expedit = World.Party.getExped(mparty1.getExpeditionId());
+                MapleExpedition expedit = PartyManager.getExped(mparty1.getExpeditionId());
                 if (expedit != null && expedit.getLeader() == chr.getId()) {
                     final int toCid = slea.readInt();
                     for (Integer i : expedit.getParties()) {
-                        final MapleParty par = World.Party.getParty(i);
+                        final MapleParty par = PartyManager.getParty(i);
                         if (par != null) {
                             MaplePartyCharacter newleader = par.getMemberById(toCid);
                             if (newleader != null && par.getId() != mparty1.getId()) {
                                 if (par.getLeader() != newleader) {
-                                    World.Party.updateParty(par.getId(), PartyOperation.CHANGE_LEADER, newleader);
+                                    PartyManager.updateParty(par.getId(), PartyOperation.CHANGE_LEADER, newleader);
                                 } else {
                                     chr.dropMessage(5,
                                             "You cannot perform this action as the character is already the party leader.");
@@ -262,7 +263,7 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                 if (oriPart == null || oriPart.getExpeditionId() <= 0) {
                     break;
                 }
-                final MapleExpedition nowExped = World.Party.getExped(oriPart.getExpeditionId());
+                final MapleExpedition nowExped = PartyManager.getExped(oriPart.getExpeditionId());
                 if (nowExped == null || nowExped.getLeader() != chr.getId()) {
                     break;
                 }
@@ -270,41 +271,41 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                 if (partyIndexTo < nowExped.getType().maxParty && partyIndexTo <= nowExped.getParties().size()) {
                     final int Tcid = slea.readInt();
                     for (Integer i : nowExped.getParties()) {
-                        final MapleParty par = World.Party.getParty(i);
+                        final MapleParty par = PartyManager.getParty(i);
                         if (par == null) {
                             continue;
                         }
                         MaplePartyCharacter expelled = par.getMemberById(Tcid);
                         if (expelled != null && expelled.isOnline()) {
-                            final MapleCharacter player = World.getStorage(expelled.getChannel())
+                            final MapleCharacter player = WorldServer.getInstance().getStorage(expelled.getChannel())
                                     .getCharacterById(expelled.getId());
                             if (player == null) {
                                 break;
                             }
                             if (partyIndexTo < nowExped.getParties().size()) {
-                                final MapleParty partyIndex = World.Party.getParty(nowExped.getParties().get(partyIndexTo));
+                                final MapleParty partyIndex = PartyManager.getParty(nowExped.getParties().get(partyIndexTo));
                                 if (partyIndex == null || partyIndex.getMembers().size() >= 6) {
                                     chr.dropMessage(5, "You can't move a character to a non-existent party.");
                                     break;
                                 }
                             }
-                            World.Party.updateParty(i, PartyOperation.MOVE_MEMBER, expelled);
+                            PartyManager.updateParty(i, PartyOperation.MOVE_MEMBER, expelled);
                             if (partyIndexTo < nowExped.getParties().size()) {
-                                final MapleParty oldParty = World.Party.getParty(nowExped.getParties().get(partyIndexTo));
+                                final MapleParty oldParty = PartyManager.getParty(nowExped.getParties().get(partyIndexTo));
                                 if (oldParty != null && oldParty.getMembers().size() < 6) {
-                                    World.Party.updateParty(oldParty.getId(), PartyOperation.JOIN, expelled);
+                                    PartyManager.updateParty(oldParty.getId(), PartyOperation.JOIN, expelled);
                                     player.receivePartyMemberHP();
                                     player.updatePartyMemberHP();
                                     player.getClient().getSession()
                                             .write(MapleUserPackets.showExpedition(nowExped, false, true));
                                 }
                             } else { // Moving to a new party
-                                final MapleParty newParty = World.Party.createPartyAndAdd(expelled, nowExped.getId());
+                                final MapleParty newParty = PartyManager.createPartyAndAdd(expelled, nowExped.getId());
                                 player.setParty(newParty);
                                 player.getClient().getSession().write(MapleUserPackets.partyCreated(newParty.getId()));
                                 player.getClient().getSession()
                                         .write(MapleUserPackets.showExpedition(nowExped, false, true));
-                                World.Party.expedPacket(nowExped.getId(),
+                                PartyManager.expedPacket(nowExped.getId(),
                                         MapleUserPackets.expeditionUpdate(nowExped.getIndex(newParty.getId()), newParty),
                                         null);
                             }

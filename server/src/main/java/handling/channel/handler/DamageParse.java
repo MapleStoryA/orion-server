@@ -35,7 +35,6 @@ import client.status.MonsterStatusEffect;
 import constants.GameConstants;
 import constants.JobConstants;
 import server.MapleStatEffect;
-import tools.Randomizer;
 import server.Timer.MapTimer;
 import server.life.Element;
 import server.life.MapleMonster;
@@ -47,6 +46,7 @@ import server.maps.MapleMapObjectType;
 import tools.AttackPair;
 import tools.MaplePacketCreator;
 import tools.Pair;
+import tools.Randomizer;
 import tools.data.input.LittleEndianAccessor;
 
 import java.awt.*;

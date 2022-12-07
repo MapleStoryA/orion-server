@@ -29,8 +29,8 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import database.DatabaseConnection;
 import handling.channel.ChannelServer;
-import handling.world.World;
 import handling.world.WorldServer;
+import handling.world.helper.FindCommand;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
 
@@ -112,8 +112,8 @@ public class PlayerNPC extends MapleNPC {
     }
 
     public static void updateByCharId(MapleCharacter chr) {
-        if (World.Find.findChannel(chr.getId()) > 0) { //if character is in cserv
-            for (PlayerNPC npc : WorldServer.getInstance().getChannel(World.Find.findChannel(chr.getId())).getAllPlayerNPC()) {
+        if (FindCommand.findChannel(chr.getId()) > 0) { //if character is in cserv
+            for (PlayerNPC npc : WorldServer.getInstance().getChannel(FindCommand.findChannel(chr.getId())).getAllPlayerNPC()) {
                 npc.update(chr);
             }
         }

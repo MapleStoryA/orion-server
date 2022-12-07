@@ -46,9 +46,10 @@ public class GameServer {
         acceptor = null;
     }
 
-    public void onStart(){
+    public void onStart() {
 
     }
+
     public void shutdown() {
     }
 

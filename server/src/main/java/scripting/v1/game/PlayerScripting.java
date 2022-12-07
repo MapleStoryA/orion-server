@@ -21,7 +21,6 @@ public class PlayerScripting extends BaseScripting {
     }
 
 
-
     @ScriptingApi
     public void test() {
         sendPacket(MaplePacketCreator.updateQuestFinish(21015, 2005, 0));
@@ -31,7 +30,6 @@ public class PlayerScripting extends BaseScripting {
     public long currentTime() {
         return System.currentTimeMillis();
     }
-
 
 
     @ScriptingApi

@@ -23,8 +23,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package server.events;
 
 import database.DatabaseConnection;
-import tools.Randomizer;
 import tools.Pair;
+import tools.Randomizer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

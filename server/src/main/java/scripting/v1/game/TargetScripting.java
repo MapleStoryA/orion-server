@@ -3,7 +3,6 @@ package scripting.v1.game;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleJob;
-import handling.world.World;
 import handling.world.WorldServer;
 import handling.world.party.MaplePartyCharacter;
 import lombok.extern.slf4j.Slf4j;
@@ -229,7 +228,7 @@ public class TargetScripting extends PlayerScripting {
     @ScriptingApi
     public int transferParty(int map, String portal, int option) {
         for (MaplePartyCharacter mate : player.getParty().getMembers()) {
-            MapleCharacter chr = World.getStorage(client.getChannel()).getCharacterById(mate.getId());
+            MapleCharacter chr = WorldServer.getInstance().getStorage(client.getChannel()).getCharacterById(mate.getId());
             chr.changeMap(map, portal);
         }
         return 1;

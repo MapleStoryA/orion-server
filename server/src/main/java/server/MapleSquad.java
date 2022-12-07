@@ -33,6 +33,7 @@ public class MapleSquad {
     private WeakReference<MapleCharacter> leader;
     private byte status = 0;
     private ScheduledFuture<?> removal;
+
     public MapleSquad(final int ch, final String type, final MapleCharacter leader, final int expiration) {
         this.leader = new WeakReference<MapleCharacter>(leader);
         this.members.put(leader.getName(), MapleCarnivalChallenge.getJobBasicNameById(leader.getJob()));
@@ -346,6 +347,7 @@ public class MapleSquad {
         public int i;
         public HashMap<Integer, ArrayList<Pair<String, String>>> queuedPlayers = new HashMap<>();
         public HashMap<Integer, ArrayList<Pair<String, Long>>> queue = new HashMap<>();
+
         MapleSquadType(int i) {
             this.i = i;
         }

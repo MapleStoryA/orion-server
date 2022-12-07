@@ -3,9 +3,9 @@ package scripting.v1.event;
 import client.MapleCharacter;
 import lombok.extern.slf4j.Slf4j;
 import org.mozilla.javascript.Context;
-import scripting.v1.game.helper.NpcTalkHelper;
 import scripting.v1.game.TargetScripting;
 import scripting.v1.game.helper.BindingHelper;
+import scripting.v1.game.helper.NpcTalkHelper;
 import tools.MaplePacketCreator;
 
 import java.util.Collection;

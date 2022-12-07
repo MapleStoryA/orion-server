@@ -40,7 +40,6 @@ import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import scripting.EventInstanceManager;
 import server.MapleItemInformationProvider;
-import tools.Randomizer;
 import server.Timer.MobTimer;
 import server.maps.MapScriptMethods;
 import server.maps.MapleMap;
@@ -50,6 +49,7 @@ import server.maps.event.MobObserver;
 import tools.ConcurrentEnumMap;
 import tools.MaplePacketCreator;
 import tools.Pair;
+import tools.Randomizer;
 import tools.packet.MobPacket;
 
 import java.awt.*;

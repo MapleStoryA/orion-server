@@ -3,8 +3,8 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
-import handling.world.World;
 import handling.world.WorldServer;
+import handling.world.helper.FindCommand;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -30,7 +30,7 @@ public class WhisperHandler extends AbstractMaplePacketHandler {
                         c.getSession().write(MaplePacketCreator.getWhisperReply(recipient, (byte) 0));
                     }
                 } else { // Not found
-                    int ch = World.Find.findChannel(recipient);
+                    int ch = FindCommand.findChannel(recipient);
                     if (ch > 0) {
                         player = WorldServer.getInstance().getChannel(ch).getPlayerStorage().getCharacterByName(recipient);
                         if (player == null) {
@@ -64,7 +64,7 @@ public class WhisperHandler extends AbstractMaplePacketHandler {
                 c.getPlayer().getCheatTracker().checkMsg();
                 final String recipient = slea.readMapleAsciiString();
                 final String text = slea.readMapleAsciiString();
-                final int ch = World.Find.findChannel(recipient);
+                final int ch = FindCommand.findChannel(recipient);
                 if (ch > 0) {
                     MapleCharacter player = WorldServer.getInstance().getChannel(ch).getPlayerStorage().getCharacterByName(recipient);
                     if (player == null) {

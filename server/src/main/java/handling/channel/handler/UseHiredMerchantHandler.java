@@ -3,7 +3,7 @@ package handling.channel.handler;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import handling.channel.handler.utils.HiredMerchantHandlerUtils;
-import handling.world.World;
+import handling.world.WorldServer;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.PlayerShopPacket;
 
@@ -22,7 +22,7 @@ public class UseHiredMerchantHandler extends AbstractMaplePacketHandler {
                     c.getPlayer().dropMessage(1, "Please claim your items from Fredrick first.");
                     break;
                 case 0:
-                    boolean merch = World.hasMerchant(c.getPlayer().getAccountID());
+                    boolean merch = WorldServer.getInstance().hasMerchant(c.getPlayer().getAccountID());
                     if (!merch) {
                         if (c.getChannelServer().isShutdown()) {
                             c.getPlayer().dropMessage(1, "The server is about to shut down.");
