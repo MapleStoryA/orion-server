@@ -1,4 +1,0 @@
-[submodule "maplebit/MapleBit"]
-	path = maplebit/MapleBit
-	url = https://github.com/greenelfx/MapleBit.git
-        ignore = dirty
