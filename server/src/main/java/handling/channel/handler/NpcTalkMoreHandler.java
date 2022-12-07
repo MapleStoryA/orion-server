@@ -4,7 +4,7 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import scripting.NPCConversationManager;
 import scripting.NPCScriptManager;
-import scripting.v1.NewNpcTalkHandler;
+import scripting.v1.game.helper.NpcTalkHelper;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 @lombok.extern.slf4j.Slf4j
@@ -16,7 +16,7 @@ public class NpcTalkMoreHandler extends AbstractMaplePacketHandler {
             return;
         }
         if (c.getNpcScript() != null && c.getNpcScript().getContinuation() != null) {
-            NewNpcTalkHandler.proceedConversation(slea, c);
+            NpcTalkHelper.proceedConversation(slea, c);
             return;
         }
         final byte lastMsg = slea.readByte(); // 00 (last msg type I think) 0F = dimensional mirror, 06 = quiz, 07 = speed quiz

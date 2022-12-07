@@ -13,7 +13,7 @@ function start() {
     }
 
     setParty = target.FieldSet("Party1");
-    res = setParty.enter(target.nCharacterID(), 0);
+    res = setParty.enter(target.getCharacterID(), 0);
     if (res == -1)
         self.say("Tenho motivos para não deixar seu grupo entrar. Tente mais tarde, por favor.");
     else if (res == 1)

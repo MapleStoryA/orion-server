@@ -9,7 +9,7 @@ function onEventStart() {
 }
 
 function onPlayerExitMap(player, map) {
-    event.log('Player ' + player.sCharacterName() + '  exit map');
+    event.log('Player ' + player.getCharacterName() + '  exit map');
     event.clear();
 }
 
@@ -19,7 +19,7 @@ function onMobKilled(player, monster) {
 }
 
 function onPlayerDisconnected(player) {
-    event.log('Player ' + player.sCharacterName() + ' disconnected');
+    event.log('Player ' + player.getCharacterName() + ' disconnected');
 }
 
 function onEventFinish() {

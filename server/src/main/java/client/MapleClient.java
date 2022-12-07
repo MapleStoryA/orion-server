@@ -39,7 +39,7 @@ import handling.world.party.MaplePartyCharacter;
 import org.apache.mina.common.IoSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import scripting.v1.binding.NpcScript;
+import scripting.v1.game.NpcScripting;
 import server.ClientStorage;
 import server.Timer.PingTimer;
 import server.config.ServerEnvironment;
@@ -108,7 +108,7 @@ public class MapleClient implements Serializable {
     private transient ScheduledFuture<?> idleTask = null;
     private transient String secondPassword, salt2; // To be used only on login
     private long lastNPCTalk;
-    private NpcScript npcScript;
+    private NpcScripting npcScript;
 
     public MapleClient(MapleAESOFB send, MapleAESOFB receive, IoSession session) {
         this.send = send;
@@ -1239,11 +1239,11 @@ public class MapleClient implements Serializable {
         getSession().write(packet);
     }
 
-    public NpcScript getNpcScript() {
+    public NpcScripting getNpcScript() {
         return npcScript;
     }
 
-    public void setNpcScript(NpcScript npcScript) {
+    public void setNpcScript(NpcScripting npcScript) {
         this.npcScript = npcScript;
     }
 

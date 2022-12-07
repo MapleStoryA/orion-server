@@ -12,7 +12,7 @@ function onMobKilled(player, monster) {
 }
 
 function onPlayerDisconnected(player) {
-    event.log('Player ' + player.sCharacterName() + ' disconnected');
+    event.log('Player ' + player.getCharacterName() + ' disconnected');
 }
 
 function onEventFinish() {

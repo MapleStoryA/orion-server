@@ -9,7 +9,7 @@ import constants.MapConstants;
 import constants.ServerConstants.PlayerGMRank;
 import handling.world.World;
 import scripting.NPCScriptManager;
-import scripting.v1.NewNpcTalkHandler;
+import scripting.v1.game.helper.NpcTalkHelper;
 import tools.MaplePacketCreator;
 
 @lombok.extern.slf4j.Slf4j
@@ -264,7 +264,7 @@ public class PlayerCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            NewNpcTalkHandler.startConversation(2121005, c);
+            NpcTalkHelper.startConversation(2121005, c);
             return 0;
         }
 

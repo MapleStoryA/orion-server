@@ -1,4 +1,4 @@
-package scripting.v1.binding;
+package scripting.v1.game.helper;
 
 import client.MapleCharacter;
 import client.MapleStat;
@@ -8,7 +8,7 @@ import server.MapleInventoryManipulator;
 import java.util.Random;
 
 @lombok.extern.slf4j.Slf4j
-public class AskAvatarOperations {
+public class AskAvatarHelper {
 
     public static boolean IsValidHairID(int nID, int nGender) {
         int v3; // esi@1

@@ -67,7 +67,7 @@ function area_check(rects) {
 }
 
 function party1_personal() {
-    charName = target.sCharacterName() + "_";
+    charName = target.getCharacterName() + "_";
 
     quest = target.FieldSet("Party1");
     prob = quest.getVar(charName);

@@ -1,17 +1,17 @@
-package scripting.v1;
+package scripting.v1.game.helper;
 
 import client.MapleClient;
 import lombok.extern.slf4j.Slf4j;
 import org.mozilla.javascript.ContinuationPending;
-import scripting.v1.binding.AskAvatarOperations;
-import scripting.v1.binding.NpcScript;
+import scripting.v1.NpcScriptingManager;
+import scripting.v1.game.NpcScripting;
 import server.config.ServerEnvironment;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 import java.io.File;
 
 @Slf4j
-public class NewNpcTalkHandler {
+public class NpcTalkHelper {
 
 
     class ChatAction {
@@ -31,7 +31,7 @@ public class NewNpcTalkHandler {
     }
 
     public static void startConversation(int npc, MapleClient client) {
-        var manager = NpcScriptingManagerSingleton.getInstance();
+        var manager = NpcScriptingManager.getInstance();
         try {
             manager.runScript(npc, client);
         } catch (ContinuationPending pending) {
@@ -40,7 +40,7 @@ public class NewNpcTalkHandler {
     }
 
     public static void startQuestConversation(int npc, int quest, MapleClient client) {
-        var manager = NpcScriptingManagerSingleton.getInstance();
+        var manager = NpcScriptingManager.getInstance();
         try {
             manager.runQuestScript(npc, quest, client);
         } catch (ContinuationPending pending) {
@@ -52,7 +52,7 @@ public class NewNpcTalkHandler {
         int talk = slea.readByte();
         Talk type = Talk.from(talk);
         int action = slea.readByte();
-        NpcScript script = client.getNpcScript();
+        NpcScripting script = client.getNpcScript();
         if (script == null) {
             client.enableActions();
             return;
@@ -83,7 +83,7 @@ public class NewNpcTalkHandler {
                 switch (action) {
                     case ChatAction.ACTION_BACK_OR_NO:
                     case ChatAction.ACTION_NEXT:
-                        int result = AskAvatarOperations.processAskAvatar(client.getPlayer(), slea.readByte(), false);
+                        int result = AskAvatarHelper.processAskAvatar(client.getPlayer(), slea.readByte(), false);
                         script.resume(result);
                 }
                 break;

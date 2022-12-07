@@ -2,7 +2,7 @@ nRet = self.askYesNo("If you use the regular coupon, your face may transform int
 if (nRet == 0) self.say("I understand. Please take your time, and if you still want it, let me know alright?");
 else if (nRet == 1) {
     teye = 0;
-    if (target.nGender() == 0) {
+    if (target.getGender() == 0) {
         changeFace1 = 20002 + teye;
         changeFace2 = 20003 + teye;
         changeFace3 = 20004 + teye;
@@ -15,7 +15,7 @@ else if (nRet == 1) {
         changeFace10 = 20016 + teye;
         changeFace11 = 20017 + teye;
         mFace = self.makeRandAvatar(5152008, changeFace1, changeFace2, changeFace3, changeFace4, changeFace5, changeFace6, changeFace7, changeFace8, changeFace9, changeFace10, changeFace11);
-    } else if (target.nGender == 1) {
+    } else if (target.getGender == 1) {
         changeFace1 = 21003 + teye;
         changeFace2 = 21003 + teye;
         changeFace3 = 21004 + teye;

@@ -98,6 +98,7 @@ import tools.ConcurrentEnumMap;
 import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
 import tools.Pair;
+import scripting.v1.game.helper.ScriptingApi;
 import tools.StringUtil;
 import tools.Triple;
 import tools.packet.CWVsContextOnMessagePackets;
@@ -6063,6 +6064,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         return var.get(key);
     }
 
+
+    @ScriptingApi
     public boolean isRideFinished() {
         boolean ret = travelTime < System.currentTimeMillis();
         return ret;

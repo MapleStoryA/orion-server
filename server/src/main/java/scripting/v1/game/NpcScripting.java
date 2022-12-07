@@ -1,23 +1,25 @@
-package scripting.v1.binding;
+package scripting.v1.game;
 
 import client.MapleClient;
+import lombok.extern.slf4j.Slf4j;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ContinuationPending;
 import org.mozilla.javascript.Scriptable;
 import scripting.ScriptMan;
-import scripting.v1.dispatch.PacketDispatcher;
+import scripting.v1.game.helper.AskAvatarHelper;
+import scripting.v1.game.helper.ScriptingApi;
 import server.life.MapleNPC;
 import tools.packet.npcpool.NpcPoolPackets;
 
-@lombok.extern.slf4j.Slf4j
-public class NpcScript extends PlayerInteractionScript {
+@Slf4j
+public class NpcScripting extends PlayerScripting {
 
     private final int npc;
     protected Scriptable globalScope;
 
 
-    public NpcScript(int npc, MapleClient client, Scriptable globalScope, PacketDispatcher dispatcher) {
-        super(client, dispatcher);
+    public NpcScripting(int npc, MapleClient client, Scriptable globalScope) {
+        super(client);
         this.npc = npc;
         this.globalScope = globalScope;
     }
@@ -30,10 +32,12 @@ public class NpcScript extends PlayerInteractionScript {
         }
     }
 
+    @ScriptingApi
     public Object getContinuation() {
         return continuation;
     }
 
+    @ScriptingApi
     public void setContinuation(Object continuation) {
         this.continuation = continuation;
     }
@@ -49,29 +53,28 @@ public class NpcScript extends PlayerInteractionScript {
         }
     }
 
-    public Scriptable getGlobalScope() {
-        return globalScope;
-    }
-
-
+    @ScriptingApi
     public void say(String text) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnSay(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text), false, true));
         throwContinuation(cx);
     }
 
+    @ScriptingApi
     public void sayUser(String text) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnSay(ScriptMan.NpcReplacedByUser, npc, (byte) 2, parseText(text), false, true));
         throwContinuation(cx);
     }
 
+    @ScriptingApi
     public void sayOk(String text) {
         Context cx = Context.enter();
         getClient().sendPacket(ScriptMan.OnSay(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text), false, false));
         throwContinuation(cx);
     }
 
+    @ScriptingApi
     public void sayOkUser(String text) {
         Context cx = Context.enter();
         getClient().sendPacket(ScriptMan.OnSay(ScriptMan.NpcReplayedByNpc, npc, (byte) 2, parseText(text), false, false));
@@ -79,18 +82,21 @@ public class NpcScript extends PlayerInteractionScript {
     }
 
 
+    @ScriptingApi
     public void askYesNo(String text) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnAskYesNo(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text)));
         throwContinuation(cx);
     }
 
+    @ScriptingApi
     public void askYesUser(String text) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnAskYesNo(ScriptMan.NpcReplayedByNpc, npc, (byte) 2, parseText(text)));
         throwContinuation(cx);
     }
 
+    @ScriptingApi
     public void askAccept(String text) {
         Context cx = Context.enter();
         if (text.contains("#L")) { // will dc otherwise!
@@ -101,6 +107,7 @@ public class NpcScript extends PlayerInteractionScript {
         throwContinuation(cx);
     }
 
+    @ScriptingApi
     public void askAcceptUser(String text) {
         Context cx = Context.enter();
         if (text.contains("#L")) { // will dc otherwise!
@@ -112,6 +119,7 @@ public class NpcScript extends PlayerInteractionScript {
     }
 
 
+    @ScriptingApi
     public int askAvatar(String text, int item, int... styles) {
         Context cx = Context.enter();
         player.addTemporaryData("askAvatar", styles);
@@ -121,12 +129,14 @@ public class NpcScript extends PlayerInteractionScript {
         return 1;
     }
 
+    @ScriptingApi
     public int makeRandAvatar(int item, int... styles) {
         player.addTemporaryData("askAvatar", styles);
         player.addTemporaryData("askAvatarItem", item);
-        return AskAvatarOperations.processAskAvatar(player, 1, true);
+        return AskAvatarHelper.processAskAvatar(player, 1, true);
     }
 
+    @ScriptingApi
     public void askMenu(String text) {
         Context cx = Context.enter();
         if (!text.contains("#L")) { // sendSimple will dc otherwise!
@@ -137,6 +147,7 @@ public class NpcScript extends PlayerInteractionScript {
         throwContinuation(cx);
     }
 
+    @ScriptingApi
     public void askMenuUser(String text) {
         Context cx = Context.enter();
         if (!text.contains("#L")) { // sendSimple will dc otherwise!
@@ -148,12 +159,14 @@ public class NpcScript extends PlayerInteractionScript {
     }
 
 
+    @ScriptingApi
     public void askText(String text, String def, int col, int line) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnAskText(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text), def, col, line));
         throwContinuation(cx);
     }
 
+    @ScriptingApi
     public void askTextUser(String text, String def, int col, int line) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnAskText(ScriptMan.NpcReplayedByNpc, npc, (byte) 2, parseText(text), def, col, line));
@@ -161,18 +174,21 @@ public class NpcScript extends PlayerInteractionScript {
     }
 
 
+    @ScriptingApi
     public void askNumber(String text, int def, int min, int max) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnAskNumber(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text), def, min, max));
         throwContinuation(cx);
     }
 
+    @ScriptingApi
     public void askNumberUser(String text, int def, int min, int max) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnAskNumber(ScriptMan.NpcReplayedByNpc, npc, (byte) 2, parseText(text), def, min, max));
         throwContinuation(cx);
     }
 
+    @ScriptingApi
     public void setSpecialAction(int npcId, String action) {
         MapleNPC npcInstance = player.getMap().getNPCById(npcId);
         sendPacket(NpcPoolPackets.setSpecialAction(npcInstance, action));

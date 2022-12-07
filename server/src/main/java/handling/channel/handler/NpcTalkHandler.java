@@ -4,7 +4,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import scripting.NPCScriptManager;
-import scripting.v1.NewNpcTalkHandler;
+import scripting.v1.game.helper.NpcTalkHelper;
 import server.life.MapleNPC;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -28,8 +28,8 @@ public class NpcTalkHandler extends AbstractMaplePacketHandler {
             chr.setConversation(1);
             npc.sendShop(c);
         } else {
-            if (NewNpcTalkHandler.isNewNpcScriptAvailable(npc.getId())) {
-                NewNpcTalkHandler.startConversation(npc.getId(), c);
+            if (NpcTalkHelper.isNewNpcScriptAvailable(npc.getId())) {
+                NpcTalkHelper.startConversation(npc.getId(), c);
                 return;
             }
             c.setNpcScript(null);

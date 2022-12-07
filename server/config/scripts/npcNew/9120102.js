@@ -1,5 +1,5 @@
 teye = 0;
-if (target.nGender() == 0) {
+if (target.getGender() == 0) {
     changeFace1 = 20002 + teye;
     changeFace2 = 20003 + teye;
     changeFace3 = 20004 + teye;
@@ -21,7 +21,7 @@ if (target.nGender() == 0) {
         changeFace5, changeFace6, changeFace7, changeFace8,
         changeFace9, changeFace10, changeFace11);
 
-} else if (target.nGender() == 1) {
+} else if (target.getGender() == 1) {
     changeFace1 = 21003 + teye;
     changeFace2 = 21003 + teye;
     changeFace3 = 21004 + teye;

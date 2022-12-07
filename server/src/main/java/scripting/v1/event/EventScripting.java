@@ -1,30 +1,23 @@
 package scripting.v1.event;
 
 import client.MapleCharacter;
+import lombok.extern.slf4j.Slf4j;
 import org.mozilla.javascript.Context;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import scripting.v1.NewNpcTalkHandler;
-import scripting.v1.binding.BindingWrapper;
-import scripting.v1.binding.TargetScript;
+import scripting.v1.game.helper.NpcTalkHelper;
+import scripting.v1.game.TargetScripting;
+import scripting.v1.game.helper.BindingHelper;
 import tools.MaplePacketCreator;
 
 import java.util.Collection;
 
-/**
- * Implements the interaction API.
- */
-@lombok.extern.slf4j.Slf4j
-public class EventInteraction {
+@Slf4j
+public class EventScripting {
 
-    private static final Logger LOG = LoggerFactory.getLogger(EventInteraction.class);
 
-    private final EventCenter manager;
     private final EventInstance instance;
 
-    public EventInteraction(String name, int channel, EventCenter manager, EventInstance instance) {
+    public EventScripting(EventInstance instance) {
         super();
-        this.manager = manager;
         this.instance = instance;
     }
 
@@ -45,34 +38,34 @@ public class EventInteraction {
     }
 
     public void registerTransferField(int map, String portal) {
-        for (TargetScript member : BindingWrapper.wrapCharacter(instance.getMembers())) {
+        for (TargetScripting member : BindingHelper.wrapCharacter(instance.getMembers())) {
             member.registerTransferField(map, portal);
         }
     }
 
-    public TargetScript getMemberByName(String name) {
-        return BindingWrapper.wrapCharacter(instance.getMemberByName(name));
+    public TargetScripting getMemberByName(String name) {
+        return BindingHelper.wrapCharacter(instance.getMemberByName(name));
     }
 
-    public Collection<TargetScript> getMembers() {
-        return BindingWrapper.wrapCharacter(instance.getMembers());
+    public Collection<TargetScripting> getMembers() {
+        return BindingHelper.wrapCharacter(instance.getMembers());
     }
 
     public void startNpc(int id) {
         //Because of Rhino contexts, it must be in another thread.
         Context.exit();
         for (MapleCharacter member : instance.getMembers()) {
-            NewNpcTalkHandler.startConversation(id, member.getClient());
+            NpcTalkHelper.startConversation(id, member.getClient());
         }
     }
 
     public void gainPartyExp(int exp) {
-        for (TargetScript member : BindingWrapper.wrapCharacter(instance.getMembers())) {
+        for (TargetScripting member : BindingHelper.wrapCharacter(instance.getMembers())) {
             member.incEXP(exp, true);
         }
     }
 
-    public TargetScript getLeader() {
+    public TargetScripting getLeader() {
         return instance.getLeader();
     }
 

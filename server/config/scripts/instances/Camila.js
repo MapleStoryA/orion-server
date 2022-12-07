@@ -41,14 +41,14 @@ function onMobKilled(player, monster) {
 }
 
 function onPlayerExitMap(player, map) {
-    event.log('Player ' + player.sCharacterName() + '  exit map');
+    event.log('Player ' + player.getCharacterName() + '  exit map');
     field.killAllMonsters();
     removeNpc();
     event.clear();
 }
 
 function onPlayerDisconnected(player) {
-    event.log('Player ' + player.sCharacterName() + ' disconnected');
+    event.log('Player ' + player.getCharacterName() + ' disconnected');
     field.killAllMonsters();
     removeNpc();
     event.clear();

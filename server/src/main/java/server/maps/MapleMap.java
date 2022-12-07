@@ -43,7 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 import scripting.EventManager;
 import scripting.NPCScriptManager;
 import scripting.ReactorScriptManager;
-import scripting.v1.binding.FieldScript;
+import scripting.v1.game.FieldScripting;
 import scripting.v1.event.EventInstance;
 import server.MapleCarnivalFactory;
 import server.MapleCarnivalFactory.MCSkill;
@@ -3397,8 +3397,8 @@ public final class MapleMap {
         return this.eventInstance != null;
     }
 
-    public FieldScript getField() {
-        return new FieldScript(this);
+    public FieldScripting getField() {
+        return new FieldScripting(this);
     }
 
     public void spawnSpecialMonsters() {

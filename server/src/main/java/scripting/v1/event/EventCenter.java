@@ -14,7 +14,7 @@ import java.util.Map;
 @lombok.extern.slf4j.Slf4j
 public class EventCenter {
 
-    private static final Logger LOG = LoggerFactory.getLogger(EventInteraction.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EventScripting.class);
 
     private final Map<String, EventInstance> events = new HashMap<>();
 

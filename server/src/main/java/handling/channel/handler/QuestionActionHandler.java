@@ -5,7 +5,7 @@ import client.MapleClient;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import scripting.NPCScriptManager;
-import scripting.v1.NewNpcTalkHandler;
+import scripting.v1.game.helper.NpcTalkHelper;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -72,8 +72,8 @@ public class QuestionActionHandler extends AbstractMaplePacketHandler {
             }
             case START_SCRIPTED_QUEST: { // Scripted Start Quest
                 final int npc = slea.readInt();
-                if (NewNpcTalkHandler.isNewQuestScriptAvailable(quest)) {
-                    NewNpcTalkHandler.startQuestConversation(npc, quest, c);
+                if (NpcTalkHelper.isNewQuestScriptAvailable(quest)) {
+                    NpcTalkHelper.startQuestConversation(npc, quest, c);
                     break;
                 }
                 c.setNpcScript(null);

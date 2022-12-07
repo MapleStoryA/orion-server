@@ -6,7 +6,7 @@ import org.mozilla.javascript.EvaluatorException;
 import org.mozilla.javascript.Scriptable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import scripting.v1.binding.TargetScript;
+import scripting.v1.game.TargetScripting;
 import server.config.ServerEnvironment;
 import server.life.MapleMonster;
 import server.maps.MapleMap;
@@ -62,17 +62,17 @@ public class RhinoEventEngine implements EventEngine {
     }
 
     @Override
-    public void onPlayerDisconnected(TargetScript player) {
+    public void onPlayerDisconnected(TargetScripting player) {
         RhinoEngineUtils.invokeMethod("onPlayerDisconnected", globalScope, player);
     }
 
     @Override
-    public void onPlayerJoin(TargetScript player) {
+    public void onPlayerJoin(TargetScripting player) {
         RhinoEngineUtils.invokeMethod("onPlayerJoin", globalScope, player);
     }
 
     @Override
-    public void onPlayerLeave(TargetScript player) {
+    public void onPlayerLeave(TargetScripting player) {
         RhinoEngineUtils.invokeMethod("onPlayerLeave", globalScope, player);
     }
 
@@ -97,13 +97,13 @@ public class RhinoEventEngine implements EventEngine {
     }
 
     @Override
-    public void onMobKilled(TargetScript killer, MapleMonster mob) {
+    public void onMobKilled(TargetScripting killer, MapleMonster mob) {
         RhinoEngineUtils.invokeMethod("onMobKilled", globalScope, killer, mob);
 
     }
 
     @Override
-    public void onPlayerDied(TargetScript player) {
+    public void onPlayerDied(TargetScripting player) {
         RhinoEngineUtils.invokeMethod("onPlayerDied", globalScope);
     }
 
@@ -135,7 +135,7 @@ public class RhinoEventEngine implements EventEngine {
     }
 
     @Override
-    public void onPlayerExitMap(TargetScript mapleCharacter, MapleMap map) {
+    public void onPlayerExitMap(TargetScripting mapleCharacter, MapleMap map) {
         RhinoEngineUtils.invokeMethod("onPlayerExitMap", globalScope, mapleCharacter, map);
     }
 

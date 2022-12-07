@@ -1,44 +1,40 @@
-package scripting.v1.binding;
+package scripting.v1.game;
 
 import client.MapleClient;
 import handling.channel.ChannelServer;
 import handling.world.WorldServer;
-import scripting.v1.dispatch.PacketDispatcher;
+import scripting.v1.game.helper.ScriptingApi;
 import tools.MaplePacketCreator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @lombok.extern.slf4j.Slf4j
-public class PlayerInteractionScript extends AbstractScript {
+public class PlayerScripting extends BaseScripting {
 
-    public PlayerInteractionScript(MapleClient client, PacketDispatcher dispatcher) {
-        super(client, dispatcher);
+    public PlayerScripting(MapleClient client) {
+        super(client);
     }
 
     protected ChannelServer getChannelServer() {
         return WorldServer.getInstance().getChannel(client.getChannel());
     }
 
-    public void debug(String text) {
-        log.info(text);
-    }
 
+
+    @ScriptingApi
     public void test() {
         sendPacket(MaplePacketCreator.updateQuestFinish(21015, 2005, 0));
     }
 
+    @ScriptingApi
     public long currentTime() {
         return System.currentTimeMillis();
     }
 
-    public int random(int min, int max) {
-        Random random = new Random();
-        int randomNumber = random.nextInt(max + 1 - min) + min;
-        return randomNumber;
-    }
 
+
+    @ScriptingApi
     public String shuffle(int i, String str) {
         List<String> list = new ArrayList<>();
         for (char c : str.toCharArray()) {
@@ -51,8 +47,29 @@ public class PlayerInteractionScript extends AbstractScript {
         return ret;
     }
 
+    @ScriptingApi
     public final void showBallon(final String msg, final int width, final int height) {
         sendPacket(MaplePacketCreator.sendHint(msg, width, height));
+    }
+
+    @ScriptingApi()
+    public void megaphone(String message, boolean whisper) {
+        client.sendPacket(MaplePacketCreator.serverMessage(2, client.getChannel(), message, whisper));
+    }
+
+    @ScriptingApi
+    public void popup(String message) {
+        sendPacket(MaplePacketCreator.serverMessage(1, client.getChannel(), message, false));
+    }
+
+    @ScriptingApi
+    public void pinkText(String message) {
+        sendPacket(MaplePacketCreator.serverMessage(5, client.getChannel(), message, false));
+    }
+
+    @ScriptingApi
+    public void yellowSupermega(String message) {
+        sendPacket(MaplePacketCreator.serverMessage(9, client.getChannel(), client.getPlayer().getName() + " : " + message, false));
     }
 
 

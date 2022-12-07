@@ -1,4 +1,4 @@
-package scripting.v1.binding;
+package scripting.v1.game.helper;
 
 import client.MapleClient;
 import client.inventory.Equip;
@@ -9,7 +9,7 @@ import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
 
 @lombok.extern.slf4j.Slf4j
-public class InventoryOperations {
+public class InventoryHelper {
 
     public static final int gainItem(final int id, final short quantity, final boolean randomStats, final long period,
                                      final int slots, final String owner, final MapleClient client) {

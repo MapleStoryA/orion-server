@@ -1,37 +1,44 @@
-package scripting.v1.binding;
+package scripting.v1.game;
 
 import client.MapleClient;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
-import scripting.v1.dispatch.PacketDispatcher;
+import scripting.v1.game.helper.InventoryHelper;
+import scripting.v1.game.helper.ScriptingApi;
+
 
 @lombok.extern.slf4j.Slf4j
-public class InventoryScript extends PlayerInteractionScript {
+public class InventoryScripting extends PlayerScripting {
 
-    public InventoryScript(MapleClient client, PacketDispatcher dispatcher) {
-        super(client, dispatcher);
+    public InventoryScripting(MapleClient client) {
+        super(client);
     }
 
+    @ScriptingApi
     public int slotCount(byte type) {
         return player.getInventory(MapleInventoryType.getByType(type)).getSlotLimit();
     }
 
+    @ScriptingApi
     public int holdCount(byte type) {
         return player.getInventory(MapleInventoryType.getByType(type)).getNumFreeSlot();
     }
 
+    @ScriptingApi
     public int itemCount(int item) {
         return player.getItemQuantity(item, true);
     }
 
+    @ScriptingApi
     public int exchange(int money, int id, short quantity) {
         if (money != 0) {
             player.gainMeso(money, true, false, true);
         }
-        return InventoryOperations.gainItem(id, quantity, false, 0, -1, "", client);
+        return InventoryHelper.gainItem(id, quantity, false, 0, -1, "", client);
     }
 
     //Like in bms, items = item, count * n
+    @ScriptingApi
     public int exchange(int money, int... items) {
         if (money != 0) {
             player.gainMeso(money, true, false, true);
@@ -56,7 +63,7 @@ public class InventoryScript extends PlayerInteractionScript {
         for (int i = 0; i <= items.length - 1; i += 2) {
             int id = items[i];
             short quantity = (short) items[i + 1];
-            InventoryOperations.gainItem(id, quantity, false, 0, -1, "", client);
+            InventoryHelper.gainItem(id, quantity, false, 0, -1, "", client);
         }
 
 

@@ -1,40 +1,46 @@
 package scripting.v1;
 
 import client.MapleClient;
+import lombok.extern.slf4j.Slf4j;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ContinuationPending;
 import org.mozilla.javascript.Script;
 import org.mozilla.javascript.Scriptable;
-import scripting.v1.binding.FieldScript;
-import scripting.v1.binding.InventoryScript;
-import scripting.v1.binding.NpcScript;
-import scripting.v1.binding.QuestScript;
-import scripting.v1.binding.TargetScript;
-import scripting.v1.dispatch.PacketDispatcher;
+import scripting.v1.game.FieldScripting;
+import scripting.v1.game.InventoryScripting;
+import scripting.v1.game.NpcScripting;
+import scripting.v1.game.QuestScripting;
+import scripting.v1.game.TargetScripting;
+import server.config.ServerEnvironment;
 import server.quest.MapleQuest;
 import tools.StringUtil;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class NpcScriptingManager {
 
     private final String scriptPath;
-    private PacketDispatcher dispatcher;
 
+    private static NpcScriptingManager INSTANCE;
 
-    public NpcScriptingManager(String scriptPath) {
+    private NpcScriptingManager(String scriptPath) {
         this.scriptPath = scriptPath;
     }
 
-    public void setDispatcher(PacketDispatcher dispatcher) {
-        this.dispatcher = dispatcher;
+
+    public static synchronized NpcScriptingManager getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new NpcScriptingManager(ServerEnvironment.getConfig().getScriptsPath() + "/");
+        }
+        return INSTANCE;
     }
+
 
     public boolean runQuestScript(int npc, int quest, MapleClient client) {
         Context ctx = setUpContext();
-        NpcScript npcScript = null;
-        TargetScript target = null;
-        QuestScript questScript = null;
-        InventoryScript inventory = null;
+        NpcScripting npcScript;
+        TargetScripting target;
+        QuestScripting questScript;
+        InventoryScripting inventory;
         try {
             String file = "function main() {" +
                     StringUtil.readFileAsString(scriptPath + "/questNew/" + quest + ".js") +
@@ -44,11 +50,11 @@ public class NpcScriptingManager {
 
             Script script = ctx.compileString(file, "questNew/" + quest + ".js", 1, null);
             Scriptable globalScope = ctx.initStandardObjects();
-            npcScript = new NpcScript(npc, client, globalScope, dispatcher);
-            target = new TargetScript(client, dispatcher);
-            inventory = new InventoryScript(client, dispatcher);
+            npcScript = new NpcScripting(npc, client, globalScope);
+            target = new TargetScripting(client);
+            inventory = new InventoryScripting(client);
             MapleQuest questObj = MapleQuest.getInstance(quest);
-            questScript = new QuestScript(client, questObj, dispatcher);
+            questScript = new QuestScripting(client, questObj);
             globalScope.put("npc", globalScope, Context.javaToJS(npc, globalScope));
             globalScope.put("self", globalScope, Context.javaToJS(npcScript, globalScope));
             globalScope.put("target", globalScope, Context.javaToJS(target, globalScope));
@@ -65,10 +71,10 @@ public class NpcScriptingManager {
 
     public boolean runScript(int npc, MapleClient client) {
         Context ctx = setUpContext();
-        NpcScript npcScript = null;
-        TargetScript target = null;
-        InventoryScript inventory = null;
-        FieldScript field = null;
+        NpcScripting npcScript;
+        TargetScripting target;
+        InventoryScripting inventory;
+        FieldScripting field;
         try {
 
             String file = "function main() {" +
@@ -79,9 +85,9 @@ public class NpcScriptingManager {
             Script script = ctx.compileString(file, "npcNew/" + npc + ".js", 1, null);
 
             Scriptable globalScope = ctx.initStandardObjects();
-            npcScript = new NpcScript(npc, client, globalScope, dispatcher);
-            target = new TargetScript(client, dispatcher);
-            inventory = new InventoryScript(client, dispatcher);
+            npcScript = new NpcScripting(npc, client, globalScope);
+            target = new TargetScripting(client);
+            inventory = new InventoryScripting(client);
             field = client.getPlayer().getMap().getField();
             globalScope.put("self", globalScope, Context.javaToJS(npcScript, globalScope));
             globalScope.put("target", globalScope, Context.javaToJS(target, globalScope));
