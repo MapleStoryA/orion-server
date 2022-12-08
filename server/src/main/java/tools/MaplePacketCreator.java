@@ -56,7 +56,7 @@ import server.MapleItemInformationProvider;
 import server.MapleShopItem;
 import server.MapleStatEffect;
 import server.MapleTrade;
-import server.ServerProperties;
+import server.config.ServerEnvironment;
 import server.events.MapleSnowball.MapleSnowballs;
 import server.life.MapleMonster;
 import server.life.MapleNPC;
@@ -100,7 +100,7 @@ public class MaplePacketCreator {
         mplew.writeShort(SendPacketOpcode.SERVER_IP.getValue());
         mplew.writeShort(0);
         try {
-            mplew.write(InetAddress.getByName(ServerProperties.getProperty("channel.net.interface"))
+            mplew.write(InetAddress.getByName(ServerEnvironment.getConfig().getProperty("channel.net.interface"))
                     .getAddress());
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -118,7 +118,7 @@ public class MaplePacketCreator {
         mplew.writeShort(SendPacketOpcode.CHANGE_CHANNEL.getValue());
         mplew.write(1);
         try {
-            mplew.write(InetAddress.getByName(ServerProperties.getProperty("channel.net.interface"))
+            mplew.write(InetAddress.getByName(ServerEnvironment.getConfig().getProperty("channel.net.interface"))
                     .getAddress());
         } catch (UnknownHostException e) {
             e.printStackTrace();

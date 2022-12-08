@@ -1,8 +1,10 @@
 package server.config;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.nio.file.Paths;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class ServerEnvironment {
 
 
