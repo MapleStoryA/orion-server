@@ -1,8 +1,9 @@
 package client;
 
-import org.apache.mina.common.IoSession;
+import handling.session.NetworkSession;
+import lombok.extern.slf4j.Slf4j;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class PingThread implements Runnable {
 
     private final MapleClient client;
@@ -17,7 +18,7 @@ public class PingThread implements Runnable {
         final long then = System.currentTimeMillis();
         long difference = (then - client.getLastPong()) / 1000;
         if (difference > 60000) {
-            IoSession session = client.getSession();
+            NetworkSession session = client.getSession();
             if (session != null && session.isConnected()) {
                 session.close();
                 return;

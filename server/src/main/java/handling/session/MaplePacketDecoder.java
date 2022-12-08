@@ -19,7 +19,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package handling.mina;
+package handling.session;
 
 import client.MapleClient;
 import org.apache.mina.common.ByteBuffer;
@@ -37,11 +37,6 @@ public class MaplePacketDecoder extends CumulativeProtocolDecoder {
     @Override
     protected boolean doDecode(IoSession session, ByteBuffer in, ProtocolDecoderOutput out) throws Exception {
         final DecoderState decoderState = (DecoderState) session.getAttribute(DECODER_STATE_KEY);
-
-/*	if (decoderState == null) {
-	    decoderState = new DecoderState();
-	    session.setAttribute(DECODER_STATE_KEY, decoderState);
-	}*/
         final MapleClient client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
 
         if (decoderState.packetlength == -1) {

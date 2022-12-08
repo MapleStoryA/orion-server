@@ -2,7 +2,7 @@ package handling.login;
 
 import handling.MapleServerHandler;
 import handling.PacketProcessor;
-import handling.mina.MapleCodecFactory;
+import handling.session.MapleCodecFactory;
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.IoAcceptor;
 import org.apache.mina.common.SimpleByteBufferAllocator;
@@ -17,35 +17,57 @@ import java.net.InetSocketAddress;
 public class GameServer {
 
     protected InetSocketAddress inetSocketAddress;
-    private IoAcceptor acceptor;
+    private final SocketProvider socketProvider;
+    protected final int channel, port;
 
-    protected int channel, port;
 
     public GameServer(int channel, int port, PacketProcessor.Mode mode) {
         this.channel = channel;
         this.port = port;
-        ByteBuffer.setUseDirectBuffers(false);
-        ByteBuffer.setAllocator(new SimpleByteBufferAllocator());
-        acceptor = new SocketAcceptor();
-        final SocketAcceptorConfig cfg = new SocketAcceptorConfig();
-        cfg.getSessionConfig().setTcpNoDelay(true);
-        cfg.setDisconnectOnUnbind(true);
-        cfg.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MapleCodecFactory()));
+        this.socketProvider = new MinaProvider();
+        socketProvider.initSocket(channel, port, mode);
+    }
 
-        try {
-            inetSocketAddress = new InetSocketAddress(port);
-            acceptor.bind(inetSocketAddress, new MapleServerHandler(channel,
-                    PacketProcessor.Mode.CASHSHOP.equals(mode),
-                    PacketProcessor.getProcessor(mode)), cfg);
-            log.info("Listening on port " + port + ".");
-        } catch (IOException e) {
-            System.err.println("Binding to port " + port + " failed" + e);
+    interface SocketProvider {
+        void initSocket(int channel, int port, PacketProcessor.Mode mode);
+
+        void unbindAll();
+    }
+
+    class MinaProvider implements SocketProvider {
+
+        private IoAcceptor acceptor;
+
+
+        public void initSocket(int channel, int port, PacketProcessor.Mode mode) {
+            ByteBuffer.setUseDirectBuffers(false);
+            ByteBuffer.setAllocator(new SimpleByteBufferAllocator());
+            acceptor = new SocketAcceptor();
+            final SocketAcceptorConfig cfg = new SocketAcceptorConfig();
+            cfg.getSessionConfig().setTcpNoDelay(true);
+            cfg.setDisconnectOnUnbind(true);
+            cfg.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MapleCodecFactory()));
+
+            try {
+                inetSocketAddress = new InetSocketAddress(port);
+                acceptor.bind(inetSocketAddress, new MapleServerHandler(channel,
+                        PacketProcessor.Mode.CASHSHOP.equals(mode),
+                        PacketProcessor.getProcessor(mode)), cfg);
+                log.info("Listening on port " + port + ".");
+            } catch (IOException e) {
+                System.err.println("Binding to port " + port + " failed" + e);
+            }
+        }
+
+        public void unbindAll() {
+            acceptor.unbindAll();
+            acceptor = null;
         }
     }
 
+
     protected void unbindAll() {
-        acceptor.unbindAll();
-        acceptor = null;
+        socketProvider.unbindAll();
     }
 
     public void onStart() {

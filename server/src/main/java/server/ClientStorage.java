@@ -1,7 +1,7 @@
 package server;
 
 import client.MapleClient;
-import org.apache.mina.common.IoSession;
+import handling.session.NetworkSession;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,7 +23,7 @@ public class ClientStorage {
         boolean isConnected = clients.containsKey(client.getAccID());
         if (isConnected) {
             MapleClient connected = clients.get(client.getAccID());
-            IoSession session = connected.getSession();
+            NetworkSession session = connected.getSession();
             if (session == null || !session.isConnected()) {
                 removeClient(connected);
                 return false;
