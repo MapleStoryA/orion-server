@@ -1,10 +1,17 @@
-package client.state;
+package database.state;
 
+import client.EvanSkillPoints;
+import client.MapleJob;
+import client.inventory.MapleInventory;
+import client.inventory.MapleInventoryType;
 import lombok.Getter;
 import lombok.Setter;
+import tools.data.output.MaplePacketLittleEndianWriter;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
@@ -25,7 +32,7 @@ public class CharacterData implements Serializable {
     private int mpApUsed;
     private int job;
     private byte skinColor;
-    private int gender;
+    private int gender;  // gender (0 = male, 1 = female)
     private short fame;
     private int hair;
     private int face;
@@ -47,6 +54,7 @@ public class CharacterData implements Serializable {
     private int rank;
     private int rankMove;
     private int jobRank;
+    private int jobRankMove;
     private int marriageId;
     private int familyId;
     private int seniorId;
@@ -67,4 +75,31 @@ public class CharacterData implements Serializable {
     private int agentPoints;
     private int contributedFP;
     private int sp;
+
+    private List<PetData> petData = new ArrayList<>();
+    private MapleInventory[] inventory = new MapleInventory[MapleInventoryType.values().length];
+    private EvanSkillPoints evanSkillPoints = null;
+
+    public boolean isEvan() {
+        return (getJob() == 2001 || getJob() / 100 == 22);
+    }
+
+    public boolean isGameMasterJob() {
+        return this.getJob() == MapleJob.GM.getId() || this.getJob() == MapleJob.SUPERGM.getId();
+    }
+
+    public final void connectData(final MaplePacketLittleEndianWriter mplew) {
+        mplew.writeShort(str); // str
+        mplew.writeShort(dex); // dex
+        mplew.writeShort(int_); // int
+        mplew.writeShort(luk); // luk
+        mplew.writeShort(hp); // hp
+        mplew.writeShort(maxHp); // maxhp
+        mplew.writeShort(mp); // mp
+        mplew.writeShort(maxHp); // maxmp
+    }
+
+    public final MapleInventory getInventory(MapleInventoryType type) {
+        return inventory[type.ordinal()];
+    }
 }
