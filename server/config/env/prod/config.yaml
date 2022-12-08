@@ -1,3 +1,4 @@
+debug: 'false'
 database:
   url: jdbc:mysql://orion-db:3306/orion?autoReconnect=true
   user: root
