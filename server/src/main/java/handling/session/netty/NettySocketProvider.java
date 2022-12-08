@@ -1,6 +1,5 @@
 package handling.session.netty;
 
-import handling.NettyMapleServerHandler;
 import handling.PacketProcessor;
 import handling.session.SocketProvider;
 import io.netty.bootstrap.ServerBootstrap;

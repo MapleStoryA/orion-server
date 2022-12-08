@@ -1,6 +1,5 @@
 package handling.session.mina;
 
-import handling.MinaMapleServerHandler;
 import handling.PacketProcessor;
 import handling.session.SocketProvider;
 import lombok.extern.slf4j.Slf4j;

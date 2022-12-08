@@ -19,28 +19,20 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package handling;
+package handling.session.mina;
 
 import client.MapleClient;
 import constants.ServerConstants;
-import handling.cashshop.CashShopOperationHandlers;
+import handling.PacketProcessor;
 import handling.cashshop.CashShopServer;
-import handling.channel.handler.InterServerHandler;
-import handling.channel.handler.PlayerHandler;
-import handling.session.mina.MinaMaplePacketDecoder;
-import handling.session.mina.MinaSession;
+import handling.session.HandlerHelper;
+import handling.session.NetworkSession;
 import handling.world.WorldServer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.mina.common.IdleStatus;
 import org.apache.mina.common.IoHandlerAdapter;
 import org.apache.mina.common.IoSession;
-import server.config.ServerEnvironment;
-import tools.FileOutputUtil;
-import tools.HexTool;
 import tools.Randomizer;
-import tools.data.input.ByteArrayByteStream;
-import tools.data.input.GenericSeekableLittleEndianAccessor;
-import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.LoginPacket;
 
 @Slf4j
@@ -55,31 +47,6 @@ public class MinaMapleServerHandler extends IoHandlerAdapter {
         this.processor = processor;
     }
 
-    private void handlePacket(final RecvPacketOpcode header, final SeekableLittleEndianAccessor slea,
-                              final MapleClient c) {
-        switch (header) {
-            case PLAYER_LOGGEDIN:
-                final int playerId = slea.readInt();
-                if (isCashShop) {
-                    CashShopOperationHandlers.enterCashShop(playerId, c);
-                } else {
-                    InterServerHandler.loggedIn(playerId, c);
-                }
-                break;
-            case CHANGE_MAP:
-                if (isCashShop) {
-                    CashShopOperationHandlers.leaveCashShop(slea, c, c.getPlayer());
-                } else {
-                    PlayerHandler.changeMap(slea, c, c.getPlayer());
-                }
-                break;
-            default:
-                if (slea.available() >= 0) {
-                    FileOutputUtil.logPacket(String.valueOf(header), "[" + header + "] " + slea);
-                }
-                break;
-        }
-    }
 
     @Override
     public void messageSent(final IoSession session, final Object message) throws Exception {
@@ -93,7 +60,6 @@ public class MinaMapleServerHandler extends IoHandlerAdapter {
 
     @Override
     public void sessionOpened(final IoSession session) {
-        final String address = session.getRemoteAddress().toString().split(":")[0];
         if (channel > -1) {
             if (WorldServer.getInstance().getChannel(channel).isShutdown()) {
                 session.close();
@@ -105,9 +71,10 @@ public class MinaMapleServerHandler extends IoHandlerAdapter {
                 return;
             }
         }
+        NetworkSession minaSession = new MinaSession(session);
         final byte[] ivSend = new byte[]{82, 48, 120, (byte) Randomizer.nextInt(255)};
         final byte[] ivRecv = new byte[]{70, 114, 122, (byte) Randomizer.nextInt(255)};
-        final var client = new MapleClient(ivSend, ivRecv, new MinaSession(session));
+        final var client = new MapleClient(ivSend, ivRecv, minaSession);
         client.setChannel(channel);
 
         MinaMaplePacketDecoder.DecoderState decoderState = new MinaMaplePacketDecoder.DecoderState();
@@ -117,8 +84,6 @@ public class MinaMapleServerHandler extends IoHandlerAdapter {
         session.setAttribute(MapleClient.CLIENT_KEY, client);
         session.setIdleTime(IdleStatus.READER_IDLE, 60);
         session.setIdleTime(IdleStatus.WRITER_IDLE, 60);
-
-        logServer(address);
     }
 
     @Override
@@ -138,46 +103,8 @@ public class MinaMapleServerHandler extends IoHandlerAdapter {
 
     @Override
     public void messageReceived(final IoSession session, final Object message) {
-        try {
-            var slea = new GenericSeekableLittleEndianAccessor(new ByteArrayByteStream((byte[]) message));
-            if (slea.available() < 2) {
-                return;
-            }
-            var header_num = slea.readShort();
-            var client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
-            var packetHandler = processor.getHandler(header_num);
-            if (ServerEnvironment.isDebugEnabled()) {
-                log.info("Received: " + header_num);
-            }
-            if (ServerEnvironment.isDebugEnabled() && packetHandler != null) {
-                log.info("[" + packetHandler.getClass().getSimpleName() + "]");
-            }
-            if (packetHandler != null && packetHandler.validateState(client)) {
-                packetHandler.handlePacket(slea, client);
-                return;
-            }
-            for (final RecvPacketOpcode recv : RecvPacketOpcode.values()) {
-                if (recv.getValue() == header_num) {
-
-                    if (!client.isReceiving()) {
-                        return;
-                    }
-                    if (recv.needsChecking()) {
-                        if (!client.isLoggedIn()) {
-                            return;
-                        }
-                    }
-                    handlePacket(recv, slea, client);
-                    return;
-                }
-            }
-            log.info("Received data: " + HexTool.toString((byte[]) message));
-            log.info("Data: " + new String((byte[]) message));
-
-        } catch (Exception e) {
-            FileOutputUtil.outputFileError(FileOutputUtil.PacketEx_Log, e);
-        }
-
+        var client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
+        HandlerHelper.handlePacket(client, processor, isCashShop, (byte[]) message);
     }
 
     @Override
@@ -190,16 +117,4 @@ public class MinaMapleServerHandler extends IoHandlerAdapter {
         super.sessionIdle(session, status);
     }
 
-    private void logServer(String address) {
-        StringBuilder sb = new StringBuilder();
-        if (channel > -1) {
-            sb.append("[Channel Server] Channel ").append(channel).append(" : ");
-        } else if (isCashShop) {
-            sb.append("[Cash Server]");
-        } else {
-            sb.append("[Login Server]");
-        }
-        sb.append("IoSession opened ").append(address);
-        log.info(sb.toString());
-    }
 }
