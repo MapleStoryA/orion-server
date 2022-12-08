@@ -31,11 +31,11 @@ public class MinaMapleCodecFactory implements ProtocolCodecFactory {
     private final ProtocolEncoder encoder = new MinaMaplePacketEncoder();
     private final ProtocolDecoder decoder = new MinaMaplePacketDecoder();
 
-    public ProtocolEncoder getEncoder() throws Exception {
+    public ProtocolEncoder getEncoder() {
         return encoder;
     }
 
-    public ProtocolDecoder getDecoder() throws Exception {
+    public ProtocolDecoder getDecoder() {
         return decoder;
     }
 }
