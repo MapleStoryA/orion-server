@@ -36,15 +36,14 @@ public class GameServer {
         this.socketThread.start();
     }
 
-    protected void unbindAll() {
-        socketProvider.unbindAll();
-    }
 
     public void onStart() {
 
     }
 
     public void shutdown() {
+        this.socketProvider.shutdown();
+        this.socketThread.interrupt();
     }
 
 }

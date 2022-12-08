@@ -55,7 +55,8 @@ public class NettySocketProvider implements SocketProvider {
     }
 
     @Override
-    public void unbindAll() {
-
+    public void shutdown() {
+        eventLoopGroupWorker.shutdownGracefully();
+        eventLoopGroupBoss.shutdownGracefully();
     }
 }

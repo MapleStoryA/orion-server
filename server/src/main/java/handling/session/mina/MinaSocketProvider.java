@@ -41,4 +41,10 @@ public class MinaSocketProvider implements SocketProvider {
         acceptor.unbindAll();
         acceptor = null;
     }
+
+    @Override
+    public void shutdown() {
+        acceptor.unbindAll();
+        acceptor = null;
+    }
 }

@@ -145,7 +145,7 @@ public class ChannelServer extends GameServer {
 
         log.info("Channel " + channel + ", Unbinding...");
 
-        unbindAll();
+       super.shutdown();
 
         WorldServer.getInstance().removeChannel(channel);
         LoginServer.getInstance().removeChannel(channel);
@@ -416,6 +416,7 @@ public class ChannelServer extends GameServer {
 
     public void setShutdown() {
         this.shutdown = true;
+        super.shutdown();
         log.info("Channel " + channel + " has set to shutdown and is closing Hired Merchants...");
     }
 
