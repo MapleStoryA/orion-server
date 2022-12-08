@@ -37,13 +37,14 @@ import tools.packet.LoginPacket;
 
 @Slf4j
 public class MinaMapleServerHandler extends IoHandlerAdapter {
-    private final boolean isCashShop;
     private final PacketProcessor processor;
+    private final PacketProcessor.Mode mode;
+
     private final int channel;
 
-    public MinaMapleServerHandler(int channel, boolean isCashShop, PacketProcessor processor) {
+    public MinaMapleServerHandler(int channel, PacketProcessor.Mode mode, PacketProcessor processor) {
         this.channel = channel;
-        this.isCashShop = isCashShop;
+        this.mode = mode;
         this.processor = processor;
     }
 
@@ -65,7 +66,7 @@ public class MinaMapleServerHandler extends IoHandlerAdapter {
                 session.close();
                 return;
             }
-        } else if (isCashShop) {
+        } else if (PacketProcessor.Mode.CASHSHOP.equals(mode)) {
             if (CashShopServer.getInstance().isShutdown()) {
                 session.close();
                 return;
@@ -92,7 +93,7 @@ public class MinaMapleServerHandler extends IoHandlerAdapter {
 
         if (client != null) {
             try {
-                client.disconnect(true, isCashShop);
+                client.disconnect(true, PacketProcessor.Mode.CASHSHOP.equals(mode));
             } finally {
                 session.close();
                 session.removeAttribute(MapleClient.CLIENT_KEY);
@@ -104,7 +105,7 @@ public class MinaMapleServerHandler extends IoHandlerAdapter {
     @Override
     public void messageReceived(final IoSession session, final Object message) {
         var client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
-        HandlerHelper.handlePacket(client, processor, isCashShop, (byte[]) message);
+        HandlerHelper.handlePacket(client, processor, PacketProcessor.Mode.CASHSHOP.equals(mode), (byte[]) message);
     }
 
     @Override

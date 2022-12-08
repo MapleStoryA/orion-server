@@ -16,13 +16,13 @@ import tools.packet.LoginPacket;
 @Slf4j
 public class NettyMapleServerHandler extends ChannelInboundHandlerAdapter {
     public static final AttributeKey<Object> CLIENT_KEY = AttributeKey.valueOf(MapleClient.CLIENT_KEY);
-    private final boolean isCashShop;
     private final PacketProcessor processor;
+    private final PacketProcessor.Mode mode;
     private final int channel;
 
-    public NettyMapleServerHandler(int channel, boolean isCashShop, PacketProcessor processor) {
+    public NettyMapleServerHandler(int channel, PacketProcessor.Mode mode, PacketProcessor processor) {
         this.channel = channel;
-        this.isCashShop = isCashShop;
+        this.mode = mode;
         this.processor = processor;
     }
 
@@ -33,7 +33,7 @@ public class NettyMapleServerHandler extends ChannelInboundHandlerAdapter {
                 ctx.channel().close();
                 return;
             }
-        } else if (isCashShop) {
+        } else if (PacketProcessor.Mode.CASHSHOP.equals(mode)) {
             if (CashShopServer.getInstance().isShutdown()) {
                 ctx.channel().close();
                 return;
@@ -55,7 +55,7 @@ public class NettyMapleServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         byte[] message = (byte[]) msg;
         var client = (MapleClient) ctx.channel().attr(AttributeKey.valueOf(MapleClient.CLIENT_KEY)).get();
-        HandlerHelper.handlePacket(client, processor, isCashShop, message);
+        HandlerHelper.handlePacket(client, processor, PacketProcessor.Mode.CASHSHOP.equals(mode), message);
     }
 
 
@@ -69,7 +69,7 @@ public class NettyMapleServerHandler extends ChannelInboundHandlerAdapter {
         final MapleClient client = (MapleClient) ctx.channel().attr(CLIENT_KEY).get();
         if (client != null) {
             try {
-                client.disconnect(true, isCashShop);
+                client.disconnect(true, PacketProcessor.Mode.CASHSHOP.equals(mode));
             } finally {
                 ctx.channel().close();
                 ctx.channel().attr(CLIENT_KEY).remove();

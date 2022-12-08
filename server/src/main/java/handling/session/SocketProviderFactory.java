@@ -5,7 +5,7 @@ import handling.session.netty.NettySocketProvider;
 
 public class SocketProviderFactory {
 
-    private static boolean isNetty = false;
+    private static boolean isNetty = true;
 
     public static SocketProvider getSocketProvider() {
         if (!isNetty) {

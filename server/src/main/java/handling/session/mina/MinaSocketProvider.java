@@ -31,7 +31,7 @@ public class MinaSocketProvider implements SocketProvider {
         try {
             var inetSocketAddress = new InetSocketAddress(port);
             acceptor.bind(inetSocketAddress, new MinaMapleServerHandler(channel,
-                    PacketProcessor.Mode.CASHSHOP.equals(mode),
+                    mode,
                     PacketProcessor.getProcessor(mode)), cfg);
             log.info("Listening on port " + port + ".");
         } catch (IOException e) {

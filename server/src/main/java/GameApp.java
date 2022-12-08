@@ -173,9 +173,7 @@ public class GameApp {
 
         executorService.submit(() -> {
             printLoad("CashItemLoader");
-            if (!ServerEnvironment.isDebugEnabled()) {
-                CashItemFactory.getInstance().loadCashShopData();
-            }
+            CashItemFactory.getInstance().loadCashShopData();
         });
 
         executorService.shutdown();
