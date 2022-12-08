@@ -26,7 +26,7 @@ public class CharacterData implements Serializable {
     private int job;
     private byte skinColor;
     private int gender;
-    private int fame;
+    private short fame;
     private int hair;
     private int face;
     private int ap;

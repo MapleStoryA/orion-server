@@ -196,27 +196,47 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
     private transient MapleDragon dragon;
     private transient RockPaperScissors rps;
     private transient SpeedQuiz sq;
+
     private MapleStorage storage;
+
     private transient MapleTrade trade;
+
     private MapleMount mount;
+
     private MapleMessenger messenger;
+
     private byte[] petStore;
+
     private transient IMaplePlayerShop playerShop;
+
     private MapleParty party;
+
     private boolean invincible = false, canTalk = true, followinitiator = false, followon = false;
+
     private MapleGuildCharacter mgc;
+
     private transient EventInstanceManager eventInstance;
+
     private MapleInventory[] inventory;
+
     private SkillMacro[] skillMacros = new SkillMacro[5];
+
     private MapleKeyLayout keylayout;
+
     private transient ScheduledFuture<?> beholderHealingSchedule, beholderBuffSchedule, mapTimeLimitTask, fishing;
+
     private long nextConsume = 0, pqStartTime = 0;
+
     private transient Event_PyramidSubway pyramidSubway = null;
+
     private transient List<Integer> pendingExpiration = null, pendingSkills = null, pendingUnlock = null;
+
     private String teleportname = "";
+
     private boolean changed_wishlist, changed_trocklocations, changed_regrocklocations, changed_skillmacros,
             changed_achievements, changed_savedlocations, changed_questinfo, changed_skills, changed_reports;
     private int watk;
+
     private EvanSkillPoints evanSP;
     private long travelTime;
 
@@ -296,14 +316,14 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         ret.fame = 0;
         ret.accountid = client.getAccID();
         ret.buddylist = new MapleBuddyList((byte) 20);
-        ret.stats.str = 12;
-        ret.stats.dex = 5;
-        ret.stats.int_ = 4;
-        ret.stats.luk = 4;
-        ret.stats.maxhp = 50;
-        ret.stats.hp = 50;
-        ret.stats.maxmp = 50;
-        ret.stats.mp = 50;
+        ret.stats.setStr((short) 12);
+        ret.stats.setDex((short) 5);
+        ret.stats.setInt((short) 4);
+        ret.stats.setLuk((short) 4);
+        ret.stats.setMaxHp(50);
+        ret.stats.setHp(50);
+        ret.stats.setMaxMp(50);
+        ret.stats.setMaxMp(50);
 
         try {
             Connection con = DatabaseConnection.getConnection();
@@ -344,14 +364,14 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         ret.CRand = new PlayerRandomStream();
 
         ret.changed_skillmacros = false;
-        ret.stats.str = ct.str;
-        ret.stats.dex = ct.dex;
-        ret.stats.int_ = ct.int_;
-        ret.stats.luk = ct.luk;
-        ret.stats.maxhp = ct.maxhp;
-        ret.stats.maxmp = ct.maxmp;
-        ret.stats.hp = ct.hp;
-        ret.stats.mp = ct.mp;
+        ret.stats.setStr(ct.str);
+        ret.stats.setDex(ct.dex);
+        ret.stats.setInt(ct.int_);
+        ret.stats.setLuk(ct.luk);
+        ret.stats.setMaxHp(ct.maxhp);
+        ret.stats.setMaxMp(ct.maxmp);
+        ret.stats.setHp(ct.hp);
+        ret.stats.setMp(ct.mp);
 
         ret.chalktext = ct.chalkboard;
         ret.exp = ct.exp;
@@ -508,18 +528,18 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
                 throw new RuntimeException("Loading the Char Failed (char not found)");
             }
 
-            ret.name = rs.getString("name");
-            ret.level = rs.getShort("level");
-            ret.fame = rs.getShort("fame");
+            ret.name = stats1.getName();
+            ret.level = stats1.getLevel();
+            ret.fame = stats1.getFame();
 
-            ret.stats.str = rs.getShort("str");
-            ret.stats.dex = rs.getShort("dex");
-            ret.stats.int_ = rs.getShort("int");
-            ret.stats.luk = rs.getShort("luk");
-            ret.stats.maxhp = rs.getInt("maxhp");
-            ret.stats.maxmp = rs.getInt("maxmp");
-            ret.stats.hp = rs.getInt("hp");
-            ret.stats.mp = rs.getInt("mp");
+            ret.stats.setStr(stats1.getStr());
+            ret.stats.setDex(stats1.getDex());
+            ret.stats.setInt(stats1.getInt_());
+            ret.stats.setLuk(stats1.getLuk());
+            ret.stats.setMaxMp(stats1.getMaxMp());
+            ret.stats.setMaxHp(stats1.getMaxHp());
+            ret.stats.setHp(stats1.getMaxHp());
+            ret.stats.setMp(stats1.getMaxMp());
 
             ret.exp = rs.getInt("exp");
             ret.hpApUsed = rs.getShort("hpApUsed");
@@ -2900,7 +2920,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         }
         if (statups.size() > 0) {
             client.getSession().write(MaplePacketCreator.updatePlayerStats(statups, getJob()));
-            int hp = this.getStat().hp;
+            int hp = this.getStat().getHp();
             if (hp <= 0) {// In case player die with disable actions
                 getClient().enableActions();
                 if (this.getNewEventInstance() != null) {
@@ -3076,10 +3096,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             updateSingleStat(MapleStat.EXP, getExp());
             if (leveled) {
                 final List<Pair<MapleStat, Integer>> statup = new ArrayList<>(7);
-                statup.add(new Pair<>(MapleStat.MAXHP, Math.min(30000, stats.maxhp)));
-                statup.add(new Pair<>(MapleStat.MAXMP, Math.min(30000, stats.maxmp)));
-                statup.add(new Pair<>(MapleStat.HP, Math.min(30000, stats.maxhp)));
-                statup.add(new Pair<>(MapleStat.MP, Math.min(30000, stats.maxmp)));
+                statup.add(new Pair<>(MapleStat.MAXHP, Math.min(30000, stats.getMaxHp())));
+                statup.add(new Pair<>(MapleStat.MAXMP, Math.min(30000, stats.getMaxMp())));
+                statup.add(new Pair<>(MapleStat.HP, Math.min(30000, stats.getMaxHp())));
+                statup.add(new Pair<>(MapleStat.MP, Math.min(30000, stats.getMaxMp())));
                 statup.add(new Pair<>(MapleStat.EXP, exp));
                 statup.add(new Pair<>(MapleStat.LEVEL, (int) level));
                 statup.add(new Pair<>(MapleStat.AVAILABLEAP, Math.min(199, remainingAp)));
@@ -3406,7 +3426,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         if (ret == null || ret.skillevel <= 0) {
             return 0;
         }
-        return (byte) Math.min(skill.getMaxLevel(), ret.skillevel + (skill.isBeginnerSkill() ? 0 : stats.incAllskill));
+        return (byte) Math.min(skill.getMaxLevel(), ret.skillevel + (skill.isBeginnerSkill() ? 0 : stats.getIncAllskill()));
     }
 
     public byte getMasterLevel(final int skill) {
@@ -4511,10 +4531,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         if (skilllevel >= 1 && map != null) {
             lastBerserkTime = System.currentTimeMillis();
             final MapleStatEffect ampStat = BerserkX.getEffect(skilllevel);
-            stats.Berserk = (stats.getHp() * 100) / stats.getCurrentMaxHp() <= ampStat.getX();
-            client.getSession().write(MaplePacketCreator.showOwnBuffEffect(1320006, 1, (byte) (stats.Berserk ? 1 : 0)));
+            stats.setBersek((stats.getHp() * 100) / stats.getCurrentMaxHp() <= ampStat.getX());
+            client.getSession().write(MaplePacketCreator.showOwnBuffEffect(1320006, 1, (byte) (stats.isBersek() ? 1 : 0)));
             map.broadcastMessage(this,
-                    MaplePacketCreator.showBuffeffect(getId(), 1320006, 1, (byte) (stats.Berserk ? 1 : 0)), false);
+                    MaplePacketCreator.showBuffeffect(getId(), 1320006, 1, (byte) (stats.isBersek() ? 1 : 0)), false);
         } else {
             lastBerserkTime = -1;
         }
@@ -4833,15 +4853,15 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
     }
 
     public int getEXPMod() {
-        return stats.expMod;
+        return stats.getExpMod();
     }
 
     public int getDropMod() {
-        return stats.dropMod;
+        return stats.getDropMod();
     }
 
     public int getCashMod() {
-        return stats.cashMod;
+        return stats.getCashMod();
     }
 
     public int getPoints() {
@@ -5651,7 +5671,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         // Not equipped
         // at Max for fairyExp
         // we don't reset it.
-        if (stats.equippedFairy && fairyExp < 30) {
+        if (stats.isEquippedFairy() && fairyExp < 30) {
             fairyExp += 10;
             lastFairyTime = System.currentTimeMillis();
             client.getSession().write(MaplePacketCreator.fairyPendantMessage(fairyExp));
@@ -5659,13 +5679,13 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
                 cancelFairySchedule(false); // Don't reset exp, just leave as
                 // max
             }
-        } else cancelFairySchedule(!stats.equippedFairy); // Reset exp
+        } else cancelFairySchedule(!stats.isEquippedFairy()); // Reset exp
     }
 
     // wear-1hr = 10%, 1hr-2hr already = 20%, 2 hrs + = 30%
     public void startFairySchedule() {
         cancelFairySchedule(true); // Reset exp
-        if (stats.equippedFairy) { // Used for login
+        if (stats.isEquippedFairy()) { // Used for login
             lastFairyTime = System.currentTimeMillis();
             client.getSession().write(MaplePacketCreator.fairyPendantMessage(fairyExp));
         }

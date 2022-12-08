@@ -529,7 +529,7 @@ public final class MapleMap {
             }
 
             //if(1 == 1){
-            if (Randomizer.nextInt(999999) < (int) (de.chance * chServerrate * chr.getDropMod() * (chr.getStat().dropBuff / 100.0) * (showdown / 100.0))) {
+            if (Randomizer.nextInt(999999) < (int) (de.chance * chServerrate * chr.getDropMod() * (chr.getStat().getDropBuff() / 100.0) * (showdown / 100.0))) {
                 byte questStatus = chr.getQuestStatus(de.questid);
                 if (questStatus > 1) {
                     continue;
@@ -603,7 +603,7 @@ public final class MapleMap {
                     pos.x = (mobpos - 25 + k * 10);
                 }
                 if (de.itemId == 0) {
-                    chr.modifyCSPoints(1, (int) ((Randomizer.nextInt(cashz) + cashz + cashModifier) * (chr.getStat().cashBuff / 100.0) * chr.getCashMod()), true);
+                    chr.modifyCSPoints(1, (int) ((Randomizer.nextInt(cashz) + cashz + cashModifier) * (chr.getStat().getCashBuff() / 100.0) * chr.getCashMod()), true);
                 } else if (!gDropsDisabled) {
                     if (GameConstants.getInventoryType(de.itemId) == MapleInventoryType.EQUIP) {
                         idrop = ii.randomizeStats((Equip) ii.getEquipById(de.itemId));

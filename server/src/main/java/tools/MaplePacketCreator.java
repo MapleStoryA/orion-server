@@ -1029,7 +1029,7 @@ public class MaplePacketCreator {
         addRingInfo(mplew, rings.getMid());
         addMRingInfo(mplew, rings.getRight(), chr);
         // mplew.write(0); // 3 ints
-        mplew.write(chr.getStat().Berserk ? 1 : 0);
+        mplew.write(chr.getStat().isBersek() ? 1 : 0);
         mplew.write(0); // if this is 1, then 1 int(size), each size = another
         // int.
         mplew.writeInt(0);

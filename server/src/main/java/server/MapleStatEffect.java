@@ -1473,7 +1473,7 @@ public class MapleStatEffect implements Serializable {
                     }
                 }
                 final Integer Concentrate = applyfrom.getBuffedSkill_X(MapleBuffStat.CONCENTRATE);
-                final int percent_off = applyfrom.getStat().mpconReduce + (Concentrate == null ? 0 : Concentrate);
+                final int percent_off = applyfrom.getStat().getMpconReduce() + (Concentrate == null ? 0 : Concentrate);
                 if (applyfrom.getBuffedValue(MapleBuffStat.INFINITY) != null) {
                     mpchange = 0;
                 } else {
@@ -1486,7 +1486,7 @@ public class MapleStatEffect implements Serializable {
 
     private final int alchemistModifyVal(final MapleCharacter chr, final int val, final boolean withX) {
         if (!skill) {
-            int offset = chr.getStat().RecoveryUP;
+            int offset = chr.getStat().getRecoveryUP();
             final MapleStatEffect alchemistEffect = getAlchemistEffect(chr);
             if (alchemistEffect != null) {
                 offset += (withX ? alchemistEffect.getX() : alchemistEffect.getY());

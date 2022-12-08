@@ -81,7 +81,7 @@ public class PetLootHandler extends AbstractMaplePacketHandler {
 
             final List<Integer> petIgnore = chr.getPetItemIgnore(pet);
             if (mapitem.getMeso() > 0) {
-                if ((!chr.getStat().hasMeso && pet.getPetItemId() != 5000054)
+                if ((!chr.getStat().isHasMeso() && pet.getPetItemId() != 5000054)
                         || petIgnore.contains(Integer.MAX_VALUE)) { // Ignore
                     c.getSession().write(MaplePacketCreator.enableActions());
                     return;
@@ -99,7 +99,7 @@ public class PetLootHandler extends AbstractMaplePacketHandler {
                     for (final MapleCharacter m : toGive) {
                         m.gainMeso(
                                 mapitem.getMeso() / toGive.size()
-                                        + (m.getStat().hasPartyBonus ? (int) (mapitem.getMeso() / 20.0) : 0),
+                                        + (m.getStat().isHasPartyBonus() ? (int) (mapitem.getMeso() / 20.0) : 0),
                                 true, true);
                     }
                 } else {
@@ -107,7 +107,7 @@ public class PetLootHandler extends AbstractMaplePacketHandler {
                 }
                 InventoryHandlerUtils.removeItem_Pet(chr, mapitem, petz);
             } else {
-                if ((!chr.getStat().hasItem && pet.getPetItemId() != 5000054)
+                if ((!chr.getStat().isHasItem() && pet.getPetItemId() != 5000054)
                         || petIgnore.contains(mapitem.getItem().getItemId())) {
                     c.getSession().write(MaplePacketCreator.enableActions());
                     return;

@@ -91,7 +91,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                     for (final MapleCharacter m : toGive) {
                         m.gainMeso(
                                 mapitem.getMeso() / toGive.size()
-                                        + (m.getStat().hasPartyBonus ? (int) (mapitem.getMeso() / 20.0) : 0),
+                                        + (m.getStat().isHasPartyBonus() ? (int) (mapitem.getMeso() / 20.0) : 0),
                                 true, true);
                     }
                 } else {
