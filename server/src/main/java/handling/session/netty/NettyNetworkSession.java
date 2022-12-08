@@ -6,12 +6,12 @@ import io.netty.channel.Channel;
 import java.net.SocketAddress;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class NettySession implements NetworkSession {
+public class NettyNetworkSession implements NetworkSession {
     private final Channel channel;
 
     private ReentrantLock connectionLock = new ReentrantLock(true);
 
-    public NettySession(Channel channel) {
+    public NettyNetworkSession(Channel channel) {
         this.channel = channel;
     }
 

@@ -22,10 +22,10 @@ public class NettyMapleServerHandler extends ChannelInboundHandlerAdapter {
     private final PacketProcessor.Mode mode;
     private final int channel;
 
-    public NettyMapleServerHandler(int channel, PacketProcessor.Mode mode, PacketProcessor processor) {
+    public NettyMapleServerHandler(int channel, PacketProcessor.Mode mode) {
         this.channel = channel;
         this.mode = mode;
-        this.processor = processor;
+        this.processor = PacketProcessor.getProcessor(mode);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class NettyMapleServerHandler extends ChannelInboundHandlerAdapter {
         }
         final byte[] ivSend = new byte[]{82, 48, 120, (byte) Randomizer.nextInt(255)};
         final byte[] ivRecv = new byte[]{70, 114, 122, (byte) Randomizer.nextInt(255)};
-        final var client = new MapleClient(ivSend, ivRecv, new NettySession(ctx.channel()));
+        final var client = new MapleClient(ivSend, ivRecv, new NettyNetworkSession(ctx.channel()));
         client.setChannel(channel);
         NettyMaplePacketEncoder encoder = new NettyMaplePacketEncoder();
         ctx.pipeline().addFirst(new NettyMaplePacketDecoder(client), encoder, new SendPingOnIdle(5, 1, 5, client));

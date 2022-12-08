@@ -42,10 +42,10 @@ public class MinaMapleServerHandler extends IoHandlerAdapter {
 
     private final int channel;
 
-    public MinaMapleServerHandler(int channel, PacketProcessor.Mode mode, PacketProcessor processor) {
+    public MinaMapleServerHandler(int channel, PacketProcessor.Mode mode) {
         this.channel = channel;
         this.mode = mode;
-        this.processor = processor;
+        this.processor = PacketProcessor.getProcessor(mode);
     }
 
 
@@ -72,7 +72,7 @@ public class MinaMapleServerHandler extends IoHandlerAdapter {
                 return;
             }
         }
-        NetworkSession minaSession = new MinaSession(session);
+        NetworkSession minaSession = new MinaNetworkSession(session);
         final byte[] ivSend = new byte[]{82, 48, 120, (byte) Randomizer.nextInt(255)};
         final byte[] ivRecv = new byte[]{70, 114, 122, (byte) Randomizer.nextInt(255)};
         final var client = new MapleClient(ivSend, ivRecv, minaSession);

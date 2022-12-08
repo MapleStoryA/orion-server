@@ -31,9 +31,7 @@ public class NettySocketProvider implements SocketProvider {
                 .childHandler(new ChannelInitializer<SocketChannel>() {
 
                     protected void initChannel(SocketChannel socketChannel) {
-                        socketChannel.pipeline().addLast(new NettyMapleServerHandler(channel,
-                                mode,
-                                PacketProcessor.getProcessor(mode)));
+                        socketChannel.pipeline().addLast(new NettyMapleServerHandler(channel, mode));
 
                     }
                 })

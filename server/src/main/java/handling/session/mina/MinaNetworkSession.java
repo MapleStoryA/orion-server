@@ -5,11 +5,11 @@ import org.apache.mina.common.IoSession;
 
 import java.net.SocketAddress;
 
-public class MinaSession implements NetworkSession {
+public class MinaNetworkSession implements NetworkSession {
 
     private final IoSession ioSession;
 
-    public MinaSession(IoSession ioSession) {
+    public MinaNetworkSession(IoSession ioSession) {
         this.ioSession = ioSession;
     }
 
