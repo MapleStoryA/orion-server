@@ -1,4 +1,4 @@
-package handling.session;
+package handling.session.netty;
 
 import client.MapleClient;
 import io.netty.buffer.ByteBuf;

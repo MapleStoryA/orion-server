@@ -1,5 +1,6 @@
-package handling.session;
+package handling.session.mina;
 
+import handling.session.NetworkSession;
 import org.apache.mina.common.IoSession;
 
 import java.net.SocketAddress;

@@ -1,5 +1,6 @@
-package handling.session;
+package handling.session.netty;
 
+import handling.session.NetworkSession;
 import io.netty.channel.Channel;
 
 import java.net.SocketAddress;
