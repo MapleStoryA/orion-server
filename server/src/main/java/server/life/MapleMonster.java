@@ -346,7 +346,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             if (attacker.hasDisease(MapleDisease.CURSE)) {
                 exp /= 2;
             }
-            exp *= attacker.getEXPMod() * (int) (attacker.getStat().expBuff / 100.0);
+            exp *= attacker.getEXPMod() * (int) (attacker.getStat().getExpBuff() / 100.0);
             if (attacker.getSubCategoryField() == 1 && attacker.getLevel() >= 10 && attacker.getLevel() < 20) {
                 exp = exp * 3 * WorldServer.getInstance().getChannel(map.getChannel()).getExpRate();
             } else if (attacker.getLevel() >= 10) {
@@ -364,8 +364,8 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             if (Premium_Bonus_EXP_PERCENT > 0) {
                 Premium_Bonus_EXP = (int) ((exp / 100.0) * Premium_Bonus_EXP_PERCENT);
             }
-            int Equipment_Bonus_EXP = (int) ((exp / 100.0) * attacker.getStat().equipmentBonusExp);
-            if (attacker.getStat().equippedFairy && attacker.getFairyExp() > 0) {
+            int Equipment_Bonus_EXP = (int) ((exp / 100.0) * attacker.getStat().getEquipmentBonusExp());
+            if (attacker.getStat().isEquippedFairy() && attacker.getFairyExp() > 0) {
                 Equipment_Bonus_EXP += (int) ((exp / 100.0) * attacker.getFairyExp());
             }
 
@@ -1438,10 +1438,10 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                                 if (Class_Bonus_EXP == 0) {
                                     Class_Bonus_EXP = ServerConstants.Class_Bonus_EXP(pchr.getJob());
                                 }
-                                if (pchr.getStat().equippedWelcomeBackRing && Premium_Bonus_EXP == 0) {
+                                if (pchr.getStat().isEquippedWelcomeBackRing() && Premium_Bonus_EXP == 0) {
                                     Premium_Bonus_EXP = 80;
                                 }
-                                if (pchr.getStat().hasPartyBonus && added_partyinc < 4) {
+                                if (pchr.getStat().isHasPartyBonus() && added_partyinc < 4) {
                                     added_partyinc++;
                                 }
                             }

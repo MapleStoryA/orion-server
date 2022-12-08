@@ -116,7 +116,7 @@ public class TakeDamageHandler extends AbstractMaplePacketHandler {
                 }
             }
             if (type != -2 && type != -3 && type != -4) {
-                final int bouncedam_ = (Randomizer.nextInt(100) < chr.getStat().DAMreflect_rate ? chr.getStat().DAMreflect : 0) + (type == -1 && chr.getBuffedValue(MapleBuffStat.POWERGUARD) != null ? chr.getBuffedValue(MapleBuffStat.POWERGUARD) : 0) + (type == -1 && chr.getBuffedValue(MapleBuffStat.PERFECT_ARMOR) != null ? chr.getBuffedValue(MapleBuffStat.PERFECT_ARMOR) : 0);
+                final int bouncedam_ = (Randomizer.nextInt(100) < chr.getStat().getDAMreflect_rate() ? chr.getStat().getDAMreflect() : 0) + (type == -1 && chr.getBuffedValue(MapleBuffStat.POWERGUARD) != null ? chr.getBuffedValue(MapleBuffStat.POWERGUARD) : 0) + (type == -1 && chr.getBuffedValue(MapleBuffStat.PERFECT_ARMOR) != null ? chr.getBuffedValue(MapleBuffStat.PERFECT_ARMOR) : 0);
                 if (bouncedam_ > 0 && attacker != null) {
                     long bouncedamage = (long) damage * bouncedam_ / 100;
                     bouncedamage = Math.min(bouncedamage, attacker.getMobMaxHp() / 10);

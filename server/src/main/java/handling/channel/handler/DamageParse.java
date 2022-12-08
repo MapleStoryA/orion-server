@@ -282,14 +282,14 @@ public class DamageParse {
                     if (monster.isBuffed(MonsterStatus.WEAPON_DAMAGE_REFLECT)) { //test
                         player.addHP(-(7000 + Randomizer.nextInt(8000))); //this is what it seems to be?
                     }
-                    if (stats.hpRecoverProp > 0) {
-                        if (Randomizer.nextInt(100) <= stats.hpRecoverProp) {//i think its out of 100, anyway
-                            player.healHP(stats.hpRecover);
+                    if (stats.getHpRecoverProp() > 0) {
+                        if (Randomizer.nextInt(100) <= stats.getHpRecoverProp()) {//i think its out of 100, anyway
+                            player.healHP(stats.getHpRecover());
                         }
                     }
-                    if (stats.mpRecoverProp > 0) {
-                        if (Randomizer.nextInt(100) <= stats.mpRecoverProp) {//i think its out of 100, anyway
-                            player.healMP(stats.mpRecover);
+                    if (stats.getMpRecoverProp() > 0) {
+                        if (Randomizer.nextInt(100) <= stats.getMpRecoverProp()) {//i think its out of 100, anyway
+                            player.healMP(stats.getMpRecover());
                         }
                     }
                     if (player.getBuffedValue(MapleBuffStat.COMBO_DRAIN) != null) {
@@ -683,7 +683,7 @@ public class DamageParse {
 //      if (skill.isChargeSkill() && chr.getKeyDownSkill_Time() == 0) {
 //          return 1;
 //      }
-        elemMaxDamagePerMob *= (mobstats.isBoss() ? stats.bossdam_r : stats.dam_r) / 100;
+        elemMaxDamagePerMob *= (mobstats.isBoss() ? stats.getBossdam_r() : stats.getDam_r()) / 100;
         elemMaxDamagePerMob += (elemMaxDamagePerMob * (double) chr.getDamageIncrease(monster.getObjectId())) / 100D;
         switch (skill.getId()) {
             case 1000:
@@ -712,15 +712,15 @@ public class DamageParse {
     private static final double ElementalStaffAttackBonus(final Element elem, double elemMaxDamagePerMob, final PlayerStats stats) {
         switch (elem) {
             case FIRE:
-                return (elemMaxDamagePerMob / 100) * stats.element_fire;
+                return (elemMaxDamagePerMob / 100) * stats.getElement_fire();
             case ICE:
-                return (elemMaxDamagePerMob / 100) * stats.element_ice;
+                return (elemMaxDamagePerMob / 100) * stats.getElement_ice();
             case LIGHTING:
-                return (elemMaxDamagePerMob / 100) * stats.element_light;
+                return (elemMaxDamagePerMob / 100) * stats.getElement_light();
             case POISON:
-                return (elemMaxDamagePerMob / 100) * stats.element_psn;
+                return (elemMaxDamagePerMob / 100) * stats.getElement_psn();
             default:
-                return (elemMaxDamagePerMob / 100) * stats.def;
+                return (elemMaxDamagePerMob / 100) * stats.getDef();
         }
     }
 
@@ -886,7 +886,7 @@ public class DamageParse {
         }
         final PlayerStats stat = player.getStat();
         elementalMaxDamagePerMonster += (elementalMaxDamagePerMonster * (double) player.getDamageIncrease(monster.getObjectId())) / 100D;
-        elementalMaxDamagePerMonster += (elementalMaxDamagePerMonster * (monster.getStats().isBoss() ? stat.bossdam_r : stat.dam_r)) / 100.0;
+        elementalMaxDamagePerMonster += (elementalMaxDamagePerMonster * (monster.getStats().isBoss() ? stat.getBossdam_r() : stat.getDam_r())) / 100.0;
 
         if (elementalMaxDamagePerMonster > 199999) {
             if (!defined) {

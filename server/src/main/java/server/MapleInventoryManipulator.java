@@ -564,7 +564,7 @@ public class MapleInventoryManipulator {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
         }
-        if (!ii.canEquip(stats, source.getItemId(), chr.getLevel(), chr.getJob(), chr.getFame(), statst.getTotalStr(), statst.getTotalDex(), statst.getTotalLuk(), statst.getTotalInt(), c.getPlayer().getStat().levelBonus)) {
+        if (!ii.canEquip(stats, source.getItemId(), chr.getLevel(), chr.getJob(), chr.getFame(), statst.getTotalStr(), statst.getTotalDex(), statst.getTotalLuk(), statst.getTotalInt(), c.getPlayer().getStat().getLevelBonus())) {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
         }

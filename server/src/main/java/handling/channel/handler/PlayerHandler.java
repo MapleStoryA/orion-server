@@ -161,8 +161,8 @@ public class PlayerHandler {
                 }
             }
             if (type != -2 && type != -3 && type != -4) {
-                final int bouncedam_ = (Randomizer.nextInt(100) < chr.getStat().DAMreflect_rate
-                        ? chr.getStat().DAMreflect : 0)
+                final int bouncedam_ = (Randomizer.nextInt(100) < chr.getStat().getDAMreflect_rate()
+                        ? chr.getStat().getDAMreflect() : 0)
                         + (type == -1 && chr.getBuffedValue(MapleBuffStat.POWERGUARD) != null
                         ? chr.getBuffedValue(MapleBuffStat.POWERGUARD) : 0)
                         + (type == -1 && chr.getBuffedValue(MapleBuffStat.PERFECT_ARMOR) != null

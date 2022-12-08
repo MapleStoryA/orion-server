@@ -43,6 +43,7 @@ import java.util.Collections;
 import java.util.HashMap;
 
 @lombok.extern.slf4j.Slf4j
+@SuppressWarnings("non-varargs")
 public class CommandProcessor {
 
     private final static HashMap<String, CommandObject> commands = new HashMap<String, CommandObject>();

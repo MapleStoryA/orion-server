@@ -27,6 +27,7 @@ import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import client.inventory.MapleWeaponType;
 import constants.GameConstants;
+import lombok.Getter;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MapleStatEffect;
@@ -48,6 +49,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.locks.ReentrantLock;
 
 @lombok.extern.slf4j.Slf4j
+@Getter
 public class PlayerStats implements Serializable {
 
     private static final long serialVersionUID = -679541993413738569L;
@@ -55,19 +57,17 @@ public class PlayerStats implements Serializable {
     private final Map<Integer, Integer> setHandling = new HashMap<Integer, Integer>();
     private final List<Equip> durabilityHandling = new ArrayList<Equip>();
     private final List<Equip> equipLevelHandling = new ArrayList<Equip>();
-    public short str, dex, luk, int_;
-    public int hp, maxhp, mp, maxmp;
-    public transient boolean equippedWelcomeBackRing, equippedFairy, hasMeso, hasItem, hasIgnore, hasPartyBonus, Berserk = false, isRecalc = false;
-    public transient int equipmentBonusExp, expMod, dropMod, cashMod, levelBonus;
-    public transient double expBuff, dropBuff, mesoBuff, cashBuff;
-    //restore/recovery are separate variables because i dont know jack shit what it even does
-    //same with incMesoProp/incRewardProp for now
-    public transient double dam_r, bossdam_r;
-    public transient int recoverHP, recoverMP, mpconReduce, incMesoProp, incRewardProp, DAMreflect, DAMreflect_rate, mpRestore,
+    private short str, dex, luk, int_;
+    private int hp, maxhp, mp, maxmp;
+    private transient boolean equippedWelcomeBackRing, equippedFairy, hasMeso, hasItem, hasIgnore, hasPartyBonus, bersek = false, isRecalc = false;
+    private transient int equipmentBonusExp, expMod, dropMod, cashMod, levelBonus;
+    private transient double expBuff, dropBuff, mesoBuff, cashBuff;
+    private transient double dam_r, bossdam_r;
+    private transient int recoverHP, recoverMP, mpconReduce, incMesoProp, incRewardProp, DAMreflect, DAMreflect_rate, mpRestore,
             hpRecover, hpRecoverProp, mpRecover, mpRecoverProp, RecoveryUP, incAllskill;
     // Elemental properties
-    public transient int def, element_ice, element_fire, element_light, element_psn;
-    public ReentrantLock lock = new ReentrantLock(); //we're getting concurrentmodificationexceptions, but would this slow things down?
+    private transient int def, element_ice, element_fire, element_light, element_psn;
+    private ReentrantLock lock = new ReentrantLock(); //we're getting concurrentmodificationexceptions, but would this slow things down?
     private transient float shouldHealHP, shouldHealMP;
     private transient short passive_sharpeye_percent, localmaxhp, localmaxmp;
     private transient byte passive_mastery, passive_sharpeye_rate;
@@ -1201,5 +1201,9 @@ public class PlayerStats implements Serializable {
         mplew.writeShort(maxhp); // maxhp
         mplew.writeShort(mp); // mp
         mplew.writeShort(maxmp); // maxmp
+    }
+
+    public void setBersek(boolean value) {
+        this.bersek = value;
     }
 }
