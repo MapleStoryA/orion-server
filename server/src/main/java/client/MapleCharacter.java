@@ -491,8 +491,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
 
     public static MapleCharacter loadCharFromDB(int charid, MapleClient client, boolean channelserver) {
 
-        CharacterData stats1 = PlayerLoader.loadCharacterData(charid);
-
         final MapleCharacter ret = new MapleCharacter(channelserver);
         ret.client = client;
         ret.id = charid;
