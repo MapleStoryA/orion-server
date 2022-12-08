@@ -59,7 +59,7 @@ public class ShutdownServer implements ShutdownServerMBean {
                     }
                 }
                 LoginServer.getInstance().shutdown();
-                CashShopServer.shutdown();
+                CashShopServer.getInstance().shutdown();
                 WorldInitHelper.initTimers();
             } catch (Exception e) {
                 log.info("Failed to shutdown..." + e);

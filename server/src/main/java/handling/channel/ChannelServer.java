@@ -145,7 +145,7 @@ public class ChannelServer extends GameServer {
 
         log.info("Channel " + channel + ", Unbinding...");
 
-        unbindAcceptor();
+        unbindAll();
 
         WorldServer.getInstance().removeChannel(channel);
         LoginServer.getInstance().removeChannel(channel);

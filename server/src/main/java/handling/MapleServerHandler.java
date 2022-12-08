@@ -98,7 +98,7 @@ public class MapleServerHandler extends IoHandlerAdapter {
                 return;
             }
         } else if (isCashShop) {
-            if (CashShopServer.isShutdown()) {
+            if (CashShopServer.getInstance().isShutdown()) {
                 session.close();
                 return;
             }

@@ -21,75 +21,55 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package handling.cashshop;
 
-import handling.MapleServerHandler;
 import handling.PacketProcessor;
 import handling.channel.PlayerStorage;
-import handling.mina.MapleCodecFactory;
-import org.apache.mina.common.ByteBuffer;
-import org.apache.mina.common.IoAcceptor;
-import org.apache.mina.common.SimpleByteBufferAllocator;
-import org.apache.mina.filter.codec.ProtocolCodecFilter;
-import org.apache.mina.transport.socket.nio.SocketAcceptor;
-import org.apache.mina.transport.socket.nio.SocketAcceptorConfig;
+import handling.login.GameServer;
+import lombok.extern.slf4j.Slf4j;
 import server.ServerProperties;
 
-import java.net.InetSocketAddress;
-
-@lombok.extern.slf4j.Slf4j
-public class CashShopServer {
+@Slf4j
+public class CashShopServer extends GameServer {
 
     private final static int PORT = 8799;
-    private static String ip;
-    private static InetSocketAddress inetSocketAddr;
-    private static IoAcceptor acceptor;
-    private static PlayerStorage players;
-    private static boolean finishedShutdown = false;
+    private String ip;
+    private PlayerStorage players;
+    private boolean finishedShutdown = false;
 
-    public static final void run_startup_configurations() {
-        ip = ServerProperties.getProperty("world.host") + ":" + PORT;
+    private static CashShopServer INSTANCE;
 
-        ByteBuffer.setUseDirectBuffers(false);
-        ByteBuffer.setAllocator(new SimpleByteBufferAllocator());
-
-        acceptor = new SocketAcceptor();
-        final SocketAcceptorConfig cfg = new SocketAcceptorConfig();
-        cfg.getSessionConfig().setTcpNoDelay(true);
-        cfg.setDisconnectOnUnbind(true);
-        cfg.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MapleCodecFactory()));
+    public CashShopServer() {
+        super(-1, 8799, PacketProcessor.Mode.CASHSHOP);
         players = new PlayerStorage(-10);
-
-        try {
-            inetSocketAddr = new InetSocketAddress(PORT);
-            acceptor.bind(inetSocketAddr, new MapleServerHandler(-1, true,
-                    PacketProcessor.getProcessor(PacketProcessor.Mode.CASHSHOP)), cfg);
-            log.info("Listening on port " + PORT + ".");
-        } catch (final Exception e) {
-            System.err.println("Binding to port " + PORT + " failed");
-            e.printStackTrace();
-            throw new RuntimeException("Binding failed.", e);
-        }
+        ip = ServerProperties.getProperty("world.host") + ":" + PORT;
     }
 
-    public static final String getIP() {
+    public final String getPublicAddress() {
         return ip;
     }
 
-    public static final PlayerStorage getPlayerStorage() {
+    public final PlayerStorage getPlayerStorage() {
         return players;
     }
 
-    public static final void shutdown() {
+    public final void shutdown() {
         if (finishedShutdown) {
             return;
         }
         log.info("Saving all connected clients (CS)...");
         players.disconnectAll();
         log.info("Shutting down CS...");
-        acceptor.unbindAll();
+        unbindAll();
         finishedShutdown = true;
     }
 
-    public static boolean isShutdown() {
+    public boolean isShutdown() {
         return finishedShutdown;
+    }
+
+    public static CashShopServer getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new CashShopServer();
+        }
+        return INSTANCE;
     }
 }

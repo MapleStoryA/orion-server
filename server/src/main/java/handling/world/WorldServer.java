@@ -139,7 +139,7 @@ public class WorldServer {
 
     public PlayerStorage getStorage(int channel) {
         if (channel == -10) {
-            return CashShopServer.getPlayerStorage();
+            return CashShopServer.getInstance().getPlayerStorage();
         }
         return WorldServer.getInstance().getChannel(channel).getPlayerStorage();
     }

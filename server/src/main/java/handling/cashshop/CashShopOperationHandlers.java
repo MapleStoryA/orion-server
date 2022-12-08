@@ -17,7 +17,7 @@ import java.util.List;
 public class CashShopOperationHandlers {
 
     public static void leaveCashShop(final SeekableLittleEndianAccessor slea, final MapleClient c, final MapleCharacter chr) {
-        CashShopServer.getPlayerStorage().deregisterPlayer(chr);
+        CashShopServer.getInstance().getPlayerStorage().deregisterPlayer(chr);
         c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION, c.getSessionIPAddress());
 
         try {
@@ -33,7 +33,7 @@ public class CashShopOperationHandlers {
     }
 
     public static void enterCashShop(final int playerid, final MapleClient c) {
-        CharacterTransfer transfer = CashShopServer.getPlayerStorage().getPendingCharacter(playerid);
+        CharacterTransfer transfer = CashShopServer.getInstance().getPlayerStorage().getPendingCharacter(playerid);
         if (transfer == null) {
             c.getSession().close();
             return;
@@ -61,7 +61,7 @@ public class CashShopOperationHandlers {
             //  return;
         }
         c.updateLoginState(MapleClient.LOGIN_LOGGEDIN, c.getSessionIPAddress());
-        CashShopServer.getPlayerStorage().registerPlayer(chr);
+        CashShopServer.getInstance().getPlayerStorage().registerPlayer(chr);
         c.getSession().write(MTSCSPacket.warpCS(c));
         CSUpdate(c);
     }

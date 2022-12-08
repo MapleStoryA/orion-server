@@ -46,7 +46,7 @@ public class EnterCashShopHandler extends AbstractMaplePacketHandler {
         chr.getMap().removePlayer(chr);
         c.setPlayer(null);
         c.setReceiving(false);
-        c.getSession().write(MaplePacketCreator.getChannelChange(Integer.parseInt(CashShopServer.getIP().split(":")[1])));
+        c.getSession().write(MaplePacketCreator.getChannelChange(Integer.parseInt(CashShopServer.getInstance().getPublicAddress().split(":")[1])));
 
     }
 

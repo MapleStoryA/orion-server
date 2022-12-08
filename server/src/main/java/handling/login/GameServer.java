@@ -17,7 +17,7 @@ import java.net.InetSocketAddress;
 public class GameServer {
 
     protected InetSocketAddress inetSocketAddress;
-    protected IoAcceptor acceptor;
+    private IoAcceptor acceptor;
 
     protected int channel, port;
 
@@ -34,14 +34,16 @@ public class GameServer {
 
         try {
             inetSocketAddress = new InetSocketAddress(port);
-            acceptor.bind(inetSocketAddress, new MapleServerHandler(channel, false, PacketProcessor.getProcessor(mode)), cfg);
+            acceptor.bind(inetSocketAddress, new MapleServerHandler(channel,
+                    PacketProcessor.Mode.CASHSHOP.equals(mode),
+                    PacketProcessor.getProcessor(mode)), cfg);
             log.info("Listening on port " + port + ".");
         } catch (IOException e) {
             System.err.println("Binding to port " + port + " failed" + e);
         }
     }
 
-    protected void unbindAcceptor() {
+    protected void unbindAll() {
         acceptor.unbindAll();
         acceptor = null;
     }

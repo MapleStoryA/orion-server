@@ -78,7 +78,7 @@ public class LoginServer extends GameServer {
             return;
         }
         log.info("Shutting down login...");
-        acceptor.unbindAll();
+        unbindAll();
         finishedShutdown = true;
     }
 

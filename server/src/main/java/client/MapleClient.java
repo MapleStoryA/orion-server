@@ -958,7 +958,7 @@ public class MapleClient implements Serializable {
                     System.err.println(getLogMessage(this, "ERROR") + e);
                 } finally {
                     if (RemoveInChannelServer && ch > 0) {
-                        CashShopServer.getPlayerStorage().deregisterPlayer(idz, namez);
+                        CashShopServer.getInstance().getPlayerStorage().deregisterPlayer(idz, namez);
                     }
                     player = null;
                 }

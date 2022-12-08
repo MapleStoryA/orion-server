@@ -7,9 +7,9 @@ import handling.channel.ChannelServer;
 import handling.channel.MapleGuildRanking;
 import handling.login.LoginInformationProvider;
 import handling.login.LoginServer;
-import handling.world.helper.WorldInitHelper;
 import handling.world.WorldServer;
 import handling.world.guild.MapleGuild;
+import handling.world.helper.WorldInitHelper;
 import handling.world.respawn.RespawnWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -201,7 +201,7 @@ public class GameApp {
         log.info("[Channel Initialized]");
 
         log.info("[Loading CS]");
-        CashShopServer.run_startup_configurations();
+        CashShopServer.getInstance();
         log.info("[CS Initialized]");
 
         CheatTimer.getInstance().register(AutobanManager.getInstance(), 60000);
