@@ -68,7 +68,7 @@ public class InterServerHandler {
             player = MapleCharacter.loadCharFromDB(playerid, c, true);
             player.setLoginTime(System.currentTimeMillis());
         } else {
-            player = MapleCharacter.ReconstructChr(transfer, c, true);
+            player = MapleCharacter.reconstructChr(transfer, c, true);
         }
         c.setPlayer(player);
         c.setAccID(player.getAccountID());

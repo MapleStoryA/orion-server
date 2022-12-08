@@ -29,8 +29,6 @@ import org.apache.mina.filter.codec.ProtocolEncoderOutput;
 import tools.MapleAESOFB;
 import tools.MapleCustomEncryption;
 
-import java.util.concurrent.locks.Lock;
-
 @lombok.extern.slf4j.Slf4j
 public class MinaMaplePacketEncoder implements ProtocolEncoder {
 
@@ -45,18 +43,12 @@ public class MinaMaplePacketEncoder implements ProtocolEncoder {
             final byte[] unencrypted = new byte[inputInitialPacket.length];
             System.arraycopy(inputInitialPacket, 0, unencrypted, 0, inputInitialPacket.length);
             final byte[] ret = new byte[unencrypted.length + 4];
-            final Lock mutex = client.getLock();
-            mutex.lock();
-            try {
-                final byte[] header = send_crypto.getPacketHeader(unencrypted.length);
-                MapleCustomEncryption.encryptData(unencrypted);
-                send_crypto.crypt(unencrypted);
-                System.arraycopy(header, 0, ret, 0, 4);
-                System.arraycopy(unencrypted, 0, ret, 4, unencrypted.length);
-                session.write(ByteBuffer.wrap(ret));
-            } finally {
-                mutex.unlock();
-            }
+            final byte[] header = send_crypto.getPacketHeader(unencrypted.length);
+            MapleCustomEncryption.encryptData(unencrypted);
+            send_crypto.crypt(unencrypted);
+            System.arraycopy(header, 0, ret, 0, 4);
+            System.arraycopy(unencrypted, 0, ret, 4, unencrypted.length);
+            session.write(ByteBuffer.wrap(ret));
         } else { // no client object created yet, send unencrypted (hello)
             out.write(ByteBuffer.wrap(((byte[]) message)));
         }

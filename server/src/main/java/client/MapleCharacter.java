@@ -43,6 +43,7 @@ import database.DatabaseConnection;
 import database.DatabaseException;
 import database.state.BanService;
 import database.state.CharacterData;
+import database.state.CharacterService;
 import database.state.LoginService;
 import handling.channel.ChannelServer;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
@@ -236,9 +237,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
 
     private boolean changed_wishlist, changed_trocklocations, changed_regrocklocations, changed_skillmacros,
             changed_achievements, changed_savedlocations, changed_questinfo, changed_skills, changed_reports;
-    private int watk;
 
-    private EvanSkillPoints evanSP;
+    private EvanSkillPoints evanSP; // TODO: Fix this
     private long travelTime;
 
     private EventInstance newEventInstance;
@@ -304,6 +304,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         }
     }
 
+    private void deleteWhereCharacterId(Connection con, String sql) throws SQLException {
+        CharacterService.deleteWhereCharacterId(con, sql, id);
+    }
+
     public static MapleCharacter getDefault(final MapleClient client, final int type) {
         MapleCharacter ret = new MapleCharacter(false);
         ret.client = client;
@@ -348,7 +352,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         return ret;
     }
 
-    public final static MapleCharacter ReconstructChr(final CharacterTransfer ct, final MapleClient client,
+    public final static MapleCharacter reconstructChr(final CharacterTransfer ct, final MapleClient client,
                                                       final boolean isChannel) {
         final MapleCharacter ret = new MapleCharacter(true); // Always true,
         // it's change
@@ -574,7 +578,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             ret.marriageId = rs.getInt("marriageId");
 
             // Evan stuff
-            loadEvanSkills(ret);
+            ret.evanSP = CharacterService.loadEvanSkills(ret.id);
             //
 
 
@@ -1096,20 +1100,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         }
     }
 
-    public static void deleteWhereCharacterId(Connection con, String sql, int id) throws SQLException {
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setInt(1, id);
-        ps.executeUpdate();
-        ps.close();
-    }
-
-    public static void deleteWhereCharacterName(Connection con, String sql, String name) throws SQLException {
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setString(1, name);
-        ps.executeUpdate();
-        ps.close();
-    }
-
     public static boolean ban(String id, String reason, boolean accountId, int gmlevel, boolean hellban) {
         try {
             Connection con = DatabaseConnection.getConnection();
@@ -1184,33 +1174,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         return false;
     }
 
-    private static void loadEvanSkills(MapleCharacter ret) {
-        EvanSkillPoints sp = new EvanSkillPoints();
-        ResultSet rs = null;
-        PreparedStatement ps = null;
-        Connection con = DatabaseConnection.getConnection();
-        try {
-            ps = con.prepareStatement("SELECT * FROM evan_skillpoints WHERE characterid = ?");
-            ps.setInt(1, ret.id);
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                sp.setSkillPoints(MapleJob.EVAN2.getId(), rs.getInt("Evan1"));
-                sp.setSkillPoints(MapleJob.EVAN3.getId(), rs.getInt("Evan2"));
-                sp.setSkillPoints(MapleJob.EVAN4.getId(), rs.getInt("Evan3"));
-                sp.setSkillPoints(MapleJob.EVAN5.getId(), rs.getInt("Evan4"));
-                sp.setSkillPoints(MapleJob.EVAN6.getId(), rs.getInt("Evan5"));
-                sp.setSkillPoints(MapleJob.EVAN7.getId(), rs.getInt("Evan6"));
-                sp.setSkillPoints(MapleJob.EVAN8.getId(), rs.getInt("Evan7"));
-                sp.setSkillPoints(MapleJob.EVAN9.getId(), rs.getInt("Evan8"));
-                sp.setSkillPoints(MapleJob.EVAN10.getId(), rs.getInt("Evan9"));
-                sp.setSkillPoints(MapleJob.EVAN11.getId(), rs.getInt("Evan10"));
-            }
-            ret.evanSP = sp;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     public void saveToDB(boolean dc, boolean fromcs) {
         Connection con = null;
@@ -1519,11 +1482,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             con.commit();
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println(MapleClient.getLogMessage(this, "[charsave] Error saving character data") + e);
             try {
                 con.rollback();
             } catch (SQLException ex) {
-                System.err.println(MapleClient.getLogMessage(this, "[charsave] Error Rolling Back") + e);
+                e.printStackTrace();
             }
         } finally {
             try {
@@ -1539,14 +1501,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
                 con.setAutoCommit(true);
                 con.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
             } catch (SQLException e) {
-                System.err
-                        .println(MapleClient.getLogMessage(this, "[charsave] Error going back to autocommit mode") + e);
+                e.printStackTrace();
             }
         }
-    }
-
-    private void deleteWhereCharacterId(Connection con, String sql) throws SQLException {
-        deleteWhereCharacterId(con, sql, id);
     }
 
     public void saveInventory(final Connection con) throws SQLException {
@@ -3694,10 +3651,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
     }
 
     public void tempban(String reason, Calendar duration, int greason, boolean IPMac) {
-        if (IPMac) {
-            client.banMacs();
-        }
-
         try {
             Connection con = DatabaseConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("INSERT INTO ipbans VALUES (DEFAULT, ?)");
@@ -3735,7 +3688,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             ps.close();
 
             if (IPMac) {
-                client.banMacs();
                 ps = con.prepareStatement("INSERT INTO ipbans VALUES (DEFAULT, ?)");
                 ps.setString(1, client.getSessionIPAddress());
                 ps.execute();
@@ -5885,16 +5837,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
 
     public void setMorphId(byte id) {
         this.morphId = id;
-    }
-
-    public void reloadChar() {
-        this.getClient().getSession().write(MaplePacketCreator.getCharInfo(this));
-        this.getMap().removePlayer(this);
-        this.getMap().addPlayer(this);
-    }
-
-    public int getTotalWatk() {
-        return watk;
     }
 
     public void setstat(byte stat, short newval) {
