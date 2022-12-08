@@ -1,7 +1,7 @@
 package handling;
 
 import handling.session.SocketProvider;
-import handling.session.netty.NettyProvider;
+import handling.session.netty.NettySocketProvider;
 
 import java.net.InetSocketAddress;
 
@@ -34,7 +34,7 @@ public class GameServer {
     public GameServer(int channel, int port, PacketProcessor.Mode mode) {
         this.channel = channel;
         this.port = port;
-        this.socketProvider = new NettyProvider();
+        this.socketProvider = new NettySocketProvider();
         this.socketThread = new SocketThread(socketProvider, mode);
         this.socketThread.start();
     }

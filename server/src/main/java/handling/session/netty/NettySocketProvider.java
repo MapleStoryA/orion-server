@@ -14,7 +14,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class NettyProvider implements SocketProvider {
+public class NettySocketProvider implements SocketProvider {
 
 
     private EventLoopGroup eventLoopGroupBoss, eventLoopGroupWorker;

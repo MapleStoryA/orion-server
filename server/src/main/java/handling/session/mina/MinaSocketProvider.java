@@ -17,12 +17,12 @@ import java.net.InetSocketAddress;
 
 @Slf4j
 @SuppressWarnings("unused")
-public class MinaProvider implements SocketProvider {
+public class MinaSocketProvider implements SocketProvider {
 
     private final GameServer gameServer;
     private IoAcceptor acceptor;
 
-    public MinaProvider(GameServer gameServer) {
+    public MinaSocketProvider(GameServer gameServer) {
         this.gameServer = gameServer;
     }
 
