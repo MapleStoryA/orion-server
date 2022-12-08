@@ -16,9 +16,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
 
-import static client.state.LoginResult.ALREADY_LOGGED_IN;
-import static client.state.LoginResult.INCORRECT_PASSWORD;
-import static client.state.LoginResult.NOT_REGISTERED_ID;
+import static database.state.LoginResult.ALREADY_LOGGED_IN;
+import static database.state.LoginResult.INCORRECT_PASSWORD;
+import static database.state.LoginResult.NOT_REGISTERED_ID;
+
 
 public class LoginService {
 
