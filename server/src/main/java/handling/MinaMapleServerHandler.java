@@ -44,12 +44,12 @@ import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.LoginPacket;
 
 @Slf4j
-public class MapleServerHandler extends IoHandlerAdapter {
+public class MinaMapleServerHandler extends IoHandlerAdapter {
     private final boolean isCashShop;
     private final PacketProcessor processor;
     private final int channel;
 
-    public MapleServerHandler(int channel, boolean isCashShop, PacketProcessor processor) {
+    public MinaMapleServerHandler(int channel, boolean isCashShop, PacketProcessor processor) {
         this.channel = channel;
         this.isCashShop = isCashShop;
         this.processor = processor;

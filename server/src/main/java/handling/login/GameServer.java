@@ -1,6 +1,6 @@
 package handling.login;
 
-import handling.MapleServerHandler;
+import handling.MinaMapleServerHandler;
 import handling.PacketProcessor;
 import handling.session.MapleCodecFactory;
 import org.apache.mina.common.ByteBuffer;
@@ -50,7 +50,7 @@ public class GameServer {
 
             try {
                 inetSocketAddress = new InetSocketAddress(port);
-                acceptor.bind(inetSocketAddress, new MapleServerHandler(channel,
+                acceptor.bind(inetSocketAddress, new MinaMapleServerHandler(channel,
                         PacketProcessor.Mode.CASHSHOP.equals(mode),
                         PacketProcessor.getProcessor(mode)), cfg);
                 log.info("Listening on port " + port + ".");
