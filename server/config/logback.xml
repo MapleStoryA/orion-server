@@ -6,7 +6,8 @@
     </appender>
 
     <logger name="org.apache.mina" level="warn"/>
-    <root level="TRACE">
+    <logger name="io.netty.util" level="ERROR"/>
+    <root level="INFO">
         <appender-ref ref="CONSOLE"/>
     </root>
 </configuration>

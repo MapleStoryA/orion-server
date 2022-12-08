@@ -19,7 +19,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package handling.mina;
+package handling.session.mina;
 
 import client.MapleClient;
 import org.apache.mina.common.ByteBuffer;
@@ -32,11 +32,10 @@ import tools.MapleCustomEncryption;
 import java.util.concurrent.locks.Lock;
 
 @lombok.extern.slf4j.Slf4j
-public class MaplePacketEncoder implements ProtocolEncoder {
+public class MinaMaplePacketEncoder implements ProtocolEncoder {
 
     @Override
-    public void encode(final IoSession session, final Object message, final ProtocolEncoderOutput out)
-            throws Exception {
+    public void encode(final IoSession session, final Object message, final ProtocolEncoderOutput out) {
         final MapleClient client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
 
         if (client != null) {

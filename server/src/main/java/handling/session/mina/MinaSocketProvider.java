@@ -1,8 +1,8 @@
-package handling.login;
+package handling.session.mina;
 
-import handling.MapleServerHandler;
 import handling.PacketProcessor;
-import handling.mina.MapleCodecFactory;
+import handling.session.SocketProvider;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.IoAcceptor;
 import org.apache.mina.common.SimpleByteBufferAllocator;
@@ -13,44 +13,32 @@ import org.apache.mina.transport.socket.nio.SocketAcceptorConfig;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-@lombok.extern.slf4j.Slf4j
-public class GameServer {
+@Slf4j
+@SuppressWarnings("unused")
+public class MinaSocketProvider implements SocketProvider {
 
-    protected InetSocketAddress inetSocketAddress;
-    protected IoAcceptor acceptor;
+    private IoAcceptor acceptor;
 
-    protected int channel, port;
-
-    public GameServer(int channel, int port, PacketProcessor.Mode mode) {
-        this.channel = channel;
-        this.port = port;
+    public void initSocket(int channel, int port, PacketProcessor.Mode mode) {
         ByteBuffer.setUseDirectBuffers(false);
         ByteBuffer.setAllocator(new SimpleByteBufferAllocator());
         acceptor = new SocketAcceptor();
         final SocketAcceptorConfig cfg = new SocketAcceptorConfig();
         cfg.getSessionConfig().setTcpNoDelay(true);
         cfg.setDisconnectOnUnbind(true);
-        cfg.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MapleCodecFactory()));
+        cfg.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MinaMapleCodecFactory()));
 
         try {
-            inetSocketAddress = new InetSocketAddress(port);
-            acceptor.bind(inetSocketAddress, new MapleServerHandler(channel, false, PacketProcessor.getProcessor(mode)), cfg);
+            var inetSocketAddress = new InetSocketAddress(port);
+            acceptor.bind(inetSocketAddress, new MinaMapleServerHandler(channel, mode), cfg);
             log.info("Listening on port " + port + ".");
         } catch (IOException e) {
             System.err.println("Binding to port " + port + " failed" + e);
         }
     }
 
-    protected void unbindAcceptor() {
+    public void unbindAll() {
         acceptor.unbindAll();
         acceptor = null;
     }
-
-    public void onStart() {
-
-    }
-
-    public void shutdown() {
-    }
-
 }

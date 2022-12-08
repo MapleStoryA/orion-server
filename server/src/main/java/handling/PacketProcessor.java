@@ -207,7 +207,7 @@ public final class PacketProcessor {
         return instance;
     }
 
-    MaplePacketHandler getHandler(short packetId) {
+    public MaplePacketHandler getHandler(short packetId) {
         if (packetId > handlers.length) {
             return null;
         }

@@ -19,17 +19,17 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package handling.mina;
+package handling.session.mina;
 
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
 import org.apache.mina.filter.codec.ProtocolDecoder;
 import org.apache.mina.filter.codec.ProtocolEncoder;
 
 @lombok.extern.slf4j.Slf4j
-public class MapleCodecFactory implements ProtocolCodecFactory {
+public class MinaMapleCodecFactory implements ProtocolCodecFactory {
 
-    private final ProtocolEncoder encoder = new MaplePacketEncoder();
-    private final ProtocolDecoder decoder = new MaplePacketDecoder();
+    private final ProtocolEncoder encoder = new MinaMaplePacketEncoder();
+    private final ProtocolDecoder decoder = new MinaMaplePacketDecoder();
 
     public ProtocolEncoder getEncoder() throws Exception {
         return encoder;

@@ -19,7 +19,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package handling.mina;
+package handling.session.mina;
 
 import client.MapleClient;
 import org.apache.mina.common.ByteBuffer;
@@ -30,18 +30,13 @@ import tools.MapleAESOFB;
 import tools.MapleCustomEncryption;
 
 @lombok.extern.slf4j.Slf4j
-public class MaplePacketDecoder extends CumulativeProtocolDecoder {
+public class MinaMaplePacketDecoder extends CumulativeProtocolDecoder {
 
-    public static final String DECODER_STATE_KEY = MaplePacketDecoder.class.getName() + ".STATE";
+    public static final String DECODER_STATE_KEY = MinaMaplePacketDecoder.class.getName() + ".STATE";
 
     @Override
     protected boolean doDecode(IoSession session, ByteBuffer in, ProtocolDecoderOutput out) throws Exception {
         final DecoderState decoderState = (DecoderState) session.getAttribute(DECODER_STATE_KEY);
-
-/*	if (decoderState == null) {
-	    decoderState = new DecoderState();
-	    session.setAttribute(DECODER_STATE_KEY, decoderState);
-	}*/
         final MapleClient client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
 
         if (decoderState.packetlength == -1) {

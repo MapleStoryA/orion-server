@@ -1,7 +1,10 @@
+debug: 'false'
 database:
   url: jdbc:mysql://127.0.0.1:7900/orion?autoReconnect=true
   user: root
   password: root
+socket:
+  provider: handling.session.mina.MinaSocketProvider
 login:
   key: releaselogin
   host: 127.0.0.1

@@ -1,5 +1,6 @@
 package server.config;
 
+import lombok.extern.slf4j.Slf4j;
 import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
 
@@ -7,9 +8,8 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class ServerConfig {
 
     private final Environment environment;
@@ -44,16 +44,11 @@ public class ServerConfig {
         return MapleDataProviderFactory.getDataProvider(new File("config/" + path));
     }
 
-    public Properties getFileAsProperties(String file) {
-        final var properties = new Properties();
-        originalConfig.computeIfPresent(file, (e, v) -> {
-            properties.putAll(v);
-            return null;
-        });
-        return properties;
-    }
-
     public String getScriptsPath() {
         return "config/scripts";
+    }
+
+    public boolean getBooleanProperty(String key) {
+        return Boolean.valueOf(getProperty(key));
     }
 }

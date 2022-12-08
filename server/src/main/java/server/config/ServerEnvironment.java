@@ -10,7 +10,7 @@ public class ServerEnvironment {
 
 
     public static boolean isDebugEnabled() {
-        return false;
+        return ServerEnvironment.getConfig().getBooleanProperty("debug");
     }
 
 

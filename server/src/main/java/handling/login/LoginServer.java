@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package handling.login;
 
 import client.MapleClient;
+import handling.GameServer;
 import handling.PacketProcessor;
 import handling.world.WorldServer;
 import server.ClientStorage;
@@ -78,7 +79,7 @@ public class LoginServer extends GameServer {
             return;
         }
         log.info("Shutting down login...");
-        acceptor.unbindAll();
+        unbindAll();
         finishedShutdown = true;
     }
 

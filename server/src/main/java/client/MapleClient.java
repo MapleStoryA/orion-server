@@ -29,6 +29,7 @@ import database.DatabaseException;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
+import handling.session.NetworkSession;
 import handling.world.WorldServer;
 import handling.world.buddy.BuddyManager;
 import handling.world.buddy.MapleBuddyList;
@@ -40,9 +41,6 @@ import handling.world.messenger.MessengerManager;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import handling.world.party.PartyManager;
-import org.apache.mina.common.IoSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import scripting.v1.game.NpcScripting;
 import server.ClientStorage;
 import server.Timer.PingTimer;
@@ -86,18 +84,17 @@ public class MapleClient implements Serializable {
             CHANGE_CHANNEL = 6;
     public static final int DEFAULT_CHARSLOT = 6;
     public static final String CLIENT_KEY = "CLIENT";
-    private static final Logger logger = LoggerFactory.getLogger(MapleClient.class);
     private static final long serialVersionUID = 9179541993413738569L;
     private final static Lock login_mutex = new ReentrantLock(true);
     private final transient MapleAESOFB send;
     private final transient MapleAESOFB receive;
-    private final transient IoSession session;
     private final transient List<Integer> allowedChar = new LinkedList<Integer>();
     private final transient Set<String> macs = new HashSet<String>();
     private final transient Map<String, ScriptEngine> engines = new HashMap<String, ScriptEngine>();
     private final transient Lock mutex = new ReentrantLock(true);
     private final transient Lock npc_mutex = new ReentrantLock();
     public transient short loginAttempt = 0, csAttempt = 0;
+    private NetworkSession session;
     private MapleCharacter player;
     private int channel = 1, accId = 1, world, birthday;
     private int charslots = DEFAULT_CHARSLOT;
@@ -114,13 +111,14 @@ public class MapleClient implements Serializable {
     private long lastNPCTalk;
     private NpcScripting npcScript;
 
-    public MapleClient(MapleAESOFB send, MapleAESOFB receive, IoSession session) {
+
+    public MapleClient(MapleAESOFB send, MapleAESOFB receive, NetworkSession session) {
         this.send = send;
         this.receive = receive;
         this.session = session;
     }
 
-    public MapleClient(byte[] ivSend, byte[] ivRecv, IoSession session) {
+    public MapleClient(byte[] ivSend, byte[] ivRecv, NetworkSession session) {
         this(new MapleAESOFB(ivSend, (short) (0xFFFF - ServerConstants.MAPLE_VERSION)),
                 new MapleAESOFB(ivRecv, ServerConstants.MAPLE_VERSION), session);
     }
@@ -352,7 +350,7 @@ public class MapleClient implements Serializable {
         return send;
     }
 
-    public final IoSession getSession() {
+    public final NetworkSession getSession() {
         return session;
     }
 
@@ -958,7 +956,7 @@ public class MapleClient implements Serializable {
                     System.err.println(getLogMessage(this, "ERROR") + e);
                 } finally {
                     if (RemoveInChannelServer && ch > 0) {
-                        CashShopServer.getPlayerStorage().deregisterPlayer(idz, namez);
+                        CashShopServer.getInstance().getPlayerStorage().deregisterPlayer(idz, namez);
                     }
                     player = null;
                 }
@@ -978,7 +976,7 @@ public class MapleClient implements Serializable {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException ex) {
-            logger.info("Error while setting player not logged in", ex);
+            log.info("Error while setting player not logged in", ex);
         }
     }
 
@@ -1015,10 +1013,6 @@ public class MapleClient implements Serializable {
         sb.append(getSession().getRemoteAddress());
         sb.append("Connected: ");
         sb.append(getSession().isConnected());
-        sb.append(" Closing: ");
-        sb.append(getSession().isClosing());
-        sb.append(" ClientKeySet: ");
-        sb.append(getSession().getAttribute(MapleClient.CLIENT_KEY) != null);
         sb.append(" loggedin: ");
         sb.append(isLoggedIn());
         sb.append(" has char: ");
