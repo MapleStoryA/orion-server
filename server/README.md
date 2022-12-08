@@ -1,19 +1,22 @@
-# Maple Story Orion V90
+# Orion MS
 
-## Run locally with Intellij
+## Running with a IDE
 
-Once the database is started with `docker-compose up orion-db`, the app can be started by running the `GameApp` class.
+- Start the database with `docker-compose up orion-db`
+- Run the main method in `GameApp` class.
 
-## Installing Docker
+## Runing as a container
+
+### Install docker
 
 - [Download Docker](https://docs.docker.com/docker-for-windows/install/)
 
-# Building the docker image
+### Build the image with jib
 
 ```shell
 mvn jib:dockerBuild
 ```
 
-# Running with docker compose
+### Start with compose
 
-After building the image with jib, the server should run with `docker-compose up`
+After building the image the server can be run with `docker-compose up`
