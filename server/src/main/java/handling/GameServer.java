@@ -1,7 +1,7 @@
 package handling;
 
-import handling.session.SocketProviderFactory;
 import handling.session.SocketProvider;
+import handling.session.SocketProviderFactory;
 
 @lombok.extern.slf4j.Slf4j
 public class GameServer {
@@ -36,15 +36,14 @@ public class GameServer {
         this.socketThread.start();
     }
 
-    protected void unbindAll() {
-        socketProvider.unbindAll();
-    }
 
     public void onStart() {
 
     }
 
     public void shutdown() {
+        this.socketProvider.shutdown();
+        this.socketThread.interrupt();
     }
 
 }

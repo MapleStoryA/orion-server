@@ -7,8 +7,6 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import tools.MapleAESOFB;
 import tools.MapleCustomEncryption;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.util.List;
 
 public class NettyMaplePacketDecoder extends ByteToMessageDecoder {
@@ -40,15 +38,7 @@ public class NettyMaplePacketDecoder extends ByteToMessageDecoder {
 
         client.getReceiveCrypto().crypt(decryptedPacket);
         MapleCustomEncryption.decryptData(decryptedPacket);
-
-        ByteBuffer packetBuffer = ByteBuffer.wrap(decryptedPacket).order(ByteOrder.LITTLE_ENDIAN);
-
-        byte[] payload = new byte[length - 2];
-
-        packetBuffer.get(payload);
-
         length = -1;
-
-        out.add(payload);
+        out.add(decryptedPacket);
     }
 }

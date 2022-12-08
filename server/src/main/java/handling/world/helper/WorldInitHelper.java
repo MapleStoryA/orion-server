@@ -1,7 +1,6 @@
 package handling.world.helper;
 
 import handling.world.alliance.AllianceManager;
-import handling.world.helper.FindCommand;
 import handling.world.messenger.MessengerManager;
 import handling.world.party.PartyManager;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +9,6 @@ import server.Timer.WorldTimer;
 
 @Slf4j
 public class WorldInitHelper {
-
 
 
     public static void initCommunity() {

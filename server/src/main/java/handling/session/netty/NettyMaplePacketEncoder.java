@@ -19,23 +19,23 @@ public class NettyMaplePacketEncoder extends MessageToByteEncoder<byte[]> {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, byte[] message, ByteBuf out) {
+
         if (client != null) {
-            MapleAESOFB send_crypto = client.getSendCrypto();
-            byte[] input = new byte[message.length];
-            System.arraycopy(message, 0, input, 0, message.length);
-            byte[] header = send_crypto.getPacketHeader(input.length);
-
-            out.writeBytes(header);
-
-            input = MapleCustomEncryption.encryptData(input);
-
-            send_crypto.crypt(input);
-
-            out.writeBytes(input);
-
+            final MapleAESOFB send_crypto = client.getSendCrypto();
+            final byte[] inputInitialPacket = message;
+            final byte[] unencrypted = new byte[inputInitialPacket.length];
+            System.arraycopy(inputInitialPacket, 0, unencrypted, 0, inputInitialPacket.length);
+            final byte[] ret = new byte[unencrypted.length + 4];
+            final byte[] header = send_crypto.getPacketHeader(unencrypted.length);
+            MapleCustomEncryption.encryptData(unencrypted);
+            send_crypto.crypt(unencrypted);
+            System.arraycopy(header, 0, ret, 0, 4);
+            System.arraycopy(unencrypted, 0, ret, 4, unencrypted.length);
+            out.writeBytes(ret);
         } else {
+            // no client object created yet, send unencrypted (hello)
             out.writeBytes(message);
         }
-    }
 
+    }
 }

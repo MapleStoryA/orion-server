@@ -4,7 +4,8 @@ database:
   user: root
   password: root
 socket:
-  provider: handling.session.mina.MinaSocketProvider
+  provider: handling.session.netty.NettySocketProvider
+  #provider: handling.session.mina.MinaSocketProvider
 login:
   key: releaselogin
   host: 127.0.0.1

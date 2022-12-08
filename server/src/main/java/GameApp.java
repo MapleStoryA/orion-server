@@ -91,7 +91,7 @@ public class GameApp {
     public static void listenCommand() {
         try (Scanner sc = new Scanner(System.in)) {
             String input;
-            input = sc.nextLine();
+            input = sc.hasNextLine() ?  sc.nextLine() : "";
             String command = input;
             if (command.contains("shutdown")) {
                 Thread t = null;

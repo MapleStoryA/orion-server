@@ -58,7 +58,7 @@ public class CashShopServer extends GameServer {
         log.info("Saving all connected clients (CS)...");
         players.disconnectAll();
         log.info("Shutting down CS...");
-        unbindAll();
+        super.shutdown();
         finishedShutdown = true;
     }
 
