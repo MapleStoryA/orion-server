@@ -4,9 +4,11 @@ import client.MapleClient;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
+import lombok.extern.slf4j.Slf4j;
 import tools.MapleAESOFB;
 import tools.MapleCustomEncryption;
 
+@Slf4j
 public class NettyMaplePacketEncoder extends MessageToByteEncoder<byte[]> {
 
     private MapleClient client;
@@ -35,4 +37,5 @@ public class NettyMaplePacketEncoder extends MessageToByteEncoder<byte[]> {
             out.writeBytes(message);
         }
     }
+
 }

@@ -111,6 +111,7 @@ public class NettyMapleServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        log.error("Exception with client", cause);
     }
 
     @Override
