@@ -27,7 +27,7 @@ import handling.cashshop.CashShopOperationHandlers;
 import handling.cashshop.CashShopServer;
 import handling.channel.handler.InterServerHandler;
 import handling.channel.handler.PlayerHandler;
-import handling.session.MaplePacketDecoder;
+import handling.session.MinaMaplePacketDecoder;
 import handling.session.MinaSession;
 import handling.world.WorldServer;
 import lombok.extern.slf4j.Slf4j;
@@ -110,8 +110,8 @@ public class MinaMapleServerHandler extends IoHandlerAdapter {
         final var client = new MapleClient(ivSend, ivRecv, new MinaSession(session));
         client.setChannel(channel);
 
-        MaplePacketDecoder.DecoderState decoderState = new MaplePacketDecoder.DecoderState();
-        session.setAttribute(MaplePacketDecoder.DECODER_STATE_KEY, decoderState);
+        MinaMaplePacketDecoder.DecoderState decoderState = new MinaMaplePacketDecoder.DecoderState();
+        session.setAttribute(MinaMaplePacketDecoder.DECODER_STATE_KEY, decoderState);
 
         session.write(LoginPacket.getHello(ServerConstants.MAPLE_VERSION, ivSend, ivRecv));
         session.setAttribute(MapleClient.CLIENT_KEY, client);

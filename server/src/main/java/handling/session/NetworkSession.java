@@ -12,7 +12,4 @@ public interface NetworkSession {
 
     boolean isConnected();
 
-    boolean isClosing();
-
-    Object getAttribute(String value);
 }

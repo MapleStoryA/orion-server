@@ -32,14 +32,5 @@ public class MinaSession implements NetworkSession {
         return ioSession.isConnected();
     }
 
-    @Override
-    public boolean isClosing() {
-        return ioSession.isClosing();
-    }
-
-    @Override
-    public Object getAttribute(String key) {
-        return ioSession.getAttribute(key);
-    }
 
 }

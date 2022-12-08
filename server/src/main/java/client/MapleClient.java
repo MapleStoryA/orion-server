@@ -1013,10 +1013,6 @@ public class MapleClient implements Serializable {
         sb.append(getSession().getRemoteAddress());
         sb.append("Connected: ");
         sb.append(getSession().isConnected());
-        sb.append(" Closing: ");
-        sb.append(getSession().isClosing());
-        sb.append(" ClientKeySet: ");
-        sb.append(getSession().getAttribute(MapleClient.CLIENT_KEY) != null);
         sb.append(" loggedin: ");
         sb.append(isLoggedIn());
         sb.append(" has char: ");

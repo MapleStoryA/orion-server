@@ -30,9 +30,9 @@ import tools.MapleAESOFB;
 import tools.MapleCustomEncryption;
 
 @lombok.extern.slf4j.Slf4j
-public class MaplePacketDecoder extends CumulativeProtocolDecoder {
+public class MinaMaplePacketDecoder extends CumulativeProtocolDecoder {
 
-    public static final String DECODER_STATE_KEY = MaplePacketDecoder.class.getName() + ".STATE";
+    public static final String DECODER_STATE_KEY = MinaMaplePacketDecoder.class.getName() + ".STATE";
 
     @Override
     protected boolean doDecode(IoSession session, ByteBuffer in, ProtocolDecoderOutput out) throws Exception {
