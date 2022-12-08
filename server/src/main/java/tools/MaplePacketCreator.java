@@ -4122,33 +4122,33 @@ public class MaplePacketCreator {
     }
 
     public static final byte[] temporaryStats_Aran() {
-        final List<Pair<MapleStat.Temp, Integer>> stats = new ArrayList<Pair<MapleStat.Temp, Integer>>();
-        stats.add(new Pair<MapleStat.Temp, Integer>(MapleStat.Temp.STR, 999));
-        stats.add(new Pair<MapleStat.Temp, Integer>(MapleStat.Temp.DEX, 999));
-        stats.add(new Pair<MapleStat.Temp, Integer>(MapleStat.Temp.INT, 999));
-        stats.add(new Pair<MapleStat.Temp, Integer>(MapleStat.Temp.LUK, 999));
-        stats.add(new Pair<MapleStat.Temp, Integer>(MapleStat.Temp.WATK, 255));
-        stats.add(new Pair<MapleStat.Temp, Integer>(MapleStat.Temp.ACC, 999));
-        stats.add(new Pair<MapleStat.Temp, Integer>(MapleStat.Temp.AVOID, 999));
-        stats.add(new Pair<MapleStat.Temp, Integer>(MapleStat.Temp.SPEED, 140));
-        stats.add(new Pair<MapleStat.Temp, Integer>(MapleStat.Temp.JUMP, 120));
+        final List<Pair<MapleStat.TemporaryMapleStat, Integer>> stats = new ArrayList<Pair<MapleStat.TemporaryMapleStat, Integer>>();
+        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.STR, 999));
+        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.DEX, 999));
+        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.INT, 999));
+        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.LUK, 999));
+        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.WATK, 255));
+        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.ACC, 999));
+        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.AVOID, 999));
+        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.SPEED, 140));
+        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.JUMP, 120));
         return temporaryStats(stats);
     }
 
     public static final byte[] temporaryStats_Balrog(final MapleCharacter chr) {
-        final List<Pair<MapleStat.Temp, Integer>> stats = new ArrayList<Pair<MapleStat.Temp, Integer>>();
+        final List<Pair<MapleStat.TemporaryMapleStat, Integer>> stats = new ArrayList<Pair<MapleStat.TemporaryMapleStat, Integer>>();
         int offset = 1 + (chr.getLevel() - 90) / 20;
         // every 20 levels above 90, +1
-        stats.add(new Pair<MapleStat.Temp, Integer>(MapleStat.Temp.STR, chr.getStat().getTotalStr() / offset));
-        stats.add(new Pair<MapleStat.Temp, Integer>(MapleStat.Temp.DEX, chr.getStat().getTotalDex() / offset));
-        stats.add(new Pair<MapleStat.Temp, Integer>(MapleStat.Temp.INT, chr.getStat().getTotalInt() / offset));
-        stats.add(new Pair<MapleStat.Temp, Integer>(MapleStat.Temp.LUK, chr.getStat().getTotalLuk() / offset));
-        stats.add(new Pair<MapleStat.Temp, Integer>(MapleStat.Temp.WATK, chr.getStat().getTotalWatk() / offset));
-        stats.add(new Pair<MapleStat.Temp, Integer>(MapleStat.Temp.MATK, chr.getStat().getTotalMagic() / offset));
+        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.STR, chr.getStat().getTotalStr() / offset));
+        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.DEX, chr.getStat().getTotalDex() / offset));
+        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.INT, chr.getStat().getTotalInt() / offset));
+        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.LUK, chr.getStat().getTotalLuk() / offset));
+        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.WATK, chr.getStat().getTotalWatk() / offset));
+        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.MATK, chr.getStat().getTotalMagic() / offset));
         return temporaryStats(stats);
     }
 
-    public static final byte[] temporaryStats(final List<Pair<MapleStat.Temp, Integer>> stats) {
+    public static final byte[] temporaryStats(final List<Pair<MapleStat.TemporaryMapleStat, Integer>> stats) {
         final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
         mplew.writeShort(SendPacketOpcode.FORCED_STATS.getValue());
         // str 0x1, dex 0x2, int 0x4, luk 0x8
@@ -4158,15 +4158,15 @@ public class MaplePacketCreator {
         // 0x400 = 120
         // 0x800 = 140
         int updateMask = 0;
-        for (final Pair<MapleStat.Temp, Integer> statupdate : stats) {
+        for (final Pair<MapleStat.TemporaryMapleStat, Integer> statupdate : stats) {
             updateMask |= statupdate.getLeft().getValue();
         }
-        List<Pair<MapleStat.Temp, Integer>> mystats = stats;
+        List<Pair<MapleStat.TemporaryMapleStat, Integer>> mystats = stats;
         if (mystats.size() > 1) {
-            Collections.sort(mystats, new Comparator<Pair<MapleStat.Temp, Integer>>() {
+            Collections.sort(mystats, new Comparator<Pair<MapleStat.TemporaryMapleStat, Integer>>() {
 
                 @Override
-                public int compare(final Pair<MapleStat.Temp, Integer> o1, final Pair<MapleStat.Temp, Integer> o2) {
+                public int compare(final Pair<MapleStat.TemporaryMapleStat, Integer> o1, final Pair<MapleStat.TemporaryMapleStat, Integer> o2) {
                     int val1 = o1.getLeft().getValue();
                     int val2 = o2.getLeft().getValue();
                     return (val1 < val2 ? -1 : (val1 == val2 ? 0 : 1));
@@ -4176,7 +4176,7 @@ public class MaplePacketCreator {
         mplew.writeInt(updateMask);
         Integer value;
 
-        for (final Pair<MapleStat.Temp, Integer> statupdate : mystats) {
+        for (final Pair<MapleStat.TemporaryMapleStat, Integer> statupdate : mystats) {
             value = statupdate.getLeft().getValue();
 
             if (value >= 1) {

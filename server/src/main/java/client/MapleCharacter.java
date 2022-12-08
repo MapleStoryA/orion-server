@@ -33,6 +33,8 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MapleMount;
 import client.inventory.MaplePet;
 import client.inventory.MapleRing;
+import client.state.CharacterData;
+import client.state.PlayerLoader;
 import constants.GameConstants;
 import constants.JobConstants;
 import constants.MapConstants;
@@ -488,6 +490,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
     }
 
     public static MapleCharacter loadCharFromDB(int charid, MapleClient client, boolean channelserver) {
+
+        CharacterData stats1 = PlayerLoader.loadCharacterData(charid);
+
         final MapleCharacter ret = new MapleCharacter(channelserver);
         ret.client = client;
         ret.id = charid;
