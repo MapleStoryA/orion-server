@@ -63,32 +63,40 @@ public class MapleClient implements Serializable {
             LOGIN_CS_LOGGEDIN = 5,
             CHANGE_CHANNEL = 6;
     public static final int DEFAULT_CHAR_SLOT = 6;
+
+
     public static final String CLIENT_KEY = "CLIENT";
     private static final long serialVersionUID = 9179541993413738569L;
-    private final static Lock login_mutex = new ReentrantLock(true);
+
+
     private final transient MapleAESOFB send;
     private final transient MapleAESOFB receive;
+    private final static Lock login_mutex = new ReentrantLock(true);
+    private NetworkSession session;
+    private final transient Map<String, ScriptEngine> engines = new HashMap<>();
+    private NpcScripting npcScript;
+
     private final transient List<Integer> allowedChar = new LinkedList<>();
     private final transient Set<String> macs = new HashSet<>();
-    private final transient Lock mutex = new ReentrantLock(true);
     private final transient Lock npc_mutex = new ReentrantLock();
+
     public transient short loginAttempt = 0, csAttempt = 0;
-    private final transient Map<String, ScriptEngine> engines = new HashMap<>();
-    private NetworkSession session;
-    private MapleCharacter player;
-    private int channel = 1, accId = 1, world;
-    private int charslots = DEFAULT_CHAR_SLOT;
-    private boolean loggedIn = false, serverTransition = false;
-    private transient Calendar tempban = null;
-    private String accountName;
     private transient long lastPong = 0;
+    private MapleCharacter player;
+    private int accountId;
+    private String accountName;
+    private int channel = 1;
+    private int world;
+    private int charSlots = DEFAULT_CHAR_SLOT;
+    private boolean loggedIn = false;
+    private boolean serverTransition = false;
+    private transient Calendar tempBan = null;
     private boolean receiving = true;
     private boolean gm;
     private int gmLevel;
     private byte greason = 1, gender = -1;
     private transient ScheduledFuture<?> idleTask = null;
     private long lastNPCTalk;
-    private NpcScripting npcScript;
 
 
     public MapleClient(MapleAESOFB send, MapleAESOFB receive, NetworkSession session) {
@@ -113,10 +121,6 @@ public class MapleClient implements Serializable {
 
     public final NetworkSession getSession() {
         return session;
-    }
-
-    public final Lock getLock() {
-        return mutex;
     }
 
     public final Lock getNPCLock() {
@@ -163,7 +167,7 @@ public class MapleClient implements Serializable {
         try {
             Connection con = DatabaseConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("SELECT id, name FROM characters WHERE accountid = ? AND world = ?");
-            ps.setInt(1, accId);
+            ps.setInt(1, accountId);
             ps.setInt(2, serverId);
 
             ResultSet rs = ps.executeQuery();
@@ -199,7 +203,7 @@ public class MapleClient implements Serializable {
     }
 
     public Calendar getTempBanCalendar() {
-        return tempban;
+        return tempBan;
     }
 
     public byte getBanReason() {
@@ -259,11 +263,11 @@ public class MapleClient implements Serializable {
                 final String passhash = rs.getString("password");
                 final String salt = rs.getString("salt");
 
-                accId = rs.getInt("id");
+                accountId = rs.getInt("id");
                 gm = rs.getInt("gm") > 0;
                 gmLevel = rs.getInt("gm");
                 greason = rs.getByte("greason");
-                tempban = getTempBanCalendar(rs);
+                tempBan = getTempBanCalendar(rs);
                 gender = rs.getByte("gender");
 
                 ps.close();
@@ -272,7 +276,7 @@ public class MapleClient implements Serializable {
                     loginok = 3;
                 } else {
                     if (banned == -1) {
-                        unban();
+                        CharacterService.unban(accountId);
                     }
                     byte loginstate = getLoginState();
                     if (loginstate > MapleClient.LOGIN_NOTLOGGEDIN || ClientStorage.isConnected(this)) { // already loggedin
@@ -302,7 +306,7 @@ public class MapleClient implements Serializable {
                                 final String newSalt = LoginCrypto.makeSalt();
                                 pss.setString(1, LoginCrypto.makeSaltedSha512Hash(pwd, newSalt));
                                 pss.setString(2, newSalt);
-                                pss.setInt(3, accId);
+                                pss.setInt(3, accountId);
                                 pss.executeUpdate();
                             } finally {
                                 pss.close();
@@ -322,17 +326,6 @@ public class MapleClient implements Serializable {
         return loginok;
     }
 
-    private void unban() {
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("UPDATE accounts SET banned = 0 and banreason = '' WHERE id = ?");
-            ps.setInt(1, accId);
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException e) {
-            System.err.println("Error while unbanning" + e);
-        }
-    }
 
     public void updateMacs(String macData) {
         Collections.addAll(macs, macData.split(", "));
@@ -348,7 +341,7 @@ public class MapleClient implements Serializable {
             Connection con = DatabaseConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("UPDATE accounts SET macs = ? WHERE id = ?");
             ps.setString(1, newMacData.toString());
-            ps.setInt(2, accId);
+            ps.setInt(2, accountId);
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
@@ -357,11 +350,11 @@ public class MapleClient implements Serializable {
     }
 
     public int getAccID() {
-        return this.accId;
+        return this.accountId;
     }
 
     public void setAccID(int id) {
-        this.accId = id;
+        this.accountId = id;
     }
 
     public final void updateLoginState(final int newstate, final String SessionID) { // TODO hide?
@@ -610,7 +603,7 @@ public class MapleClient implements Serializable {
     public final boolean CheckIPAddress() {
         try {
             final PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT SessionIP FROM accounts WHERE id = ?");
-            ps.setInt(1, this.accId);
+            ps.setInt(1, this.accountId);
             final ResultSet rs = ps.executeQuery();
 
             boolean canlogin = false;
@@ -644,61 +637,6 @@ public class MapleClient implements Serializable {
         return WorldServer.getInstance().getChannel(channel);
     }
 
-    public final int deleteCharacter(final int cid) {
-        try {
-            final Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("SELECT guildid, guildrank, name FROM characters WHERE id = ? AND accountid = ?");
-            ps.setInt(1, cid);
-            ps.setInt(2, accId);
-            ResultSet rs = ps.executeQuery();
-            if (!rs.next()) {
-                rs.close();
-                ps.close();
-                return 9;
-            }
-            if (rs.getInt("guildid") > 0) { // is in a guild when deleted
-                if (rs.getInt("guildrank") == 1) { //cant delete when leader
-                    rs.close();
-                    ps.close();
-                    return 22;
-                }
-                GuildManager.deleteGuildCharacter(rs.getInt("guildid"), cid);
-            }
-
-            final String name = rs.getString("name");
-            CharacterService.deleteWhereCharacterName(con, "DELETE FROM `notes` WHERE `to` = ?", name);
-            CharacterService.deleteWhereCharacterName(con, "DELETE FROM `notes` WHERE `from` = ?", name);
-
-            rs.close();
-            ps.close();
-
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM characters WHERE id = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM monsterbook WHERE charid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM hiredmerch WHERE characterid = ?", cid);
-            //CharacterService.deleteWhereCharacterId(con, "DELETE FROM cheatlog WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM mountdata WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM inventoryitems WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM famelog WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM famelog WHERE characterid_to = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM wishlist WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM buddyentries WHERE owner = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM buddyentries WHERE buddyid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM keymap WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM savedlocations WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM skills WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM mountdata WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM skillmacros WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM trocklocations WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM queststatus WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM customqueststatus WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM inventoryslot WHERE characterid = ?", cid);
-            return 0;
-        } catch (Exception e) {
-            FileOutputUtil.outputFileError(FileOutputUtil.PacketEx_Log, e);
-            e.printStackTrace();
-        }
-        return 10;
-    }
 
     public final byte getGender() {
         return gender;
@@ -761,22 +699,22 @@ public class MapleClient implements Serializable {
         if (isGm()) {
             return 15;
         }
-        if (charslots != DEFAULT_CHAR_SLOT) {
-            return charslots; //save a sql
+        if (charSlots != DEFAULT_CHAR_SLOT) {
+            return charSlots; //save a sql
         }
         try {
             Connection con = DatabaseConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("SELECT * FROM character_slots WHERE accid = ? AND worldid = ?");
-            ps.setInt(1, accId);
+            ps.setInt(1, accountId);
             ps.setInt(2, world);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                charslots = rs.getInt("charslots");
+                charSlots = rs.getInt("charslots");
             } else {
                 PreparedStatement psu = con.prepareStatement("INSERT INTO character_slots (accid, worldid, charslots) VALUES (?, ?, ?)");
-                psu.setInt(1, accId);
+                psu.setInt(1, accountId);
                 psu.setInt(2, world);
-                psu.setInt(3, charslots);
+                psu.setInt(3, charSlots);
                 psu.executeUpdate();
                 psu.close();
             }
@@ -786,7 +724,7 @@ public class MapleClient implements Serializable {
             sqlE.printStackTrace();
         }
 
-        return charslots;
+        return charSlots;
     }
 
     public boolean isReceiving() {

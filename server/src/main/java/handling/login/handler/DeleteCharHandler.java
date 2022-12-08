@@ -1,6 +1,7 @@
 package handling.login.handler;
 
 import client.MapleClient;
+import database.state.CharacterService;
 import handling.AbstractMaplePacketHandler;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.LoginPacket;
@@ -17,7 +18,7 @@ public class DeleteCharHandler extends AbstractMaplePacketHandler {
             c.getSession().close();
             return; // Attempting to delete other character
         }
-        final byte state = (byte) c.deleteCharacter(Character_ID);
+        final byte state = (byte) CharacterService.deleteCharacter(Character_ID, c.getAccID());
 
         c.getSession().write(LoginPacket.deleteCharResponse(Character_ID, state));
 
