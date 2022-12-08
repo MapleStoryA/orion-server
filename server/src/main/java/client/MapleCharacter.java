@@ -41,6 +41,7 @@ import constants.skills.BladeLord;
 import constants.skills.Rogue;
 import database.DatabaseConnection;
 import database.DatabaseException;
+import database.state.BanService;
 import database.state.CharacterData;
 import database.state.LoginService;
 import handling.channel.ChannelServer;
@@ -1153,7 +1154,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
                         if (rsa.getString("macs") != null) {
                             String[] macData = rsa.getString("macs").split(", ");
                             if (macData.length > 0) {
-                                MapleClient.banMacs(macData);
+                                BanService.banMacs(macData);
                             }
                         }
                         if (hellban) {

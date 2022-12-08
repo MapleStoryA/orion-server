@@ -22,6 +22,7 @@ import constants.GameConstants;
 import constants.MapConstants;
 import constants.ServerConstants.PlayerGMRank;
 import database.DatabaseConnection;
+import database.state.BanService;
 import handling.channel.ChannelServer;
 import handling.world.WorldServer;
 import handling.world.helper.BroadcastHelper;
@@ -289,9 +290,9 @@ public class AdminCommand {
             }
             byte ret;
             if (hellban) {
-                ret = MapleClient.unHellban(splitted[1]);
+                ret = BanService.unHellban(splitted[1]);
             } else {
-                ret = MapleClient.unban(splitted[1]);
+                ret = BanService.unban(splitted[1]);
             }
             if (ret == -2) {
                 c.getPlayer().dropMessage(6, "[" + getCommand() + "] SQL error.");
@@ -303,7 +304,7 @@ public class AdminCommand {
                 c.getPlayer().dropMessage(6, "[" + getCommand() + "] Successfully unbanned!");
 
             }
-            byte ret_ = MapleClient.unbanIPMacs(splitted[1]);
+            byte ret_ = BanService.unbanIPMacs(splitted[1]);
             if (ret_ == -2) {
                 c.getPlayer().dropMessage(6, "[UnbanIP] SQL error.");
             } else if (ret_ == -1) {
@@ -327,7 +328,7 @@ public class AdminCommand {
                 c.getPlayer().dropMessage(6, "[Syntax] !unbanip <IGN>");
                 return 0;
             }
-            byte ret = MapleClient.unbanIPMacs(splitted[1]);
+            byte ret = BanService.unbanIPMacs(splitted[1]);
             if (ret == -2) {
                 c.getPlayer().dropMessage(6, "[UnbanIP] SQL error.");
             } else if (ret == -1) {
