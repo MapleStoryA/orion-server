@@ -50,8 +50,8 @@ public class HandlerHelper {
                     return;
                 }
             }
-            log.info("Received data: " + HexTool.toString((byte[]) message));
-            log.info("Data: " + new String((byte[]) message));
+            log.info("Received data: " + HexTool.toString(message));
+            log.info("Data: " + new String(message));
 
         } catch (Exception e) {
             FileOutputUtil.outputFileError(FileOutputUtil.PacketEx_Log, e);

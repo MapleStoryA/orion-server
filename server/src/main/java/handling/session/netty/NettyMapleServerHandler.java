@@ -8,6 +8,8 @@ import handling.session.HandlerHelper;
 import handling.world.WorldServer;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.handler.timeout.IdleStateEvent;
+import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.AttributeKey;
 import lombok.extern.slf4j.Slf4j;
 import tools.Randomizer;
@@ -44,7 +46,7 @@ public class NettyMapleServerHandler extends ChannelInboundHandlerAdapter {
         final var client = new MapleClient(ivSend, ivRecv, new NettySession(ctx.channel()));
         client.setChannel(channel);
         NettyMaplePacketEncoder encoder = new NettyMaplePacketEncoder();
-        ctx.pipeline().addFirst(new NettyMaplePacketDecoder(client), encoder);
+        ctx.pipeline().addFirst(new NettyMaplePacketDecoder(client), encoder, new SendPingOnIdle(5, 1, 5, client));
         ctx.channel().writeAndFlush(LoginPacket.getHello(ServerConstants.MAPLE_VERSION, ivSend, ivRecv));
         ctx.channel().attr(CLIENT_KEY).set(client);
         encoder.setClient(client);
@@ -75,6 +77,27 @@ public class NettyMapleServerHandler extends ChannelInboundHandlerAdapter {
                 ctx.channel().attr(CLIENT_KEY).remove();
             }
         }
+    }
+
+    static class SendPingOnIdle extends IdleStateHandler {
+
+        private MapleClient client;
+
+        public SendPingOnIdle(int readerIdleTimeSeconds,
+                              int writerIdleTimeSeconds, int allIdleTimeSeconds, MapleClient client) {
+            super(readerIdleTimeSeconds, writerIdleTimeSeconds, allIdleTimeSeconds);
+            this.client = client;
+        }
+
+        @Override
+        protected void channelIdle(ChannelHandlerContext ctx, IdleStateEvent evt)
+                throws Exception {
+
+            client.sendPing();
+
+            super.channelIdle(ctx, evt);
+        }
+
     }
 
 }
