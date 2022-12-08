@@ -33,8 +33,6 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MapleMount;
 import client.inventory.MaplePet;
 import client.inventory.MapleRing;
-import client.state.CharacterData;
-import client.state.PlayerLoader;
 import constants.GameConstants;
 import constants.JobConstants;
 import constants.MapConstants;
@@ -43,6 +41,8 @@ import constants.skills.BladeLord;
 import constants.skills.Rogue;
 import database.DatabaseConnection;
 import database.DatabaseException;
+import database.state.CharacterData;
+import database.state.LoginService;
 import handling.channel.ChannelServer;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
 import handling.world.WorldServer;
@@ -323,7 +323,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         ret.stats.setMaxHp(50);
         ret.stats.setHp(50);
         ret.stats.setMaxMp(50);
-        ret.stats.setMaxMp(50);
+        ret.stats.setMp(50);
 
         try {
             Connection con = DatabaseConnection.getConnection();
@@ -512,6 +512,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
     public static MapleCharacter loadCharFromDB(int charid, MapleClient client, boolean channelserver) {
 
         final MapleCharacter ret = new MapleCharacter(channelserver);
+        CharacterData characterData = LoginService.loadCharacterData(charid);
         ret.client = client;
         ret.id = charid;
 
@@ -528,18 +529,18 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
                 throw new RuntimeException("Loading the Char Failed (char not found)");
             }
 
-            ret.name = stats1.getName();
-            ret.level = stats1.getLevel();
-            ret.fame = stats1.getFame();
+            ret.name = characterData.getName();
+            ret.level = characterData.getLevel();
+            ret.fame = characterData.getFame();
 
-            ret.stats.setStr(stats1.getStr());
-            ret.stats.setDex(stats1.getDex());
-            ret.stats.setInt(stats1.getInt_());
-            ret.stats.setLuk(stats1.getLuk());
-            ret.stats.setMaxMp(stats1.getMaxMp());
-            ret.stats.setMaxHp(stats1.getMaxHp());
-            ret.stats.setHp(stats1.getMaxHp());
-            ret.stats.setMp(stats1.getMaxMp());
+            ret.stats.setStr(characterData.getStr());
+            ret.stats.setDex(characterData.getDex());
+            ret.stats.setInt(characterData.getInt_());
+            ret.stats.setLuk(characterData.getLuk());
+            ret.stats.setMaxMp(characterData.getMaxMp());
+            ret.stats.setMaxHp(characterData.getMaxHp());
+            ret.stats.setHp(characterData.getMaxHp());
+            ret.stats.setMp(characterData.getMaxMp());
 
             ret.exp = rs.getInt("exp");
             ret.hpApUsed = rs.getShort("hpApUsed");
