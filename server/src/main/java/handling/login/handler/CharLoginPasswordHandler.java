@@ -1,6 +1,5 @@
 package handling.login.handler;
 
-import client.MapleCharacter;
 import client.MapleClient;
 import handling.MaplePacketHandler;
 import handling.login.LoginServer;
@@ -34,17 +33,12 @@ public class CharLoginPasswordHandler implements MaplePacketHandler {
 
         c.setAccountName(login);
         final boolean ipBan = c.hasBannedIP();
-        final boolean macBan = c.hasBannedMac();
 
-        int loginok = c.login(login, pwd, ipBan || macBan);
+        int loginok = c.login(login, pwd, ipBan);
         final Calendar tempbannedTill = c.getTempBanCalendar();
 
-        if (loginok == 0 && (ipBan || macBan) && !c.isGm()) {
+        if (loginok == 0 && (ipBan) && !c.isGm()) {
             loginok = 3;
-            if (macBan) {
-                MapleCharacter.ban(c.getSession().getRemoteAddress().toString().split(":")[0],
-                        "Enforcing account ban, account " + login, false, 4, false);
-            }
         }
         if (loginok != 0) {
             if (!loginFailCount(c)) {

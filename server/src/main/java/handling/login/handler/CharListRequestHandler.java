@@ -23,8 +23,7 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
 
         final List<MapleCharacter> chars = c.loadCharacters(server);
         if (chars != null) {
-            var secondPassword = c.getSecondPassword() != null;
-            c.getSession().write(LoginPacket.getCharList(secondPassword, chars, c.getCharacterSlots()));
+            c.getSession().write(LoginPacket.getCharList(true, chars, c.getCharacterSlots()));
         } else {
             c.getSession().close();
         }
