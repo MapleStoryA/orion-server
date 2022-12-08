@@ -19,7 +19,6 @@ import server.MapleCarnivalFactory;
 import server.MapleItemInformationProvider;
 import server.RandomRewards;
 import server.RankingWorker;
-import server.ServerProperties;
 import server.ShutdownServer;
 import server.SpeedQuizFactory;
 import server.SpeedRunner;
@@ -61,7 +60,7 @@ public class GameApp {
         ServerEnvironment.getConfig();
         GameApp server = new GameApp();
         server.start();
-        log.info("[" + ServerProperties.getProperty("login.serverName") + "]");
+        log.info("[" + ServerEnvironment.getConfig().getProperty("login.serverName") + "]");
     }
 
     private static void initDatabase() {
@@ -187,9 +186,9 @@ public class GameApp {
 
         WorldServer worldServer = WorldServer.getInstance();
 
-        for (int i = 0; i < Integer.parseInt(ServerProperties.getProperty("channel.count", "0")); i++) {
+        for (int i = 0; i < Integer.parseInt(ServerEnvironment.getConfig().getProperty("channel.count", "0")); i++) {
             int channel = i + 1;
-            int port = Short.parseShort(ServerProperties.getProperty("channel.net.port" + channel, String.valueOf(ChannelServer.DEFAULT_PORT + channel)));
+            int port = Short.parseShort(ServerEnvironment.getConfig().getProperty("channel.net.port" + channel, String.valueOf(ChannelServer.DEFAULT_PORT + channel)));
             ChannelServer ch = new ChannelServer(channel, port);
             worldServer.registerChannel(channel, ch);
             ch.onStart();

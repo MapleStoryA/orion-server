@@ -21,11 +21,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package handling.cashshop;
 
+import handling.GameServer;
 import handling.PacketProcessor;
 import handling.channel.PlayerStorage;
-import handling.GameServer;
 import lombok.extern.slf4j.Slf4j;
-import server.ServerProperties;
+import server.config.ServerEnvironment;
 
 @Slf4j
 public class CashShopServer extends GameServer {
@@ -40,7 +40,7 @@ public class CashShopServer extends GameServer {
     public CashShopServer() {
         super(-1, 8799, PacketProcessor.Mode.CASHSHOP);
         players = new PlayerStorage(-10);
-        ip = ServerProperties.getProperty("world.host") + ":" + PORT;
+        ip = ServerEnvironment.getConfig().getProperty("world.host") + ":" + PORT;
     }
 
     public final String getPublicAddress() {

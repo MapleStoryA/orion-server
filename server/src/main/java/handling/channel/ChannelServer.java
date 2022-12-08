@@ -22,17 +22,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package handling.channel;
 
 import client.MapleCharacter;
-import handling.PacketProcessor;
 import handling.GameServer;
+import handling.PacketProcessor;
 import handling.login.LoginServer;
 import handling.world.WorldServer;
 import handling.world.helper.CheaterData;
 import scripting.EventScriptManager;
 import scripting.v1.event.EventCenter;
 import server.MapleSquad;
-import server.ServerProperties;
 import server.TimerManager;
 import server.autosave.AutoSaveRunnable;
+import server.config.ServerEnvironment;
 import server.events.MapleCoconut;
 import server.events.MapleEvent;
 import server.events.MapleEventType;
@@ -85,18 +85,18 @@ public class ChannelServer extends GameServer {
 
     public ChannelServer(int channel, int port) {
         super(channel, port, PacketProcessor.Mode.CHANNELSERVER);
-        this.expRate = Integer.parseInt(ServerProperties.getProperty("world.exp"));
-        this.mesoRate = Integer.parseInt(ServerProperties.getProperty("world.meso"));
-        this.dropRate = Integer.parseInt(ServerProperties.getProperty("world.drop"));
-        this.cashRate = Integer.parseInt(ServerProperties.getProperty("world.cash"));
-        this.serverMessage = ServerProperties.getProperty("world.serverMessage");
-        this.flags = Integer.parseInt(ServerProperties.getProperty("world.flags", "0"));
-        this.adminOnly = Boolean.parseBoolean(ServerProperties.getProperty("world.admin", "false"));
-        this.publicAddress = ServerProperties.getProperty("channel.net.interface") + ":" + port;
+        this.expRate = Integer.parseInt(ServerEnvironment.getConfig().getProperty("world.exp"));
+        this.mesoRate = Integer.parseInt(ServerEnvironment.getConfig().getProperty("world.meso"));
+        this.dropRate = Integer.parseInt(ServerEnvironment.getConfig().getProperty("world.drop"));
+        this.cashRate = Integer.parseInt(ServerEnvironment.getConfig().getProperty("world.cash"));
+        this.serverMessage = ServerEnvironment.getConfig().getProperty("world.serverMessage");
+        this.flags = Integer.parseInt(ServerEnvironment.getConfig().getProperty("world.flags", "0"));
+        this.adminOnly = Boolean.parseBoolean(ServerEnvironment.getConfig().getProperty("world.admin", "false"));
+        this.publicAddress = ServerEnvironment.getConfig().getProperty("channel.net.interface") + ":" + port;
         this.mapFactory = new MapleMapFactory();
         this.aramiaEvent = new AramiaFireWorks();
         this.eventCenter = new EventCenter(channel);
-        this.eventSM = new EventScriptManager(this, ServerProperties.getProperty("channel.events").split(","));
+        this.eventSM = new EventScriptManager(this, ServerEnvironment.getConfig().getProperty("channel.events").split(","));
         this.mapFactory.setChannel(channel);
         this.players = new PlayerStorage(channel);
         this.serverStartTime = System.currentTimeMillis();
@@ -234,7 +234,7 @@ public class ChannelServer extends GameServer {
 
     public void reloadEvents() {
         eventSM.cancel();
-        eventSM = new EventScriptManager(this, ServerProperties.getProperty("channel.events").split(","));
+        eventSM = new EventScriptManager(this, ServerEnvironment.getConfig().getProperty("channel.events").split(","));
         eventSM.init();
     }
 
