@@ -32,7 +32,6 @@ public class NettySocketProvider implements SocketProvider {
 
                     protected void initChannel(SocketChannel socketChannel) {
                         socketChannel.pipeline().addLast(new NettyMapleServerHandler(channel, mode));
-
                     }
                 })
                 .option(ChannelOption.SO_BACKLOG, 128)

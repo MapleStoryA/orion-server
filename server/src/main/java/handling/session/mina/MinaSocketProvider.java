@@ -30,8 +30,7 @@ public class MinaSocketProvider implements SocketProvider {
 
         try {
             var inetSocketAddress = new InetSocketAddress(port);
-            acceptor.bind(inetSocketAddress, new MinaMapleServerHandler(channel,
-                    mode), cfg);
+            acceptor.bind(inetSocketAddress, new MinaMapleServerHandler(channel, mode), cfg);
             log.info("Listening on port " + port + ".");
         } catch (IOException e) {
             System.err.println("Binding to port " + port + " failed" + e);
