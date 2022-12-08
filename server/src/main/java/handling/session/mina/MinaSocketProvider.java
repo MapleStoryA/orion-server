@@ -1,6 +1,5 @@
 package handling.session.mina;
 
-import handling.GameServer;
 import handling.MinaMapleServerHandler;
 import handling.PacketProcessor;
 import handling.session.SocketProvider;
@@ -19,13 +18,7 @@ import java.net.InetSocketAddress;
 @SuppressWarnings("unused")
 public class MinaSocketProvider implements SocketProvider {
 
-    private final GameServer gameServer;
     private IoAcceptor acceptor;
-
-    public MinaSocketProvider(GameServer gameServer) {
-        this.gameServer = gameServer;
-    }
-
 
     public void initSocket(int channel, int port, PacketProcessor.Mode mode) {
         ByteBuffer.setUseDirectBuffers(false);
@@ -38,7 +31,6 @@ public class MinaSocketProvider implements SocketProvider {
 
         try {
             var inetSocketAddress = new InetSocketAddress(port);
-            gameServer.setInetSocketAddress(inetSocketAddress);
             acceptor.bind(inetSocketAddress, new MinaMapleServerHandler(channel,
                     PacketProcessor.Mode.CASHSHOP.equals(mode),
                     PacketProcessor.getProcessor(mode)), cfg);

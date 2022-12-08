@@ -1,14 +1,11 @@
 package handling;
 
+import handling.session.SocketProviderFactory;
 import handling.session.SocketProvider;
-import handling.session.netty.NettySocketProvider;
-
-import java.net.InetSocketAddress;
 
 @lombok.extern.slf4j.Slf4j
 public class GameServer {
 
-    protected InetSocketAddress inetSocketAddress;
     private final SocketProvider socketProvider;
     private final SocketThread socketThread;
 
@@ -34,7 +31,7 @@ public class GameServer {
     public GameServer(int channel, int port, PacketProcessor.Mode mode) {
         this.channel = channel;
         this.port = port;
-        this.socketProvider = new NettySocketProvider();
+        this.socketProvider = SocketProviderFactory.getSocketProvider();
         this.socketThread = new SocketThread(socketProvider, mode);
         this.socketThread.start();
     }
@@ -50,7 +47,4 @@ public class GameServer {
     public void shutdown() {
     }
 
-    public void setInetSocketAddress(InetSocketAddress inetSocketAddress) {
-        this.inetSocketAddress = inetSocketAddress;
-    }
 }
