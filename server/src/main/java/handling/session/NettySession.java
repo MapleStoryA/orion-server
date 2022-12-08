@@ -3,9 +3,12 @@ package handling.session;
 import io.netty.channel.Channel;
 
 import java.net.SocketAddress;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class NettySession implements NetworkSession {
     private final Channel channel;
+
+    private ReentrantLock connectionLock = new ReentrantLock(true);
 
     public NettySession(Channel channel) {
         this.channel = channel;
@@ -13,7 +16,12 @@ public class NettySession implements NetworkSession {
 
     @Override
     public void write(byte[] packet) {
-        channel.write(packet);
+        connectionLock.lock();
+        try {
+            channel.writeAndFlush(packet);
+        } finally {
+            connectionLock.unlock();
+        }
     }
 
     @Override

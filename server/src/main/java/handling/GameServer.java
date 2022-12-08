@@ -1,4 +1,4 @@
-package handling.login;
+package handling;
 
 import handling.MinaMapleServerHandler;
 import handling.NettyMapleServerHandler;

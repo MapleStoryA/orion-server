@@ -23,7 +23,7 @@ package handling.cashshop;
 
 import handling.PacketProcessor;
 import handling.channel.PlayerStorage;
-import handling.login.GameServer;
+import handling.GameServer;
 import lombok.extern.slf4j.Slf4j;
 import server.ServerProperties;
 

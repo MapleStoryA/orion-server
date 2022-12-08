@@ -6,7 +6,7 @@ import java.net.SocketAddress;
 
 public class MinaSession implements NetworkSession {
 
-    private IoSession ioSession;
+    private final IoSession ioSession;
 
     public MinaSession(IoSession ioSession) {
         this.ioSession = ioSession;

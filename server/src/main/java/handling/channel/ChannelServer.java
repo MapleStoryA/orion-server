@@ -23,7 +23,7 @@ package handling.channel;
 
 import client.MapleCharacter;
 import handling.PacketProcessor;
-import handling.login.GameServer;
+import handling.GameServer;
 import handling.login.LoginServer;
 import handling.world.WorldServer;
 import handling.world.helper.CheaterData;
