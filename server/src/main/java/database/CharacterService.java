@@ -1,11 +1,10 @@
-package database.state;
+package database;
 
 import client.CharNameAndId;
 import client.EvanSkillPoints;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleJob;
-import database.DatabaseConnection;
 import handling.world.guild.GuildManager;
 import lombok.extern.slf4j.Slf4j;
 import tools.FileOutputUtil;

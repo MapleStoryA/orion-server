@@ -1,4 +1,4 @@
-package database.state;
+package database;
 
 import client.EvanSkillPoints;
 import client.MapleJob;
@@ -6,7 +6,6 @@ import client.inventory.IItem;
 import client.inventory.ItemLoader;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
-import database.DatabaseConnection;
 import org.jdbi.v3.core.Jdbi;
 import tools.Pair;
 
@@ -16,9 +15,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
 
-import static database.state.LoginResult.ALREADY_LOGGED_IN;
-import static database.state.LoginResult.INCORRECT_PASSWORD;
-import static database.state.LoginResult.NOT_REGISTERED_ID;
+import static database.LoginResult.ALREADY_LOGGED_IN;
+import static database.LoginResult.INCORRECT_PASSWORD;
+import static database.LoginResult.NOT_REGISTERED_ID;
 
 
 public class LoginService {

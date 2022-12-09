@@ -2,7 +2,7 @@ package handling.login.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import database.state.CharacterService;
+import database.CharacterService;
 import handling.AbstractMaplePacketHandler;
 import lombok.extern.slf4j.Slf4j;
 import tools.data.input.SeekableLittleEndianAccessor;

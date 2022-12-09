@@ -2,11 +2,12 @@ package client;
 
 import client.crypto.LoginCrypto;
 import client.crypto.LoginCryptoLegacy;
+import database.AccountData;
+import database.CharacterService;
 import database.DatabaseConnection;
 import database.DatabaseException;
-import database.state.AccountData;
-import database.state.CharacterService;
-import database.state.LoginService;
+import database.LoginService;
+import database.LoginState;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
@@ -39,6 +40,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.Lock;
@@ -100,16 +102,16 @@ public class MapleClient extends BaseMapleClient {
     public int finishLogin() {
         login_mutex.lock();
         try {
-            final byte state = getLoginState();
-            if (state > MapleClient.LOGIN_NOTLOGGEDIN && state != MapleClient.LOGIN_WAITING) { // already loggedin
+            final LoginState state = getLoginState();
+            if (state.getCode() > LoginState.LOGIN_NOTLOGGEDIN.getCode() && state.getCode() != LoginState.LOGIN_WAITING.getCode()) { // already loggedin
                 if (!ClientStorage.isConnected(this)) {
-                    updateLoginState(MapleClient.LOGIN_LOGGEDIN, getSessionIPAddress());
+                    updateLoginState(LoginState.LOGIN_NOTLOGGEDIN, getSessionIPAddress());
                     return 0;
                 }
                 loggedIn = false;
                 return 7;
             }
-            updateLoginState(MapleClient.LOGIN_LOGGEDIN, getSessionIPAddress());
+            updateLoginState(LoginState.LOGIN_WAITING, getSessionIPAddress());
         } finally {
             login_mutex.unlock();
         }
@@ -134,8 +136,9 @@ public class MapleClient extends BaseMapleClient {
                     if (banned == -1) {
                         CharacterService.unban(this.accountData.getId());
                     }
-                    byte loginstate = getLoginState();
-                    if (loginstate > MapleClient.LOGIN_NOTLOGGEDIN || ClientStorage.isConnected(this)) { // already loggedin
+                    LoginState loginState = getLoginState();
+                    if (loginState.getCode() > LoginState.LOGIN_NOTLOGGEDIN.getCode() || ClientStorage.isConnected(this)) {
+                        // already loggedin
                         loggedIn = false;
                         loginOk = 7;
                     } else {
@@ -186,11 +189,11 @@ public class MapleClient extends BaseMapleClient {
         this.accountData = LoginService.loadAccountDataById(id);
     }
 
-    public final void updateLoginState(final int newstate, final String SessionID) { // TODO hide?
+    public final void updateLoginState(final LoginState loginState, final String SessionID) { // TODO hide?
         try {
             Connection con = DatabaseConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("UPDATE accounts SET loggedin = ?, SessionIP = ?, lastlogin = CURRENT_TIMESTAMP() WHERE id = ?");
-            ps.setInt(1, newstate);
+            ps.setInt(1, loginState.getCode());
             ps.setString(2, SessionID);
             ps.setInt(3, getAccountData().getId());
             ps.executeUpdate();
@@ -198,16 +201,17 @@ public class MapleClient extends BaseMapleClient {
         } catch (SQLException e) {
             System.err.println("error updating login state" + e);
         }
-        if (newstate == MapleClient.LOGIN_NOTLOGGEDIN || newstate == MapleClient.LOGIN_WAITING) {
+        if (LoginState.LOGIN_NOTLOGGEDIN.equals(loginState) || LoginState.LOGIN_WAITING.equals(loginState)) {
             loggedIn = false;
             serverTransition = false;
         } else {
-            serverTransition = (newstate == MapleClient.LOGIN_SERVER_TRANSITION || newstate == MapleClient.CHANGE_CHANNEL);
+            var states = List.of(LoginState.LOGIN_SERVER_TRANSITION, LoginState.CHANGE_CHANNEL);
+            serverTransition = states.contains(loginState);
             loggedIn = !serverTransition;
         }
     }
 
-    public final byte getLoginState() {
+    public final LoginState getLoginState() {
         Connection con = DatabaseConnection.getConnection();
         try {
             PreparedStatement ps;
@@ -218,17 +222,18 @@ public class MapleClient extends BaseMapleClient {
                 ps.close();
                 throw new DatabaseException("Everything sucks");
             }
-            byte state = rs.getByte("loggedin");
+            LoginState state = LoginState.fromCode(rs.getInt("loggedin"));
 
-            if (state == MapleClient.LOGIN_SERVER_TRANSITION || state == MapleClient.CHANGE_CHANNEL) {
-                if (rs.getTimestamp("lastlogin").getTime() + 20000 < System.currentTimeMillis()) { // connecting to chanserver timeout
-                    state = MapleClient.LOGIN_NOTLOGGEDIN;
+            if (LoginState.LOGIN_SERVER_TRANSITION.equals(state) || LoginState.CHANGE_CHANNEL.equals(state)) {
+                if (rs.getTimestamp("lastlogin").getTime() + 20000 < System.currentTimeMillis()) {
+                    // connecting to channel server timeout
+                    state = LoginState.LOGIN_NOTLOGGEDIN;
                     updateLoginState(state, getSessionIPAddress());
                 }
             }
             rs.close();
             ps.close();
-            loggedIn = state == MapleClient.LOGIN_LOGGEDIN;
+            loggedIn = LoginState.LOGIN_LOGGEDIN.equals(state);
             return state;
         } catch (SQLException e) {
             loggedIn = false;
@@ -407,7 +412,7 @@ public class MapleClient extends BaseMapleClient {
             }
         }
         if (!serverTransition && isLoggedIn()) {
-            updateLoginState(MapleClient.LOGIN_NOTLOGGEDIN, getSessionIPAddress());
+            updateLoginState(LoginState.LOGIN_NOTLOGGEDIN, getSessionIPAddress());
         }
     }
 

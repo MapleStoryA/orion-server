@@ -1,4 +1,4 @@
-package database.state;
+package database;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
