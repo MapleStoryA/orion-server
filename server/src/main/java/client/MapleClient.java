@@ -116,7 +116,6 @@ public class MapleClient extends BaseMapleClient {
     }
 
     public LoginResult login(String name, String pwd) {
-
         return LoginService.checkPassword(name, pwd);
     }
 
