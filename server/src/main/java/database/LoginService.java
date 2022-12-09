@@ -6,6 +6,7 @@ import client.inventory.IItem;
 import client.inventory.ItemLoader;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
+import lombok.extern.slf4j.Slf4j;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.result.ResultIterable;
 import tools.Pair;
@@ -21,6 +22,7 @@ import static database.LoginResult.INCORRECT_PASSWORD;
 import static database.LoginResult.NOT_REGISTERED_ID;
 
 
+@Slf4j
 public class LoginService {
 
 
@@ -140,6 +142,20 @@ public class LoginService {
             return inventory;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void setClientAccountLoginState(AccountData data, LoginState loginState, String sessionIp) {
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("UPDATE accounts SET loggedin = ?, SessionIP = ?, lastlogin = CURRENT_TIMESTAMP() WHERE id = ?");
+            ps.setInt(1, loginState.getCode());
+            ps.setString(2, sessionIp);
+            ps.setInt(3, data.getId());
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e) {
+            log.error("error updating login state" + e);
         }
     }
 

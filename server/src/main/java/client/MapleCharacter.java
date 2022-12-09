@@ -331,11 +331,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         ret.stats.setHp(50);
         ret.stats.setMaxMp(50);
         ret.stats.setMp(50);
-
-        AccountData accountData = LoginService.loadAccountDataById(ret.accountid);
-        ret.nxcredit = accountData.getNxCredit();
-        ret.maplepoints = accountData.getMPoints();
-        ret.points = accountData.getPoints();
+        ret.nxcredit = client.getAccountData().getNxCredit();
+        ret.maplepoints = client.getAccountData().getMPoints();
+        ret.points = client.getAccountData().getPoints();
 
         return ret;
     }
@@ -5426,12 +5424,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
 
     public void resetStatsByJob(boolean beginnerJob) {
         int baseJob = (beginnerJob ? (job % 1000) : (job % 1000 / 100 * 100)); // 1112
-        // ->
-        // 112
-        // ->
-        // 1
-        // ->
-        // 100
         if (baseJob == 100) { // first job = warrior
             resetStats(25, 4, 4, 4);
         } else if (baseJob == 200) {

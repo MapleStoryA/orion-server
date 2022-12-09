@@ -4,7 +4,7 @@ import client.MapleClient;
 import constants.ServerConstants;
 import handling.PacketProcessor;
 import handling.cashshop.CashShopServer;
-import handling.session.HandlerHelper;
+import handling.session.DefaultPacketHandler;
 import handling.world.WorldServer;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -57,7 +57,7 @@ public class NettyMapleServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         byte[] message = (byte[]) msg;
         var client = (MapleClient) ctx.channel().attr(AttributeKey.valueOf(MapleClient.CLIENT_KEY)).get();
-        HandlerHelper.handlePacket(client, processor, PacketProcessor.Mode.CASHSHOP.equals(mode), message);
+        DefaultPacketHandler.handlePacket(client, processor, PacketProcessor.Mode.CASHSHOP.equals(mode), message);
     }
 
 

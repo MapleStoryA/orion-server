@@ -61,7 +61,7 @@ import java.util.List;
 public class InterServerHandler {
 
 
-    public static final void loggedIn(final int playerid, final MapleClient c) {
+    public static final void onLoggedIn(final int playerid, final MapleClient c) {
         final ChannelServer channelServer = c.getChannelServer();
         MapleCharacter player;
         final CharacterTransfer transfer = channelServer.getPlayerStorage().getPendingCharacter(playerid);
@@ -81,7 +81,7 @@ public class InterServerHandler {
             return;
         }
 
-        final LoginState state = c.getLoginState();
+        final LoginState state = c.getAccountData().getLoginState();
         boolean allowLogin = false;
 
         if (LoginState.LOGIN_SERVER_TRANSITION.equals(state) || LoginState.CHANGE_CHANNEL.equals(state)) {

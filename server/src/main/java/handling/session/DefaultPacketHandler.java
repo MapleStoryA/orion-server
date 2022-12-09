@@ -15,7 +15,7 @@ import tools.data.input.GenericSeekableLittleEndianAccessor;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 @Slf4j
-public class HandlerHelper {
+public class DefaultPacketHandler {
 
     public static void handlePacket(MapleClient client, PacketProcessor processor, boolean isCashShop, byte[] message) {
         try {
@@ -43,7 +43,7 @@ public class HandlerHelper {
                             return;
                         }
                     }
-                    HandlerHelper.handlePacket(recv, slea, client, isCashShop);
+                    DefaultPacketHandler.handlePacket(recv, slea, client, isCashShop);
                     return;
                 }
             }
@@ -64,12 +64,12 @@ public class HandlerHelper {
                 if (isCashShop) {
                     CashShopOperationHandlers.enterCashShop(playerId, c);
                 } else {
-                    InterServerHandler.loggedIn(playerId, c);
+                    InterServerHandler.onLoggedIn(playerId, c);
                 }
                 break;
             case CHANGE_MAP:
                 if (isCashShop) {
-                    CashShopOperationHandlers.leaveCashShop(slea, c, c.getPlayer());
+                    CashShopOperationHandlers.onLeaveCashShop(slea, c, c.getPlayer());
                 } else {
                     PlayerHandler.changeMap(slea, c, c.getPlayer());
                 }

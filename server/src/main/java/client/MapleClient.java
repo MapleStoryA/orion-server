@@ -2,7 +2,6 @@ package client;
 
 import database.AccountData;
 import database.DatabaseConnection;
-import database.DatabaseException;
 import database.LoginResult;
 import database.LoginService;
 import database.LoginState;
@@ -99,7 +98,7 @@ public class MapleClient extends BaseMapleClient {
     public int finishLogin() {
         login_mutex.lock();
         try {
-            final LoginState state = getLoginState();
+            final LoginState state = accountData.getLoginState();
             if ((state.getCode() > LoginState.LOGIN_NOTLOGGEDIN.getCode()) && !state.equals(LoginState.LOGIN_WAITING)) {
                 if (!ClientStorage.isConnected(this)) {
                     updateLoginState(LoginState.LOGIN_LOGGEDIN, getSessionIPAddress());
@@ -124,57 +123,19 @@ public class MapleClient extends BaseMapleClient {
         this.accountData = LoginService.loadAccountDataById(id);
     }
 
-    public final void updateLoginState(final LoginState loginState, final String SessionID) { // TODO hide?
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("UPDATE accounts SET loggedin = ?, SessionIP = ?, lastlogin = CURRENT_TIMESTAMP() WHERE id = ?");
-            ps.setInt(1, loginState.getCode());
-            ps.setString(2, SessionID);
-            ps.setInt(3, getAccountData().getId());
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException e) {
-            System.err.println("error updating login state" + e);
-        }
-        if (LoginState.LOGIN_NOTLOGGEDIN.equals(loginState) || LoginState.LOGIN_WAITING.equals(loginState)) {
+    public final void updateLoginState(final LoginState loginState, final String sessionIp) {
+        LoginService.setClientAccountLoginState(this.getAccountData(), loginState, sessionIp);
+        var waitingStates = List.of(LoginState.LOGIN_NOTLOGGEDIN, LoginState.LOGIN_WAITING);
+        if (waitingStates.contains(loginState)) {
             loggedIn = false;
             serverTransition = false;
         } else {
-            var states = List.of(LoginState.LOGIN_SERVER_TRANSITION, LoginState.CHANGE_CHANNEL);
-            serverTransition = states.contains(loginState);
+            var transitionStates = List.of(LoginState.LOGIN_SERVER_TRANSITION, LoginState.CHANGE_CHANNEL);
+            serverTransition = transitionStates.contains(loginState);
             loggedIn = !serverTransition;
         }
     }
 
-    public final LoginState getLoginState() {
-        Connection con = DatabaseConnection.getConnection();
-        try {
-            PreparedStatement ps;
-            ps = con.prepareStatement("SELECT loggedin, lastlogin, `birthday` + 0 AS `bday` FROM accounts WHERE id = ?");
-            ps.setInt(1, getAccountData().getId());
-            ResultSet rs = ps.executeQuery();
-            if (!rs.next()) {
-                ps.close();
-                throw new DatabaseException("Everything sucks");
-            }
-            LoginState state = LoginState.fromCode(rs.getInt("loggedin"));
-
-            if (LoginState.LOGIN_SERVER_TRANSITION.equals(state) || LoginState.CHANGE_CHANNEL.equals(state)) {
-                if (rs.getTimestamp("lastlogin").getTime() + 20000 < System.currentTimeMillis()) {
-                    // connecting to channel server timeout
-                    state = LoginState.LOGIN_NOTLOGGEDIN;
-                    updateLoginState(state, getSessionIPAddress());
-                }
-            }
-            rs.close();
-            ps.close();
-            loggedIn = LoginState.LOGIN_LOGGEDIN.equals(state);
-            return state;
-        } catch (SQLException e) {
-            loggedIn = false;
-            throw new DatabaseException("error getting login state", e);
-        }
-    }
 
     public void removalTask() {
         try {
