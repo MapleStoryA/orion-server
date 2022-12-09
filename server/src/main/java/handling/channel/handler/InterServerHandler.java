@@ -76,7 +76,7 @@ public class InterServerHandler {
         c.loadAccountData(player.getAccountID());
 
 
-        if (!c.CheckIPAddress()) { // Remote hack
+        if (!c.checkClientIpAddress()) { // Remote hack
             c.getSession().close();
             return;
         }
