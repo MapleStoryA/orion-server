@@ -27,12 +27,6 @@ public class AccountData {
     private int mPoints;
     private byte gender;
 
-
-    public LoginState getLoginState() {
-        return LoginState.fromCode(loggedIn);
-    }
-
-
     public boolean isOnline() {
         return loggedIn > LoginState.LOGIN_NOTLOGGEDIN.getCode();
     }
