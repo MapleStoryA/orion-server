@@ -51,7 +51,7 @@ public class CreateCharHandler extends AbstractMaplePacketHandler {
         final int bottom = slea.readInt();
         final int shoes = slea.readInt();
         final int weapon = slea.readInt();
-        final byte gender = c.getGender();
+        final byte gender = c.getAccountData().getGender();
 
         if (JobType < 0 || JobType > 3 || (db == 1 && JobType != 1)) {
             return;

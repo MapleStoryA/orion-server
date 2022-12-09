@@ -26,14 +26,15 @@ public class CharLoginPasswordHandler implements MaplePacketHandler {
         final String login = slea.readMapleAsciiString();
         final String pwd = normalizeStringPassword(slea.readMapleAsciiString());
 
-        c.setAccountName(login);
         final boolean ipBan = c.hasBannedIP();
 
-        int loginok = c.login(login, pwd, ipBan);
-        final Calendar tempbannedTill = c.getTempBanCalendar();
+        int loginok = c.login(login, pwd);
+        final Calendar tempbannedTill = c.getAccountData().getTempBanCalendar();
 
-        if (loginok == 0 && (ipBan) && !c.isGm()) {
-            loginok = 3;
+        if (loginok == 0 && (ipBan)) {
+            if (!c.getAccountData().isGameMaster()) {
+                loginok = 3;
+            }
         }
         if (loginok != 0) {
             if (!c.tooManyLogin()) {
@@ -42,7 +43,7 @@ public class CharLoginPasswordHandler implements MaplePacketHandler {
         } else if (tempbannedTill.getTimeInMillis() != 0) {
             if (!c.tooManyLogin()) {
                 c.getSession().write(LoginPacket.getTempBan(
-                        KoreanDateUtil.getTempBanTimestamp(tempbannedTill.getTimeInMillis()), c.getBanReason()));
+                        KoreanDateUtil.getTempBanTimestamp(tempbannedTill.getTimeInMillis()), c.getAccountData().getGreason()));
             }
         } else {
             c.resetLoginCount();

@@ -12,17 +12,17 @@ public class ClientStorage {
     private static final Map<Integer, MapleClient> clients = new ConcurrentHashMap<>();
 
     public static void addClient(MapleClient client) {
-        clients.put(client.getAccID(), client);
+        clients.put(client.getAccountData().getId(), client);
     }
 
     public static void removeClient(MapleClient client) {
-        clients.remove(client.getAccID());
+        clients.remove(client.getAccountData().getId());
     }
 
     public static boolean isConnected(MapleClient client) {
-        boolean isConnected = clients.containsKey(client.getAccID());
+        boolean isConnected = clients.containsKey(client.getAccountData().getId());
         if (isConnected) {
-            MapleClient connected = clients.get(client.getAccID());
+            MapleClient connected = clients.get(client.getAccountData().getId());
             NetworkSession session = connected.getSession();
             if (session == null || !session.isConnected()) {
                 removeClient(connected);

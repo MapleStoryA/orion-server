@@ -43,7 +43,7 @@ public class CsSurpriseHandler extends AbstractMaplePacketHandler {
                             c.getPlayer().getCashInventory().addToInventory(newBox); // add the balance back
                         }
                         c.getPlayer().getCashInventory().addToInventory(itemz);
-                        c.getSession().write(MTSCSPacket.showCashShopSurprise(uniqueId, itemz, c.getAccID()));
+                        c.getSession().write(MTSCSPacket.showCashShopSurprise(uniqueId, itemz, c.getAccountData().getId()));
                         success = true;
                     }
                 }

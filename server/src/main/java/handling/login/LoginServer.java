@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package handling.login;
 
 import client.MapleClient;
+import database.state.LoginService;
 import handling.GameServer;
 import handling.PacketProcessor;
 import handling.world.WorldServer;
@@ -121,10 +122,12 @@ public class LoginServer extends GameServer {
     }
 
     public void registerClient(final MapleClient c) {
-        if (LoginServer.getInstance().isAdminOnly() && !c.isGm()) {
-            c.getSession().write(MaplePacketCreator.serverNotice(1, "The server is currently set to Admin login only.\r\nWe are currently testing some issues.\r\nPlease try again later."));
-            c.getSession().write(LoginPacket.getLoginFailed(7));
-            return;
+        if (LoginServer.getInstance().isAdminOnly()) {
+            if (!c.getAccountData().isGameMaster()) {
+                c.getSession().write(MaplePacketCreator.serverNotice(1, "The server is currently set to Admin login only.\r\nWe are currently testing some issues.\r\nPlease try again later."));
+                c.getSession().write(LoginPacket.getLoginFailed(7));
+                return;
+            }
         }
 
         if (System.currentTimeMillis() - lastUpdate > 600000) { // Update once every 10 minutes
@@ -146,6 +149,7 @@ public class LoginServer extends GameServer {
         }
 
         if (c.finishLogin() == 0) {
+            c.setAccountData(LoginService.loadAccountDataById(c.getAccountData().getId()));
             c.getSession().write(LoginPacket.getAuthSuccessRequest(c));
             ClientStorage.addClient(c);
             c.setIdleTask(Timer.PingTimer.getInstance().schedule(() -> c.getSession().close(), 10 * 60 * 10000));

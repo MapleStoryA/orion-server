@@ -18,7 +18,7 @@ public class CharSelectedHandler extends AbstractMaplePacketHandler {
         String macAddress = slea.readMapleAsciiString();
         log.info("HardwareID: " + macAddress);
         log.info("MAC: " + hardwareID);
-        if (c.tooManyLogin() || !CharacterService.checkIfCharacterExist(c.getAccID(), characterId)) {
+        if (c.tooManyLogin() || !CharacterService.checkIfCharacterExist(c.getAccountData().getId(), characterId)) {
             c.getSession().close();
             return;
         }

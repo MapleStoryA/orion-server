@@ -98,7 +98,7 @@ public class CharacterTransfer implements Externalizable {
     public CharacterTransfer(final MapleCharacter chr) {
         this.characterid = chr.getId();
         this.accountid = chr.getAccountID();
-        this.accountname = chr.getClient().getAccountName();
+        //this.accountname = chr.getClient().getAccountName();
         this.channel = (byte) chr.getClient().getChannel();
         this.nxCredit = chr.getCSPoints(1);
         this.MaplePoints = chr.getCSPoints(2);
