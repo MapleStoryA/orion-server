@@ -15,7 +15,7 @@ public class NpcTalkMoreHandler extends AbstractMaplePacketHandler {
         if (c.getLastNPCTalk() > System.currentTimeMillis() - 400) {
             return;
         }
-        if (c.getNpcScript() != null && c.getNpcScript().getContinuation() != null) {
+        if (c.getCurrentNpcScript() != null && c.getCurrentNpcScript().getContinuation() != null) {
             NpcTalkHelper.proceedConversation(slea, c);
             return;
         }

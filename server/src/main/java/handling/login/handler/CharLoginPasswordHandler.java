@@ -13,11 +13,6 @@ import java.util.Calendar;
 @Slf4j
 public class CharLoginPasswordHandler implements MaplePacketHandler {
 
-    private static final boolean loginFailCount(final MapleClient c) {
-        c.loginAttempt++;
-        return c.loginAttempt > 5;
-    }
-
 
     private String normalizeStringPassword(String password) {
         if (password == null) {
@@ -41,16 +36,16 @@ public class CharLoginPasswordHandler implements MaplePacketHandler {
             loginok = 3;
         }
         if (loginok != 0) {
-            if (!loginFailCount(c)) {
+            if (!c.tooManyLogin()) {
                 c.getSession().write(LoginPacket.getLoginFailed(loginok));
             }
         } else if (tempbannedTill.getTimeInMillis() != 0) {
-            if (!loginFailCount(c)) {
+            if (!c.tooManyLogin()) {
                 c.getSession().write(LoginPacket.getTempBan(
                         KoreanDateUtil.getTempBanTimestamp(tempbannedTill.getTimeInMillis()), c.getBanReason()));
             }
         } else {
-            c.loginAttempt = 0;
+            c.resetLoginCount();
             LoginServer.getInstance().registerClient(c);
         }
 

@@ -35,7 +35,7 @@ public class NpcTalkHelper {
         try {
             manager.runScript(npc, client);
         } catch (ContinuationPending pending) {
-            client.getNpcScript().setContinuation(pending.getContinuation());
+            client.getCurrentNpcScript().setContinuation(pending.getContinuation());
         }
     }
 
@@ -44,7 +44,7 @@ public class NpcTalkHelper {
         try {
             manager.runQuestScript(npc, quest, client);
         } catch (ContinuationPending pending) {
-            client.getNpcScript().setContinuation(pending.getContinuation());
+            client.getCurrentNpcScript().setContinuation(pending.getContinuation());
         }
     }
 
@@ -52,7 +52,7 @@ public class NpcTalkHelper {
         int talk = slea.readByte();
         Talk type = Talk.from(talk);
         int action = slea.readByte();
-        NpcScripting script = client.getNpcScript();
+        NpcScripting script = client.getCurrentNpcScript();
         if (script == null) {
             client.enableActions();
             return;

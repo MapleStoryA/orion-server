@@ -10,10 +10,6 @@ import tools.data.input.SeekableLittleEndianAccessor;
 @lombok.extern.slf4j.Slf4j
 public class CharSelectedViewAllHandler extends AbstractMaplePacketHandler {
 
-    private static boolean loginFailCount(final MapleClient c) {
-        c.loginAttempt++;
-        return c.loginAttempt > 5;
-    }
 
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
@@ -23,8 +19,8 @@ public class CharSelectedViewAllHandler extends AbstractMaplePacketHandler {
         int channel = 1;
         c.setChannel(channel);
         String mac = slea.readMapleAsciiString();
-        c.updateMacs(mac);
-        if (loginFailCount(c) || !CharacterService.checkIfCharacterExist(c.getAccID(), characterId)) {
+        log.info("Mac connected: {}", mac);
+        if (c.tooManyLogin() || !CharacterService.checkIfCharacterExist(c.getAccID(), characterId)) {
             c.getSession().close();
             return;
         }
