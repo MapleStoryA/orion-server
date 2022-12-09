@@ -11,9 +11,9 @@ import java.util.UUID;
 /**
  * Simple class to hash the password with Bcrypt.
  * <p>
- * Salt = SHA-256(uuid + seed)
- * hashed password = bcrypt(Salt + password)
- * decrypted password = bcrypt_verify((Salt + raw password), hashed password)
+ * salt = SHA-256(uuid + seed)
+ * hashed password = bcrypt(salt + password)
+ * decrypted password = bcrypt_verify((salt + raw password), hashed password)
  **/
 @Slf4j
 public class PasswordEncryptor {
