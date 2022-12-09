@@ -81,7 +81,7 @@ public class InterServerHandler {
             return;
         }
 
-        final LoginState state = c.getLoginState();
+        final LoginState state = c.getAccountData().getLoginState();
         boolean allowLogin = false;
 
         if (LoginState.LOGIN_SERVER_TRANSITION.equals(state) || LoginState.CHANGE_CHANNEL.equals(state)) {
