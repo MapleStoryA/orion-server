@@ -22,7 +22,7 @@ import constants.GameConstants;
 import constants.MapConstants;
 import constants.ServerConstants.PlayerGMRank;
 import database.DatabaseConnection;
-import database.state.BanService;
+import database.BanService;
 import handling.channel.ChannelServer;
 import handling.world.WorldServer;
 import handling.world.helper.BroadcastHelper;

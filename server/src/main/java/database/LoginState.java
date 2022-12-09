@@ -1,4 +1,4 @@
-package database.state;
+package database;
 
 public enum LoginState {
 

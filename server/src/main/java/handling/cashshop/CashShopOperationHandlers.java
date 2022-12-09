@@ -5,7 +5,8 @@ import client.MapleClient;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
-import database.state.CharacterService;
+import database.CharacterService;
+import database.LoginState;
 import handling.world.WorldServer;
 import handling.world.helper.CharacterTransfer;
 import tools.MaplePacketCreator;
@@ -19,7 +20,7 @@ public class CashShopOperationHandlers {
 
     public static void leaveCashShop(final SeekableLittleEndianAccessor slea, final MapleClient c, final MapleCharacter chr) {
         CashShopServer.getInstance().getPlayerStorage().deregisterPlayer(chr);
-        c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION, c.getSessionIPAddress());
+        c.updateLoginState(LoginState.LOGIN_SERVER_TRANSITION, c.getSessionIPAddress());
 
         try {
             WorldServer.getInstance().getChangeChannelData(new CharacterTransfer(chr), chr.getId(), c.getChannel());
@@ -48,9 +49,9 @@ public class CashShopOperationHandlers {
             return;
         }
 
-        final int state = c.getLoginState();
+        final LoginState state = c.getLoginState();
         boolean allowLogin = false;
-        if (state == MapleClient.LOGIN_SERVER_TRANSITION || state == MapleClient.CHANGE_CHANNEL) {
+        if (LoginState.LOGIN_SERVER_TRANSITION.equals(state) || LoginState.CHANGE_CHANNEL.equals(state)) {
             if (!WorldServer.getInstance().isCharacterListConnected(CharacterService.loadCharacterNames(c.getWorld(), c.getAccountData().getId()))) {
                 allowLogin = true;
             }
@@ -60,7 +61,7 @@ public class CashShopOperationHandlers {
             //c.getSession().close();
             //  return;
         }
-        c.updateLoginState(MapleClient.LOGIN_LOGGEDIN, c.getSessionIPAddress());
+        c.updateLoginState(LoginState.LOGIN_LOGGEDIN, c.getSessionIPAddress());
         CashShopServer.getInstance().getPlayerStorage().registerPlayer(chr);
         c.getSession().write(MTSCSPacket.warpCS(c));
         CSUpdate(c);

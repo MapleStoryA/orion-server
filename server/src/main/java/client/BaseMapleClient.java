@@ -17,13 +17,6 @@ import java.sql.SQLException;
 public class BaseMapleClient {
     public static final String CLIENT_KEY = "CLIENT";
 
-    public static final byte LOGIN_NOTLOGGEDIN = 0,
-            LOGIN_SERVER_TRANSITION = 1,
-            LOGIN_LOGGEDIN = 2,
-            LOGIN_WAITING = 3,
-            CASH_SHOP_TRANSITION = 4,
-            LOGIN_CS_LOGGEDIN = 5,
-            CHANGE_CHANNEL = 6;
 
     protected final MapleAESOFB send;
     protected final MapleAESOFB receive;

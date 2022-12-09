@@ -1,9 +1,8 @@
-package database.state;
+package database;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Externalizable;
 import java.time.LocalDate;
 import java.util.Calendar;
 

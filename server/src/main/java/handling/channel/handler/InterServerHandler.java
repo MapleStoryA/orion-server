@@ -26,7 +26,8 @@ import client.MapleClient;
 import client.MapleQuestStatus;
 import client.SkillFactory;
 import constants.ServerConstants;
-import database.state.CharacterService;
+import database.CharacterService;
+import database.LoginState;
 import handling.channel.ChannelServer;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
 import handling.world.WorldServer;
@@ -80,10 +81,10 @@ public class InterServerHandler {
             return;
         }
 
-        final int state = c.getLoginState();
+        final LoginState state = c.getLoginState();
         boolean allowLogin = false;
 
-        if (state == MapleClient.LOGIN_SERVER_TRANSITION || state == MapleClient.CHANGE_CHANNEL) {
+        if (LoginState.LOGIN_SERVER_TRANSITION.equals(state) || LoginState.CHANGE_CHANNEL.equals(state)) {
             if (!WorldServer.getInstance().isCharacterListConnected(CharacterService.loadCharacterNames(c.getWorld(), c.getAccountData().getId()))) {
                 allowLogin = true;
             }
@@ -94,7 +95,7 @@ public class InterServerHandler {
             // return;
         }
         ClientStorage.addClient(c);
-        c.updateLoginState(MapleClient.LOGIN_LOGGEDIN, c.getSessionIPAddress());
+        c.updateLoginState(LoginState.LOGIN_LOGGEDIN, c.getSessionIPAddress());
         channelServer.addPlayer(player);
 
         c.getSession().write(MaplePacketCreator.getCharInfo(player));

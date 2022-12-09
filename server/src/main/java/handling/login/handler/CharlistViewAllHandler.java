@@ -2,7 +2,7 @@ package handling.login.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import database.state.CharacterService;
+import database.CharacterService;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
