@@ -1,16 +1,23 @@
 package database.state;
 
+import client.CharNameAndId;
 import client.EvanSkillPoints;
+import client.MapleCharacter;
+import client.MapleClient;
 import client.MapleJob;
 import database.DatabaseConnection;
 import handling.world.guild.GuildManager;
+import lombok.extern.slf4j.Slf4j;
 import tools.FileOutputUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
+@Slf4j
 public class CharacterService {
 
     public static void deleteWhereCharacterId(Connection con, String sql, int id) throws SQLException {
@@ -122,6 +129,49 @@ public class CharacterService {
             e.printStackTrace();
         }
         return 10;
+    }
+
+    public static List<String> loadCharacterNames(int serverId, int accountId) {
+        List<String> chars = new LinkedList<String>();
+        for (CharNameAndId cni : loadCharactersInternal(serverId, accountId)) {
+            chars.add(cni.name);
+        }
+        return chars;
+    }
+
+    public static List<CharNameAndId> loadCharactersInternal(int serverId, int accountId) {
+        List<CharNameAndId> chars = new LinkedList<>();
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT id, name FROM characters WHERE accountid = ? AND world = ?");
+            ps.setInt(1, accountId);
+            ps.setInt(2, serverId);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                chars.add(new CharNameAndId(rs.getString("name"), rs.getInt("id")));
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            log.info("error loading characters internal" + e);
+        }
+        return chars;
+    }
+
+    public static List<MapleCharacter> loadCharacters(MapleClient client, final int serverId, int accountId) {
+        final List<MapleCharacter> chars = new LinkedList<>();
+        final List<Integer> allowedChar = new LinkedList<>();
+        for (final CharNameAndId cni : loadCharactersInternal(serverId, accountId)) {
+            final MapleCharacter chr = MapleCharacter.loadCharFromDB(cni.id, client, false);
+            chars.add(chr);
+            allowedChar.add(chr.getId());
+        }
+        return chars;
+    }
+
+    public static boolean checkIfCharacterExist(int accountId, int characterId) {
+        return LoginService.loadCharacterData(accountId, characterId) != null;
     }
 
 }

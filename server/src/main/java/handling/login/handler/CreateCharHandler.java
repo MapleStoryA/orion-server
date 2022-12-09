@@ -135,7 +135,6 @@ public class CreateCharHandler extends AbstractMaplePacketHandler {
         if (MapleCharacterUtil.canCreateChar(name) && !LoginInformationProvider.getInstance().isForbiddenName(name)) {
             MapleCharacter.saveNewCharToDB(newchar, JobType, JobType == 1 && db > 0);
             c.getSession().write(LoginPacket.addNewCharEntry(newchar, true));
-            c.createdChar(newchar.getId());
         } else {
             c.getSession().write(LoginPacket.addNewCharEntry(newchar, false));
         }

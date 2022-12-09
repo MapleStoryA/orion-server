@@ -1,6 +1,7 @@
 package handling.login.handler;
 
 import client.MapleClient;
+import database.state.CharacterService;
 import handling.AbstractMaplePacketHandler;
 import handling.world.WorldServer;
 import tools.MaplePacketCreator;
@@ -16,14 +17,14 @@ public class CharSelectedViewAllHandler extends AbstractMaplePacketHandler {
 
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        int charId = slea.readInt();
+        int characterId = slea.readInt();
         slea.readInt();
         c.setWorld(0); // world
         int channel = 1;
         c.setChannel(channel);
         String mac = slea.readMapleAsciiString();
         c.updateMacs(mac);
-        if (loginFailCount(c) || !c.login_Auth(charId)) { // This should not happen unlessplayer is hacking
+        if (loginFailCount(c) || !CharacterService.checkIfCharacterExist(c.getAccID(), characterId)) {
             c.getSession().close();
             return;
         }
@@ -33,7 +34,7 @@ public class CharSelectedViewAllHandler extends AbstractMaplePacketHandler {
         }
         c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION, c.getSessionIPAddress());
         c.getSession().write(MaplePacketCreator.getServerIP(
-                Integer.parseInt(WorldServer.getInstance().getChannel(c.getChannel()).getPublicAddress().split(":")[1]), charId));
+                Integer.parseInt(WorldServer.getInstance().getChannel(c.getChannel()).getPublicAddress().split(":")[1]), characterId));
 
     }
 

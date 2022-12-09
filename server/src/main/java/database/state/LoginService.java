@@ -30,6 +30,12 @@ public class LoginService {
         return result.mapToBean(CharacterData.class).first();
     }
 
+    public static CharacterData loadCharacterData(int accountId, int characterId) {
+        var jdbi = Jdbi.create(DatabaseConnection.getConnection());
+        var result = jdbi.withHandle((h) -> h.select("SELECT * FROM characters WHERE accountid = ? AND id = ?", accountId, characterId));
+        return result.mapToBean(CharacterData.class).first();
+    }
+
     public static CharacterListResult loadCharacterList(int accountId, int world) {
         var jdbi = Jdbi.create(DatabaseConnection.getConnection());
         var result = jdbi.withHandle((h) -> h.select(
