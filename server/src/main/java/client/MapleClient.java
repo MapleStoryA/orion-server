@@ -105,13 +105,13 @@ public class MapleClient extends BaseMapleClient {
             final LoginState state = getLoginState();
             if ((state.getCode() > LoginState.LOGIN_NOTLOGGEDIN.getCode()) && !state.equals(LoginState.LOGIN_WAITING)) {
                 if (!ClientStorage.isConnected(this)) {
-                    updateLoginState(LoginState.LOGIN_NOTLOGGEDIN, getSessionIPAddress());
+                    updateLoginState(LoginState.LOGIN_LOGGEDIN, getSessionIPAddress());
                     return 0;
                 }
                 loggedIn = false;
                 return 7;
             }
-            updateLoginState(LoginState.LOGIN_WAITING, getSessionIPAddress());
+            updateLoginState(LoginState.LOGIN_LOGGEDIN, getSessionIPAddress());
         } finally {
             login_mutex.unlock();
         }
