@@ -20,17 +20,16 @@ import handling.world.messenger.MessengerManager;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import handling.world.party.PartyManager;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import scripting.v1.game.NpcScripting;
 import server.ClientStorage;
-import server.Timer.PingTimer;
 import server.config.ServerEnvironment;
 import server.maps.MapleMap;
 import server.quest.MapleQuest;
 import server.shops.IMaplePlayerShop;
 import tools.FileOutputUtil;
-import tools.MaplePacketCreator;
-import tools.packet.LoginPacket;
 
 import javax.script.ScriptEngine;
 import java.sql.Connection;
@@ -38,12 +37,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -55,29 +50,31 @@ public class MapleClient extends BaseMapleClient {
     public static final int DEFAULT_CHAR_SLOT = 6;
 
     private final static Lock login_mutex = new ReentrantLock(true);
-    private final transient Map<String, ScriptEngine> engines = new HashMap<>();
-    private NpcScripting npcScript;
+    private final Map<String, ScriptEngine> engines = new HashMap<>();
+    @Getter
+    @Setter
+    private NpcScripting currentNpcScript;
+    private final Lock npc_mutex = new ReentrantLock();
 
-    private final transient Set<String> macs = new HashSet<>();
-    private final transient Lock npc_mutex = new ReentrantLock();
-
-    public transient short loginAttempt = 0, csAttempt = 0;
-    private transient long lastPong = 0;
+    // Account and player fields
     private MapleCharacter player;
     private int accountId;
     private String accountName;
-    private int channel = 1;
-    private int world;
-    private int charSlots = DEFAULT_CHAR_SLOT;
-    private boolean loggedIn = false;
-    private boolean serverTransition = false;
-    private transient Calendar tempBan = null;
-    private boolean receiving = true;
-    private boolean gm;
+    private Calendar tempBan = null;
+    private boolean isGM;
     private int gmLevel;
-    private byte greason = 1, gender = -1;
-    private transient ScheduledFuture<?> idleTask = null;
+    private byte banReason = 1, gender = -1;
+    private int charSlots = DEFAULT_CHAR_SLOT;
+
+    // Channel and world related fields.
+    private int world;
+    private int channel = 1;
+    private boolean serverTransition = false;
+    private boolean loggedIn = false;
+    @Getter
+    @Setter
     private long lastNPCTalk;
+    private ScheduledFuture<?> idleTask = null;
 
 
     public MapleClient(byte[] ivSend, byte[] ivRecv, NetworkSession session) {
@@ -123,7 +120,7 @@ public class MapleClient extends BaseMapleClient {
     }
 
     public byte getBanReason() {
-        return greason;
+        return banReason;
     }
 
     public boolean hasBannedIP() {
@@ -180,15 +177,15 @@ public class MapleClient extends BaseMapleClient {
                 final String salt = rs.getString("salt");
 
                 accountId = rs.getInt("id");
-                gm = rs.getInt("gm") > 0;
+                isGM = rs.getInt("gm") > 0;
                 gmLevel = rs.getInt("gm");
-                greason = rs.getByte("greason");
+                banReason = rs.getByte("greason");
                 tempBan = getTempBanCalendar(rs);
                 gender = rs.getByte("gender");
 
                 ps.close();
 
-                if (banned > 0 && !gm) {
+                if (banned > 0 && !isGM) {
                     loginok = 3;
                 } else {
                     if (banned == -1) {
@@ -242,28 +239,6 @@ public class MapleClient extends BaseMapleClient {
         return loginok;
     }
 
-
-    public void updateMacs(String macData) {
-        Collections.addAll(macs, macData.split(", "));
-        StringBuilder newMacData = new StringBuilder();
-        Iterator<String> iter = macs.iterator();
-        while (iter.hasNext()) {
-            newMacData.append(iter.next());
-            if (iter.hasNext()) {
-                newMacData.append(", ");
-            }
-        }
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("UPDATE accounts SET macs = ? WHERE id = ?");
-            ps.setString(1, newMacData.toString());
-            ps.setInt(2, accountId);
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException e) {
-            System.err.println("Error saving MACs" + e);
-        }
-    }
 
     public int getAccID() {
         return this.accountId;
@@ -399,7 +374,6 @@ public class MapleClient extends BaseMapleClient {
             player.saveToDB(true, fromCS);
             if (shutdown) {
                 player = null;
-                receiving = false;
                 return;
             }
 
@@ -578,21 +552,9 @@ public class MapleClient extends BaseMapleClient {
         this.world = world;
     }
 
-    public final long getLastPong() {
-        return lastPong;
-    }
 
-    public final void pongReceived() {
-        lastPong = System.currentTimeMillis();
-    }
-
-    public void sendPing() {
-        session.write(LoginPacket.getPing());
-        PingTimer.getInstance().schedule(new PingThread(this), 15000);
-    }
-
-    public final boolean isGm() {
-        return gm;
+    public boolean isGm() {
+        return isGM;
     }
 
     public final void setScriptEngine(final String name, final ScriptEngine e) {
@@ -643,14 +605,6 @@ public class MapleClient extends BaseMapleClient {
         return charSlots;
     }
 
-    public boolean isReceiving() {
-        return receiving;
-    }
-
-    public void setReceiving(boolean m) {
-        this.receiving = m;
-    }
-
     public long getLastNPCTalk() {
         return lastNPCTalk;
     }
@@ -659,17 +613,6 @@ public class MapleClient extends BaseMapleClient {
         lastNPCTalk = System.currentTimeMillis();
     }
 
-
-
-
-
-    public NpcScripting getNpcScript() {
-        return npcScript;
-    }
-
-    public void setNpcScript(NpcScripting npcScript) {
-        this.npcScript = npcScript;
-    }
 
     public int getGMLevel() {
         return gmLevel;

@@ -61,7 +61,7 @@ public class NpcScriptingManager {
             globalScope.put("quest", globalScope, Context.javaToJS(questScript, globalScope));
             globalScope.put("inventory", globalScope, Context.javaToJS(inventory, globalScope));
 
-            client.setNpcScript(npcScript);
+            client.setCurrentNpcScript(npcScript);
             ctx.executeScriptWithContinuations(script, globalScope);
             return true;
         } finally {
@@ -93,7 +93,7 @@ public class NpcScriptingManager {
             globalScope.put("target", globalScope, Context.javaToJS(target, globalScope));
             globalScope.put("inventory", globalScope, Context.javaToJS(inventory, globalScope));
             globalScope.put("field", globalScope, Context.javaToJS(field, globalScope));
-            client.setNpcScript(npcScript);
+            client.setCurrentNpcScript(npcScript);
             ctx.executeScriptWithContinuations(script, globalScope);
             return true;
         } catch (ContinuationPending ex) {

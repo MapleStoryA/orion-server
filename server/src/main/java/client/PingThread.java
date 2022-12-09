@@ -6,9 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PingThread implements Runnable {
 
-    private final MapleClient client;
+    private final BaseMapleClient client;
 
-    public PingThread(MapleClient client) {
+    public PingThread(BaseMapleClient client) {
         super();
         this.client = client;
     }

@@ -33,8 +33,8 @@ public class EnterCashShopHandler extends AbstractMaplePacketHandler {
         chr.changeRemoval();
 
         if (chr.getMessenger() != null) {
-            MapleMessengerCharacter messengerplayer = new MapleMessengerCharacter(chr);
-            MessengerManager.leaveMessenger(chr.getMessenger().getId(), messengerplayer);
+            var participant = new MapleMessengerCharacter(chr);
+            MessengerManager.leaveMessenger(chr.getMessenger().getId(), participant);
         }
         PlayerBuffStorage.addBuffsToStorage(chr.getId(), chr.getAllBuffs());
         PlayerBuffStorage.addCooldownsToStorage(chr.getId(), chr.getCooldowns());
@@ -45,7 +45,6 @@ public class EnterCashShopHandler extends AbstractMaplePacketHandler {
         chr.saveToDB(false, false);
         chr.getMap().removePlayer(chr);
         c.setPlayer(null);
-        c.setReceiving(false);
         c.getSession().write(MaplePacketCreator.getChannelChange(Integer.parseInt(CashShopServer.getInstance().getPublicAddress().split(":")[1])));
 
     }

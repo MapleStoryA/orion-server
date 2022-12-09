@@ -11,12 +11,6 @@ import tools.data.input.SeekableLittleEndianAccessor;
 public class CharSelectedHandler extends AbstractMaplePacketHandler {
 
 
-    private static final boolean loginFailCount(final MapleClient c) {
-        c.loginAttempt++;
-        return c.loginAttempt > 5;
-    }
-
-
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         final int characterId = slea.readInt();
@@ -24,7 +18,7 @@ public class CharSelectedHandler extends AbstractMaplePacketHandler {
         String macAddress = slea.readMapleAsciiString();
         log.info("HardwareID: " + macAddress);
         log.info("MAC: " + hardwareID);
-        if (loginFailCount(c) || !CharacterService.checkIfCharacterExist(c.getAccID(), characterId)) {
+        if (c.tooManyLogin() || !CharacterService.checkIfCharacterExist(c.getAccID(), characterId)) {
             c.getSession().close();
             return;
         }

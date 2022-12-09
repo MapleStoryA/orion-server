@@ -5154,7 +5154,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         saveToDB(false, false);
 
         client.setPlayer(null);
-        client.setReceiving(false);
     }
 
     public void expandInventory(byte type, int amount) {

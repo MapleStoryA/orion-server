@@ -485,11 +485,11 @@ public class MTSCSPacket {
     }
 
     public static byte[] sendCouponFail(final MapleClient c, int err) {
-        c.csAttempt++;
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
         mplew.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
-        mplew.write(c.csAttempt > 2 ? 0x58 : 0x62);
+        // TODO: Do we need more than one login attempt ? mplew.write(c.csAttempt > 2 ? 0x58 : 0x62);
+        mplew.write(0x62);
         mplew.write(err);
 
         return mplew.getPacket();

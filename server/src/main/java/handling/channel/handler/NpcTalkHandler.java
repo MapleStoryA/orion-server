@@ -32,7 +32,7 @@ public class NpcTalkHandler extends AbstractMaplePacketHandler {
                 NpcTalkHelper.startConversation(npc.getId(), c);
                 return;
             }
-            c.setNpcScript(null);
+            c.setCurrentNpcScript(null);
             NPCScriptManager.getInstance().start(c, npc.getId());
         }
 

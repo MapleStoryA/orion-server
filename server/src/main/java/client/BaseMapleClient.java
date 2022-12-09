@@ -2,8 +2,11 @@ package client;
 
 import constants.ServerConstants;
 import handling.session.NetworkSession;
+import lombok.Getter;
+import server.Timer;
 import tools.MapleAESOFB;
 import tools.MaplePacketCreator;
+import tools.packet.LoginPacket;
 
 public class BaseMapleClient {
     public static final String CLIENT_KEY = "CLIENT";
@@ -16,9 +19,12 @@ public class BaseMapleClient {
             LOGIN_CS_LOGGEDIN = 5,
             CHANGE_CHANNEL = 6;
 
-    protected final transient MapleAESOFB send;
-    protected final transient MapleAESOFB receive;
+    protected final MapleAESOFB send;
+    protected final MapleAESOFB receive;
     protected NetworkSession session;
+    private long lastPong = 0;
+    @Getter
+    private short loginAttempt = 0;
 
     public BaseMapleClient(MapleAESOFB send, MapleAESOFB receive, NetworkSession session) {
         this.send = send;
@@ -51,4 +57,27 @@ public class BaseMapleClient {
     public void enableActions() {
         getSession().write(MaplePacketCreator.enableActions());
     }
+
+    public final long getLastPong() {
+        return lastPong;
+    }
+
+    public final void pongReceived() {
+        lastPong = System.currentTimeMillis();
+    }
+
+    public void sendPing() {
+        session.write(LoginPacket.getPing());
+        Timer.PingTimer.getInstance().schedule(new PingThread(this), 15000);
+    }
+
+    public void resetLoginCount() {
+        this.loginAttempt = 0;
+    }
+
+    public boolean tooManyLogin() {
+        this.loginAttempt++;
+        return this.getLoginAttempt() > 5;
+    }
+
 }

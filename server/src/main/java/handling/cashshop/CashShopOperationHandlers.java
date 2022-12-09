@@ -29,7 +29,6 @@ public class CashShopOperationHandlers {
         } finally {
             chr.saveToDB(false, true);
             c.setPlayer(null);
-            c.setReceiving(false);
         }
     }
 

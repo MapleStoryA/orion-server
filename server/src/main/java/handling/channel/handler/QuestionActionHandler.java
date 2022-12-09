@@ -76,7 +76,7 @@ public class QuestionActionHandler extends AbstractMaplePacketHandler {
                     NpcTalkHelper.startQuestConversation(npc, quest, c);
                     break;
                 }
-                c.setNpcScript(null);
+                c.setCurrentNpcScript(null);
                 NPCScriptManager.getInstance().startQuest(c, npc, quest);
                 break;
             }

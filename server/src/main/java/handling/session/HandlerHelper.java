@@ -38,9 +38,6 @@ public class HandlerHelper {
             for (final RecvPacketOpcode recv : RecvPacketOpcode.values()) {
                 if (recv.getValue() == header_num) {
 
-                    if (!client.isReceiving()) {
-                        return;
-                    }
                     if (recv.needsChecking()) {
                         if (!client.isLoggedIn()) {
                             return;
