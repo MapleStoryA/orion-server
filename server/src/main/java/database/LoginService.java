@@ -7,6 +7,7 @@ import client.inventory.ItemLoader;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import org.jdbi.v3.core.Jdbi;
+import org.jdbi.v3.core.result.ResultIterable;
 import tools.Pair;
 
 import java.sql.Connection;
@@ -26,13 +27,15 @@ public class LoginService {
     public static CharacterData loadCharacterData(int characterId) {
         var jdbi = Jdbi.create(DatabaseConnection.getConnection());
         var result = jdbi.withHandle((h) -> h.select("SELECT * FROM characters WHERE id = ?", characterId));
-        return result.mapToBean(CharacterData.class).first();
+        ResultIterable<CharacterData> accountData = result.mapToBean(CharacterData.class);
+        return accountData.findOne().orElse(null);
     }
 
     public static CharacterData loadCharacterData(int accountId, int characterId) {
         var jdbi = Jdbi.create(DatabaseConnection.getConnection());
         var result = jdbi.withHandle((h) -> h.select("SELECT * FROM characters WHERE accountid = ? AND id = ?", accountId, characterId));
-        return result.mapToBean(CharacterData.class).first();
+        ResultIterable<CharacterData> accountData = result.mapToBean(CharacterData.class);
+        return accountData.findOne().orElse(null);
     }
 
     public static CharacterListResult loadCharacterList(int accountId, int world) {
@@ -57,13 +60,15 @@ public class LoginService {
     public static AccountData loadAccountDataById(int accountId) {
         var jdbi = Jdbi.create(DatabaseConnection.getConnection());
         var result = jdbi.withHandle((h) -> h.select("SELECT * FROM accounts WHERE id = ?", accountId));
-        return result.mapToBean(AccountData.class).first();
+        ResultIterable<AccountData> accountData = result.mapToBean(AccountData.class);
+        return accountData.findOne().orElse(null);
     }
 
     public static AccountData loadAccountDataByName(String accountName) {
         var jdbi = Jdbi.create(DatabaseConnection.getConnection());
         var result = jdbi.withHandle((h) -> h.select("SELECT * FROM accounts WHERE name = ?", accountName));
-        return result.mapToBean(AccountData.class).first();
+        ResultIterable<AccountData> accountData = result.mapToBean(AccountData.class);
+        return accountData.findOne().orElse(null);
     }
 
 
