@@ -15,7 +15,7 @@ import tools.data.input.GenericSeekableLittleEndianAccessor;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 @Slf4j
-public class HandlerHelper {
+public class DefaultPacketHandler {
 
     public static void handlePacket(MapleClient client, PacketProcessor processor, boolean isCashShop, byte[] message) {
         try {
@@ -43,7 +43,7 @@ public class HandlerHelper {
                             return;
                         }
                     }
-                    HandlerHelper.handlePacket(recv, slea, client, isCashShop);
+                    DefaultPacketHandler.handlePacket(recv, slea, client, isCashShop);
                     return;
                 }
             }

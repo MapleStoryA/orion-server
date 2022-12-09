@@ -25,7 +25,7 @@ import client.MapleClient;
 import constants.ServerConstants;
 import handling.PacketProcessor;
 import handling.cashshop.CashShopServer;
-import handling.session.HandlerHelper;
+import handling.session.DefaultPacketHandler;
 import handling.session.NetworkSession;
 import handling.world.WorldServer;
 import lombok.extern.slf4j.Slf4j;
@@ -105,7 +105,7 @@ public class MinaMapleServerHandler extends IoHandlerAdapter {
     @Override
     public void messageReceived(final IoSession session, final Object message) {
         var client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
-        HandlerHelper.handlePacket(client, processor, PacketProcessor.Mode.CASHSHOP.equals(mode), (byte[]) message);
+        DefaultPacketHandler.handlePacket(client, processor, PacketProcessor.Mode.CASHSHOP.equals(mode), (byte[]) message);
     }
 
     @Override

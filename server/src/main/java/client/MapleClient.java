@@ -124,27 +124,19 @@ public class MapleClient extends BaseMapleClient {
         this.accountData = LoginService.loadAccountDataById(id);
     }
 
-    public final void updateLoginState(final LoginState loginState, final String SessionID) { // TODO hide?
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("UPDATE accounts SET loggedin = ?, SessionIP = ?, lastlogin = CURRENT_TIMESTAMP() WHERE id = ?");
-            ps.setInt(1, loginState.getCode());
-            ps.setString(2, SessionID);
-            ps.setInt(3, getAccountData().getId());
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException e) {
-            System.err.println("error updating login state" + e);
-        }
-        if (LoginState.LOGIN_NOTLOGGEDIN.equals(loginState) || LoginState.LOGIN_WAITING.equals(loginState)) {
+    public final void updateLoginState(final LoginState loginState, final String sessionIp) {
+        LoginService.setClientAccountLoginState(this.getAccountData(), loginState, sessionIp);
+        var waitingStates = List.of(LoginState.LOGIN_NOTLOGGEDIN, LoginState.LOGIN_WAITING);
+        if (waitingStates.contains(loginState)) {
             loggedIn = false;
             serverTransition = false;
         } else {
-            var states = List.of(LoginState.LOGIN_SERVER_TRANSITION, LoginState.CHANGE_CHANNEL);
-            serverTransition = states.contains(loginState);
+            var transitionStates = List.of(LoginState.LOGIN_SERVER_TRANSITION, LoginState.CHANGE_CHANNEL);
+            serverTransition = transitionStates.contains(loginState);
             loggedIn = !serverTransition;
         }
     }
+
 
     public final LoginState getLoginState() {
         Connection con = DatabaseConnection.getConnection();
