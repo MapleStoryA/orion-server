@@ -18,7 +18,7 @@ public class CharlistViewAllHandler extends AbstractMaplePacketHandler {
         c.setWorld(0);
         c.setChannel(1);
 
-        List<MapleCharacter> chars = CharacterService.loadCharacters(c, 0, c.getAccID());
+        List<MapleCharacter> chars = CharacterService.loadCharacters(c, 0, c.getAccountData().getId());
 
         if (chars != null) {
             c.getSession().write(MaplePacketCreator.viewAllChar(1, chars.size()));

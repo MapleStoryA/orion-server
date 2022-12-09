@@ -41,7 +41,7 @@ public class MapleInventoryManipulator {
         }
         chr.getCashInventory().addToInventory(ring);
         //chr.getClient().getSession().write(MTSCSPacket.confirmToCSInventory(ring, chr.getClient().getAccID(), csi.getSN()));
-        chr.getClient().getSession().write(MTSCSPacket.OnCashItemResCoupleDone(ring, sn, chr.getClient().getAccID(), partner, GameConstants.isCrushRing(itemId)));
+        chr.getClient().getSession().write(MTSCSPacket.OnCashItemResCoupleDone(ring, sn, chr.getClient().getAccountData().getId(), partner, GameConstants.isCrushRing(itemId)));
         //chr.getClient().getSession().write(MTSCSPacket.showBoughtCSItem(ring, sn, chr.getClient().getAccID()));
     }
 

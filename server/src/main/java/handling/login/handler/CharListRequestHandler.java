@@ -22,7 +22,7 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
         c.setWorld(server);
         c.setChannel(channel);
 
-        final List<MapleCharacter> chars = CharacterService.loadCharacters(c, c.getWorld(), c.getAccID());
+        final List<MapleCharacter> chars = CharacterService.loadCharacters(c, c.getWorld(), c.getAccountData().getId());
         if (chars != null) {
             c.getSession().write(LoginPacket.getCharList(true, chars, c.getCharacterSlots()));
         } else {

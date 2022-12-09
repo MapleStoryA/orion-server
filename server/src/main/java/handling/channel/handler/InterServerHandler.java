@@ -72,7 +72,7 @@ public class InterServerHandler {
             player = MapleCharacter.reconstructChr(transfer, c, true);
         }
         c.setPlayer(player);
-        c.setAccID(player.getAccountID());
+        c.loadAccountData(player.getAccountID());
 
 
         if (!c.CheckIPAddress()) { // Remote hack
@@ -84,7 +84,7 @@ public class InterServerHandler {
         boolean allowLogin = false;
 
         if (state == MapleClient.LOGIN_SERVER_TRANSITION || state == MapleClient.CHANGE_CHANNEL) {
-            if (!WorldServer.getInstance().isCharacterListConnected(CharacterService.loadCharacterNames(c.getWorld(), c.getAccID()))) {
+            if (!WorldServer.getInstance().isCharacterListConnected(CharacterService.loadCharacterNames(c.getWorld(), c.getAccountData().getId()))) {
                 allowLogin = true;
             }
         }

@@ -20,7 +20,7 @@ public class CharSelectedViewAllHandler extends AbstractMaplePacketHandler {
         c.setChannel(channel);
         String mac = slea.readMapleAsciiString();
         log.info("Mac connected: {}", mac);
-        if (c.tooManyLogin() || !CharacterService.checkIfCharacterExist(c.getAccID(), characterId)) {
+        if (c.tooManyLogin() || !CharacterService.checkIfCharacterExist(c.getAccountData().getId(), characterId)) {
             c.getSession().close();
             return;
         }

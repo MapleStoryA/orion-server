@@ -41,7 +41,7 @@ public class CashShopOperationHandlers {
         MapleCharacter chr = MapleCharacter.reconstructChr(transfer, c, false);
 
         c.setPlayer(chr);
-        c.setAccID(chr.getAccountID());
+        c.loadAccountData(chr.getAccountID());
 
         if (!c.CheckIPAddress()) { // Remote hack
             c.getSession().close();
@@ -51,7 +51,7 @@ public class CashShopOperationHandlers {
         final int state = c.getLoginState();
         boolean allowLogin = false;
         if (state == MapleClient.LOGIN_SERVER_TRANSITION || state == MapleClient.CHANGE_CHANNEL) {
-            if (!WorldServer.getInstance().isCharacterListConnected(CharacterService.loadCharacterNames(c.getWorld(), c.getAccID()))) {
+            if (!WorldServer.getInstance().isCharacterListConnected(CharacterService.loadCharacterNames(c.getWorld(), c.getAccountData().getId()))) {
                 allowLogin = true;
             }
         }

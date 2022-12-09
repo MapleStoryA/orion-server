@@ -38,7 +38,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
@@ -98,50 +97,6 @@ public class MapleClient extends BaseMapleClient {
         return loggedIn;
     }
 
-    private Calendar getTempBanCalendar(ResultSet rs) throws SQLException {
-        Calendar lTempban = Calendar.getInstance();
-        if (rs.getLong("tempban") == 0) { // basically if timestamp in db is 0000-00-00
-            lTempban.setTimeInMillis(0);
-            return lTempban;
-        }
-        Calendar today = Calendar.getInstance();
-        lTempban.setTimeInMillis(rs.getTimestamp("tempban").getTime());
-        if (today.getTimeInMillis() < lTempban.getTimeInMillis()) {
-            return lTempban;
-        }
-
-        lTempban.setTimeInMillis(0);
-        return lTempban;
-    }
-
-    public Calendar getTempBanCalendar() {
-        return this.accountData.getTempBanCalendar();
-    }
-
-    public byte getBanReason() {
-        return this.accountData.getGreason();
-    }
-
-    public boolean hasBannedIP() {
-        boolean ret = false;
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) FROM ipbans WHERE ? LIKE CONCAT(ip, '%')");
-            ps.setString(1, session.getRemoteAddress().toString());
-            ResultSet rs = ps.executeQuery();
-            rs.next();
-            if (rs.getInt(1) > 0) {
-                ret = true;
-            }
-            rs.close();
-            ps.close();
-        } catch (SQLException ex) {
-            System.err.println("Error checking ip bans" + ex);
-        }
-        return ret;
-    }
-
-
     public int finishLogin() {
         login_mutex.lock();
         try {
@@ -161,9 +116,9 @@ public class MapleClient extends BaseMapleClient {
         return 0;
     }
 
-    public int login(String name, String pwd, boolean ipMacBanned) {
+    public int login(String name, String pwd) {
 
-        int loginok = 5;
+        int loginOk = 5;
         try {
             this.accountData = LoginService.loadAccountDataByName(name);
 
@@ -174,7 +129,7 @@ public class MapleClient extends BaseMapleClient {
 
 
                 if (banned > 0 && !this.accountData.isGameMaster()) {
-                    loginok = 3;
+                    loginOk = 3;
                 } else {
                     if (banned == -1) {
                         CharacterService.unban(this.accountData.getId());
@@ -182,24 +137,24 @@ public class MapleClient extends BaseMapleClient {
                     byte loginstate = getLoginState();
                     if (loginstate > MapleClient.LOGIN_NOTLOGGEDIN || ClientStorage.isConnected(this)) { // already loggedin
                         loggedIn = false;
-                        loginok = 7;
+                        loginOk = 7;
                     } else {
                         boolean updatePasswordHash = false;
                         // Check if the passwords are correct here. :B
                         if (LoginCryptoLegacy.isLegacyPassword(passhash) && LoginCryptoLegacy.checkPassword(pwd, passhash)) {
                             // Check if a password upgrade is needed.
-                            loginok = 0;
+                            loginOk = 0;
                             updatePasswordHash = true;
                         } else if (LoginCrypto.checkSha1Hash(passhash, pwd)) {
-                            loginok = 0;
+                            loginOk = 0;
                             updatePasswordHash = true;
                         } else if (LoginCrypto.checkSaltedSha512Hash(passhash, pwd, salt)) {
-                            loginok = 0;
+                            loginOk = 0;
                         } else if (passhash.equals(pwd)) {
-                            loginok = 0;
+                            loginOk = 0;
                         } else {
                             loggedIn = false;
-                            loginok = 4;
+                            loginOk = 4;
                         }
                         if (updatePasswordHash) {
                             Connection con = DatabaseConnection.getConnection();
@@ -223,15 +178,11 @@ public class MapleClient extends BaseMapleClient {
         if (ServerEnvironment.isDebugEnabled()) {
             return 0;
         }
-        return loginok;
+        return loginOk;
     }
 
 
-    public int getAccID() {
-        return this.accountData.getId();
-    }
-
-    public void setAccID(int id) {
+    public void loadAccountData(int id) {
         this.accountData = LoginService.loadAccountDataById(id);
     }
 
@@ -241,7 +192,7 @@ public class MapleClient extends BaseMapleClient {
             PreparedStatement ps = con.prepareStatement("UPDATE accounts SET loggedin = ?, SessionIP = ?, lastlogin = CURRENT_TIMESTAMP() WHERE id = ?");
             ps.setInt(1, newstate);
             ps.setString(2, SessionID);
-            ps.setInt(3, getAccID());
+            ps.setInt(3, getAccountData().getId());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
@@ -261,7 +212,7 @@ public class MapleClient extends BaseMapleClient {
         try {
             PreparedStatement ps;
             ps = con.prepareStatement("SELECT loggedin, lastlogin, `birthday` + 0 AS `bday` FROM accounts WHERE id = ?");
-            ps.setInt(1, getAccID());
+            ps.setInt(1, getAccountData().getId());
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
                 ps.close();
@@ -285,7 +236,7 @@ public class MapleClient extends BaseMapleClient {
         }
     }
 
-    public final void removalTask() {
+    public void removalTask() {
         try {
             player.cancelAllBuffs_();
             player.cancelAllDebuffs();
@@ -465,7 +416,7 @@ public class MapleClient extends BaseMapleClient {
             Connection con = DatabaseConnection.getConnection();
             PreparedStatement ps;
             ps = con.prepareStatement("UPDATE accounts SET loggedin = 0 WHERE id = ?");
-            ps.setInt(1, this.getAccID());
+            ps.setInt(1, getAccountData().getId());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException ex) {
@@ -473,9 +424,6 @@ public class MapleClient extends BaseMapleClient {
         }
     }
 
-    public final String getSessionIPAddress() {
-        return session.getRemoteAddress().toString().split(":")[0];
-    }
 
     public final boolean CheckIPAddress() {
         try {
@@ -510,11 +458,6 @@ public class MapleClient extends BaseMapleClient {
         this.channel = channel;
     }
 
-    public final ChannelServer getChannelServer() {
-        return WorldServer.getInstance().getChannel(channel);
-    }
-
-
     public final int getWorld() {
         return world;
     }
@@ -523,9 +466,8 @@ public class MapleClient extends BaseMapleClient {
         this.world = world;
     }
 
-
-    public boolean isGm() {
-        return this.accountData.isGameMaster();
+    public final ChannelServer getChannelServer() {
+        return WorldServer.getInstance().getChannel(channel);
     }
 
     public final void setScriptEngine(final String name, final ScriptEngine e) {
@@ -545,7 +487,7 @@ public class MapleClient extends BaseMapleClient {
     }
 
     public int getCharacterSlots() {
-        if (isGm()) {
+        if (this.getAccountData().isGameMaster()) {
             return 15;
         }
         if (charSlots != DEFAULT_CHAR_SLOT) {

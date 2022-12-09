@@ -122,7 +122,7 @@ public class LoginPacket {
         mplew.write(0);// some error code shit, and nNumOfCharacter
         mplew.write(0);// sMsg + 500, 0 or 1 decodes a bunch of shit
         mplew.writeInt(0);// not read
-        mplew.writeInt(client.getAccID()); // user id
+        mplew.writeInt(client.getAccountData().getId()); // user id
         mplew.write(client.getAccountData().getGender());
         //
         PlayerGMRanking rank = PlayerGMRanking.getByLevel(client.getAccountData().getGMLevel());

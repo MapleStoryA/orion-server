@@ -320,7 +320,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         ret.level = 1;
         ret.remainingAp = 0;
         ret.fame = 0;
-        ret.accountid = client.getAccID();
+        ret.accountid = client.getAccountData().getId();
         ret.buddylist = new MapleBuddyList((byte) 20);
         ret.stats.setStr((short) 12);
         ret.stats.setDex((short) 5);
@@ -1411,7 +1411,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             ps.setInt(1, nxcredit);
             ps.setInt(2, maplepoints);
             ps.setInt(3, points);
-            ps.setInt(4, client.getAccID());
+            ps.setInt(4, client.getAccountData().getId());
             ps.execute();
             ps.close();
 

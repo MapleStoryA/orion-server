@@ -116,7 +116,7 @@ public class CouponCodeHandler extends AbstractMaplePacketHandler {
             }
         }
         CashShopCoupon.deleteCouponData(c.getPlayer().getName(), code);
-        c.getSession().write(MTSCSPacket.showCouponRedeemedItem(c.getAccID(), MaplePoints, togiveCS, togiveII, mesos));
+        c.getSession().write(MTSCSPacket.showCouponRedeemedItem(c.getAccountData().getId(), MaplePoints, togiveCS, togiveII, mesos));
         CashShopOperationHandlers.doCSPackets(c);
 
     }

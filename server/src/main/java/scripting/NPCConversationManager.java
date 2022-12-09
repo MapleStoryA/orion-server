@@ -1905,7 +1905,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         try {
             Connection con = DatabaseConnection.getConnection();
             ps = con.prepareStatement("INSERT INTO feedback VALUES(?, ?, ?, ?, ?)");
-            ps.setInt(1, getClient().getAccID());
+            ps.setInt(1, getClient().getAccountData().getId());
             ps.setInt(2, getPlayer().getId());
             ps.setString(3, getClient().getAccountData().getName());
             ps.setString(4, getPlayer().getName());

@@ -57,7 +57,7 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
             final IItem itemz = chr.getCashInventory().toItem(item);
             if (itemz != null && itemz.getSN() > 0 && itemz.getItemId() == item.getId() && itemz.getQuantity() == item.getCount()) {
                 chr.getCashInventory().addToInventory(itemz);
-                c.getSession().write(MTSCSPacket.showBoughtCSItem(itemz, item.getSN(), c.getAccID()));
+                c.getSession().write(MTSCSPacket.showBoughtCSItem(itemz, item.getSN(), c.getAccountData().getId()));
             } else {
                 c.getSession().write(MTSCSPacket.sendCSFail(0));
             }
@@ -75,7 +75,7 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
                 return;
             }
             final Triple<Integer, Integer, Integer> info = MapleCharacterUtil.getInfoByName(partnerName, chr.getWorld());
-            if (info == null || info.getLeft().intValue() <= 0 || info.getLeft().intValue() == chr.getId() || info.getMid().intValue() == c.getAccID()) {
+            if (info == null || info.getLeft().intValue() <= 0 || info.getLeft().intValue() == chr.getId() || info.getMid().intValue() == c.getAccountData().getId()) {
                 c.getSession().write(MTSCSPacket.sendCSFail(0x07));
                 CashShopOperationHandlers.doCSPackets(c);
                 return;
@@ -182,7 +182,7 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
                 return;
             }
             final Triple<Integer, Integer, Integer> info = MapleCharacterUtil.getInfoByName(partnerName, chr.getWorld());
-            if (info == null || info.getLeft().intValue() <= 0 || info.getLeft().intValue() == chr.getId() || info.getMid().intValue() == c.getAccID()) {
+            if (info == null || info.getLeft().intValue() <= 0 || info.getLeft().intValue() == chr.getId() || info.getMid().intValue() == c.getAccountData().getId()) {
                 c.getSession().write(MTSCSPacket.sendCSFail(0x07));
                 CashShopOperationHandlers.doCSPackets(c);
                 return;
@@ -243,7 +243,7 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
             if (!isNxWhore || useNx != 2) {
                 chr.modifyCSPoints(useNx, -item.getPrice(), false);
             }
-            c.getSession().write(MTSCSPacket.showBoughtCSPackage(ccz, c.getAccID()));
+            c.getSession().write(MTSCSPacket.showBoughtCSPackage(ccz, c.getAccountData().getId()));
         } else if (action == 33) { // Buying Quest Items
             final int sn = slea.readInt();
             final CashItemInfo item = CashItemFactory.getInstance().getItem(sn);

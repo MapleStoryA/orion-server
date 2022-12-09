@@ -543,7 +543,7 @@ public class MTSCSPacket {
         CashShop mci = c.getPlayer().getCashInventory();
         mplew.writeShort(mci.getItemsSize());
         for (IItem itemz : mci.getInventory()) {
-            addCashItemInfo(mplew, itemz, c.getAccID(), ""); //test
+            addCashItemInfo(mplew, itemz, c.getAccountData().getId(), ""); //test
         }
         mplew.writeShort(c.getPlayer().getStorage().getSlots());
         mplew.writeShort(c.getCharacterSlots());
