@@ -44,7 +44,7 @@ public class CashShopOperationHandlers {
         c.setPlayer(chr);
         c.loadAccountData(chr.getAccountID());
 
-        if (!c.CheckIPAddress()) { // Remote hack
+        if (!c.checkClientIpAddress()) { // Remote hack
             c.getSession().close();
             return;
         }

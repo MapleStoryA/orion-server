@@ -326,7 +326,7 @@ public class MapleClient extends BaseMapleClient {
     }
 
 
-    public final boolean CheckIPAddress() {
+    public final boolean checkClientIpAddress() {
         try {
             final PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT SessionIP FROM accounts WHERE id = ?");
             ps.setInt(1, this.accountData.getId());

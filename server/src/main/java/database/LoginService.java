@@ -90,8 +90,10 @@ public class LoginService {
         }
 
         int loginStatus = -1;
-        boolean passwordOk = accountData.getName().equals(name); // TODO: Add password salt
-        if (passwordOk) {
+        var salt = accountData.getSalt();
+        var encryptor = new PasswordEncryptor();
+        var passwordMatches = encryptor.verifyPassword(password, accountData.getPassword(), accountData.getSalt());
+        if (passwordMatches) {
             loginStatus = 0;
         } else {
             loginStatus = INCORRECT_PASSWORD;

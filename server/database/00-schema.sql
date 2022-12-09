@@ -39,9 +39,9 @@ CREATE TABLE `accounts`
     `id`          int(11)             NOT NULL AUTO_INCREMENT,
     `name`        varchar(13)         NOT NULL DEFAULT '',
     `password`    varchar(128)        NOT NULL DEFAULT '',
-    `salt`        varchar(32)                  DEFAULT NULL,
+    `salt`        varchar(256)                  DEFAULT NULL,
     `2ndpassword` varchar(134)                 DEFAULT NULL,
-    `salt2`       varchar(32)                  DEFAULT NULL,
+    `salt2`       varchar(256)                  DEFAULT NULL,
     `loggedin`    tinyint(1) unsigned NOT NULL DEFAULT '0',
     `lastlogin`   timestamp           NULL     DEFAULT NULL,
     `lastlogon`   timestamp           NULL     DEFAULT NULL,
@@ -84,8 +84,8 @@ LOCK TABLES `accounts` WRITE;
     DISABLE KEYS */;
 INSERT INTO `accounts`
 VALUES (30004, 'admin',
-        'e1579419586a517b07d77e3128016efba65b83e85dd2ee0a92bb3b4648f39e01c7433000fbd48f36682c3d9390b8627729d8b9b99fc7788b498a2024cab0db28',
-        '13e7100fb810322519c3b514a64dc99d', NULL, NULL, 0, '2020-06-17 19:01:54', '2020-06-17 16:47:02',
+        '$10$jYVJnXepFhfzziC7ZBt5K.nxF4Sa95xq/eQj4MLJbvcfdOE5S0HFa',
+        'ddc5f4f0dfeff1a572560ee436730eb11d64b7a7208400d45d7f49b2eb32919f', NULL, NULL, 0, '2020-06-17 19:01:54', '2020-06-17 16:47:02',
         '2011-11-25 16:08:40', '2011-01-01', 0, NULL, 0, '', '6C-71-D9-19-77-66', '0000-00-00 00:00:00', NULL, 995899,
         11994599, 0, '/192.168.137.1', NULL, 2, 0, '1466652818', 1, NULL, 0, NULL);
 /*!40000 ALTER TABLE `accounts`
