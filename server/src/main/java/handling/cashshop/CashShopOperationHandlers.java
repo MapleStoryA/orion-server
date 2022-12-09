@@ -5,6 +5,7 @@ import client.MapleClient;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
+import database.state.CharacterService;
 import handling.world.WorldServer;
 import handling.world.helper.CharacterTransfer;
 import tools.MaplePacketCreator;
@@ -51,7 +52,7 @@ public class CashShopOperationHandlers {
         final int state = c.getLoginState();
         boolean allowLogin = false;
         if (state == MapleClient.LOGIN_SERVER_TRANSITION || state == MapleClient.CHANGE_CHANNEL) {
-            if (!WorldServer.getInstance().isCharacterListConnected(c.loadCharacterNames(c.getWorld()))) {
+            if (!WorldServer.getInstance().isCharacterListConnected(CharacterService.loadCharacterNames(c.getWorld(), c.getAccID()))) {
                 allowLogin = true;
             }
         }

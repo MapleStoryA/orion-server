@@ -2,7 +2,6 @@ package client;
 
 import client.crypto.LoginCrypto;
 import client.crypto.LoginCryptoLegacy;
-import constants.ServerConstants;
 import database.DatabaseConnection;
 import database.DatabaseException;
 import database.state.CharacterService;
@@ -21,6 +20,7 @@ import handling.world.messenger.MessengerManager;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import handling.world.party.PartyManager;
+import lombok.extern.slf4j.Slf4j;
 import scripting.v1.game.NpcScripting;
 import server.ClientStorage;
 import server.Timer.PingTimer;
@@ -29,12 +29,10 @@ import server.maps.MapleMap;
 import server.quest.MapleQuest;
 import server.shops.IMaplePlayerShop;
 import tools.FileOutputUtil;
-import tools.MapleAESOFB;
 import tools.MaplePacketCreator;
 import tools.packet.LoginPacket;
 
 import javax.script.ScriptEngine;
-import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -44,39 +42,22 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-@lombok.extern.slf4j.Slf4j
-public class MapleClient implements Serializable {
+@Slf4j
+public class MapleClient extends BaseMapleClient {
 
-    public static final byte LOGIN_NOTLOGGEDIN = 0,
-            LOGIN_SERVER_TRANSITION = 1,
-            LOGIN_LOGGEDIN = 2,
-            LOGIN_WAITING = 3,
-            CASH_SHOP_TRANSITION = 4,
-            LOGIN_CS_LOGGEDIN = 5,
-            CHANGE_CHANNEL = 6;
+
     public static final int DEFAULT_CHAR_SLOT = 6;
 
-
-    public static final String CLIENT_KEY = "CLIENT";
-    private static final long serialVersionUID = 9179541993413738569L;
-
-
-    private final transient MapleAESOFB send;
-    private final transient MapleAESOFB receive;
     private final static Lock login_mutex = new ReentrantLock(true);
-    private NetworkSession session;
     private final transient Map<String, ScriptEngine> engines = new HashMap<>();
     private NpcScripting npcScript;
 
-    private final transient List<Integer> allowedChar = new LinkedList<>();
     private final transient Set<String> macs = new HashSet<>();
     private final transient Lock npc_mutex = new ReentrantLock();
 
@@ -99,29 +80,10 @@ public class MapleClient implements Serializable {
     private long lastNPCTalk;
 
 
-    public MapleClient(MapleAESOFB send, MapleAESOFB receive, NetworkSession session) {
-        this.send = send;
-        this.receive = receive;
-        this.session = session;
-    }
-
     public MapleClient(byte[] ivSend, byte[] ivRecv, NetworkSession session) {
-        this(new MapleAESOFB(ivSend, (short) (0xFFFF - ServerConstants.MAPLE_VERSION)),
-                new MapleAESOFB(ivRecv, ServerConstants.MAPLE_VERSION), session);
+        super(ivSend, ivRecv, session);
     }
 
-
-    public final MapleAESOFB getReceiveCrypto() {
-        return receive;
-    }
-
-    public final MapleAESOFB getSendCrypto() {
-        return send;
-    }
-
-    public final NetworkSession getSession() {
-        return session;
-    }
 
     public final Lock getNPCLock() {
         return npc_mutex;
@@ -135,52 +97,6 @@ public class MapleClient implements Serializable {
         this.player = player;
     }
 
-    public void createdChar(final int id) {
-        allowedChar.add(id);
-    }
-
-    public final boolean login_Auth(final int id) {
-        return allowedChar.contains(id);
-    }
-
-    public final List<MapleCharacter> loadCharacters(final int serverId) { // TODO make this less costly zZz
-        final List<MapleCharacter> chars = new LinkedList<MapleCharacter>();
-
-        for (final CharNameAndId cni : loadCharactersInternal(serverId)) {
-            final MapleCharacter chr = MapleCharacter.loadCharFromDB(cni.id, this, false);
-            chars.add(chr);
-            allowedChar.add(chr.getId());
-        }
-        return chars;
-    }
-
-    public List<String> loadCharacterNames(int serverId) {
-        List<String> chars = new LinkedList<String>();
-        for (CharNameAndId cni : loadCharactersInternal(serverId)) {
-            chars.add(cni.name);
-        }
-        return chars;
-    }
-
-    private List<CharNameAndId> loadCharactersInternal(int serverId) {
-        List<CharNameAndId> chars = new LinkedList<CharNameAndId>();
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("SELECT id, name FROM characters WHERE accountid = ? AND world = ?");
-            ps.setInt(1, accountId);
-            ps.setInt(2, serverId);
-
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                chars.add(new CharNameAndId(rs.getString("name"), rs.getInt("id")));
-            }
-            rs.close();
-            ps.close();
-        } catch (SQLException e) {
-            System.err.println("error loading characters internal" + e);
-        }
-        return chars;
-    }
 
     public boolean isLoggedIn() {
         return loggedIn;
@@ -467,11 +383,11 @@ public class MapleClient implements Serializable {
             ClientStorage.removeClient(this);
             MapleMap map = player.getMap();
             final MapleParty party = player.getParty();
-            final String namez = player.getName();
+            final String name = player.getName();
             final boolean hidden = player.isHidden();
             final int gmLevel = player.getGMLevel();
-            final int idz = player.getId();
-            int messengerid = player.getMessenger() == null ? 0 : player.getMessenger().getId();
+            final int id = player.getId();
+            int messengerId = player.getMessenger() == null ? 0 : player.getMessenger().getId();
             int gid = player.getGuildId();
             final MapleBuddyList bl = player.getBuddylist();
             final MaplePartyCharacter chrp = new MaplePartyCharacter(player);
@@ -495,8 +411,8 @@ public class MapleClient implements Serializable {
                         player = null;
                         return;//no idea
                     }
-                    if (messengerid > 0) {
-                        MessengerManager.leaveMessenger(messengerid, chrm);
+                    if (messengerId > 0) {
+                        MessengerManager.leaveMessenger(messengerId, chrm);
                     }
 
                     if (party != null) {
@@ -527,9 +443,9 @@ public class MapleClient implements Serializable {
                     }
                     if (bl != null) {
                         if (!serverTransition && isLoggedIn()) {
-                            BuddyManager.loggedOff(namez, idz, channel, bl.getBuddyIds(), gmLevel, hidden);
+                            BuddyManager.loggedOff(name, id, channel, bl.getBuddyIds(), gmLevel, hidden);
                         } else { // Change channel
-                            BuddyManager.loggedOn(namez, idz, channel, bl.getBuddyIds(), gmLevel, hidden);
+                            BuddyManager.loggedOn(name, id, channel, bl.getBuddyIds(), gmLevel, hidden);
                         }
                     }
                     if (gid > 0) {
@@ -541,14 +457,14 @@ public class MapleClient implements Serializable {
                     setNotLoggedIn();
                 } finally {
                     if (RemoveInChannelServer && ch != null) {
-                        ch.removePlayer(idz, namez);
+                        ch.removePlayer(id, name);
                     }
                     player = null;
                 }
             } else {
-                final int ch = FindCommand.findChannel(idz);
+                final int ch = FindCommand.findChannel(id);
                 if (ch > 0) {
-                    disconnect(RemoveInChannelServer, false);//u lie
+                    disconnect(RemoveInChannelServer, false);
                     return;
                 }
                 try {
@@ -557,9 +473,9 @@ public class MapleClient implements Serializable {
                         PartyManager.updateParty(party.getId(), PartyOperation.LOG_ONOFF, chrp);
                     }
                     if (!serverTransition && isLoggedIn()) {
-                        BuddyManager.loggedOff(namez, idz, channel, bl.getBuddyIds(), gmLevel, hidden);
+                        BuddyManager.loggedOff(name, id, channel, bl.getBuddyIds(), gmLevel, hidden);
                     } else { // Change channel
-                        BuddyManager.loggedOn(namez, idz, channel, bl.getBuddyIds(), gmLevel, hidden);
+                        BuddyManager.loggedOn(name, id, channel, bl.getBuddyIds(), gmLevel, hidden);
                     }
                     if (gid > 0) {
                         GuildManager.setGuildMemberOnline(chrg, false, -1);
@@ -572,7 +488,7 @@ public class MapleClient implements Serializable {
                     FileOutputUtil.outputFileError(FileOutputUtil.Acc_Stuck, e);
                 } finally {
                     if (RemoveInChannelServer && ch > 0) {
-                        CashShopServer.getInstance().getPlayerStorage().deregisterPlayer(idz, namez);
+                        CashShopServer.getInstance().getPlayerStorage().deregisterPlayer(id, name);
                     }
                     player = null;
                 }
@@ -606,19 +522,19 @@ public class MapleClient implements Serializable {
             ps.setInt(1, this.accountId);
             final ResultSet rs = ps.executeQuery();
 
-            boolean canlogin = false;
+            boolean canLogin = false;
 
             if (rs.next()) {
                 final String sessionIP = rs.getString("SessionIP");
 
                 if (sessionIP != null) { // Probably a login proced skipper?
-                    canlogin = getSessionIPAddress().equals(sessionIP.split(":")[0]);
+                    canLogin = getSessionIPAddress().equals(sessionIP.split(":")[0]);
                 }
             }
             rs.close();
             ps.close();
 
-            return canlogin;
+            return canLogin;
         } catch (final SQLException e) {
             log.info("Failed in checking IP address for client.");
         }
@@ -743,13 +659,9 @@ public class MapleClient implements Serializable {
         lastNPCTalk = System.currentTimeMillis();
     }
 
-    public void enableActions() {
-        getSession().write(MaplePacketCreator.enableActions());
-    }
 
-    public void sendPacket(byte[] packet) {
-        getSession().write(packet);
-    }
+
+
 
     public NpcScripting getNpcScript() {
         return npcScript;
@@ -763,15 +675,4 @@ public class MapleClient implements Serializable {
         return gmLevel;
     }
 
-    protected static final class CharNameAndId {
-
-        public final String name;
-        public final int id;
-
-        public CharNameAndId(final String name, final int id) {
-            super();
-            this.name = name;
-            this.id = id;
-        }
-    }
 }

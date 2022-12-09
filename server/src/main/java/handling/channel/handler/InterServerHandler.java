@@ -26,6 +26,7 @@ import client.MapleClient;
 import client.MapleQuestStatus;
 import client.SkillFactory;
 import constants.ServerConstants;
+import database.state.CharacterService;
 import handling.channel.ChannelServer;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
 import handling.world.WorldServer;
@@ -83,7 +84,7 @@ public class InterServerHandler {
         boolean allowLogin = false;
 
         if (state == MapleClient.LOGIN_SERVER_TRANSITION || state == MapleClient.CHANGE_CHANNEL) {
-            if (!WorldServer.getInstance().isCharacterListConnected(c.loadCharacterNames(c.getWorld()))) {
+            if (!WorldServer.getInstance().isCharacterListConnected(CharacterService.loadCharacterNames(c.getWorld(), c.getAccID()))) {
                 allowLogin = true;
             }
         }

@@ -2,6 +2,7 @@ package handling.login.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import database.state.CharacterService;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -17,7 +18,7 @@ public class CharlistViewAllHandler extends AbstractMaplePacketHandler {
         c.setWorld(0);
         c.setChannel(1);
 
-        List<MapleCharacter> chars = c.loadCharacters(0);
+        List<MapleCharacter> chars = CharacterService.loadCharacters(c, 0, c.getAccID());
 
         if (chars != null) {
             c.getSession().write(MaplePacketCreator.viewAllChar(1, chars.size()));
