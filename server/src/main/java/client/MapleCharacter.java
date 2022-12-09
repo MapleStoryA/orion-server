@@ -39,12 +39,12 @@ import constants.MapConstants;
 import constants.ServerConstants;
 import constants.skills.BladeLord;
 import constants.skills.Rogue;
-import database.DatabaseConnection;
-import database.DatabaseException;
 import database.AccountData;
 import database.BanService;
 import database.CharacterData;
 import database.CharacterService;
+import database.DatabaseConnection;
+import database.DatabaseException;
 import database.LoginService;
 import database.LoginState;
 import handling.channel.ChannelServer;
@@ -333,8 +333,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         ret.stats.setMp(50);
 
         AccountData accountData = LoginService.loadAccountDataById(ret.accountid);
-
-        ret.client.setAccountData(accountData);
         ret.nxcredit = accountData.getNxCredit();
         ret.maplepoints = accountData.getMPoints();
         ret.points = accountData.getPoints();
@@ -494,9 +492,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         ret.storage = (MapleStorage) ct.storage;
         ret.cs = (CashShop) ct.cs;
 
-        AccountData accountData = LoginService.loadAccountDataById(ct.accountid);
-
-        client.setAccountData(accountData);
         ret.nxcredit = ct.nxCredit;
         ret.maplepoints = ct.MaplePoints;
         ret.mount = new MapleMount(ret, ct.mount_itemid, GameConstants.getSkillByJob(1004, ret.job), ct.mount_Fatigue,

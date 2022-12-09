@@ -8,7 +8,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.LoginPacket;
 
 @lombok.extern.slf4j.Slf4j
-public class ServerlistRequestHandler extends AbstractMaplePacketHandler {
+public class ServerListRequestHandler extends AbstractMaplePacketHandler {
 
 
     @Override
