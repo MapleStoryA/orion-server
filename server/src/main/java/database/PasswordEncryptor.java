@@ -28,7 +28,7 @@ public class PasswordEncryptor {
         return BCrypt.verifyer().verify(salt.concat(rawPassword).toCharArray(), hashedPassword).verified;
     }
 
-    private static String createSha256(String value) throws NoSuchAlgorithmException {
+    private String createSha256(String value) throws NoSuchAlgorithmException {
         var md = MessageDigest.getInstance("SHA-256");
         var uuid = UUID.randomUUID().toString();
         md.update(uuid.getBytes());

@@ -90,7 +90,6 @@ public class LoginService {
         }
 
         int loginStatus = -1;
-        var salt = accountData.getSalt();
         var encryptor = new PasswordEncryptor();
         var passwordMatches = encryptor.verifyPassword(password, accountData.getPassword(), accountData.getSalt());
         if (passwordMatches) {
