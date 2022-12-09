@@ -123,9 +123,9 @@ public class LoginPacket {
         mplew.write(0);// sMsg + 500, 0 or 1 decodes a bunch of shit
         mplew.writeInt(0);// not read
         mplew.writeInt(client.getAccID()); // user id
-        mplew.write(client.getGender());
+        mplew.write(client.getAccountData().getGender());
         //
-        PlayerGMRanking rank = PlayerGMRanking.getByLevel(client.getGMLevel());
+        PlayerGMRanking rank = PlayerGMRanking.getByLevel(client.getAccountData().getGMLevel());
         byte nSubGradeCode = 0;
         nSubGradeCode |= rank.getSubGrade();
         mplew.writeBool(rank.getLevel() >= PlayerGMRanking.GM.getLevel());// nGradeCode
@@ -136,7 +136,7 @@ public class LoginPacket {
         // v118 will only be 1 if nSubGradeCode is 0x100
         mplew.writeBool(false);// nCountryID, admin accounts?
         //
-        mplew.writeMapleAsciiString(client.getAccountName());// sNexonClubID
+        mplew.writeMapleAsciiString(client.getAccountData().getName());// sNexonClubID
         mplew.write(0);// nPurchaseExp
         mplew.write(0); // isquietbanned, nChatBlockReason
         mplew.writeLong(0);// isquietban time, dtChatUnblockDate

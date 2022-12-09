@@ -41,6 +41,7 @@ import constants.skills.BladeLord;
 import constants.skills.Rogue;
 import database.DatabaseConnection;
 import database.DatabaseException;
+import database.state.AccountData;
 import database.state.BanService;
 import database.state.CharacterData;
 import database.state.CharacterService;
@@ -330,25 +331,13 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         ret.stats.setMaxMp(50);
         ret.stats.setMp(50);
 
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps;
-            ps = con.prepareStatement("SELECT * FROM accounts WHERE id = ?");
-            ps.setInt(1, ret.accountid);
-            ResultSet rs = ps.executeQuery();
+        AccountData accountData = LoginService.loadAccountDataById(ret.accountid);
 
-            if (rs.next()) {
-                ret.client.setAccountName(rs.getString("name"));
-                ret.nxcredit = rs.getInt("nxCredit");
-                ret.maplepoints = rs.getInt("mPoints");
-                ret.points = rs.getInt("points");
+        ret.client.setAccountData(accountData);
+        ret.nxcredit = accountData.getNxCredit();
+        ret.maplepoints = accountData.getMPoints();
+        ret.points = accountData.getPoints();
 
-            }
-            rs.close();
-            ps.close();
-        } catch (SQLException e) {
-            System.err.println("Error getting character default" + e);
-        }
         return ret;
     }
 
@@ -503,7 +492,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         ret.morphId = ct.morphId;
         ret.storage = (MapleStorage) ct.storage;
         ret.cs = (CashShop) ct.cs;
-        client.setAccountName(ct.accountname);
+
+        AccountData accountData = LoginService.loadAccountDataById(ct.accountid);
+
+        client.setAccountData(accountData);
         ret.nxcredit = ct.nxCredit;
         ret.maplepoints = ct.MaplePoints;
         ret.mount = new MapleMount(ret, ct.mount_itemid, GameConstants.getSkillByJob(1004, ret.job), ct.mount_Fatigue,
@@ -700,10 +692,11 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
                 ps.setInt(1, ret.accountid);
                 rs = ps.executeQuery();
                 if (rs.next()) {
-                    ret.getClient().setAccountName(rs.getString("name"));
-                    ret.nxcredit = rs.getInt("nxCredit");
-                    ret.maplepoints = rs.getInt("mPoints");
-                    ret.points = rs.getInt("points");
+                    AccountData accountData = LoginService.loadAccountDataById(ret.accountid);
+                    ret.getClient().setAccountData(accountData);
+                    ret.nxcredit = accountData.getNxCredit();
+                    ret.maplepoints = accountData.getMPoints();
+                    ret.points = accountData.getPoints();
 
                     if (rs.getTimestamp("lastlogon") != null) {
                         final Calendar cal = Calendar.getInstance();

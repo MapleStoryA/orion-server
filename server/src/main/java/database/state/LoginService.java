@@ -55,9 +55,15 @@ public class LoginService {
     }
 
 
-    public static AccountData loadAccountData(int accountId) {
+    public static AccountData loadAccountDataById(int accountId) {
         var jdbi = Jdbi.create(DatabaseConnection.getConnection());
         var result = jdbi.withHandle((h) -> h.select("SELECT * FROM accounts WHERE id = ?", accountId));
+        return result.mapToBean(AccountData.class).first();
+    }
+
+    public static AccountData loadAccountDataByName(String accountName) {
+        var jdbi = Jdbi.create(DatabaseConnection.getConnection());
+        var result = jdbi.withHandle((h) -> h.select("SELECT * FROM accounts WHERE name = ?", accountName));
         return result.mapToBean(AccountData.class).first();
     }
 

@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package handling.login;
 
 import client.MapleClient;
+import database.state.LoginService;
 import handling.GameServer;
 import handling.PacketProcessor;
 import handling.world.WorldServer;
@@ -146,6 +147,7 @@ public class LoginServer extends GameServer {
         }
 
         if (c.finishLogin() == 0) {
+            c.setAccountData(LoginService.loadAccountDataById(c.getAccID()));
             c.getSession().write(LoginPacket.getAuthSuccessRequest(c));
             ClientStorage.addClient(c);
             c.setIdleTask(Timer.PingTimer.getInstance().schedule(() -> c.getSession().close(), 10 * 60 * 10000));

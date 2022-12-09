@@ -113,7 +113,7 @@ public class MTSCSPacket {
         PacketHelper.addCharacterInfo(mplew, c.getPlayer());
 
         mplew.write(1);
-        mplew.writeMapleAsciiString(c.getAccountName());
+        mplew.writeMapleAsciiString(c.getAccountData().getName());
 
 
         mplew.writeInt(0); // limit sell data, for each, one int

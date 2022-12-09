@@ -26,7 +26,6 @@ public class CharLoginPasswordHandler implements MaplePacketHandler {
         final String login = slea.readMapleAsciiString();
         final String pwd = normalizeStringPassword(slea.readMapleAsciiString());
 
-        c.setAccountName(login);
         final boolean ipBan = c.hasBannedIP();
 
         int loginok = c.login(login, pwd, ipBan);
