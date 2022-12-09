@@ -64,12 +64,12 @@ public class HandlerHelper {
                 if (isCashShop) {
                     CashShopOperationHandlers.enterCashShop(playerId, c);
                 } else {
-                    InterServerHandler.loggedIn(playerId, c);
+                    InterServerHandler.onLoggedIn(playerId, c);
                 }
                 break;
             case CHANGE_MAP:
                 if (isCashShop) {
-                    CashShopOperationHandlers.leaveCashShop(slea, c, c.getPlayer());
+                    CashShopOperationHandlers.onLeaveCashShop(slea, c, c.getPlayer());
                 } else {
                     PlayerHandler.changeMap(slea, c, c.getPlayer());
                 }

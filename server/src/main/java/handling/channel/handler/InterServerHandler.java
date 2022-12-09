@@ -61,7 +61,7 @@ import java.util.List;
 public class InterServerHandler {
 
 
-    public static final void loggedIn(final int playerid, final MapleClient c) {
+    public static final void onLoggedIn(final int playerid, final MapleClient c) {
         final ChannelServer channelServer = c.getChannelServer();
         MapleCharacter player;
         final CharacterTransfer transfer = channelServer.getPlayerStorage().getPendingCharacter(playerid);
