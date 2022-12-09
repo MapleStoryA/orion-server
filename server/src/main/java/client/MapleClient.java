@@ -1,11 +1,9 @@
 package client;
 
-import client.crypto.LoginCrypto;
-import client.crypto.LoginCryptoLegacy;
 import database.AccountData;
-import database.CharacterService;
 import database.DatabaseConnection;
 import database.DatabaseException;
+import database.LoginResult;
 import database.LoginService;
 import database.LoginState;
 import handling.cashshop.CashShopServer;
@@ -28,7 +26,6 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import scripting.v1.game.NpcScripting;
 import server.ClientStorage;
-import server.config.ServerEnvironment;
 import server.maps.MapleMap;
 import server.quest.MapleQuest;
 import server.shops.IMaplePlayerShop;
@@ -118,70 +115,8 @@ public class MapleClient extends BaseMapleClient {
         return 0;
     }
 
-    public int login(String name, String pwd) {
-
-        int loginOk = 5;
-        try {
-            this.accountData = LoginService.loadAccountDataByName(name);
-
-            if (this.accountData != null) {
-                final int banned = accountData.getBanned();
-                final String passhash = accountData.getPassword();
-                final String salt = accountData.getSalt();
-
-
-                if (banned > 0 && !this.accountData.isGameMaster()) {
-                    loginOk = 3;
-                } else {
-                    if (banned == -1) {
-                        CharacterService.unban(this.accountData.getId());
-                    }
-                    LoginState loginState = getLoginState();
-                    if (loginState.getCode() > LoginState.LOGIN_NOTLOGGEDIN.getCode() || ClientStorage.isConnected(this)) {
-                        // already loggedin
-                        loggedIn = false;
-                        loginOk = 7;
-                    } else {
-                        boolean updatePasswordHash = false;
-                        // Check if the passwords are correct here. :B
-                        if (LoginCryptoLegacy.isLegacyPassword(passhash) && LoginCryptoLegacy.checkPassword(pwd, passhash)) {
-                            // Check if a password upgrade is needed.
-                            loginOk = 0;
-                            updatePasswordHash = true;
-                        } else if (LoginCrypto.checkSha1Hash(passhash, pwd)) {
-                            loginOk = 0;
-                            updatePasswordHash = true;
-                        } else if (LoginCrypto.checkSaltedSha512Hash(passhash, pwd, salt)) {
-                            loginOk = 0;
-                        } else if (passhash.equals(pwd)) {
-                            loginOk = 0;
-                        } else {
-                            loggedIn = false;
-                            loginOk = 4;
-                        }
-                        if (updatePasswordHash) {
-                            Connection con = DatabaseConnection.getConnection();
-                            PreparedStatement pss = con.prepareStatement("UPDATE `accounts` SET `password` = ?, `salt` = ? WHERE id = ?");
-                            try {
-                                final String newSalt = LoginCrypto.makeSalt();
-                                pss.setString(1, LoginCrypto.makeSaltedSha512Hash(pwd, newSalt));
-                                pss.setString(2, newSalt);
-                                pss.setInt(3, accountData.getId());
-                                pss.executeUpdate();
-                            } finally {
-                                pss.close();
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("ERROR" + e);
-        }
-        if (ServerEnvironment.isDebugEnabled()) {
-            return 0;
-        }
-        return loginOk;
+    public LoginResult login(String name, String pwd) {
+        return LoginService.checkPassword(name, pwd);
     }
 
 

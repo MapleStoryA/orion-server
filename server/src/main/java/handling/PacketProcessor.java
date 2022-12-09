@@ -180,7 +180,7 @@ import handling.login.handler.InvalidPacketRequestHandler;
 import handling.login.handler.KeepAliveHandler;
 import handling.login.handler.RelogRequestHandler;
 import handling.login.handler.ServerStatusRequestHandler;
-import handling.login.handler.ServerlistRequestHandler;
+import handling.login.handler.ServerListRequestHandler;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -229,9 +229,9 @@ public final class PacketProcessor {
         if (mode == Mode.LOGINSERVER) {
             registerHandler(RecvPacketOpcode.LOGIN_PASSWORD, new CharLoginPasswordHandler());
             registerHandler(RecvPacketOpcode.AFTER_LOGIN, new AfterLoginHandler());
-            registerHandler(RecvPacketOpcode.SERVERLIST_REQUEST, new ServerlistRequestHandler());
-            registerHandler(RecvPacketOpcode.SERVERLIST_REQUEST_2, new ServerlistRequestHandler());
-            registerHandler(RecvPacketOpcode.SERVERLIST_REQUEST_3, new ServerlistRequestHandler());
+            registerHandler(RecvPacketOpcode.SERVERLIST_REQUEST, new ServerListRequestHandler());
+            registerHandler(RecvPacketOpcode.SERVERLIST_REQUEST_2, new ServerListRequestHandler());
+            registerHandler(RecvPacketOpcode.SERVERLIST_REQUEST_3, new ServerListRequestHandler());
             registerHandler(RecvPacketOpcode.CHARLIST_REQUEST, new CharListRequestHandler());
             registerHandler(RecvPacketOpcode.SERVERSTATUS_REQUEST, new ServerStatusRequestHandler());
             registerHandler(RecvPacketOpcode.CHECK_CHAR_NAME, new CheckCharNameHandler());

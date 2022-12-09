@@ -1,6 +1,7 @@
 package handling.login.handler;
 
 import client.MapleClient;
+import database.LoginResult;
 import handling.MaplePacketHandler;
 import handling.login.LoginServer;
 import lombok.extern.slf4j.Slf4j;
@@ -26,27 +27,23 @@ public class CharLoginPasswordHandler implements MaplePacketHandler {
         final String login = slea.readMapleAsciiString();
         final String pwd = normalizeStringPassword(slea.readMapleAsciiString());
 
-        final boolean ipBan = c.hasBannedIP();
+        LoginResult result = c.login(login, pwd);
 
-        int loginok = c.login(login, pwd);
-        final Calendar tempbannedTill = c.getAccountData().getTempBanCalendar();
-
-        if (loginok == 0 && (ipBan)) {
-            if (!c.getAccountData().isGameMaster()) {
-                loginok = 3;
-            }
+        if (result.isLoginError()) {
+            c.getSession().write(LoginPacket.getLoginFailed(result.getResult()));
+            return;
         }
-        if (loginok != 0) {
-            if (!c.tooManyLogin()) {
-                c.getSession().write(LoginPacket.getLoginFailed(loginok));
-            }
-        } else if (tempbannedTill.getTimeInMillis() != 0) {
+
+        final Calendar tempBannedUntil = result.getAccountData().getTempBanCalendar();
+
+        if (tempBannedUntil.getTimeInMillis() != 0) {
             if (!c.tooManyLogin()) {
                 c.getSession().write(LoginPacket.getTempBan(
-                        KoreanDateUtil.getTempBanTimestamp(tempbannedTill.getTimeInMillis()), c.getAccountData().getGreason()));
+                        KoreanDateUtil.getTempBanTimestamp(tempBannedUntil.getTimeInMillis()), c.getAccountData().getGreason()));
             }
         } else {
             c.resetLoginCount();
+            c.setAccountData(result.getAccountData());
             LoginServer.getInstance().registerClient(c);
         }
 

@@ -88,7 +88,7 @@ public class LoginService {
         }
 
         int loginStatus = -1;
-        boolean passwordOk = accountData.getPassword().equals(name); // TODO: Add password salt
+        boolean passwordOk = accountData.getName().equals(name); // TODO: Add password salt
         if (passwordOk) {
             loginStatus = 0;
         } else {
