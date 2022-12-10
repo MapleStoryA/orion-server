@@ -13,6 +13,8 @@ import java.util.List;
 @lombok.extern.slf4j.Slf4j
 public class TeleportRockAddMapHandler extends AbstractMaplePacketHandler {
     private static final List<Integer> blockedMaps;
+    public static final int DELETE = 0;
+    public static final int ADD = 1;
 
     static {
         blockedMaps = new ArrayList<>();
@@ -42,27 +44,27 @@ public class TeleportRockAddMapHandler extends AbstractMaplePacketHandler {
         final byte vip = slea.readByte();
 
         if (vip == 1) {
-            if (addrem == 0) {
-                chr.deleteFromRocks(slea.readInt());
-            } else if (addrem == 1) {
+            if (addrem == DELETE) {
+                chr.getVipTeleportRock().deleteMap(slea.readInt());
+            } else if (addrem == ADD) {
                 if ((!FieldLimitType.VipRock.check(chr.getMap().getFieldLimit())) && !blockedMaps.contains(chr.getMapId())) {
-                    chr.addRockMap();
+                    chr.getVipTeleportRock().addMap(chr.getMapId());
                 } else {
                     chr.dropMessage(1, "You may not add this map.");
                 }
             }
         } else {
             if (addrem == 0) {
-                chr.deleteFromRegRocks(slea.readInt());
+                chr.getRegTeleportRock().deleteMap(slea.readInt());
             } else if (addrem == 1) {
                 if (!FieldLimitType.VipRock.check(chr.getMap().getFieldLimit())) {
-                    chr.addRegRockMap();
+                    chr.getRegTeleportRock().addMap(chr.getMapId());
                 } else {
                     chr.dropMessage(1, "You may not add this map.");
                 }
             }
         }
-        c.getSession().write(MTSCSPacket.getTrockRefresh(chr, vip == 1, addrem == 3));
+        c.getSession().write(MTSCSPacket.getTeleportRockRefresh(chr, vip == 1, addrem == 3));
 
     }
 

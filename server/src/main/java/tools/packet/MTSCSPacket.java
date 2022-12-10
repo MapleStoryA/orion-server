@@ -277,22 +277,16 @@ public class MTSCSPacket {
         return mplew.getPacket();
     }
 
-    public static byte[] getTrockRefresh(MapleCharacter chr, boolean vip, boolean delete) {
+    public static byte[] getTeleportRockRefresh(MapleCharacter chr, boolean vip, boolean delete) {
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
         mplew.writeShort(SendPacketOpcode.TROCK_LOCATIONS.getValue());
         mplew.write(delete ? 2 : 3);
         mplew.write(vip ? 1 : 0);
         if (vip) {
-            int[] map = chr.getRocks();
-            for (int i = 0; i < 10; i++) {
-                mplew.writeInt(map[i]);
-            }
+            chr.getVipTeleportRock().encode(mplew);
         } else {
-            int[] map = chr.getRegRocks();
-            for (int i = 0; i < 5; i++) {
-                mplew.writeInt(map[i]);
-            }
+            chr.getRegTeleportRock().encode(mplew);
         }
         return mplew.getPacket();
     }
