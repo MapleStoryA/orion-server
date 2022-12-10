@@ -98,7 +98,6 @@ import server.life.MapleMonster;
 import server.life.MobSkill;
 import server.maplevar.MapleVar;
 import server.maplevar.SimpleMapleVar;
-import server.maps.AbstractAnimatedMapleMapObject;
 import server.maps.Event_PyramidSubway;
 import server.maps.FieldLimitType;
 import server.maps.MapleDoor;
@@ -153,10 +152,9 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Slf4j
-public class MapleCharacter extends AbstractAnimatedMapleMapObject {
+public class MapleCharacter extends BaseMapleCharacter {
 
     private int id;
     private byte world;
@@ -238,13 +236,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private List<MapleDoor> doors;
     private List<MaplePet> pets;
     private Set<MapleMonster> controlled;
-    private Set<MapleMapObject> visibleMapObjects;
-    private ReentrantReadWriteLock visibleMapObjectsLock;
+
     private Map<Integer, String> questInfo;
     private Map<Integer, MapleSummon> summons;
     private final Map<MapleQuest, MapleQuestStatus> quests;
     private final Map<Integer, Integer> linkMobs = new LinkedHashMap<>();
-    private final Map<ISkill, SkillEntry> skills = new LinkedHashMap<ISkill, SkillEntry>();
+    private final Map<ISkill, SkillEntry> skills = new LinkedHashMap<>();
     private final Map<MapleBuffStat, MapleBuffStatValueHolder> effects = new ConcurrentEnumMap<>(
             MapleBuffStat.class);
     private final Map<Integer, MapleCoolDownValueHolder> coolDowns = new LinkedHashMap<>();
@@ -373,8 +370,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             doors = new ArrayList<>();
             controlled = new LinkedHashSet<>();
             summons = new LinkedHashMap<>();
-            visibleMapObjects = new LinkedHashSet<>();
-            visibleMapObjectsLock = new ReentrantReadWriteLock();
             pendingCarnivalRequests = new LinkedList<>();
 
             savedLocations = new int[SavedLocationType.values().length];
@@ -2563,12 +2558,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
     public void leaveMap() {
         controlled.clear();
-        visibleMapObjectsLock.writeLock().lock();
-        try {
-            visibleMapObjects.clear();
-        } finally {
-            visibleMapObjectsLock.writeLock().unlock();
-        }
+        super.leaveMap();
         if (chair != 0) {
             cancelFishingTask();
             chair = 0;
@@ -3756,41 +3746,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         return storage;
     }
 
-    public void addVisibleMapObject(MapleMapObject mo) {
-        visibleMapObjectsLock.writeLock().lock();
-        try {
-            visibleMapObjects.add(mo);
-        } finally {
-            visibleMapObjectsLock.writeLock().unlock();
-        }
-    }
 
-    public void removeVisibleMapObject(MapleMapObject mo) {
-        visibleMapObjectsLock.writeLock().lock();
-        try {
-            visibleMapObjects.remove(mo);
-        } finally {
-            visibleMapObjectsLock.writeLock().unlock();
-        }
-    }
-
-    public boolean isMapObjectVisible(MapleMapObject mo) {
-        visibleMapObjectsLock.readLock().lock();
-        try {
-            return visibleMapObjects.contains(mo);
-        } finally {
-            visibleMapObjectsLock.readLock().unlock();
-        }
-    }
-
-    public Collection<MapleMapObject> getAndWriteLockVisibleMapObjects() {
-        visibleMapObjectsLock.writeLock().lock();
-        return visibleMapObjects;
-    }
-
-    public void unlockWriteVisibleMapObjects() {
-        visibleMapObjectsLock.writeLock().unlock();
-    }
 
     public boolean isAlive() {
         return stats.getHp() > 0;
