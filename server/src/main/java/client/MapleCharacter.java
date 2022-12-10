@@ -321,7 +321,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         ret.map = null;
         ret.exp = 0;
         ret.gmLevel = 0;
-        ret.job = MapleJob.fromId((short) (type == 1 ? 0 : (type == 0 ? 1000 : (type == 3 ? 2001 : (type == 4 ? 3000 : 2000)))));
+        ret.job = MapleJob.getById((short) (type == 1 ? 0 : (type == 0 ? 1000 : (type == 3 ? 2001 : (type == 4 ? 3000 : 2000)))));
         ret.meso = 0;
         ret.level = 1;
         ret.remainingAp = 0;
@@ -360,14 +360,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         ret.CRand = new PlayerRandomStream();
 
         ret.changed_skillmacros = false;
-        ret.stats.setStr(ct.str);
-        ret.stats.setDex(ct.dex);
-        ret.stats.setInt(ct.int_);
-        ret.stats.setLuk(ct.luk);
-        ret.stats.setMaxHp(ct.maxhp);
-        ret.stats.setMaxMp(ct.maxmp);
-        ret.stats.setHp(ct.hp);
-        ret.stats.setMp(ct.mp);
+
 
         ret.chalkText = ct.chalkboard;
         ret.exp = ct.exp;
@@ -378,7 +371,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         ret.gmLevel = ct.gmLevel;
         ret.skinColor = ct.skinColor;
         ret.gender = ct.gender;
-        ret.job = MapleJob.fromId(ct.job);
+        ret.job = MapleJob.getById(ct.job);
         ret.hair = ct.hair;
         ret.face = ct.face;
         ret.accountid = ct.accountid;
@@ -395,6 +388,14 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         ret.fairyExp = ct.fairyExp;
         ret.marriageId = ct.marriageId;
         ret.evanSP = ct.evanSP;
+        ret.stats.setStr(ct.str);
+        ret.stats.setDex(ct.dex);
+        ret.stats.setInt(ct.int_);
+        ret.stats.setLuk(ct.luk);
+        ret.stats.setMaxHp(ct.maxhp);
+        ret.stats.setMaxMp(ct.maxmp);
+        ret.stats.setHp(ct.hp);
+        ret.stats.setMp(ct.mp);
 
         if (ret.guildid > 0) {
             ret.mgc = new MapleGuildCharacter(ret);
@@ -527,25 +528,15 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             ret.name = characterData.getName();
             ret.level = characterData.getLevel();
             ret.fame = characterData.getFame();
-
-            ret.stats.setStr(characterData.getStr());
-            ret.stats.setDex(characterData.getDex());
-            ret.stats.setInt(characterData.getInt_());
-            ret.stats.setLuk(characterData.getLuk());
-            ret.stats.setMaxMp(characterData.getMaxMp());
-            ret.stats.setMaxHp(characterData.getMaxHp());
-            ret.stats.setHp(characterData.getMaxHp());
-            ret.stats.setMp(characterData.getMaxMp());
-
-            ret.exp = rs.getInt("exp");
+            ret.exp = characterData.getExp();
             ret.hpApUsed = rs.getShort("hpApUsed");
-            ret.remainingAp = rs.getInt("ap");
-            ret.remainingSp = rs.getInt("sp");
-            ret.meso = rs.getInt("meso");
+            ret.remainingAp = characterData.getAp();
+            ret.remainingSp = characterData.getSp();
+            ret.meso = characterData.getMeso();
             ret.gmLevel = rs.getByte("gm");
             ret.skinColor = rs.getByte("skincolor");
             ret.gender = rs.getByte("gender");
-            ret.job = MapleJob.fromId(rs.getShort("job"));
+            ret.job = MapleJob.getById(rs.getShort("job"));
             ret.hair = rs.getInt("hair");
             ret.face = rs.getInt("face");
             ret.accountid = rs.getInt("accountid");
@@ -566,6 +557,15 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             ret.jobRank = rs.getInt("jobRank");
             ret.jobRankMove = rs.getInt("jobRankMove");
             ret.marriageId = rs.getInt("marriageId");
+
+            ret.stats.setStr(characterData.getStr());
+            ret.stats.setDex(characterData.getDex());
+            ret.stats.setInt(characterData.getInt_());
+            ret.stats.setLuk(characterData.getLuk());
+            ret.stats.setMaxMp(characterData.getMaxMp());
+            ret.stats.setMaxHp(characterData.getMaxHp());
+            ret.stats.setHp(characterData.getMaxHp());
+            ret.stats.setMp(characterData.getMaxMp());
 
             // Evan stuff
             ret.evanSP = CharacterService.loadEvanSkills(ret.id);

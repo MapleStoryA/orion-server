@@ -177,9 +177,6 @@ public enum MapleJob {
         return isExtendSPJob(job.getId());
     }
 
-    public static MapleJob fromId(short id) {
-        return null;
-    }
 
     public int getId() {
         return jobid;
