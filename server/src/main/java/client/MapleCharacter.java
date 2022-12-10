@@ -448,12 +448,12 @@ public class MapleCharacter extends BaseMapleCharacter {
         ret.map_id = ct.getMap_id();
         ret.initialSpawnPoint = ct.getInitialSpawnPoint();
         ret.world = ct.getWorld();
-        ret.bookCover = ct.getmBookCover();
+        ret.bookCover = ct.getMBookCover();
         ret.dojo = ct.getDojo();
         ret.dojoRecord = ct.getDojoRecord();
         ret.guild_id = ct.getGuild_id();
-        ret.guildRank = ct.getGuildrank();
-        ret.allianceRank = ct.getAlliancerank();
+        ret.guildRank = ct.getGuildRank();
+        ret.allianceRank = ct.getAllianceRank();
         ret.points = ct.getPoints();
         ret.fairyExp = ct.getFairyExp();
         ret.marriageId = ct.getMarriageId();
@@ -462,15 +462,15 @@ public class MapleCharacter extends BaseMapleCharacter {
         ret.stats.setDex(ct.getDex());
         ret.stats.setInt(ct.getInt_());
         ret.stats.setLuk(ct.getLuk());
-        ret.stats.setMaxHp(ct.getMaxMp());
-        ret.stats.setMaxMp(ct.getMaxmp());
+        ret.stats.setMaxHp(ct.getMaxHp());
+        ret.stats.setMaxMp(ct.getMaxMp());
         ret.stats.setHp(ct.getHp());
         ret.stats.setMp(ct.getMp());
 
         if (ret.guild_id > 0) {
             ret.mgc = new MapleGuildCharacter(ret);
         }
-        ret.buddyList = new MapleBuddyList(ct.getBuddysize());
+        ret.buddyList = new MapleBuddyList(ct.getBuddySize());
         ret.subcategory = ct.getSubcategory();
 
         if (isChannel) {
@@ -537,22 +537,20 @@ public class MapleCharacter extends BaseMapleCharacter {
         for (final Map.Entry<Byte, Integer> qs : ct.getReports().entrySet()) {
             ret.reports.put(ReportType.getById(qs.getKey()), qs.getValue());
         }
-        ret.monsterBook = new MonsterBook(ct.getMbook());
-        ret.inventory = (MapleInventory[]) ct.getInventorys();
+        ret.monsterBook = new MonsterBook(ct.getMapleBookCards());
+        ret.inventory = (MapleInventory[]) ct.getInventories();
         ret.BlessOfFairy_Origin = ct.getBlessOfFairy();
-        ret.skillMacros = (SkillMacro[]) ct.getSkillmacro();
-        ret.keyLayout = new MapleKeyLayout(ct.getKeymap());
+        ret.skillMacros = (SkillMacro[]) ct.getSkillMacro();
+        ret.keyLayout = new MapleKeyLayout(ct.getKeyMap());
         ret.petStore = ct.getPetStore();
         ret.questInfo = ct.getInfoQuest();
-        ret.savedLocations = ct.getSavedlocation();
+        ret.savedLocations = ct.getSavedLocation();
         ret.wishlist = ct.getWishlist();
         ret.vipTeleportRock.initMaps(ct.getVipTeleportRocks());
         ret.regTeleportRock.initMaps(ct.getRegularTeleportRocks());
         ret.buddyList.loadFromTransfer(ct.getBuddies());
-        // ret.lastfametime
-        // ret.lastmonthfameids
         ret.keydown_skill = 0; // Keydown skill can't be brought over
-        ret.lastFameTime = ct.getLastfametime();
+        ret.lastFameTime = ct.getLastFameTime();
         ret.loginTime = ct.getLoginTime();
         ret.lastRecoveryTime = ct.getLastRecoveryTime();
         ret.lastDragonBloodTime = ct.getLastDragonBloodTime();
@@ -560,10 +558,10 @@ public class MapleCharacter extends BaseMapleCharacter {
         ret.lastHPTime = ct.getLastHPTime();
         ret.lastMPTime = ct.getLastMPTime();
         ret.lastFairyTime = ct.getLastFairyTime();
-        ret.lastMonthFameIds = ct.getFamedcharacters();
+        ret.lastMonthFameIds = ct.getFamedCharacters();
         ret.morphId = ct.getMorphId();
-        ret.storage = (MapleStorage) ct.getStorage();
-        ret.cs = (CashShop) ct.getCs();
+        ret.storage = ct.getStorage();
+        ret.cs = ct.getCashInventory();
 
         ret.nx_credit = ct.getNxCredit();
         ret.maple_points = ct.getMaplePoints();
@@ -3112,7 +3110,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         return inventory[type.ordinal()];
     }
 
-    public final MapleInventory[] getInventorys() {
+    public final MapleInventory[] getInventories() {
         return inventory;
     }
 
@@ -3617,7 +3615,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         changed_skill_macros = true;
     }
 
-    public final SkillMacro[] getMacros() {
+    public final SkillMacro[] getSkillMacros() {
         return skillMacros;
     }
 
