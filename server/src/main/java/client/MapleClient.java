@@ -28,7 +28,6 @@ import server.ClientStorage;
 import server.maps.MapleMap;
 import server.quest.MapleQuest;
 import server.shops.IMaplePlayerShop;
-import tools.DateHelper;
 
 import javax.script.ScriptEngine;
 import java.sql.Connection;
@@ -203,7 +202,7 @@ public class MapleClient extends BaseMapleClient {
             final int id = player.getId();
             int messengerId = player.getMessenger() == null ? 0 : player.getMessenger().getId();
             int gid = player.getGuildId();
-            final MapleBuddyList bl = player.getBuddylist();
+            final MapleBuddyList bl = player.getBuddyList();
             final MaplePartyCharacter chrp = new MaplePartyCharacter(player);
             final MapleMessengerCharacter chrm = new MapleMessengerCharacter(player);
             final MapleGuildCharacter chrg = player.getMGC();

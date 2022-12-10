@@ -58,7 +58,7 @@ public class BuddyManager {
         if (ch > 0) {
             final MapleCharacter addChar = WorldServer.getInstance().getChannel(ch).getPlayerStorage().getCharacterByName(addName);
             if (addChar != null) {
-                final MapleBuddyList buddylist = addChar.getBuddylist();
+                final MapleBuddyList buddylist = addChar.getBuddyList();
                 if (buddylist.isFull()) {
                     return MapleBuddyList.BuddyAddResult.BUDDYLIST_FULL;
                 }
@@ -84,7 +84,7 @@ public class BuddyManager {
             BuddyInvitedEntry inv = itr.next();
             if (inviterCid == inv.inviter && chr.getName().equalsIgnoreCase(inv.name)) {
                 itr.remove();
-                if (chr.getBuddylist().isFull()) {
+                if (chr.getBuddyList().isFull()) {
                     return new Pair<>(MapleBuddyList.BuddyAddResult.BUDDYLIST_FULL, null);
                 }
                 final int ch = FindCommand.findChannel(inviterCid);
@@ -93,11 +93,11 @@ public class BuddyManager {
                     if (addChar == null) {
                         return new Pair<>(MapleBuddyList.BuddyAddResult.NOT_FOUND, null);
                     }
-                    addChar.getBuddylist().put(new BuddyListEntry(chr.getName(), chr.getId(), "Default Group", chr.getClient().getChannel()));
-                    addChar.getClient().getSession().write(MaplePacketCreator.updateBuddylist(BuddyListModifyHandler.ADD, addChar.getBuddylist().getBuddies()));
+                    addChar.getBuddyList().put(new BuddyListEntry(chr.getName(), chr.getId(), "Default Group", chr.getClient().getChannel()));
+                    addChar.getClient().getSession().write(MaplePacketCreator.updateBuddylist(BuddyListModifyHandler.ADD, addChar.getBuddyList().getBuddies()));
 
-                    chr.getBuddylist().put(new BuddyListEntry(addChar.getName(), addChar.getId(), "Default Group", ch));
-                    chr.getClient().getSession().write(MaplePacketCreator.updateBuddylist(BuddyListModifyHandler.ADD, chr.getBuddylist().getBuddies()));
+                    chr.getBuddyList().put(new BuddyListEntry(addChar.getName(), addChar.getId(), "Default Group", ch));
+                    chr.getClient().getSession().write(MaplePacketCreator.updateBuddylist(BuddyListModifyHandler.ADD, chr.getBuddyList().getBuddies()));
 
                     return new Pair<>(MapleBuddyList.BuddyAddResult.OK, addChar.getName());
                 }
@@ -127,7 +127,7 @@ public class BuddyManager {
     }
 
     public static MapleBuddyList.BuddyDelResult DeleteBuddy(MapleCharacter chr, int deleteCid) {
-        final BuddyListEntry myBlz = chr.getBuddylist().get(deleteCid);
+        final BuddyListEntry myBlz = chr.getBuddyList().get(deleteCid);
         if (myBlz == null) {
             return MapleBuddyList.BuddyDelResult.NOT_ON_LIST;
         }
@@ -147,25 +147,25 @@ public class BuddyManager {
                     if (result == -1) {
                         return MapleBuddyList.BuddyDelResult.ERROR;
                     }
-                    chr.getBuddylist().remove(deleteCid);
-                    chr.getClient().getSession().write(MaplePacketCreator.updateBuddylist(BuddyListModifyHandler.REMOVE, chr.getBuddylist().getBuddies()));
+                    chr.getBuddyList().remove(deleteCid);
+                    chr.getClient().getSession().write(MaplePacketCreator.updateBuddylist(BuddyListModifyHandler.REMOVE, chr.getBuddyList().getBuddies()));
                     return MapleBuddyList.BuddyDelResult.OK;
                 }
             }
-            delChar.getBuddylist().remove(chr.getId());
-            delChar.getClient().getSession().write(MaplePacketCreator.updateBuddylist(BuddyListModifyHandler.REMOVE, delChar.getBuddylist().getBuddies()));
+            delChar.getBuddyList().remove(chr.getId());
+            delChar.getClient().getSession().write(MaplePacketCreator.updateBuddylist(BuddyListModifyHandler.REMOVE, delChar.getBuddyList().getBuddies()));
             delChar.dropMessage(5, "Your buddy relationship with '" + chr.getName() + "' has ended.");
 
-            chr.getBuddylist().remove(deleteCid);
-            chr.getClient().getSession().write(MaplePacketCreator.updateBuddylist(BuddyListModifyHandler.REMOVE, chr.getBuddylist().getBuddies()));
+            chr.getBuddyList().remove(deleteCid);
+            chr.getClient().getSession().write(MaplePacketCreator.updateBuddylist(BuddyListModifyHandler.REMOVE, chr.getBuddyList().getBuddies()));
             return MapleBuddyList.BuddyDelResult.OK;
         } else { // Buddy is offline
             final byte result = deleteOfflineBuddy(deleteCid, chr.getId()); // Execute SQL query.
             if (result == -1) {
                 return MapleBuddyList.BuddyDelResult.ERROR;
             }
-            chr.getBuddylist().remove(deleteCid);
-            chr.getClient().getSession().write(MaplePacketCreator.updateBuddylist(BuddyListModifyHandler.REMOVE, chr.getBuddylist().getBuddies()));
+            chr.getBuddyList().remove(deleteCid);
+            chr.getClient().getSession().write(MaplePacketCreator.updateBuddylist(BuddyListModifyHandler.REMOVE, chr.getBuddyList().getBuddies()));
             return MapleBuddyList.BuddyDelResult.OK;
         }
     }
@@ -209,7 +209,7 @@ public class BuddyManager {
             if (ch > 0) {
                 MapleCharacter chr = WorldServer.getInstance().getChannel(ch).getPlayerStorage().getCharacterById(buddy);
                 if (chr != null) {
-                    BuddyListEntry ble = chr.getBuddylist().get(characterId);
+                    BuddyListEntry ble = chr.getBuddyList().get(characterId);
                     if (ble != null) {
                         int mcChannel;
                         if (offline || (isHidden && chr.getGMLevel() < gmLevel)) {
@@ -219,7 +219,7 @@ public class BuddyManager {
                             ble.setChannel(channel);
                             mcChannel = channel - 1;
                         }
-                        chr.getBuddylist().put(ble);
+                        chr.getBuddyList().put(ble);
                         chr.getClient().getSession().write(MaplePacketCreator.updateBuddyChannel(ble.getCharacterId(), mcChannel));
                     }
                 }
