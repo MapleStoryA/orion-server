@@ -1,6 +1,7 @@
 package database;
 
 import client.CharNameAndId;
+import client.FinishedAchievements;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleJob;
@@ -34,6 +35,28 @@ public class CharacterService {
         ps.setString(1, name);
         ps.executeUpdate();
         ps.close();
+    }
+
+    public static void saveAchievement(FinishedAchievements finishedAchievements, int account_id, int characterId) {
+        try {
+            if (finishedAchievements.isChanged()) {
+                Connection con = DatabaseConnection.getConnection();
+                var ps = con.prepareStatement("DELETE FROM achievements WHERE accountid = ?");
+                ps.setInt(1, account_id);
+                ps.executeUpdate();
+                ps.close();
+                ps = con.prepareStatement("INSERT INTO achievements(charid, achievementid, accountid) VALUES(?, ?, ?)");
+                for (Integer achievementid : finishedAchievements.getFinishedAchievements()) {
+                    ps.setInt(1, characterId);
+                    ps.setInt(2, achievementid);
+                    ps.setInt(3, account_id);
+                    ps.executeUpdate();
+                }
+                ps.close();
+            }
+        } catch (Exception ex) {
+            log.error("Error saving achievement", ex);
+        }
     }
 
     public static void saveSkillMacro(SavedSkillMacro savedSkillMacro, int characterId) {

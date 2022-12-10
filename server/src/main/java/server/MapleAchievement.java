@@ -23,12 +23,10 @@ package server;
 
 import client.MapleCharacter;
 import handling.world.helper.BroadcastHelper;
+import lombok.extern.slf4j.Slf4j;
 import tools.MaplePacketCreator;
 
-/**
- * @author KyleShum
- */
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleAchievement {
 
     private final boolean notice;
@@ -69,7 +67,7 @@ public class MapleAchievement {
 
     public void finishAchievement(MapleCharacter chr) {
         chr.modifyAchievementCSPoints(1, reward);
-        chr.setAchievementFinished(MapleAchievements.getInstance().getByMapleAchievement(this));
+        chr.getFinishedAchievements().setAchievementFinished(MapleAchievements.getInstance().getByMapleAchievement(this));
         if (notice && !chr.isGameMaster()) {
             BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(6, "[Achievement] Congratulations to " + chr.getName() + " on " + name + " and rewarded with " + reward + " Nx-Credit!"));
         } else {

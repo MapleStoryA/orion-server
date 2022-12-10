@@ -707,7 +707,7 @@ public final class MapleMap {
         if (mobid == 8810018 && mapid == 240060200) { // Horntail
             BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(6, "To the crew that have finally conquered Horned Tail after numerous attempts, I salute thee! You are the true heroes of Leafre!!"));
             for (MapleCharacter c : getCharactersThreadsafe()) {
-                c.finishAchievement(16);
+                c.getFinishedAchievements().finishAchievement(c, 16);
             }
             final String msg = MapDebug_Log();
             log.info("Log_Horntail.rtf" + " : " + msg);
@@ -720,7 +720,7 @@ public final class MapleMap {
         } else if (mobid == 8810122 && mapid == 240060201) { // Horntail
             BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(6, "To the crew that have finally conquered Chaos Horned Tail after numerous attempts, I salute thee! You are the true heroes of Leafre!!"));
             for (MapleCharacter c : getCharactersThreadsafe()) {
-                c.finishAchievement(24);
+                c.getFinishedAchievements().finishAchievement(c, 24);
             }
             final String msg = MapDebug_Log();
             log.info("Log_Horntail.rtf" + " : " + msg);
@@ -795,7 +795,7 @@ public final class MapleMap {
         } else if (mobid == 8820001 && mapid == 270050100) {
             BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(6, "Expedition who defeated Pink Bean with invicible passion! You are the true timeless hero!"));
             for (MapleCharacter c : getCharactersThreadsafe()) {
-                c.finishAchievement(17);
+                c.getFinishedAchievements().finishAchievement(c, 17);
             }
             if (speedRunStart > 0) {
                 type = SpeedRunType.Pink_Bean;
@@ -807,7 +807,7 @@ public final class MapleMap {
             log.info("Log_Pinkbean.rtf" + " : " + msg);
         } else if (mobid == 8800002 && mapid == 280030000) {
             for (MapleCharacter c : getCharactersThreadsafe()) {
-                c.finishAchievement(15);
+                c.getFinishedAchievements().finishAchievement(c, 15);
             }
             final String msg = MapDebug_Log();
             log.info("Log_Zakum.rtf" + " : " + msg);
@@ -819,7 +819,7 @@ public final class MapleMap {
             }
         } else if (mobid == 8800102 && mapid == 280030001) {
             for (MapleCharacter c : getCharactersThreadsafe()) {
-                c.finishAchievement(23);
+                c.getFinishedAchievements().finishAchievement(c, 23);
             }
             final String msg = MapDebug_Log();
             log.info("Log_Zakum.rtf" + " : " + msg);

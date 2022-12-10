@@ -531,7 +531,7 @@ public class EventInstanceManager {
             return;
         }
         for (MapleCharacter chr : getPlayers()) {
-            chr.finishAchievement(type);
+            chr.getFinishedAchievements().finishAchievement(chr, type);
         }
     }
 

@@ -116,7 +116,7 @@ public class BuddyListModifyHandler extends AbstractMaplePacketHandler {
                 }
                 c.getPlayer().dropMessage(5, "Congratulations, you are now friends with '" + bal.getRight() + "'");
                 if (buddylist.getBuddies().size() >= 20) {
-                    c.getPlayer().finishAchievement(26);
+                    c.getPlayer().getFinishedAchievements().finishAchievement(c.getPlayer(), 26);
                 }
                 c.getSession().write(MaplePacketCreator.enableActions());
                 break;
