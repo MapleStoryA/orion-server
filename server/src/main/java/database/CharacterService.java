@@ -7,7 +7,7 @@ import client.MapleClient;
 import client.MapleJob;
 import handling.world.guild.GuildManager;
 import lombok.extern.slf4j.Slf4j;
-import tools.FileOutputUtil;
+import tools.DateHelper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -124,7 +124,7 @@ public class CharacterService {
             CharacterService.deleteWhereCharacterId(con, "DELETE FROM inventoryslot WHERE characterid = ?", cid);
             return 0;
         } catch (Exception e) {
-            FileOutputUtil.outputFileError(FileOutputUtil.PacketEx_Log, e);
+            log.info("Log_Packet_Except.rtf", e);
             e.printStackTrace();
         }
         return 10;

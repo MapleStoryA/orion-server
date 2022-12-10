@@ -16,7 +16,7 @@ import constants.GameConstants;
 import constants.MapConstants;
 import server.cashshop.CashItemFactory;
 import server.cashshop.CashItemInfo;
-import tools.FileOutputUtil;
+import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
 import tools.Triple;
@@ -409,7 +409,9 @@ public class MapleInventoryManipulator {
             }
         }
         if (item.getQuantity() >= 50 && GameConstants.isUpgradeScroll(item.getItemId())) {
-            FileOutputUtil.logUsers(c.getPlayer().getName(), "[MapleInventoryManipulator] " + item.getQuantity() + " of " + item.getItemId() + " was added to inventory.");
+            final String file = c.getPlayer().getName();
+            final String msg = "[MapleInventoryManipulator] " + item.getQuantity() + " of " + item.getItemId() + " was added to inventory.";
+            log.info(file + " : " + msg);
         }
 
         c.getPlayer().havePartyQuest(item.getItemId());

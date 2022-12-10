@@ -18,7 +18,7 @@ import server.shops.IMaplePlayerShop;
 import server.shops.MapleMiniGame;
 import server.shops.MaplePlayerShop;
 import server.shops.MaplePlayerShopItem;
-import tools.FileOutputUtil;
+import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.PlayerShopPacket;
@@ -390,8 +390,10 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                             }
                         }
                         if (bundles_perbundle >= 50 && GameConstants.isUpgradeScroll(ivItem.getItemId())) {
-                            FileOutputUtil.logUsers(chr.getName(), "[PLAYER_SHOP_ADD_ITEM / ADD_ITEM] Placed "
-                                    + bundles_perbundle + " of " + ivItem.getItemId());
+                            final String file = chr.getName();
+                            final String msg = "[PLAYER_SHOP_ADD_ITEM / ADD_ITEM] Placed "
+                                    + bundles_perbundle + " of " + ivItem.getItemId();
+                            log.info(file + " : " + msg);
                         }
                         if (GameConstants.isThrowingStar(ivItem.getItemId())
                                 || GameConstants.isBullet(ivItem.getItemId())) {
@@ -458,9 +460,10 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     return;
                 }
                 if (quantity >= 50 && GameConstants.isUpgradeScroll(tobuy.item.getItemId())) {
-                    FileOutputUtil.logUsers(chr.getName(),
-                            "[BUY_ITEM_PLAYER_SHOP / BUY_ITEM_STORE | BUY_ITEM_HIREDMERCHANT] Placed " + quantity + " of "
-                                    + tobuy.item.getItemId());
+                    final String file = chr.getName();
+                    final String msg = "[BUY_ITEM_PLAYER_SHOP / BUY_ITEM_STORE | BUY_ITEM_HIREDMERCHANT] Placed " + quantity + " of "
+                            + tobuy.item.getItemId();
+                    log.info(file + " : " + msg);
                 }
                 shop.buy(c, item, quantity);
                 shop.broadcastToVisitors(PlayerShopPacket.shopItemUpdate(shop));
@@ -491,8 +494,9 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                         }
                         item_get.setQuantity((short) check);
                         if (item_get.getQuantity() >= 50 && GameConstants.isUpgradeScroll(item.item.getItemId())) {
-                            FileOutputUtil.logUsers(chr.getName(),
-                                    "[REMOVE_ITEM] Removed " + item_get.getQuantity() + " of " + item.item.getItemId());
+                            final String file = chr.getName();
+                            final String msg = "[REMOVE_ITEM] Removed " + item_get.getQuantity() + " of " + item.item.getItemId();
+                            log.info(file + " : " + msg);
                         }
                         if (MapleInventoryManipulator.checkSpace(c, item_get.getItemId(), item_get.getQuantity(),
                                 item_get.getOwner())) {

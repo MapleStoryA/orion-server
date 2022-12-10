@@ -31,7 +31,7 @@ import server.maps.MapleMapObject;
 import server.maps.MapleMist;
 import server.quest.MapleQuest;
 import server.shops.HiredMerchant;
-import tools.FileOutputUtil;
+import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
@@ -108,8 +108,10 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                         mapitem.getItem().getQuantity(), mapitem.getItem().getOwner())) {
                     if (mapitem.getItem().getQuantity() >= 50
                             && GameConstants.isUpgradeScroll(mapitem.getItem().getItemId())) {
-                        FileOutputUtil.logUsers(chr.getName(), "Player picked up " + mapitem.getItem().getQuantity()
-                                + " of " + mapitem.getItem().getItemId());
+                        final String file = chr.getName();
+                        final String msg = "Player picked up " + mapitem.getItem().getQuantity()
+                                + " of " + mapitem.getItem().getItemId();
+                        log.info(file + " : " + msg);
                     }
                     if (MapleInventoryManipulator.addFromDrop(c, mapitem.getItem(), true,
                             mapitem.getDropper() instanceof MapleMonster)) {
@@ -625,7 +627,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                                 .broadcastMessage(MaplePacketCreator.getMiracleCubeEffect(c.getPlayer().getId(), true));
                         c.getPlayer().forceReAddItem_NoUpdate(item, MapleInventoryType.EQUIP);
                         MapleInventoryManipulator.addById(c, 2430112, (short) 1,
-                                "Cubed on " + FileOutputUtil.CurrentReadable_Date());
+                                "Cubed on " + DateHelper.getCurrentReadableDate());
                         used = true;
                     } else {
                         c.getPlayer().dropMessage(5, "This item's Potential cannot be reset.");

@@ -72,7 +72,7 @@ import server.maps.event.KentaMapUserEnterEvent;
 import server.maps.event.MapEvent;
 import server.maps.event.PuppeteerMapEvent;
 import server.maps.event.SimpleQuestMapEvent;
-import tools.FileOutputUtil;
+import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
@@ -709,7 +709,8 @@ public final class MapleMap {
             for (MapleCharacter c : getCharactersThreadsafe()) {
                 c.finishAchievement(16);
             }
-            FileOutputUtil.log(FileOutputUtil.Horntail_Log, MapDebug_Log());
+            final String msg = MapDebug_Log();
+            log.info("Log_Horntail.rtf" + " : " + msg);
             if (speedRunStart > 0) {
                 type = SpeedRunType.Horntail;
             }
@@ -721,7 +722,8 @@ public final class MapleMap {
             for (MapleCharacter c : getCharactersThreadsafe()) {
                 c.finishAchievement(24);
             }
-            FileOutputUtil.log(FileOutputUtil.Horntail_Log, MapDebug_Log());
+            final String msg = MapDebug_Log();
+            log.info("Log_Horntail.rtf" + " : " + msg);
             if (speedRunStart > 0) {
                 type = SpeedRunType.ChaosHT;
             }
@@ -801,12 +803,14 @@ public final class MapleMap {
             if (sqd != null) {
                 doShrine(true);
             }
-            FileOutputUtil.log(FileOutputUtil.PinkBean_Log, MapDebug_Log());
+            final String msg = MapDebug_Log();
+            log.info("Log_Pinkbean.rtf" + " : " + msg);
         } else if (mobid == 8800002 && mapid == 280030000) {
             for (MapleCharacter c : getCharactersThreadsafe()) {
                 c.finishAchievement(15);
             }
-            FileOutputUtil.log(FileOutputUtil.Zakum_Log, MapDebug_Log());
+            final String msg = MapDebug_Log();
+            log.info("Log_Zakum.rtf" + " : " + msg);
             if (speedRunStart > 0) {
                 type = SpeedRunType.Zakum;
             }
@@ -817,7 +821,8 @@ public final class MapleMap {
             for (MapleCharacter c : getCharactersThreadsafe()) {
                 c.finishAchievement(23);
             }
-            FileOutputUtil.log(FileOutputUtil.Zakum_Log, MapDebug_Log());
+            final String msg = MapDebug_Log();
+            log.info("Log_Zakum.rtf" + " : " + msg);
             if (speedRunStart > 0) {
                 type = SpeedRunType.Chaos_Zakum;
             }
@@ -1001,7 +1006,7 @@ public final class MapleMap {
 
     private String MapDebug_Log() {
         final StringBuilder sb = new StringBuilder("Defeat time : ");
-        sb.append(FileOutputUtil.CurrentReadable_Time());
+        sb.append(DateHelper.getCurrentReadableTime());
 
         sb.append(" | Mapid : ").append(this.mapid);
 

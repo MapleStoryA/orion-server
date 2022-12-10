@@ -25,7 +25,7 @@ import client.MapleClient;
 import database.DatabaseConnection;
 import server.maps.MapleReactor;
 import server.maps.ReactorDropEntry;
-import tools.FileOutputUtil;
+import tools.DateHelper;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -62,7 +62,8 @@ public class ReactorScriptManager extends AbstractScriptManager {
             iv.invokeFunction("act");
         } catch (Exception e) {
             System.err.println("Error executing reactor script. ReactorID: " + reactor.getReactorId() + ", ReactorName: " + reactor.getName() + ":" + e);
-            FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Error executing reactor script. ReactorID: " + reactor.getReactorId() + ", ReactorName: " + reactor.getName() + ":" + e);
+            final String msg = "Error executing reactor script. ReactorID: " + reactor.getReactorId() + ", ReactorName: " + reactor.getName() + ":" + e;
+            log.info("Log_Script_Except.rtf" + " : " + msg);
         }
     }
 

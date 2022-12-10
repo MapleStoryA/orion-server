@@ -31,7 +31,7 @@ import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
 import server.quest.MapleQuest;
 import server.quest.MapleQuest.MedalQuest;
-import tools.FileOutputUtil;
+import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
 import tools.packet.UIPacket;
@@ -354,7 +354,8 @@ public class MapScriptMethods {
             }
             default: {
                 log.info("Unhandled script : " + scriptName + ", type : onFirstUserEnter - MAPID " + c.getPlayer().getMapId());
-                FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Unhandled script : " + scriptName + ", type : onFirstUserEnter - MAPID " + c.getPlayer().getMapId());
+                final String msg = "Unhandled script : " + scriptName + ", type : onFirstUserEnter - MAPID " + c.getPlayer().getMapId();
+                log.info("Log_Script_Except.rtf" + " : " + msg);
                 break;
             }
         }
@@ -698,7 +699,8 @@ public class MapScriptMethods {
                 return;
             default: {
                 log.info("Unhandled script : " + scriptName + ", type : onUserEnter - MAPID " + c.getPlayer().getMapId());
-                FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Unhandled script : " + scriptName + ", type : onUserEnter - MAPID " + c.getPlayer().getMapId());
+                final String msg = "Unhandled script : " + scriptName + ", type : onUserEnter - MAPID " + c.getPlayer().getMapId();
+                log.info("Log_Script_Except.rtf" + " : " + msg);
                 break;
             }
         }

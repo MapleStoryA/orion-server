@@ -33,7 +33,7 @@ import constants.ServerConstants.CommandType;
 import constants.ServerConstants.PlayerGMRank;
 import database.DatabaseConnection;
 import server.config.ServerEnvironment;
-import tools.FileOutputUtil;
+import tools.DateHelper;
 
 import java.lang.reflect.Modifier;
 import java.sql.PreparedStatement;
@@ -77,14 +77,14 @@ public class CommandProcessor {
                         }
                     } catch (Exception ex) {
                         //ex.printStackTrace();
-                        FileOutputUtil.outputFileError(FileOutputUtil.ScriptEx_Log, ex);
+                        log.info("Log_Script_Except.rtf", ex);
                     }
                 }
                 Collections.sort(cL);
                 commandList.put(rankNeeded.getLevel(), cL);
             } catch (Exception ex) {
                 //ex.printStackTrace();
-                FileOutputUtil.outputFileError(FileOutputUtil.ScriptEx_Log, ex);
+                log.info("Log_Script_Except.rtf", ex);
             }
         }
     }
@@ -161,7 +161,7 @@ public class CommandProcessor {
             ps.setInt(3, player.getMap().getId());
             ps.executeUpdate();
         } catch (SQLException ex) {
-            FileOutputUtil.outputFileError(FileOutputUtil.PacketEx_Log, ex);
+            log.info("Log_Packet_Except.rtf", ex);
             //ex.printStackTrace();
         } finally {
             try {

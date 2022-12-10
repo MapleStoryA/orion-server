@@ -49,7 +49,7 @@ import handling.world.party.MaplePartyCharacter;
 import handling.world.party.PartyManager;
 import server.ClientStorage;
 import server.quest.MapleQuest;
-import tools.FileOutputUtil;
+import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.packet.MapleUserPackets;
 import tools.packet.ReportPackets;
@@ -166,7 +166,7 @@ public class InterServerHandler {
 
 
         } catch (Exception e) {
-            FileOutputUtil.outputFileError(FileOutputUtil.Login_Error, e);
+            log.info("Log_Login_Error.rtf", e);
         }
         player.sendMacros();
         player.showNote();

@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package handling.channel.handler.utils;
 
 import client.ISkill;
-import client.JobUtils;
+import constants.JobUtils;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.SkillFactory;
@@ -38,7 +38,7 @@ import server.MapleItemInformationProvider;
 import server.StructRewardItem;
 import server.maps.MapleMapItem;
 import server.maps.MapleMapObject;
-import tools.FileOutputUtil;
+import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
@@ -418,9 +418,9 @@ public class InventoryHandlerUtils {
         final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         c.getSession().write(MaplePacketCreator.getPeanutResult(ids[z], (short) 1, ids[z_2], (short) 1));
         MapleInventoryManipulator.addById(c, ids[z], (short) 1,
-                ii.getName(ids[z]) + " on " + FileOutputUtil.CurrentReadable_Date());
+                ii.getName(ids[z]) + " on " + DateHelper.getCurrentReadableDate());
         MapleInventoryManipulator.addById(c, ids[z_2], (short) 1,
-                ii.getName(ids[z_2]) + " on " + FileOutputUtil.CurrentReadable_Date());
+                ii.getName(ids[z_2]) + " on " + DateHelper.getCurrentReadableDate());
         return true;
     }
 
@@ -450,7 +450,7 @@ public class InventoryHandlerUtils {
                                     MapleInventoryManipulator.addbyItem(c, item);
                                 } else {
                                     MapleInventoryManipulator.addById(c, reward.itemid, reward.quantity,
-                                            "Reward item: " + itemId + " on " + FileOutputUtil.CurrentReadable_Date());
+                                            "Reward item: " + itemId + " on " + DateHelper.getCurrentReadableDate());
                                 }
                                 MapleInventoryManipulator.removeById(c, GameConstants.getInventoryType(itemId), itemId,
                                         1, false, false);

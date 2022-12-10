@@ -27,7 +27,7 @@ import constants.GameConstants;
 import handling.world.helper.BroadcastHelper;
 import server.AutobanManager;
 import server.Timer.CheatTimer;
-import tools.FileOutputUtil;
+import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.StringUtil;
 
@@ -187,7 +187,8 @@ public class CheatTracker {
                 if (dc) {
                     chr.get().getClient().getSession().close();
                 } else {
-                    FileOutputUtil.logUsers(chr.get().getName(), "Check Drop method hack");
+                    final String file = chr.get().getName();
+                    log.info(file + " : " + "Check Drop method hack");
                 }
             }
         } else {

@@ -8,7 +8,6 @@ import handling.channel.handler.InterServerHandler;
 import handling.channel.handler.PlayerHandler;
 import lombok.extern.slf4j.Slf4j;
 import server.config.ServerEnvironment;
-import tools.FileOutputUtil;
 import tools.HexTool;
 import tools.data.input.ByteArrayByteStream;
 import tools.data.input.GenericSeekableLittleEndianAccessor;
@@ -51,7 +50,7 @@ public class DefaultPacketHandler {
             log.info("Data: " + new String(message));
 
         } catch (Exception e) {
-            FileOutputUtil.outputFileError(FileOutputUtil.PacketEx_Log, e);
+            log.error("Log_Packet_Except.rtf", e);
         }
     }
 
@@ -76,7 +75,7 @@ public class DefaultPacketHandler {
                 break;
             default:
                 if (slea.available() >= 0) {
-                    FileOutputUtil.logPacket(String.valueOf(header), "[" + header + "] " + slea);
+                    log.info(String.valueOf(header), "[" + header + "] " + slea);
                 }
                 break;
         }

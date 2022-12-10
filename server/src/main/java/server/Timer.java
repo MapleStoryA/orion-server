@@ -1,6 +1,6 @@
 package server;
 
-import tools.FileOutputUtil;
+import lombok.extern.slf4j.Slf4j;
 import tools.Randomizer;
 
 import java.util.concurrent.ScheduledFuture;
@@ -178,6 +178,7 @@ public abstract class Timer {
         }
     }
 
+    @Slf4j
     private static class LoggingSaveRunnable implements Runnable {
 
         Runnable r;
@@ -193,8 +194,7 @@ public abstract class Timer {
             try {
                 r.run();
             } catch (Throwable t) {
-                FileOutputUtil.outputFileError(file, t);
-                //t.printStackTrace(); //mostly this gives un-needed errors... that take up a lot of space
+                log.error(file, t);
             }
         }
     }

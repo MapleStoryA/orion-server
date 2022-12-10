@@ -104,7 +104,7 @@ import server.shops.IMaplePlayerShop;
 import server.state.MapleVar;
 import server.state.SimpleMapleVar;
 import tools.ConcurrentEnumMap;
-import tools.FileOutputUtil;
+import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
@@ -1764,7 +1764,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
                 client.getSession().write(MaplePacketCreator.GameMaster_Func(0x12, 1));
                 map.broadcastNONGMMessage(this, MaplePacketCreator.removePlayerFromMap(getId()));
             } else {
-                FileOutputUtil.logUsers(getName(), "TRIED TO USE GM HIDE");
+                final String file = getName();
+                log.info(file + " : " + "TRIED TO USE GM HIDE");
             }
         } else if (effect.isDragonBlood()) {
             prepareDragonBlood();
@@ -2626,7 +2627,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             equipChanged();
             sendServerChangeJobCongratulations();
         } catch (Exception e) {
-            FileOutputUtil.outputFileError(FileOutputUtil.ScriptEx_Log, e);
+            log.info("Log_Script_Except.rtf", e);
         }
     }
 
@@ -2950,7 +2951,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
                 }
             }
         } catch (Exception e) {
-            FileOutputUtil.outputFileError(FileOutputUtil.ScriptEx_Log, e); // all
+            // all
+            log.info("Log_Script_Except.rtf", e);
             // jobs
             // throw
             // errors
@@ -5360,7 +5362,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
                 if (mins2 <= 0 || mins < mins2) {
                     updateOneInfo(questid, "min", String.valueOf(mins));
                     updateOneInfo(questid, "sec", String.valueOf(secs));
-                    updateOneInfo(questid, "date", FileOutputUtil.CurrentReadable_Date());
+                    updateOneInfo(questid, "date", DateHelper.getCurrentReadableDate());
                 }
                 final int newCmp = Integer.parseInt(getOneInfo(questid, "cmp")) + 1;
                 updateOneInfo(questid, "cmp", String.valueOf(newCmp));

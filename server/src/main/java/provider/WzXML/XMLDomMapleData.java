@@ -28,7 +28,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import provider.MapleData;
 import provider.MapleDataEntity;
-import tools.FileOutputUtil;
+import tools.DateHelper;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -93,7 +93,8 @@ public class XMLDomMapleData implements MapleData, Serializable {
                         break;
                     }
                 } catch (NullPointerException e) {
-                    FileOutputUtil.outputFileError(FileOutputUtil.PacketEx_Log, e); //ugh.
+                    //ugh.
+                    log.info("Log_Packet_Except.rtf", e);
                 }
             }
             if (!foundChild) {

@@ -9,7 +9,7 @@ import client.inventory.MaplePet;
 import constants.GameConstants;
 import constants.ServerConstants;
 import database.DatabaseConnection;
-import tools.FileOutputUtil;
+import tools.DateHelper;
 import tools.MaplePacketCreator;
 
 import java.sql.Connection;
@@ -159,7 +159,7 @@ public class MapleShop {
                     if (GameConstants.isRechargable(itemId)) {
                         quantity = ii.getSlotMax(c, item.getItemId());
                     }
-                    MapleInventoryManipulator.addById(c, itemId, quantity, "Bought from shop " + id + ", " + npcId + " on " + FileOutputUtil.CurrentReadable_Date());
+                    MapleInventoryManipulator.addById(c, itemId, quantity, "Bought from shop " + id + ", " + npcId + " on " + DateHelper.getCurrentReadableDate());
                 }
             } else {
                 c.getPlayer().dropMessage(1, "Your Inventory is full");

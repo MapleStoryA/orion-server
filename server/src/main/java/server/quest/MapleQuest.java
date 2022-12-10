@@ -8,7 +8,7 @@ import provider.MapleDataProvider;
 import provider.MapleDataTool;
 import scripting.NPCScriptManager;
 import server.config.ServerEnvironment;
-import tools.FileOutputUtil;
+import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.Pair;
 
@@ -171,8 +171,8 @@ public class MapleQuest implements Serializable {
                 quests.put(id, ret);
             } catch (Exception ex) {
                 ex.printStackTrace();
-                FileOutputUtil.outputFileError(FileOutputUtil.ScriptEx_Log, ex);
-                FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Caused by questID " + id);
+                log.info("Log_Script_Except.rtf", ex);
+                log.info("Log_Script_Except.rtf" + " : " + ("Caused by questID " + id));
                 log.info("Caused by questID " + id);
                 return null;
             }

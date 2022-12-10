@@ -1,4 +1,4 @@
-package client;
+package constants;
 
 import client.inventory.IItem;
 

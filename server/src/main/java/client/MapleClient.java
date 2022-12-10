@@ -28,7 +28,7 @@ import server.ClientStorage;
 import server.maps.MapleMap;
 import server.quest.MapleQuest;
 import server.shops.IMaplePlayerShop;
-import tools.FileOutputUtil;
+import tools.DateHelper;
 
 import javax.script.ScriptEngine;
 import java.sql.Connection;
@@ -184,7 +184,7 @@ public class MapleClient extends BaseMapleClient {
             }
             player.setMessenger(null);
         } catch (final Throwable e) {
-            FileOutputUtil.outputFileError(FileOutputUtil.Acc_Stuck, e);
+            log.info("Log_AccountStuck.rtf", e);
         }
     }
 
@@ -266,7 +266,7 @@ public class MapleClient extends BaseMapleClient {
                     }
                 } catch (final Exception e) {
                     e.printStackTrace();
-                    FileOutputUtil.outputFileError(FileOutputUtil.Acc_Stuck, e);
+                    log.info("Log_AccountStuck.rtf", e);
                     setNotLoggedIn();
                 } finally {
                     if (RemoveInChannelServer && ch != null) {
@@ -298,7 +298,7 @@ public class MapleClient extends BaseMapleClient {
                     }
                 } catch (final Exception e) {
                     e.printStackTrace();
-                    FileOutputUtil.outputFileError(FileOutputUtil.Acc_Stuck, e);
+                    log.info("Log_AccountStuck.rtf", e);
                 } finally {
                     if (RemoveInChannelServer && ch > 0) {
                         CashShopServer.getInstance().getPlayerStorage().deregisterPlayer(id, name);
