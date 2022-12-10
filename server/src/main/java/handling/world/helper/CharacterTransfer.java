@@ -196,7 +196,7 @@ public class CharacterTransfer implements Externalizable {
         this.keymap = chr.getKeyLayout().Layout();
         this.savedlocation = chr.getSavedLocations();
         this.wishlist = chr.getWishlist();
-        this.rocks = chr.getRocks();
+        this.rocks = chr.geTeleportRocks().toArray();
         this.regrocks = chr.getRegRocks();
         for (final Integer zz : chr.getFamedCharacters()) {
             this.famedcharacters.add(zz);

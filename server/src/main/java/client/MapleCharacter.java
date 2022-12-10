@@ -105,7 +105,6 @@ import server.maps.MapleDragon;
 import server.maps.MapleFoothold;
 import server.maps.MapleMap;
 import server.maps.MapleMapFactory;
-import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import server.maps.MapleSummon;
 import server.maps.SavedLocationType;
@@ -156,6 +155,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 public class MapleCharacter extends BaseMapleCharacter {
 
+    @Getter
+    private TeleportRock teleportRock;
     private int id;
     private byte world;
     private int account_id;
@@ -228,7 +229,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     private boolean hidden;
     private boolean hasSummon = false;
     private int[] wishlist;
-    private int[] rocks;
     private int[] savedLocations;
     private int[] regular_rocks;
 
@@ -259,7 +259,6 @@ public class MapleCharacter extends BaseMapleCharacter {
 
 
     private boolean changed_wishlist;
-    private boolean changed_teleport_rock_locations;
     private boolean changed_regular_teleport_rock_locations;
     private boolean changed_skill_macros;
     private boolean changed_achievements;
@@ -338,7 +337,6 @@ public class MapleCharacter extends BaseMapleCharacter {
             changed_skills = false;
             setChanged_achievements(false);
             changed_wishlist = false;
-            changed_teleport_rock_locations = false;
             changed_regular_teleport_rock_locations = false;
             changed_skill_macros = false;
             changed_saved_locations = false;
@@ -360,7 +358,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 petStore[i] = (byte) -1;
             }
             wishlist = new int[10];
-            rocks = new int[10];
+            teleportRock = new TeleportRock();
             setRegular_rocks(new int[5]);
 
             conversation_status = new AtomicInteger();
@@ -547,7 +545,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         ret.questInfo = ct.InfoQuest;
         ret.savedLocations = ct.savedlocation;
         ret.wishlist = ct.wishlist;
-        ret.rocks = ct.rocks;
+        ret.teleportRock.initMaps(ct.rocks);
         ret.setRegular_rocks(ct.regrocks);
         ret.buddyList.loadFromTransfer(ct.buddies);
         // ret.lastfametime
@@ -926,11 +924,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 rs = ps.executeQuery();
                 int r = 0;
                 while (rs.next()) {
-                    ret.rocks[r] = rs.getInt("mapid");
-                    r++;
-                }
-                while (r < 10) {
-                    ret.rocks[r] = 999999999;
+                    ret.teleportRock.addMap(rs.getInt("mapid"));
                     r++;
                 }
                 rs.close();
@@ -1505,16 +1499,14 @@ public class MapleCharacter extends BaseMapleCharacter {
                 }
             }
 
-            if (changed_teleport_rock_locations) {
+            if (teleportRock.isChanged()) {
                 deleteWhereCharacterId(con, "DELETE FROM trocklocations WHERE characterid = ?");
-                for (int i = 0; i < rocks.length; i++) {
-                    if (rocks[i] != 999999999) {
-                        ps = con.prepareStatement("INSERT INTO trocklocations(characterid, mapid) VALUES(?, ?) ");
-                        ps.setInt(1, getId());
-                        ps.setInt(2, rocks[i]);
-                        ps.execute();
-                        ps.close();
-                    }
+                for (var map : teleportRock.getMap_ids()) {
+                    ps = con.prepareStatement("INSERT INTO trocklocations(characterid, mapid) VALUES(?, ?) ");
+                    ps.setInt(1, getId());
+                    ps.setInt(2, map);
+                    ps.execute();
+                    ps.close();
                 }
             }
 
@@ -1532,7 +1524,6 @@ public class MapleCharacter extends BaseMapleCharacter {
             }
 
             changed_wishlist = false;
-            changed_teleport_rock_locations = false;
             changed_regular_teleport_rock_locations = false;
             changed_skill_macros = false;
             changed_saved_locations = false;
@@ -3747,7 +3738,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
 
-
     public boolean isAlive() {
         return stats.getHp() > 0;
     }
@@ -4554,45 +4544,8 @@ public class MapleCharacter extends BaseMapleCharacter {
         return ret;
     }
 
-    public int[] getRocks() {
-        return rocks;
-    }
-
-    public int getRockSize() {
-        int ret = 0;
-        for (int i = 0; i < 10; i++) {
-            if (rocks[i] != 999999999) {
-                ret++;
-            }
-        }
-        return ret;
-    }
-
-    public void deleteFromRocks(int map) {
-        for (int i = 0; i < 10; i++) {
-            if (rocks[i] == map) {
-                rocks[i] = 999999999;
-                changed_teleport_rock_locations = true;
-                break;
-            }
-        }
-    }
-
-    public void addRockMap() {
-        if (getRockSize() >= 10) {
-            return;
-        }
-        rocks[getRockSize()] = getMapId();
-        changed_teleport_rock_locations = true;
-    }
-
-    public boolean isRockMap(int id) {
-        for (int i = 0; i < 10; i++) {
-            if (rocks[i] == id) {
-                return true;
-            }
-        }
-        return false;
+    public TeleportRock geTeleportRocks() {
+        return teleportRock;
     }
 
     public int[] getRegRocks() {

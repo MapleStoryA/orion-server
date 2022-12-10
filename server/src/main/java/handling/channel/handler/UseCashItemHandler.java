@@ -1,17 +1,17 @@
 package handling.channel.handler;
 
-import client.skill.ISkill;
 import client.MapleCharacter;
 import client.MapleCharacterUtil;
 import client.MapleClient;
 import client.MapleStat;
 import client.PlayerStats;
-import client.skill.SkillFactory;
 import client.inventory.Equip;
 import client.inventory.IItem;
 import client.inventory.ItemFlag;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
+import client.skill.ISkill;
+import client.skill.SkillFactory;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import handling.channel.handler.utils.InventoryHandlerUtils;
@@ -175,7 +175,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
             case 5040001: { // Teleport Coke
                 if (slea.readByte() == 0) { // Rocktype
                     final MapleMap target = c.getChannelServer().getMapFactory().getMap(slea.readInt());
-                    if ((itemId == 5041000 && c.getPlayer().isRockMap(target.getId()))
+                    if ((itemId == 5041000 && c.getPlayer().geTeleportRocks().hasMap(target.getId()))
                             || (itemId != 5041000 && c.getPlayer().isRegRockMap(target.getId()))) {
                         if (!FieldLimitType.VipRock.check(c.getPlayer().getMap().getFieldLimit())
                                 && !FieldLimitType.VipRock.check(target.getFieldLimit())
