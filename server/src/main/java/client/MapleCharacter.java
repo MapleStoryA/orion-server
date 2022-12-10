@@ -156,7 +156,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MapleCharacter extends BaseMapleCharacter {
 
     @Getter
-    private TeleportRock teleportRock;
+    private TeleportRock vipTeleportRock;
     private int id;
     private byte world;
     private int account_id;
@@ -358,7 +358,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 petStore[i] = (byte) -1;
             }
             wishlist = new int[10];
-            teleportRock = new TeleportRock();
+            vipTeleportRock = new TeleportRock(true);
             setRegular_rocks(new int[5]);
 
             conversation_status = new AtomicInteger();
@@ -545,7 +545,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         ret.questInfo = ct.InfoQuest;
         ret.savedLocations = ct.savedlocation;
         ret.wishlist = ct.wishlist;
-        ret.teleportRock.initMaps(ct.rocks);
+        ret.vipTeleportRock.initMaps(ct.rocks);
         ret.setRegular_rocks(ct.regrocks);
         ret.buddyList.loadFromTransfer(ct.buddies);
         // ret.lastfametime
@@ -924,7 +924,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 rs = ps.executeQuery();
                 int r = 0;
                 while (rs.next()) {
-                    ret.teleportRock.addMap(rs.getInt("mapid"));
+                    ret.vipTeleportRock.addMap(rs.getInt("mapid"));
                     r++;
                 }
                 rs.close();
@@ -1499,9 +1499,9 @@ public class MapleCharacter extends BaseMapleCharacter {
                 }
             }
 
-            if (teleportRock.isChanged()) {
+            if (vipTeleportRock.isChanged()) {
                 deleteWhereCharacterId(con, "DELETE FROM trocklocations WHERE characterid = ?");
-                for (var map : teleportRock.getMap_ids()) {
+                for (var map : vipTeleportRock.getMap_ids()) {
                     ps = con.prepareStatement("INSERT INTO trocklocations(characterid, mapid) VALUES(?, ?) ");
                     ps.setInt(1, getId());
                     ps.setInt(2, map);
@@ -4545,7 +4545,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public TeleportRock geTeleportRocks() {
-        return teleportRock;
+        return vipTeleportRock;
     }
 
     public int[] getRegRocks() {

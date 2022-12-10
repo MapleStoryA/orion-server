@@ -12,14 +12,13 @@ public class TeleportRock {
     @Getter
     private Set<Integer> map_ids;
 
-
     @Getter
     private boolean changed;
 
     private int maxMaps;
 
-    public TeleportRock() {
-        this.maxMaps = 10;
+    public TeleportRock(boolean vip) {
+        this.maxMaps = vip ? 10 : 5;
         this.map_ids = new LinkedHashSet<>(this.maxMaps);
     }
 
