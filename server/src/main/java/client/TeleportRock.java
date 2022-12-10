@@ -15,10 +15,14 @@ public class TeleportRock {
     @Getter
     private boolean changed;
 
+    @Getter
+    private String name;
+
     private int maxMaps;
 
     public TeleportRock(boolean vip) {
         this.maxMaps = vip ? 10 : 5;
+        this.name = vip ? "trocklocations" : "regrocklocations";
         this.map_ids = new LinkedHashSet<>(this.maxMaps);
     }
 

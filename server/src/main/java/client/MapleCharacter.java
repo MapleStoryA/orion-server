@@ -54,6 +54,7 @@ import database.DatabaseConnection;
 import database.DatabaseException;
 import database.LoginService;
 import database.LoginState;
+import database.TeleportRockService;
 import handling.channel.ChannelServer;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
 import handling.world.WorldServer;
@@ -1493,27 +1494,8 @@ public class MapleCharacter extends BaseMapleCharacter {
                 }
             }
 
-            if (vipTeleportRock.isChanged()) {
-                deleteWhereCharacterId(con, "DELETE FROM trocklocations WHERE characterid = ?");
-                for (var map : vipTeleportRock.getMap_ids()) {
-                    ps = con.prepareStatement("INSERT INTO trocklocations(characterid, mapid) VALUES(?, ?) ");
-                    ps.setInt(1, getId());
-                    ps.setInt(2, map);
-                    ps.execute();
-                    ps.close();
-                }
-            }
-
-            if (regTeleportRock.isChanged()) {
-                deleteWhereCharacterId(con, "DELETE FROM regrocklocations WHERE characterid = ?");
-                for (var map : regTeleportRock.getMap_ids()) {
-                    ps = con.prepareStatement("INSERT INTO regrocklocations(characterid, mapid) VALUES(?, ?) ");
-                    ps.setInt(1, getId());
-                    ps.setInt(2, map);
-                    ps.execute();
-                    ps.close();
-                }
-            }
+            TeleportRockService.save(vipTeleportRock, id);
+            TeleportRockService.save(regTeleportRock, id);
 
             changed_wishlist = false;
             changed_skill_macros = false;
