@@ -21,9 +21,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package tools;
 
-import client.skill.EvanSkillPoints;
-import client.skill.ExtendedSPTable;
-import client.skill.ISkill;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
@@ -31,14 +28,17 @@ import client.MapleDisease;
 import client.MapleKeyLayout;
 import client.MapleQuestStatus;
 import client.MapleStat;
-import client.skill.SkillEntry;
-import client.skill.SkillMacro;
 import client.inventory.IEquip.ScrollResult;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import client.inventory.MapleMount;
 import client.inventory.MaplePet;
 import client.inventory.MapleRing;
+import client.skill.EvanSkillPoints;
+import client.skill.ExtendedSPTable;
+import client.skill.ISkill;
+import client.skill.SkillEntry;
+import client.skill.SkillMacro;
 import constants.GameConstants;
 import constants.GameUI;
 import handling.SendPacketOpcode;
@@ -1787,14 +1787,7 @@ public class MaplePacketCreator {
             mplew.write(0);
         }
 
-        final int wishlistSize = chr.getWishlistSize();
-        mplew.write(wishlistSize);
-        if (wishlistSize > 0) {
-            final int[] wishlist = chr.getWishlist();
-            for (int x = 0; x < wishlistSize; x++) {
-                mplew.writeInt(wishlist[x]);
-            }
-        }
+        chr.getWishlist().encodeToCharInfo(mplew);
         chr.getMonsterBook().addCharInfoPacket(chr.getMonsterBookCover(), mplew);
 
         IItem medal = chr.getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -46);

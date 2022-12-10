@@ -23,6 +23,7 @@ package handling.world.helper;
 
 import client.MapleCharacter;
 import client.MapleQuestStatus;
+import client.WishList;
 import client.anticheat.ReportType;
 import client.inventory.MapleInventory;
 import client.inventory.MapleMount;
@@ -125,7 +126,7 @@ public class CharacterTransfer {
     private MapleStorage storage;
     private CashShop cashInventory;
     private int[] savedLocation;
-    private int[] wishlist;
+    private WishList wishlist;
     private int[] vipTeleportRocks;
     private int[] regularTeleportRocks;
     private byte[] petStore;

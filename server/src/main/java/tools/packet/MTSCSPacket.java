@@ -295,11 +295,8 @@ public class MTSCSPacket {
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
         mplew.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
-        mplew.write(update ? 0x61 : 0x5B); //+12
-        int[] list = chr.getWishlist();
-        for (int i = 0; i < 10; i++) {
-            mplew.writeInt(list[i] != -1 ? list[i] : 0);
-        }
+        mplew.write(update ? 0x61 : 0x5B);
+        chr.getWishlist().encodeToCashShop(mplew);
         return mplew.getPacket();
     }
 

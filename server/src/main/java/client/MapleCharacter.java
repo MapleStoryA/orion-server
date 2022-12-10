@@ -48,6 +48,7 @@ import constants.skills.BladeLord;
 import constants.skills.Rogue;
 import database.AccountData;
 import database.BanService;
+import database.CashShopService;
 import database.CharacterData;
 import database.CharacterService;
 import database.DatabaseConnection;
@@ -231,7 +232,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     private boolean superMegaEnabled;
     private boolean hidden;
     private boolean hasSummon = false;
-    private int[] wishlist;
+
     private int[] savedLocations;
 
 
@@ -261,7 +262,8 @@ public class MapleCharacter extends BaseMapleCharacter {
     private MonsterBook monsterBook;
 
 
-    private boolean changed_wishlist;
+    @Getter
+    private WishList wishlist;
     private boolean changed_skill_macros;
     private boolean changed_achievements;
     private boolean changed_saved_locations;
@@ -338,7 +340,6 @@ public class MapleCharacter extends BaseMapleCharacter {
             changed_reports = false;
             changed_skills = false;
             setChanged_achievements(false);
-            changed_wishlist = false;
             changed_skill_macros = false;
             changed_saved_locations = false;
             changed_quest_info = false;
@@ -358,7 +359,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             for (int i = 0; i < petStore.length; i++) {
                 petStore[i] = (byte) -1;
             }
-            wishlist = new int[10];
+            wishlist = new WishList();
             vipTeleportRock = new TeleportRock(true);
             regTeleportRock = new TeleportRock(false);
 
@@ -906,14 +907,8 @@ public class MapleCharacter extends BaseMapleCharacter {
                 ps = con.prepareStatement("SELECT sn FROM wishlist WHERE characterid = ?");
                 ps.setInt(1, charid);
                 rs = ps.executeQuery();
-                int i = 0;
                 while (rs.next()) {
-                    ret.wishlist[i] = rs.getInt("sn");
-                    i++;
-                }
-                while (i < 10) {
-                    ret.wishlist[i] = 0;
-                    i++;
+                    ret.wishlist.addItem(rs.getInt("sn"));
                 }
                 rs.close();
                 ps.close();
@@ -1481,21 +1476,10 @@ public class MapleCharacter extends BaseMapleCharacter {
             mount.saveMount(id);
             monsterBook.saveCards(id);
 
-            if (changed_wishlist) {
-                deleteWhereCharacterId(con, "DELETE FROM wishlist WHERE characterid = ?");
-                for (int i = 0; i < getWishlistSize(); i++) {
-                    ps = con.prepareStatement("INSERT INTO wishlist(characterid, sn) VALUES(?, ?) ");
-                    ps.setInt(1, getId());
-                    ps.setInt(2, wishlist[i]);
-                    ps.execute();
-                    ps.close();
-                }
-            }
-
+            CashShopService.saveWishList(wishlist, id);
             TeleportRockService.save(vipTeleportRock, id);
             TeleportRockService.save(regTeleportRock, id);
 
-            changed_wishlist = false;
             changed_skill_macros = false;
             changed_saved_locations = false;
             changed_quest_info = false;
@@ -4487,32 +4471,6 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public MapleMount getMount() {
         return mount;
-    }
-
-    public int[] getWishlist() {
-        return wishlist;
-    }
-
-    public void setWishlist(int[] wl) {
-        this.wishlist = wl;
-        this.changed_wishlist = true;
-    }
-
-    public void clearWishlist() {
-        for (int i = 0; i < 10; i++) {
-            wishlist[i] = 0;
-        }
-        changed_wishlist = true;
-    }
-
-    public int getWishlistSize() {
-        int ret = 0;
-        for (int i = 0; i < 10; i++) {
-            if (wishlist[i] > 0) {
-                ret++;
-            }
-        }
-        return ret;
     }
 
 
