@@ -19,7 +19,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package client.commands;
+package client.commands.v1;
 
 import client.MapleCharacter;
 import client.MapleClient;
@@ -98,6 +98,11 @@ public class CommandProcessor {
     }
 
     public static boolean processCommand(MapleClient c, String line, CommandType type) {
+
+        if (client.commands.v2.CommandProcessor.getInstance().processLine(c, line)) {
+            return true;
+        }
+
         if (line.charAt(0) == PlayerGMRank.NORMAL.getCommandPrefix()) {
             String[] splitted = line.split(" ");
             splitted[0] = splitted[0].toLowerCase();

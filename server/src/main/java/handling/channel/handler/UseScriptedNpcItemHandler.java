@@ -2,10 +2,10 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import client.skill.SkillFactory;
 import client.inventory.IItem;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
+import client.skill.SkillFactory;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import scripting.NPCScriptManager;
@@ -59,7 +59,7 @@ public class UseScriptedNpcItemHandler extends AbstractMaplePacketHandler {
                     break;
                 }
                 case 2430008: { // Gold Compass
-                    chr.saveLocation(SavedLocationType.RICHIE);
+                    chr.getSavedLocations().saveLocation(SavedLocationType.RICHIE, chr);
                     MapleMap map;
                     boolean warped = false;
 

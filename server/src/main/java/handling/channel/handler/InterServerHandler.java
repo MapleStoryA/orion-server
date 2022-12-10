@@ -168,7 +168,7 @@ public class InterServerHandler {
         } catch (Exception e) {
             log.info("Log_Login_Error.rtf", e);
         }
-        player.sendMacros();
+        player.getSkillMacros().sendMacros(c);
         player.showNote();
         player.updatePartyMemberHP();
         if (transfer == null) { // Login

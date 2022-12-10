@@ -88,7 +88,7 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
             chr.modifyCSPoints(1, -item.getPrice(), false);
             c.getSession().write(MTSCSPacket.showGiftSucceed(item.getPrice(), item.getId(), item.getCount(), partnerName, action == 32));
         } else if (action == 5) { // Wishlist
-            chr.clearWishlist();
+            chr.getWishlist().clear();
             if (slea.available() < 40) {
                 c.getSession().write(MTSCSPacket.sendCSFail(0));
                 CashShopOperationHandlers.doCSPackets(c);
@@ -98,7 +98,7 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
             for (int i = 0; i < 10; i++) {
                 wishlist[i] = slea.readInt();
             }
-            chr.setWishlist(wishlist);
+            chr.getWishlist().update(wishlist);
             c.getSession().write(MTSCSPacket.sendWishList(chr, true));
         } else if (action == 7) { // Increase Storage Slots
             slea.skip(1);

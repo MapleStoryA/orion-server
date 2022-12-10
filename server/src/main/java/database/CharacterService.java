@@ -1,12 +1,16 @@
 package database;
 
 import client.CharNameAndId;
-import client.skill.EvanSkillPoints;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleJob;
+import client.SavedLocations;
+import client.SavedSkillMacro;
+import client.skill.EvanSkillPoints;
+import client.skill.SkillMacro;
 import handling.world.guild.GuildManager;
 import lombok.extern.slf4j.Slf4j;
+import server.maps.SavedLocationType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,6 +34,31 @@ public class CharacterService {
         ps.setString(1, name);
         ps.executeUpdate();
         ps.close();
+    }
+
+    public static void saveSkillMacro(SavedSkillMacro savedSkillMacro, int characterId) {
+        Connection con = DatabaseConnection.getConnection();
+        try {
+            deleteWhereCharacterId(con, "DELETE FROM skillmacros WHERE characterid = ?", characterId);
+            for (int i = 0; i < 5; i++) {
+                final SkillMacro macro = savedSkillMacro.getSkillMacros()[i];
+                if (macro != null) {
+                    var ps = con.prepareStatement(
+                            "INSERT INTO skillmacros (characterid, skill1, skill2, skill3, name, shout, position) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                    ps.setInt(1, characterId);
+                    ps.setInt(2, macro.getSkill1());
+                    ps.setInt(3, macro.getSkill2());
+                    ps.setInt(4, macro.getSkill3());
+                    ps.setString(5, macro.getName());
+                    ps.setInt(6, macro.getShout());
+                    ps.setInt(7, i);
+                    ps.execute();
+                    ps.close();
+                }
+            }
+        } catch (Exception e) {
+            log.error("Error when saving skill macros", e);
+        }
     }
 
     public static EvanSkillPoints loadEvanSkills(int id) {
@@ -172,4 +201,24 @@ public class CharacterService {
         return LoginService.loadCharacterData(accountId, characterId) != null;
     }
 
+    public static void saveLocation(SavedLocations savedLocations, int id) {
+        if (savedLocations.isChanged()) {
+            try {
+                var con = DatabaseConnection.getConnection();
+                deleteWhereCharacterId(con, "DELETE FROM savedlocations WHERE characterid = ?", id);
+                var ps = con.prepareStatement("INSERT INTO savedlocations (characterid, `locationtype`, `map`) VALUES (?, ?, ?)");
+                ps.setInt(1, id);
+                for (final SavedLocationType savedLocationType : SavedLocationType.values()) {
+                    if (savedLocations.getSavedLocation(savedLocationType.getValue()) != -1) {
+                        ps.setInt(2, savedLocationType.getValue());
+                        ps.setInt(3, savedLocations.getSavedLocation(savedLocationType.getValue()));
+                        ps.execute();
+                    }
+                }
+                ps.close();
+            } catch (Exception e) {
+
+            }
+        }
+    }
 }

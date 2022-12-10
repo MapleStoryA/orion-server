@@ -9,7 +9,7 @@ import handling.world.party.MaplePartyCharacter;
 import lombok.extern.slf4j.Slf4j;
 import scripting.v1.event.EventCenter;
 import scripting.v1.event.EventInstance;
-import scripting.v1.game.helper.ScriptingApi;
+import scripting.v1.game.helper.ApiClass;
 import server.maps.MapleMap;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
@@ -28,143 +28,143 @@ public class TargetScripting extends PlayerScripting {
         super(client);
     }
 
-    @ScriptingApi
+    @ApiClass
     public int getCharacterID() {
         return player.getId();
     }
 
-    @ScriptingApi
+    @ApiClass
     public String getCharacterName() {
         return player.getName();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int getGender() {
         return player.getGender();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int getHair() {
         return player.getHair();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int getFace() {
         return player.getFace();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int nLevel() {
         return player.getLevel();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int nJob() {
         return player.getJob().getId();
     }
 
-    @ScriptingApi
+    @ApiClass
     public boolean changeJob(int job) {
         player.changeJob(job);
         return true;
     }
 
-    @ScriptingApi
+    @ApiClass
     public int nSTR() {
         return player.getStat().getStr();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int incSTR(int value) {
         short previousSTR = player.getStat().getStr();
         player.setStat(MapleStat.STR, (short) (previousSTR + value));
         return nSTR();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int nDEX() {
         return player.getStat().getDex();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int incDEX(int value) {
         short previousDEX = player.getStat().getDex();
         player.setStat(MapleStat.DEX, (short) (previousDEX + value));
         return nDEX();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int nINT() {
         return player.getStat().getInt();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int incINT(int value) {
         short previousINT = player.getStat().getInt();
         player.setStat(MapleStat.INT, (short) (previousINT + value));
         return nINT();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int nLUK() {
         return player.getStat().getLuk();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int incLUK(short value) {
         short previousLUK = player.getStat().getLuk();
         player.setStat(MapleStat.LUK, (short) (previousLUK + value));
         return nLUK();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int nHP() {
         return player.getStat().getHp();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int incHP(int value) {
         int previousHP = player.getStat().getHp();
         player.getStat().setHp(previousHP + value);
         return nHP();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int nMP() {
         return player.getStat().getMp();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int incMP(int value) {
         int previousMP = player.getStat().getHp();
         player.getStat().setMp(previousMP + value);
         return nMP();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int nAP() {
         return player.getRemainingAp();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int incAP(int value) {
         player.gainAp(value);
         return nAP();
     }
 
 
-    @ScriptingApi
+    @ApiClass
     public int incAP(int value, int a) {
         player.gainAp(value);
         return nAP();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int nSP() {
         return player.getRemainingSp();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int incSP(int value) {
         if (player.getJob().isEvan()) {
             player.addEvanSP(value);
@@ -175,37 +175,37 @@ public class TargetScripting extends PlayerScripting {
         return nSP();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int incSP(int value, int a) {
         return incSP(value);
     }
 
-    @ScriptingApi
+    @ApiClass
     public boolean isMaster() {
         return player.isGameMaster();
     }
 
-    @ScriptingApi
+    @ApiClass
     public boolean isSuperGM() {
         return player.isGameMaster();
     }
 
-    @ScriptingApi
+    @ApiClass
     public void message(String text) {
         player.dropMessage(5, text);
     }
 
-    @ScriptingApi
+    @ApiClass
     public void incEXP(int total, boolean show) {
         player.gainExp(total, show, show, show);
     }
 
-    @ScriptingApi
+    @ApiClass
     public void incEXP(int total, int show) {
         this.incEXP(total, show == 0);
     }
 
-    @ScriptingApi
+    @ApiClass
     public boolean isPartyBoss() {
         if (player.getParty() == null) {
             return false;
@@ -213,12 +213,12 @@ public class TargetScripting extends PlayerScripting {
         return player.getParty().getLeader().getId() == player.getId();
     }
 
-    @ScriptingApi
+    @ApiClass
     public boolean isOnParty() {
         return player.getParty() != null;
     }
 
-    @ScriptingApi
+    @ApiClass
     public int getPartyMembersCount() {
         if (!isOnParty()) {
             return 0;
@@ -226,7 +226,7 @@ public class TargetScripting extends PlayerScripting {
         return player.getParty().getMembers().size();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int transferParty(int map, String portal, int option) {
         for (MaplePartyCharacter mate : player.getParty().getMembers()) {
             MapleCharacter chr = WorldServer.getInstance().getStorage(client.getChannel()).getCharacterById(mate.getId());
@@ -235,12 +235,12 @@ public class TargetScripting extends PlayerScripting {
         return 1;
     }
 
-    @ScriptingApi
+    @ApiClass
     public void playPortalSE() {
         sendPacket(MaplePacketCreator.showOwnBuffEffect(0, 7));
     }
 
-    @ScriptingApi
+    @ApiClass
     public void registerTransferField(int map, String portal) {
         final MapleMap mapz = getWarpMap(map);
         if (map == 109060000 || map == 109060002 || map == 109060004) {
@@ -260,28 +260,28 @@ public class TargetScripting extends PlayerScripting {
         }
     }
 
-    @ScriptingApi
+    @ApiClass
     public FieldScripting field() {
         return client.getPlayer().getMap().getField();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int fieldID() {
         return player.getMap().getId();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int nMoney() {
         return player.getMeso();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int incMoney(int meso, int show) {
         return incMoney(meso, meso == 1);
     }
 
 
-    @ScriptingApi
+    @ApiClass
     public int incMoney(int meso, boolean show) {
         if (meso < 0) {
             return -1;
@@ -290,7 +290,7 @@ public class TargetScripting extends PlayerScripting {
         return nMoney();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int decMoney(int meso, boolean show) {
         if (meso < 0) {
             return -1;
@@ -299,12 +299,12 @@ public class TargetScripting extends PlayerScripting {
         return nMoney();
     }
 
-    @ScriptingApi
+    @ApiClass
     public void set(String key, String value) {
         player.set(key, value);
     }
 
-    @ScriptingApi
+    @ApiClass
     public String get(String key) {
         String value = player.get(key);
         if (value == null) {
@@ -313,12 +313,12 @@ public class TargetScripting extends PlayerScripting {
         return value;
     }
 
-    @ScriptingApi
+    @ApiClass
     public void setVar(String key, Object value) {
         player.addTemporaryData(key, value);
     }
 
-    @ScriptingApi
+    @ApiClass
     public Object getVar(String key) {
         Object value = player.getTemporaryData(key);
         if (value == null) {
@@ -327,48 +327,48 @@ public class TargetScripting extends PlayerScripting {
         return value;
     }
 
-    @ScriptingApi
+    @ApiClass
     public void clearTemporaryData() {
         player.clearTemporaryData();
     }
 
-    @ScriptingApi
+    @ApiClass
     public EventCenter getEventCenter() {
         return getChannelServer().getEventCenter();
     }
 
-    @ScriptingApi
+    @ApiClass
     public boolean isEvan() {
         return player.getJob().isEvan();
     }
 
-    @ScriptingApi
+    @ApiClass
     public boolean isDualBlade() {
         return player.getJob().isDualblade();
     }
 
-    @ScriptingApi
+    @ApiClass
     public boolean isNightWalker() {
         int job = nJob();
         return job == MapleJob.NIGHTWALKER1.getId() || job == MapleJob.NIGHTWALKER2.getId() || job == MapleJob.NIGHTWALKER3.getId() || job == MapleJob.NIGHTWALKER4.getId();
     }
 
-    @ScriptingApi
+    @ApiClass
     public boolean isAnyKindOfThief() {
         return isNightWalker() || isDualBlade() || (nJob() / 100) == 4;
     }
 
-    @ScriptingApi
+    @ApiClass
     public boolean isAran() {
         return player.getJob().isAran();
     }
 
-    @ScriptingApi
+    @ApiClass
     public boolean haveItem(int id) {
         return player.haveItem(id);
     }
 
-    @ScriptingApi
+    @ApiClass
     public EventInstance getEvent() {
         return player.getNewEventInstance();
     }
@@ -377,42 +377,42 @@ public class TargetScripting extends PlayerScripting {
         return WorldServer.getInstance().getChannel(client.getChannel()).getMapFactory().getMap(map);
     }
 
-    @ScriptingApi
+    @ApiClass
     public FieldScripting getMap(final int map) {
         return new FieldScripting(getWarpMap(map));
     }
 
-    @ScriptingApi
+    @ApiClass
     public final byte getQuestStatus(final int id) {
         return player.getQuestStatus(id);
     }
 
-    @ScriptingApi
+    @ApiClass
     public final boolean isQuestActive(final int id) {
         return getQuestStatus(id) == ACTIVE_QUEST;
     }
 
-    @ScriptingApi
+    @ApiClass
     public final boolean isQuestFinished(final int id) {
         return getQuestStatus(id) == COMPLETE_QUEST;
     }
 
-    @ScriptingApi
+    @ApiClass
     public void completeQuest(int id, int npcId) {
         MapleQuest.getInstance(id).complete(getPlayer(), npcId);
     }
 
-    @ScriptingApi
+    @ApiClass
     public void forfeitQuest(int id) {
         MapleQuest.getInstance(id).forfeit(getPlayer());
     }
 
-    @ScriptingApi
+    @ApiClass
     public void forceCompleteQuest(final int id, int npcId) {
         MapleQuest.getInstance(id).forceComplete(getPlayer(), npcId);
     }
 
-    @ScriptingApi
+    @ApiClass
     public void changeMusic(String music) {
         sendPacket(MaplePacketCreator.musicChange(music));
     }

@@ -1,4 +1,4 @@
-package client.commands;
+package client.commands.v1;
 
 import client.skill.ISkill;
 import client.MapleCharacter;

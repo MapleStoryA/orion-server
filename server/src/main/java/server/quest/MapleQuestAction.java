@@ -506,11 +506,7 @@ public class MapleQuestAction implements Serializable {
             case sp: {
                 for (MapleData sEntry : data) {
                     final int sp = MapleDataTool.getInt(sEntry.getChildByPath("sp_value"));
-                    if (!c.getJob().isEvan()) {
-                        c.gainSp(sp);
-                    } else {
-                        c.addEvanSP(sp);
-                    }
+                    c.gainSp(sp);
                     c.getClient().sendPacket(CWVsContextOnMessagePackets.onIncSpMessage(c.getJob(), sp));
                     break;
                 }

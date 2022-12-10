@@ -2,7 +2,7 @@ package scripting.v1.game;
 
 import client.MapleClient;
 import lombok.extern.slf4j.Slf4j;
-import scripting.v1.game.helper.ScriptingApi;
+import scripting.v1.game.helper.ApiClass;
 import server.quest.MapleQuest;
 
 @Slf4j
@@ -12,28 +12,28 @@ public class QuestScripting extends PlayerScripting {
     private static final int ACTIVE_QUEST = 1;
     private final MapleQuest quest;
 
-    @ScriptingApi
+    @ApiClass
     public QuestScripting(MapleClient client, MapleQuest quest) {
         super(client);
         this.quest = quest;
     }
 
-    @ScriptingApi
+    @ApiClass
     public MapleQuest getQuest() {
         return quest;
     }
 
-    @ScriptingApi
+    @ApiClass
     public final byte getQuestStatus(final int id) {
         return player.getQuestStatus(id);
     }
 
-    @ScriptingApi
+    @ApiClass
     public final boolean isQuestActive(final int id) {
         return getQuestStatus(id) == ACTIVE_QUEST;
     }
 
-    @ScriptingApi
+    @ApiClass
     public final boolean isQuestFinished(final int id) {
         return getQuestStatus(id) == COMPLETE_QUEST;
     }

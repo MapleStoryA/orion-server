@@ -23,6 +23,9 @@ package handling.world.helper;
 
 import client.MapleCharacter;
 import client.MapleQuestStatus;
+import client.SavedLocations;
+import client.SavedSkillMacro;
+import client.WishList;
 import client.anticheat.ReportType;
 import client.inventory.MapleInventory;
 import client.inventory.MapleMount;
@@ -30,7 +33,6 @@ import client.inventory.MaplePet;
 import client.skill.EvanSkillPoints;
 import client.skill.ISkill;
 import client.skill.SkillEntry;
-import client.skill.SkillMacro;
 import handling.world.buddy.BuddyListEntry;
 import lombok.Getter;
 import lombok.Setter;
@@ -121,11 +123,11 @@ public class CharacterTransfer {
     private short occupationId;
     private short occupationEXP;
     private MapleInventory[] inventories;
-    private SkillMacro[] skillMacro;
+    private SavedSkillMacro skillMacros;
     private MapleStorage storage;
     private CashShop cashInventory;
-    private int[] savedLocation;
-    private int[] wishlist;
+    private SavedLocations savedLocations;
+    private WishList wishlist;
     private int[] vipTeleportRocks;
     private int[] regularTeleportRocks;
     private byte[] petStore;
@@ -235,9 +237,9 @@ public class CharacterTransfer {
 
         this.setBlessOfFairy(chr.getBlessOfFairyOrigin());
         this.setChalkboard(chr.getChalkboard());
-        this.setSkillMacro(chr.getSkillMacros());
+        this.setSkillMacros(chr.getSkillMacros());
         this.setKeyMap(chr.getKeyLayout().Layout());
-        this.setSavedLocation(chr.getSavedLocations());
+        this.setSavedLocations(chr.getSavedLocations());
         this.setWishlist(chr.getWishlist());
         this.setVipTeleportRocks(chr.getVipTeleportRock().toArray());
         this.setRegularTeleportRocks(chr.getRegTeleportRock().toArray());

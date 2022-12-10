@@ -190,7 +190,7 @@ public abstract class MapleEvent {
     }
 
     public void warpBack(MapleCharacter chr) {
-        int map = chr.getSavedLocation(SavedLocationType.EVENT);
+        int map = chr.getSavedLocations().getSavedLocation(SavedLocationType.EVENT);
         if (map <= -1) {
             map = 104000000;
         }

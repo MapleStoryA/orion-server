@@ -48,6 +48,7 @@ import constants.skills.BladeLord;
 import constants.skills.Rogue;
 import database.AccountData;
 import database.BanService;
+import database.CashShopService;
 import database.CharacterData;
 import database.CharacterService;
 import database.DatabaseConnection;
@@ -78,7 +79,7 @@ import lombok.extern.slf4j.Slf4j;
 import scripting.EventInstanceManager;
 import scripting.NPCScriptManager;
 import scripting.v1.event.EventInstance;
-import scripting.v1.game.helper.ScriptingApi;
+import scripting.v1.game.helper.ApiClass;
 import server.MapleAchievements;
 import server.MapleCarnivalChallenge;
 import server.MapleCarnivalParty;
@@ -156,10 +157,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 public class MapleCharacter extends BaseMapleCharacter {
 
-    @Getter
-    private TeleportRock vipTeleportRock;
-    @Getter
-    private TeleportRock regTeleportRock;
+
     private int id;
     private byte world;
     private int account_id;
@@ -231,8 +229,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     private boolean superMegaEnabled;
     private boolean hidden;
     private boolean hasSummon = false;
-    private int[] wishlist;
-    private int[] savedLocations;
 
 
     private List<Integer> lastMonthFameIds;
@@ -260,11 +256,19 @@ public class MapleCharacter extends BaseMapleCharacter {
     private MapleBuddyList buddyList;
     private MonsterBook monsterBook;
 
+    @Getter
+    private TeleportRock vipTeleportRock;
+    @Getter
+    private TeleportRock regTeleportRock;
+    @Getter
+    private SavedLocations savedLocations;
+    @Getter
+    private WishList wishlist;
 
-    private boolean changed_wishlist;
-    private boolean changed_skill_macros;
+    @Getter
+    private SavedSkillMacro skillMacros;
+
     private boolean changed_achievements;
-    private boolean changed_saved_locations;
     private boolean changed_quest_info;
     private boolean changed_skills;
     private boolean changed_reports;
@@ -302,7 +306,6 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     private MapleGuildCharacter mgc;
     private MapleInventory[] inventory;
-    private SkillMacro[] skillMacros = new SkillMacro[5];
     private MapleKeyLayout keyLayout;
     private EvanSkillPoints evanSP;
 
@@ -338,9 +341,6 @@ public class MapleCharacter extends BaseMapleCharacter {
             changed_reports = false;
             changed_skills = false;
             setChanged_achievements(false);
-            changed_wishlist = false;
-            changed_skill_macros = false;
-            changed_saved_locations = false;
             changed_quest_info = false;
             lastCombo = 0;
             mu_lung_energy = 0;
@@ -358,9 +358,11 @@ public class MapleCharacter extends BaseMapleCharacter {
             for (int i = 0; i < petStore.length; i++) {
                 petStore[i] = (byte) -1;
             }
-            wishlist = new int[10];
+            wishlist = new WishList();
             vipTeleportRock = new TeleportRock(true);
             regTeleportRock = new TeleportRock(false);
+            savedLocations = new SavedLocations();
+            skillMacros = new SavedSkillMacro();
 
             conversation_status = new AtomicInteger();
             conversation_status.set(0); // 1 = NPC/ Quest, 2 = Duey, 3 = Hired Merch store, 4 =
@@ -371,10 +373,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             summons = new LinkedHashMap<>();
             pendingCarnivalRequests = new LinkedList<>();
 
-            savedLocations = new int[SavedLocationType.values().length];
-            for (int i = 0; i < SavedLocationType.values().length; i++) {
-                savedLocations[i] = -1;
-            }
+
             questInfo = new LinkedHashMap<>();
             anti_cheat = new CheatTracker(this);
             pets = new ArrayList<>();
@@ -428,8 +427,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         ret.fame = ct.getFame();
 
         ret.playerRandomStream = new PlayerRandomStream();
-
-        ret.changed_skill_macros = false;
 
 
         ret.chalkText = ct.getChalkboard();
@@ -540,11 +537,11 @@ public class MapleCharacter extends BaseMapleCharacter {
         ret.monsterBook = new MonsterBook(ct.getMapleBookCards());
         ret.inventory = (MapleInventory[]) ct.getInventories();
         ret.BlessOfFairy_Origin = ct.getBlessOfFairy();
-        ret.skillMacros = (SkillMacro[]) ct.getSkillMacro();
+        ret.skillMacros = ct.getSkillMacros();
         ret.keyLayout = new MapleKeyLayout(ct.getKeyMap());
         ret.petStore = ct.getPetStore();
         ret.questInfo = ct.getInfoQuest();
-        ret.savedLocations = ct.getSavedLocation();
+        ret.savedLocations = ct.getSavedLocations();
         ret.wishlist = ct.getWishlist();
         ret.vipTeleportRock.initMaps(ct.getVipTeleportRocks());
         ret.regTeleportRock.initMaps(ct.getRegularTeleportRocks());
@@ -850,7 +847,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                     position = rs.getInt("position");
                     SkillMacro macro = new SkillMacro(rs.getInt("skill1"), rs.getInt("skill2"), rs.getInt("skill3"),
                             rs.getString("name"), rs.getInt("shout"), position);
-                    ret.skillMacros[position] = macro;
+                    ret.skillMacros.add(macro);
                 }
                 rs.close();
                 ps.close();
@@ -881,7 +878,8 @@ public class MapleCharacter extends BaseMapleCharacter {
                 ps.setInt(1, charid);
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    ret.savedLocations[rs.getInt("locationtype")] = rs.getInt("map");
+                    var locationType = SavedLocationType.fromCode(rs.getInt("locationtype"));
+                    ret.savedLocations.saveLocation(locationType, rs.getInt("map"));
                 }
                 rs.close();
                 ps.close();
@@ -906,14 +904,8 @@ public class MapleCharacter extends BaseMapleCharacter {
                 ps = con.prepareStatement("SELECT sn FROM wishlist WHERE characterid = ?");
                 ps.setInt(1, charid);
                 rs = ps.executeQuery();
-                int i = 0;
                 while (rs.next()) {
-                    ret.wishlist[i] = rs.getInt("sn");
-                    i++;
-                }
-                while (i < 10) {
-                    ret.wishlist[i] = 0;
-                    i++;
+                    ret.wishlist.addItem(rs.getInt("sn"));
                 }
                 rs.close();
                 ps.close();
@@ -1293,25 +1285,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             }
             ps.close();
 
-            if (changed_skill_macros) {
-                deleteWhereCharacterId(con, "DELETE FROM skillmacros WHERE characterid = ?");
-                for (int i = 0; i < 5; i++) {
-                    final SkillMacro macro = skillMacros[i];
-                    if (macro != null) {
-                        ps = con.prepareStatement(
-                                "INSERT INTO skillmacros (characterid, skill1, skill2, skill3, name, shout, position) VALUES (?, ?, ?, ?, ?, ?, ?)");
-                        ps.setInt(1, id);
-                        ps.setInt(2, macro.getSkill1());
-                        ps.setInt(3, macro.getSkill2());
-                        ps.setInt(4, macro.getSkill3());
-                        ps.setString(5, macro.getName());
-                        ps.setInt(6, macro.getShout());
-                        ps.setInt(7, i);
-                        ps.execute();
-                        ps.close();
-                    }
-                }
-            }
+            CharacterService.saveSkillMacro(skillMacros, id);
 
             deleteWhereCharacterId(con, "DELETE FROM inventoryslot WHERE characterid = ?");
             ps = con.prepareStatement(
@@ -1410,20 +1384,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 ps.close();
             }
 
-            if (changed_saved_locations) {
-                deleteWhereCharacterId(con, "DELETE FROM savedlocations WHERE characterid = ?");
-                ps = con.prepareStatement(
-                        "INSERT INTO savedlocations (characterid, `locationtype`, `map`) VALUES (?, ?, ?)");
-                ps.setInt(1, id);
-                for (final SavedLocationType savedLocationType : SavedLocationType.values()) {
-                    if (savedLocations[savedLocationType.getValue()] != -1) {
-                        ps.setInt(2, savedLocationType.getValue());
-                        ps.setInt(3, savedLocations[savedLocationType.getValue()]);
-                        ps.execute();
-                    }
-                }
-                ps.close();
-            }
+            CharacterService.saveLocation(savedLocations, id);
 
             if (isChanged_achievements()) {
                 ps = con.prepareStatement("DELETE FROM achievements WHERE accountid = ?");
@@ -1481,23 +1442,10 @@ public class MapleCharacter extends BaseMapleCharacter {
             mount.saveMount(id);
             monsterBook.saveCards(id);
 
-            if (changed_wishlist) {
-                deleteWhereCharacterId(con, "DELETE FROM wishlist WHERE characterid = ?");
-                for (int i = 0; i < getWishlistSize(); i++) {
-                    ps = con.prepareStatement("INSERT INTO wishlist(characterid, sn) VALUES(?, ?) ");
-                    ps.setInt(1, getId());
-                    ps.setInt(2, wishlist[i]);
-                    ps.execute();
-                    ps.close();
-                }
-            }
-
+            CashShopService.saveWishList(wishlist, id);
             TeleportRockService.save(vipTeleportRock, id);
             TeleportRockService.save(regTeleportRock, id);
 
-            changed_wishlist = false;
-            changed_skill_macros = false;
-            changed_saved_locations = false;
             changed_quest_info = false;
             setChanged_achievements(false);
             changed_skills = false;
@@ -3237,28 +3185,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         return meso;
     }
 
-    public final int[] getSavedLocations() {
-        return savedLocations;
-    }
-
-    public int getSavedLocation(SavedLocationType type) {
-        return savedLocations[type.getValue()];
-    }
-
-    public void saveLocation(SavedLocationType type) {
-        savedLocations[type.getValue()] = getMapId();
-        changed_saved_locations = true;
-    }
-
-    public void saveLocation(SavedLocationType type, int mapz) {
-        savedLocations[type.getValue()] = mapz;
-        changed_saved_locations = true;
-    }
-
-    public void clearSavedLocation(SavedLocationType type) {
-        savedLocations[type.getValue()] = -1;
-        changed_saved_locations = true;
-    }
 
     public void gainMeso(int gain, boolean show) {
         gainMeso(gain, show, false, false);
@@ -3604,19 +3530,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         } else {
             keyLayout.Layout().remove(Integer.valueOf(key));
         }
-    }
-
-    public void sendMacros() {
-        client.getSession().write(MaplePacketCreator.getMacros(skillMacros));
-    }
-
-    public void updateMacros(int position, SkillMacro updateMacro) {
-        skillMacros[position] = updateMacro;
-        changed_skill_macros = true;
-    }
-
-    public final SkillMacro[] getSkillMacros() {
-        return skillMacros;
     }
 
     public void tempban(String reason, Calendar duration, int greason, boolean IPMac) {
@@ -4487,32 +4400,6 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public MapleMount getMount() {
         return mount;
-    }
-
-    public int[] getWishlist() {
-        return wishlist;
-    }
-
-    public void setWishlist(int[] wl) {
-        this.wishlist = wl;
-        this.changed_wishlist = true;
-    }
-
-    public void clearWishlist() {
-        for (int i = 0; i < 10; i++) {
-            wishlist[i] = 0;
-        }
-        changed_wishlist = true;
-    }
-
-    public int getWishlistSize() {
-        int ret = 0;
-        for (int i = 0; i < 10; i++) {
-            if (wishlist[i] > 0) {
-                ret++;
-            }
-        }
-        return ret;
     }
 
 
@@ -5680,18 +5567,38 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     }
 
+    public void maxAllSkills() {
+        for (ISkill skill : SkillFactory.getAllSkills()) {
+            if (GameConstants.isApplicableSkill(skill.getId())) {
+                if (skill.getId() >= 22000000 && (GameConstants.isEvan((skill.getId() / 10000)) || GameConstants.isResist((skill.getId() / 10000)))) {
+                    continue;
+                } // only beginner skills are not maxed!
+                if (skill.getId() < 10000 || ((skill.getId() / 10000) == 1000) || ((skill.getId() / 10000) == 2000)
+                        || ((skill.getId() / 10000) == 2001)) {
 
-    public final void maxMastery() {
+                    if (getSkillLevel(skill) > level) {
+                        level = getSkillLevel(skill);
+                    }
+                    changeSkillLevel(skill, (byte) level, skill.getMaxLevel());
+                }
+            }
+        }
+        for (var entry : getSkills().entrySet()) {
+            changeSkillLevel(entry.getKey(), (byte) level, entry.getKey().getMaxLevel());
+        }
+    }
+
+    public void maxMastery() {
         for (ISkill skill_ : SkillFactory.getAllSkills()) {
             try {
-                int skillid = skill_.getId();
-                if ((skillid % 10000000 >= 1000000) && ((skillid >= 9000000) && (skillid <= 10000000))) {
+                int skill_id = skill_.getId();
+                if ((skill_id % 10000000 >= 1000000) && ((skill_id >= 9000000) && (skill_id <= 10000000))) {
                     continue;
                 }
-                ISkill skill = SkillFactory.getSkill(skillid);
-                boolean add = ((skillid / 10000000 == this.getJob().getId() / 1000) && (skill.hasMastery())) || (job.isCygnus());
+                ISkill skill = SkillFactory.getSkill(skill_id);
+                boolean add = ((skill_id / 10000000 == this.getJob().getId() / 1000) && (skill.hasMastery())) || (job.isCygnus());
                 if ((!add) && (job.isAran())) {
-                    switch (skillid) {
+                    switch (skill_id) {
                         case 21000000:
                         case 21001003:
                         case 21100000:
@@ -5763,7 +5670,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
 
-    @ScriptingApi
+    @ApiClass
     public boolean isRideFinished() {
         return travelTime < System.currentTimeMillis();
     }
