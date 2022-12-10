@@ -21,8 +21,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package client;
 
-import client.crypto.LoginCrypto;
-import client.crypto.LoginCryptoLegacy;
 import constants.GameConstants;
 import database.DatabaseConnection;
 import tools.Triple;
@@ -93,16 +91,6 @@ public class MapleCharacterUtil {
             System.err.println("error 'getIdByName' " + e);
         }
         return -1;
-    }
-
-    private static final boolean check_ifPasswordEquals(final String passhash, final String pwd, final String salt) {
-        // Check if the passwords are correct here. :B
-        if (LoginCryptoLegacy.isLegacyPassword(passhash) && LoginCryptoLegacy.checkPassword(pwd, passhash)) {
-            // Check if a password upgrade is needed.
-            return true;
-        } else if (salt == null && LoginCrypto.checkSha1Hash(passhash, pwd)) {
-            return true;
-        } else return LoginCrypto.checkSaltedSha512Hash(passhash, pwd, salt);
     }
 
     //id accountid gender
