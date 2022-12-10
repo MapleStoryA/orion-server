@@ -162,7 +162,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     private int account_id;
     private String name;
     private String chalkText;
-    private String BlessOfFairy_Origin;
+    private String blessOfFairy_Origin;
     private long lastCombo;
     private long lastFameTime;
     private long keydown_skill;
@@ -251,7 +251,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     private final Map<Integer, Integer> movedMobs = new HashMap<>();
     private final HashMap<String, Object> temporaryData = new HashMap<>();
 
-    private MapleCarnivalParty carnivalParty;
     private MapleBuddyList buddyList;
     private MonsterBook monsterBook;
 
@@ -267,12 +266,30 @@ public class MapleCharacter extends BaseMapleCharacter {
     private SavedSkillMacro skillMacros;
     @Getter
     private FinishedAchievements finishedAchievements;
+    private MapleStorage storage;
+    private MapleTrade trade;
+    private MapleMount mount;
+    private MapleMessenger messenger;
+    private byte[] petStore;
+    private IMaplePlayerShop playerShop;
+    private MapleParty party;
+    private MapleGuildCharacter mgc;
+    private MapleInventory[] inventory;
+    private MapleKeyLayout keyLayout;
+    private EvanSkillPoints evanSP;
 
-    private boolean changed_achievements;
     private boolean changed_quest_info;
     private boolean changed_skills;
     private boolean changed_reports;
 
+
+    private boolean invincible = false;
+    private boolean canTalk = true;
+    private boolean follow_initiator = false;
+    private boolean follow_on = false;
+
+    private long nextConsume = 0;
+    private long pqStartTime = 0;
 
     private AtomicInteger conversation_status;
     private MapleClient client;
@@ -284,35 +301,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     private MapleDragon dragon;
     private RockPaperScissors rps;
     private SpeedQuiz sq;
-
-    private MapleStorage storage;
-
-    private MapleTrade trade;
-
-    private MapleMount mount;
-
-    private MapleMessenger messenger;
-
-    private byte[] petStore;
-
-    private IMaplePlayerShop playerShop;
-
-    private MapleParty party;
-
-    private boolean invincible = false;
-    private boolean canTalk = true;
-    private boolean follow_initiator = false;
-    private boolean follow_on = false;
-
-    private MapleGuildCharacter mgc;
-    private MapleInventory[] inventory;
-    private MapleKeyLayout keyLayout;
-    private EvanSkillPoints evanSP;
-
-
-    private long nextConsume = 0;
-    private long pqStartTime = 0;
-
+    private MapleCarnivalParty carnivalParty;
     private Deque<MapleCarnivalChallenge> pendingCarnivalRequests;
     private Event_PyramidSubway pyramidSubway = null;
     private long travelTime;
@@ -536,7 +525,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         }
         ret.monsterBook = new MonsterBook(ct.getMapleBookCards());
         ret.inventory = (MapleInventory[]) ct.getInventories();
-        ret.BlessOfFairy_Origin = ct.getBlessOfFairy();
+        ret.blessOfFairy_Origin = ct.getBlessOfFairy();
         ret.skillMacros = ct.getSkillMacros();
         ret.keyLayout = new MapleKeyLayout(ct.getKeyMap());
         ret.petStore = ct.getPetStore();
@@ -828,7 +817,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                         }
                         if (maxlevel > maxlevel_) {
                             maxlevel_ = maxlevel;
-                            ret.BlessOfFairy_Origin = rs.getString("name");
+                            ret.blessOfFairy_Origin = rs.getString("name");
                         }
 
                     }
@@ -2255,7 +2244,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public final String getBlessOfFairyOrigin() {
-        return this.BlessOfFairy_Origin;
+        return this.blessOfFairy_Origin;
     }
 
     public final short getLevel() {
@@ -5675,10 +5664,6 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public boolean isHasSummon() {
         return hasSummon;
-    }
-
-    public void setChanged_achievements(boolean changed_achievements) {
-        this.changed_achievements = changed_achievements;
     }
 
     public ScheduledFuture<?> getMapTimeLimitTask() {
