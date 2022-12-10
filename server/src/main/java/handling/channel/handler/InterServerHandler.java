@@ -112,7 +112,7 @@ public class InterServerHandler {
             player.giveSilentDebuff(PlayerBuffStorage.getDiseaseFromStorage(player.getId()));
 
             // Start of buddylist
-            final int[] buddyIds = player.getBuddylist().getBuddyIds();
+            final int[] buddyIds = player.getBuddyList().getBuddyIds();
             BuddyManager.loggedOn(player.getName(), player.getId(), c.getChannel(), buddyIds, player.getGMLevel(), player.isHidden());
             if (player.getParty() != null) {
                 player.receivePartyMemberHP();
@@ -129,11 +129,11 @@ public class InterServerHandler {
             }
             final CharacterIdChannelPair[] onlineBuddies = FindCommand.multiBuddyFind(player.getId(), buddyIds);
             for (CharacterIdChannelPair onlineBuddy : onlineBuddies) {
-                final BuddyListEntry ble = player.getBuddylist().get(onlineBuddy.getCharacterId());
+                final BuddyListEntry ble = player.getBuddyList().get(onlineBuddy.getCharacterId());
                 ble.setChannel(onlineBuddy.getChannel());
-                player.getBuddylist().put(ble);
+                player.getBuddyList().put(ble);
             }
-            c.getSession().write(MaplePacketCreator.updateBuddylist(BuddyListModifyHandler.UPDATE, player.getBuddylist().getBuddies()));
+            c.getSession().write(MaplePacketCreator.updateBuddylist(BuddyListModifyHandler.UPDATE, player.getBuddyList().getBuddies()));
 
             // Start of Messenger
             final MapleMessenger messenger = player.getMessenger();

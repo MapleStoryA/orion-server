@@ -271,7 +271,7 @@ public class PlayerStorage {
             while (itr.hasNext()) {
                 chr = itr.next();
 
-                if (chr.getClient().isLoggedIn() && chr.getSmega()) {
+                if (chr.getClient().isLoggedIn() && chr.getSuperMegaEnabled()) {
                     chr.getClient().getSession().write(data);
                 }
             }

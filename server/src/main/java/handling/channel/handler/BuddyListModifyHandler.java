@@ -37,7 +37,7 @@ public class BuddyListModifyHandler extends AbstractMaplePacketHandler {
 
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        final MapleBuddyList buddylist = c.getPlayer().getBuddylist();
+        final MapleBuddyList buddylist = c.getPlayer().getBuddyList();
         switch (slea.readByte()) {
             case 1: // Invite / Modify Buddy List
                 final String addName = slea.readMapleAsciiString();
@@ -72,7 +72,7 @@ public class BuddyListModifyHandler extends AbstractMaplePacketHandler {
                 }
                 final MapleCharacter otherChar = WorldServer.getInstance().getChannel(channel).getPlayerStorage().getCharacterByName(addName);
                 if (!otherChar.isGameMaster() || c.getPlayer().isGameMaster()) {
-                    if (otherChar.getBuddylist().isFull()) {
+                    if (otherChar.getBuddyList().isFull()) {
                         c.getSession().write(MaplePacketCreator.buddylistMessage(THEIR_LIST_FULL));
                         return;
                     }

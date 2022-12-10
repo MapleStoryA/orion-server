@@ -485,7 +485,7 @@ public class PacketHelper {
         mplew.writeLong(-1);
         mplew.write(0);
         addCharStats(mplew, chr);
-        mplew.write(chr.getBuddylist().getCapacity());
+        mplew.write(chr.getBuddyList().getCapacity());
         if (chr.getBlessOfFairyOrigin() != null) {
             mplew.write(1);
             mplew.writeMapleAsciiString(chr.getBlessOfFairyOrigin());
