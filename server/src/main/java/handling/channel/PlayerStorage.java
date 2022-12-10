@@ -47,7 +47,7 @@ public class PlayerStorage {
     private final Lock rL2 = mutex2.readLock(), wL2 = mutex2.writeLock();
     private final Map<String, MapleCharacter> nameToChar = new HashMap<String, MapleCharacter>();
     private final Map<Integer, MapleCharacter> idToChar = new HashMap<Integer, MapleCharacter>();
-    private final Map<Integer, CharacterTransfer> PendingCharacter = new HashMap<Integer, CharacterTransfer>();
+    private final Map<Integer, CharacterTransfer> pendingCharacter = new HashMap<>();
     private final int channel;
 
 
@@ -80,7 +80,7 @@ public class PlayerStorage {
     public final void registerPendingPlayer(final CharacterTransfer chr, final int playerid) {
         wL2.lock();
         try {
-            PendingCharacter.put(playerid, chr);//new Pair(System.currentTimeMillis(), chr));
+            pendingCharacter.put(playerid, chr);//new Pair(System.currentTimeMillis(), chr));
         } finally {
             wL2.unlock();
         }
@@ -111,7 +111,7 @@ public class PlayerStorage {
     public final void deregisterPendingPlayer(final int charid) {
         wL2.lock();
         try {
-            PendingCharacter.remove(charid);
+            pendingCharacter.remove(charid);
         } finally {
             wL2.unlock();
         }
@@ -121,7 +121,7 @@ public class PlayerStorage {
         final CharacterTransfer toreturn;
         rL2.lock();
         try {
-            toreturn = PendingCharacter.get(charid);//.right;
+            toreturn = pendingCharacter.get(charid);//.right;
         } finally {
             rL2.unlock();
         }
@@ -304,10 +304,10 @@ public class PlayerStorage {
             wL2.lock();
             try {
                 final long currenttime = System.currentTimeMillis();
-                final Iterator<Map.Entry<Integer, CharacterTransfer>> itr = PendingCharacter.entrySet().iterator();
+                final Iterator<Map.Entry<Integer, CharacterTransfer>> itr = pendingCharacter.entrySet().iterator();
 
                 while (itr.hasNext()) {
-                    if (currenttime - itr.next().getValue().TranferTime > 40000) { // 40 sec
+                    if (currenttime - itr.next().getValue().getTransferTime() > 40000) { // 40 sec
                         itr.remove();
                     }
                 }

@@ -26,7 +26,7 @@ public class CashShopOperationHandlers {
             WorldServer.getInstance().getChangeChannelData(new CharacterTransfer(chr), chr.getId(), c.getChannel());
             c.getSession().write(MaplePacketCreator.getChannelChange(Integer.parseInt(WorldServer.getInstance().getChannel(c.getChannel()).getPublicAddress().split(":")[1])));
         } catch (Exception ex) {
-            log.info(ex.getMessage());
+            log.error("Error leaving cash shop", ex);
         } finally {
             chr.saveToDB(false, true);
             c.setPlayer(null);
@@ -57,9 +57,9 @@ public class CashShopOperationHandlers {
             }
         }
         if (!allowLogin) {
-            //   c.setPlayer(null);
-            //c.getSession().close();
-            //  return;
+            c.setPlayer(null);
+            c.getSession().close();
+            return;
         }
         c.updateLoginState(LoginState.LOGIN_LOGGEDIN, c.getSessionIPAddress());
         CashShopServer.getInstance().getPlayerStorage().registerPlayer(chr);
