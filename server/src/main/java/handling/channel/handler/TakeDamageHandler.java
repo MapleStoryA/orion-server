@@ -47,7 +47,7 @@ public class TakeDamageHandler extends AbstractMaplePacketHandler {
             return;
         }
 
-        if (chr.isGM() && chr.isInvincible()) {
+        if (chr.isGameMaster() && chr.isInvincible()) {
             return;
         }
         final PlayerStats stats = chr.getStat();

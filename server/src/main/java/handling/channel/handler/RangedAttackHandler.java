@@ -31,7 +31,7 @@ public class RangedAttackHandler extends AbstractMaplePacketHandler {
         }
         c.getPlayer().checkForDarkSight();
         final AttackInfo attack = DamageParse.Modify_AttackCrit(DamageParse.parseDmgR(slea), chr, 2);
-        if (!chr.isSkillBelongToJob(attack.skill)) {
+        if (!chr.getJob().isSkillBelongToJob(attack.skill, chr.isGameMaster())) {
             chr.dropMessage(5, "This skill cannot be used with the current job.");
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
@@ -61,7 +61,7 @@ public class RangedAttackHandler extends AbstractMaplePacketHandler {
                     bulletCount = effect.getBulletCount();
                     break;
             }
-            if (effect.getCooldown() > 0 && !chr.isGM()) {
+            if (effect.getCooldown() > 0 && !chr.isGameMaster()) {
                 if (chr.skillisCooling(attack.skill)) {
                     c.getSession().write(MaplePacketCreator.enableActions());
                     return;

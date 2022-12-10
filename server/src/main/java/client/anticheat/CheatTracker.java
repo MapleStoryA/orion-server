@@ -27,7 +27,6 @@ import constants.GameConstants;
 import handling.world.helper.BroadcastHelper;
 import server.AutobanManager;
 import server.Timer.CheatTimer;
-import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.StringUtil;
 
@@ -183,7 +182,7 @@ public class CheatTracker {
     public final void checkDrop(final boolean dc) {
         if ((System.currentTimeMillis() - lastDropTime) < 1000) {
             dropsPerSecond++;
-            if (dropsPerSecond >= (dc ? 32 : 16) && chr.get() != null && !chr.get().isGM()) {
+            if (dropsPerSecond >= (dc ? 32 : 16) && chr.get() != null && !chr.get().isGameMaster()) {
                 if (dc) {
                     chr.get().getClient().getSession().close();
                 } else {
@@ -227,7 +226,7 @@ public class CheatTracker {
 
     public final void registerOffense(final CheatingOffense offense, final String param) {
         final MapleCharacter chrhardref = chr.get();
-        if (chrhardref == null || !offense.isEnabled() || chrhardref.isGM()) {
+        if (chrhardref == null || !offense.isEnabled() || chrhardref.isGameMaster()) {
             return;
         }
         CheatingOffenseEntry entry = null;

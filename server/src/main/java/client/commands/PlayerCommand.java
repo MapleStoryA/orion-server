@@ -216,7 +216,7 @@ public class PlayerCommand {
 
             final MapleCharacter other = c.getPlayer().getMap().getCharacterByName(splitted[1]);
             final ReportType type = ReportType.getByString(splitted[2]);
-            if (other == null || type == null || (other.isGM() && !c.getPlayer().isGM())
+            if (other == null || type == null || (other.isGameMaster() && !c.getPlayer().isGameMaster())
                     || other.getName().equals(c.getPlayer().getName())) {
                 c.getPlayer().dropMessage(5, "You've entered the wrong character name.");
                 return 0;

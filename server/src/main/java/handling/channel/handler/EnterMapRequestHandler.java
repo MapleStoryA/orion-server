@@ -15,7 +15,7 @@ public class EnterMapRequestHandler extends AbstractMaplePacketHandler {
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
 
-        if (c.getPlayer().isHidden() && c.getPlayer().isGM() || c.getPlayer().getMap() == null) {
+        if (c.getPlayer().isHidden() && c.getPlayer().isGameMaster() || c.getPlayer().getMap() == null) {
             c.enableActions();
             return;
         }

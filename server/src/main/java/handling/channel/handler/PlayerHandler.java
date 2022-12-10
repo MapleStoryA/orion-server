@@ -88,7 +88,7 @@ public class PlayerHandler {
             return;
         }
 
-        if (chr.isGM() && chr.isInvincible()) {
+        if (chr.isGameMaster() && chr.isInvincible()) {
             return;
         }
         final PlayerStats stats = chr.getStat();
@@ -337,7 +337,7 @@ public class PlayerHandler {
                     final MapleMap to = chr.getMap();
                     chr.changeMap(to, to.getPortal(0));
                 }
-            } else if (targetid != -1 && chr.isGM()) {
+            } else if (targetid != -1 && chr.isGameMaster()) {
                 if (targetid == 502050000 || targetid == 502050001) {
                     c.getSession().write(UIPacket.IntroDisableUI(false));
                     c.getSession().write(UIPacket.IntroLock(false));
@@ -351,7 +351,7 @@ public class PlayerHandler {
                 final MapleMap to = WorldServer.getInstance().getChannel(c.getChannel()).getMapFactory().getMap(targetid);
                 chr.changeMap(to, to.getPortal(0));
 
-            } else if (targetid != -1 && !chr.isGM()) {
+            } else if (targetid != -1 && !chr.isGameMaster()) {
                 final int divi = chr.getMapId() / 100;
                 boolean unlock = false;
                 boolean warp = false;

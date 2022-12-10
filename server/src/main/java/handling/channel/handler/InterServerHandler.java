@@ -98,7 +98,7 @@ public class InterServerHandler {
         channelServer.addPlayer(player);
 
         c.getSession().write(MaplePacketCreator.getCharInfo(player));
-        if (player.isGM()) {
+        if (player.isGameMaster()) {
             SkillFactory.getSkill(9101004).getEffect(1).applyTo(player);
         }
         player.sendSkills();

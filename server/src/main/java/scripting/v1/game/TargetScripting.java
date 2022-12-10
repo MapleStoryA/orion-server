@@ -181,12 +181,12 @@ public class TargetScripting extends PlayerScripting {
 
     @ScriptingApi
     public boolean isMaster() {
-        return player.isGM();
+        return player.isGameMaster();
     }
 
     @ScriptingApi
     public boolean isSuperGM() {
-        return player.isGM();
+        return player.isGameMaster();
     }
 
     @ScriptingApi
@@ -343,7 +343,7 @@ public class TargetScripting extends PlayerScripting {
 
     @ScriptingApi
     public boolean isDualBlade() {
-        return player.isDualblade();
+        return player.getJob().isDualblade();
     }
 
     @ScriptingApi
@@ -359,7 +359,7 @@ public class TargetScripting extends PlayerScripting {
 
     @ScriptingApi
     public boolean isAran() {
-        return player.isAran();
+        return player.getJob().isAran();
     }
 
     @ScriptingApi

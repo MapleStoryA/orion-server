@@ -196,7 +196,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                 } else {
                     final MapleCharacter victim = c.getChannelServer().getPlayerStorage()
                             .getCharacterByName(slea.readMapleAsciiString());
-                    if (victim != null && !victim.isGM() && c.getPlayer().getEventInstance() == null
+                    if (victim != null && !victim.isGameMaster() && c.getPlayer().getEventInstance() == null
                             && victim.getEventInstance() == null) {
                         if (!FieldLimitType.VipRock.check(c.getPlayer().getMap().getFieldLimit()) && !FieldLimitType.VipRock
                                 .check(c.getChannelServer().getMapFactory().getMap(victim.getMapId()).getFieldLimit())) {

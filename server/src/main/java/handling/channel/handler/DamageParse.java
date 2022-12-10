@@ -187,7 +187,7 @@ public class DamageParse {
                 fixeddmg = monsterstats.getFixedDamage();
                 Tempest = monster.getStatusSourceID(MonsterStatus.FREEZE) == 21120006;
 
-                if (!Tempest && !player.isGM()) {
+                if (!Tempest && !player.isGameMaster()) {
                     if (!monster.isBuffed(MonsterStatus.DAMAGE_IMMUNITY) && !monster.isBuffed(MonsterStatus.WEAPON_IMMUNITY) && !monster.isBuffed(MonsterStatus.WEAPON_DAMAGE_REFLECT)) {
                         maxDamagePerHit = CalculateMaxWeaponDamagePerHit(player, monster, attack, theSkill, effect, maxDamagePerMonster, CriticalDamage);
                     } else {
@@ -214,7 +214,7 @@ public class DamageParse {
                     } else {
                         if (monsterstats.getOnlyNoramlAttack()) {
                             eachd = attack.skill != 0 ? 0 : Math.min(eachd, (int) maxDamagePerHit);  // Convert to server calculated damage
-                        } else if (!player.isGM() && !GameConstants.isVisitorSkill(attack.skill)) {
+                        } else if (!player.isGameMaster() && !GameConstants.isVisitorSkill(attack.skill)) {
                             if (Tempest) { // Monster buffed with Tempest
                                 if (eachd > monster.getMobMaxHp()) {
                                     eachd = (int) Math.min(monster.getMobMaxHp(), Integer.MAX_VALUE);
@@ -267,7 +267,7 @@ public class DamageParse {
                     }
                 }
                 final MapleStatEffect ds = player.getStatForBuff(MapleBuffStat.DARKSIGHT);
-                if (ds != null && !player.isGM()) {
+                if (ds != null && !player.isGameMaster()) {
                     if (ds.getSourceId() != 4330001 || !ds.makeChanceResult()) {
                         player.cancelEffectFromBuffStat(MapleBuffStat.DARKSIGHT);
                     }
@@ -551,7 +551,7 @@ public class DamageParse {
                 totDamageToOneMonster = 0;
                 monsterstats = monster.getStats();
                 fixeddmg = monsterstats.getFixedDamage();
-                if (!Tempest && !player.isGM()) {
+                if (!Tempest && !player.isGameMaster()) {
                     if (!monster.isBuffed(MonsterStatus.DAMAGE_IMMUNITY) && !monster.isBuffed(MonsterStatus.MAGIC_IMMUNITY) && !monster.isBuffed(MonsterStatus.MAGIC_DAMAGE_REFLECT)) {
                         MaxDamagePerHit = CalculateMaxMagicDamagePerHit(player, theSkill, monster, monsterstats, stats, element, CriticalDamage, maxDamagePerHit);
                     } else {
@@ -568,7 +568,7 @@ public class DamageParse {
                     } else {
                         if (monsterstats.getOnlyNoramlAttack()) {
                             eachd = 0; // Magic is always not a normal attack
-                        } else if (!player.isGM()) {
+                        } else if (!player.isGameMaster()) {
 //			    log.info("Client damage : " + eachd + " Server : " + MaxDamagePerHit);
 
                             if (Tempest) { // Buffed with Tempest

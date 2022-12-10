@@ -1523,7 +1523,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                             || key.getMid() == 20001004 || key.getMid() == 20011004) {
                         continue;
                     }
-                    if (((key.getMid() / 10000 == 910) || (key.getMid() / 10000 == 900)) && !c.getPlayer().isGM()) { // is
+                    if (((key.getMid() / 10000 == 910) || (key.getMid() / 10000 == 900)) && !c.getPlayer().isGameMaster()) { // is
                         // gm
                         // skills
                         // but
@@ -1573,7 +1573,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                             || key.getMid() == 20001004 || key.getMid() == 20011004) {
                         continue;
                     }
-                    if (((key.getMid() / 10000 == 910) || (key.getMid() / 10000 == 900)) && !c.getPlayer().isGM()) { // is
+                    if (((key.getMid() / 10000 == 910) || (key.getMid() / 10000 == 900)) && !c.getPlayer().isGameMaster()) { // is
                         // gm
                         // skills
                         // but

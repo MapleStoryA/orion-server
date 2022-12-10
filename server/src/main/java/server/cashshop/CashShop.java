@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package server.cashshop;
 
 import client.MapleClient;
+import client.MapleJob;
 import client.inventory.Equip;
 import client.inventory.IItem;
 import client.inventory.Item;
@@ -57,19 +58,19 @@ public class CashShop implements Serializable {
     private final List<IItem> inventory = new ArrayList<IItem>();
     private final List<Integer> uniqueids = new ArrayList<Integer>();
 
-    public CashShop(int accountId, int characterId, int jobType) throws SQLException {
+    public CashShop(int accountId, int characterId, MapleJob mapleJob) throws SQLException {
         this.accountId = accountId;
         this.characterId = characterId;
-
-        if (jobType / 1000 == 1) {
+        int job_id = mapleJob.getId();
+        if (job_id / 1000 == 1) {
             factory = ItemLoader.CASHSHOP_CYGNUS;
-        } else if ((jobType / 100 == 21 || jobType / 100 == 20) && jobType != 2001) {
+        } else if ((job_id / 100 == 21 || job_id / 100 == 20) && job_id != 2001) {
             factory = ItemLoader.CASHSHOP_ARAN;
-        } else if (jobType == 2001 || jobType / 100 == 22) {
+        } else if (job_id == 2001 || job_id / 100 == 22) {
             factory = ItemLoader.CASHSHOP_EVAN;
-        } else if (jobType >= 3000) {
+        } else if (job_id >= 3000) {
             factory = ItemLoader.CASHSHOP_RESIST;
-        } else if (jobType / 10 == 43) {
+        } else if (job_id / 10 == 43) {
             factory = ItemLoader.CASHSHOP_DB;
         } else {
             factory = ItemLoader.CASHSHOP_EXPLORER;

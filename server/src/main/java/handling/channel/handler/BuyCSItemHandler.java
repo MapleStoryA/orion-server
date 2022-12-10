@@ -229,7 +229,7 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
             final Map<Integer, IItem> ccz = new HashMap<>();
             for (final CashItemInfo i : ccc) {
                 for (final int iz : GameConstants.cashBlock) {
-                    if (i.getId() == iz && !chr.isGM()) {
+                    if (i.getId() == iz && !chr.isGameMaster()) {
                         continue;
                     }
                 }

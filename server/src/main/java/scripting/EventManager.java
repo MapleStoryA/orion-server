@@ -38,7 +38,6 @@ import server.maps.MapleMapFactory;
 import server.maps.MapleMapObject;
 import server.maps.MapleReactor;
 import server.maps.MapleReactorFactory;
-import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
 
@@ -277,7 +276,7 @@ public class EventManager {
         if (squad.getStatus() == 0) {
             return; //we dont like cleared squads
         }
-        if (!squad.getLeader().isGM()) {
+        if (!squad.getLeader().isGameMaster()) {
             if (squad.getMembers().size() < 1) { //less than 3
                 squad.getLeader().dropMessage(5, "The squad has less than 1 people participating.");
                 return;
@@ -393,7 +392,7 @@ public class EventManager {
         if (squad.getStatus() == 0) {
             return; //we dont like cleared squads
         }
-        if (!squad.getLeader().isGM()) {
+        if (!squad.getLeader().isGameMaster()) {
             if (name.equals("CWKPQ") && squad.getJobs().size() < 5) {
                 squad.getLeader().dropMessage(5, "The squad requires members from every type of job.");
                 return;

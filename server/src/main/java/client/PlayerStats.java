@@ -1178,7 +1178,7 @@ public class PlayerStats implements Serializable {
                 shouldHealMP += effect.getEffect(lvl).getMp();
             }
         }
-        if (chra.isGM()) {
+        if (chra.isGameMaster()) {
             shouldHealHP += 1000;
             shouldHealMP += 1000;
         }

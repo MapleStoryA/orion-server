@@ -4923,7 +4923,7 @@ public class MaplePacketCreator {
         for (final MapleCharacter chr : chars) {
             PacketHelper.addCharStats(mplew, chr);
             PacketHelper.addCharLook(mplew, chr, true);
-            boolean ranking = !chr.isGM();
+            boolean ranking = !chr.isGameMaster();
             mplew.write(ranking ? 1 : 0);
             if (ranking) {
                 mplew.writeInt(chr.getRank());

@@ -1161,7 +1161,7 @@ public class AdminCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             for (MapleCharacter map : c.getPlayer().getMap().getCharactersThreadsafe()) {
-                if (map != null && !map.isGM()) {
+                if (map != null && !map.isGameMaster()) {
                     map.getStat().setHp((short) 0);
                     map.getStat().setMp((short) 0);
                     map.updateSingleStat(MapleStat.HP, 0);
@@ -1196,7 +1196,7 @@ public class AdminCommand {
                 return 0;
             } else {
                 victim.getMap().broadcastMessage(MaplePacketCreator.getChatText(victim.getId(),
-                        StringUtil.joinStringFrom(splitted, 2), victim.isGM(), 0));
+                        StringUtil.joinStringFrom(splitted, 2), victim.isGameMaster(), 0));
             }
             return 1;
         }
@@ -1209,7 +1209,7 @@ public class AdminCommand {
             for (MapleCharacter victim : c.getPlayer().getMap().getCharactersThreadsafe()) {
                 if (victim.getId() != c.getPlayer().getId()) {
                     victim.getMap().broadcastMessage(MaplePacketCreator.getChatText(victim.getId(),
-                            StringUtil.joinStringFrom(splitted, 1), victim.isGM(), 0));
+                            StringUtil.joinStringFrom(splitted, 1), victim.isGameMaster(), 0));
                 }
             }
             return 1;
@@ -1223,7 +1223,7 @@ public class AdminCommand {
             for (MapleCharacter victim : c.getChannelServer().getPlayerStorage().getAllCharacters()) {
                 if (victim.getId() != c.getPlayer().getId()) {
                     victim.getMap().broadcastMessage(MaplePacketCreator.getChatText(victim.getId(),
-                            StringUtil.joinStringFrom(splitted, 1), victim.isGM(), 0));
+                            StringUtil.joinStringFrom(splitted, 1), victim.isGameMaster(), 0));
                 }
             }
             return 1;
@@ -1238,7 +1238,7 @@ public class AdminCommand {
                 for (MapleCharacter victim : cserv.getPlayerStorage().getAllCharacters()) {
                     if (victim.getId() != c.getPlayer().getId()) {
                         victim.getMap().broadcastMessage(MaplePacketCreator.getChatText(victim.getId(),
-                                StringUtil.joinStringFrom(splitted, 1), victim.isGM(), 0));
+                                StringUtil.joinStringFrom(splitted, 1), victim.isGameMaster(), 0));
                     }
                 }
             }
@@ -1338,7 +1338,7 @@ public class AdminCommand {
         public int execute(MapleClient c, String[] splitted) {
             ChannelServer cs = c.getChannelServer();
             for (MapleCharacter mchr : cs.getPlayerStorage().getAllCharacters()) {
-                if (mchr.isGM()) {
+                if (mchr.isGameMaster()) {
                     continue;
                 }
                 MapleInventory equipped = mchr.getInventory(MapleInventoryType.EQUIPPED);

@@ -94,6 +94,8 @@ import server.cashshop.CashShop;
 import server.config.ServerEnvironment;
 import server.life.MapleMonster;
 import server.life.MobSkill;
+import server.maplevar.MapleVar;
+import server.maplevar.SimpleMapleVar;
 import server.maps.AbstractAnimatedMapleMapObject;
 import server.maps.Event_PyramidSubway;
 import server.maps.FieldLimitType;
@@ -108,8 +110,6 @@ import server.maps.MapleSummon;
 import server.maps.SavedLocationType;
 import server.quest.MapleQuest;
 import server.shops.IMaplePlayerShop;
-import server.maplevar.MapleVar;
-import server.maplevar.SimpleMapleVar;
 import tools.ConcurrentEnumMap;
 import tools.DateHelper;
 import tools.MaplePacketCreator;
@@ -127,7 +127,6 @@ import tools.packet.PlayerShopPacket;
 import tools.packet.UIPacket;
 
 import java.awt.*;
-import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -142,7 +141,6 @@ import java.util.Comparator;
 import java.util.Deque;
 import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -156,9 +154,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @lombok.extern.slf4j.Slf4j
-public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Serializable {
+public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
-    private static final long serialVersionUID = 845748950829L;
     private static final boolean autoSkill = false;
     private final Map<MapleQuest, MapleQuestStatus> quests;
     private final Map<Integer, Integer> linkMobs = new LinkedHashMap<>();
@@ -173,12 +170,13 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
     private final List<Integer> finishedAchievements = new ArrayList<Integer>();
     private final transient Map<Integer, Integer> movedMobs = new HashMap<Integer, Integer>();
     private final HashMap<String, Object> temporaryData = new HashMap<>();
-    private String name, chalktext, BlessOfFairy_Origin;
+    private String name, chalkText, BlessOfFairy_Origin;
     private long lastCombo, lastfametime, keydown_skill, loginTime, lastRecoveryTime, lastDragonBloodTime,
             lastBerserkTime, lastHPTime, lastMPTime, lastFairyTime;
     private byte dojoRecord, gmLevel, gender, initialSpawnPoint, skinColor, guildrank = 5, allianceRank = 5, world,
             fairyExp = 10, subcategory, mobKilledNo, portalCount = 0, morphId = 0;
-    private short level, mulung_energy, combo, availableCP, totalCP, fame, hpApUsed, job;
+    private short level, mulung_energy, combo, availableCP, totalCP, fame, hpApUsed;
+    private MapleJob job;
     private int accountid, id, meso, exp, hair, face, mapid, bookCover, dojo, guildid = 0, fallcounter = 0, maplepoints,
             nxcredit, chair, itemEffect, points, rank = 1, rankMove = 0, jobRank = 1, jobRankMove = 0,
             marriageId, marriageItemId = 0, coconutteam = 0, followid = 0, battleshipHP = 0, remainingAp, remainingSp;
@@ -323,7 +321,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         ret.map = null;
         ret.exp = 0;
         ret.gmLevel = 0;
-        ret.job = (short) (type == 1 ? 0 : (type == 0 ? 1000 : (type == 3 ? 2001 : (type == 4 ? 3000 : 2000))));
+        ret.job = MapleJob.fromId((short) (type == 1 ? 0 : (type == 0 ? 1000 : (type == 3 ? 2001 : (type == 4 ? 3000 : 2000)))));
         ret.meso = 0;
         ret.level = 1;
         ret.remainingAp = 0;
@@ -371,7 +369,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         ret.stats.setHp(ct.hp);
         ret.stats.setMp(ct.mp);
 
-        ret.chalktext = ct.chalkboard;
+        ret.chalkText = ct.chalkboard;
         ret.exp = ct.exp;
         ret.hpApUsed = ct.hpApUsed;
         ret.remainingAp = ct.remainingAp;
@@ -380,7 +378,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         ret.gmLevel = ct.gmLevel;
         ret.skinColor = ct.skinColor;
         ret.gender = ct.gender;
-        ret.job = ct.job;
+        ret.job = MapleJob.fromId(ct.job);
         ret.hair = ct.hair;
         ret.face = ct.face;
         ret.accountid = ct.accountid;
@@ -424,17 +422,16 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             }
             ret.setPosition(portal.getPosition());
 
-            final int messengerid = ct.messengerid;
-            if (messengerid > 0) {
-                ret.messenger = MessengerManager.getMessenger(messengerid);
+            final int messengerId = ct.messengerid;
+            if (messengerId > 0) {
+                ret.messenger = MessengerManager.getMessenger(messengerId);
             }
         } else {
-
             ret.messenger = null;
         }
-        int partyid = ct.partyid;
-        if (partyid >= 0) {
-            MapleParty party = PartyManager.getParty(partyid);
+        int partyId = ct.partyid;
+        if (partyId >= 0) {
+            MapleParty party = PartyManager.getParty(partyId);
             if (party != null && party.getMemberById(ret.id) != null) {
                 ret.party = party;
             }
@@ -499,7 +496,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
 
         ret.nxcredit = ct.nxCredit;
         ret.maplepoints = ct.MaplePoints;
-        ret.mount = new MapleMount(ret, ct.mount_itemid, GameConstants.getSkillByJob(1004, ret.job), ct.mount_Fatigue,
+        ret.mount = new MapleMount(ret, ct.mount_itemid, GameConstants.getSkillByJob(1004, ret.job.getId()), ct.mount_Fatigue,
                 ct.mount_level, ct.mount_exp);
         ret.expirationTask(false, false);
         ret.stats.recalcLocalStats(true);
@@ -548,7 +545,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             ret.gmLevel = rs.getByte("gm");
             ret.skinColor = rs.getByte("skincolor");
             ret.gender = rs.getByte("gender");
-            ret.job = rs.getShort("job");
+            ret.job = MapleJob.fromId(rs.getShort("job"));
             ret.hair = rs.getInt("hair");
             ret.face = rs.getInt("face");
             ret.accountid = rs.getInt("accountid");
@@ -563,7 +560,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             }
             ret.buddylist = new MapleBuddyList(rs.getByte("buddyCapacity"));
             ret.subcategory = rs.getByte("subcategory");
-            ret.mount = new MapleMount(ret, 0, GameConstants.getSkillByJob(1004, ret.job), (byte) 0, (byte) 1, 0);
+            ret.mount = new MapleMount(ret, 0, GameConstants.getSkillByJob(1004, ret.job.getId()), (byte) 0, (byte) 1, 0);
             ret.rank = rs.getInt("rank");
             ret.rankMove = rs.getInt("rankMove");
             ret.jobRank = rs.getInt("jobRank");
@@ -771,7 +768,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
 
                     }
                 }
-                ret.skills.put(SkillFactory.getSkill(GameConstants.getBOF_ForJob(ret.job)),
+                ret.skills.put(SkillFactory.getSkill(GameConstants.getBOF_ForJob(ret.job.getId())),
                         new SkillEntry(maxlevel_, (byte) 0, -1));
                 ps.close();
                 rs.close();
@@ -891,7 +888,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
                 }
                 final IItem mount = ret.getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -18);
                 ret.mount = new MapleMount(ret, mount != null ? mount.getItemId() : 0,
-                        GameConstants.getSkillByJob(1004, ret.job), rs.getByte("Fatigue"), rs.getByte("Level"),
+                        GameConstants.getSkillByJob(1004, ret.job.getId()), rs.getByte("Fatigue"), rs.getByte("Level"),
                         rs.getInt("Exp"));
                 ps.close();
                 rs.close();
@@ -921,9 +918,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
 
     private static void loadAutoSkills(final MapleCharacter ret) {
         if (autoSkill) {// TODO: Remove aran auto skill
-            ret.skills.putAll(JobConstants.getSkillsFromJob(ret.getJobValue()));
+            ret.skills.putAll(JobConstants.getSkillsFromJob(ret.getJob()));
         }
-        if (ret.isEvan() && autoSkill) {
+        if (ret.getJob().isEvan() && autoSkill) {
             ret.skills.putAll(JobConstants.getEvanSkills());
         }
 
@@ -959,7 +956,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             ps.setByte(13, (byte) 0); // GM Level
             ps.setByte(14, chr.skinColor);
             ps.setByte(15, chr.gender);
-            ps.setShort(16, chr.job);
+            ps.setShort(16, (short) chr.job.getId());
             ps.setInt(17, chr.hair);
             ps.setInt(18, chr.face);
             ps.setInt(19, type == 1 ? 0 : (type == 0 ? 130030000 : (type == 3 ? 900090000 : 914000000)));
@@ -1200,7 +1197,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             ps.setByte(13, gmLevel);
             ps.setByte(14, skinColor);
             ps.setByte(15, gender);
-            ps.setShort(16, job);
+            ps.setShort(16, (short) job.getId());
             ps.setInt(17, hair);
             ps.setInt(18, face);
             if (!fromcs && map != null) {
@@ -1335,7 +1332,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
                 }
                 ps.close();
             }
-            if (isEvan()) {
+            if (job.isEvan()) {
                 deleteWhereCharacterId(con, "DELETE FROM evan_skillpoints where characterid = ?");
                 ps = con.prepareStatement(this.evanSP.prepareSkillQuery(this.id));
                 ps.executeUpdate();
@@ -1707,7 +1704,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
     }
 
     public void startFishingTask(final boolean VIP) {
-        final int time = GameConstants.getFishingTime(VIP, isGM());
+        final int time = GameConstants.getFishingTime(VIP, isGameMaster());
         cancelFishingTask();
 
         fishing = EtcTimer.getInstance().register(new Runnable() { // no real
@@ -1766,7 +1763,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
     public void registerEffect(MapleStatEffect effect, long starttime, ScheduledFuture<?> schedule,
                                List<Pair<MapleBuffStat, Integer>> statups) {
         if (effect.isHide()) {
-            if (isGM()) {
+            if (isGameMaster()) {
                 this.hidden = true;
                 client.getSession().write(MaplePacketCreator.GameMaster_Func(0x12, 1));
                 map.broadcastNONGMMessage(this, MaplePacketCreator.removePlayerFromMap(getId()));
@@ -1946,7 +1943,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
 
     private void cancelPlayerBuffs(List<MapleBuffStat> buffstats) {
         boolean write = client.getChannelServer().getPlayerStorage().getCharacterById(getId()) != null;
-        if (buffstats.contains(MapleBuffStat.MONSTER_RIDING) && GameConstants.isEvan(getJob()) && getJob() >= 2200) {
+        if (buffstats.contains(MapleBuffStat.MONSTER_RIDING) && job.isEvan() && job.getId() >= 2200) {
             makeDragon();
             map.spawnDragon(dragon);
             map.updateMapObjectVisibility(this, dragon);
@@ -2056,7 +2053,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
                         }
                         if (questBuff) {
                             for (int i = 1066; i <= 1067; i++) {
-                                final ISkill skill = SkillFactory.getSkill(GameConstants.getSkillByJob(i, getJob()));
+                                final ISkill skill = SkillFactory.getSkill(GameConstants.getSkillByJob(i, getJob().getId()));
                                 changeSkillLevel_Skip(skill, (byte) -1, (byte) 0);
                             }
                         }
@@ -2161,7 +2158,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         ISkill combo;
         ISkill advcombo;
 
-        switch (getJob()) {
+        switch (getJob().getId()) {
             case 1110:
             case 1111:
             case 1112:
@@ -2205,7 +2202,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
     public void handleOrbconsume() {
         ISkill combo;
 
-        switch (getJob()) {
+        switch (getJob().getId()) {
             case 1110:
             case 1111:
                 combo = SkillFactory.getSkill(11111001);
@@ -2247,7 +2244,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             statups.add(new Pair<MapleStat, Integer>(MapleStat.HP, Integer.valueOf(stats.getHp())));
         }
         if (statups.size() > 0) {
-            client.getSession().write(MaplePacketCreator.updatePlayerStats(statups, getJob()));
+            client.getSession().write(MaplePacketCreator.updatePlayerStats(statups, getJob().getId()));
         }
     }
 
@@ -2352,7 +2349,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
     }
 
     public void setExp(int exp) {
-        if (isCygnus() && level >= 120) {
+        if (job.isCygnus() && level >= 120) {
             this.exp = 0;
             return;
         }
@@ -2387,12 +2384,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         this.skinColor = skinColor;
     }
 
-    public short getJob() {
+    public MapleJob getJob() {
         return job;
-    }
-
-    public MapleJob getJobValue() {
-        return MapleJob.getById(job);
     }
 
     public byte getGender() {
@@ -2523,8 +2516,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
                 // Bad..
                 newJob = MapleJob.BEGINNER.getId();
             }
-            this.job = (short) varJob.getId();
-            if (newJob > 0 && !isGM()) {
+            this.job = varJob;
+            if (newJob > 0 && !isGameMaster()) {
                 resetStatsByJob(true);
                 if (newJob == 2200) {
                     MapleQuest.getInstance(22100).forceStart(this, 0, null);
@@ -2539,54 +2532,54 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             int maxhp = stats.getMaxHp(), maxmp = stats.getMaxMp();
 
             switch (job) {
-                case 100: // Warrior
-                case 1100: // Soul Master
-                case 2100: // Aran
-                case 3200:
+                case WARRIOR:
+                case DAWNWARRIOR1:
+                case ARAN2:
+                case BattleMage1:
                     maxhp += Randomizer.rand(200, 250);
                     break;
-                case 200: // Magician
-                case 2200: // evan
-                case 2210: // evan
+                case MAGICIAN:
+                case EVAN2:
+                case EVAN3:
                     maxmp += Randomizer.rand(100, 150);
                     break;
-                case 300: // Bowman
-                case 400: // Thief
-                case 500: // Pirate
-                case 3300:
-                case 3500:
+                case BOWMAN:
+                case THIEF:
+                case PIRATE:
+                case WildHunter1:
+                case Mechanic1:
                     maxhp += Randomizer.rand(100, 150);
                     maxmp += Randomizer.rand(25, 50);
                     break;
-                case 110: // Fighter
+                case FIGHTER:
                     maxhp += Randomizer.rand(300, 350);
                     break;
-                case 120: // Page
-                case 130: // Spearman
-                case 1110: // Soul Master
-                case 2110: // Aran
-                case 3210:
+                case PAGE:
+                case SPEARMAN:
+                case DAWNWARRIOR2:
+                case ARAN3:
+                case BattleMage2:
                     maxhp += Randomizer.rand(300, 350);
                     break;
-                case 210: // FP
-                case 220: // IL
-                case 230: // Cleric
+                case FP_WIZARD:
+                case IL_WIZARD:
+                case CLERIC:
                     maxmp += Randomizer.rand(400, 450);
                     break;
-                case 310: // Bowman
-                case 320: // Crossbowman
-                case 410: // Assasin
-                case 420: // Bandit
-                case 430: // Semi Dualer
-                case 1310: // Wind Breaker
-                case 1410: // Night Walker
-                case 3310:
-                case 3510:
+                case HUNTER:
+                case CROSSBOWMAN:
+                case ASSASSIN:
+                case BANDIT:
+                case BLADE_RECRUIT:
+                case WINDARCHER2:
+                case NIGHTWALKER2:
+                case WildHunter2:
+                case Mechanic2:
                     maxhp += Randomizer.rand(300, 350);
                     maxhp += Randomizer.rand(150, 200);
                     break;
-                case 900: // GM
-                case 800: // Manager
+                case GM: // GM
+                case Manager: // Manager
                     maxhp += 30000;
                     maxhp += 30000;
                     break;
@@ -2602,12 +2595,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             stats.setHp((short) maxhp);
             stats.setMp((short) maxmp);
             List<Pair<MapleStat, Integer>> statup = new ArrayList<Pair<MapleStat, Integer>>(4);
-            statup.add(new Pair<MapleStat, Integer>(MapleStat.MAXHP, Integer.valueOf(maxhp)));
-            statup.add(new Pair<MapleStat, Integer>(MapleStat.MAXMP, Integer.valueOf(maxmp)));
-            statup.add(new Pair<MapleStat, Integer>(MapleStat.HP, Integer.valueOf(maxhp)));
-            statup.add(new Pair<MapleStat, Integer>(MapleStat.MP, Integer.valueOf(maxmp)));
+            statup.add(new Pair<>(MapleStat.MAXHP, Integer.valueOf(maxhp)));
+            statup.add(new Pair<>(MapleStat.MAXMP, Integer.valueOf(maxmp)));
+            statup.add(new Pair<>(MapleStat.HP, Integer.valueOf(maxhp)));
+            statup.add(new Pair<>(MapleStat.MP, Integer.valueOf(maxmp)));
             stats.recalcLocalStats();
-            client.getSession().write(MaplePacketCreator.updatePlayerStats(statup, getJob()));
+            client.getSession().write(MaplePacketCreator.updatePlayerStats(statup, getJob().getId()));
             map.broadcastMessage(this, MaplePacketCreator.showForeignEffect(getId(), 8), false);
             silentPartyUpdate();
             guildUpdate();
@@ -2639,12 +2632,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
     }
 
     private void sendServerChangeJobCongratulations() {
-        if (this.isGM()) {
+        if (this.isGameMaster()) {
             return;
         }
         String str = "[Lv. %s] Congratulations to %s on becoming a %s!";
         BroadcastHelper.broadcastMessage(
-                MaplePacketCreator.serverNotice(6, String.format(str, level, name, this.getJobValue().getName())));
+                MaplePacketCreator.serverNotice(6, String.format(str, level, name, this.job.getName())));
     }
 
     public void makeDragon() {
@@ -2665,7 +2658,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
     }
 
     public void gainSp(int sp) {
-        if (isEvan()) {
+        if (job.isEvan()) {
             addEvanSP(sp);
             return;
         }
@@ -2750,7 +2743,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         cancelEffectFromBuffStat(MapleBuffStat.REAPER);
         cancelEffectFromBuffStat(MapleBuffStat.PUPPET);
         checkFollow();
-        if (job != 0 && job != 1000 && job != 2000 && job != 2001 && job != 3000) {
+        if (job != MapleJob.BEGINNER && job != MapleJob.NOBLESSE && job != MapleJob.LEGEND && job != MapleJob.EVAN1) {
             int charms = getItemQuantity(5130000, false);
             if (charms > 0) {
                 MapleInventoryManipulator.removeById(client, MapleInventoryType.CASH, 5130000, 1, true, false);
@@ -2767,7 +2760,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
                     diepercentage = 0.01f;
                 } else {
                     float v8 = 0.0f;
-                    if (this.job / 100 == 3) {
+                    if (this.job.getId() / 100 == 3) {
                         v8 = 0.08f;
                     } else {
                         v8 = 0.2f;
@@ -2842,7 +2835,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
      * then directly does a updateSingleStat.
      *
      * @param delta
-     * @see MapleCharacter#setHp(int)
      */
     public void addHP(int delta) {
         if (stats.setHp(stats.getHp() + delta)) {
@@ -2855,7 +2847,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
      * then directly does a updateSingleStat.
      *
      * @param delta
-     * @see MapleCharacter#setMp(int)
      */
     public void addMP(int delta) {
         if (stats.setMp(stats.getMp() + delta)) {
@@ -2873,7 +2864,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             statups.add(new Pair<MapleStat, Integer>(MapleStat.MP, Integer.valueOf(stats.getMp())));
         }
         if (statups.size() > 0) {
-            client.getSession().write(MaplePacketCreator.updatePlayerStats(statups, getJob()));
+            client.getSession().write(MaplePacketCreator.updatePlayerStats(statups, getJob().getId()));
             int hp = this.getStat().getHp();
             if (hp <= 0) {// In case player die with disable actions
                 getClient().enableActions();
@@ -2905,7 +2896,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         }
         Pair<MapleStat, Integer> statpair = new Pair<MapleStat, Integer>(stat, Integer.valueOf(newval));
         client.getSession().write(
-                MaplePacketCreator.updatePlayerStats(Collections.singletonList(statpair), itemReaction, getJob()));
+                MaplePacketCreator.updatePlayerStats(Collections.singletonList(statpair), itemReaction, getJob().getId()));
     }
 
     public void gainExp(final int total, final boolean show, final boolean inChat, final boolean white) {
@@ -2914,7 +2905,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         }
 
         try {
-            if (isCygnus() && level >= 120) {
+            if (job.isCygnus() && level >= 120) {
                 return;
             }
             int prevexp = getExp();
@@ -2958,12 +2949,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
                 }
             }
         } catch (Exception e) {
-            // all
-            log.info("Log_Script_Except.rtf", e);
-            // jobs
-            // throw
-            // errors
-            // :(
+            log.error("Log_Script_Except.rtf", e);
         }
     }
 
@@ -2972,7 +2958,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         if (!isAlive()) {
             return;
         }
-        if (isCygnus() && level >= 120) {
+        if (job.isCygnus() && level >= 120) {
             return;
         }
         mobKilledNo++; // Reset back to 0 when cc
@@ -3058,7 +3044,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
                 statup.add(new Pair<>(MapleStat.EXP, exp));
                 statup.add(new Pair<>(MapleStat.LEVEL, (int) level));
                 statup.add(new Pair<>(MapleStat.AVAILABLEAP, Math.min(199, remainingAp)));
-                client.getSession().write(MaplePacketCreator.updatePlayerStats(statup, getJob()));
+                client.getSession().write(MaplePacketCreator.updatePlayerStats(statup, getJob().getId()));
                 map.broadcastMessage(this, MaplePacketCreator.showForeignEffect(getId(), 0), false);
             }
             if (show) { // still show the expgain even if it's not there
@@ -3077,14 +3063,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
     }
 
     public void forceReAddItem(IItem item, MapleInventoryType type) { // used
-        // for
-        // stuff
-        // like
-        // durability,
-        // item
-        // exp/level,
-        // probably
-        // owner?
         forceReAddItem_NoUpdate(item, type);
         if (type != MapleInventoryType.UNDEFINED) {
             client.getSession().write(MaplePacketCreator.updateSpecialItemUse(item,
@@ -3093,8 +3071,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
     }
 
     public void forceReAddItem_Flag(IItem item, MapleInventoryType type) { // used
-        // for
-        // flags
         forceReAddItem_NoUpdate(item, type);
         if (type != MapleInventoryType.UNDEFINED) {
             client.getSession().write(MaplePacketCreator.updateSpecialItemUse_(item,
@@ -3102,7 +3078,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         }
     }
 
-    public boolean isGM() {
+    public boolean isGameMaster() {
         return gmLevel > 0;
     }
 
@@ -3114,9 +3090,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         return gmLevel;
     }
 
-    public boolean hasGmLevel(int level) {
-        return gmLevel >= level;
-    }
 
     public final MapleInventory getInventory(MapleInventoryType type) {
         return inventory[type.ordinal()];
@@ -3397,7 +3370,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
     }
 
     public void levelUp(boolean show) {
-        if (isCygnus() && getLevel() >= 120) {
+        if (job.isCygnus() && getLevel() >= 120) {
             return;
         }
         if ((long) (remainingAp + 5) >= Integer.MAX_VALUE) {
@@ -3405,17 +3378,17 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         } else {
             remainingAp += 5;
         }
-        if (isCygnus() && getLevel() < 70) {
+        if (job.isCygnus() && getLevel() < 70) {
             remainingAp += 1;
         }
 
         int maxhp = stats.getMaxHp();
         int maxmp = stats.getMaxMp();
 
-        if (isBeginner()) {
+        if (job.isBeginner()) {
             maxhp += Randomizer.rand(12, 16);
             maxmp += Randomizer.rand(10, 12);
-        } else if (isWarrior()) {
+        } else if (job.isWarrior()) {
             final ISkill improvingMaxHP = SkillFactory.getSkill(1000001);
             final int slevel = getSkillLevel(improvingMaxHP);
             if (slevel > 0) {
@@ -3423,7 +3396,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             }
             maxhp += Randomizer.rand(24, 28);
             maxmp += Randomizer.rand(4, 6);
-        } else if (isMage()) {
+        } else if (job.isMage()) {
             final ISkill improvingMaxMP = SkillFactory.getSkill(2000001);
             final int slevel = getSkillLevel(improvingMaxMP);
             if (slevel > 0) {
@@ -3431,11 +3404,11 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             }
             maxhp += Randomizer.rand(10, 14);
             maxmp += Randomizer.rand(22, 24);
-        } else if ((job >= 300 && job <= 322) || (job >= 400 && job <= 434) || (job >= 1300 && job <= 1311)
-                || (job >= 1400 && job <= 1411)) {
+        } else if ((job.getId() >= 300 && job.getId() <= 322) || (job.getId() >= 400 && job.getId() <= 434) || (job.getId() >= 1300 && job.getId() <= 1311)
+                || (job.getId() >= 1400 && job.getId() <= 1411)) {
             maxhp += Randomizer.rand(20, 24);
             maxmp += Randomizer.rand(14, 16);
-        } else if (isPirate()) { // Pirate
+        } else if (job.isPirate()) { // Pirate
             final ISkill improvingMaxHP = SkillFactory.getSkill(5100000);
             final int slevel = getSkillLevel(improvingMaxHP);
             if (slevel > 0) {
@@ -3443,7 +3416,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             }
             maxhp += Randomizer.rand(22, 26);
             maxmp += Randomizer.rand(18, 22);
-        } else if (job >= 1100 && job <= 1111) { // Soul Master
+        } else if (job.getId() >= 1100 && job.getId() <= 1111) { // Soul Master
             final ISkill improvingMaxHP = SkillFactory.getSkill(11000000);
             final int slevel = getSkillLevel(improvingMaxHP);
             if (slevel > 0) {
@@ -3451,7 +3424,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             }
             maxhp += Randomizer.rand(24, 28);
             maxmp += Randomizer.rand(4, 6);
-        } else if (job >= 1200 && job <= 1211) { // Flame Wizard
+        } else if (job.getId() >= 1200 && job.getId() <= 1211) { // Flame Wizard
             final ISkill improvingMaxMP = SkillFactory.getSkill(12000000);
             final int slevel = getSkillLevel(improvingMaxMP);
             if (slevel > 0) {
@@ -3459,7 +3432,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             }
             maxhp += Randomizer.rand(10, 14);
             maxmp += Randomizer.rand(22, 24);
-        } else if (job >= 1500 && job <= 1512) { // Pirate
+        } else if (job.getId() >= 1500 && job.getId() <= 1512) { // Pirate
             final ISkill improvingMaxHP = SkillFactory.getSkill(15100000);
             final int slevel = getSkillLevel(improvingMaxHP);
             if (slevel > 0) {
@@ -3467,10 +3440,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             }
             maxhp += Randomizer.rand(22, 26);
             maxmp += Randomizer.rand(18, 22);
-        } else if (job >= 2100 && job <= 2112) { // Aran
+        } else if (job.getId() >= 2100 && job.getId() <= 2112) { // Aran
             maxhp += Randomizer.rand(50, 52);
             maxmp += Randomizer.rand(4, 6);
-        } else if (job >= 2200 && job <= 2218) { // Evan
+        } else if (job.getId() >= 2200 && job.getId() <= 2218) { // Evan
             maxhp += Randomizer.rand(12, 16);
             maxmp += Randomizer.rand(50, 52);
         } else { // GameMaster
@@ -3499,13 +3472,13 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         statup.add(new Pair<MapleStat, Integer>(MapleStat.LEVEL, level));
         statup.add(new Pair<MapleStat, Integer>(MapleStat.AVAILABLEAP, remainingAp));
 
-        if (!isEvan() && level >= 10 || (level > 8 && job == 200)) {
+        if (!job.isEvan() && level >= 10 || (level > 8 && job.equals(MapleJob.MAGICIAN.getId()))) {
             remainingSp += 3;
             statup.add(new Pair<MapleStat, Integer>(MapleStat.AVAILABLESP, remainingSp));
         }
 
-        client.getSession().write(MaplePacketCreator.updatePlayerStats(statup, getJob()));
-        if ((isEvan()) && (this.getJobValue() != MapleJob.EVAN1)) {
+        client.getSession().write(MaplePacketCreator.updatePlayerStats(statup, getJob().getId()));
+        if ((job.isEvan()) && (!MapleJob.EVAN1.equals(job))) {
             addEvanSP(3);
         }
         map.broadcastMessage(this, MaplePacketCreator.showForeignEffect(getId(), 0), false);
@@ -3522,29 +3495,14 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
     }
 
     public void addEvanSP(int evanPoints) {
-        this.evanSP.addSkillPoints(this.getJobValue().getId(), evanPoints);
-        if (this.evanSP.getSkillPoints(this.getJobValue().getId()) < 0) {
-            this.evanSP.setSkillPoints(this.getJobValue().getId(), 0);
+        this.evanSP.addSkillPoints(this.job.getId(), evanPoints);
+        if (this.evanSP.getSkillPoints(this.job.getId()) < 0) {
+            this.evanSP.setSkillPoints(this.job.getId(), 0);
         }
         this.client.getSession().write(MaplePacketCreator.updateExtendedSP(this.evanSP));
 
     }
 
-    private boolean isPirate() {
-        return job >= 500 && job <= 522;
-    }
-
-    private boolean isMage() {
-        return job >= 200 && job <= 232;
-    }
-
-    private boolean isWarrior() {
-        return job >= 100 && job <= 132;
-    }
-
-    private boolean isBeginner() {
-        return job == 0 || job == 1000 || job == 2000 || job == 2001 || job == 3000;
-    }
 
     private void checkForAchievements() {
         int level = getLevel();
@@ -3575,7 +3533,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
 
     private void sendLevel200Congratulations() {
         int level = getLevel();
-        if (level == 200 && !isGM() || isCygnus() && level == 120) {
+        if (level == 200 && !isGameMaster() || job.isCygnus() && level == 120) {
             final StringBuilder sb = new StringBuilder("[Congratulation] ");
             final IItem medal = getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -46);
             if (medal != null) { // Medal
@@ -3591,35 +3549,35 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
 
     private void checkForChangeJob() {
         int level = getLevel();
-        if (GameConstants.isKOC(job) && job > 1000) {
+        if (GameConstants.isKOC(job.getId()) && job.getId() > 1000) {
             final String base = (String.valueOf(job).substring(0, 2)) + "00";
-            if (level >= 120 && job % 10 != 2 && job % 100 != 0) {
+            if (level >= 120 && job.getId() % 10 != 2 && job.getId() % 100 != 0) {
                 changeJob(Integer.valueOf(base) + 12);
-            } else if ((level >= 70 && level <= 119) && job % 10 != 1 && job % 100 != 0) {
+            } else if ((level >= 70 && level <= 119) && job.getId() % 10 != 1 && job.getId() % 100 != 0) {
                 changeJob(Integer.valueOf(base) + 11);
-            } else if ((level >= 30 && level <= 69) && job % 100 == 0) {
+            } else if ((level >= 30 && level <= 69) && job.getId() % 100 == 0) {
                 changeJob(Integer.valueOf(base) + 10);
             }
-        } else if (GameConstants.isEvan(job)) {
-            if (level >= 160 && job != 2218) {
+        } else if (GameConstants.isEvan(job.getId())) {
+            if (level >= 160 && job.getId() != 2218) {
                 changeJob(2218);
-            } else if (level >= 120 && level <= 159 && job != 2217) {
+            } else if (level >= 120 && level <= 159 && job.getId() != 2217) {
                 changeJob(2217);
-            } else if (level >= 100 && level <= 119 && job != 2216) {
+            } else if (level >= 100 && level <= 119 && job.getId() != 2216) {
                 changeJob(2216);
-            } else if (level >= 80 && level <= 99 && job != 2215) {
+            } else if (level >= 80 && level <= 99 && job.getId() != 2215) {
                 changeJob(2215);
-            } else if (level >= 60 && level <= 79 && job != 2214) {
+            } else if (level >= 60 && level <= 79 && job.getId() != 2214) {
                 changeJob(2214);
-            } else if (level >= 50 && level <= 59 && job != 2213) {
+            } else if (level >= 50 && level <= 59 && job.getId() != 2213) {
                 changeJob(2213);
-            } else if (level >= 40 && level <= 49 && job != 2212) {
+            } else if (level >= 40 && level <= 49 && job.getId() != 2212) {
                 changeJob(2212);
-            } else if (level >= 30 && level <= 39 && job != 2211) {
+            } else if (level >= 30 && level <= 39 && job.getId() != 2211) {
                 changeJob(2211);
-            } else if (level >= 20 && level <= 29 && job != 2210) {
+            } else if (level >= 20 && level <= 29 && job.getId() != 2210) {
                 changeJob(2210);
-            } else if (level >= 10 && level <= 19 && job != 2200) {
+            } else if (level >= 10 && level <= 19 && job.getId() != 2200) {
                 changeJob(2200);
             }
         }
@@ -4137,7 +4095,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
             return;
         }
         mgc.setLevel(level);
-        mgc.setJobId(job);
+        mgc.setJobId(job.getId());
         GuildManager.memberLevelJobUpdate(mgc);
     }
 
@@ -4539,11 +4497,11 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
     }
 
     public String getChalkboard() {
-        return chalktext;
+        return chalkText;
     }
 
     public void setChalkboard(String text) {
-        this.chalktext = text;
+        this.chalkText = text;
         map.broadcastMessage(MTSCSPacket.useChalkboard(getId(), text));
     }
 
@@ -4947,13 +4905,13 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
                         && (item.getExpiration() == -1 || item.getExpiration() > System.currentTimeMillis())) {
 
                     int leadid = 8;
-                    if (GameConstants.isKOC(getJob())) {
+                    if (GameConstants.isKOC(getJob().getId())) {
                         leadid = 10000018;
-                    } else if (GameConstants.isAran(getJob())) {
+                    } else if (GameConstants.isAran(getJob().getId())) {
                         leadid = 20000024;
-                    } else if (GameConstants.isEvan(getJob())) {
+                    } else if (GameConstants.isEvan(getJob().getId())) {
                         leadid = 20011024;
-                    } else if (GameConstants.isResist(getJob())) {
+                    } else if (GameConstants.isResist(getJob().getId())) {
                         leadid = 30000024;
                     }
                     if (getSkillLevel(SkillFactory.getSkill(leadid)) == 0 && getPet(0) != null) {
@@ -5432,7 +5390,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
     }
 
     public void resetStatsByJob(boolean beginnerJob) {
-        int baseJob = (beginnerJob ? (job % 1000) : (job % 1000 / 100 * 100)); // 1112
+        int baseJob = (beginnerJob ? (job.getId() % 1000) : (job.getId() % 1000 / 100 * 100)); // 1112
         if (baseJob == 100) { // first job = warrior
             resetStats(25, 4, 4, 4);
         } else if (baseJob == 200) {
@@ -5721,7 +5679,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
     }
 
     public void sendSkills() {
-        if (GameConstants.isEvan(getJob()) || getJob() == 900 || getJob() == 910) {
+        if (job.isEvan() || getJob().getId() == 900 || getJob().getId() == 910) {
             client.getSession().write(MaplePacketCreator.updateSkill(this.getSkills()));
         }
     }
@@ -5730,40 +5688,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         client.getSession().write(MaplePacketCreator.updateSkill(this.getSkills()));
     }
 
-    public boolean isSkillBelongToJob(final int skillid) {
-        if (isGM()) {
-            return true;
-        }
-
-        if (JobConstants.isFixedSkill(skillid)) {
-            if (skillid >= 10000000 && skillid < 20000000) { // koc skills
-                if ((skillid / 10000) <= getJob()) {
-                    return GameConstants.isJobFamily((skillid / 10000), getJob());
-                }
-            } else if (skillid >= 10000000 && skillid < 30000000) {
-                if (GameConstants.isEvan((skillid / 10000))) {
-                    if ((skillid / 10000) <= getJob()) {
-                        return GameConstants.isJobFamily((skillid / 10000), getJob());
-                    }
-                } else if (GameConstants.isAran((skillid / 10000))) {
-                    if ((skillid / 10000) <= getJob()) {
-                        return GameConstants.isJobFamily((skillid / 10000), getJob());
-                    }
-                } else {
-                    return false;
-                }
-            } else { // All explorer skills
-                if (skillid >= 1000000) {
-                    return GameConstants.isJobFamily((skillid / 10000), getJob());
-                }
-            }
-        }
-        return true;
-    }
-
-    public void resetKeyMap() {
-
-    }
 
     public void removeAllKey(final List<Integer> x) {
         for (Integer i : x) {
@@ -5773,32 +5697,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
 
     public Collection<Triple<Byte, Integer, Byte>> getKeymap() {
         return keylayout.Layout().values();
-    }
-
-    public void wipeSkillsWithException(int skill) {
-        int NextKey = 0;
-        Iterator<Entry<Integer, Triple<Byte, Integer, Byte>>> i = keylayout.Layout().entrySet().iterator();
-        while (i.hasNext()) {
-            Entry<Integer, Triple<Byte, Integer, Byte>> o = i.next();
-            final int oid = o.getValue().getMid();
-            if (o.getValue().getLeft() == 1 && oid >= 1000) {
-                if (oid == skill && skill != -1) {
-                    NextKey = o.getKey();
-                } else if (JobConstants.isEvanSkill(oid)
-                        || oid == 1004 || oid == 10001004 || oid == 20001004 || oid == 20011004
-                        || (o.getValue().getRight() <= 0 && GameConstants.getMountItem(oid) == 0)
-                        || (o.getValue().getRight() <= 0 && oid == 5221006)
-                        || (((oid / 10000 == 910) || (oid / 10000 == 900)) && !isGM())) {
-                    i.remove();
-                }
-            }
-        }
-        if (NextKey != 0) {
-            changeKeybinding(NextKey, (byte) 1, skill, (byte) 1);
-        }
-
-        sendSkills();
-        client.getSession().write(MaplePacketCreator.getKeymap(getKeyLayout()));
     }
 
     public SpeedQuiz getSpeedQuiz() {
@@ -5903,25 +5801,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
 
     }
 
-    public boolean isEvan() {
-        return (getJob() == 2001 || getJob() / 100 == 22);
-    }
-
-    public boolean isAran() {
-        return (this.getJob() / 100 == 21) || (this.getJob() == 2000);
-    }
-
-    public int getJobType() {
-        return this.getJob() / 1000;
-    }
-
-    public boolean isCygnus() {
-        return getJobType() == 1;
-    }
-
-    public boolean isDualblade() {
-        return getJob() >= 430 && getJob() <= 434;
-    }
 
     public final void maxMastery() {
         for (ISkill skill_ : SkillFactory.getAllSkills()) {
@@ -5931,8 +5810,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
                     continue;
                 }
                 ISkill skill = SkillFactory.getSkill(skillid);
-                boolean add = ((skillid / 10000000 == this.getJob() / 1000) && (skill.hasMastery())) || (isCygnus());
-                if ((!add) && (isAran())) {
+                boolean add = ((skillid / 10000000 == this.getJob() / 1000) && (skill.hasMastery())) || (job.isCygnus());
+                if ((!add) && (job.isAran())) {
                     switch (skillid) {
                         case 21000000:
                         case 21001003:
@@ -5964,7 +5843,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
         if (isActiveBuffedValue(Rogue.DARK_SIGHT)) {
             int incresePercent = 10 + getSkillLevel(BladeLord.ADVANCED_DARK_SIGHT) * 2;
             int randomNumber = new Random().nextInt(100) + 1;
-            if (isDualblade()) {
+            if (job.isDualblade()) {
                 if (incresePercent < randomNumber) {
                     cancelBuffStats(MapleBuffStat.DARKSIGHT);
                 }
@@ -5972,23 +5851,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements Se
                 cancelBuffStats(MapleBuffStat.DARKSIGHT);
             }
         }
-    }
-
-    public boolean isGameMasterJob() {
-        return this.getJobValue() == MapleJob.GM || this.getJobValue() == MapleJob.SUPERGM;
-    }
-
-    public int getJobCategoryForEquips() {
-        if (isEvan()) {
-            return 2;
-        }
-        if (isDualblade()) {
-            return 4;
-        }
-        if (isAran()) {
-            return 1;
-        }
-        return this.job / 100;
     }
 
     public void addTemporaryData(String key, Object value) {

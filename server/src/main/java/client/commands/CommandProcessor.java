@@ -112,7 +112,7 @@ public class CommandProcessor {
 
             } catch (Exception e) {
                 sendDisplayMessage(c, "There was an error.", type);
-                if (c.getPlayer().isGM()) {
+                if (c.getPlayer().isGameMaster()) {
                     sendDisplayMessage(c, "Error: " + e, type);
                 }
             }

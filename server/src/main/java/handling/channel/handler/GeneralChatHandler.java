@@ -18,7 +18,7 @@ public class GeneralChatHandler extends AbstractMaplePacketHandler {
         final byte unk = slea.readByte();
         MapleCharacter chr = c.getPlayer();
         if (chr != null && !CommandProcessor.processCommand(c, text, CommandType.NORMAL)) {
-            if (!chr.isGM() && text.length() >= 80) {
+            if (!chr.isGameMaster() && text.length() >= 80) {
                 return;
             }
             if (chr.getCanTalk() || chr.isStaff()) {
@@ -26,11 +26,11 @@ public class GeneralChatHandler extends AbstractMaplePacketHandler {
                 // broadcast to people who might be packet sniffing.
                 if (chr.isHidden()) {
                     chr.getMap().broadcastGMMessage(chr,
-                            MaplePacketCreator.getChatText(chr.getId(), text, c.getPlayer().isGM(), unk), true);
+                            MaplePacketCreator.getChatText(chr.getId(), text, c.getPlayer().isGameMaster(), unk), true);
                 } else {
                     chr.getCheatTracker().checkMsg();
                     chr.getMap().broadcastMessage(
-                            MaplePacketCreator.getChatText(chr.getId(), text, c.getPlayer().isGM(), unk),
+                            MaplePacketCreator.getChatText(chr.getId(), text, c.getPlayer().isGameMaster(), unk),
                             c.getPlayer().getPosition());
                 }
             } else {

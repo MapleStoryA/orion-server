@@ -52,7 +52,7 @@ public class CloseRangeDamageHandler extends AbstractMaplePacketHandler {
             return;
         }
         final AttackInfo attack = DamageParse.Modify_AttackCrit(DamageParse.parseDmgM(slea), chr, 1);
-        if (!chr.isSkillBelongToJob(attack.skill)) {
+        if (!chr.getJob().isSkillBelongToJob(attack.skill, chr.isGameMaster())) {
             chr.dropMessage(5, "This skill cannot be used with the current job");
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
@@ -85,7 +85,7 @@ public class CloseRangeDamageHandler extends AbstractMaplePacketHandler {
             maxdamage *= effect.getDamage() / 100.0;
             attackCount = effect.getAttackCount();
 
-            if (effect.getCooldown() > 0 && !chr.isGM()) {
+            if (effect.getCooldown() > 0 && !chr.isGameMaster()) {
                 if (chr.skillisCooling(attack.skill)) {
                     c.getSession().write(MaplePacketCreator.enableActions());
                     return;

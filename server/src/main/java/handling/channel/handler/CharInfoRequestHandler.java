@@ -21,7 +21,7 @@ public class CharInfoRequestHandler extends AbstractMaplePacketHandler {
         final MapleCharacter player = c.getPlayer().getMap().getCharacterById(objectid);
         c.getSession().write(MaplePacketCreator.enableActions());
         if (player != null) {
-            if (!player.isGM() || c.getPlayer().isGM()) {
+            if (!player.isGameMaster() || c.getPlayer().isGameMaster()) {
                 if (c.getPlayer().getId() == objectid) {
                     if (player.getPet(0) != null) {
                         c.getSession().write(PetPacket.loadExceptionList(player.getId(), player.getPet(0).getUniqueId(), ""));

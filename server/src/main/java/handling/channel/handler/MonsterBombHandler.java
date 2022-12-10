@@ -27,7 +27,7 @@ public class MonsterBombHandler extends AbstractMaplePacketHandler {
         final MapleMonster monster = chr.getMap().getMonsterByOid(slea.readInt());
         final int xpos = slea.readInt();
         final int ypos = slea.readInt();
-        if (!chr.isGM()) {
+        if (!chr.isGameMaster()) {
             if ((monster == null || chr.getJob() != 434 || chr.getMap() == null || !chr.isAlive() || chr.isHidden())) {
                 return;
             }

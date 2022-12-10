@@ -164,7 +164,7 @@ public class MessengerManager {
                 MapleCharacter from = WorldServer.getInstance().getChannel(fromchannel).getPlayerStorage().getCharacterByName(sender);
                 MapleCharacter targeter = WorldServer.getInstance().getChannel(ch).getPlayerStorage().getCharacterByName(target);
                 if (targeter != null && targeter.getMessenger() == null) {
-                    if (!targeter.isGM() || gm) {
+                    if (!targeter.isGameMaster() || gm) {
                         targeter.getClient().getSession().write(MaplePacketCreator.messengerInvite(sender, messengerid));
                         from.getClient().getSession().write(MaplePacketCreator.messengerNote(target, 4, 1));
                     } else {

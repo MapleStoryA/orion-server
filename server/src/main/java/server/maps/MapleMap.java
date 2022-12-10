@@ -1967,7 +1967,7 @@ public final class MapleMap {
             }
         }
         sendObjectPlacement(chr);
-        if (!chr.isHidden() && !chr.isGM()) {
+        if (!chr.isHidden() && !chr.isGameMaster()) {
             chr.getClient().getPlayer().getMap().broadcastMessage(MaplePacketCreator.spawnPlayerMapobject(chr));
         }
 
@@ -2969,7 +2969,7 @@ public final class MapleMap {
 
     public void disconnectAll() {
         for (MapleCharacter chr : getCharactersThreadsafe()) {
-            if (!chr.isGM()) {
+            if (!chr.isGameMaster()) {
                 chr.getClient().disconnect(true, false);
                 chr.getClient().getSession().close();
             }
@@ -3282,7 +3282,7 @@ public final class MapleMap {
         charactersLock.readLock().lock();
         try {
             for (MapleCharacter chr : characters) {
-                if (chr != source && !chr.isGM()) {
+                if (chr != source && !chr.isGameMaster()) {
                     chr.getClient().getSession().write(packet);
                 }
             }
