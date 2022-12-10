@@ -79,7 +79,7 @@ import lombok.extern.slf4j.Slf4j;
 import scripting.EventInstanceManager;
 import scripting.NPCScriptManager;
 import scripting.v1.event.EventInstance;
-import scripting.v1.game.helper.ScriptingApi;
+import scripting.v1.game.helper.ApiClass;
 import server.MapleAchievements;
 import server.MapleCarnivalChallenge;
 import server.MapleCarnivalParty;
@@ -5650,7 +5650,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
 
-    @ScriptingApi
+    @ApiClass
     public boolean isRideFinished() {
         return travelTime < System.currentTimeMillis();
     }

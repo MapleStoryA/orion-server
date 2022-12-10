@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package client.commands;
+package client.commands.v1;
 
 import client.MapleCharacter;
 import client.MapleClient;

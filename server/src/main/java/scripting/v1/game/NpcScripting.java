@@ -7,7 +7,7 @@ import org.mozilla.javascript.ContinuationPending;
 import org.mozilla.javascript.Scriptable;
 import scripting.ScriptMan;
 import scripting.v1.game.helper.AskAvatarHelper;
-import scripting.v1.game.helper.ScriptingApi;
+import scripting.v1.game.helper.ApiClass;
 import server.life.MapleNPC;
 import tools.packet.npcpool.NpcPoolPackets;
 
@@ -32,12 +32,12 @@ public class NpcScripting extends PlayerScripting {
         }
     }
 
-    @ScriptingApi
+    @ApiClass
     public Object getContinuation() {
         return continuation;
     }
 
-    @ScriptingApi
+    @ApiClass
     public void setContinuation(Object continuation) {
         this.continuation = continuation;
     }
@@ -53,28 +53,28 @@ public class NpcScripting extends PlayerScripting {
         }
     }
 
-    @ScriptingApi
+    @ApiClass
     public void say(String text) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnSay(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text), false, true));
         throwContinuation(cx);
     }
 
-    @ScriptingApi
+    @ApiClass
     public void sayUser(String text) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnSay(ScriptMan.NpcReplacedByUser, npc, (byte) 2, parseText(text), false, true));
         throwContinuation(cx);
     }
 
-    @ScriptingApi
+    @ApiClass
     public void sayOk(String text) {
         Context cx = Context.enter();
         getClient().sendPacket(ScriptMan.OnSay(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text), false, false));
         throwContinuation(cx);
     }
 
-    @ScriptingApi
+    @ApiClass
     public void sayOkUser(String text) {
         Context cx = Context.enter();
         getClient().sendPacket(ScriptMan.OnSay(ScriptMan.NpcReplayedByNpc, npc, (byte) 2, parseText(text), false, false));
@@ -82,21 +82,21 @@ public class NpcScripting extends PlayerScripting {
     }
 
 
-    @ScriptingApi
+    @ApiClass
     public void askYesNo(String text) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnAskYesNo(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text)));
         throwContinuation(cx);
     }
 
-    @ScriptingApi
+    @ApiClass
     public void askYesUser(String text) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnAskYesNo(ScriptMan.NpcReplayedByNpc, npc, (byte) 2, parseText(text)));
         throwContinuation(cx);
     }
 
-    @ScriptingApi
+    @ApiClass
     public void askAccept(String text) {
         Context cx = Context.enter();
         if (text.contains("#L")) { // will dc otherwise!
@@ -107,7 +107,7 @@ public class NpcScripting extends PlayerScripting {
         throwContinuation(cx);
     }
 
-    @ScriptingApi
+    @ApiClass
     public void askAcceptUser(String text) {
         Context cx = Context.enter();
         if (text.contains("#L")) { // will dc otherwise!
@@ -119,7 +119,7 @@ public class NpcScripting extends PlayerScripting {
     }
 
 
-    @ScriptingApi
+    @ApiClass
     public int askAvatar(String text, int item, int... styles) {
         Context cx = Context.enter();
         player.addTemporaryData("askAvatar", styles);
@@ -129,14 +129,14 @@ public class NpcScripting extends PlayerScripting {
         return 1;
     }
 
-    @ScriptingApi
+    @ApiClass
     public int makeRandAvatar(int item, int... styles) {
         player.addTemporaryData("askAvatar", styles);
         player.addTemporaryData("askAvatarItem", item);
         return AskAvatarHelper.processAskAvatar(player, 1, true);
     }
 
-    @ScriptingApi
+    @ApiClass
     public void askMenu(String text) {
         Context cx = Context.enter();
         if (!text.contains("#L")) { // sendSimple will dc otherwise!
@@ -147,7 +147,7 @@ public class NpcScripting extends PlayerScripting {
         throwContinuation(cx);
     }
 
-    @ScriptingApi
+    @ApiClass
     public void askMenuUser(String text) {
         Context cx = Context.enter();
         if (!text.contains("#L")) { // sendSimple will dc otherwise!
@@ -159,14 +159,14 @@ public class NpcScripting extends PlayerScripting {
     }
 
 
-    @ScriptingApi
+    @ApiClass
     public void askText(String text, String def, int col, int line) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnAskText(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text), def, col, line));
         throwContinuation(cx);
     }
 
-    @ScriptingApi
+    @ApiClass
     public void askTextUser(String text, String def, int col, int line) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnAskText(ScriptMan.NpcReplayedByNpc, npc, (byte) 2, parseText(text), def, col, line));
@@ -174,21 +174,21 @@ public class NpcScripting extends PlayerScripting {
     }
 
 
-    @ScriptingApi
+    @ApiClass
     public void askNumber(String text, int def, int min, int max) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnAskNumber(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text), def, min, max));
         throwContinuation(cx);
     }
 
-    @ScriptingApi
+    @ApiClass
     public void askNumberUser(String text, int def, int min, int max) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnAskNumber(ScriptMan.NpcReplayedByNpc, npc, (byte) 2, parseText(text), def, min, max));
         throwContinuation(cx);
     }
 
-    @ScriptingApi
+    @ApiClass
     public void setSpecialAction(int npcId, String action) {
         MapleNPC npcInstance = player.getMap().getNPCById(npcId);
         sendPacket(NpcPoolPackets.setSpecialAction(npcInstance, action));

@@ -4,7 +4,7 @@ import client.MapleClient;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import scripting.v1.game.helper.InventoryHelper;
-import scripting.v1.game.helper.ScriptingApi;
+import scripting.v1.game.helper.ApiClass;
 
 
 @lombok.extern.slf4j.Slf4j
@@ -14,22 +14,22 @@ public class InventoryScripting extends PlayerScripting {
         super(client);
     }
 
-    @ScriptingApi
+    @ApiClass
     public int slotCount(byte type) {
         return player.getInventory(MapleInventoryType.getByType(type)).getSlotLimit();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int holdCount(byte type) {
         return player.getInventory(MapleInventoryType.getByType(type)).getNumFreeSlot();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int itemCount(int item) {
         return player.getItemQuantity(item, true);
     }
 
-    @ScriptingApi
+    @ApiClass
     public int exchange(int money, int id, short quantity) {
         if (money != 0) {
             player.gainMeso(money, true, false, true);
@@ -38,7 +38,7 @@ public class InventoryScripting extends PlayerScripting {
     }
 
     //Like in bms, items = item, count * n
-    @ScriptingApi
+    @ApiClass
     public int exchange(int money, int... items) {
         if (money != 0) {
             player.gainMeso(money, true, false, true);

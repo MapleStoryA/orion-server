@@ -1,7 +1,7 @@
 package scripting.v1.game;
 
 import client.MapleCharacter;
-import scripting.v1.game.helper.ScriptingApi;
+import scripting.v1.game.helper.ApiClass;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
 
@@ -13,49 +13,49 @@ public class FieldScripting {
 
     private final MapleMap map;
 
-    @ScriptingApi
+    @ApiClass
     public FieldScripting(MapleMap map) {
         this.map = map;
     }
 
-    @ScriptingApi
+    @ApiClass
     public void showEffect(String effect) {
         broadcastPacket(MaplePacketCreator.showEffect(effect));
     }
 
-    @ScriptingApi
+    @ApiClass
     public Collection<MapleCharacter> fieldMembers() {
         return map.getCharacters();
     }
 
-    @ScriptingApi
+    @ApiClass
     public int fieldMembersCount() {
         return fieldMembers().size();
     }
 
-    @ScriptingApi
+    @ApiClass
     public void environmentChange(String env) {
         broadcastPacket(MaplePacketCreator.environmentChange(env, 2));
     }
 
-    @ScriptingApi
+    @ApiClass
     public void playSound(String sound) {
         broadcastPacket(MaplePacketCreator.playSound(sound));
     }
 
-    @ScriptingApi
+    @ApiClass
     public void changeMusic(String music) {
         broadcastPacket(MaplePacketCreator.musicChange(music));
     }
 
-    @ScriptingApi
+    @ApiClass
     public void setMapVar(String key, String value) {
         for (MapleCharacter chr : map.getCharacters()) {
             chr.addTemporaryData(key, value);
         }
     }
 
-    @ScriptingApi
+    @ApiClass
     public void spawnMonster(int id, int x, int y) {
         map.spawnMonsterOnGroundBelow(id, x, y);
     }
@@ -64,33 +64,33 @@ public class FieldScripting {
         map.broadcastMessage(packet);
     }
 
-    @ScriptingApi
+    @ApiClass
     public void spawnNpcWithEffect(int npcId, int x, int y) {
         map.spawnNpcWithEffect(npcId, new Point(x, y));
     }
 
-    @ScriptingApi
+    @ApiClass
     public void removeNpcWithEffect(int npcId) {
         map.makeNpcInvisible(npcId);
         map.removeNpc(npcId);
     }
 
-    @ScriptingApi
+    @ApiClass
     public void killAllMonsters() {
         map.killAllMonsters(false);
     }
 
-    @ScriptingApi
+    @ApiClass
     public int getMonsterCount() {
         return map.getAllMonster().size();
     }
 
-    @ScriptingApi
+    @ApiClass
     public void spawnSpecialMonsters() {
         map.spawnSpecialMonsters();
     }
 
-    @ScriptingApi
+    @ApiClass
     public void clearEventInstance() {
         map.clearEventInstance();
     }

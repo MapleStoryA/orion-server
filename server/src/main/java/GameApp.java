@@ -1,4 +1,5 @@
 import ch.qos.logback.classic.ClassicConstants;
+import client.commands.v2.CommandProcessor;
 import client.skill.SkillFactory;
 import constants.JobConstants;
 import database.DatabaseConnection;
@@ -91,7 +92,7 @@ public class GameApp {
     public static void listenCommand() {
         try (Scanner sc = new Scanner(System.in)) {
             String input;
-            input = sc.hasNextLine() ?  sc.nextLine() : "";
+            input = sc.hasNextLine() ? sc.nextLine() : "";
             String command = input;
             if (command.contains("shutdown")) {
                 Thread t = null;
@@ -122,6 +123,7 @@ public class GameApp {
     public void start() throws InterruptedException {
         initDatabase();
         setAccountsAsLoggedOff();
+        CommandProcessor.getInstance();
 
 
         WorldInitHelper.initCommunity();
