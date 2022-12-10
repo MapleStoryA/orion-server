@@ -307,7 +307,7 @@ public class PlayerStorage {
                 final Iterator<Map.Entry<Integer, CharacterTransfer>> itr = PendingCharacter.entrySet().iterator();
 
                 while (itr.hasNext()) {
-                    if (currenttime - itr.next().getValue().TranferTime > 40000) { // 40 sec
+                    if (currenttime - itr.next().getValue().getTranferTime() > 40000) { // 40 sec
                         itr.remove();
                     }
                 }

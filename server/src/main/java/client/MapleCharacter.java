@@ -420,58 +420,58 @@ public class MapleCharacter extends BaseMapleCharacter {
         // channel
         ret.client = client;
         if (!isChannel) {
-            ret.client.setChannel(ct.channel);
+            ret.client.setChannel(ct.getChannel());
         }
-        ret.id = ct.characterid;
-        ret.setName(ct.name);
-        ret.level = ct.level;
-        ret.fame = ct.fame;
+        ret.id = ct.getCharacter_id();
+        ret.setName(ct.getName());
+        ret.level = ct.getLevel();
+        ret.fame = ct.getFame();
 
         ret.playerRandomStream = new PlayerRandomStream();
 
         ret.changed_skill_macros = false;
 
 
-        ret.chalkText = ct.chalkboard;
-        ret.exp = ct.exp;
-        ret.setHpApUsed(ct.hpApUsed);
-        ret.remainingAp = ct.remainingAp;
-        ret.remainingSp = ct.remainingSp;
-        ret.meso = ct.meso;
-        ret.gmLevel = ct.gmLevel;
-        ret.setSkinColor(ct.skinColor);
-        ret.gender = ct.gender;
-        ret.job = MapleJob.getById(ct.job);
-        ret.hair = ct.hair;
-        ret.setFace(ct.face);
-        ret.account_id = ct.accountid;
-        ret.map_id = ct.mapid;
-        ret.initialSpawnPoint = ct.initialSpawnPoint;
-        ret.world = ct.world;
-        ret.bookCover = ct.mBookCover;
-        ret.dojo = ct.dojo;
-        ret.dojoRecord = ct.dojoRecord;
-        ret.guild_id = ct.guildid;
-        ret.guildRank = ct.guildrank;
-        ret.allianceRank = ct.alliancerank;
-        ret.points = ct.points;
-        ret.fairyExp = ct.fairyExp;
-        ret.marriageId = ct.marriageId;
-        ret.evanSP = ct.evanSP;
-        ret.stats.setStr(ct.str);
-        ret.stats.setDex(ct.dex);
-        ret.stats.setInt(ct.int_);
-        ret.stats.setLuk(ct.luk);
-        ret.stats.setMaxHp(ct.maxhp);
-        ret.stats.setMaxMp(ct.maxmp);
-        ret.stats.setHp(ct.hp);
-        ret.stats.setMp(ct.mp);
+        ret.chalkText = ct.getChalkboard();
+        ret.exp = ct.getExp();
+        ret.setHpApUsed(ct.getHpApUsed());
+        ret.remainingAp = ct.getRemainingAp();
+        ret.remainingSp = ct.getRemainingSp();
+        ret.meso = ct.getMeso();
+        ret.gmLevel = ct.getGmLevel();
+        ret.setSkinColor(ct.getSkinColor());
+        ret.gender = ct.getGender();
+        ret.job = MapleJob.getById(ct.getJob());
+        ret.hair = ct.getHair();
+        ret.setFace(ct.getFace());
+        ret.account_id = ct.getAccount_id();
+        ret.map_id = ct.getMap_id();
+        ret.initialSpawnPoint = ct.getInitialSpawnPoint();
+        ret.world = ct.getWorld();
+        ret.bookCover = ct.getmBookCover();
+        ret.dojo = ct.getDojo();
+        ret.dojoRecord = ct.getDojoRecord();
+        ret.guild_id = ct.getGuild_id();
+        ret.guildRank = ct.getGuildrank();
+        ret.allianceRank = ct.getAlliancerank();
+        ret.points = ct.getPoints();
+        ret.fairyExp = ct.getFairyExp();
+        ret.marriageId = ct.getMarriageId();
+        ret.evanSP = ct.getEvanSP();
+        ret.stats.setStr(ct.getStr());
+        ret.stats.setDex(ct.getDex());
+        ret.stats.setInt(ct.getInt_());
+        ret.stats.setLuk(ct.getLuk());
+        ret.stats.setMaxHp(ct.getMaxMp());
+        ret.stats.setMaxMp(ct.getMaxmp());
+        ret.stats.setHp(ct.getHp());
+        ret.stats.setMp(ct.getMp());
 
         if (ret.guild_id > 0) {
             ret.mgc = new MapleGuildCharacter(ret);
         }
-        ret.buddyList = new MapleBuddyList(ct.buddysize);
-        ret.subcategory = ct.subcategory;
+        ret.buddyList = new MapleBuddyList(ct.getBuddysize());
+        ret.subcategory = ct.getSubcategory();
 
         if (isChannel) {
             final MapleMapFactory mapFactory = WorldServer.getInstance().getChannel(client.getChannel()).getMapFactory();
@@ -493,14 +493,14 @@ public class MapleCharacter extends BaseMapleCharacter {
             }
             ret.setPosition(portal.getPosition());
 
-            final int messengerId = ct.messengerid;
+            final int messengerId = ct.getMessenger_id();
             if (messengerId > 0) {
                 ret.messenger = MessengerManager.getMessenger(messengerId);
             }
         } else {
             ret.messenger = null;
         }
-        int partyId = ct.partyid;
+        int partyId = ct.getParty_id();
         if (partyId >= 0) {
             MapleParty party = PartyManager.getParty(partyId);
             if (party != null && party.getMemberById(ret.id) != null) {
@@ -511,7 +511,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         MapleQuestStatus queststatus;
         MapleQuestStatus queststatus_from;
         MapleQuest quest;
-        for (final Map.Entry<Integer, Object> qs : ct.Quest.entrySet()) {
+        for (final Map.Entry<Integer, Object> qs : ct.getQuest().entrySet()) {
             quest = MapleQuest.getInstance(qs.getKey());
             queststatus_from = (MapleQuestStatus) qs.getValue();
 
@@ -528,47 +528,47 @@ public class MapleCharacter extends BaseMapleCharacter {
             ret.quests.put(quest, queststatus);
         }
 
-        for (final Map.Entry<Integer, SkillEntry> qs : ct.Skills.entrySet()) {
+        for (final Map.Entry<Integer, SkillEntry> qs : ct.getSkills().entrySet()) {
             ret.skills.put(SkillFactory.getSkill(qs.getKey()), qs.getValue());
         }
-        for (final Integer zz : ct.finishedAchievements) {
+        for (final Integer zz : ct.getFinishedAchievements()) {
             ret.finishedAchievements.add(zz);
         }
-        for (final Map.Entry<Byte, Integer> qs : ct.reports.entrySet()) {
+        for (final Map.Entry<Byte, Integer> qs : ct.getReports().entrySet()) {
             ret.reports.put(ReportType.getById(qs.getKey()), qs.getValue());
         }
-        ret.monsterBook = new MonsterBook(ct.mbook);
-        ret.inventory = (MapleInventory[]) ct.inventorys;
-        ret.BlessOfFairy_Origin = ct.BlessOfFairy;
-        ret.skillMacros = (SkillMacro[]) ct.skillmacro;
-        ret.keyLayout = new MapleKeyLayout(ct.keymap);
-        ret.petStore = ct.petStore;
-        ret.questInfo = ct.InfoQuest;
-        ret.savedLocations = ct.savedlocation;
-        ret.wishlist = ct.wishlist;
-        ret.vipTeleportRock.initMaps(ct.rocks);
-        ret.regTeleportRock.initMaps(ct.regrocks);
-        ret.buddyList.loadFromTransfer(ct.buddies);
+        ret.monsterBook = new MonsterBook(ct.getMbook());
+        ret.inventory = (MapleInventory[]) ct.getInventorys();
+        ret.BlessOfFairy_Origin = ct.getBlessOfFairy();
+        ret.skillMacros = (SkillMacro[]) ct.getSkillmacro();
+        ret.keyLayout = new MapleKeyLayout(ct.getKeymap());
+        ret.petStore = ct.getPetStore();
+        ret.questInfo = ct.getInfoQuest();
+        ret.savedLocations = ct.getSavedlocation();
+        ret.wishlist = ct.getWishlist();
+        ret.vipTeleportRock.initMaps(ct.getVipTeleportRocks());
+        ret.regTeleportRock.initMaps(ct.getRegularTeleportRocks());
+        ret.buddyList.loadFromTransfer(ct.getBuddies());
         // ret.lastfametime
         // ret.lastmonthfameids
         ret.keydown_skill = 0; // Keydown skill can't be brought over
-        ret.lastFameTime = ct.lastfametime;
-        ret.loginTime = ct.loginTime;
-        ret.lastRecoveryTime = ct.lastRecoveryTime;
-        ret.lastDragonBloodTime = ct.lastDragonBloodTime;
-        ret.setLastBerserkTime(ct.lastBerserkTime);
-        ret.lastHPTime = ct.lastHPTime;
-        ret.lastMPTime = ct.lastMPTime;
-        ret.lastFairyTime = ct.lastFairyTime;
-        ret.lastMonthFameIds = ct.famedcharacters;
-        ret.morphId = ct.morphId;
-        ret.storage = (MapleStorage) ct.storage;
-        ret.cs = (CashShop) ct.cs;
+        ret.lastFameTime = ct.getLastfametime();
+        ret.loginTime = ct.getLoginTime();
+        ret.lastRecoveryTime = ct.getLastRecoveryTime();
+        ret.lastDragonBloodTime = ct.getLastDragonBloodTime();
+        ret.setLastBerserkTime(ct.getLastBerserkTime());
+        ret.lastHPTime = ct.getLastHPTime();
+        ret.lastMPTime = ct.getLastMPTime();
+        ret.lastFairyTime = ct.getLastFairyTime();
+        ret.lastMonthFameIds = ct.getFamedcharacters();
+        ret.morphId = ct.getMorphId();
+        ret.storage = (MapleStorage) ct.getStorage();
+        ret.cs = (CashShop) ct.getCs();
 
-        ret.nx_credit = ct.nxCredit;
-        ret.maple_points = ct.MaplePoints;
-        ret.mount = new MapleMount(ret, ct.mount_itemid, GameConstants.getSkillByJob(1004, ret.job.getId()), ct.mount_Fatigue,
-                ct.mount_level, ct.mount_exp);
+        ret.nx_credit = ct.getNxCredit();
+        ret.maple_points = ct.getMaplePoints();
+        ret.mount = new MapleMount(ret, ct.getMount_item_id(), GameConstants.getSkillByJob(1004, ret.job.getId()), ct.getMount_Fatigue(),
+                ct.getMount_level(), ct.getMount_exp());
         ret.expirationTask(false, false);
         ret.stats.recalcLocalStats(true);
 
