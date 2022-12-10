@@ -5567,18 +5567,38 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     }
 
+    public void maxAllSkills() {
+        for (ISkill skill : SkillFactory.getAllSkills()) {
+            if (GameConstants.isApplicableSkill(skill.getId())) {
+                if (skill.getId() >= 22000000 && (GameConstants.isEvan((skill.getId() / 10000)) || GameConstants.isResist((skill.getId() / 10000)))) {
+                    continue;
+                } // only beginner skills are not maxed!
+                if (skill.getId() < 10000 || ((skill.getId() / 10000) == 1000) || ((skill.getId() / 10000) == 2000)
+                        || ((skill.getId() / 10000) == 2001)) {
 
-    public final void maxMastery() {
+                    if (getSkillLevel(skill) > level) {
+                        level = getSkillLevel(skill);
+                    }
+                    changeSkillLevel(skill, (byte) level, skill.getMaxLevel());
+                }
+            }
+        }
+        for (var entry : getSkills().entrySet()) {
+            changeSkillLevel(entry.getKey(), (byte) level, entry.getKey().getMaxLevel());
+        }
+    }
+
+    public void maxMastery() {
         for (ISkill skill_ : SkillFactory.getAllSkills()) {
             try {
-                int skillid = skill_.getId();
-                if ((skillid % 10000000 >= 1000000) && ((skillid >= 9000000) && (skillid <= 10000000))) {
+                int skill_id = skill_.getId();
+                if ((skill_id % 10000000 >= 1000000) && ((skill_id >= 9000000) && (skill_id <= 10000000))) {
                     continue;
                 }
-                ISkill skill = SkillFactory.getSkill(skillid);
-                boolean add = ((skillid / 10000000 == this.getJob().getId() / 1000) && (skill.hasMastery())) || (job.isCygnus());
+                ISkill skill = SkillFactory.getSkill(skill_id);
+                boolean add = ((skill_id / 10000000 == this.getJob().getId() / 1000) && (skill.hasMastery())) || (job.isCygnus());
                 if ((!add) && (job.isAran())) {
-                    switch (skillid) {
+                    switch (skill_id) {
                         case 21000000:
                         case 21001003:
                         case 21100000:
