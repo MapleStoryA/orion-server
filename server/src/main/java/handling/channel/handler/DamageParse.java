@@ -21,15 +21,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package handling.channel.handler;
 
-import client.ISkill;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.PlayerStats;
-import client.SkillFactory;
 import client.anticheat.CheatTracker;
 import client.anticheat.CheatingOffense;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
+import client.skill.ISkill;
+import client.skill.SkillFactory;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
 import constants.GameConstants;
@@ -187,7 +187,7 @@ public class DamageParse {
                 fixeddmg = monsterstats.getFixedDamage();
                 Tempest = monster.getStatusSourceID(MonsterStatus.FREEZE) == 21120006;
 
-                if (!Tempest && !player.isGM()) {
+                if (!Tempest && !player.isGameMaster()) {
                     if (!monster.isBuffed(MonsterStatus.DAMAGE_IMMUNITY) && !monster.isBuffed(MonsterStatus.WEAPON_IMMUNITY) && !monster.isBuffed(MonsterStatus.WEAPON_DAMAGE_REFLECT)) {
                         maxDamagePerHit = CalculateMaxWeaponDamagePerHit(player, monster, attack, theSkill, effect, maxDamagePerMonster, CriticalDamage);
                     } else {
@@ -214,7 +214,7 @@ public class DamageParse {
                     } else {
                         if (monsterstats.getOnlyNoramlAttack()) {
                             eachd = attack.skill != 0 ? 0 : Math.min(eachd, (int) maxDamagePerHit);  // Convert to server calculated damage
-                        } else if (!player.isGM() && !GameConstants.isVisitorSkill(attack.skill)) {
+                        } else if (!player.isGameMaster() && !GameConstants.isVisitorSkill(attack.skill)) {
                             if (Tempest) { // Monster buffed with Tempest
                                 if (eachd > monster.getMobMaxHp()) {
                                     eachd = (int) Math.min(monster.getMobMaxHp(), Integer.MAX_VALUE);
@@ -267,7 +267,7 @@ public class DamageParse {
                     }
                 }
                 final MapleStatEffect ds = player.getStatForBuff(MapleBuffStat.DARKSIGHT);
-                if (ds != null && !player.isGM()) {
+                if (ds != null && !player.isGameMaster()) {
                     if (ds.getSourceId() != 4330001 || !ds.makeChanceResult()) {
                         player.cancelEffectFromBuffStat(MapleBuffStat.DARKSIGHT);
                     }
@@ -440,7 +440,7 @@ public class DamageParse {
                                 monster.applyStatus(player, monsterStatusEffect, false, eff.getY() * 1000L, false);
                             }
                         }
-                        if (player.getJob() == 121) { // WHITEKNIGHT
+                        if (player.getJob().getId() == 121) { // WHITEKNIGHT
                             for (int charge : charges) {
                                 final ISkill skill = SkillFactory.getSkill(charge);
                                 if (player.isBuffFrom(MapleBuffStat.WK_CHARGE, skill)) {
@@ -538,7 +538,7 @@ public class DamageParse {
         boolean Tempest;
         MapleMonsterStats monsterstats;
         int CriticalDamage = stats.passive_sharpeye_percent();
-        final ISkill eaterSkill = SkillFactory.getSkill(GameConstants.getMPEaterForJob(player.getJob()));
+        final ISkill eaterSkill = SkillFactory.getSkill(GameConstants.getMPEaterForJob(player.getJob().getId()));
         final int eaterLevel = player.getSkillLevel(eaterSkill);
 
         final MapleMap map = player.getMap();
@@ -551,7 +551,7 @@ public class DamageParse {
                 totDamageToOneMonster = 0;
                 monsterstats = monster.getStats();
                 fixeddmg = monsterstats.getFixedDamage();
-                if (!Tempest && !player.isGM()) {
+                if (!Tempest && !player.isGameMaster()) {
                     if (!monster.isBuffed(MonsterStatus.DAMAGE_IMMUNITY) && !monster.isBuffed(MonsterStatus.MAGIC_IMMUNITY) && !monster.isBuffed(MonsterStatus.MAGIC_DAMAGE_REFLECT)) {
                         MaxDamagePerHit = CalculateMaxMagicDamagePerHit(player, theSkill, monster, monsterstats, stats, element, CriticalDamage, maxDamagePerHit);
                     } else {
@@ -568,7 +568,7 @@ public class DamageParse {
                     } else {
                         if (monsterstats.getOnlyNoramlAttack()) {
                             eachd = 0; // Magic is always not a normal attack
-                        } else if (!player.isGM()) {
+                        } else if (!player.isGameMaster()) {
 //			    log.info("Client damage : " + eachd + " Server : " + MaxDamagePerHit);
 
                             if (Tempest) { // Buffed with Tempest

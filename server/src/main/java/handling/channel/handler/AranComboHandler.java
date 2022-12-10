@@ -2,8 +2,8 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import client.SkillFactory;
 import client.anticheat.CheatingOffense;
+import client.skill.SkillFactory;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -14,7 +14,7 @@ public class AranComboHandler extends AbstractMaplePacketHandler {
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        if (chr != null && chr.getJob() >= 2000 && chr.getJob() <= 2112) {
+        if (chr != null && chr.getJob().getId() >= 2000 && chr.getJob().getId() <= 2112) {
             short combo = chr.getCombo();
             final long curr = System.currentTimeMillis();
 

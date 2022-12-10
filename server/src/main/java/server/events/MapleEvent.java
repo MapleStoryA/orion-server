@@ -31,7 +31,7 @@ import server.RandomRewards;
 import server.Timer.EventTimer;
 import server.maps.MapleMap;
 import server.maps.SavedLocationType;
-import tools.FileOutputUtil;
+import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
 
@@ -168,7 +168,7 @@ public abstract class MapleEvent {
             }
             final int quantity = (max_quantity > 1 ? Randomizer.nextInt(max_quantity) : 0) + 1;
             if (MapleInventoryManipulator.checkSpace(chr.getClient(), reward, quantity, "")) {
-                MapleInventoryManipulator.addById(chr.getClient(), reward, (short) quantity, "Event prize on " + FileOutputUtil.CurrentReadable_Date());
+                MapleInventoryManipulator.addById(chr.getClient(), reward, (short) quantity, "Event prize on " + DateHelper.getCurrentReadableDate());
             } else {
                 givePrize(chr); //do again until they get
             }

@@ -71,7 +71,7 @@ public class BuddyListModifyHandler extends AbstractMaplePacketHandler {
                     return;
                 }
                 final MapleCharacter otherChar = WorldServer.getInstance().getChannel(channel).getPlayerStorage().getCharacterByName(addName);
-                if (!otherChar.isGM() || c.getPlayer().isGM()) {
+                if (!otherChar.isGameMaster() || c.getPlayer().isGameMaster()) {
                     if (otherChar.getBuddylist().isFull()) {
                         c.getSession().write(MaplePacketCreator.buddylistMessage(THEIR_LIST_FULL));
                         return;

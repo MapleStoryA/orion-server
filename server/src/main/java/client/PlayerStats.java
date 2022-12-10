@@ -26,6 +26,8 @@ import client.inventory.IEquip;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import client.inventory.MapleWeaponType;
+import client.skill.ISkill;
+import client.skill.SkillFactory;
 import constants.GameConstants;
 import lombok.Getter;
 import server.MapleInventoryManipulator;
@@ -294,7 +296,7 @@ public class PlayerStats implements Serializable {
         hasItem = false;
         hasIgnore = false;
         hasPartyBonus = false;
-        final boolean canEquipLevel = chra.getLevel() >= 120 && !GameConstants.isKOC(chra.getJob());
+        final boolean canEquipLevel = chra.getLevel() >= 120 && !GameConstants.isKOC(chra.getJob().getId());
         equipmentBonusExp = 0;
         RecoveryUP = 0;
         dropMod = 1;
@@ -437,7 +439,7 @@ public class PlayerStats implements Serializable {
                             }
                             mpRestore += pot.mpRestore;
                             if (!first_login && pot.skillID > 0) {
-                                chra.changeSkillLevel_Skip(SkillFactory.getSkill(GameConstants.getSkillByJob(pot.skillID, chra.getJob())), (byte) 1, (byte) 1);
+                                chra.changeSkillLevel_Skip(SkillFactory.getSkill(GameConstants.getSkillByJob(pot.skillID, chra.getJob().getId())), (byte) 1, (byte) 1);
                             }
                         }
                     }
@@ -573,7 +575,7 @@ public class PlayerStats implements Serializable {
         if (buff != null) {
             localmaxmp_ += buff.intValue();
         }
-        switch (chra.getJob()) {
+        switch (chra.getJob().getId()) {
             case 322: { // Crossbowman
                 final ISkill expert = SkillFactory.getSkill(3220004);
                 final int boostLevel = chra.getSkillLevel(expert);
@@ -641,7 +643,7 @@ public class PlayerStats implements Serializable {
                 break;
             }
         }
-        final ISkill blessoffairy = SkillFactory.getSkill(GameConstants.getBOF_ForJob(chra.getJob()));
+        final ISkill blessoffairy = SkillFactory.getSkill(GameConstants.getBOF_ForJob(chra.getJob().getId()));
         final int boflevel = chra.getSkillLevel(blessoffairy);
         if (boflevel > 0) {
             watk += blessoffairy.getEffect(boflevel).getX();
@@ -836,7 +838,7 @@ public class PlayerStats implements Serializable {
                             for (Integer z : ins.get(lvlz + i)) {
                                 if (Math.random() < 0.1) { //10% chance dood
                                     final ISkill skil = SkillFactory.getSkill(z.intValue());
-                                    if (skil != null && skil.canBeLearnedBy(chr.getJob()) && chr.getSkillLevel(skil) < chr.getMasterLevel(skil)) { //dont go over masterlevel :D
+                                    if (skil != null && skil.canBeLearnedBy(chr.getJob().getId()) && chr.getSkillLevel(skil) < chr.getMasterLevel(skil)) { //dont go over masterlevel :D
                                         chr.changeSkillLevel(skil, (byte) (chr.getSkillLevel(skil) + 1), chr.getMasterLevel(skil));
                                     }
                                 }
@@ -890,14 +892,14 @@ public class PlayerStats implements Serializable {
         final int skil;
         switch (GameConstants.getWeaponType(player.getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -11).getItemId())) {
             case BOW:
-                skil = GameConstants.isKOC(player.getJob()) ? 13100000 : (GameConstants.isResist(player.getJob()) ? 33100000 : 3100000);
+                skil = GameConstants.isKOC(player.getJob().getId()) ? 13100000 : (GameConstants.isResist(player.getJob().getId()) ? 33100000 : 3100000);
                 break;
             case CLAW:
                 skil = 4100000;
                 break;
             case KATARA:
             case DAGGER:
-                skil = player.getJob() >= 430 && player.getJob() <= 434 ? 4300000 : 4200000;
+                skil = player.getJob().getId() >= 430 && player.getJob().getId() <= 434 ? 4300000 : 4200000;
                 break;
             case CROSSBOW:
                 skil = 3200000;
@@ -908,23 +910,23 @@ public class PlayerStats implements Serializable {
                 break;
             case SWORD1H:
             case SWORD2H:
-                skil = GameConstants.isKOC(player.getJob()) ? 11100000 : (player.getJob() > 112 ? 1200000 : 1100000); //hero/pally
+                skil = GameConstants.isKOC(player.getJob().getId()) ? 11100000 : (player.getJob().getId() > 112 ? 1200000 : 1100000); //hero/pally
                 break;
             case BLUNT1H:
             case BLUNT2H:
                 skil = 1200001;
                 break;
             case POLE_ARM:
-                skil = GameConstants.isAran(player.getJob()) ? 21100000 : 1300001;
+                skil = GameConstants.isAran(player.getJob().getId()) ? 21100000 : 1300001;
                 break;
             case SPEAR:
                 skil = 1300000;
                 break;
             case KNUCKLE:
-                skil = GameConstants.isKOC(player.getJob()) ? 15100001 : 5100001;
+                skil = GameConstants.isKOC(player.getJob().getId()) ? 15100001 : 5100001;
                 break;
             case GUN:
-                skil = GameConstants.isResist(player.getJob()) ? 35100000 : 5200000;
+                skil = GameConstants.isResist(player.getJob().getId()) ? 35100000 : 5200000;
                 break;
             case STAFF:
                 skil = 32100006;
@@ -942,7 +944,7 @@ public class PlayerStats implements Serializable {
     }
 
     private final void CalcPassive_SharpEye(final MapleCharacter player, final int added_sharpeye_rate, final int added_sharpeye_dmg) {
-        switch (player.getJob()) { // Apply passive Critical bonus
+        switch (player.getJob().getId()) { // Apply passive Critical bonus
             case 410:
             case 411:
             case 412: { // Assasin/ Hermit / NL
@@ -1070,7 +1072,7 @@ public class PlayerStats implements Serializable {
             maxbasedamage = 1;
         } else {
             final IItem weapon_item = chra.getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -11);
-            final int job = chra.getJob();
+            final int job = chra.getJob().getId();
             final MapleWeaponType weapon = weapon_item == null ? MapleWeaponType.NOT_A_WEAPON : GameConstants.getWeaponType(weapon_item.getItemId());
             int mainstat, secondarystat;
 
@@ -1127,64 +1129,64 @@ public class PlayerStats implements Serializable {
     }
 
     public final void relocHeal() {
-        final MapleCharacter chra = chr.get();
-        if (chra == null) {
+        final MapleCharacter player = chr.get();
+        if (player == null) {
             return;
         }
-        final int playerjob = chra.getJob();
+        final int player_job_id = player.getJob().getId();
 
         shouldHealHP = 10 + recoverHP; // Reset
-        shouldHealMP = 3 + mpRestore + recoverMP; // i think
+        shouldHealMP = 3 + mpRestore + recoverMP;
 
-        if (GameConstants.isJobFamily(200, playerjob)) { // Improving MP recovery
-            shouldHealMP += (((float) chra.getSkillLevel(SkillFactory.getSkill(2000000)) / 10) * chra.getLevel());
+        if (GameConstants.isJobFamily(200, player_job_id)) { // Improving MP recovery
+            shouldHealMP += (((float) player.getSkillLevel(SkillFactory.getSkill(2000000)) / 10) * player.getLevel());
 
-        } else if (GameConstants.isJobFamily(111, playerjob)) {
+        } else if (GameConstants.isJobFamily(111, player_job_id)) {
             final ISkill effect = SkillFactory.getSkill(1110000); // Improving MP Recovery
-            final int lvl = chra.getSkillLevel(effect);
+            final int lvl = player.getSkillLevel(effect);
             if (lvl > 0) {
                 shouldHealMP += effect.getEffect(lvl).getMp();
             }
 
-        } else if (GameConstants.isJobFamily(121, playerjob)) {
+        } else if (GameConstants.isJobFamily(121, player_job_id)) {
             final ISkill effect = SkillFactory.getSkill(1210000); // Improving MP Recovery
-            final int lvl = chra.getSkillLevel(effect);
+            final int lvl = player.getSkillLevel(effect);
             if (lvl > 0) {
                 shouldHealMP += effect.getEffect(lvl).getMp();
             }
 
-        } else if (GameConstants.isJobFamily(1111, playerjob)) {
+        } else if (GameConstants.isJobFamily(1111, player_job_id)) {
             final ISkill effect = SkillFactory.getSkill(11110000); // Improving MP Recovery
-            final int lvl = chra.getSkillLevel(effect);
+            final int lvl = player.getSkillLevel(effect);
             if (lvl > 0) {
                 shouldHealMP += effect.getEffect(lvl).getMp();
             }
 
-        } else if (GameConstants.isJobFamily(410, playerjob)) {
+        } else if (GameConstants.isJobFamily(410, player_job_id)) {
             final ISkill effect = SkillFactory.getSkill(4100002); // Endure
-            final int lvl = chra.getSkillLevel(effect);
+            final int lvl = player.getSkillLevel(effect);
             if (lvl > 0) {
                 shouldHealHP += effect.getEffect(lvl).getHp();
                 shouldHealMP += effect.getEffect(lvl).getMp();
             }
 
-        } else if (GameConstants.isJobFamily(420, playerjob)) {
+        } else if (GameConstants.isJobFamily(420, player_job_id)) {
             final ISkill effect = SkillFactory.getSkill(4200001); // Endure
-            final int lvl = chra.getSkillLevel(effect);
+            final int lvl = player.getSkillLevel(effect);
             if (lvl > 0) {
                 shouldHealHP += effect.getEffect(lvl).getHp();
                 shouldHealMP += effect.getEffect(lvl).getMp();
             }
         }
-        if (chra.isGM()) {
+        if (player.isGameMaster()) {
             shouldHealHP += 1000;
             shouldHealMP += 1000;
         }
-        if (chra.getChair() != 0) { // Is sitting on a chair.
+        if (player.getChair() != 0) { // Is sitting on a chair.
             shouldHealHP += 99; // Until the values of Chair heal has been fixed,
             shouldHealMP += 99; // MP is different here, if chair data MP = 0, heal + 1.5
         } else { // Because Heal isn't multipled when there's a chair :)
-            final float recvRate = chra.getMap().getRecoveryRate();
+            final float recvRate = player.getMap().getRecoveryRate();
             shouldHealHP *= recvRate;
             shouldHealMP *= recvRate;
         }

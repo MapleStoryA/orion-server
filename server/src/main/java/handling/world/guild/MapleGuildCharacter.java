@@ -42,7 +42,7 @@ public class MapleGuildCharacter implements java.io.Serializable { // alias for 
         level = c.getLevel();
         id = c.getId();
         channel = (byte) c.getClient().getChannel();
-        jobid = c.getJob();
+        jobid = c.getJob().getId();
         guildrank = c.getGuildRank();
         guildid = c.getGuildId();
         allianceRank = c.getAllianceRank();

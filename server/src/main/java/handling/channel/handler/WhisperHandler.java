@@ -22,7 +22,7 @@ public class WhisperHandler extends AbstractMaplePacketHandler {
                 final String recipient = slea.readMapleAsciiString();
                 MapleCharacter player = c.getChannelServer().getPlayerStorage().getCharacterByName(recipient);
                 if (player != null) {
-                    if (!player.isGM() || c.getPlayer().isGM() && player.isGM()) {
+                    if (!player.isGameMaster() || c.getPlayer().isGameMaster() && player.isGameMaster()) {
 
                         c.getSession().write(MaplePacketCreator.getFindReplyWithMap(player.getName(),
                                 player.getMap().getId(), mode == 68));
@@ -37,7 +37,7 @@ public class WhisperHandler extends AbstractMaplePacketHandler {
                             break;
                         }
                         if (player != null) {
-                            if (!player.isGM() || (c.getPlayer().isGM() && player.isGM())) {
+                            if (!player.isGameMaster() || (c.getPlayer().isGameMaster() && player.isGameMaster())) {
                                 c.getSession().write(MaplePacketCreator.getFindReply(recipient, (byte) ch, mode == 68));
                             } else {
                                 c.getSession().write(MaplePacketCreator.getWhisperReply(recipient, (byte) 0));
@@ -72,7 +72,7 @@ public class WhisperHandler extends AbstractMaplePacketHandler {
                     }
                     player.getClient().getSession()
                             .write(MaplePacketCreator.getWhisper(c.getPlayer().getName(), c.getChannel(), text));
-                    if (!c.getPlayer().isGM() && player.isGM() && player.isHidden()) {
+                    if (!c.getPlayer().isGameMaster() && player.isGameMaster() && player.isHidden()) {
                         c.getSession().write(MaplePacketCreator.getWhisperReply(recipient, (byte) 0));
                     } else {
                         c.getSession().write(MaplePacketCreator.getWhisperReply(recipient, (byte) 1));

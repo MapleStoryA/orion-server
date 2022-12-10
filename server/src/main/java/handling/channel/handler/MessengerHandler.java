@@ -57,7 +57,7 @@ public class MessengerHandler extends AbstractMaplePacketHandler {
 
                     if (target != null) {
                         if (target.getMessenger() == null) {
-                            if (!target.isGM() || c.getPlayer().isGM()) {
+                            if (!target.isGameMaster() || c.getPlayer().isGameMaster()) {
                                 c.getSession().write(MaplePacketCreator.messengerNote(input, 4, 1));
                                 target.getClient().getSession().write(
                                         MaplePacketCreator.messengerInvite(c.getPlayer().getName(), messenger.getId()));
@@ -71,7 +71,7 @@ public class MessengerHandler extends AbstractMaplePacketHandler {
                     } else {
                         if (WorldServer.getInstance().isConnected(input)) {
                             MessengerManager.messengerInvite(c.getPlayer().getName(), messenger.getId(), input,
-                                    c.getChannel(), c.getPlayer().isGM());
+                                    c.getChannel(), c.getPlayer().isGameMaster());
                         } else {
                             c.getSession().write(MaplePacketCreator.messengerNote(input, 4, 0));
                         }
@@ -87,7 +87,7 @@ public class MessengerHandler extends AbstractMaplePacketHandler {
                                 .write(MaplePacketCreator.messengerNote(c.getPlayer().getName(), 5, 0));
                     }
                 } else { // Other channel
-                    if (!c.getPlayer().isGM()) {
+                    if (!c.getPlayer().isGameMaster()) {
                         MessengerManager.declineChat(targeted, c.getPlayer().getName());
                     }
                 }

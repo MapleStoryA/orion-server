@@ -21,13 +21,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package handling.channel.handler;
 
-import client.ISkill;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.PlayerStats;
-import client.SkillFactory;
 import client.inventory.MapleInventoryType;
+import client.skill.ISkill;
+import client.skill.SkillFactory;
 import constants.MapConstants;
 import handling.world.WorldServer;
 import server.AutobanManager;
@@ -88,7 +88,7 @@ public class PlayerHandler {
             return;
         }
 
-        if (chr.isGM() && chr.isInvincible()) {
+        if (chr.isGameMaster() && chr.isInvincible()) {
             return;
         }
         final PlayerStats stats = chr.getStat();
@@ -121,7 +121,7 @@ public class PlayerHandler {
         }
 
         if (damage == -1) {
-            fake = 4020002 + ((chr.getJob() / 10 - 40) * 100000);
+            fake = 4020002 + ((chr.getJob().getId() / 10 - 40) * 100000);
         } else if (damage < -1 || damage > 60000) {
             AutobanManager.getInstance().addPoints(c, 1000, 60000,
                     "Taking abnormal amounts of damge from " + monsteridfrom + ": " + damage);
@@ -177,7 +177,7 @@ public class PlayerHandler {
                 }
             }
             if (type != -1 && type != -2 && type != -3 && type != -4) {
-                switch (chr.getJob()) {
+                switch (chr.getJob().getId()) {
                     case 112: {
                         final ISkill skill = SkillFactory.getSkill(1120004);
                         if (chr.getSkillLevel(skill) > 0) {
@@ -337,7 +337,7 @@ public class PlayerHandler {
                     final MapleMap to = chr.getMap();
                     chr.changeMap(to, to.getPortal(0));
                 }
-            } else if (targetid != -1 && chr.isGM()) {
+            } else if (targetid != -1 && chr.isGameMaster()) {
                 if (targetid == 502050000 || targetid == 502050001) {
                     c.getSession().write(UIPacket.IntroDisableUI(false));
                     c.getSession().write(UIPacket.IntroLock(false));
@@ -351,7 +351,7 @@ public class PlayerHandler {
                 final MapleMap to = WorldServer.getInstance().getChannel(c.getChannel()).getMapFactory().getMap(targetid);
                 chr.changeMap(to, to.getPortal(0));
 
-            } else if (targetid != -1 && !chr.isGM()) {
+            } else if (targetid != -1 && !chr.isGameMaster()) {
                 final int divi = chr.getMapId() / 100;
                 boolean unlock = false;
                 boolean warp = false;

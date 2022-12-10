@@ -1,5 +1,5 @@
 import ch.qos.logback.classic.ClassicConstants;
-import client.SkillFactory;
+import client.skill.SkillFactory;
 import constants.JobConstants;
 import database.DatabaseConnection;
 import handling.cashshop.CashShopServer;

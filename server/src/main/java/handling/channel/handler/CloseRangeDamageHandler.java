@@ -1,11 +1,11 @@
 package handling.channel.handler;
 
-import client.ISkill;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
-import client.SkillFactory;
 import client.anticheat.CheatingOffense;
+import client.skill.ISkill;
+import client.skill.SkillFactory;
 import constants.GameConstants;
 import constants.skills.BladeMaster;
 import handling.AbstractMaplePacketHandler;
@@ -44,7 +44,7 @@ public class CloseRangeDamageHandler extends AbstractMaplePacketHandler {
     public void handlePacket(SeekableLittleEndianAccessor slea, final MapleClient c) {
         final MapleCharacter chr = c.getPlayer();
         if (chr == null || (energy && chr.getBuffedValue(MapleBuffStat.ENERGY_CHARGE) == null
-                && chr.getBuffedValue(MapleBuffStat.BODY_PRESSURE) == null && !GameConstants.isKOC(chr.getJob()))) {
+                && chr.getBuffedValue(MapleBuffStat.BODY_PRESSURE) == null && !GameConstants.isKOC(chr.getJob().getId()))) {
             return;
         }
         if (!chr.isAlive() || chr.getMap() == null) {
@@ -52,7 +52,7 @@ public class CloseRangeDamageHandler extends AbstractMaplePacketHandler {
             return;
         }
         final AttackInfo attack = DamageParse.Modify_AttackCrit(DamageParse.parseDmgM(slea), chr, 1);
-        if (!chr.isSkillBelongToJob(attack.skill)) {
+        if (!chr.getJob().isSkillBelongToJob(attack.skill, chr.isGameMaster())) {
             chr.dropMessage(5, "This skill cannot be used with the current job");
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
@@ -63,7 +63,7 @@ public class CloseRangeDamageHandler extends AbstractMaplePacketHandler {
         }
         final boolean mirror = chr.getBuffedValue(MapleBuffStat.MIRROR_IMAGE) != null;
         double maxdamage = chr.getStat().getCurrentMaxBaseDamage();
-        int attackCount = (chr.getJob() >= 430 && chr.getJob() <= 434 ? 2 : 1), skillLevel = 0;
+        int attackCount = (chr.getJob().getId() >= 430 && chr.getJob().getId() <= 434 ? 2 : 1), skillLevel = 0;
         MapleStatEffect effect = null;
         ISkill skill = null;
         if (c.getPlayer().isActiveBuffedValue(BladeMaster.FINAL_CUT)
@@ -85,7 +85,7 @@ public class CloseRangeDamageHandler extends AbstractMaplePacketHandler {
             maxdamage *= effect.getDamage() / 100.0;
             attackCount = effect.getAttackCount();
 
-            if (effect.getCooldown() > 0 && !chr.isGM()) {
+            if (effect.getCooldown() > 0 && !chr.isGameMaster()) {
                 if (chr.skillisCooling(attack.skill)) {
                     c.getSession().write(MaplePacketCreator.enableActions());
                     return;
@@ -124,7 +124,7 @@ public class CloseRangeDamageHandler extends AbstractMaplePacketHandler {
 
             } else if (attack.targets > 0 && comboBuff != null) {
                 // handle combo orbgain
-                switch (chr.getJob()) {
+                switch (chr.getJob().getId()) {
                     case 111:
                     case 112:
                     case 1110:
@@ -135,7 +135,7 @@ public class CloseRangeDamageHandler extends AbstractMaplePacketHandler {
                         break;
                 }
             }
-            switch (chr.getJob()) {
+            switch (chr.getJob().getId()) {
                 case 511:
                 case 512: {
                     chr.handleEnergyCharge(5110001, attack.targets * attack.hits);
@@ -169,7 +169,7 @@ public class CloseRangeDamageHandler extends AbstractMaplePacketHandler {
                 maxdamage *= numFinisherOrbs;
             } else if (comboBuff != null) {
                 ISkill combo;
-                if (c.getPlayer().getJob() == 1110 || c.getPlayer().getJob() == 1111) {
+                if (c.getPlayer().getJob().getId() == 1110 || c.getPlayer().getJob().getId() == 1111) {
                     combo = SkillFactory.getSkill(11111001);
                 } else {
                     combo = SkillFactory.getSkill(1111002);

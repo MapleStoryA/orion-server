@@ -18,7 +18,7 @@ public class PuppeteerMapEvent extends AbstractMapEvent {
 
     @Override
     public void onUserEnter(MapleCharacter c) {
-        if (!c.isAran()) {
+        if (!c.getJob().isAran()) {
             return;
         }
         map.broadcastMessage(MaplePacketCreator.getClock(10 * 60));

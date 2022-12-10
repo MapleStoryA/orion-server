@@ -202,7 +202,7 @@ public class NpcScripting extends PlayerScripting {
             finalText = finalText.replace("#npcname#", npcObject.getName());
         }
         finalText = finalText.replace("#level#", "Lvl." + String.valueOf(player.getLevel()));
-        finalText = finalText.replace("#job#", player.getJobValue().getName());
+        finalText = finalText.replace("#job#", player.getJob().getName());
         finalText = finalText.replace("#street#", player.getMap().getStreetName());
         finalText = finalText.replace("#mapname#", player.getMap().getMapName());
         finalText = finalText.replace("#name#", player.getName());

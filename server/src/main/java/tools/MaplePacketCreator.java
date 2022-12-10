@@ -21,9 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package tools;
 
-import client.EvanSkillPoints;
-import client.ExtendedSPTable;
-import client.ISkill;
+import client.skill.EvanSkillPoints;
+import client.skill.ExtendedSPTable;
+import client.skill.ISkill;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
@@ -31,8 +31,8 @@ import client.MapleDisease;
 import client.MapleKeyLayout;
 import client.MapleQuestStatus;
 import client.MapleStat;
-import client.SkillEntry;
-import client.SkillMacro;
+import client.skill.SkillEntry;
+import client.skill.SkillMacro;
 import client.inventory.IEquip.ScrollResult;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
@@ -248,7 +248,7 @@ public class MaplePacketCreator {
         mplew.writeShort(SendPacketOpcode.UPDATE_STATS.getValue());
         mplew.write(itemReaction ? 1 : 0);
         mplew.writeInt(MapleStat.AVAILABLESP.getValue());
-        if (overrideJob || GameConstants.isEvan(chr.getJob()) || GameConstants.isResist(chr.getJob())) {
+        if (overrideJob || GameConstants.isEvan(chr.getJob().getId()) || GameConstants.isResist(chr.getJob().getId())) {
             mplew.write(0);
         } else {
             mplew.writeShort(chr.getRemainingSp());
@@ -998,7 +998,7 @@ public class MaplePacketCreator {
         mplew.write(1);
         mplew.writeInt(CHAR_MAGIC_SPAWN);
         mplew.writeShort(0);
-        mplew.writeShort(chr.getJob());
+        mplew.writeShort(chr.getJob().getId());
         PacketHelper.addCharLook(mplew, chr, false);
         mplew.writeInt(0);// this is CHARID to follow
         mplew.writeInt(0); // probably charid following
@@ -1727,7 +1727,7 @@ public class MaplePacketCreator {
         mplew.writeShort(SendPacketOpcode.CHARACTER_INFO.getValue());
         mplew.writeInt(chr.getId());
         mplew.write(chr.getLevel());
-        mplew.writeShort(chr.getJob());
+        mplew.writeShort(chr.getJob().getId());
         mplew.writeShort(chr.getFame());
         mplew.write(chr.getMarriageId() > 0 ? 1 : 0); // heart red or gray
 
@@ -2175,7 +2175,7 @@ public class MaplePacketCreator {
         mplew.write(HexTool.getByteArrayFromHexString("04 0" + slot));
         PacketHelper.addCharLook(mplew, c, false);
         mplew.writeMapleAsciiString(c.getName());
-        mplew.writeShort(c.getJob());
+        mplew.writeShort(c.getJob().getId());
 
         return mplew.getPacket();
     }
@@ -2200,7 +2200,7 @@ public class MaplePacketCreator {
         mplew.write(1);
         PacketHelper.addCharLook(mplew, c, false);
         mplew.writeMapleAsciiString(c.getName());
-        mplew.writeShort(c.getJob());
+        mplew.writeShort(c.getJob().getId());
 
         return mplew.getPacket();
     }
@@ -2252,12 +2252,12 @@ public class MaplePacketCreator {
             mplew.write(0);
             PacketHelper.addCharLook(mplew, trade.getPartner().getChr(), false);
             mplew.writeMapleAsciiString(trade.getPartner().getChr().getName());
-            mplew.writeShort(trade.getPartner().getChr().getJob());
+            mplew.writeShort(trade.getPartner().getChr().getJob().getId());
         }
         mplew.write(number);
         PacketHelper.addCharLook(mplew, c.getPlayer(), false);
         mplew.writeMapleAsciiString(c.getPlayer().getName());
-        mplew.writeShort(c.getPlayer().getJob());
+        mplew.writeShort(c.getPlayer().getJob().getId());
         mplew.write(0xFF);
 
         return mplew.getPacket();
@@ -4923,7 +4923,7 @@ public class MaplePacketCreator {
         for (final MapleCharacter chr : chars) {
             PacketHelper.addCharStats(mplew, chr);
             PacketHelper.addCharLook(mplew, chr, true);
-            boolean ranking = !chr.isGM();
+            boolean ranking = !chr.isGameMaster();
             mplew.write(ranking ? 1 : 0);
             if (ranking) {
                 mplew.writeInt(chr.getRank());

@@ -1,12 +1,12 @@
 package server.quest;
 
-import client.ISkill;
 import client.MapleCharacter;
 import client.MapleQuestStatus;
-import client.SkillFactory;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
+import client.skill.ISkill;
+import client.skill.SkillFactory;
 import constants.GameConstants;
 import provider.MapleData;
 import provider.MapleDataTool;
@@ -138,7 +138,7 @@ public class MapleQuestRequirement implements Serializable {
         switch (type) {
             case job:
                 for (Pair<Integer, Integer> a : dataStore) {
-                    if (a.getRight() == c.getJob() || c.isGM()) {
+                    if (a.getRight() == c.getJob().getId() || c.isGameMaster()) {
                         return true;
                     }
                 }

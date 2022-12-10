@@ -24,7 +24,7 @@ package scripting;
 import client.MapleClient;
 import server.MaplePortal;
 import server.config.ServerEnvironment;
-import tools.FileOutputUtil;
+import tools.DateHelper;
 
 import javax.script.Compilable;
 import javax.script.CompiledScript;
@@ -75,7 +75,7 @@ public class PortalScriptManager {
             compiled.eval();
         } catch (final Exception e) {
             System.err.println("Error executing Portalscript: " + scriptName + ":" + e);
-            FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Error executing Portal script. (" + scriptName + ") " + e);
+            log.info("Log_Script_Except.rtf" + " : " + ("Error executing Portal script. (" + scriptName + ") " + e));
         } finally {
             if (fr != null) {
                 try {
@@ -101,7 +101,8 @@ public class PortalScriptManager {
             }
         } else {
             log.info("Unhandled portal script " + portal.getScriptName() + " on map " + c.getPlayer().getMapId());
-            FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Unhandled portal script " + portal.getScriptName() + " on map " + c.getPlayer().getMapId());
+            final String msg = "Unhandled portal script " + portal.getScriptName() + " on map " + c.getPlayer().getMapId();
+            log.info("Log_Script_Except.rtf" + " : " + msg);
         }
     }
 

@@ -318,7 +318,7 @@ public class MapleUserPackets {
         mplew.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
         mplew.write(68);
         mplew.writeInt(from.getLevel());
-        mplew.writeInt(from.getJob());
+        mplew.writeInt(from.getJob().getId());
         mplew.writeMapleAsciiString(from.getName());
         mplew.writeInt(exped);
         return mplew.getPacket();

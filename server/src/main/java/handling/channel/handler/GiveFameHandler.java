@@ -34,7 +34,7 @@ public class GiveFameHandler extends AbstractMaplePacketHandler {
                     target.addFame(famechange);
                     target.updateSingleStat(MapleStat.FAME, target.getFame());
                 }
-                if (!chr.isGM()) {
+                if (!chr.isGameMaster()) {
                     chr.hasGivenFame(target);
                 }
                 c.getSession().write(MaplePacketCreator.giveFameResponse(mode, target.getName(), target.getFame()));

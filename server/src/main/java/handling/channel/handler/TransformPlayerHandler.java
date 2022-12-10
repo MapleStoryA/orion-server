@@ -32,7 +32,7 @@ public class TransformPlayerHandler extends AbstractMaplePacketHandler {
             final MapleCharacter search_chr = chr.getMap().getCharacterByName(target);
             if (search_chr != null) {
                 if (search_chr.getId() != chr.getId()) {
-                    if (!search_chr.isGM() && !chr.isGM() || chr.isGM()) {
+                    if (!search_chr.isGameMaster() && !chr.isGameMaster() || chr.isGameMaster()) {
                         if (search_chr.getBuffedValue(MapleBuffStat.MORPH) == null) {
                             MapleItemInformationProvider.getInstance().getItemEffect(2212000).applyTo(search_chr);
                             search_chr.dropMessage(6, chr.getName() + " had played a prank on you!"); // there's

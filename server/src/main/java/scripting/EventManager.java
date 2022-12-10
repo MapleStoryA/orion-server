@@ -38,7 +38,6 @@ import server.maps.MapleMapFactory;
 import server.maps.MapleMapObject;
 import server.maps.MapleReactor;
 import server.maps.MapleReactorFactory;
-import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
 
@@ -74,7 +73,7 @@ public class EventManager {
             iv.invokeFunction("cancelSchedule", (Object) null);
         } catch (Exception ex) {
             log.info("Event name : " + name + ", method Name : cancelSchedule:\n" + ex);
-            FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Event name : " + name + ", method Name : cancelSchedule:\n" + ex);
+            log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : cancelSchedule:\n" + ex));
         }
     }
 
@@ -86,7 +85,7 @@ public class EventManager {
                     iv.invokeFunction(methodName, (Object) null);
                 } catch (Exception ex) {
                     log.info("Event name : " + name + ", method Name : " + methodName + ":\n" + ex);
-                    FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Event name : " + name + ", method Name : " + methodName + ":\n" + ex);
+                    log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : " + methodName + ":\n" + ex));
                 }
             }
         }, delay);
@@ -100,7 +99,7 @@ public class EventManager {
                     iv.invokeFunction(methodName, eim);
                 } catch (Exception ex) {
                     log.info("Event name : " + name + ", method Name : " + methodName + ":\n" + ex);
-                    FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Event name : " + name + ", method Name : " + methodName + ":\n" + ex);
+                    log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : " + methodName + ":\n" + ex));
                 }
             }
         }, delay);
@@ -184,7 +183,7 @@ public class EventManager {
             iv.invokeFunction("setup", (Object) null);
         } catch (Exception ex) {
             ex.printStackTrace();
-            FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Event name : " + name + ", method Name : setup:\n" + ex);
+            log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : setup:\n" + ex));
         }
     }
 
@@ -194,7 +193,7 @@ public class EventManager {
             eim.registerCarnivalParty(chr, chr.getMap(), (byte) 0);
         } catch (Exception ex) {
             ex.printStackTrace();
-            FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Event name : " + name + ", method Name : setup:\n" + ex);
+            log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : setup:\n" + ex));
         }
     }
 
@@ -208,7 +207,7 @@ public class EventManager {
             setProperty("guildid", String.valueOf(character.getGuildId()));
         } catch (Exception ex) {
             log.info("Event name : " + name + ", method Name : setup-Guild:\n" + ex);
-            FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Event name : " + name + ", method Name : setup-Guild:\n" + ex);
+            log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : setup-Guild:\n" + ex));
         }
     }
 
@@ -218,7 +217,7 @@ public class EventManager {
             eim.registerPlayer(character);
         } catch (Exception ex) {
             log.info("Event name : " + name + ", method Name : setup-CharID:\n" + ex);
-            FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Event name : " + name + ", method Name : setup-CharID:\n" + ex);
+            log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : setup-CharID:\n" + ex));
         }
     }
 
@@ -228,7 +227,7 @@ public class EventManager {
             eim.registerPlayer(character);
         } catch (Exception ex) {
             log.info("Event name : " + name + ", method Name : setup-character:\n" + ex);
-            FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Event name : " + name + ", method Name : setup-character:\n" + ex);
+            log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : setup-character:\n" + ex));
         }
     }
 
@@ -239,7 +238,7 @@ public class EventManager {
             eim.registerParty(party, map);
         } catch (ScriptException ex) {
             log.info("Event name : " + name + ", method Name : setup-partyid:\n" + ex);
-            FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Event name : " + name + ", method Name : setup-partyid:\n" + ex);
+            log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : setup-partyid:\n" + ex));
         } catch (Exception ex) {
             //ignore
             startInstance_NoID(party, map, ex);
@@ -256,7 +255,8 @@ public class EventManager {
             eim.registerParty(party, map);
         } catch (Exception ex) {
             log.info("Event name : " + name + ", method Name : setup-party:\n" + ex);
-            FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Event name : " + name + ", method Name : setup-party:\n" + ex + "\n" + (old == null ? "no old exception" : old));
+            final String msg = "Event name : " + name + ", method Name : setup-party:\n" + ex + "\n" + (old == null ? "no old exception" : old);
+            log.info("Log_Script_Except.rtf" + " : " + msg);
         }
     }
 
@@ -267,7 +267,7 @@ public class EventManager {
             eim.setProperty("leader", leader);
         } catch (Exception ex) {
             log.info("Event name : " + name + ", method Name : setup-leader:\n" + ex);
-            FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Event name : " + name + ", method Name : setup-leader:\n" + ex);
+            log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : setup-leader:\n" + ex));
         }
     }
 
@@ -276,7 +276,7 @@ public class EventManager {
         if (squad.getStatus() == 0) {
             return; //we dont like cleared squads
         }
-        if (!squad.getLeader().isGM()) {
+        if (!squad.getLeader().isGameMaster()) {
             if (squad.getMembers().size() < 1) { //less than 3
                 squad.getLeader().dropMessage(5, "The squad has less than 1 people participating.");
                 return;
@@ -297,7 +297,7 @@ public class EventManager {
             eim.registerSquad(squad, map);
         } catch (Exception ex) {
             log.info("Event name : " + name + ", method Name : setup-squad:\n" + ex);
-            FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Event name : " + name + ", method Name : setup-squad:\n" + ex);
+            log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : setup-squad:\n" + ex));
         }
     }
 
@@ -306,7 +306,7 @@ public class EventManager {
             EventInstanceManager eim = (EventInstanceManager) iv.invokeFunction("setup", mapid);
             eim.registerParty(chr.getParty(), chr.getMap());
         } catch (NoSuchMethodException | ScriptException ex) {
-            FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Event name : " + name + ", method Name : setup:\r\n" + ex);
+            log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : setup:\r\n" + ex));
         }
     }
 
@@ -392,7 +392,7 @@ public class EventManager {
         if (squad.getStatus() == 0) {
             return; //we dont like cleared squads
         }
-        if (!squad.getLeader().isGM()) {
+        if (!squad.getLeader().isGameMaster()) {
             if (name.equals("CWKPQ") && squad.getJobs().size() < 5) {
                 squad.getLeader().dropMessage(5, "The squad requires members from every type of job.");
                 return;
@@ -403,7 +403,7 @@ public class EventManager {
             eim.registerSquad(squad, map);
         } catch (NoSuchMethodException | ScriptException ex) {
             log.info("Event name : " + name + ", method Name : setup-squad:\n" + ex);
-            FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Event name : " + name + ", method Name : setup-squad:\n" + ex);
+            log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : setup-squad:\n" + ex));
         }
     }
 

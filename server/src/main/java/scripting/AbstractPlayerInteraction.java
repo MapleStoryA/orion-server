@@ -21,15 +21,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package scripting;
 
-import client.ISkill;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleQuestStatus;
-import client.SkillFactory;
 import client.inventory.Equip;
 import client.inventory.MapleInventoryIdentifier;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
+import client.skill.ISkill;
+import client.skill.SkillFactory;
 import constants.GameConstants;
 import handling.channel.ChannelServer;
 import handling.world.WorldServer;
@@ -282,7 +282,7 @@ public abstract class AbstractPlayerInteraction {
         } else if (type.equals("ARANK")) {
             return c.getPlayer().getAllianceRank();
         } else if (type.equals("GM")) {
-            return c.getPlayer().isGM() ? 1 : 0;
+            return c.getPlayer().isGameMaster() ? 1 : 0;
         } else if (type.equals("ADMIN")) {
             return c.getPlayer().isAdmin() ? 1 : 0;
         } else if (type.equals("GENDER")) {
@@ -424,7 +424,7 @@ public abstract class AbstractPlayerInteraction {
     }
 
     public final int getJob() {
-        return c.getPlayer().getJob();
+        return c.getPlayer().getJob().getId();
     }
 
     public final void gainNX(final int amount) {

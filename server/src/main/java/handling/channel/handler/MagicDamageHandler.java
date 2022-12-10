@@ -1,10 +1,10 @@
 package handling.channel.handler;
 
-import client.ISkill;
 import client.MapleCharacter;
 import client.MapleClient;
-import client.SkillFactory;
 import client.anticheat.CheatingOffense;
+import client.skill.ISkill;
+import client.skill.SkillFactory;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import server.MapleStatEffect;
@@ -31,7 +31,7 @@ public class MagicDamageHandler extends AbstractMaplePacketHandler {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
         }
-        if (!chr.isSkillBelongToJob(attack.skill)) {
+        if (!chr.getJob().isSkillBelongToJob(attack.skill, chr.isGameMaster())) {
             chr.dropMessage(5, "This skill cannot be used with the current job.");
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
@@ -42,7 +42,7 @@ public class MagicDamageHandler extends AbstractMaplePacketHandler {
         if (effect == null) {
             return;
         }
-        if (effect.getCooldown() > 0 && !chr.isGM()) {
+        if (effect.getCooldown() > 0 && !chr.isGameMaster()) {
             if (chr.skillisCooling(attack.skill)) {
                 c.getSession().write(MaplePacketCreator.enableActions());
                 return;

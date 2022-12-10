@@ -253,7 +253,7 @@ public class LoginPacket {
         mplew.write(chars.size()); // 1
 
         for (final MapleCharacter chr : chars) {
-            boolean isGM = chr.getJob() == 900 || chr.getJob() == 910;
+            boolean isGM = chr.getJob().getId() == 900 || chr.getJob().getId() == 910;
             addCharEntry(mplew, chr, !isGM && chr.getLevel() >= 10);
         }
         mplew.write(2); // second pw request

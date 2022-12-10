@@ -110,7 +110,7 @@ public class MapleGenericPortal implements MaplePortal {
             c.getPlayer().getCheatTracker().registerOffense(CheatingOffense.USING_FARAWAY_PORTAL);
         }
         final MapleMap currentmap = c.getPlayer().getMap();
-        if (portalState || c.getPlayer().isGM()) {
+        if (portalState || c.getPlayer().isGameMaster()) {
             if (getScriptName() != null) {
                 c.getPlayer().checkFollow();
                 try {

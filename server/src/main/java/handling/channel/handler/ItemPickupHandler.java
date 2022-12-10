@@ -13,7 +13,7 @@ import server.life.MapleMonster;
 import server.maps.MapleMapItem;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
-import tools.FileOutputUtil;
+import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -105,8 +105,10 @@ public class ItemPickupHandler extends AbstractMaplePacketHandler {
                             mapitem.getItem().getQuantity(), mapitem.getItem().getOwner())) {
                         if (mapitem.getItem().getQuantity() >= 50
                                 && GameConstants.isUpgradeScroll(mapitem.getItem().getItemId())) {
-                            FileOutputUtil.logUsers(chr.getName(), "Player picked up " + mapitem.getItem().getQuantity()
-                                    + " of " + mapitem.getItem().getItemId());
+                            final String file = chr.getName();
+                            final String msg = "Player picked up " + mapitem.getItem().getQuantity()
+                                    + " of " + mapitem.getItem().getItemId();
+                            log.info(file + " : " + msg);
                         }
                         if (MapleInventoryManipulator.addFromDrop(c, mapitem.getItem(), true,
                                 mapitem.getDropper() instanceof MapleMonster)) {

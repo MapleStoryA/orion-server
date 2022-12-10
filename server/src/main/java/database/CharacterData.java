@@ -1,6 +1,6 @@
 package database;
 
-import client.EvanSkillPoints;
+import client.skill.EvanSkillPoints;
 import client.MapleJob;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;

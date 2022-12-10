@@ -1,10 +1,10 @@
 package handling.channel.handler;
 
-import client.ISkill;
+import client.skill.ISkill;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
-import client.SkillFactory;
+import client.skill.SkillFactory;
 import client.SummonSkillEntry;
 import client.anticheat.CheatingOffense;
 import client.status.MonsterStatus;

@@ -24,7 +24,7 @@ package server.maps;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
-import client.SkillFactory;
+import client.skill.SkillFactory;
 import client.inventory.Equip;
 import client.inventory.IItem;
 import client.inventory.Item;
@@ -72,7 +72,7 @@ import server.maps.event.KentaMapUserEnterEvent;
 import server.maps.event.MapEvent;
 import server.maps.event.PuppeteerMapEvent;
 import server.maps.event.SimpleQuestMapEvent;
-import tools.FileOutputUtil;
+import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
@@ -709,7 +709,8 @@ public final class MapleMap {
             for (MapleCharacter c : getCharactersThreadsafe()) {
                 c.finishAchievement(16);
             }
-            FileOutputUtil.log(FileOutputUtil.Horntail_Log, MapDebug_Log());
+            final String msg = MapDebug_Log();
+            log.info("Log_Horntail.rtf" + " : " + msg);
             if (speedRunStart > 0) {
                 type = SpeedRunType.Horntail;
             }
@@ -721,7 +722,8 @@ public final class MapleMap {
             for (MapleCharacter c : getCharactersThreadsafe()) {
                 c.finishAchievement(24);
             }
-            FileOutputUtil.log(FileOutputUtil.Horntail_Log, MapDebug_Log());
+            final String msg = MapDebug_Log();
+            log.info("Log_Horntail.rtf" + " : " + msg);
             if (speedRunStart > 0) {
                 type = SpeedRunType.ChaosHT;
             }
@@ -801,12 +803,14 @@ public final class MapleMap {
             if (sqd != null) {
                 doShrine(true);
             }
-            FileOutputUtil.log(FileOutputUtil.PinkBean_Log, MapDebug_Log());
+            final String msg = MapDebug_Log();
+            log.info("Log_Pinkbean.rtf" + " : " + msg);
         } else if (mobid == 8800002 && mapid == 280030000) {
             for (MapleCharacter c : getCharactersThreadsafe()) {
                 c.finishAchievement(15);
             }
-            FileOutputUtil.log(FileOutputUtil.Zakum_Log, MapDebug_Log());
+            final String msg = MapDebug_Log();
+            log.info("Log_Zakum.rtf" + " : " + msg);
             if (speedRunStart > 0) {
                 type = SpeedRunType.Zakum;
             }
@@ -817,7 +821,8 @@ public final class MapleMap {
             for (MapleCharacter c : getCharactersThreadsafe()) {
                 c.finishAchievement(23);
             }
-            FileOutputUtil.log(FileOutputUtil.Zakum_Log, MapDebug_Log());
+            final String msg = MapDebug_Log();
+            log.info("Log_Zakum.rtf" + " : " + msg);
             if (speedRunStart > 0) {
                 type = SpeedRunType.Chaos_Zakum;
             }
@@ -1001,7 +1006,7 @@ public final class MapleMap {
 
     private String MapDebug_Log() {
         final StringBuilder sb = new StringBuilder("Defeat time : ");
-        sb.append(FileOutputUtil.CurrentReadable_Time());
+        sb.append(DateHelper.getCurrentReadableTime());
 
         sb.append(" | Mapid : ").append(this.mapid);
 
@@ -1962,7 +1967,7 @@ public final class MapleMap {
             }
         }
         sendObjectPlacement(chr);
-        if (!chr.isHidden() && !chr.isGM()) {
+        if (!chr.isHidden() && !chr.isGameMaster()) {
             chr.getClient().getPlayer().getMap().broadcastMessage(MaplePacketCreator.spawnPlayerMapobject(chr));
         }
 
@@ -2053,7 +2058,7 @@ public final class MapleMap {
         } else if (mapid == 140090000 || mapid == 105100301 || mapid == 105100401 || mapid == 105100100) {
             chr.getClient().getSession().write(MaplePacketCreator.temporaryStats_Reset());
         }
-        if (GameConstants.isEvan(chr.getJob()) && chr.getJob() >= 2200 && chr.getBuffedValue(MapleBuffStat.MONSTER_RIDING) == null) {
+        if (GameConstants.isEvan(chr.getJob().getId()) && chr.getJob().getId() >= 2200 && chr.getBuffedValue(MapleBuffStat.MONSTER_RIDING) == null) {
             if (chr.getDragon() == null) {
                 chr.makeDragon();
             }
@@ -2067,7 +2072,7 @@ public final class MapleMap {
             chr.getClient().getSession().write(MaplePacketCreator.musicChange("Bgm00/DragonDream"));
         }
         for (int i = 1066; i <= 1067; i++) {
-            final int realId = GameConstants.getSkillByJob(i, chr.getJob());
+            final int realId = GameConstants.getSkillByJob(i, chr.getJob().getId());
             if (chr.getSkillLevel(realId) > -1 && chr.getMorphState() != 2210062 && chr.getMorphState() != 2210063 && chr.getMorphState() != 2210064 && chr.getMorphState() != 2210065) {
                 chr.changeSkillLevel_Skip(SkillFactory.getSkill(realId), (byte) -1, (byte) 0);
             }
@@ -2964,7 +2969,7 @@ public final class MapleMap {
 
     public void disconnectAll() {
         for (MapleCharacter chr : getCharactersThreadsafe()) {
-            if (!chr.isGM()) {
+            if (!chr.isGameMaster()) {
                 chr.getClient().disconnect(true, false);
                 chr.getClient().getSession().close();
             }
@@ -3277,7 +3282,7 @@ public final class MapleMap {
         charactersLock.readLock().lock();
         try {
             for (MapleCharacter chr : characters) {
-                if (chr != source && !chr.isGM()) {
+                if (chr != source && !chr.isGameMaster()) {
                     chr.getClient().getSession().write(packet);
                 }
             }

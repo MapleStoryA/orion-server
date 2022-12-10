@@ -56,7 +56,7 @@ public class MapleOxQuiz extends MapleEvent {
 
     @Override
     public void onMapLoad(MapleCharacter chr) {
-        if (chr.getMapId() == mapid[0] && !chr.isGM()) {
+        if (chr.getMapId() == mapid[0] && !chr.isGameMaster()) {
             chr.canTalk(false);
         }
     }
@@ -95,7 +95,7 @@ public class MapleOxQuiz extends MapleEvent {
             public void run() {
                 int number = 0;
                 for (MapleCharacter mc : toSend.getCharactersThreadsafe()) {
-                    if (mc.isGM() || !mc.isAlive()) {
+                    if (mc.isGameMaster() || !mc.isAlive()) {
                         number++;
                     }
                 }
@@ -103,7 +103,7 @@ public class MapleOxQuiz extends MapleEvent {
                     toSend.broadcastMessage(MaplePacketCreator.serverNotice(6, "The event has ended"));
                     unreset();
                     for (MapleCharacter chr : toSend.getCharactersThreadsafe()) {
-                        if (chr != null && !chr.isGM() && chr.isAlive()) {
+                        if (chr != null && !chr.isGameMaster() && chr.isAlive()) {
                             chr.canTalk(true);
                             chr.finishAchievement(19);
                             givePrize(chr);
@@ -126,7 +126,7 @@ public class MapleOxQuiz extends MapleEvent {
                         toSend.broadcastMessage(MaplePacketCreator.showOXQuiz(question.getKey().left, question.getKey().right, false));
                         timesAsked++;
                         for (MapleCharacter chr : toSend.getCharactersThreadsafe()) {
-                            if (chr != null && !chr.isGM() && chr.isAlive()) { // make sure they aren't null... maybe something can happen in 12 seconds.
+                            if (chr != null && !chr.isGameMaster() && chr.isAlive()) { // make sure they aren't null... maybe something can happen in 12 seconds.
                                 if (!isCorrectAnswer(chr, question.getValue().getAnswer())) {
                                     chr.getStat().setHp((short) 0);
                                     chr.updateSingleStat(MapleStat.HP, 0);

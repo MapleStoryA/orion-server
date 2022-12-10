@@ -22,6 +22,9 @@
 
 package client;
 
+import constants.GameConstants;
+import constants.JobConstants;
+
 public enum MapleJob {
     BEGINNER(0, "Beginner"),
     WARRIOR(100, "Warrior"),
@@ -70,7 +73,7 @@ public enum MapleJob {
     GUNSLINGER(520, "Gunslinger"),
     OUTLAW(521, "Outlaw"),
     CORSAIR(522, "Corsair"),
-    MAPLELEAF_BRIGADIER(800, "Manager"),
+    Manager(800, "Manager"),
     GM(900, "GameMaster"),
     SUPERGM(910, "GameMaster"),
     NOBLESSE(1000, "Dawn Warrior"),
@@ -110,6 +113,12 @@ public enum MapleJob {
     EVAN9(2216, "Evan"),
     EVAN10(2217, "Evan"),
     EVAN11(2218, "Evan"),
+    BattleMage1(3200, "BattleMage"),
+    BattleMage2(3210, "WildHunter"),
+    WildHunter1(3300, "WildHunter"),
+    WildHunter2(3310, "WildHunter"),
+    Mechanic1(3500, "WildHunter"),
+    Mechanic2(3510, "WildHunter"),
     ADDITIONAL_SKILLS(9000, "???");
     private final int jobid;
     private final String name;
@@ -119,10 +128,11 @@ public enum MapleJob {
         this.name = name;
     }
 
+
     public static MapleJob getById(int id) {
-        for (MapleJob l : MapleJob.values()) {
-            if (l.getId() == id) {
-                return l;
+        for (var state : MapleJob.values()) {
+            if (state.getId() == id) {
+                return state;
             }
         }
         return null;
@@ -167,6 +177,7 @@ public enum MapleJob {
         return isExtendSPJob(job.getId());
     }
 
+
     public int getId() {
         return jobid;
     }
@@ -175,11 +186,92 @@ public enum MapleJob {
         return getId() >= basejob.getId() && getId() / 100 == basejob.getId() / 100;
     }
 
-    public boolean isAnEvan() {
-        return getId() == 2001 || getId() / 100 == 22;
+    public int getJobType() {
+        return getId() / 1000;
+    }
+
+    public boolean isCygnus() {
+        return getJobType() == 1;
+    }
+
+    public boolean isAran() {
+        return (getId() / 100 == 21) || (getId() == 2000);
+    }
+
+    public boolean isDualblade() {
+        return getId() >= 430 && getId() <= 434;
+    }
+
+
+    public boolean isEvan() {
+        return (getId() == 2001 || getId() / 100 == 22);
+    }
+
+    public boolean isPirate() {
+        return getId() >= 500 && getId() <= 522;
+    }
+
+    public boolean isMage() {
+        return getId() >= 200 && getId() <= 232;
+    }
+
+    public boolean isWarrior() {
+        return getId() >= 100 && getId() <= 132;
+    }
+
+    public boolean isBeginner() {
+        return getId() == 0 || getId() == 1000 || getId() == 2000 || getId() == 2001 || getId() == 3000;
+    }
+
+    public int getJobCategoryForEquips() {
+        if (isEvan()) {
+            return 2;
+        }
+        if (isDualblade()) {
+            return 4;
+        }
+        if (isAran()) {
+            return 1;
+        }
+        return this.getId() / 100;
+    }
+
+    public boolean isSkillBelongToJob(final int skillId, boolean isGM) {
+        if (isGM) {
+            return true;
+        }
+
+        if (JobConstants.isFixedSkill(skillId)) {
+            if (skillId >= 10000000 && skillId < 20000000) { // koc skills
+                if ((skillId / 10000) <= getId()) {
+                    return GameConstants.isJobFamily((skillId / 10000), getId());
+                }
+            } else if (skillId >= 10000000 && skillId < 30000000) {
+                if (GameConstants.isEvan((skillId / 10000))) {
+                    if ((skillId / 10000) <= getId()) {
+                        return GameConstants.isJobFamily((skillId / 10000), getId());
+                    }
+                } else if (GameConstants.isAran((skillId / 10000))) {
+                    if ((skillId / 10000) <= getId()) {
+                        return GameConstants.isJobFamily((skillId / 10000), getId());
+                    }
+                } else {
+                    return false;
+                }
+            } else { // All explorer skills
+                if (skillId >= 1000000) {
+                    return GameConstants.isJobFamily((skillId / 10000), getId());
+                }
+            }
+        }
+        return true;
     }
 
     public String getName() {
         return this.name;
+    }
+
+    public boolean isGameMasterJob() {
+        return this.equals(MapleJob.GM) || this.equals(MapleJob.SUPERGM);
     }
 }

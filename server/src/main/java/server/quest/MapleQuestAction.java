@@ -21,13 +21,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package server.quest;
 
-import client.ISkill;
 import client.MapleCharacter;
 import client.MapleQuestStatus;
 import client.MapleStat;
-import client.SkillFactory;
 import client.inventory.InventoryException;
 import client.inventory.MapleInventoryType;
+import client.skill.ISkill;
+import client.skill.SkillFactory;
 import constants.GameConstants;
 import provider.MapleData;
 import provider.MapleDataTool;
@@ -72,7 +72,7 @@ public class MapleQuestAction implements Serializable {
             final List<Integer> code = getJobBy5ByteEncoding(job);
             boolean jobFound = false;
             for (int codec : code) {
-                if (codec / 100 == c.getJob() / 100) {
+                if (codec / 100 == c.getJob().getId() / 100) {
                     jobFound = true;
                     break;
                 }
@@ -81,7 +81,7 @@ public class MapleQuestAction implements Serializable {
                 final int jobEx = MapleDataTool.getInt(item.getChildByPath("jobEx"));
                 final List<Integer> codeEx = getJobBy5ByteEncoding(jobEx);
                 for (int codec : codeEx) {
-                    if (codec / 100 == c.getJob() / 100) {
+                    if (codec / 100 == c.getJob().getId() / 100) {
                         jobFound = true;
                         break;
                     }
@@ -269,7 +269,7 @@ public class MapleQuestAction implements Serializable {
                     final ISkill skillObject = SkillFactory.getSkill(skillid);
 
                     for (MapleData applicableJob : sEntry.getChildByPath("job")) {
-                        if (skillObject.isBeginnerSkill() || c.getJob() == MapleDataTool.getInt(applicableJob)) {
+                        if (skillObject.isBeginnerSkill() || c.getJob().getId() == MapleDataTool.getInt(applicableJob)) {
                             c.changeSkillLevel(skillObject,
                                     (byte) Math.max(skillLevel, c.getSkillLevel(skillObject)),
                                     (byte) Math.max(masterLevel, c.getMasterLevel(skillObject)));
@@ -486,7 +486,7 @@ public class MapleQuestAction implements Serializable {
                     final ISkill skillObject = SkillFactory.getSkill(skillid);
 
                     for (MapleData applicableJob : sEntry.getChildByPath("job")) {
-                        if (skillObject.isBeginnerSkill() || c.getJob() == MapleDataTool.getInt(applicableJob)) {
+                        if (skillObject.isBeginnerSkill() || c.getJob().getId() == MapleDataTool.getInt(applicableJob)) {
                             c.changeSkillLevel(skillObject,
                                     (byte) Math.max(skillLevel, c.getSkillLevel(skillObject)),
                                     (byte) Math.max(masterLevel, c.getMasterLevel(skillObject)));
@@ -506,12 +506,12 @@ public class MapleQuestAction implements Serializable {
             case sp: {
                 for (MapleData sEntry : data) {
                     final int sp = MapleDataTool.getInt(sEntry.getChildByPath("sp_value"));
-                    if (!c.isEvan()) {
+                    if (!c.getJob().isEvan()) {
                         c.gainSp(sp);
                     } else {
                         c.addEvanSP(sp);
                     }
-                    c.getClient().sendPacket(CWVsContextOnMessagePackets.onIncSpMessage(c.getJobValue(), sp));
+                    c.getClient().sendPacket(CWVsContextOnMessagePackets.onIncSpMessage(c.getJob(), sp));
                     break;
                 }
                 break;

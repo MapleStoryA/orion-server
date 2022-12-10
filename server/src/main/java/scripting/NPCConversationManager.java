@@ -21,19 +21,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package scripting;
 
-import client.ISkill;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleJob;
 import client.MapleStat;
-import client.SkillEntry;
-import client.SkillFactory;
-import client.SpeedQuiz;
+import client.events.SpeedQuiz;
 import client.inventory.Equip;
 import client.inventory.IItem;
 import client.inventory.ItemFlag;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
+import client.skill.ISkill;
+import client.skill.SkillEntry;
+import client.skill.SkillFactory;
 import constants.GameConstants;
 import constants.JobConstants;
 import constants.ServerConstants;
@@ -1163,7 +1163,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         statup.add(new Pair<MapleStat, Integer>(MapleStat.MP, Integer.valueOf(30000)));
         statup.add(new Pair<MapleStat, Integer>(MapleStat.MAXMP, Integer.valueOf(30000)));
 
-        c.getSession().write(MaplePacketCreator.updatePlayerStats(statup, c.getPlayer().getJob()));
+        c.getSession().write(MaplePacketCreator.updatePlayerStats(statup, c.getPlayer().getJob().getId()));
     }
 
     public Pair<String, Map<Integer, String>> getSpeedRun(String typ) {
@@ -1506,7 +1506,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public String populateKeymapValues() {
-        if (GameConstants.isEvan(c.getPlayer().getJob())) {
+        if (GameConstants.isEvan(c.getPlayer().getJob().getId())) {
             return "I'm sorry to say that since you're an Evan, you can't keep any skills as other jobs do not have any dragon. Hence, you cannot keep any skills.";
         }
         final Collection<Triple<Byte, Integer, Byte>> keymap = c.getPlayer().getKeymap();
@@ -1523,7 +1523,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                             || key.getMid() == 20001004 || key.getMid() == 20011004) {
                         continue;
                     }
-                    if (((key.getMid() / 10000 == 910) || (key.getMid() / 10000 == 900)) && !c.getPlayer().isGM()) { // is
+                    if (((key.getMid() / 10000 == 910) || (key.getMid() / 10000 == 900)) && !c.getPlayer().isGameMaster()) { // is
                         // gm
                         // skills
                         // but
@@ -1558,7 +1558,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public int getSkillIdKey(final int selection) {
-        if (GameConstants.isEvan(c.getPlayer().getJob())) {
+        if (GameConstants.isEvan(c.getPlayer().getJob().getId())) {
             return -1;
         }
         final Collection<Triple<Byte, Integer, Byte>> keymap = c.getPlayer().getKeymap();
@@ -1573,7 +1573,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                             || key.getMid() == 20001004 || key.getMid() == 20011004) {
                         continue;
                     }
-                    if (((key.getMid() / 10000 == 910) || (key.getMid() / 10000 == 900)) && !c.getPlayer().isGM()) { // is
+                    if (((key.getMid() / 10000 == 910) || (key.getMid() / 10000 == 900)) && !c.getPlayer().isGameMaster()) { // is
                         // gm
                         // skills
                         // but
@@ -1703,7 +1703,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public short getJobId() {
-        return getPlayer().getJob();
+        return (short) getPlayer().getJob().getId();
     }
 
     public short getLevel() {
@@ -2001,7 +2001,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         int newSp = (getPlayer().getRemainingSp() + amount);
         getPlayer().setRemainingSp(newSp);
         getPlayer().updateSingleStat(MapleStat.AVAILABLESP, newSp);
-        byte[] packet = CWVsContextOnMessagePackets.onIncSpMessage(this.getPlayer().getJobValue(), amount);
+        byte[] packet = CWVsContextOnMessagePackets.onIncSpMessage(this.getPlayer().getJob(), amount);
         getClient().sendPacket(packet);
     }
 

@@ -5,7 +5,6 @@ import client.MapleClient;
 import client.MapleStat;
 import client.PlayerStats;
 import handling.AbstractMaplePacketHandler;
-import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -23,7 +22,8 @@ public class AutoAssignAPHandler extends AbstractMaplePacketHandler {
         slea.skip(4);
         if (slea.available() < 16) {
             log.info("AutoAssignAP : \n" + slea.toString(true));
-            FileOutputUtil.log(FileOutputUtil.PacketEx_Log, "AutoAssignAP : \n" + slea.toString(true));
+            final String msg = "AutoAssignAP : \n" + slea.toString(true);
+            log.info("Log_Packet_Except.rtf" + " : " + msg);
             return;
         }
         final int PrimaryStat = slea.readInt();
@@ -37,7 +37,7 @@ public class AutoAssignAPHandler extends AbstractMaplePacketHandler {
         final PlayerStats playerst = chr.getStat();
 
         List<Pair<MapleStat, Integer>> statupdate = new ArrayList<Pair<MapleStat, Integer>>(2);
-        c.getSession().write(MaplePacketCreator.updatePlayerStats(statupdate, true, chr.getJob()));
+        c.getSession().write(MaplePacketCreator.updatePlayerStats(statupdate, true, chr.getJob().getId()));
 
         if (chr.getRemainingAp() == amount + amount2) {
             switch (PrimaryStat) {
@@ -71,7 +71,7 @@ public class AutoAssignAPHandler extends AbstractMaplePacketHandler {
                     break;
                 default:
                     c.getSession().write(
-                            MaplePacketCreator.updatePlayerStats(MaplePacketCreator.EMPTY_STATUPDATE, true, chr.getJob()));
+                            MaplePacketCreator.updatePlayerStats(MaplePacketCreator.EMPTY_STATUPDATE, true, chr.getJob().getId()));
                     return;
             }
             switch (SecondaryStat) {
@@ -105,12 +105,12 @@ public class AutoAssignAPHandler extends AbstractMaplePacketHandler {
                     break;
                 default:
                     c.getSession().write(
-                            MaplePacketCreator.updatePlayerStats(MaplePacketCreator.EMPTY_STATUPDATE, true, chr.getJob()));
+                            MaplePacketCreator.updatePlayerStats(MaplePacketCreator.EMPTY_STATUPDATE, true, chr.getJob().getId()));
                     return;
             }
             chr.setRemainingAp((short) (chr.getRemainingAp() - (amount + amount2)));
             statupdate.add(new Pair<MapleStat, Integer>(MapleStat.AVAILABLEAP, chr.getRemainingAp()));
-            c.getSession().write(MaplePacketCreator.updatePlayerStats(statupdate, true, chr.getJob()));
+            c.getSession().write(MaplePacketCreator.updatePlayerStats(statupdate, true, chr.getJob().getId()));
         }
 
     }

@@ -1,11 +1,11 @@
 package handling.channel.handler;
 
-import client.ISkill;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleStat;
 import client.PlayerStats;
-import client.SkillFactory;
+import client.skill.ISkill;
+import client.skill.SkillFactory;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
@@ -23,11 +23,11 @@ public class DistributeAPHandler extends AbstractMaplePacketHandler {
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         final List<Pair<MapleStat, Integer>> statupdate = new ArrayList<Pair<MapleStat, Integer>>(2);
-        c.getSession().write(MaplePacketCreator.updatePlayerStats(statupdate, true, chr.getJob()));
+        c.getSession().write(MaplePacketCreator.updatePlayerStats(statupdate, true, chr.getJob().getId()));
         chr.updateTick(slea.readInt());
 
         final PlayerStats stat = chr.getStat();
-        final int job = chr.getJob();
+        final int job = chr.getJob().getId();
         if (chr.getRemainingAp() > 0) {
             switch (slea.readInt()) {
                 case 64: // Str
@@ -147,12 +147,12 @@ public class DistributeAPHandler extends AbstractMaplePacketHandler {
                     statupdate.add(new Pair<MapleStat, Integer>(MapleStat.MAXMP, maxmp));
                     break;
                 default:
-                    c.getSession().write(MaplePacketCreator.updatePlayerStats(MaplePacketCreator.EMPTY_STATUPDATE, true, chr.getJob()));
+                    c.getSession().write(MaplePacketCreator.updatePlayerStats(MaplePacketCreator.EMPTY_STATUPDATE, true, chr.getJob().getId()));
                     return;
             }
             chr.setRemainingAp((short) (chr.getRemainingAp() - 1));
             statupdate.add(new Pair<MapleStat, Integer>(MapleStat.AVAILABLEAP, chr.getRemainingAp()));
-            c.getSession().write(MaplePacketCreator.updatePlayerStats(statupdate, true, chr.getJob()));
+            c.getSession().write(MaplePacketCreator.updatePlayerStats(statupdate, true, chr.getJob().getId()));
         }
 
     }

@@ -21,16 +21,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package server.life;
 
-import client.ISkill;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleDisease;
-import client.SkillFactory;
 import client.inventory.Equip;
 import client.inventory.IItem;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
+import client.skill.ISkill;
+import client.skill.SkillFactory;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
 import constants.GameConstants;
@@ -832,7 +832,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             int poisonLevel = 0;
             int matk = 0;
 
-            switch (from.getJob()) {
+            switch (from.getJob().getId()) {
                 case 412:
                     poisonLevel = from.getSkillLevel(SkillFactory.getSkill(4120005));
                     if (poisonLevel <= 0) {
@@ -1436,7 +1436,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                                 averagePartyLevel += pchr.getLevel();
 
                                 if (Class_Bonus_EXP == 0) {
-                                    Class_Bonus_EXP = ServerConstants.Class_Bonus_EXP(pchr.getJob());
+                                    Class_Bonus_EXP = ServerConstants.calculate_bonus_exp(pchr.getJob().getId());
                                 }
                                 if (pchr.getStat().isEquippedWelcomeBackRing() && Premium_Bonus_EXP == 0) {
                                     Premium_Bonus_EXP = 80;

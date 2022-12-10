@@ -23,8 +23,9 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import client.MapleJob;
 import client.MapleQuestStatus;
-import client.SkillFactory;
+import client.skill.SkillFactory;
 import constants.ServerConstants;
 import database.CharacterService;
 import database.LoginState;
@@ -49,7 +50,6 @@ import handling.world.party.MaplePartyCharacter;
 import handling.world.party.PartyManager;
 import server.ClientStorage;
 import server.quest.MapleQuest;
-import tools.FileOutputUtil;
 import tools.MaplePacketCreator;
 import tools.packet.MapleUserPackets;
 import tools.packet.ReportPackets;
@@ -99,7 +99,7 @@ public class InterServerHandler {
         channelServer.addPlayer(player);
 
         c.getSession().write(MaplePacketCreator.getCharInfo(player));
-        if (player.isGM()) {
+        if (player.isGameMaster()) {
             SkillFactory.getSkill(9101004).getEffect(1).applyTo(player);
         }
         player.sendSkills();
@@ -166,7 +166,7 @@ public class InterServerHandler {
 
 
         } catch (Exception e) {
-            FileOutputUtil.outputFileError(FileOutputUtil.Login_Error, e);
+            log.info("Log_Login_Error.rtf", e);
         }
         player.sendMacros();
         player.showNote();
@@ -185,7 +185,7 @@ public class InterServerHandler {
             }
         }
         player.expirationTask(true, transfer == null);
-        if (player.getJob() == 132) { // DARKKNIGHT
+        if (player.getJob().equals(MapleJob.DARKKNIGHT)) {
             player.checkBerserk();
         }
         player.spawnSavedPets();

@@ -27,7 +27,7 @@ public class AutobanManager implements Runnable {
     }
 
     public final void autoban(final MapleClient c, final String reason) {
-        if (c.getPlayer().isGM()) {
+        if (c.getPlayer().isGameMaster()) {
             c.getPlayer().dropMessage(5, "[WARNING] A/b triggled : " + reason);
             return;
         }
@@ -56,7 +56,7 @@ public class AutobanManager implements Runnable {
             }
 
             if (this.points.get(acc) >= AUTOBAN_POINTS) { // See if it's sufficient to auto ban
-                if (c.getPlayer().isGM()) {
+                if (c.getPlayer().isGameMaster()) {
                     c.getPlayer().dropMessage(5, "[WARNING] A/b triggled : " + reason);
                     return;
                 }

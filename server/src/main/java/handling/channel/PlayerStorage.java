@@ -205,7 +205,7 @@ public class PlayerStorage {
             while (itr.hasNext()) {
                 chr = itr.next();
 
-                if (!chr.isGM() || !checkGM) {
+                if (!chr.isGameMaster() || !checkGM) {
                     chr.getClient().disconnect(false, false, true);
                     chr.getClient().getSession().close();
                     FindCommand.forceDeregister(chr.getId(), chr.getName());
@@ -239,7 +239,7 @@ public class PlayerStorage {
                 while (itr.hasNext()) {
                     chr = itr.next();
 
-                    if (!chr.isGM()) {
+                    if (!chr.isGameMaster()) {
                         sb.append(MapleCharacterUtil.makeMapleReadable(chr.getName()));
                         sb.append(", ");
                     }
@@ -288,7 +288,7 @@ public class PlayerStorage {
             while (itr.hasNext()) {
                 chr = itr.next();
 
-                if (chr.getClient().isLoggedIn() && chr.isGM()) {
+                if (chr.getClient().isLoggedIn() && chr.isGameMaster()) {
                     chr.getClient().getSession().write(data);
                 }
             }

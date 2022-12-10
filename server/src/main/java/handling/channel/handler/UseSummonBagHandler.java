@@ -36,7 +36,7 @@ public class UseSummonBagHandler extends AbstractMaplePacketHandler {
 
             MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
 
-            if (c.getPlayer().isGM() || !FieldLimitType.SummoningBag.check(chr.getMap().getFieldLimit())) {
+            if (c.getPlayer().isGameMaster() || !FieldLimitType.SummoningBag.check(chr.getMap().getFieldLimit())) {
                 final List<Pair<Integer, Integer>> toSpawn = MapleItemInformationProvider.getInstance()
                         .getSummonMobs(itemId);
 

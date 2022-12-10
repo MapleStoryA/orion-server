@@ -23,7 +23,7 @@ package scripting;
 
 import handling.channel.ChannelServer;
 import lombok.extern.slf4j.Slf4j;
-import tools.FileOutputUtil;
+import tools.DateHelper;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -67,7 +67,7 @@ public class EventScriptManager extends AbstractScriptManager {
                 entry.iv.invokeFunction("init", (Object) null);
             } catch (final Exception ex) {
                 log.info("Error initiating event: " + entry.script + ":" + ex);
-                FileOutputUtil.log(FileOutputUtil.ScriptEx_Log, "Error initiating event: " + entry.script + ":" + ex);
+                log.info("Log_Script_Except.rtf" + " : " + ("Error initiating event: " + entry.script + ":" + ex));
             }
         }
     }

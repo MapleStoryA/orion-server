@@ -27,7 +27,7 @@ public final class AdminCommandHandler extends AbstractMaplePacketHandler {
 
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        if (!c.getPlayer().isGM()) {// if ( (signed int)CWvsContext::GetAdminLevel((void *)v294) > 2 )
+        if (!c.getPlayer().isGameMaster()) {// if ( (signed int)CWvsContext::GetAdminLevel((void *)v294) > 2 )
             return;
         }
 

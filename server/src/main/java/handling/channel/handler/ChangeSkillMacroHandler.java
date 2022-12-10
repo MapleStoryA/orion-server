@@ -2,7 +2,7 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import client.SkillMacro;
+import client.skill.SkillMacro;
 import handling.AbstractMaplePacketHandler;
 import tools.data.input.SeekableLittleEndianAccessor;
 
