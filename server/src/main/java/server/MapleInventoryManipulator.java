@@ -693,11 +693,11 @@ public class MapleInventoryManipulator {
             }
         }
         if (GameConstants.isDragonItem(source.getItemId())) {
-            chr.finishAchievement(8);
+            chr.getFinishedAchievements().finishAchievement(chr,8);
         } else if (GameConstants.isReverseItem(source.getItemId())) {
-            chr.finishAchievement(9);
+            chr.getFinishedAchievements().finishAchievement(chr,9);
         } else if (GameConstants.isTimelessItem(source.getItemId())) {
-            chr.finishAchievement(10);
+            chr.getFinishedAchievements().finishAchievement(chr,10);
         }
         c.getSession().write(MaplePacketCreator.moveInventoryItem(MapleInventoryType.EQUIP, src, dst, (byte) 2));
         chr.equipChanged();

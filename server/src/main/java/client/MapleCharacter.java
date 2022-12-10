@@ -80,7 +80,6 @@ import scripting.EventInstanceManager;
 import scripting.NPCScriptManager;
 import scripting.v1.event.EventInstance;
 import scripting.v1.game.helper.ApiClass;
-import server.MapleAchievements;
 import server.MapleCarnivalChallenge;
 import server.MapleCarnivalParty;
 import server.MapleInventoryManipulator;
@@ -248,7 +247,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             MapleDisease.class);
     private final Map<ReportType, Integer> reports = new EnumMap<>(ReportType.class);
     private final PlayerStats stats;
-    private final List<Integer> finishedAchievements = new ArrayList<>();
+
     private final Map<Integer, Integer> movedMobs = new HashMap<>();
     private final HashMap<String, Object> temporaryData = new HashMap<>();
 
@@ -264,9 +263,10 @@ public class MapleCharacter extends BaseMapleCharacter {
     private SavedLocations savedLocations;
     @Getter
     private WishList wishlist;
-
     @Getter
     private SavedSkillMacro skillMacros;
+    @Getter
+    private FinishedAchievements finishedAchievements;
 
     private boolean changed_achievements;
     private boolean changed_quest_info;
@@ -340,7 +340,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         if (ChannelServer) {
             changed_reports = false;
             changed_skills = false;
-            setChanged_achievements(false);
             changed_quest_info = false;
             lastCombo = 0;
             mu_lung_energy = 0;
@@ -363,6 +362,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             regTeleportRock = new TeleportRock(false);
             savedLocations = new SavedLocations();
             skillMacros = new SavedSkillMacro();
+            finishedAchievements = new FinishedAchievements();
 
             conversation_status = new AtomicInteger();
             conversation_status.set(0); // 1 = NPC/ Quest, 2 = Duey, 3 = Hired Merch store, 4 =
@@ -528,9 +528,9 @@ public class MapleCharacter extends BaseMapleCharacter {
         for (final Map.Entry<Integer, SkillEntry> qs : ct.getSkills().entrySet()) {
             ret.skills.put(SkillFactory.getSkill(qs.getKey()), qs.getValue());
         }
-        for (final Integer zz : ct.getFinishedAchievements()) {
-            ret.finishedAchievements.add(zz);
-        }
+
+        ret.finishedAchievements = ct.getFinishedAchievements();
+
         for (final Map.Entry<Byte, Integer> qs : ct.getReports().entrySet()) {
             ret.reports.put(ReportType.getById(qs.getKey()), qs.getValue());
         }
@@ -682,7 +682,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 ps.setInt(1, ret.account_id);
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    ret.finishedAchievements.add(rs.getInt("achievementid"));
+                    ret.finishedAchievements.addAchievementFinished(rs.getInt("achievementid"));
                 }
 
                 ps = con.prepareStatement("SELECT * FROM reports WHERE characterid = ?");
@@ -1385,21 +1385,8 @@ public class MapleCharacter extends BaseMapleCharacter {
             }
 
             CharacterService.saveLocation(savedLocations, id);
+            CharacterService.saveAchievement(finishedAchievements, this.account_id, this.id);
 
-            if (isChanged_achievements()) {
-                ps = con.prepareStatement("DELETE FROM achievements WHERE accountid = ?");
-                ps.setInt(1, account_id);
-                ps.executeUpdate();
-                ps.close();
-                ps = con.prepareStatement("INSERT INTO achievements(charid, achievementid, accountid) VALUES(?, ?, ?)");
-                for (Integer achid : finishedAchievements) {
-                    ps.setInt(1, id);
-                    ps.setInt(2, achid);
-                    ps.setInt(3, account_id);
-                    ps.executeUpdate();
-                }
-                ps.close();
-            }
 
             if (changed_reports) {
                 deleteWhereCharacterId(con, "DELETE FROM reports WHERE characterid = ?");
@@ -1447,7 +1434,6 @@ public class MapleCharacter extends BaseMapleCharacter {
             TeleportRockService.save(regTeleportRock, id);
 
             changed_quest_info = false;
-            setChanged_achievements(false);
             changed_skills = false;
             changed_reports = false;
 
@@ -2412,7 +2398,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     public void addFame(int famechange) {
         this.fame += famechange;
         if (this.fame >= 50) {
-            finishAchievement(7);
+            this.getFinishedAchievements().finishAchievement(this, 7);
         }
     }
 
@@ -3448,16 +3434,16 @@ public class MapleCharacter extends BaseMapleCharacter {
     private void checkForAchievements() {
         int level = getLevel();
         if (level >= 30) {
-            finishAchievement(2);
+            this.getFinishedAchievements().finishAchievement(this, 2);
         }
         if (level >= 70) {
-            finishAchievement(3);
+            this.getFinishedAchievements().finishAchievement(this, 3);
         }
         if (level >= 120) {
-            finishAchievement(4);
+            this.getFinishedAchievements().finishAchievement(this, 4);
         }
         if (level >= 200) {
-            finishAchievement(5);
+            this.getFinishedAchievements().finishAchievement(this, 5);
         }
     }
 
@@ -4500,28 +4486,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         client.getSession().write(MonsterCarnivalPacket.playerDiedMessage(name, lostCP, team));
     }
 
-    public void setAchievementFinished(int id) {
-        if (!finishedAchievements.contains(id)) {
-            finishedAchievements.add(id);
-            setChanged_achievements(true);
-        }
-    }
-
-    public boolean achievementFinished(int achievementid) {
-        return finishedAchievements.contains(achievementid);
-    }
-
-    public void finishAchievement(int id) {
-        if (!achievementFinished(id)) {
-            if (isAlive()) {
-                MapleAchievements.getInstance().getById(id).finishAchievement(this);
-            }
-        }
-    }
-
-    public List<Integer> getFinishedAchievements() {
-        return finishedAchievements;
-    }
 
     public void modifyAchievementCSPoints(int type, int quantity) {
         switch (type) {
@@ -4562,7 +4526,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     public void setPoints(int p) {
         this.points = p;
         if (this.points >= 1) {
-            finishAchievement(1);
+            this.getFinishedAchievements().finishAchievement(this, 1);
         }
     }
 
@@ -5711,10 +5675,6 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public boolean isHasSummon() {
         return hasSummon;
-    }
-
-    public boolean isChanged_achievements() {
-        return changed_achievements;
     }
 
     public void setChanged_achievements(boolean changed_achievements) {

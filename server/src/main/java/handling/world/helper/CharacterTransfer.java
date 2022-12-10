@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package handling.world.helper;
 
+import client.FinishedAchievements;
 import client.MapleCharacter;
 import client.MapleQuestStatus;
 import client.SavedLocations;
@@ -52,7 +53,7 @@ import java.util.Map;
 @Setter
 public class CharacterTransfer {
 
-    private final List<Integer> finishedAchievements = new ArrayList<>();
+
     private final List<Integer> famedCharacters = new ArrayList<>();
     private final List<BuddyListEntry> buddies = new ArrayList<>();
     private final Map<Integer, Object> quest = new LinkedHashMap<>();
@@ -128,6 +129,7 @@ public class CharacterTransfer {
     private CashShop cashInventory;
     private SavedLocations savedLocations;
     private WishList wishlist;
+    private FinishedAchievements finishedAchievements;
     private int[] vipTeleportRocks;
     private int[] regularTeleportRocks;
     private byte[] petStore;
@@ -214,9 +216,7 @@ public class CharacterTransfer {
             this.setMessenger_id(0);
         }
 
-        for (final Integer zz : chr.getFinishedAchievements()) {
-            this.getFinishedAchievements().add(zz);
-        }
+        this.setFinishedAchievements(chr.getFinishedAchievements());
 
         this.setMBookCover(chr.getMonsterBookCover());
         this.setDojo(chr.getDojo());
