@@ -1,12 +1,14 @@
 package database;
 
 import client.CharNameAndId;
-import client.skill.EvanSkillPoints;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleJob;
+import client.SavedLocations;
+import client.skill.EvanSkillPoints;
 import handling.world.guild.GuildManager;
 import lombok.extern.slf4j.Slf4j;
+import server.maps.SavedLocationType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -172,4 +174,24 @@ public class CharacterService {
         return LoginService.loadCharacterData(accountId, characterId) != null;
     }
 
+    public static void saveLocation(SavedLocations savedLocations, int id) {
+        if (savedLocations.isChanged()) {
+            try {
+                var con = DatabaseConnection.getConnection();
+                deleteWhereCharacterId(con, "DELETE FROM savedlocations WHERE characterid = ?", id);
+                var ps = con.prepareStatement("INSERT INTO savedlocations (characterid, `locationtype`, `map`) VALUES (?, ?, ?)");
+                ps.setInt(1, id);
+                for (final SavedLocationType savedLocationType : SavedLocationType.values()) {
+                    if (savedLocations.getSavedLocation(savedLocationType.getValue()) != -1) {
+                        ps.setInt(2, savedLocationType.getValue());
+                        ps.setInt(3, savedLocations.getSavedLocation(savedLocationType.getValue()));
+                        ps.execute();
+                    }
+                }
+                ps.close();
+            } catch (Exception e) {
+
+            }
+        }
+    }
 }

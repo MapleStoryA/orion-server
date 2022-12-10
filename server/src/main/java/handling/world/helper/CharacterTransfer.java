@@ -23,6 +23,7 @@ package handling.world.helper;
 
 import client.MapleCharacter;
 import client.MapleQuestStatus;
+import client.SavedLocations;
 import client.WishList;
 import client.anticheat.ReportType;
 import client.inventory.MapleInventory;
@@ -125,7 +126,7 @@ public class CharacterTransfer {
     private SkillMacro[] skillMacro;
     private MapleStorage storage;
     private CashShop cashInventory;
-    private int[] savedLocation;
+    private SavedLocations savedLocations;
     private WishList wishlist;
     private int[] vipTeleportRocks;
     private int[] regularTeleportRocks;
@@ -238,7 +239,7 @@ public class CharacterTransfer {
         this.setChalkboard(chr.getChalkboard());
         this.setSkillMacro(chr.getSkillMacros());
         this.setKeyMap(chr.getKeyLayout().Layout());
-        this.setSavedLocation(chr.getSavedLocations());
+        this.setSavedLocations(chr.getSavedLocations());
         this.setWishlist(chr.getWishlist());
         this.setVipTeleportRocks(chr.getVipTeleportRock().toArray());
         this.setRegularTeleportRocks(chr.getRegTeleportRock().toArray());

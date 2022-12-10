@@ -233,8 +233,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     private boolean hidden;
     private boolean hasSummon = false;
 
-    private int[] savedLocations;
-
 
     private List<Integer> lastMonthFameIds;
     private List<MapleDoor> doors;
@@ -261,6 +259,8 @@ public class MapleCharacter extends BaseMapleCharacter {
     private MapleBuddyList buddyList;
     private MonsterBook monsterBook;
 
+    @Getter
+    private SavedLocations savedLocations;
 
     @Getter
     private WishList wishlist;
@@ -372,10 +372,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             summons = new LinkedHashMap<>();
             pendingCarnivalRequests = new LinkedList<>();
 
-            savedLocations = new int[SavedLocationType.values().length];
-            for (int i = 0; i < SavedLocationType.values().length; i++) {
-                savedLocations[i] = -1;
-            }
+            savedLocations = new SavedLocations();
             questInfo = new LinkedHashMap<>();
             anti_cheat = new CheatTracker(this);
             pets = new ArrayList<>();
@@ -545,7 +542,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         ret.keyLayout = new MapleKeyLayout(ct.getKeyMap());
         ret.petStore = ct.getPetStore();
         ret.questInfo = ct.getInfoQuest();
-        ret.savedLocations = ct.getSavedLocation();
+        ret.savedLocations = ct.getSavedLocations();
         ret.wishlist = ct.getWishlist();
         ret.vipTeleportRock.initMaps(ct.getVipTeleportRocks());
         ret.regTeleportRock.initMaps(ct.getRegularTeleportRocks());
@@ -882,7 +879,8 @@ public class MapleCharacter extends BaseMapleCharacter {
                 ps.setInt(1, charid);
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    ret.savedLocations[rs.getInt("locationtype")] = rs.getInt("map");
+                    var locationType = SavedLocationType.fromCode(rs.getInt("locationtype"));
+                    ret.savedLocations.saveLocation(locationType, rs.getInt("map"));
                 }
                 rs.close();
                 ps.close();
@@ -1405,20 +1403,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 ps.close();
             }
 
-            if (changed_saved_locations) {
-                deleteWhereCharacterId(con, "DELETE FROM savedlocations WHERE characterid = ?");
-                ps = con.prepareStatement(
-                        "INSERT INTO savedlocations (characterid, `locationtype`, `map`) VALUES (?, ?, ?)");
-                ps.setInt(1, id);
-                for (final SavedLocationType savedLocationType : SavedLocationType.values()) {
-                    if (savedLocations[savedLocationType.getValue()] != -1) {
-                        ps.setInt(2, savedLocationType.getValue());
-                        ps.setInt(3, savedLocations[savedLocationType.getValue()]);
-                        ps.execute();
-                    }
-                }
-                ps.close();
-            }
+            CharacterService.saveLocation(savedLocations, id);
 
             if (isChanged_achievements()) {
                 ps = con.prepareStatement("DELETE FROM achievements WHERE accountid = ?");
@@ -3221,28 +3206,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         return meso;
     }
 
-    public final int[] getSavedLocations() {
-        return savedLocations;
-    }
-
-    public int getSavedLocation(SavedLocationType type) {
-        return savedLocations[type.getValue()];
-    }
-
-    public void saveLocation(SavedLocationType type) {
-        savedLocations[type.getValue()] = getMapId();
-        changed_saved_locations = true;
-    }
-
-    public void saveLocation(SavedLocationType type, int mapz) {
-        savedLocations[type.getValue()] = mapz;
-        changed_saved_locations = true;
-    }
-
-    public void clearSavedLocation(SavedLocationType type) {
-        savedLocations[type.getValue()] = -1;
-        changed_saved_locations = true;
-    }
 
     public void gainMeso(int gain, boolean show) {
         gainMeso(gain, show, false, false);

@@ -20,7 +20,7 @@ public class EnterMTSHandler extends AbstractMaplePacketHandler {
         if (c.getPlayer().getMapId() == map) {
             c.getSession().write(MaplePacketCreator.enableActions());
         } else {
-            c.getPlayer().saveLocation(SavedLocationType.FREE_MARKET, c.getPlayer().getMapId());
+            c.getPlayer().getSavedLocations().saveLocation(SavedLocationType.FREE_MARKET, c.getPlayer().getMapId());
             c.getPlayer().changeMap(map, "out00");
         }
 

@@ -873,7 +873,7 @@ public abstract class AbstractPlayerInteraction {
     }
 
     public final int getSavedLocation(final String loc) {
-        final Integer ret = c.getPlayer().getSavedLocation(SavedLocationType.fromString(loc));
+        final Integer ret = c.getPlayer().getSavedLocations().getSavedLocation(SavedLocationType.fromString(loc));
         if (ret == null || ret == -1) {
             return 100000000;
         }
@@ -882,15 +882,15 @@ public abstract class AbstractPlayerInteraction {
 
     public final void saveLocation(final String loc) {
         SavedLocationType location = SavedLocationType.fromString(loc);
-        c.getPlayer().saveLocation(location);
+        c.getPlayer().getSavedLocations().saveLocation(location, c.getPlayer());
     }
 
     public final void saveReturnLocation(final String loc) {
-        c.getPlayer().saveLocation(SavedLocationType.fromString(loc), c.getPlayer().getMap().getReturnMap().getId());
+        c.getPlayer().getSavedLocations().saveLocation(SavedLocationType.fromString(loc), c.getPlayer().getMap().getReturnMap().getId());
     }
 
     public final void clearSavedLocation(final String loc) {
-        c.getPlayer().clearSavedLocation(SavedLocationType.fromString(loc));
+        c.getPlayer().getSavedLocations().clearSavedLocation(SavedLocationType.fromString(loc));
     }
 
     public final void summonMsg(final String msg) {
