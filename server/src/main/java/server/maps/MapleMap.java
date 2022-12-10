@@ -2058,7 +2058,7 @@ public final class MapleMap {
         } else if (mapid == 140090000 || mapid == 105100301 || mapid == 105100401 || mapid == 105100100) {
             chr.getClient().getSession().write(MaplePacketCreator.temporaryStats_Reset());
         }
-        if (GameConstants.isEvan(chr.getJob()) && chr.getJob() >= 2200 && chr.getBuffedValue(MapleBuffStat.MONSTER_RIDING) == null) {
+        if (GameConstants.isEvan(chr.getJob().getId()) && chr.getJob().getId() >= 2200 && chr.getBuffedValue(MapleBuffStat.MONSTER_RIDING) == null) {
             if (chr.getDragon() == null) {
                 chr.makeDragon();
             }
@@ -2072,7 +2072,7 @@ public final class MapleMap {
             chr.getClient().getSession().write(MaplePacketCreator.musicChange("Bgm00/DragonDream"));
         }
         for (int i = 1066; i <= 1067; i++) {
-            final int realId = GameConstants.getSkillByJob(i, chr.getJob());
+            final int realId = GameConstants.getSkillByJob(i, chr.getJob().getId());
             if (chr.getSkillLevel(realId) > -1 && chr.getMorphState() != 2210062 && chr.getMorphState() != 2210063 && chr.getMorphState() != 2210064 && chr.getMorphState() != 2210065) {
                 chr.changeSkillLevel_Skip(SkillFactory.getSkill(realId), (byte) -1, (byte) 0);
             }

@@ -59,7 +59,7 @@ public class TargetScripting extends PlayerScripting {
 
     @ScriptingApi
     public int nJob() {
-        return player.getJob();
+        return player.getJob().getId();
     }
 
     @ScriptingApi
@@ -165,12 +165,12 @@ public class TargetScripting extends PlayerScripting {
 
     @ScriptingApi
     public int incSP(int value) {
-        if (player.isEvan()) {
+        if (player.getJob().isEvan()) {
             player.addEvanSP(value);
         } else {
             player.gainSp(value);
         }
-        sendPacket(CWVsContextOnMessagePackets.onIncSpMessage(player.getJobValue(), value));
+        sendPacket(CWVsContextOnMessagePackets.onIncSpMessage(player.getJob(), value));
         return nSP();
     }
 
@@ -338,7 +338,7 @@ public class TargetScripting extends PlayerScripting {
 
     @ScriptingApi
     public boolean isEvan() {
-        return player.isEvan();
+        return player.getJob().isEvan();
     }
 
     @ScriptingApi

@@ -16,7 +16,6 @@ import constants.GameConstants;
 import constants.MapConstants;
 import server.cashshop.CashItemFactory;
 import server.cashshop.CashItemInfo;
-import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
 import tools.Triple;
@@ -566,7 +565,7 @@ public class MapleInventoryManipulator {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
         }
-        if (!ii.canEquip(stats, source.getItemId(), chr.getLevel(), chr.getJob(), chr.getFame(), statst.getTotalStr(), statst.getTotalDex(), statst.getTotalLuk(), statst.getTotalInt(), c.getPlayer().getStat().getLevelBonus())) {
+        if (!ii.canEquip(stats, source.getItemId(), chr.getLevel(), chr.getJob().getId(), chr.getFame(), statst.getTotalStr(), statst.getTotalDex(), statst.getTotalLuk(), statst.getTotalInt(), c.getPlayer().getStat().getLevelBonus())) {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
         }
@@ -574,14 +573,14 @@ public class MapleInventoryManipulator {
             AutobanManager.getInstance().autoban(c, "Equipment hack, itemid " + source.getItemId() + " to slot " + dst);
             return;
         }
-        if (!ii.isCash(source.getItemId()) && !GameConstants.isMountItemAvailable(source.getItemId(), c.getPlayer().getJob())) {
+        if (!ii.isCash(source.getItemId()) && !GameConstants.isMountItemAvailable(source.getItemId(), c.getPlayer().getJob().getId())) {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
         }
         if (GameConstants.isKatara(source.getItemId())) {
             dst = (byte) -10; //shield slot
         }
-        if (GameConstants.isEvanDragonItem(source.getItemId()) && (chr.getJob() < 2200 || chr.getJob() > 2218)) {
+        if (GameConstants.isEvanDragonItem(source.getItemId()) && (chr.getJob().getId() < 2200 || chr.getJob().getId() > 2218)) {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
         }
@@ -623,7 +622,7 @@ public class MapleInventoryManipulator {
             case -10: { // Shield
                 IItem weapon = chr.getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -11);
                 if (GameConstants.isKatara(source.getItemId())) {
-                    if ((chr.getJob() != 900 && (chr.getJob() < 430 || chr.getJob() > 434)) || weapon == null || !GameConstants.isDagger(weapon.getItemId())) {
+                    if ((chr.getJob().getId() != 900 && (chr.getJob().getId() < 430 || chr.getJob().getId() > 434)) || weapon == null || !GameConstants.isDagger(weapon.getItemId())) {
                         c.getSession().write(MaplePacketCreator.getInventoryFull());
                         c.getSession().write(MaplePacketCreator.getShowInventoryFull());
                         return;

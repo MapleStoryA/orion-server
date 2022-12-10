@@ -21,14 +21,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package handling.world.helper;
 
-import client.skill.EvanSkillPoints;
-import client.skill.ISkill;
 import client.MapleCharacter;
 import client.MapleQuestStatus;
-import client.skill.SkillEntry;
 import client.anticheat.ReportType;
 import client.inventory.MapleMount;
 import client.inventory.MaplePet;
+import client.skill.EvanSkillPoints;
+import client.skill.ISkill;
+import client.skill.SkillEntry;
 import handling.world.buddy.BuddyListEntry;
 import server.quest.MapleQuest;
 import tools.Triple;
@@ -120,7 +120,7 @@ public class CharacterTransfer implements Externalizable {
         this.remainingSp = chr.getRemainingSp();
         this.meso = chr.getMeso();
         this.skinColor = chr.getSkinColor();
-        this.job = chr.getJob();
+        this.job = (short) chr.getJob().getId();
         this.hair = chr.getHair();
         this.face = chr.getFace();
         this.mapid = chr.getMapId();

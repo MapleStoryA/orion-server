@@ -8,7 +8,6 @@ import provider.MapleDataProvider;
 import provider.MapleDataTool;
 import scripting.NPCScriptManager;
 import server.config.ServerEnvironment;
-import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.Pair;
 
@@ -313,7 +312,7 @@ public class MapleQuest implements Serializable {
     }
 
     private boolean checkNPCOnMap(MapleCharacter player, int npcid) {
-        return (GameConstants.isEvan(player.getJob()) && npcid == 1013000) || (player.getMap() != null && player.getMap().containsNPC(npcid));
+        return (GameConstants.isEvan(player.getJob().getId()) && npcid == 1013000) || (player.getMap() != null && player.getMap().containsNPC(npcid));
     }
 
     public int getMedalItem() {

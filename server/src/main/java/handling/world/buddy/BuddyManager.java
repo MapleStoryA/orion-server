@@ -71,7 +71,7 @@ public class BuddyManager {
                 } finally {
                     lock.writeLock().unlock();
                 }
-                addChar.getClient().getSession().write(MaplePacketCreator.requestBuddylistAdd(inviter.getId(), inviter.getName(), inviter.getLevel(), inviter.getJob()));
+                addChar.getClient().getSession().write(MaplePacketCreator.requestBuddylistAdd(inviter.getId(), inviter.getName(), inviter.getLevel(), inviter.getJob().getId()));
                 return MapleBuddyList.BuddyAddResult.OK;
             }
         }

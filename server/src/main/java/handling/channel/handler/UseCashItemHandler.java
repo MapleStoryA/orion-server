@@ -222,7 +222,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                 if (apto == apfrom) {
                     break; // Hack
                 }
-                final int job = c.getPlayer().getJob();
+                final int job = c.getPlayer().getJob().getId();
                 final PlayerStats playerst = c.getPlayer().getStat();
                 used = true;
 
@@ -260,19 +260,19 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                 }
                 switch (apfrom) { // AP to
                     case 64: // str
-                        if (playerst.getStr() <= 4 || (c.getPlayer().getJob() % 1000 / 100 == 1 && playerst.getStr() <= 35)) {
+                        if (playerst.getStr() <= 4 || (c.getPlayer().getJob().getId() % 1000 / 100 == 1 && playerst.getStr() <= 35)) {
                             used = false;
                         }
                         break;
                     case 128: // dex
-                        if (playerst.getDex() <= 4 || (c.getPlayer().getJob() % 1000 / 100 == 3 && playerst.getStr() <= 25)
-                                || (c.getPlayer().getJob() % 1000 / 100 == 4 && playerst.getLuk() <= 25)
-                                || (c.getPlayer().getJob() % 1000 / 100 == 5 && playerst.getStr() <= 20)) {
+                        if (playerst.getDex() <= 4 || (c.getPlayer().getJob().getId() % 1000 / 100 == 3 && playerst.getStr() <= 25)
+                                || (c.getPlayer().getJob().getId() % 1000 / 100 == 4 && playerst.getLuk() <= 25)
+                                || (c.getPlayer().getJob().getId() % 1000 / 100 == 5 && playerst.getStr() <= 20)) {
                             used = false;
                         }
                         break;
                     case 256: // int
-                        if (playerst.getInt() <= 4 || (c.getPlayer().getJob() % 1000 / 100 == 2 && playerst.getInt() <= 20)) {
+                        if (playerst.getInt() <= 4 || (c.getPlayer().getJob().getId() % 1000 / 100 == 2 && playerst.getInt() <= 20)) {
                             used = false;
                         }
                         break;
@@ -528,7 +528,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                             statupdate.add(new Pair<MapleStat, Integer>(MapleStat.MAXMP, maxmp));
                             break;
                     }
-                    c.getSession().write(MaplePacketCreator.updatePlayerStats(statupdate, true, c.getPlayer().getJob()));
+                    c.getSession().write(MaplePacketCreator.updatePlayerStats(statupdate, true, c.getPlayer().getJob().getId()));
                 }
                 break;
             }
@@ -541,10 +541,10 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
             case 5050007:
             case 5050008:
             case 5050009: {
-                if (itemId >= 5050005 && !GameConstants.isEvan(c.getPlayer().getJob())) {
+                if (itemId >= 5050005 && !GameConstants.isEvan(c.getPlayer().getJob().getId())) {
                     break;
                 } // well i dont really care other than this o.o
-                if (itemId < 5050005 && GameConstants.isEvan(c.getPlayer().getJob())) {
+                if (itemId < 5050005 && GameConstants.isEvan(c.getPlayer().getJob().getId())) {
                     break;
                 } // well i dont really care other than this o.o
                 int skill1 = slea.readInt();
@@ -579,7 +579,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                 }
                 if ((c.getPlayer().getSkillLevel(skillSPTo) + 1 <= skillSPTo.getMaxLevel())
                         && c.getPlayer().getSkillLevel(skillSPFrom) > 0
-                        && skillSPTo.canBeLearnedBy(c.getPlayer().getJob())) {
+                        && skillSPTo.canBeLearnedBy(c.getPlayer().getJob().getId())) {
                     if (skillSPTo.isFourthJob()
                             && (c.getPlayer().getSkillLevel(skillSPTo) + 1 > c.getPlayer().getMasterLevel(skillSPTo))) {
                         break;

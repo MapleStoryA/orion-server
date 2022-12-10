@@ -21,15 +21,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package handling.channel.handler;
 
-import client.skill.ISkill;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.PlayerStats;
-import client.skill.SkillFactory;
 import client.anticheat.CheatTracker;
 import client.anticheat.CheatingOffense;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
+import client.skill.ISkill;
+import client.skill.SkillFactory;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
 import constants.GameConstants;
@@ -440,7 +440,7 @@ public class DamageParse {
                                 monster.applyStatus(player, monsterStatusEffect, false, eff.getY() * 1000L, false);
                             }
                         }
-                        if (player.getJob() == 121) { // WHITEKNIGHT
+                        if (player.getJob().getId() == 121) { // WHITEKNIGHT
                             for (int charge : charges) {
                                 final ISkill skill = SkillFactory.getSkill(charge);
                                 if (player.isBuffFrom(MapleBuffStat.WK_CHARGE, skill)) {
@@ -538,7 +538,7 @@ public class DamageParse {
         boolean Tempest;
         MapleMonsterStats monsterstats;
         int CriticalDamage = stats.passive_sharpeye_percent();
-        final ISkill eaterSkill = SkillFactory.getSkill(GameConstants.getMPEaterForJob(player.getJob()));
+        final ISkill eaterSkill = SkillFactory.getSkill(GameConstants.getMPEaterForJob(player.getJob().getId()));
         final int eaterLevel = player.getSkillLevel(eaterSkill);
 
         final MapleMap map = player.getMap();

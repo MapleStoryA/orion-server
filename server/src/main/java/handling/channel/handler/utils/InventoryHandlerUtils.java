@@ -288,7 +288,7 @@ public class InventoryHandlerUtils {
                 break; // End of data
             }
             final ISkill CurrSkillData = SkillFactory.getSkill(CurrentLoopedSkillId);
-            if (CurrSkillData != null && CurrSkillData.canBeLearnedBy(chr.getJob())
+            if (CurrSkillData != null && CurrSkillData.canBeLearnedBy(chr.getJob().getId())
                     && chr.getSkillLevel(CurrSkillData) >= ReqSkillLevel
                     && chr.getMasterLevel(CurrSkillData) < MasterLevel) {
                 canuse = true;

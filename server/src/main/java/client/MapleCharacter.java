@@ -5033,7 +5033,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         stat.add(new Pair<MapleStat, Integer>(MapleStat.INT, int_));
         stat.add(new Pair<MapleStat, Integer>(MapleStat.LUK, luk));
         stat.add(new Pair<MapleStat, Integer>(MapleStat.AVAILABLEAP, Math.min(199, total)));
-        client.getSession().write(MaplePacketCreator.updatePlayerStats(stat, false, getJob()));
+        client.getSession().write(MaplePacketCreator.updatePlayerStats(stat, false, getJob().getId()));
     }
 
     public Event_PyramidSubway getPyramidSubway() {
@@ -5810,7 +5810,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     continue;
                 }
                 ISkill skill = SkillFactory.getSkill(skillid);
-                boolean add = ((skillid / 10000000 == this.getJob() / 1000) && (skill.hasMastery())) || (job.isCygnus());
+                boolean add = ((skillid / 10000000 == this.getJob().getId() / 1000) && (skill.hasMastery())) || (job.isCygnus());
                 if ((!add) && (job.isAran())) {
                     switch (skillid) {
                         case 21000000:

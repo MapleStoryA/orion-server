@@ -36,7 +36,7 @@ public class MapleSquad {
 
     public MapleSquad(final int ch, final String type, final MapleCharacter leader, final int expiration) {
         this.leader = new WeakReference<MapleCharacter>(leader);
-        this.members.put(leader.getName(), MapleCarnivalChallenge.getJobBasicNameById(leader.getJob()));
+        this.members.put(leader.getName(), MapleCarnivalChallenge.getJobBasicNameById(leader.getJob().getId()));
         this.leaderName = leader.getName();
         this.channel = ch;
         this.type = type;

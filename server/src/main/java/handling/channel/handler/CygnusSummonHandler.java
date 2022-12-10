@@ -10,9 +10,9 @@ public class CygnusSummonHandler extends AbstractMaplePacketHandler {
 
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        if (c.getPlayer().getJob() == 2000) {
+        if (c.getPlayer().getJob().getId() == 2000) {
             NPCScriptManager.getInstance().start(c, 1202000);
-        } else if (c.getPlayer().getJob() == 1000) {
+        } else if (c.getPlayer().getJob().getId() == 1000) {
             NPCScriptManager.getInstance().start(c, 1101008);
         }
 

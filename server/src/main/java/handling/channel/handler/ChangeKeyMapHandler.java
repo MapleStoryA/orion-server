@@ -1,11 +1,11 @@
 package handling.channel.handler;
 
 import client.ExcludedKeyMap;
-import client.skill.ISkill;
 import client.MapleCharacter;
 import client.MapleClient;
-import client.skill.SkillFactory;
 import client.inventory.MapleInventoryType;
+import client.skill.ISkill;
+import client.skill.SkillFactory;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import server.MapleItemInformationProvider;
@@ -45,7 +45,7 @@ public class ChangeKeyMapHandler extends AbstractMaplePacketHandler {
                                 || (action % 10000 < 1000) || (action >= 91000000))) {
                             continue;
                         }
-                        if (!chr.isSkillBelongToJob(action)) {
+                        if (!chr.getJob().isSkillBelongToJob(action, chr.isGameMaster())) {
                             continue;
                         }
                     } else if (type == 2) { // item (All except equip)

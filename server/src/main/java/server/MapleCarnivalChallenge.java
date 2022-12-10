@@ -1,21 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package server;
 
 import client.MapleCharacter;
 import handling.world.party.MaplePartyCharacter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.ref.WeakReference;
 
-/**
- * TODO : Make this a function for NPC instead.. cleaner
- *
- * @author Rob
- */
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleCarnivalChallenge {
 
     WeakReference<MapleCharacter> challenger;
@@ -27,7 +18,7 @@ public class MapleCarnivalChallenge {
         for (MaplePartyCharacter pc : challenger.getParty().getMembers()) {
             MapleCharacter c = challenger.getMap().getCharacterById(pc.getId());
             if (c != null) {
-                challengeinfo += (c.getName() + " / Level" + c.getLevel() + " / " + getJobNameById(c.getJob()));
+                challengeinfo += (c.getName() + " / Level" + c.getLevel() + " / " + getJobNameById(c.getJob().getId()));
             }
         }
         challengeinfo += "#k";

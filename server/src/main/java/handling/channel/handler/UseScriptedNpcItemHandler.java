@@ -248,10 +248,10 @@ public class UseScriptedNpcItemHandler extends AbstractMaplePacketHandler {
             }
         }
         if (mountid > 0) {
-            mountid += (GameConstants.isAran(c.getPlayer().getJob()) ? 20000000
-                    : (GameConstants.isEvan(c.getPlayer().getJob()) ? 20010000
-                    : (GameConstants.isKOC(c.getPlayer().getJob()) ? 10000000
-                    : (GameConstants.isResist(c.getPlayer().getJob()) ? 30000000 : 0))));
+            mountid += (GameConstants.isAran(c.getPlayer().getJob().getId()) ? 20000000
+                    : (GameConstants.isEvan(c.getPlayer().getJob().getId()) ? 20010000
+                    : (GameConstants.isKOC(c.getPlayer().getJob().getId()) ? 10000000
+                    : (GameConstants.isResist(c.getPlayer().getJob().getId()) ? 30000000 : 0))));
             if (c.getPlayer().getSkillLevel(mountid) > 0) {
                 c.getPlayer().dropMessage(5, "You already have this skill.");
             } else if (expiration_days > 0) {

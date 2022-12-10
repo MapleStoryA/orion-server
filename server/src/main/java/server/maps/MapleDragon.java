@@ -51,7 +51,7 @@ public class MapleDragon extends AbstractAnimatedMapleMapObject {
     public MapleDragon(MapleCharacter owner) {
         super();
         this.owner = owner.getId();
-        this.jobid = owner.getJob();
+        this.jobid = owner.getJob().getId();
         if (jobid < 2200 || jobid > 2218) {
             throw new RuntimeException("Trying to create a dragon for a non-Evan");
         }

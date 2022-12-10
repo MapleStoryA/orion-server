@@ -1,8 +1,8 @@
 package handling.channel.handler;
 
-import client.skill.ISkill;
 import client.MapleCharacter;
 import client.MapleClient;
+import client.skill.ISkill;
 import client.skill.SkillFactory;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
@@ -28,7 +28,7 @@ public class MonsterBombHandler extends AbstractMaplePacketHandler {
         final int xpos = slea.readInt();
         final int ypos = slea.readInt();
         if (!chr.isGameMaster()) {
-            if ((monster == null || chr.getJob() != 434 || chr.getMap() == null || !chr.isAlive() || chr.isHidden())) {
+            if ((monster == null || chr.getJob().getId() != 434 || chr.getMap() == null || !chr.isAlive() || chr.isHidden())) {
                 return;
             }
         }

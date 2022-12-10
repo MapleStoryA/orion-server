@@ -1,11 +1,11 @@
 package server;
 
 import client.MapleClient;
-import client.skill.SkillFactory;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryIdentifier;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
+import client.skill.SkillFactory;
 import constants.GameConstants;
 import constants.ServerConstants;
 import database.DatabaseConnection;
@@ -116,7 +116,7 @@ public class MapleShop {
             AutobanManager.getInstance().addPoints(c, 1000, 0, "Buying " + quantity + " " + itemId);
             return;
         }
-        if (!GameConstants.isMountItemAvailable(itemId, c.getPlayer().getJob())) {
+        if (!GameConstants.isMountItemAvailable(itemId, c.getPlayer().getJob().getId())) {
             c.getPlayer().dropMessage(1, "You may not buy this item.");
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
@@ -216,7 +216,7 @@ public class MapleShop {
         }
         final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         short slotMax = ii.getSlotMax(c, item.getItemId());
-        final int skill = GameConstants.getMasterySkill(c.getPlayer().getJob());
+        final int skill = GameConstants.getMasterySkill(c.getPlayer().getJob().getId());
 
         if (skill != 0) {
             slotMax += c.getPlayer().getSkillLevel(SkillFactory.getSkill(skill)) * 10;

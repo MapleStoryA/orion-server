@@ -21,12 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package tools.packet;
 
-import client.skill.EvanSkillPoints;
-import client.skill.ISkill;
 import client.MapleCharacter;
 import client.MapleCoolDownValueHolder;
 import client.MapleQuestStatus;
-import client.skill.SkillEntry;
 import client.inventory.Equip;
 import client.inventory.IEquip;
 import client.inventory.IItem;
@@ -35,6 +32,9 @@ import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import client.inventory.MapleRing;
+import client.skill.EvanSkillPoints;
+import client.skill.ISkill;
+import client.skill.SkillEntry;
 import constants.GameConstants;
 import server.shops.AbstractPlayerStore;
 import server.shops.IMaplePlayerShop;
@@ -252,10 +252,10 @@ public class PacketHelper {
             }
         }
         mplew.write(chr.getLevel()); // level
-        mplew.writeShort(chr.getJob()); // job
+        mplew.writeShort(chr.getJob().getId()); // job
         chr.getStat().connectData(mplew);
         mplew.writeShort(Math.min(199, chr.getRemainingAp())); // Avoid Popup
-        if (chr.isEvan() && (chr.getLevel() >= 10) && (chr.getJob() != 2001)) {
+        if (chr.getJob().isEvan() && (chr.getLevel() >= 10) && (chr.getJob().getId() != 2001)) {
             EvanSkillPoints esp;
             esp = chr.getEvanSP();
             mplew.write(esp.getSkillPoints().keySet().size());
@@ -264,7 +264,7 @@ public class PacketHelper {
                 mplew.write(i == 2200 ? 1 : i - 2208);
                 mplew.write(esp.getSkillPoints(i));
             }
-        } else if (chr.getJob() == 2001) {
+        } else if (chr.getJob().getId() == 2001) {
             mplew.write(0);
         } else {
             mplew.writeShort(chr.getRemainingSp()); // remaining sp
@@ -292,7 +292,7 @@ public class PacketHelper {
         for (final IItem item : equip.list()) {
             if (item instanceof Equip) {
                 Equip currentEquip = (Equip) item;
-                if (!chr.isGameMasterJob()) {
+                if (!chr.getJob().isGameMasterJob()) {
                     if (currentEquip.getRequiredStr() > chr.getStat().getTotalStr()) {
                         continue;
                     }

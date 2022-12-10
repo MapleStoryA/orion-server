@@ -132,7 +132,7 @@ public class SpecialMoveHandler extends AbstractMaplePacketHandler {
                 } else {
                     final int mountid = MapleStatEffect.parseMountInfo(c.getPlayer(), skill.getId());
                     if (mountid != 0 && mountid != GameConstants.getMountItem(skill.getId()) && !c.getPlayer().isGameMaster() && c.getPlayer().getBuffedValue(MapleBuffStat.MONSTER_RIDING) == null && c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -118) == null) {
-                        if (!GameConstants.isMountItemAvailable(mountid, c.getPlayer().getJob())) {
+                        if (!GameConstants.isMountItemAvailable(mountid, c.getPlayer().getJob().getId())) {
                             c.getSession().write(MaplePacketCreator.enableActions());
                             return;
                         }

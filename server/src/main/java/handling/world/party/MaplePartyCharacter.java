@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package handling.world.party;
 
 import client.MapleCharacter;
+import client.MapleJob;
 import server.maps.MapleDoor;
 
 import java.awt.*;
@@ -36,7 +37,7 @@ public class MaplePartyCharacter implements Serializable {
     private int id;
     private int level;
     private int channel;
-    private int jobid;
+    private MapleJob job;
     private int mapid;
     private int doorTown = 999999999;
     private int doorTarget = 999999999;
@@ -44,16 +45,16 @@ public class MaplePartyCharacter implements Serializable {
     private Point doorPosition = new Point(0, 0);
     private boolean online;
 
-    public MaplePartyCharacter(MapleCharacter maplechar) {
-        this.name = maplechar.getName();
-        this.level = maplechar.getLevel();
-        this.channel = maplechar.getClient().getChannel();
-        this.id = maplechar.getId();
-        this.jobid = maplechar.getJob();
-        this.mapid = maplechar.getMapId();
+    public MaplePartyCharacter(MapleCharacter player) {
+        this.name = player.getName();
+        this.level = player.getLevel();
+        this.channel = player.getClient().getChannel();
+        this.id = player.getId();
+        this.job = player.getJob();
+        this.mapid = player.getMapId();
         this.online = true;
 
-        final List<MapleDoor> doors = maplechar.getDoors();
+        final List<MapleDoor> doors = player.getDoors();
         if (doors.size() > 0) {
             final MapleDoor door = doors.get(0);
 
@@ -62,7 +63,7 @@ public class MaplePartyCharacter implements Serializable {
             this.doorSkill = door.getSkill();
             this.doorPosition = door.getTargetPosition();
         } else {
-            this.doorPosition = new Point(maplechar.getPosition());
+            this.doorPosition = new Point(player.getPosition());
         }
     }
 
@@ -100,7 +101,7 @@ public class MaplePartyCharacter implements Serializable {
     }
 
     public int getJobId() {
-        return jobid;
+        return job.getId();
     }
 
     public int getDoorTown() {

@@ -23,6 +23,7 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import client.MapleJob;
 import client.MapleQuestStatus;
 import client.skill.SkillFactory;
 import constants.ServerConstants;
@@ -184,7 +185,7 @@ public class InterServerHandler {
             }
         }
         player.expirationTask(true, transfer == null);
-        if (player.getJob() == 132) { // DARKKNIGHT
+        if (player.getJob().equals(MapleJob.DARKKNIGHT)) {
             player.checkBerserk();
         }
         player.spawnSavedPets();

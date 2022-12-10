@@ -124,7 +124,7 @@ public class PlayerShopPacket {
             mplew.write(storechr.left);
             PacketHelper.addCharLook(mplew, storechr.right, false);
             mplew.writeMapleAsciiString(storechr.right.getName());
-            mplew.writeShort(storechr.right.getJob());
+            mplew.writeShort(storechr.right.getJob().getId());
         }
         mplew.write(-1);
         mplew.writeShort(0);
@@ -171,7 +171,7 @@ public class PlayerShopPacket {
             mplew.write(storechr.left);
             PacketHelper.addCharLook(mplew, storechr.right, false);
             mplew.writeMapleAsciiString(storechr.right.getName());
-            mplew.writeShort(storechr.right.getJob());
+            mplew.writeShort(storechr.right.getJob().getId());
         }
         mplew.write(255);
         mplew.writeShort(0);
@@ -226,12 +226,12 @@ public class PlayerShopPacket {
         mplew.writeShort(ips.getVisitorSlot(chr));
         PacketHelper.addCharLook(mplew, ((MaplePlayerShop) ips).getMCOwner(), false);
         mplew.writeMapleAsciiString(ips.getOwnerName());
-        mplew.writeShort(((MaplePlayerShop) ips).getMCOwner().getJob());
+        mplew.writeShort(((MaplePlayerShop) ips).getMCOwner().getJob().getId());
         for (final Pair<Byte, MapleCharacter> storechr : ips.getVisitors()) {
             mplew.write(storechr.left);
             PacketHelper.addCharLook(mplew, storechr.right, false);
             mplew.writeMapleAsciiString(storechr.right.getName());
-            mplew.writeShort(storechr.right.getJob());
+            mplew.writeShort(storechr.right.getJob().getId());
         }
         mplew.write(0xFF);
         mplew.writeMapleAsciiString(ips.getDescription());
@@ -320,7 +320,7 @@ public class PlayerShopPacket {
         mplew.write(slot);
         PacketHelper.addCharLook(mplew, chr, false);
         mplew.writeMapleAsciiString(chr.getName());
-        mplew.writeShort(chr.getJob());
+        mplew.writeShort(chr.getJob().getId());
 
         return mplew.getPacket();
     }
@@ -437,12 +437,12 @@ public class PlayerShopPacket {
         mplew.writeShort(minigame.getVisitorSlot(c.getPlayer()));
         PacketHelper.addCharLook(mplew, minigame.getMCOwner(), false);
         mplew.writeMapleAsciiString(minigame.getOwnerName());
-        mplew.writeShort(minigame.getMCOwner().getJob());
+        mplew.writeShort(minigame.getMCOwner().getJob().getId());
         for (Pair<Byte, MapleCharacter> visitorz : minigame.getVisitors()) {
             mplew.write(visitorz.getLeft());
             PacketHelper.addCharLook(mplew, visitorz.getRight(), false);
             mplew.writeMapleAsciiString(visitorz.getRight().getName());
-            mplew.writeShort(visitorz.getRight().getJob());
+            mplew.writeShort(visitorz.getRight().getJob().getId());
         }
         mplew.write(-1);
         mplew.write(0);
@@ -527,7 +527,7 @@ public class PlayerShopPacket {
         mplew.write(slot);
         PacketHelper.addCharLook(mplew, c, false);
         mplew.writeMapleAsciiString(c.getName());
-        mplew.writeShort(c.getJob());
+        mplew.writeShort(c.getJob().getId());
         addGameInfo(mplew, c, game);
         return mplew.getPacket();
     }

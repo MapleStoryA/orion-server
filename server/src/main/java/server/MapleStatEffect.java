@@ -1,16 +1,16 @@
 package server;
 
-import client.skill.ISkill;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleCoolDownValueHolder;
 import client.MapleDisease;
 import client.MapleStat;
 import client.PlayerStats;
-import client.skill.SkillFactory;
 import client.inventory.IItem;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
+import client.skill.ISkill;
+import client.skill.SkillFactory;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
 import constants.GameConstants;
@@ -777,11 +777,6 @@ public class MapleStatEffect implements Serializable {
         return -1;
     }
 
-    /**
-     * @param applyto
-     * @param obj
-     * @param attack  damage done by the skill
-     */
     public final void applyPassive(final MapleCharacter applyto, final MapleMapObject obj) {
         if (makeChanceResult()) {
             switch (sourceid) { // MP eater
@@ -828,7 +823,7 @@ public class MapleStatEffect implements Serializable {
             return false; //not supposed to
         } else if (sourceid == 2210062 || sourceid == 2210063 || sourceid == 2210064 || sourceid == 2210065) {
             for (int i = 1066; i <= 1067; i++) {
-                final ISkill skill = SkillFactory.getSkill(GameConstants.getSkillByJob(i, applyfrom.getJob()));
+                final ISkill skill = SkillFactory.getSkill(GameConstants.getSkillByJob(i, applyfrom.getJob().getId()));
                 applyfrom.changeSkillLevel_Skip(skill, (byte) 1, (byte) 1); // apply
             }
         }
@@ -880,7 +875,7 @@ public class MapleStatEffect implements Serializable {
         }
         hpmpupdate.add(new Pair<MapleStat, Integer>(MapleStat.HP, Integer.valueOf(stat.getHp())));
 
-        applyto.getClient().getSession().write(MaplePacketCreator.updatePlayerStats(hpmpupdate, true, applyto.getJob()));
+        applyto.getClient().getSession().write(MaplePacketCreator.updatePlayerStats(hpmpupdate, true, applyto.getJob().getId()));
 
         if (expinc != 0) {
             applyto.gainExp(expinc, true, true, false);
@@ -1447,7 +1442,7 @@ public class MapleStatEffect implements Serializable {
         return hpchange;
     }
 
-    private final int calcMPChange(final MapleCharacter applyfrom, final boolean primary) {
+    private int calcMPChange(final MapleCharacter applyfrom, final boolean primary) {
         int mpchange = 0;
         if (mp != 0) {
             if (primary) {
@@ -1463,7 +1458,7 @@ public class MapleStatEffect implements Serializable {
             if (mpCon != 0) {
                 double mod = 1.0;
 
-                final int ElemSkillId = getElementalAmp(applyfrom.getJob());
+                final int ElemSkillId = getElementalAmp(applyfrom.getJob().getId());
                 if (ElemSkillId != -1) {
                     final ISkill amp = SkillFactory.getSkill(ElemSkillId);
                     final int ampLevel = applyfrom.getSkillLevel(amp);
@@ -1498,9 +1493,9 @@ public class MapleStatEffect implements Serializable {
         return val;
     }
 
-    private final MapleStatEffect getAlchemistEffect(final MapleCharacter chr) {
+    private MapleStatEffect getAlchemistEffect(final MapleCharacter chr) {
         ISkill al;
-        switch (chr.getJob()) {
+        switch (chr.getJob().getId()) {
             case 411:
             case 412:
                 al = SkillFactory.getSkill(4110000);
@@ -1516,7 +1511,7 @@ public class MapleStatEffect implements Serializable {
                 }
                 return al.getEffect(chr.getSkillLevel(al));
         }
-        if (GameConstants.isResist(chr.getJob())) {
+        if (GameConstants.isResist(chr.getJob().getId())) {
             al = SkillFactory.getSkill(30000002);
             if (chr.getSkillLevel(al) <= 0) {
                 return null;
