@@ -266,7 +266,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     private WishList wishlist;
     private boolean changed_skill_macros;
     private boolean changed_achievements;
-    private boolean changed_saved_locations;
     private boolean changed_quest_info;
     private boolean changed_skills;
     private boolean changed_reports;
@@ -341,7 +340,6 @@ public class MapleCharacter extends BaseMapleCharacter {
             changed_skills = false;
             setChanged_achievements(false);
             changed_skill_macros = false;
-            changed_saved_locations = false;
             changed_quest_info = false;
             lastCombo = 0;
             mu_lung_energy = 0;
@@ -1466,7 +1464,6 @@ public class MapleCharacter extends BaseMapleCharacter {
             TeleportRockService.save(regTeleportRock, id);
 
             changed_skill_macros = false;
-            changed_saved_locations = false;
             changed_quest_info = false;
             setChanged_achievements(false);
             changed_skills = false;
