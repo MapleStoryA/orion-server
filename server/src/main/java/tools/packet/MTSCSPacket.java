@@ -284,12 +284,9 @@ public class MTSCSPacket {
         mplew.write(delete ? 2 : 3);
         mplew.write(vip ? 1 : 0);
         if (vip) {
-            chr.geTeleportRocks().encode(mplew);
+            chr.getVipTeleportRock().encode(mplew);
         } else {
-            int[] map = chr.getRegRocks();
-            for (int i = 0; i < 5; i++) {
-                mplew.writeInt(map[i]);
-            }
+            chr.getRegTeleportRock().encode(mplew);
         }
         return mplew.getPacket();
     }

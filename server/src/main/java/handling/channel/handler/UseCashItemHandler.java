@@ -49,6 +49,8 @@ import java.util.concurrent.locks.Lock;
 @lombok.extern.slf4j.Slf4j
 public class UseCashItemHandler extends AbstractMaplePacketHandler {
 
+    public static final int VIP_TELEPORT_ROCK = 5041000;
+
     public static void PickupItemAtSpot(final MapleClient c, final MapleCharacter chr, final MapleMapObject ob) {
         if (ob == null) {
             c.getSession().write(MaplePacketCreator.enableActions());
@@ -170,29 +172,27 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                 break;
             }
             case 2320000: // The Teleport Rock
-            case 5041000: // VIP Teleport Rock
+            case VIP_TELEPORT_ROCK: // VIP Teleport Rock
             case 5040000: // The Teleport Rock
             case 5040001: { // Teleport Coke
                 if (slea.readByte() == 0) { // Rocktype
-                    final MapleMap target = c.getChannelServer().getMapFactory().getMap(slea.readInt());
-                    if ((itemId == 5041000 && c.getPlayer().geTeleportRocks().hasMap(target.getId()))
-                            || (itemId != 5041000 && c.getPlayer().isRegRockMap(target.getId()))) {
-                        if (!FieldLimitType.VipRock.check(c.getPlayer().getMap().getFieldLimit())
-                                && !FieldLimitType.VipRock.check(target.getFieldLimit())
-                                && c.getPlayer().getEventInstance() == null) { // Makes
-                            // sure
-                            // this
-                            // map
-                            // doesn't
-                            // have
-                            // a
-                            // forced
-                            // return
-                            // map
-                            c.getPlayer().changeMap(target, target.getPortal(0));
-                            used = true;
-                        }
+                    final MapleMap destination_map = c.getChannelServer().getMapFactory().getMap(slea.readInt());
+                    boolean has_registered_map;
+                    if (itemId == VIP_TELEPORT_ROCK) {
+                        has_registered_map = c.getPlayer().getVipTeleportRock().hasMap(destination_map.getId());
+                    } else {
+                        has_registered_map = c.getPlayer().getRegTeleportRock().hasMap(destination_map.getId());
                     }
+                    MapleMap currentMap = c.getPlayer().getMap();
+                    if (!FieldLimitType.VipRock.check(currentMap.getFieldLimit())
+                            && !FieldLimitType.VipRock.check(destination_map.getFieldLimit())
+                            && c.getPlayer().getEventInstance() == null
+                            && has_registered_map
+                    ) {
+                        c.getPlayer().changeMap(destination_map, destination_map.getPortal(0));
+                        used = true;
+                    }
+
                 } else {
                     final MapleCharacter victim = c.getChannelServer().getPlayerStorage()
                             .getCharacterByName(slea.readMapleAsciiString());

@@ -45,20 +45,20 @@ public class TeleportRockAddMapHandler extends AbstractMaplePacketHandler {
 
         if (vip == 1) {
             if (addrem == DELETE) {
-                chr.geTeleportRocks().deleteMap(slea.readInt());
+                chr.getVipTeleportRock().deleteMap(slea.readInt());
             } else if (addrem == ADD) {
                 if ((!FieldLimitType.VipRock.check(chr.getMap().getFieldLimit())) && !blockedMaps.contains(chr.getMapId())) {
-                    chr.geTeleportRocks().addMap(chr.getMapId());
+                    chr.getVipTeleportRock().addMap(chr.getMapId());
                 } else {
                     chr.dropMessage(1, "You may not add this map.");
                 }
             }
         } else {
             if (addrem == 0) {
-                chr.deleteFromRegRocks(slea.readInt());
+                chr.getRegTeleportRock().deleteMap(slea.readInt());
             } else if (addrem == 1) {
                 if (!FieldLimitType.VipRock.check(chr.getMap().getFieldLimit())) {
-                    chr.addRegRockMap();
+                    chr.getRegTeleportRock().addMap(chr.getMapId());
                 } else {
                     chr.dropMessage(1, "You may not add this map.");
                 }

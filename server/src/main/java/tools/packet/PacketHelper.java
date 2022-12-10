@@ -118,12 +118,8 @@ public class PacketHelper {
     }
 
     public static final void addRocksInfo(final MaplePacketLittleEndianWriter mplew, final MapleCharacter chr) {
-        final int[] mapz = chr.getRegRocks();
-        for (int i = 0; i < 5; i++) { // VIP teleport map
-            mplew.writeInt(mapz[i]);
-        }
-        chr.geTeleportRocks().encode(mplew);
-
+        chr.getRegTeleportRock().encode(mplew);
+        chr.getVipTeleportRock().encode(mplew);
     }
 
     public static final void addMonsterBookInfo(final MaplePacketLittleEndianWriter mplew, final MapleCharacter chr) {
