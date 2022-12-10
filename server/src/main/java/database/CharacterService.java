@@ -5,7 +5,9 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleJob;
 import client.SavedLocations;
+import client.SavedSkillMacro;
 import client.skill.EvanSkillPoints;
+import client.skill.SkillMacro;
 import handling.world.guild.GuildManager;
 import lombok.extern.slf4j.Slf4j;
 import server.maps.SavedLocationType;
@@ -32,6 +34,31 @@ public class CharacterService {
         ps.setString(1, name);
         ps.executeUpdate();
         ps.close();
+    }
+
+    public static void saveSkillMacro(SavedSkillMacro savedSkillMacro, int characterId) {
+        Connection con = DatabaseConnection.getConnection();
+        try {
+            deleteWhereCharacterId(con, "DELETE FROM skillmacros WHERE characterid = ?", characterId);
+            for (int i = 0; i < 5; i++) {
+                final SkillMacro macro = savedSkillMacro.getSkillMacros()[i];
+                if (macro != null) {
+                    var ps = con.prepareStatement(
+                            "INSERT INTO skillmacros (characterid, skill1, skill2, skill3, name, shout, position) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                    ps.setInt(1, characterId);
+                    ps.setInt(2, macro.getSkill1());
+                    ps.setInt(3, macro.getSkill2());
+                    ps.setInt(4, macro.getSkill3());
+                    ps.setString(5, macro.getName());
+                    ps.setInt(6, macro.getShout());
+                    ps.setInt(7, i);
+                    ps.execute();
+                    ps.close();
+                }
+            }
+        } catch (Exception e) {
+            log.error("Error when saving skill macros", e);
+        }
     }
 
     public static EvanSkillPoints loadEvanSkills(int id) {

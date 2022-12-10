@@ -25,7 +25,7 @@ public class ChangeSkillMacroHandler extends AbstractMaplePacketHandler {
             skill3 = slea.readInt();
 
             macro = new SkillMacro(skill1, skill2, skill3, name, shout, i);
-            chr.updateMacros(i, macro);
+            chr.getSkillMacros().updateMacros(i, macro);
         }
 
     }

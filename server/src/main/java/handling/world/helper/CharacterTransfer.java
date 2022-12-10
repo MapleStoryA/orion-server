@@ -24,6 +24,7 @@ package handling.world.helper;
 import client.MapleCharacter;
 import client.MapleQuestStatus;
 import client.SavedLocations;
+import client.SavedSkillMacro;
 import client.WishList;
 import client.anticheat.ReportType;
 import client.inventory.MapleInventory;
@@ -32,7 +33,6 @@ import client.inventory.MaplePet;
 import client.skill.EvanSkillPoints;
 import client.skill.ISkill;
 import client.skill.SkillEntry;
-import client.skill.SkillMacro;
 import handling.world.buddy.BuddyListEntry;
 import lombok.Getter;
 import lombok.Setter;
@@ -123,7 +123,7 @@ public class CharacterTransfer {
     private short occupationId;
     private short occupationEXP;
     private MapleInventory[] inventories;
-    private SkillMacro[] skillMacro;
+    private SavedSkillMacro skillMacros;
     private MapleStorage storage;
     private CashShop cashInventory;
     private SavedLocations savedLocations;
@@ -237,7 +237,7 @@ public class CharacterTransfer {
 
         this.setBlessOfFairy(chr.getBlessOfFairyOrigin());
         this.setChalkboard(chr.getChalkboard());
-        this.setSkillMacro(chr.getSkillMacros());
+        this.setSkillMacros(chr.getSkillMacros());
         this.setKeyMap(chr.getKeyLayout().Layout());
         this.setSavedLocations(chr.getSavedLocations());
         this.setWishlist(chr.getWishlist());

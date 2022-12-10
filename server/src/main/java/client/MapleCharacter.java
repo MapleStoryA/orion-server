@@ -157,10 +157,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 public class MapleCharacter extends BaseMapleCharacter {
 
-    @Getter
-    private TeleportRock vipTeleportRock;
-    @Getter
-    private TeleportRock regTeleportRock;
+
     private int id;
     private byte world;
     private int account_id;
@@ -260,11 +257,17 @@ public class MapleCharacter extends BaseMapleCharacter {
     private MonsterBook monsterBook;
 
     @Getter
+    private TeleportRock vipTeleportRock;
+    @Getter
+    private TeleportRock regTeleportRock;
+    @Getter
     private SavedLocations savedLocations;
-
     @Getter
     private WishList wishlist;
-    private boolean changed_skill_macros;
+
+    @Getter
+    private SavedSkillMacro skillMacros;
+
     private boolean changed_achievements;
     private boolean changed_quest_info;
     private boolean changed_skills;
@@ -303,7 +306,6 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     private MapleGuildCharacter mgc;
     private MapleInventory[] inventory;
-    private SkillMacro[] skillMacros = new SkillMacro[5];
     private MapleKeyLayout keyLayout;
     private EvanSkillPoints evanSP;
 
@@ -339,7 +341,6 @@ public class MapleCharacter extends BaseMapleCharacter {
             changed_reports = false;
             changed_skills = false;
             setChanged_achievements(false);
-            changed_skill_macros = false;
             changed_quest_info = false;
             lastCombo = 0;
             mu_lung_energy = 0;
@@ -360,6 +361,8 @@ public class MapleCharacter extends BaseMapleCharacter {
             wishlist = new WishList();
             vipTeleportRock = new TeleportRock(true);
             regTeleportRock = new TeleportRock(false);
+            savedLocations = new SavedLocations();
+            skillMacros = new SavedSkillMacro();
 
             conversation_status = new AtomicInteger();
             conversation_status.set(0); // 1 = NPC/ Quest, 2 = Duey, 3 = Hired Merch store, 4 =
@@ -370,7 +373,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             summons = new LinkedHashMap<>();
             pendingCarnivalRequests = new LinkedList<>();
 
-            savedLocations = new SavedLocations();
+
             questInfo = new LinkedHashMap<>();
             anti_cheat = new CheatTracker(this);
             pets = new ArrayList<>();
@@ -424,8 +427,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         ret.fame = ct.getFame();
 
         ret.playerRandomStream = new PlayerRandomStream();
-
-        ret.changed_skill_macros = false;
 
 
         ret.chalkText = ct.getChalkboard();
@@ -536,7 +537,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         ret.monsterBook = new MonsterBook(ct.getMapleBookCards());
         ret.inventory = (MapleInventory[]) ct.getInventories();
         ret.BlessOfFairy_Origin = ct.getBlessOfFairy();
-        ret.skillMacros = (SkillMacro[]) ct.getSkillMacro();
+        ret.skillMacros = ct.getSkillMacros();
         ret.keyLayout = new MapleKeyLayout(ct.getKeyMap());
         ret.petStore = ct.getPetStore();
         ret.questInfo = ct.getInfoQuest();
@@ -846,7 +847,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                     position = rs.getInt("position");
                     SkillMacro macro = new SkillMacro(rs.getInt("skill1"), rs.getInt("skill2"), rs.getInt("skill3"),
                             rs.getString("name"), rs.getInt("shout"), position);
-                    ret.skillMacros[position] = macro;
+                    ret.skillMacros.add(macro);
                 }
                 rs.close();
                 ps.close();
@@ -1284,25 +1285,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             }
             ps.close();
 
-            if (changed_skill_macros) {
-                deleteWhereCharacterId(con, "DELETE FROM skillmacros WHERE characterid = ?");
-                for (int i = 0; i < 5; i++) {
-                    final SkillMacro macro = skillMacros[i];
-                    if (macro != null) {
-                        ps = con.prepareStatement(
-                                "INSERT INTO skillmacros (characterid, skill1, skill2, skill3, name, shout, position) VALUES (?, ?, ?, ?, ?, ?, ?)");
-                        ps.setInt(1, id);
-                        ps.setInt(2, macro.getSkill1());
-                        ps.setInt(3, macro.getSkill2());
-                        ps.setInt(4, macro.getSkill3());
-                        ps.setString(5, macro.getName());
-                        ps.setInt(6, macro.getShout());
-                        ps.setInt(7, i);
-                        ps.execute();
-                        ps.close();
-                    }
-                }
-            }
+            CharacterService.saveSkillMacro(skillMacros, id);
 
             deleteWhereCharacterId(con, "DELETE FROM inventoryslot WHERE characterid = ?");
             ps = con.prepareStatement(
@@ -1463,7 +1446,6 @@ public class MapleCharacter extends BaseMapleCharacter {
             TeleportRockService.save(vipTeleportRock, id);
             TeleportRockService.save(regTeleportRock, id);
 
-            changed_skill_macros = false;
             changed_quest_info = false;
             setChanged_achievements(false);
             changed_skills = false;
@@ -3548,19 +3530,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         } else {
             keyLayout.Layout().remove(Integer.valueOf(key));
         }
-    }
-
-    public void sendMacros() {
-        client.getSession().write(MaplePacketCreator.getMacros(skillMacros));
-    }
-
-    public void updateMacros(int position, SkillMacro updateMacro) {
-        skillMacros[position] = updateMacro;
-        changed_skill_macros = true;
-    }
-
-    public final SkillMacro[] getSkillMacros() {
-        return skillMacros;
     }
 
     public void tempban(String reason, Calendar duration, int greason, boolean IPMac) {
