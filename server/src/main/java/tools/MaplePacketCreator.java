@@ -21,9 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package tools;
 
-import client.EvanSkillPoints;
-import client.ExtendedSPTable;
-import client.ISkill;
+import client.skill.EvanSkillPoints;
+import client.skill.ExtendedSPTable;
+import client.skill.ISkill;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
@@ -31,8 +31,8 @@ import client.MapleDisease;
 import client.MapleKeyLayout;
 import client.MapleQuestStatus;
 import client.MapleStat;
-import client.SkillEntry;
-import client.SkillMacro;
+import client.skill.SkillEntry;
+import client.skill.SkillMacro;
 import client.inventory.IEquip.ScrollResult;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;

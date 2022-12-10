@@ -3,10 +3,10 @@
  * and open the template in the editor.
  */
 
-package client.messages.commands;
+package client.commands;
 
 import client.MapleClient;
-import client.SkillFactory;
+import client.skill.SkillFactory;
 import constants.ServerConstants.PlayerGMRank;
 
 @lombok.extern.slf4j.Slf4j

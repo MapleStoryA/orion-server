@@ -1,11 +1,11 @@
 package handling.channel.handler;
 
-import client.ISkill;
+import client.skill.ISkill;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleStat;
 import client.PlayerStats;
-import client.SkillFactory;
+import client.skill.SkillFactory;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;

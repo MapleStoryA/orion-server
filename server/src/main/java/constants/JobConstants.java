@@ -18,10 +18,10 @@
 
 package constants;
 
-import client.ISkill;
+import client.skill.ISkill;
 import client.MapleJob;
-import client.SkillEntry;
-import client.SkillFactory;
+import client.skill.SkillEntry;
+import client.skill.SkillFactory;
 import database.DatabaseConnection;
 
 import java.sql.Connection;

@@ -1,5 +1,6 @@
-package client;
+package client.skill;
 
+import client.MapleJob;
 import server.config.ServerEnvironment;
 
 import java.util.HashMap;

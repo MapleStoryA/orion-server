@@ -1,10 +1,10 @@
 package handling.channel.handler;
 
 import client.ExcludedKeyMap;
-import client.ISkill;
+import client.skill.ISkill;
 import client.MapleCharacter;
 import client.MapleClient;
-import client.SkillFactory;
+import client.skill.SkillFactory;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;

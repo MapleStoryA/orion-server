@@ -21,11 +21,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package handling.world.helper;
 
-import client.EvanSkillPoints;
-import client.ISkill;
+import client.skill.EvanSkillPoints;
+import client.skill.ISkill;
 import client.MapleCharacter;
 import client.MapleQuestStatus;
-import client.SkillEntry;
+import client.skill.SkillEntry;
 import client.anticheat.ReportType;
 import client.inventory.MapleMount;
 import client.inventory.MaplePet;

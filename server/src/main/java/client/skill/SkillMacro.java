@@ -19,7 +19,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package client;
+package client.skill;
 
 import java.io.Serializable;
 

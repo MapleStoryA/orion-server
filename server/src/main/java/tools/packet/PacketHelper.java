@@ -21,12 +21,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package tools.packet;
 
-import client.EvanSkillPoints;
-import client.ISkill;
+import client.skill.EvanSkillPoints;
+import client.skill.ISkill;
 import client.MapleCharacter;
 import client.MapleCoolDownValueHolder;
 import client.MapleQuestStatus;
-import client.SkillEntry;
+import client.skill.SkillEntry;
 import client.inventory.Equip;
 import client.inventory.IEquip;
 import client.inventory.IItem;

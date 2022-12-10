@@ -1,4 +1,4 @@
-package client.messages.commands;
+package client.commands;
 
 import client.MapleClient;
 import constants.ServerConstants.CommandType;

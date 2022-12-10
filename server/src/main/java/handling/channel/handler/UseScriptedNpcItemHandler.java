@@ -2,7 +2,7 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import client.SkillFactory;
+import client.skill.SkillFactory;
 import client.inventory.IItem;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;

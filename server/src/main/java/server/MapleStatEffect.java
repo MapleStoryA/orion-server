@@ -1,13 +1,13 @@
 package server;
 
-import client.ISkill;
+import client.skill.ISkill;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleCoolDownValueHolder;
 import client.MapleDisease;
 import client.MapleStat;
 import client.PlayerStats;
-import client.SkillFactory;
+import client.skill.SkillFactory;
 import client.inventory.IItem;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;

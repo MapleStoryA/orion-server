@@ -1,4 +1,4 @@
-package client.information.drop;
+package client.drop;
 
 import server.life.MapleMonster;
 

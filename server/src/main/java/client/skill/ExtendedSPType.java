@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package client;
+package client.skill;
 
 /**
  * @author Simon

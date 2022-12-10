@@ -23,7 +23,7 @@ package server.maps;
 
 import client.MapleClient;
 import client.MapleQuestStatus;
-import client.SkillFactory;
+import client.skill.SkillFactory;
 import scripting.EventManager;
 import scripting.NPCScriptManager;
 import server.MapleItemInformationProvider;
@@ -31,7 +31,6 @@ import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
 import server.quest.MapleQuest;
 import server.quest.MapleQuest.MedalQuest;
-import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
 import tools.packet.UIPacket;

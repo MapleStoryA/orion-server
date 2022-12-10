@@ -1,4 +1,4 @@
-package server.state;
+package server.maplevar;
 
 
 import client.MapleCharacter;

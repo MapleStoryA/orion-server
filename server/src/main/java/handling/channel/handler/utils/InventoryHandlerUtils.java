@@ -21,11 +21,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package handling.channel.handler.utils;
 
-import client.ISkill;
+import client.skill.ISkill;
 import constants.JobUtils;
 import client.MapleCharacter;
 import client.MapleClient;
-import client.SkillFactory;
+import client.skill.SkillFactory;
 import client.inventory.IEquip;
 import client.inventory.IEquip.ScrollResult;
 import client.inventory.IItem;

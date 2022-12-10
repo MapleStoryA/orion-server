@@ -1,9 +1,9 @@
 package server.quest;
 
-import client.ISkill;
+import client.skill.ISkill;
 import client.MapleCharacter;
 import client.MapleQuestStatus;
-import client.SkillFactory;
+import client.skill.SkillFactory;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;

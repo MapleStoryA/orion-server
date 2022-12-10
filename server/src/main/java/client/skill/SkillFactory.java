@@ -19,8 +19,9 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package client;
+package client.skill;
 
+import client.SummonSkillEntry;
 import provider.MapleData;
 import provider.MapleDataDirectoryEntry;
 import provider.MapleDataFileEntry;

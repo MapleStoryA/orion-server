@@ -1,7 +1,7 @@
 package server;
 
 import client.MapleClient;
-import client.SkillFactory;
+import client.skill.SkillFactory;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryIdentifier;
 import client.inventory.MapleInventoryType;

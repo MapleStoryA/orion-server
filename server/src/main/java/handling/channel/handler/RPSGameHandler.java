@@ -1,7 +1,7 @@
 package handling.channel.handler;
 
 import client.MapleClient;
-import client.RockPaperScissors;
+import client.events.RockPaperScissors;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;

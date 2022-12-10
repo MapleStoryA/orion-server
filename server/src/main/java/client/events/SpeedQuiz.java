@@ -16,8 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package client;
+package client.events;
 
+import client.MapleClient;
 import scripting.NPCConversationManager;
 import scripting.NPCScriptManager;
 import server.SpeedQuizFactory;

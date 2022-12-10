@@ -5,7 +5,7 @@ import client.MapleClient;
 import client.inventory.IItem;
 import client.inventory.ItemFlag;
 import client.inventory.MapleInventoryType;
-import client.messages.CommandProcessor;
+import client.commands.CommandProcessor;
 import constants.GameConstants;
 import constants.MapConstants;
 import constants.ServerConstants.CommandType;

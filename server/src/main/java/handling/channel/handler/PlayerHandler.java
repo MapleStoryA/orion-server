@@ -21,12 +21,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package handling.channel.handler;
 
-import client.ISkill;
+import client.skill.ISkill;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.PlayerStats;
-import client.SkillFactory;
+import client.skill.SkillFactory;
 import client.inventory.MapleInventoryType;
 import constants.MapConstants;
 import handling.world.WorldServer;

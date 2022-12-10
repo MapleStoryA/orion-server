@@ -1,4 +1,4 @@
-package client.messages;
+package client.commands;
 
 import tools.StringUtil;
 

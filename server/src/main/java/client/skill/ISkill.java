@@ -19,7 +19,7 @@ You should have received a copy of the GNU Affero General  License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package client;
+package client.skill;
 
 import server.MapleStatEffect;
 import server.life.Element;

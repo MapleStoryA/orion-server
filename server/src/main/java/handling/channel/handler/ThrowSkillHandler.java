@@ -1,8 +1,8 @@
 package handling.channel.handler;
 
-import client.ISkill;
+import client.skill.ISkill;
 import client.MapleClient;
-import client.SkillFactory;
+import client.skill.SkillFactory;
 import handling.AbstractMaplePacketHandler;
 import server.maps.MapleMist;
 import tools.MaplePacketCreator;

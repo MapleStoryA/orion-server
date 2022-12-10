@@ -21,14 +21,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package scripting;
 
-import client.ISkill;
+import client.skill.ISkill;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleJob;
 import client.MapleStat;
-import client.SkillEntry;
-import client.SkillFactory;
-import client.SpeedQuiz;
+import client.skill.SkillEntry;
+import client.skill.SkillFactory;
+import client.events.SpeedQuiz;
 import client.inventory.Equip;
 import client.inventory.IItem;
 import client.inventory.ItemFlag;

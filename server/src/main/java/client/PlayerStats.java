@@ -26,6 +26,8 @@ import client.inventory.IEquip;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import client.inventory.MapleWeaponType;
+import client.skill.ISkill;
+import client.skill.SkillFactory;
 import constants.GameConstants;
 import lombok.Getter;
 import server.MapleInventoryManipulator;

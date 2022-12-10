@@ -21,11 +21,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package handling.channel.handler;
 
-import client.ISkill;
+import client.skill.ISkill;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.PlayerStats;
-import client.SkillFactory;
+import client.skill.SkillFactory;
 import client.anticheat.CheatTracker;
 import client.anticheat.CheatingOffense;
 import client.inventory.IItem;

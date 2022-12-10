@@ -1,9 +1,9 @@
 package handling.channel.handler;
 
-import client.ISkill;
+import client.skill.ISkill;
 import client.MapleCharacter;
 import client.MapleClient;
-import client.SkillFactory;
+import client.skill.SkillFactory;
 import constants.skills.BladeMaster;
 import handling.AbstractMaplePacketHandler;
 import server.TimerManager;

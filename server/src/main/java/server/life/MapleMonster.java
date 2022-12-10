@@ -21,12 +21,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package server.life;
 
-import client.ISkill;
+import client.skill.ISkill;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleDisease;
-import client.SkillFactory;
+import client.skill.SkillFactory;
 import client.inventory.Equip;
 import client.inventory.IItem;
 import client.inventory.Item;

@@ -2,7 +2,7 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import client.SkillFactory;
+import client.skill.SkillFactory;
 import client.anticheat.CheatingOffense;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;

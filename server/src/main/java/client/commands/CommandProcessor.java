@@ -19,21 +19,14 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package client.messages;
+package client.commands;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import client.messages.commands.AdminCommand;
-import client.messages.commands.CommandExecute;
-import client.messages.commands.CommandObject;
-import client.messages.commands.DonorCommand;
-import client.messages.commands.GMCommand;
-import client.messages.commands.PlayerCommand;
 import constants.ServerConstants.CommandType;
 import constants.ServerConstants.PlayerGMRank;
 import database.DatabaseConnection;
 import server.config.ServerEnvironment;
-import tools.DateHelper;
 
 import java.lang.reflect.Modifier;
 import java.sql.PreparedStatement;

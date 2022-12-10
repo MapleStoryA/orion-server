@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package handling.channel.handler;
 
 import client.MapleClient;
-import client.SkillFactory;
+import client.skill.SkillFactory;
 import client.inventory.Equip;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;

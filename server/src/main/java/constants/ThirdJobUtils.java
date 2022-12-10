@@ -1,4 +1,7 @@
-package client;
+package constants;
+
+import client.MapleCharacter;
+import client.MapleJob;
 
 @lombok.extern.slf4j.Slf4j
 public class ThirdJobUtils {

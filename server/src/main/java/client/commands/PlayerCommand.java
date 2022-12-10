@@ -1,4 +1,4 @@
-package client.messages.commands;
+package client.commands;
 
 import client.MapleCharacter;
 import client.MapleClient;
@@ -199,14 +199,6 @@ public class PlayerCommand {
         }
     }
 
-    public static class toggle extends CommandExecute {
-
-        @Override
-        public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().setSmega();
-            return 1;
-        }
-    }
 
     public static class Report extends CommandExecute {
 
@@ -234,11 +226,6 @@ public class PlayerCommand {
         }
     }
 
-    public static class DropNx extends OpenNPCCommand {
-        public DropNx() {
-            npc = 4;
-        }
-    }
 
     public static class ap extends CommandExecute {
         @Override
@@ -276,7 +263,6 @@ public class PlayerCommand {
         public int execute(MapleClient c, String[] splitted) {
             final MapleCharacter player = c.getPlayer();
             player.dcolormsg(5, "@str / dex / int / luk <val> : add ap to your stats");
-            player.dcolormsg(5, "@dropnx : open the npc to drop nx items");
             player.dcolormsg(5, "@music : open the npc to change the music");
             player.dcolormsg(5, "@toggle : turn of smegas");
             player.dcolormsg(5, "@report <player> <offense> : report a player");
