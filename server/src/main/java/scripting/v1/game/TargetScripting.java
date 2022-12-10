@@ -3,6 +3,7 @@ package scripting.v1.game;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleJob;
+import client.MapleStat;
 import handling.world.WorldServer;
 import handling.world.party.MaplePartyCharacter;
 import lombok.extern.slf4j.Slf4j;
@@ -76,7 +77,7 @@ public class TargetScripting extends PlayerScripting {
     @ScriptingApi
     public int incSTR(int value) {
         short previousSTR = player.getStat().getStr();
-        player.setstat((byte) 1, (short) (previousSTR + value));
+        player.setStat(MapleStat.STR, (short) (previousSTR + value));
         return nSTR();
     }
 
@@ -88,7 +89,7 @@ public class TargetScripting extends PlayerScripting {
     @ScriptingApi
     public int incDEX(int value) {
         short previousDEX = player.getStat().getDex();
-        player.setstat((byte) 2, (short) (previousDEX + value));
+        player.setStat(MapleStat.DEX, (short) (previousDEX + value));
         return nDEX();
     }
 
@@ -100,7 +101,7 @@ public class TargetScripting extends PlayerScripting {
     @ScriptingApi
     public int incINT(int value) {
         short previousINT = player.getStat().getInt();
-        player.setstat((byte) 3, (short) (previousINT + value));
+        player.setStat(MapleStat.INT, (short) (previousINT + value));
         return nINT();
     }
 
@@ -112,7 +113,7 @@ public class TargetScripting extends PlayerScripting {
     @ScriptingApi
     public int incLUK(short value) {
         short previousLUK = player.getStat().getLuk();
-        player.setstat((byte) 4, (short) (previousLUK + value));
+        player.setStat(MapleStat.LUK, (short) (previousLUK + value));
         return nLUK();
     }
 

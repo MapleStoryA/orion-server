@@ -1892,10 +1892,6 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         BroadcastHelper.broadcastMessage(MaplePacketCreator.showSpecialEffect_(effect));
     }
 
-    public void setstat(byte stats, short newval) {
-        getPlayer().setstat(stats, newval);
-    }
-
     public void gainNx(int amount) {
         c.getPlayer().modifyCSPoints(1, amount);
     }
