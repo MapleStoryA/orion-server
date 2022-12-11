@@ -23,6 +23,11 @@ public class WishList {
         changed = true;
     }
 
+
+    public void setItem(int item) {
+        items.add(item);
+    }
+
     public void clear() {
         changed = true;
         items.clear();

@@ -884,7 +884,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 ps.setInt(1, charid);
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    ret.wishlist.addItem(rs.getInt("sn"));
+                    ret.wishlist.setItem(rs.getInt("sn"));
                 }
                 rs.close();
                 ps.close();
