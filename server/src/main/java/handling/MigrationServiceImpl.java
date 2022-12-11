@@ -18,7 +18,7 @@ public class MigrationServiceImpl implements MigrationService {
 
     @Override
     public void putMigrationEntry(ServerMigration entry) {
-        cache.put(entry.getRemoteHost(), entry);
+        cache.put(entry.getRemoteHost() + entry.getCharacterId(), entry);
         scheduledExecutorService.schedule(() -> {
             cache.remove(entry.getRemoteHost());
         }, 1, TimeUnit.MINUTES);
@@ -27,7 +27,7 @@ public class MigrationServiceImpl implements MigrationService {
     // TODO: Check if user is trying to login with another character in the same account
     @Override
     public ServerMigration getServerMigration(int characterId, String host) {
-        var serverMigration = cache.remove(host);
+        var serverMigration = cache.remove(host + characterId);
         if (serverMigration != null && serverMigration.getCharacterId() == characterId) {
             return serverMigration;
         }
