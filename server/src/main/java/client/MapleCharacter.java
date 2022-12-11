@@ -355,11 +355,10 @@ public class MapleCharacter extends BaseMapleCharacter {
             savedLocations = new SavedLocations();
             skillMacros = new SavedSkillMacro();
             finishedAchievements = new FinishedAchievements();
-            keyLayout = new MapleKeyLayout();
+            keyLayout = new MapleKeyLayout(id);
             conversation_status = new AtomicInteger();
             conversation_status.set(0); // 1 = NPC/ Quest, 2 = Duey, 3 = Hired Merch store, 4 =
             // Storage
-            keyLayout = new MapleKeyLayout();
             doors = new ArrayList<>();
             controlled = new LinkedHashSet<>();
             summons = new LinkedHashMap<>();
@@ -1070,9 +1069,9 @@ public class MapleCharacter extends BaseMapleCharacter {
                 }
             }
             ItemLoader.INVENTORY.saveItems(listing, con, chr.id);
-            chr.keyLayout = new MapleKeyLayout();
-            chr.keyLayout.setDefaultKeys(chr.id);
-            chr.keyLayout.saveKeys();
+            var keyLayout = new MapleKeyLayout(chr.id);
+            keyLayout.setDefaultKeys();
+            keyLayout.saveKeys();
             ps.close();
            // con.commit();
         } catch (Exception e) {

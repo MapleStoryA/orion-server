@@ -43,9 +43,11 @@ public class MapleKeyLayout implements Serializable {
 
     private static final long serialVersionUID = 9179541993413738569L;
     private final Map<Integer, KeyMapBinding> keyMapBindings;
+    private final int characterId;
 
 
-    public MapleKeyLayout() {
+    public MapleKeyLayout(int characterId) {
+        this.characterId = characterId;
         keyMapBindings = new ConcurrentHashMap<>();
     }
 
@@ -69,7 +71,7 @@ public class MapleKeyLayout implements Serializable {
             jDbi.setSqlLogger(new Slf4JSqlLogger());
             for (var binding : new ArrayList<>(keyMapBindings.values())) {
                 if (binding.isDeleted()) {
-                    log.info("Deleting key: {}", binding.getKey());
+                    log.debug("Deleting key: {}", binding.getKey());
                     jDbi.withHandle(r -> {
                         r.createUpdate("DELETE FROM keymap WHERE `characterid` = :d.characterId AND `key` = :d.key")
                                 .bindBean("d", binding)
@@ -81,7 +83,7 @@ public class MapleKeyLayout implements Serializable {
             }
             for (var binding : keyMapBindings.values()) {
                 if (binding.isChanged()) {
-                    log.info("Saving key: {}", binding.getKey());
+                    log.debug("Saving key: {}", binding.getKey());
                     jDbi.withHandle(r -> {
                         r.createUpdate("INSERT INTO keymap(`characterid`, `key`, `type`, `action`, `fixed`) " +
                                         "VALUES (:d.characterId, :d.key, :d.type, :d.action, :d.fixed) " +
@@ -104,7 +106,7 @@ public class MapleKeyLayout implements Serializable {
         keyMapBindings.put(binding.getKey(), binding);
     }
 
-    public void setDefaultKeys(int characterId) {
+    public void setDefaultKeys() {
         for (int i = 0; i < key.length; i++) {
             if (ExcludedKeyMap.fromKeyValue(action[i]) != null) {
                 continue;
