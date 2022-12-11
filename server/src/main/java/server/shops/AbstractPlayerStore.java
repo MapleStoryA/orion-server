@@ -166,14 +166,14 @@ public abstract class AbstractPlayerStore extends AbstractMapleMapObject impleme
             List<Pair<IItem, MapleInventoryType>> iters = new ArrayList<Pair<IItem, MapleInventoryType>>();
             IItem item;
             for (MaplePlayerShopItem pItems : items) {
-                if (pItems.item == null || pItems.bundles <= 0) {
+                if (pItems.getItem() == null || pItems.getBundles() <= 0) {
                     continue;
                 }
-                if (pItems.item.getQuantity() <= 0 && !GameConstants.isRechargable(pItems.item.getItemId())) {
+                if (pItems.getItem().getQuantity() <= 0 && !GameConstants.isRechargable(pItems.getItem().getItemId())) {
                     continue;
                 }
-                item = pItems.item.copy();
-                item.setQuantity((short) (item.getQuantity() * pItems.bundles));
+                item = pItems.getItem().copy();
+                item.setQuantity((short) (item.getQuantity() * pItems.getBundles()));
                 iters.add(new Pair<IItem, MapleInventoryType>(item, GameConstants.getInventoryType(item.getItemId())));
             }
             ItemLoader.HIRED_MERCHANT.saveItems(iters, packageid, owneraccount, ownerId);

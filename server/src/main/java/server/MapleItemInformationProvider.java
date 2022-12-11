@@ -96,10 +96,10 @@ public class MapleItemInformationProvider {
         SetItem itez;
         for (MapleData dat : setsData) {
             itemz = new StructSetItem();
-            itemz.setItemID = Byte.parseByte(dat.getName());
-            itemz.completeCount = (byte) MapleDataTool.getIntConvert("completeCount", dat, 0);
+            itemz.setSetItemID(Byte.parseByte(dat.getName()));
+            itemz.setCompleteCount((byte) MapleDataTool.getIntConvert("completeCount", dat, 0));
             for (MapleData level : dat.getChildByPath("ItemID")) {
-                itemz.itemIDs.add(MapleDataTool.getIntConvert(level));
+                itemz.getItemIDs().add(MapleDataTool.getIntConvert(level));
             }
             for (MapleData level : dat.getChildByPath("Effect")) {
                 itez = new SetItem();
@@ -115,9 +115,9 @@ public class MapleItemInformationProvider {
                 itez.incSpeed = MapleDataTool.getIntConvert("incSpeed", level, 0);
                 itez.incMHP = MapleDataTool.getIntConvert("incMHP", level, 0);
                 itez.incMMP = MapleDataTool.getIntConvert("incMMP", level, 0);
-                itemz.items.put(Integer.parseInt(level.getName()), itez);
+                itemz.getItems().put(Integer.parseInt(level.getName()), itez);
             }
-            setItems.put(itemz.setItemID, itemz);
+            setItems.put(itemz.getSetItemID(), itemz);
         }
         final MapleData potsData = itemData.getData("ItemOption.img");
         StructPotentialItem item;
@@ -126,67 +126,67 @@ public class MapleItemInformationProvider {
             items = new LinkedList<StructPotentialItem>();
             for (MapleData level : dat.getChildByPath("level")) {
                 item = new StructPotentialItem();
-                item.optionType = MapleDataTool.getIntConvert("info/optionType", dat, 0);
-                item.reqLevel = MapleDataTool.getIntConvert("info/reqLevel", dat, 0);
-                item.face = MapleDataTool.getString("face", level, "");
-                item.boss = MapleDataTool.getIntConvert("boss", level, 0) > 0;
-                item.potentialID = Short.parseShort(dat.getName());
-                item.attackType = (short) MapleDataTool.getIntConvert("attackType", level, 0);
-                item.incMHP = (short) MapleDataTool.getIntConvert("incMHP", level, 0);
-                item.incMMP = (short) MapleDataTool.getIntConvert("incMMP", level, 0);
+                item.setOptionType(MapleDataTool.getIntConvert("info/optionType", dat, 0));
+                item.setReqLevel(MapleDataTool.getIntConvert("info/reqLevel", dat, 0));
+                item.setFace(MapleDataTool.getString("face", level, ""));
+                item.setBoss(MapleDataTool.getIntConvert("boss", level, 0) > 0);
+                item.setPotentialID(Short.parseShort(dat.getName()));
+                item.setAttackType((short) MapleDataTool.getIntConvert("attackType", level, 0));
+                item.setIncMHP((short) MapleDataTool.getIntConvert("incMHP", level, 0));
+                item.setIncMMP((short) MapleDataTool.getIntConvert("incMMP", level, 0));
 
-                item.incSTR = (byte) MapleDataTool.getIntConvert("incSTR", level, 0);
-                item.incDEX = (byte) MapleDataTool.getIntConvert("incDEX", level, 0);
-                item.incINT = (byte) MapleDataTool.getIntConvert("incINT", level, 0);
-                item.incLUK = (byte) MapleDataTool.getIntConvert("incLUK", level, 0);
-                item.incACC = (byte) MapleDataTool.getIntConvert("incACC", level, 0);
-                item.incEVA = (byte) MapleDataTool.getIntConvert("incEVA", level, 0);
-                item.incSpeed = (byte) MapleDataTool.getIntConvert("incSpeed", level, 0);
-                item.incJump = (byte) MapleDataTool.getIntConvert("incJump", level, 0);
-                item.incPAD = (byte) MapleDataTool.getIntConvert("incPAD", level, 0);
-                item.incMAD = (byte) MapleDataTool.getIntConvert("incMAD", level, 0);
-                item.incPDD = (byte) MapleDataTool.getIntConvert("incPDD", level, 0);
-                item.incMDD = (byte) MapleDataTool.getIntConvert("incMDD", level, 0);
-                item.prop = (byte) MapleDataTool.getIntConvert("prop", level, 0);
-                item.time = (byte) MapleDataTool.getIntConvert("time", level, 0);
-                item.incSTRr = (byte) MapleDataTool.getIntConvert("incSTRr", level, 0);
-                item.incDEXr = (byte) MapleDataTool.getIntConvert("incDEXr", level, 0);
-                item.incINTr = (byte) MapleDataTool.getIntConvert("incINTr", level, 0);
-                item.incLUKr = (byte) MapleDataTool.getIntConvert("incLUKr", level, 0);
-                item.incMHPr = (byte) MapleDataTool.getIntConvert("incMHPr", level, 0);
-                item.incMMPr = (byte) MapleDataTool.getIntConvert("incMMPr", level, 0);
-                item.incACCr = (byte) MapleDataTool.getIntConvert("incACCr", level, 0);
-                item.incEVAr = (byte) MapleDataTool.getIntConvert("incEVAr", level, 0);
-                item.incPADr = (byte) MapleDataTool.getIntConvert("incPADr", level, 0);
-                item.incMADr = (byte) MapleDataTool.getIntConvert("incMADr", level, 0);
-                item.incPDDr = (byte) MapleDataTool.getIntConvert("incPDDr", level, 0);
-                item.incMDDr = (byte) MapleDataTool.getIntConvert("incMDDr", level, 0);
-                item.incCr = (byte) MapleDataTool.getIntConvert("incCr", level, 0);
-                item.incDAMr = (byte) MapleDataTool.getIntConvert("incDAMr", level, 0);
-                item.RecoveryHP = (byte) MapleDataTool.getIntConvert("RecoveryHP", level, 0);
-                item.RecoveryMP = (byte) MapleDataTool.getIntConvert("RecoveryMP", level, 0);
-                item.HP = (byte) MapleDataTool.getIntConvert("HP", level, 0);
-                item.MP = (byte) MapleDataTool.getIntConvert("MP", level, 0);
-                item.level = (byte) MapleDataTool.getIntConvert("level", level, 0);
-                item.ignoreTargetDEF = (byte) MapleDataTool.getIntConvert("ignoreTargetDEF", level, 0);
-                item.ignoreDAM = (byte) MapleDataTool.getIntConvert("ignoreDAM", level, 0);
-                item.DAMreflect = (byte) MapleDataTool.getIntConvert("DAMreflect", level, 0);
-                item.mpconReduce = (byte) MapleDataTool.getIntConvert("mpconReduce", level, 0);
-                item.mpRestore = (byte) MapleDataTool.getIntConvert("mpRestore", level, 0);
-                item.incMesoProp = (byte) MapleDataTool.getIntConvert("incMesoProp", level, 0);
-                item.incRewardProp = (byte) MapleDataTool.getIntConvert("incRewardProp", level, 0);
-                item.incAllskill = (byte) MapleDataTool.getIntConvert("incAllskill", level, 0);
-                item.ignoreDAMr = (byte) MapleDataTool.getIntConvert("ignoreDAMr", level, 0);
-                item.RecoveryUP = (byte) MapleDataTool.getIntConvert("RecoveryUP", level, 0);
-                switch (item.potentialID) {
+                item.setIncSTR((byte) MapleDataTool.getIntConvert("incSTR", level, 0));
+                item.setIncDEX((byte) MapleDataTool.getIntConvert("incDEX", level, 0));
+                item.setIncINT((byte) MapleDataTool.getIntConvert("incINT", level, 0));
+                item.setIncLUK((byte) MapleDataTool.getIntConvert("incLUK", level, 0));
+                item.setIncACC((byte) MapleDataTool.getIntConvert("incACC", level, 0));
+                item.setIncEVA((byte) MapleDataTool.getIntConvert("incEVA", level, 0));
+                item.setIncSpeed((byte) MapleDataTool.getIntConvert("incSpeed", level, 0));
+                item.setIncJump((byte) MapleDataTool.getIntConvert("incJump", level, 0));
+                item.setIncPAD((byte) MapleDataTool.getIntConvert("incPAD", level, 0));
+                item.setIncMAD((byte) MapleDataTool.getIntConvert("incMAD", level, 0));
+                item.setIncPDD((byte) MapleDataTool.getIntConvert("incPDD", level, 0));
+                item.setIncMDD((byte) MapleDataTool.getIntConvert("incMDD", level, 0));
+                item.setProp((byte) MapleDataTool.getIntConvert("prop", level, 0));
+                item.setTime((byte) MapleDataTool.getIntConvert("time", level, 0));
+                item.setIncSTRr((byte) MapleDataTool.getIntConvert("incSTRr", level, 0));
+                item.setIncDEXr((byte) MapleDataTool.getIntConvert("incDEXr", level, 0));
+                item.setIncINTr((byte) MapleDataTool.getIntConvert("incINTr", level, 0));
+                item.setIncLUKr((byte) MapleDataTool.getIntConvert("incLUKr", level, 0));
+                item.setIncMHPr((byte) MapleDataTool.getIntConvert("incMHPr", level, 0));
+                item.setIncMMPr((byte) MapleDataTool.getIntConvert("incMMPr", level, 0));
+                item.setIncACCr((byte) MapleDataTool.getIntConvert("incACCr", level, 0));
+                item.setIncEVAr((byte) MapleDataTool.getIntConvert("incEVAr", level, 0));
+                item.setIncPADr((byte) MapleDataTool.getIntConvert("incPADr", level, 0));
+                item.setIncMADr((byte) MapleDataTool.getIntConvert("incMADr", level, 0));
+                item.setIncPDDr((byte) MapleDataTool.getIntConvert("incPDDr", level, 0));
+                item.setIncMDDr((byte) MapleDataTool.getIntConvert("incMDDr", level, 0));
+                item.setIncCr((byte) MapleDataTool.getIntConvert("incCr", level, 0));
+                item.setIncDAMr((byte) MapleDataTool.getIntConvert("incDAMr", level, 0));
+                item.setRecoveryHP((byte) MapleDataTool.getIntConvert("RecoveryHP", level, 0));
+                item.setRecoveryMP((byte) MapleDataTool.getIntConvert("RecoveryMP", level, 0));
+                item.setHP((byte) MapleDataTool.getIntConvert("HP", level, 0));
+                item.setMP((byte) MapleDataTool.getIntConvert("MP", level, 0));
+                item.setLevel((byte) MapleDataTool.getIntConvert("level", level, 0));
+                item.setIgnoreTargetDEF((byte) MapleDataTool.getIntConvert("ignoreTargetDEF", level, 0));
+                item.setIgnoreDAM((byte) MapleDataTool.getIntConvert("ignoreDAM", level, 0));
+                item.setDAMreflect((byte) MapleDataTool.getIntConvert("DAMreflect", level, 0));
+                item.setMpconReduce((byte) MapleDataTool.getIntConvert("mpconReduce", level, 0));
+                item.setMpRestore((byte) MapleDataTool.getIntConvert("mpRestore", level, 0));
+                item.setIncMesoProp((byte) MapleDataTool.getIntConvert("incMesoProp", level, 0));
+                item.setIncRewardProp((byte) MapleDataTool.getIntConvert("incRewardProp", level, 0));
+                item.setIncAllskill((byte) MapleDataTool.getIntConvert("incAllskill", level, 0));
+                item.setIgnoreDAMr((byte) MapleDataTool.getIntConvert("ignoreDAMr", level, 0));
+                item.setRecoveryUP((byte) MapleDataTool.getIntConvert("RecoveryUP", level, 0));
+                switch (item.getPotentialID()) {
                     case 31001:
                     case 31002:
                     case 31003:
                     case 31004:
-                        item.skillID = (short) (item.potentialID - 23001);
+                        item.setSkillID((short) (item.getPotentialID() - 23001));
                         break;
                     default:
-                        item.skillID = 0;
+                        item.setSkillID((short) 0);
                         break;
                 }
                 items.add(item);
@@ -1230,14 +1230,14 @@ public class MapleItemInformationProvider {
         for (final MapleData reward : rewards) {
             StructRewardItem struct = new StructRewardItem();
 
-            struct.itemid = MapleDataTool.getInt("item", reward, 0);
-            struct.prob = (byte) MapleDataTool.getInt("prob", reward, 0);
-            struct.quantity = (short) MapleDataTool.getInt("count", reward, 0);
-            struct.effect = MapleDataTool.getString("Effect", reward, "");
-            struct.worldmsg = MapleDataTool.getString("worldMsg", reward, null);
-            struct.period = MapleDataTool.getInt("period", reward, -1);
-            struct.prob = (short) ((struct.prob < 1) ? struct.prob * -1 : struct.prob);
-            totalprob += struct.prob;
+            struct.setItemId(MapleDataTool.getInt("item", reward, 0));
+            struct.setProb((byte) MapleDataTool.getInt("prob", reward, 0));
+            struct.setQuantity((short) MapleDataTool.getInt("count", reward, 0));
+            struct.setEffect(MapleDataTool.getString("Effect", reward, ""));
+            struct.setWorldMsg(MapleDataTool.getString("worldMsg", reward, null));
+            struct.setPeriod(MapleDataTool.getInt("period", reward, -1));
+            struct.setProb((short) ((struct.getProb() < 1) ? struct.getProb() * -1 : struct.getProb()));
+            totalprob += struct.getProb();
             all.add(struct);
         }
 

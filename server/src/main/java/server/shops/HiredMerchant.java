@@ -96,7 +96,7 @@ public class HiredMerchant extends AbstractPlayerStore {
     public List<MaplePlayerShopItem> searchItem(final int itemSearch) {
         final List<MaplePlayerShopItem> itemz = new LinkedList<MaplePlayerShopItem>();
         for (MaplePlayerShopItem item : items) {
-            if (item.item.getItemId() == itemSearch && item.bundles > 0) {
+            if (item.getItem().getItemId() == itemSearch && item.getBundles() > 0) {
                 itemz.add(item);
             }
         }
@@ -109,7 +109,7 @@ public class HiredMerchant extends AbstractPlayerStore {
             return;
         }
         final MaplePlayerShopItem pItem = items.get(item);
-        final IItem shopItem = pItem.item;
+        final IItem shopItem = pItem.getItem();
         final IItem newItem = shopItem.copy();
         final short perbundle = newItem.getQuantity();
         newItem.setQuantity((short) (quantity * perbundle));
@@ -123,14 +123,14 @@ public class HiredMerchant extends AbstractPlayerStore {
         }
 
         if (MapleInventoryManipulator.checkSpace(c, newItem.getItemId(), newItem.getQuantity(), newItem.getOwner()) && MapleInventoryManipulator.addFromDrop(c, newItem, false)) {
-            pItem.bundles -= quantity; // Number remaining in the store
-            bought.add(new BoughtItem(newItem.getItemId(), quantity, (pItem.price * quantity), c.getPlayer().getName()));
+            pItem.setBundles((short) (pItem.getBundles() - quantity)); // Number remaining in the store
+            bought.add(new BoughtItem(newItem.getItemId(), quantity, (pItem.getPrice() * quantity), c.getPlayer().getName()));
 
 
-            final int mesos = (getMesos() + (pItem.price * quantity));
+            final int mesos = (getMesos() + (pItem.getPrice() * quantity));
             int fee = getFee(mesos);
             setMesos(fee);
-            c.getPlayer().gainMeso(-pItem.price * quantity, false);
+            c.getPlayer().gainMeso(-pItem.getPrice() * quantity, false);
             saveItems();
         } else {
             c.getPlayer().dropMessage(1, "Your inventory is full.");

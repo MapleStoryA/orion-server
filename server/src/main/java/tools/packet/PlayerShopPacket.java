@@ -147,10 +147,10 @@ public class PlayerShopPacket {
         mplew.writeInt(merch.getMeso()); // meso
         mplew.write(merch.getItems().size());
         for (final MaplePlayerShopItem item : merch.getItems()) {
-            mplew.writeShort(item.bundles);
-            mplew.writeShort(item.item.getQuantity());
-            mplew.writeInt(item.price);
-            PacketHelper.addItemInfo(mplew, item.item, true, true);
+            mplew.writeShort(item.getBundles());
+            mplew.writeShort(item.getItem().getQuantity());
+            mplew.writeInt(item.getPrice());
+            PacketHelper.addItemInfo(mplew, item.getItem(), true, true);
         }
         mplew.writeShort(0);
 
@@ -191,10 +191,10 @@ public class PlayerShopPacket {
             mplew.write(0);
         } else {
             for (MaplePlayerShopItem item : hm.getItems()) {
-                mplew.writeShort(item.bundles);
-                mplew.writeShort(item.item.getQuantity());
-                mplew.writeInt(item.price);
-                PacketHelper.addItemInfo(mplew, item.item, true, true);
+                mplew.writeShort(item.getBundles());
+                mplew.writeShort(item.getItem().getQuantity());
+                mplew.writeInt(item.getPrice());
+                PacketHelper.addItemInfo(mplew, item.getItem(), true, true);
             }
         }
         return mplew.getPacket();
@@ -239,10 +239,10 @@ public class PlayerShopPacket {
         mplew.write(ips.getItems().size());
 
         for (final MaplePlayerShopItem item : ips.getItems()) {
-            mplew.writeShort(item.bundles);
-            mplew.writeShort(item.item.getQuantity());
-            mplew.writeInt(item.price);
-            PacketHelper.addItemInfo(mplew, item.item, true, true);
+            mplew.writeShort(item.getBundles());
+            mplew.writeShort(item.getItem().getQuantity());
+            mplew.writeInt(item.getPrice());
+            PacketHelper.addItemInfo(mplew, item.getItem(), true, true);
         }
         return mplew.getPacket();
     }
@@ -304,10 +304,10 @@ public class PlayerShopPacket {
         mplew.write(shop.getItems().size());
 
         for (final MaplePlayerShopItem item : shop.getItems()) {
-            mplew.writeShort(item.bundles);
-            mplew.writeShort(item.item.getQuantity());
-            mplew.writeInt(item.price);
-            PacketHelper.addItemInfo(mplew, item.item, true, true);
+            mplew.writeShort(item.getBundles());
+            mplew.writeShort(item.getItem().getQuantity());
+            mplew.writeInt(item.getPrice());
+            PacketHelper.addItemInfo(mplew, item.getItem(), true, true);
         }
         return mplew.getPacket();
     }

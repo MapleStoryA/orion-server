@@ -55,17 +55,17 @@ public class UseMagnifyGlassHandler extends AbstractMaplePacketHandler {
                     boolean rewarded = false;
                     while (!rewarded) {
                         StructPotentialItem pot = pots.get(Randomizer.nextInt(pots.size())).get(reqLevel);
-                        if (pot != null && pot.reqLevel / 10 <= reqLevel
-                                && GameConstants.optionTypeFits(pot.optionType, eqq.getItemId())
-                                && GameConstants.potentialIDFits(pot.potentialID, new_state, i)) { // optionType
+                        if (pot != null && pot.getReqLevel() / 10 <= reqLevel
+                                && GameConstants.optionTypeFits(pot.getOptionType(), eqq.getItemId())
+                                && GameConstants.potentialIDFits(pot.getPotentialID(), new_state, i)) { // optionType
                             // have to research optionType before making this
                             // truely sea-like
                             if (i == 0) {
-                                eqq.setPotential1(pot.potentialID);
+                                eqq.setPotential1(pot.getPotentialID());
                             } else if (i == 1) {
-                                eqq.setPotential2(pot.potentialID);
+                                eqq.setPotential2(pot.getPotentialID());
                             } else if (i == 2) {
-                                eqq.setPotential3(pot.potentialID);
+                                eqq.setPotential3(pot.getPotentialID());
                             }
                             rewarded = true;
                         }
