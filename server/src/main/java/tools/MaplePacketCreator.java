@@ -2563,7 +2563,7 @@ public class MaplePacketCreator {
 
         mplew.writeShort(SendPacketOpcode.KEYMAP.getValue());
         mplew.write(0);
-        layout.writeData(mplew);
+        layout.encode(mplew);
 
         return mplew.getPacket();
     }

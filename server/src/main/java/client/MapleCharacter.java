@@ -1408,7 +1408,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             if (cs != null) {
                 cs.save();
             }
-            keyLayout.saveKeys(id, this);
+            keyLayout.saveKeys();
             mount.saveMount(id);
             monsterBook.saveCards(id);
 
@@ -5403,12 +5403,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         client.getSession().write(MaplePacketCreator.updateSkill(this.getSkills()));
     }
 
-
-    public void removeAllKey(final List<Integer> x) {
-        for (Integer i : x) {
-            keyLayout.remove(i);
-        }
-    }
 
     public Collection<Triple<Byte, Integer, Byte>> getKeymap() {
         return Collections.emptyList();//keyLayout.Layout().values(); TODO: fix key map

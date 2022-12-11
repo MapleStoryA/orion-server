@@ -21,7 +21,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package client.layout;
 
-import client.MapleCharacter;
 import database.DatabaseConnection;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.statement.Slf4JSqlLogger;
@@ -44,7 +43,7 @@ public class MapleKeyLayout implements Serializable {
     }
 
 
-    public void writeData(final MaplePacketLittleEndianWriter mplew) {
+    public void encode(final MaplePacketLittleEndianWriter mplew) {
         for (int x = 0; x < 90; x++) {
             var binding = keyMapBindings.get(Integer.valueOf(x));
             if (binding != null) {
@@ -57,7 +56,7 @@ public class MapleKeyLayout implements Serializable {
         }
     }
 
-    public final void saveKeys(final int charId, final MapleCharacter chr) {
+    public final void saveKeys() {
         for (var key : keyMapBindings.values()) {
             if (key.isDeleted()) {
                 keyMapBindings.remove(key);
@@ -74,6 +73,7 @@ public class MapleKeyLayout implements Serializable {
                                 .execute();
                         return true;
                     });
+                    binding.setChanged(false);
                 }
             }
         } catch (Exception ex) {
@@ -98,7 +98,4 @@ public class MapleKeyLayout implements Serializable {
         keyMapBindings.put(binding.getKey(), binding);
     }
 
-    public void remove(Integer key) {
-
-    }
 }
