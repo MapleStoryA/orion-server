@@ -34,6 +34,8 @@ public class DatabaseConnection {
 
     public static Connection getConnection() {
         try {
+            StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+            log.info(stackTraceElements[2].toString());
             return pool.getConnection();
         } catch (SQLException ex) {
             log.error("Could not get connection. Error: ", ex);
@@ -57,10 +59,18 @@ public class DatabaseConnection {
         hikariConfig.setJdbcUrl(config.getProperty("database.url"));
         hikariConfig.setUsername(config.getProperty("database.user"));
         hikariConfig.setPassword(config.getProperty("database.password"));
+
+        hikariConfig.setConnectionTimeout(30000);
+
+        hikariConfig.setIdleTimeout(10000);
+
+        hikariConfig.setMaximumPoolSize(30);
+
         hikariConfig.addDataSourceProperty("cachePrepStmts", "true");
-        hikariConfig.addDataSourceProperty("maximumPoolSize", "1000");
         hikariConfig.addDataSourceProperty("prepStmtCacheSize", "250");
         hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        hikariConfig.setConnectionTestQuery("SELECT 1");
+
 
         pool = new HikariConnectionPool(new HikariDataSource(hikariConfig));
     }
