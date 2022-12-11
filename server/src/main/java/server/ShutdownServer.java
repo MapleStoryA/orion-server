@@ -66,7 +66,6 @@ public class ShutdownServer implements ShutdownServerMBean {
             }
 
             log.info("Shutdown 2 has finished.");
-            DatabaseConnection.closeAll();
             this.mode = 0;
             log.info("Done.");
         }

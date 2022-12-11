@@ -66,6 +66,7 @@ public class MapleMount implements Serializable {
         ps.setInt(4, charid);
         ps.executeUpdate();
         ps.close();
+        con.close();
     }
 
     public int getItemId() {

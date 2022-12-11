@@ -24,7 +24,8 @@ public class PartyManager {
     private static final AtomicInteger runningExpedId = new AtomicInteger(1);
 
     static {
-        try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE `characters` SET `party` = -1")) {
+        try (var con = DatabaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement("UPDATE `characters` SET `party` = -1")) {
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -152,8 +152,8 @@ public class CommandProcessor {
 
     private static void logGMCommandToDB(MapleCharacter player, String command) {
         PreparedStatement ps = null;
-        try {
-            ps = DatabaseConnection.getConnection().prepareStatement("INSERT INTO gmlog (cid, command, mapid) VALUES (?, ?, ?)");
+        try (var con = DatabaseConnection.getConnection()) {
+            ps = con.prepareStatement("INSERT INTO gmlog (cid, command, mapid) VALUES (?, ?, ?)");
             ps.setInt(1, player.getId());
             ps.setString(2, command);
             ps.setInt(3, player.getMap().getId());

@@ -57,18 +57,19 @@ public class MapleStorage implements Serializable {
             storageid = rs.getInt(1);
             ps.close();
             rs.close();
+            con.close();
             return storageid;
         }
         ps.close();
         rs.close();
+        con.close();
         throw new DatabaseException("Inserting char failed.");
     }
 
     public static MapleStorage loadStorage(int id) {
         MapleStorage ret = null;
         int storeId;
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM storages WHERE accountid = ?");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -99,8 +100,7 @@ public class MapleStorage implements Serializable {
         if (!changed) {
             return;
         }
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
 
             PreparedStatement ps = con.prepareStatement("UPDATE storages SET slots = ?, meso = ? WHERE storageid = ?");
             ps.setInt(1, slots);

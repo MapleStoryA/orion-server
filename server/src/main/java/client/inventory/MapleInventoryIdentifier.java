@@ -85,9 +85,8 @@ public class MapleInventoryIdentifier implements Serializable {
         if (grabRunningUID() > 0) {
             return grabRunningUID();
         }
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
             int[] ids = new int[4];
-            Connection con = DatabaseConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("SELECT MAX(uniqueid) FROM inventoryitems");
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {

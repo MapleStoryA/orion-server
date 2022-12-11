@@ -12,7 +12,7 @@ public class GachaponFactory {
     public static SimpleGachaponMachine getInstance() {
         if (instance == null) {
             instance = new SimpleGachaponMachine();
-            CustomRewardsProvider reward = new CustomRewardsProvider(DatabaseConnection.getConnection());
+            CustomRewardsProvider reward = new CustomRewardsProvider();
             instance.setRewards(GachaponLocation.HENESYS, reward.getRewardsByLocation(GachaponLocation.HENESYS));
             instance.setRewards(GachaponLocation.ELLINIA, reward.getRewardsByLocation(GachaponLocation.ELLINIA));
             instance.setRewards(GachaponLocation.KERNING, reward.getRewardsByLocation(GachaponLocation.KERNING));

@@ -12,8 +12,7 @@ import java.util.List;
 public class BanService {
 
     public static final byte unban(String charname) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT accountid from characters where name = ?");
             ps.setString(1, charname);
 
@@ -39,8 +38,7 @@ public class BanService {
     }
 
     public static final void banMacs(String[] macs) {
-        Connection con = DatabaseConnection.getConnection();
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
             List<String> filtered = new LinkedList<String>();
             PreparedStatement ps = con.prepareStatement("SELECT filter FROM macfilters");
             ResultSet rs = ps.executeQuery();
@@ -75,8 +73,7 @@ public class BanService {
     }
 
     public static final byte unbanIPMacs(String charname) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT accountid from characters where name = ?");
             ps.setString(1, charname);
 
@@ -130,8 +127,7 @@ public class BanService {
     }
 
     public static final byte unHellban(String charname) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT accountid from characters where name = ?");
             ps.setString(1, charname);
 

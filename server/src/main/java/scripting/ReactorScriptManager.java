@@ -77,8 +77,7 @@ public class ReactorScriptManager extends AbstractScriptManager {
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             ps = con.prepareStatement("SELECT * FROM reactordrops WHERE reactorid = ?");
             ps.setInt(1, rid);
             rs = ps.executeQuery();

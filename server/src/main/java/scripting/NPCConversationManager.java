@@ -988,8 +988,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
     public void giveMerchantMesos() {
         long mesos = 0;
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con
                     .prepareStatement("SELECT * FROM hiredmerchants WHERE merchantid = ?");
             ps.setInt(1, getPlayer().getId());
@@ -1016,8 +1015,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
     public long getMerchantMesos() {
         long mesos = 0;
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con
                     .prepareStatement("SELECT * FROM hiredmerch WHERE characterid = ?");
             ps.setInt(1, getPlayer().getId());
@@ -1898,8 +1896,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
     public void sendFeedback(String msg) {
         PreparedStatement ps;
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             ps = con.prepareStatement("INSERT INTO feedback VALUES(?, ?, ?, ?, ?)");
             ps.setInt(1, getClient().getAccountData().getId());
             ps.setInt(2, getPlayer().getId());
@@ -1947,8 +1944,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public String generateFeedbackList() {
-        Connection con = DatabaseConnection.getConnection();
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
             StringBuilder sb = new StringBuilder();
             PreparedStatement ps = con.prepareStatement("SELECT charname, feedback FROM feedback");
             ResultSet rs = ps.executeQuery();

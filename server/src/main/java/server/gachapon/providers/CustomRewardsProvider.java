@@ -18,8 +18,8 @@ public class CustomRewardsProvider {
 
     List<AbstractRandomEntity> list;
 
-    public CustomRewardsProvider(Connection con) {
-        this.provider = new DbRewardProvider(con);
+    public CustomRewardsProvider() {
+        this.provider = new DbRewardProvider();
         list = provider.getRewards();
     }
 

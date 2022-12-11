@@ -110,6 +110,7 @@ public class MapleBuddyList implements Serializable {
         }
         rs.close();
         ps.close();
+        con.close();
     }
 
     public enum BuddyAddResult {

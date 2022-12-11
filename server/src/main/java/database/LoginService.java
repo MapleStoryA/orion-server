@@ -105,8 +105,7 @@ public class LoginService {
         EvanSkillPoints sp = new EvanSkillPoints();
         ResultSet rs = null;
         PreparedStatement ps = null;
-        Connection con = DatabaseConnection.getConnection();
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
             ps = con.prepareStatement("SELECT * FROM evan_skillpoints WHERE characterid = ?");
             ps.setInt(1, characterId);
             rs = ps.executeQuery();
@@ -147,8 +146,7 @@ public class LoginService {
     }
 
     public static void setClientAccountLoginState(AccountData data, LoginState loginState, String sessionIp) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("UPDATE accounts SET loggedin = ?, SessionIP = ?, lastlogin = CURRENT_TIMESTAMP() WHERE id = ?");
             ps.setInt(1, loginState.getCode());
             ps.setString(2, sessionIp);

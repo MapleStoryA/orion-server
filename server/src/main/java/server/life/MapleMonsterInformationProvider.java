@@ -26,7 +26,6 @@ import constants.GameConstants;
 import constants.ServerConstants;
 import database.DatabaseConnection;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -62,8 +61,7 @@ public class MapleMonsterInformationProvider {
     public void load() {
         PreparedStatement ps = null;
         ResultSet rs = null;
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
 
             ps = con.prepareStatement("SELECT * FROM `drop_data_global` WHERE chance > 0");
             rs = ps.executeQuery();
@@ -111,12 +109,12 @@ public class MapleMonsterInformationProvider {
 
         PreparedStatement ps = null;
         ResultSet rs = null;
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
             MapleMonsterStats mons = MapleLifeFactory.getMonsterStats(monsterId);
             if (mons == null) {
                 return;
             }
-            ps = DatabaseConnection.getConnection().prepareStatement("SELECT * FROM drop_data WHERE dropperid = ?");
+            ps = con.prepareStatement("SELECT * FROM drop_data WHERE dropperid = ?");
             ps.setInt(1, monsterId);
             rs = ps.executeQuery();
 

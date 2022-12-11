@@ -62,8 +62,7 @@ public class RankingWorker {
     public void run() {
         log.info("Loading Rankings::");
         loadJobCommands();
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             updateRanking(con);
         } catch (Exception ex) {
             log.error("Log_Script_Except.rtf", ex);

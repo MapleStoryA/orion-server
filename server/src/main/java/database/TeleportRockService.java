@@ -10,11 +10,10 @@ public class TeleportRockService {
 
 
     public static void save(TeleportRock teleportRock, int characterId) {
-        var con = DatabaseConnection.getConnection();
         if (!teleportRock.isChanged()) {
             return;
         }
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
             CharacterService.deleteWhereCharacterId(con, "DELETE FROM " + teleportRock.getName() + " WHERE characterid = ?", characterId);
             for (var map_id : teleportRock.getMap_ids()) {
                 var ps = con.prepareStatement("INSERT INTO " + teleportRock.getName() + " (characterid, mapid) VALUES(?, ?) ");

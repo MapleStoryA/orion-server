@@ -43,8 +43,7 @@ public class HiredMerchantHandlerUtils {
 
 
     public static final byte checkExistance(final int accid, final int charid) {
-        Connection con = DatabaseConnection.getConnection();
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT * from hiredmerch where accountid = ? OR characterid = ?");
             ps.setInt(1, accid);
             ps.setInt(2, charid);
@@ -88,9 +87,8 @@ public class HiredMerchantHandlerUtils {
     }
 
     public static final boolean deletePackage(final int charid, final int accid, final int packageid) {
-        final Connection con = DatabaseConnection.getConnection();
 
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("DELETE from hiredmerch where characterid = ? OR accountid = ? OR packageid = ?");
             ps.setInt(1, charid);
             ps.setInt(2, accid);
@@ -106,9 +104,7 @@ public class HiredMerchantHandlerUtils {
     }
 
     public static final MerchItemPackage loadItemFrom_Database(final int charid, final int accountid) {
-        final Connection con = DatabaseConnection.getConnection();
-
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT * from hiredmerch where characterid = ? OR accountid = ?");
             ps.setInt(1, charid);
             ps.setInt(2, accountid);

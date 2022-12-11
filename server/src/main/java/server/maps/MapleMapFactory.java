@@ -63,8 +63,7 @@ public class MapleMapFactory {
 
     public static int loadCustomLife() {
         customLife.clear(); // init
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM `wz_customlife`");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

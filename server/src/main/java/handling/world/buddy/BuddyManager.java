@@ -171,8 +171,7 @@ public class BuddyManager {
     }
 
     public static byte deleteOfflineBuddy(final int delId, final int myId) {
-        Connection con = DatabaseConnection.getConnection();
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("DELETE from `buddyentries` WHERE `owner` = ? AND `buddyid` = ?");
             ps.setInt(1, delId);
             ps.setInt(2, myId);

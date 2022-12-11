@@ -50,8 +50,7 @@ public class SpeedQuizFactory {
             return;
         }
         log.info("Loading Speed Quiz Data...");
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             try (PreparedStatement ps = con.prepareStatement("SELECT * FROM `wz_speedquiz`"); ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     quiz.put(new QuizEntry(rs.getByte("type"), rs.getInt("objectid"), rs.getString("answer")), rs.getInt("questionNo"));

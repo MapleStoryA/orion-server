@@ -28,7 +28,6 @@ import server.movement.MovePath;
 
 import java.awt.*;
 import java.io.Serializable;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -62,10 +61,9 @@ public class MaplePet implements Serializable {
     }
 
     public static MaplePet loadFromDb(final int itemid, final int petid, final short inventorypos) {
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
             final MaplePet ret = new MaplePet(itemid, petid, inventorypos);
 
-            Connection con = DatabaseConnection.getConnection(); // Get a connection to the database
             PreparedStatement ps = con.prepareStatement("SELECT * FROM pets WHERE petid = ?"); // Get pet details..
             ps.setInt(1, petid);
 
@@ -101,8 +99,8 @@ public class MaplePet implements Serializable {
         if (uniqueid <= -1) { //wah
             uniqueid = MapleInventoryIdentifier.getInstance();
         }
-        try { // Commit to db first
-            PreparedStatement pse = DatabaseConnection.getConnection().prepareStatement("INSERT INTO pets (petid, name, level, closeness, fullness, seconds, summoned) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        try (var con = DatabaseConnection.getConnection()) {
+            PreparedStatement pse = con.prepareStatement("INSERT INTO pets (petid, name, level, closeness, fullness, seconds, summoned) VALUES (?, ?, ?, ?, ?, ?, ?)");
             pse.setInt(1, uniqueid);
             pse.setString(2, name);
             pse.setByte(3, (byte) level);
@@ -127,8 +125,8 @@ public class MaplePet implements Serializable {
     }
 
     public final void saveToDb() {
-        try {
-            final PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE pets SET name = ?, level = ?, closeness = ?, fullness = ?, seconds = ?, summoned = ? WHERE petid = ?");
+        try (var con = DatabaseConnection.getConnection()) {
+            final PreparedStatement ps = con.prepareStatement("UPDATE pets SET name = ?, level = ?, closeness = ?, fullness = ?, seconds = ?, summoned = ? WHERE petid = ?");
             ps.setString(1, name); // Set name
             ps.setByte(2, level); // Set Level
             ps.setShort(3, closeness); // Set Closeness

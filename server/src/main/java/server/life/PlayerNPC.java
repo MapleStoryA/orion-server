@@ -82,6 +82,7 @@ public class PlayerNPC extends MapleNPC {
         }
         rs2.close();
         ps.close();
+        con.close();
     }
 
     public PlayerNPC(MapleCharacter cid, int npc, MapleMap map, MapleCharacter base) {
@@ -94,8 +95,7 @@ public class PlayerNPC extends MapleNPC {
 
     public static void loadAll() {
         List<PlayerNPC> toAdd = new ArrayList<PlayerNPC>();
-        Connection con = DatabaseConnection.getConnection();
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM playernpcs");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -166,8 +166,7 @@ public class PlayerNPC extends MapleNPC {
     }
 
     public void destroy(boolean remove) {
-        Connection con = DatabaseConnection.getConnection();
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("DELETE FROM playernpcs WHERE scriptid = ?");
             ps.setInt(1, getId());
             ps.executeUpdate();
@@ -186,8 +185,7 @@ public class PlayerNPC extends MapleNPC {
     }
 
     public void saveToDB() {
-        Connection con = DatabaseConnection.getConnection();
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
 
             if (getNPCFromWZ() == null) {
                 destroy(true);

@@ -24,12 +24,12 @@ package server.maps;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
-import client.skill.SkillFactory;
 import client.inventory.Equip;
 import client.inventory.IItem;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
+import client.skill.SkillFactory;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
 import constants.GameConstants;
@@ -83,7 +83,6 @@ import tools.packet.PetPacket;
 import tools.packet.npcpool.NpcPoolPackets;
 
 import java.awt.*;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -2927,7 +2926,7 @@ public final class MapleMap {
     }
 
     public void getRankAndAdd(String leader, String time, SpeedRunType type, long timz, Collection<String> squad) {
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
             //Pair<String, Map<Integer, String>>
             StringBuilder rett = new StringBuilder();
             if (squad != null) {
@@ -2940,7 +2939,6 @@ public final class MapleMap {
             if (squad != null) {
                 z = z.substring(0, z.length() - 1);
             }
-            Connection con = DatabaseConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("INSERT INTO speedruns(`type`, `leader`, `timestring`, `time`, `members`) VALUES (?,?,?,?,?)");
             ps.setString(1, type.name());
             ps.setString(2, leader);
