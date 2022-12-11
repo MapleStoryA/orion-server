@@ -28,9 +28,8 @@ import tools.data.output.MaplePacketLittleEndianWriter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleKeyLayout implements Serializable {
@@ -40,7 +39,7 @@ public class MapleKeyLayout implements Serializable {
 
 
     public MapleKeyLayout() {
-        keyMapBindings = new HashMap<>();
+        keyMapBindings = new ConcurrentHashMap<>();
     }
 
 
@@ -62,8 +61,8 @@ public class MapleKeyLayout implements Serializable {
             Jdbi jDbi = Jdbi.create(con);
             jDbi.setSqlLogger(new Slf4JSqlLogger());
             for (var binding : new ArrayList<>(keyMapBindings.values())) {
-                log.info(binding.toString());
                 if (binding.isDeleted()) {
+                    log.info("Deleting key: {}", binding.getKey());
                     jDbi.withHandle(r -> {
                         r.createUpdate("DELETE FROM keymap WHERE `characterid` = :d.characterId AND `key` = :d.key")
                                 .bindBean("d", binding)
@@ -74,10 +73,8 @@ public class MapleKeyLayout implements Serializable {
                 }
             }
             for (var binding : keyMapBindings.values()) {
-                if (binding.isDeleted()) {
-                    continue;
-                }
                 if (binding.isChanged()) {
+                    log.info("Saving key: {}", binding.getKey());
                     jDbi.withHandle(r -> {
                         r.createUpdate("INSERT INTO keymap(`characterid`, `key`, `type`, `action`, `fixed`) " +
                                         "VALUES (:d.characterId, :d.key, :d.type, :d.action, :d.fixed) " +
@@ -96,14 +93,11 @@ public class MapleKeyLayout implements Serializable {
 
     }
 
-    public void changeKeybinding(KeyMapBinding newBinding) {
-        Optional<KeyMapBinding> existentKeyBinding = keyMapBindings.values()
-                .stream()
-                .filter(key -> key.getAction() == newBinding.getAction())
-                .findFirst();
-        existentKeyBinding.ifPresent((existentBinding) -> {
-            newBinding.setKey(existentBinding.getKey());
-        });
+    public void deleteKeyBinding(KeyMapBinding newBinding) {
+        keyMapBindings.put(newBinding.getKey(), newBinding);
+    }
+
+    public void changeKeyBinding(KeyMapBinding newBinding) {
         keyMapBindings.put(newBinding.getKey(), newBinding);
     }
 

@@ -3494,9 +3494,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         }
     }
 
-    public void changeKeybinding(KeyMapBinding binding) {
-        keyLayout.changeKeybinding(binding);
-    }
 
     public void tempban(String reason, Calendar duration, int greason, boolean IPMac) {
         try (var con = DatabaseConnection.getConnection()) {
