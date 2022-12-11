@@ -3,8 +3,10 @@ package client.layout;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.jdbi.v3.core.annotation.JdbiProperty;
 
+@ToString
 public class KeyMapBinding {
 
     @Getter

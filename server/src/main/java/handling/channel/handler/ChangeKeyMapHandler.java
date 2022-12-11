@@ -57,9 +57,16 @@ public class ChangeKeyMapHandler extends AbstractMaplePacketHandler {
                         // sit, jump, npc chat), 6 =
                         // emotion
                         var binding = new KeyMapBinding(chr.getId(), key, type, action, 0);
-                        binding.setChanged(true);
-                        binding.setDeleted(type == 1 || type != 0);
+                        if (type == 1) { // User changes a skill key
+                            binding.setChanged(true);
+                        } else if (type == 0) { // User unmaps a key
+                            binding.setDeleted(true);
+                        } else {
+                            binding.setChanged(true); // User moves key of the unmapped keys.
+                        }
+
                         chr.changeKeybinding(binding);
+                        chr.getKeyLayout().saveKeys();
                     }
                 }
                 // chr.resetKeyMap();
