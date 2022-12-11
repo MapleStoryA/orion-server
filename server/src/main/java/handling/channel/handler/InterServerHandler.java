@@ -27,7 +27,6 @@ import client.MapleJob;
 import client.MapleQuestStatus;
 import client.skill.SkillFactory;
 import constants.ServerConstants;
-import database.CharacterService;
 import database.LoginState;
 import handling.ServerMigration;
 import handling.channel.ChannelServer;
@@ -49,7 +48,6 @@ import handling.world.messenger.MessengerManager;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import handling.world.party.PartyManager;
-import server.ClientStorage;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
 import tools.packet.MapleUserPackets;
@@ -66,15 +64,17 @@ public class InterServerHandler {
         final ChannelServer channelServer = c.getChannelServer();
 
         ServerMigration serverMigration = WorldServer.getInstance().getMigrationService().getServerMigration(characterId, c.getSessionIPAddress());
-
         if (serverMigration != null) {
             c.setAccountData(serverMigration.getAccountData());
+        } else {
+            log.error("Missing server migration", c.getAccountData().getName());
+            return;
         }
 
         MapleCharacter player;
         final CharacterTransfer transfer = serverMigration.getCharacterTransfer();
 
-        if (transfer == null) { // Player isn't in storage, probably isn't CC
+        if (transfer == null) { // Logged for the first time
             player = MapleCharacter.loadCharFromDB(characterId, c, true);
             player.setLoginTime(System.currentTimeMillis());
         } else {
@@ -82,26 +82,6 @@ public class InterServerHandler {
         }
         c.setPlayer(player);
 
-
-        if (!c.checkClientIpAddress()) { // Remote hack
-            c.getSession().close();
-            return;
-        }
-
-        final LoginState state = c.getAccountData().getLoginState();
-        boolean allowLogin = false;
-
-        if (LoginState.LOGIN_SERVER_TRANSITION.equals(state) || LoginState.CHANGE_CHANNEL.equals(state)) {
-            if (!WorldServer.getInstance().isCharacterListConnected(CharacterService.loadCharacterNames(c.getWorld(), c.getAccountData().getId()))) {
-                allowLogin = true;
-            }
-        }
-        if (!allowLogin) {
-            //  c.setPlayer(null);
-            // c.getSession().close();
-            // return;
-        }
-        ClientStorage.addClient(c);
         c.updateLoginState(LoginState.LOGIN_LOGGEDIN, c.getSessionIPAddress());
         channelServer.addPlayer(player);
 

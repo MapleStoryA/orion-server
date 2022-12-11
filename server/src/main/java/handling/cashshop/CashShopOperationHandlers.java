@@ -44,11 +44,6 @@ public class CashShopOperationHandlers {
         c.setPlayer(chr);
         c.loadAccountData(chr.getAccountID());
 
-        if (!c.checkClientIpAddress()) { // Remote hack
-            c.getSession().close();
-            return;
-        }
-
         final LoginState state = c.getAccountData().getLoginState();
         boolean allowLogin = false;
         if (LoginState.LOGIN_SERVER_TRANSITION.equals(state) || LoginState.CHANGE_CHANNEL.equals(state)) {
