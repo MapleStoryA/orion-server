@@ -35,6 +35,9 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MapleMount;
 import client.inventory.MaplePet;
 import client.inventory.MapleRing;
+import client.layout.ExcludedKeyMap;
+import client.layout.KeyMapBinding;
+import client.layout.MapleKeyLayout;
 import client.skill.EvanSkillPoints;
 import client.skill.ISkill;
 import client.skill.SkillEntry;
@@ -353,7 +356,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             savedLocations = new SavedLocations();
             skillMacros = new SavedSkillMacro();
             finishedAchievements = new FinishedAchievements();
-
+            keyLayout = new MapleKeyLayout();
             conversation_status = new AtomicInteger();
             conversation_status.set(0); // 1 = NPC/ Quest, 2 = Duey, 3 = Hired Merch store, 4 =
             // Storage
@@ -526,7 +529,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         ret.inventory = (MapleInventory[]) ct.getInventories();
         ret.blessOfFairy_Origin = ct.getBlessOfFairy();
         ret.skillMacros = ct.getSkillMacros();
-        ret.keyLayout = new MapleKeyLayout(ct.getKeyMap());
+        ret.keyLayout = ct.getKeyMap();
         ret.petStore = ct.getPetStore();
         ret.questInfo = ct.getInfoQuest();
         ret.savedLocations = ct.getSavedLocations();
@@ -835,19 +838,16 @@ public class MapleCharacter extends BaseMapleCharacter {
                 ps.setInt(1, charid);
                 rs = ps.executeQuery();
 
-                final Map<Integer, Triple<Byte, Integer, Byte>> keyb = ret.keyLayout.Layout();
-                if (ServerEnvironment.isDebugEnabled()) {
-                    log.info("Loading key map...");
-                }
+
                 while (rs.next()) {
-                    int skill = rs.getInt("action");
+                    int action = rs.getInt("action");
                     int key = rs.getInt("key");
                     byte fixed = rs.getByte("fixed");
                     byte type = rs.getByte("type");
                     if (ServerEnvironment.isDebugEnabled()) {
-                        log.info("K: " + key + " fixed: " + fixed + " type: " + type + " skill: " + skill);
+                        log.info("K: " + key + " fixed: " + fixed + " type: " + type + " action: " + action);
                     }
-                    keyb.put(key, new Triple<>(type, skill, fixed));
+                    ret.keyLayout.setBinding(new KeyMapBinding(ret.id, key, type, action, fixed));
 
                 }
                 rs.close();
@@ -3494,12 +3494,8 @@ public class MapleCharacter extends BaseMapleCharacter {
         }
     }
 
-    public void changeKeybinding(int key, byte type, int action, byte fixed) {
-        if (type != 0) {
-            keyLayout.Layout().put(Integer.valueOf(key), new Triple<>(type, action, fixed));
-        } else {
-            keyLayout.Layout().remove(Integer.valueOf(key));
-        }
+    public void changeKeybinding(KeyMapBinding binding) {
+        keyLayout.changeKeybinding(binding);
     }
 
     public void tempban(String reason, Calendar duration, int greason, boolean IPMac) {
@@ -5410,12 +5406,12 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public void removeAllKey(final List<Integer> x) {
         for (Integer i : x) {
-            keyLayout.Layout().remove(i);
+            keyLayout.remove(i);
         }
     }
 
     public Collection<Triple<Byte, Integer, Byte>> getKeymap() {
-        return keyLayout.Layout().values();
+        return Collections.emptyList();//keyLayout.Layout().values(); TODO: fix key map
     }
 
     public SpeedQuiz getSpeedQuiz() {

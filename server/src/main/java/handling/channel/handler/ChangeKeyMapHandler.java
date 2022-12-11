@@ -1,18 +1,16 @@
 package handling.channel.handler;
 
-import client.ExcludedKeyMap;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.inventory.MapleInventoryType;
+import client.layout.ExcludedKeyMap;
+import client.layout.KeyMapBinding;
 import client.skill.ISkill;
 import client.skill.SkillFactory;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import server.MapleItemInformationProvider;
 import tools.data.input.SeekableLittleEndianAccessor;
-
-import java.util.LinkedList;
-import java.util.List;
 
 @lombok.extern.slf4j.Slf4j
 public class ChangeKeyMapHandler extends AbstractMaplePacketHandler {
@@ -27,7 +25,6 @@ public class ChangeKeyMapHandler extends AbstractMaplePacketHandler {
         final int actiontype = slea.readInt();
         switch (actiontype) {
             case 0: { // Normal Key Map
-                final List<Integer> toRemove = new LinkedList<>();
                 final int numChanges = slea.readInt();
                 for (int i = 0; i < numChanges; i++) {
                     final int key = slea.readInt();
@@ -59,17 +56,11 @@ public class ChangeKeyMapHandler extends AbstractMaplePacketHandler {
                         // 4 = UI, 5 = (attack, loot,
                         // sit, jump, npc chat), 6 =
                         // emotion
-                        if (type == 1) { // I don't want to parse the keymap twice.
-                            chr.changeKeybinding(key, type, action, (byte) 0);
-                        } else if (type != 0) {
-                            chr.changeKeybinding(key, type, action, (byte) 0);
-                        } else { // Type is 0
-                            toRemove.add(key);
-                        }
+                        var binding = new KeyMapBinding(chr.getId(), key, type, action, 0);
+                        binding.setChanged(true);
+                        binding.setDeleted(type == 1 || type != 0);
+                        chr.changeKeybinding(binding);
                     }
-                }
-                if (!toRemove.isEmpty()) {
-                    chr.removeAllKey(toRemove);
                 }
                 // chr.resetKeyMap();
                 break;

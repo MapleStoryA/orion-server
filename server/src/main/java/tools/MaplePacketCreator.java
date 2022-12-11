@@ -26,7 +26,7 @@ import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleDisease;
-import client.MapleKeyLayout;
+import client.layout.MapleKeyLayout;
 import client.MapleQuestStatus;
 import client.MapleStat;
 import client.inventory.IEquip.ScrollResult;
