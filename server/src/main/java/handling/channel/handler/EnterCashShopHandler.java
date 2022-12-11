@@ -3,8 +3,8 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import constants.MapConstants;
-import database.LoginState;
 import handling.AbstractMaplePacketHandler;
+import handling.ServerMigration;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
 import handling.world.WorldServer;
@@ -40,12 +40,15 @@ public class EnterCashShopHandler extends AbstractMaplePacketHandler {
         PlayerBuffStorage.addBuffsToStorage(chr.getId(), chr.getAllBuffs());
         PlayerBuffStorage.addCooldownsToStorage(chr.getId(), chr.getCooldowns());
         PlayerBuffStorage.addDiseaseToStorage(chr.getId(), chr.getAllDiseases());
-        WorldServer.getInstance().getChangeChannelData(new CharacterTransfer(chr), chr.getId(), -10);
         ch.removePlayer(chr);
-        c.updateLoginState(LoginState.CHANGE_CHANNEL, c.getSessionIPAddress());
         chr.saveToDB(false, false);
         chr.getMap().removePlayer(chr);
         c.setPlayer(null);
+
+        ServerMigration entry = new ServerMigration(chr.getId(), c.getAccountData(), c.getSessionIPAddress());
+        entry.setCharacterTransfer(new CharacterTransfer(chr));
+        WorldServer.getInstance().getMigrationService().putMigrationEntry(entry);
+
         c.getSession().write(MaplePacketCreator.getChannelChange(Integer.parseInt(CashShopServer.getInstance().getPublicAddress().split(":")[1])));
 
     }

@@ -67,7 +67,7 @@ public class InterServerHandler {
         if (serverMigration != null) {
             c.setAccountData(serverMigration.getAccountData());
         } else {
-            log.error("Missing server migration", c.getAccountData().getName());
+            log.error("Missing server migration: {}", c.getAccountData().getName());
             return;
         }
 
