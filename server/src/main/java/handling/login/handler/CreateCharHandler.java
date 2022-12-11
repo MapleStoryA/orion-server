@@ -1,7 +1,7 @@
 package handling.login.handler;
 
 import client.MapleCharacter;
-import client.MapleCharacterUtil;
+import client.MapleCharacterHelper;
 import client.MapleClient;
 import client.inventory.Equip;
 import client.inventory.IItem;
@@ -132,7 +132,7 @@ public class CreateCharHandler extends AbstractMaplePacketHandler {
                 break;
         }
 
-        if (MapleCharacterUtil.canCreateChar(name) && !LoginInformationProvider.getInstance().isForbiddenName(name)) {
+        if (MapleCharacterHelper.canCreateChar(name) && !LoginInformationProvider.getInstance().isForbiddenName(name)) {
             MapleCharacter.saveNewCharToDB(newchar, JobType, JobType == 1 && db > 0);
             c.getSession().write(LoginPacket.addNewCharEntry(newchar, true));
         } else {

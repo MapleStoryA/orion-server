@@ -32,7 +32,7 @@ import java.sql.SQLException;
 import java.util.regex.Pattern;
 
 @lombok.extern.slf4j.Slf4j
-public class MapleCharacterUtil {
+public class MapleCharacterHelper {
 
     private static final Pattern namePattern = Pattern.compile("[a-zA-Z0-9_-]{3,12}");
     private static final Pattern petPattern = Pattern.compile("[a-zA-Z0-9_-]{4,12}");

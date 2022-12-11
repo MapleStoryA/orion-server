@@ -1,7 +1,7 @@
 package handling.channel.handler;
 
 import client.MapleCharacter;
-import client.MapleCharacterUtil;
+import client.MapleCharacterHelper;
 import client.MapleClient;
 import client.MapleStat;
 import client.PlayerStats;
@@ -1031,7 +1031,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                         break;
                     }
                 }
-                if (MapleCharacterUtil.canChangePetName(nName)) {
+                if (MapleCharacterHelper.canChangePetName(nName)) {
                     pet.setName(nName);
                     c.getSession().write(PetPacket.updatePet(pet, c.getPlayer().getInventory(MapleInventoryType.CASH)
                             .getItem((byte) pet.getInventoryPosition())));

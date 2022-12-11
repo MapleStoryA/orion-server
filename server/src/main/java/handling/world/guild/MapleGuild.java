@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package handling.world.guild;
 
 import client.MapleCharacter;
-import client.MapleCharacterUtil;
+import client.MapleCharacterHelper;
 import client.MapleClient;
 import database.DatabaseConnection;
 import handling.world.alliance.AllianceManager;
@@ -605,7 +605,7 @@ public class MapleGuild implements java.io.Serializable {
                     if (mgc.isOnline()) {
                         GuildManager.setGuildAndRank(cid, 0, 5, 5);
                     } else {
-                        MapleCharacterUtil.sendNote(mgc.getName(), initiator.getName(), "You have been expelled from the guild.", 0);
+                        MapleCharacterHelper.sendNote(mgc.getName(), initiator.getName(), "You have been expelled from the guild.", 0);
                         setOfflineGuildStatus((short) 0, (byte) 5, (byte) 5, cid);
                     }
                     members.remove(mgc);

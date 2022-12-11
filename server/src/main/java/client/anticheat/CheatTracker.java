@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package client.anticheat;
 
 import client.MapleCharacter;
-import client.MapleCharacterUtil;
+import client.MapleCharacterHelper;
 import constants.GameConstants;
 import handling.world.helper.BroadcastHelper;
 import server.AutobanManager;
@@ -274,7 +274,7 @@ public class CheatTracker {
             case SAME_DAMAGE:
                 gm_message--;
                 if (gm_message == 0) {
-                    BroadcastHelper.broadcastGMMessage(MaplePacketCreator.serverNotice(6, "[GM Message] " + MapleCharacterUtil.makeMapleReadable(chrhardref.getName()) + " suspected of hacking! " + StringUtil.makeEnumHumanReadable(offense.name()) + (param == null ? "" : (" - " + param))));
+                    BroadcastHelper.broadcastGMMessage(MaplePacketCreator.serverNotice(6, "[GM Message] " + MapleCharacterHelper.makeMapleReadable(chrhardref.getName()) + " suspected of hacking! " + StringUtil.makeEnumHumanReadable(offense.name()) + (param == null ? "" : (" - " + param))));
                     gm_message = 100;
                 }
                 break;

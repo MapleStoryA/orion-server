@@ -2,7 +2,7 @@ package client.commands.v1;
 
 import client.skill.ISkill;
 import client.MapleCharacter;
-import client.MapleCharacterUtil;
+import client.MapleCharacterHelper;
 import client.MapleClient;
 import client.MapleDisease;
 import client.MapleStat;
@@ -1406,7 +1406,7 @@ public class AdminCommand {
                     c.getPlayer().dropMessage(6, builder.toString());
                     builder = new StringBuilder();
                 }
-                builder.append(MapleCharacterUtil.makeMapleReadable(chr.getName()));
+                builder.append(MapleCharacterHelper.makeMapleReadable(chr.getName()));
                 builder.append(", ");
             }
             builder.setLength(builder.length() - 2);

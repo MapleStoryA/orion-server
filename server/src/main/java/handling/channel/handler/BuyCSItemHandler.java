@@ -1,7 +1,7 @@
 package handling.channel.handler;
 
 import client.MapleCharacter;
-import client.MapleCharacterUtil;
+import client.MapleCharacterHelper;
 import client.MapleClient;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryIdentifier;
@@ -74,7 +74,7 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
                 CashShopOperationHandlers.doCSPackets(c);
                 return;
             }
-            final Triple<Integer, Integer, Integer> info = MapleCharacterUtil.getInfoByName(partnerName, chr.getWorld());
+            final Triple<Integer, Integer, Integer> info = MapleCharacterHelper.getInfoByName(partnerName, chr.getWorld());
             if (info == null || info.getLeft().intValue() <= 0 || info.getLeft().intValue() == chr.getId() || info.getMid().intValue() == c.getAccountData().getId()) {
                 c.getSession().write(MTSCSPacket.sendCSFail(0x07));
                 CashShopOperationHandlers.doCSPackets(c);
@@ -181,7 +181,7 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
                 CashShopOperationHandlers.doCSPackets(c);
                 return;
             }
-            final Triple<Integer, Integer, Integer> info = MapleCharacterUtil.getInfoByName(partnerName, chr.getWorld());
+            final Triple<Integer, Integer, Integer> info = MapleCharacterHelper.getInfoByName(partnerName, chr.getWorld());
             if (info == null || info.getLeft().intValue() <= 0 || info.getLeft().intValue() == chr.getId() || info.getMid().intValue() == c.getAccountData().getId()) {
                 c.getSession().write(MTSCSPacket.sendCSFail(0x07));
                 CashShopOperationHandlers.doCSPackets(c);
