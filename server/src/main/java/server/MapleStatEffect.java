@@ -993,9 +993,9 @@ public class MapleStatEffect implements Serializable {
 
         } else if (isTimeLeap()) { // Time Leap
             for (MapleCoolDownValueHolder i : applyto.getCooldowns()) {
-                if (i.skillId != 5121010) {
-                    applyto.removeCooldown(i.skillId);
-                    applyto.getClient().getSession().write(MaplePacketCreator.skillCooldown(i.skillId, 0));
+                if (i.getSkillId() != 5121010) {
+                    applyto.removeCooldown(i.getSkillId());
+                    applyto.getClient().getSession().write(MaplePacketCreator.skillCooldown(i.getSkillId(), 0));
                 }
             }
         }
@@ -1067,9 +1067,9 @@ public class MapleStatEffect implements Serializable {
                     }
                     if (isTimeLeap()) {
                         for (MapleCoolDownValueHolder i : affected.getCooldowns()) {
-                            if (i.skillId != 5121010) {
-                                affected.removeCooldown(i.skillId);
-                                affected.getClient().getSession().write(MaplePacketCreator.skillCooldown(i.skillId, 0));
+                            if (i.getSkillId() != 5121010) {
+                                affected.removeCooldown(i.getSkillId());
+                                affected.getClient().getSession().write(MaplePacketCreator.skillCooldown(i.getSkillId(), 0));
                             }
                         }
                     }

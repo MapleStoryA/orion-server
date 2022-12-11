@@ -1365,9 +1365,9 @@ public class MapleCharacter extends BaseMapleCharacter {
                         "INSERT INTO skills_cooldowns (charid, SkillID, StartTime, length) VALUES (?, ?, ?, ?)");
                 ps.setInt(1, getId());
                 for (final MapleCoolDownValueHolder cooling : cd) {
-                    ps.setInt(2, cooling.skillId);
-                    ps.setLong(3, cooling.startTime);
-                    ps.setLong(4, cooling.length);
+                    ps.setInt(2, cooling.getSkillId());
+                    ps.setLong(3, cooling.getStartTime());
+                    ps.setLong(4, cooling.getLength());
                     ps.execute();
                 }
                 ps.close();
@@ -1567,7 +1567,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     public boolean isActiveBuffedValue(int skillid) {
         LinkedList<MapleBuffStatValueHolder> allBuffs = new LinkedList<MapleBuffStatValueHolder>(getEffects().values());
         for (MapleBuffStatValueHolder mbsvh : allBuffs) {
-            if (mbsvh.effect.isSkill() && mbsvh.effect.getSourceId() == skillid) {
+            if (mbsvh.getEffect().isSkill() && mbsvh.getEffect().getSourceId() == skillid) {
                 return true;
             }
         }
@@ -1579,7 +1579,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             return (int) morphId;
         }
         final MapleBuffStatValueHolder mbsvh = getEffects().get(effect);
-        return mbsvh == null ? null : Integer.valueOf(mbsvh.value);
+        return mbsvh == null ? null : Integer.valueOf(mbsvh.getValue());
     }
 
     public final Integer getBuffedSkill_X(final MapleBuffStat effect) {
@@ -1587,7 +1587,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         if (mbsvh == null) {
             return null;
         }
-        return mbsvh.effect.getX();
+        return mbsvh.getEffect().getX();
     }
 
     public final Integer getBuffedSkill_Y(final MapleBuffStat effect) {
@@ -1595,12 +1595,12 @@ public class MapleCharacter extends BaseMapleCharacter {
         if (mbsvh == null) {
             return null;
         }
-        return mbsvh.effect.getY();
+        return mbsvh.getEffect().getY();
     }
 
     public int getTrueBuffSource(MapleBuffStat stat) {
         final MapleBuffStatValueHolder mbsvh = getEffects().get(stat);
-        return mbsvh == null ? -1 : (mbsvh.effect.isSkill() ? mbsvh.effect.getSourceId() : -mbsvh.effect.getSourceId());
+        return mbsvh == null ? -1 : (mbsvh.getEffect().isSkill() ? mbsvh.getEffect().getSourceId() : -mbsvh.getEffect().getSourceId());
     }
 
     /*
@@ -1612,12 +1612,12 @@ public class MapleCharacter extends BaseMapleCharacter {
         if (mbsvh == null) {
             return false;
         }
-        return mbsvh.effect.isSkill() && mbsvh.effect.getSourceId() == skill.getId();
+        return mbsvh.getEffect().isSkill() && mbsvh.getEffect().getSourceId() == skill.getId();
     }
 
     public int getBuffSource(MapleBuffStat stat) {
         final MapleBuffStatValueHolder mbsvh = getEffects().get(stat);
-        return mbsvh == null ? -1 : mbsvh.effect.getSourceId();
+        return mbsvh == null ? -1 : mbsvh.getEffect().getSourceId();
     }
 
     public int getItemQuantity(int itemid, boolean checkEquipped) {
@@ -1633,17 +1633,17 @@ public class MapleCharacter extends BaseMapleCharacter {
         if (mbsvh == null) {
             return;
         }
-        mbsvh.value = value;
+        mbsvh.setValue(value);
     }
 
     public Long getBuffedStarttime(MapleBuffStat effect) {
         final MapleBuffStatValueHolder mbsvh = getEffects().get(effect);
-        return mbsvh == null ? null : Long.valueOf(mbsvh.startTime);
+        return mbsvh == null ? null : Long.valueOf(mbsvh.getStartTime());
     }
 
     public MapleStatEffect getStatForBuff(MapleBuffStat effect) {
         final MapleBuffStatValueHolder mbsvh = getEffects().get(effect);
-        return mbsvh == null ? null : mbsvh.effect;
+        return mbsvh == null ? null : mbsvh.getEffect();
     }
 
     public void startMapTimeLimitTask(int time, final MapleMap to) {
@@ -1763,7 +1763,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 getEffects());
         for (Entry<MapleBuffStat, MapleBuffStatValueHolder> stateffect : allBuffs.entrySet()) {
             final MapleBuffStatValueHolder mbsvh = stateffect.getValue();
-            if (mbsvh.effect.sameSource(effect) && (startTime == -1 || startTime == mbsvh.startTime)) {
+            if (mbsvh.getEffect().sameSource(effect) && (startTime == -1 || startTime == mbsvh.getStartTime())) {
                 bstats.add(stateffect.getKey());
             }
         }
@@ -1778,7 +1778,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             if (mbsvh != null) {
                 boolean addMbsvh = true;
                 for (MapleBuffStatValueHolder contained : effectsToCancel) {
-                    if (mbsvh.startTime == contained.startTime && contained.effect == mbsvh.effect) {
+                    if (mbsvh.getStartTime() == contained.getStartTime() && contained.getEffect() == mbsvh.getEffect()) {
                         addMbsvh = false;
                         break;
                     }
@@ -1787,7 +1787,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                     effectsToCancel.add(mbsvh);
                 }
                 if (stat == MapleBuffStat.SUMMON || stat == MapleBuffStat.PUPPET || stat == MapleBuffStat.REAPER) {
-                    final int summonId = mbsvh.effect.getSourceId();
+                    final int summonId = mbsvh.getEffect().getSourceId();
                     final MapleSummon summon = summons.get(summonId);
                     if (summon != null) {
                         map.broadcastMessage(MaplePacketCreator.removeSummon(summon, true));
@@ -1807,7 +1807,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                     }
                 } else if (stat == MapleBuffStat.DRAGONBLOOD) {
                     lastDragonBloodTime = 0;
-                } else if (stat == MapleBuffStat.RECOVERY || mbsvh.effect.getSourceId() == 35121005) {
+                } else if (stat == MapleBuffStat.RECOVERY || mbsvh.getEffect().getSourceId() == 35121005) {
                     lastRecoveryTime = 0;
                 } else if (stat == MapleBuffStat.HOMING_BEACON) {
                     linkMobs.clear();
@@ -1821,9 +1821,9 @@ public class MapleCharacter extends BaseMapleCharacter {
             }
         }
         for (MapleBuffStatValueHolder cancelEffectCancelTasks : effectsToCancel) {
-            if (getBuffStats(cancelEffectCancelTasks.effect, cancelEffectCancelTasks.startTime).size() == 0) {
-                if (cancelEffectCancelTasks.schedule != null) {
-                    cancelEffectCancelTasks.schedule.cancel(false);
+            if (getBuffStats(cancelEffectCancelTasks.getEffect(), cancelEffectCancelTasks.getStartTime()).size() == 0) {
+                if (cancelEffectCancelTasks.getSchedule() != null) {
+                    cancelEffectCancelTasks.getSchedule().cancel(false);
                 }
             }
         }
@@ -1893,7 +1893,7 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public void cancelEffectFromBuffStat(MapleBuffStat stat) {
         if (getEffects().get(stat) != null) {
-            cancelEffect(getEffects().get(stat).effect, false, -1);
+            cancelEffect(getEffects().get(stat).getEffect(), false, -1);
         }
     }
 
@@ -1922,8 +1922,8 @@ public class MapleCharacter extends BaseMapleCharacter {
             final LinkedList<MapleBuffStatValueHolder> allBuffs = new LinkedList<MapleBuffStatValueHolder>(
                     getEffects().values());
             for (MapleBuffStatValueHolder mbsvh : allBuffs) {
-                if (mbsvh.effect.isSkill() && mbsvh.schedule != null && !mbsvh.effect.isMorph()) {
-                    cancelEffect(mbsvh.effect, false, mbsvh.startTime);
+                if (mbsvh.getEffect().isSkill() && mbsvh.getSchedule() != null && !mbsvh.getEffect().isMorph()) {
+                    cancelEffect(mbsvh.getEffect(), false, mbsvh.getStartTime());
                 }
             }
         }
@@ -1935,20 +1935,20 @@ public class MapleCharacter extends BaseMapleCharacter {
 
         for (MapleBuffStatValueHolder mbsvh : allBuffs) {
             if (skillid == 0) {
-                if (mbsvh.effect.isSkill()
-                        && (mbsvh.effect.getSourceId() == 4331003 || mbsvh.effect.getSourceId() == 4331002
-                        || mbsvh.effect.getSourceId() == 4341002 || mbsvh.effect.getSourceId() == 22131001
-                        || mbsvh.effect.getSourceId() == 1321007 || mbsvh.effect.getSourceId() == 2121005
-                        || mbsvh.effect.getSourceId() == 2221005 || mbsvh.effect.getSourceId() == 2311006
-                        || mbsvh.effect.getSourceId() == 2321003 || mbsvh.effect.getSourceId() == 3111002
-                        || mbsvh.effect.getSourceId() == 3111005 || mbsvh.effect.getSourceId() == 3211002
-                        || mbsvh.effect.getSourceId() == 3211005 || mbsvh.effect.getSourceId() == 4111002)) {
-                    cancelEffect(mbsvh.effect, false, mbsvh.startTime);
+                if (mbsvh.getEffect().isSkill()
+                        && (mbsvh.getEffect().getSourceId() == 4331003 || mbsvh.getEffect().getSourceId() == 4331002
+                        || mbsvh.getEffect().getSourceId() == 4341002 || mbsvh.getEffect().getSourceId() == 22131001
+                        || mbsvh.getEffect().getSourceId() == 1321007 || mbsvh.getEffect().getSourceId() == 2121005
+                        || mbsvh.getEffect().getSourceId() == 2221005 || mbsvh.getEffect().getSourceId() == 2311006
+                        || mbsvh.getEffect().getSourceId() == 2321003 || mbsvh.getEffect().getSourceId() == 3111002
+                        || mbsvh.getEffect().getSourceId() == 3111005 || mbsvh.getEffect().getSourceId() == 3211002
+                        || mbsvh.getEffect().getSourceId() == 3211005 || mbsvh.getEffect().getSourceId() == 4111002)) {
+                    cancelEffect(mbsvh.getEffect(), false, mbsvh.getStartTime());
                     break;
                 }
             } else {
-                if (mbsvh.effect.isSkill() && mbsvh.effect.getSourceId() == skillid) {
-                    cancelEffect(mbsvh.effect, false, mbsvh.startTime);
+                if (mbsvh.getEffect().isSkill() && mbsvh.getEffect().getSourceId() == skillid) {
+                    cancelEffect(mbsvh.getEffect(), false, mbsvh.getStartTime());
                     break;
                 }
             }
@@ -1960,8 +1960,8 @@ public class MapleCharacter extends BaseMapleCharacter {
                 getEffects().values());
 
         for (MapleBuffStatValueHolder mbsvh : allBuffs) {
-            if (mbsvh.effect.getSourceId() == skillid) {
-                cancelEffect(mbsvh.effect, false, mbsvh.startTime);
+            if (mbsvh.getEffect().getSourceId() == skillid) {
+                cancelEffect(mbsvh.getEffect(), false, mbsvh.getStartTime());
                 break;
             }
         }
@@ -1976,7 +1976,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 getEffects().values());
 
         for (MapleBuffStatValueHolder mbsvh : allBuffs) {
-            cancelEffect(mbsvh.effect, false, mbsvh.startTime);
+            cancelEffect(mbsvh.getEffect(), false, mbsvh.getStartTime());
         }
     }
 
@@ -1990,7 +1990,7 @@ public class MapleCharacter extends BaseMapleCharacter {
 
         boolean questBuff = false;
         for (MapleBuffStatValueHolder mbsvh : allBuffs) {
-            switch (mbsvh.effect.getSourceId()) {
+            switch (mbsvh.getEffect().getSourceId()) {
                 case 5111005:
                 case 5121003:
                 case 15111002:
@@ -2003,7 +2003,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                     questBuff = true;
                     // fall through
                 default:
-                    if (mbsvh.effect.isMorph()) {
+                    if (mbsvh.getEffect().isMorph()) {
                         if (questBuff && MapConstants.isStorylineMap(getMapId()) && !force) {
                             return;
                         }
@@ -2013,7 +2013,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                                 changeSkillLevel_Skip(skill, (byte) -1, (byte) 0);
                             }
                         }
-                        cancelEffect(mbsvh.effect, false, mbsvh.startTime);
+                        cancelEffect(mbsvh.getEffect(), false, mbsvh.getStartTime());
                         return;
                     }
             }
@@ -2023,8 +2023,8 @@ public class MapleCharacter extends BaseMapleCharacter {
     public int getMorphState() {
         LinkedList<MapleBuffStatValueHolder> allBuffs = new LinkedList<MapleBuffStatValueHolder>(getEffects().values());
         for (MapleBuffStatValueHolder mbsvh : allBuffs) {
-            if (mbsvh.effect.isMorph()) {
-                return mbsvh.effect.getSourceId();
+            if (mbsvh.getEffect().isMorph()) {
+                return mbsvh.getEffect().getSourceId();
             }
         }
         return -1;
@@ -2043,7 +2043,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         List<PlayerBuffValueHolder> ret = new ArrayList<PlayerBuffValueHolder>();
         LinkedList<MapleBuffStatValueHolder> allBuffs = new LinkedList<MapleBuffStatValueHolder>(getEffects().values());
         for (MapleBuffStatValueHolder mbsvh : allBuffs) {
-            ret.add(new PlayerBuffValueHolder(mbsvh.startTime, mbsvh.effect));
+            ret.add(new PlayerBuffValueHolder(mbsvh.getStartTime(), mbsvh.getEffect()));
         }
         return ret;
     }
@@ -2053,8 +2053,8 @@ public class MapleCharacter extends BaseMapleCharacter {
                 getEffects().values());
 
         for (MapleBuffStatValueHolder mbsvh : allBuffs) {
-            if (mbsvh.effect.isMagicDoor()) {
-                cancelEffect(mbsvh.effect, false, mbsvh.startTime);
+            if (mbsvh.getEffect().isMagicDoor()) {
+                cancelEffect(mbsvh.getEffect(), false, mbsvh.getStartTime());
                 break;
             }
         }
@@ -4077,7 +4077,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         int time;
         if (cooldowns != null) {
             for (MapleCoolDownValueHolder cooldown : cooldowns) {
-                coolDowns.put(cooldown.skillId, cooldown);
+                coolDowns.put(cooldown.getSkillId(), cooldown);
             }
         } else {
             try {
@@ -4166,7 +4166,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     public final void giveSilentDebuff(final List<MapleDiseaseValueHolder> ld) {
         if (ld != null) {
             for (final MapleDiseaseValueHolder disease : ld) {
-                diseases.put(disease.disease, disease);
+                diseases.put(disease.getDisease(), disease);
             }
         }
     }
