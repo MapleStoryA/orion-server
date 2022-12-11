@@ -22,13 +22,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package client;
 
 import database.DatabaseConnection;
-import server.config.ServerEnvironment;
 import tools.Triple;
 import tools.data.output.MaplePacketLittleEndianWriter;
 
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -72,25 +69,22 @@ public class MapleKeyLayout implements Serializable {
         if (!changed || keymap.isEmpty()) {
             return;
         }
-        try (var con = DatabaseConnection.getConnection()) {
-            con.setAutoCommit(false);
-            PreparedStatement ps = con.prepareStatement("DELETE FROM keymap WHERE characterid = ?");
+        try (var con = DatabaseConnection.getConnection();
+             var ps = con.prepareStatement("DELETE FROM keymap WHERE characterid = ?")
+        ) {
             ps.setInt(1, charid);
             ps.execute();
-            ps.close();
-
+        } catch (SQLException ex) {
+            log.error("Error while deleting existent keys", ex);
+        }
+        try (var con = DatabaseConnection.getConnection();) {
+            var ps = con.prepareStatement("DELETE FROM keymap WHERE characterid = ?");
             boolean first = true;
             StringBuilder query = new StringBuilder();
-            if (ServerEnvironment.isDebugEnabled()) {
-                // log.info("Saving key map...");
-            }
             for (Entry<Integer, Triple<Byte, Integer, Byte>> keybinding : keymap.entrySet()) {
                 int skill = keybinding.getValue().getMid().intValue();
                 if (ExcludedKeyMap.fromKeyValue(skill) != null) {
                     continue;
-                }
-                if (ServerEnvironment.isDebugEnabled()) {
-                    // log.info("Entry: " + keybinding.getValue());
                 }
                 if (first) {
                     first = false;
@@ -105,16 +99,11 @@ public class MapleKeyLayout implements Serializable {
                 query.append(skill).append(",");
                 query.append(keybinding.getValue().getRight().byteValue()).append(")");
             }
-            if (ServerEnvironment.isDebugEnabled()) {
-                // log.info(query);
-            }
             ps = con.prepareStatement(query.toString());
             ps.execute();
-            con.commit();
             ps.close();
         } catch (SQLException ex) {
-            log.info("Error while saving key " + ex.getMessage());
-            throw ex;
+            log.error("Error while deleting existent keys", ex);
         }
 
     }

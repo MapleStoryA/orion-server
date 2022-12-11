@@ -176,14 +176,6 @@ public class CharacterService {
         return 10;
     }
 
-    public static List<String> loadCharacterNames(int serverId, int accountId) {
-        List<String> chars = new LinkedList<String>();
-        for (CharNameAndId cni : loadCharactersInternal(serverId, accountId)) {
-            chars.add(cni.name);
-        }
-        return chars;
-    }
-
     public static List<CharNameAndId> loadCharactersInternal(int serverId, int accountId) {
         List<CharNameAndId> chars = new LinkedList<>();
         try (var con = DatabaseConnection.getConnection()) {
@@ -206,6 +198,7 @@ public class CharacterService {
     public static List<MapleCharacter> loadCharacters(MapleClient client, final int serverId, int accountId) {
         final List<MapleCharacter> chars = new LinkedList<>();
         final List<Integer> allowedChar = new LinkedList<>();
+
         for (final CharNameAndId cni : loadCharactersInternal(serverId, accountId)) {
             final MapleCharacter chr = MapleCharacter.loadCharFromDB(cni.id, client, false);
             chars.add(chr);

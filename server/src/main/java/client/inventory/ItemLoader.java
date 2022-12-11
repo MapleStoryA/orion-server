@@ -24,7 +24,7 @@ package client.inventory;
 
 import constants.GameConstants;
 import database.DatabaseConnection;
-import server.MerchItemPackage;
+import lombok.extern.slf4j.Slf4j;
 import tools.Pair;
 
 import java.sql.Connection;
@@ -32,13 +32,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public enum ItemLoader {
 
     INVENTORY("inventoryitems", "inventoryequipment", 0, "characterid"),
@@ -62,42 +62,6 @@ public enum ItemLoader {
         this.arg = Arrays.asList(arg);
     }
 
-    private static MerchItemPackage loadItemFrom_Database(final int accountid) {
-        try (var con = DatabaseConnection.getConnection()) {
-            ResultSet rs;
-
-            final int packageid;
-            final MerchItemPackage pack;
-            try (PreparedStatement ps = con.prepareStatement("SELECT * from hiredmerch where accountid = ?")) {
-                ps.setInt(1, accountid);
-                rs = ps.executeQuery();
-                if (!rs.next()) {
-                    ps.close();
-                    rs.close();
-                    return null;
-                }
-                packageid = rs.getInt("PackageId");
-                pack = new MerchItemPackage();
-                pack.setPackageid(packageid);
-                pack.setMesos(rs.getInt("Mesos"));
-                pack.setSentTime(rs.getLong("time"));
-            }
-            rs.close();
-
-            Map<Integer, Pair<IItem, MapleInventoryType>> items = ItemLoader.HIRED_MERCHANT.loadItems(false, packageid);
-            if (items != null) {
-                List<IItem> iters = new ArrayList<>();
-                for (Pair<IItem, MapleInventoryType> z : items.values()) {
-                    iters.add(z.left);
-                }
-                pack.setItems(iters);
-            }
-
-            return pack;
-        } catch (SQLException e) {
-            return null;
-        }
-    }
 
     public int getValue() {
         return value;
@@ -214,6 +178,8 @@ public enum ItemLoader {
     public void saveItems(List<Pair<IItem, MapleInventoryType>> items, Integer... id) throws SQLException {
         try (Connection con = DatabaseConnection.getConnection();) {
             saveItems(items, con, id);
+        } catch (SQLException ex) {
+            log.error("Error while saving items", ex);
         }
     }
 
