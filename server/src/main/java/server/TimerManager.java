@@ -96,33 +96,8 @@ public class TimerManager implements TimerManagerMBean {
     }
 
     @Override
-    public long getActiveCount() {
-        return ses.getActiveCount();
-    }
-
-    @Override
-    public long getCompletedTaskCount() {
-        return ses.getCompletedTaskCount();
-    }
-
-    @Override
-    public int getQueuedTasks() {
-        return ses.getQueue().toArray().length;
-    }
-
-    @Override
-    public long getTaskCount() {
-        return ses.getTaskCount();
-    }
-
-    @Override
     public boolean isShutdown() {
         return ses.isShutdown();
-    }
-
-    @Override
-    public boolean isTerminated() {
-        return ses.isTerminated();
     }
 
 

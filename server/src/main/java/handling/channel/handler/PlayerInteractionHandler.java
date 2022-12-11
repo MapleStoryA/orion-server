@@ -18,7 +18,6 @@ import server.shops.IMaplePlayerShop;
 import server.shops.MapleMiniGame;
 import server.shops.MaplePlayerShop;
 import server.shops.MaplePlayerShopItem;
-import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.PlayerShopPacket;
@@ -434,9 +433,9 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     c.enableActions();
                     return;
                 }
-                long check = tobuy.bundles * quantity;
-                long check2 = (long) tobuy.price * quantity;
-                long check3 = tobuy.item.getQuantity() * quantity;
+                long check = tobuy.getBundles() * quantity;
+                long check2 = (long) tobuy.getPrice() * quantity;
+                long check3 = tobuy.getItem().getQuantity() * quantity;
                 long mesosToHold = shop.getMesos() + check2;
                 if (check > 32767 || check <= 0 || check2 > Integer.MAX_VALUE || check2 <= 0 || check3 > Integer.MAX_VALUE
                         || check3 <= 0) { // This is the better way to check.
@@ -448,8 +447,8 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     c.enableActions();
                     return;
                 }
-                if (quantity <= 0 || tobuy.bundles < quantity
-                        || (tobuy.bundles % quantity != 0 && GameConstants.isEquip(tobuy.item.getItemId())) // Buying
+                if (quantity <= 0 || tobuy.getBundles() < quantity
+                        || (tobuy.getBundles() % quantity != 0 && GameConstants.isEquip(tobuy.getItem().getItemId())) // Buying
                         || (shop.getMesos() + check2) < 0) {
                     c.enableActions();
                     return;
@@ -459,10 +458,10 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     c.enableActions();
                     return;
                 }
-                if (quantity >= 50 && GameConstants.isUpgradeScroll(tobuy.item.getItemId())) {
+                if (quantity >= 50 && GameConstants.isUpgradeScroll(tobuy.getItem().getItemId())) {
                     final String file = chr.getName();
                     final String msg = "[BUY_ITEM_PLAYER_SHOP / BUY_ITEM_STORE | BUY_ITEM_HIREDMERCHANT] Placed " + quantity + " of "
-                            + tobuy.item.getItemId();
+                            + tobuy.getItem().getItemId();
                     log.info(file + " : " + msg);
                 }
                 shop.buy(c, item, quantity);
@@ -482,10 +481,10 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     return;
                 }
                 if (item != null) {
-                    if (item.bundles > 0) {
-                        IItem item_get = item.item.copy();
-                        long check = item.bundles * item.item.getQuantity();
-                        if (item.bundles < 0 || item.item.getQuantity() < 0) {
+                    if (item.getBundles() > 0) {
+                        IItem item_get = item.getItem().copy();
+                        long check = item.getBundles() * item.getItem().getQuantity();
+                        if (item.getBundles() < 0 || item.getItem().getQuantity() < 0) {
                             return;
                         }
                         if (check <= 0 || check > 32767) {
@@ -493,15 +492,15 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                             return;
                         }
                         item_get.setQuantity((short) check);
-                        if (item_get.getQuantity() >= 50 && GameConstants.isUpgradeScroll(item.item.getItemId())) {
+                        if (item_get.getQuantity() >= 50 && GameConstants.isUpgradeScroll(item.getItem().getItemId())) {
                             final String file = chr.getName();
-                            final String msg = "[REMOVE_ITEM] Removed " + item_get.getQuantity() + " of " + item.item.getItemId();
+                            final String msg = "[REMOVE_ITEM] Removed " + item_get.getQuantity() + " of " + item.getItem().getItemId();
                             log.info(file + " : " + msg);
                         }
                         if (MapleInventoryManipulator.checkSpace(c, item_get.getItemId(), item_get.getQuantity(),
                                 item_get.getOwner())) {
                             MapleInventoryManipulator.addFromDrop(c, item_get, false);
-                            item.bundles = 0;
+                            item.setBundles((short)0);
                             shop.removeFromSlot(slot);
                         }
                     }
@@ -522,7 +521,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                 if (imps != null && imps.isOwner(chr) && !(imps instanceof MapleMiniGame)) {
                     for (Iterator<MaplePlayerShopItem> iterator = imps.getItems().iterator(); iterator.hasNext(); ) {
                         MaplePlayerShopItem myItem = iterator.next();
-                        if (myItem.bundles == 0) {
+                        if (myItem.getBundles() == 0) {
                             iterator.remove();
                         }
                     }

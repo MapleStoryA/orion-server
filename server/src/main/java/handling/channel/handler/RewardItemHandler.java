@@ -39,26 +39,26 @@ public class RewardItemHandler extends AbstractMaplePacketHandler {
                     boolean rewarded = false;
                     while (!rewarded) {
                         for (StructRewardItem reward : rewards.getRight()) {
-                            if (reward.prob > 0 && Randomizer.nextInt(rewards.getLeft()) < reward.prob) { // Total
+                            if (reward.getProb() > 0 && Randomizer.nextInt(rewards.getLeft()) < reward.getProb()) { // Total
                                 // prob
-                                if (GameConstants.getInventoryType(reward.itemid) == MapleInventoryType.EQUIP) {
-                                    final IItem item = ii.getEquipById(reward.itemid);
-                                    if (reward.period > 0) {
-                                        item.setExpiration(System.currentTimeMillis() + (reward.period * 60 * 60 * 10));
+                                if (GameConstants.getInventoryType(reward.getItemId()) == MapleInventoryType.EQUIP) {
+                                    final IItem item = ii.getEquipById(reward.getItemId());
+                                    if (reward.getPeriod() > 0) {
+                                        item.setExpiration(System.currentTimeMillis() + (reward.getPeriod() * 60 * 60 * 10));
                                     }
                                     MapleInventoryManipulator.addbyItem(c, item);
                                 } else {
-                                    MapleInventoryManipulator.addById(c, reward.itemid, reward.quantity, "Reward item: " + itemId + " on " + DateHelper.getCurrentReadableDate());
+                                    MapleInventoryManipulator.addById(c, reward.getItemId(), reward.getQuantity(), "Reward item: " + itemId + " on " + DateHelper.getCurrentReadableDate());
                                 }
                                 MapleInventoryManipulator.removeById(c, GameConstants.getInventoryType(itemId), itemId,
                                         1, false, false);
 
                                 c.getSession().write(
-                                        MaplePacketCreator.showRewardItemAnimation(reward.itemid, reward.effect));
+                                        MaplePacketCreator.showRewardItemAnimation(reward.getItemId(), reward.getEffect()));
                                 chr.getMap().broadcastMessage(chr, MaplePacketCreator
-                                        .showRewardItemAnimation(reward.itemid, reward.effect, chr.getId()), false);
+                                        .showRewardItemAnimation(reward.getItemId(), reward.getEffect(), chr.getId()), false);
                                 c.getSession()
-                                        .write(MaplePacketCreator.getShowItemGain(reward.itemid, (short) 1, true));
+                                        .write(MaplePacketCreator.getShowItemGain(reward.getItemId(), (short) 1, true));
                                 rewarded = true;
                             }
                         }

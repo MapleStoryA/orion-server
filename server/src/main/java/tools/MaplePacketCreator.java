@@ -4330,14 +4330,14 @@ public class MaplePacketCreator {
                 mplew.writeMapleAsciiString(hm.getOwnerName());
                 mplew.writeInt(hm.getMap().getId());
                 mplew.writeMapleAsciiString(hm.getDescription());
-                mplew.writeInt(item.item.getQuantity()); // I THINK.
-                mplew.writeInt(item.bundles); // I THINK.
-                mplew.writeInt(item.price);
+                mplew.writeInt(item.getItem().getQuantity()); // I THINK.
+                mplew.writeInt(item.getBundles()); // I THINK.
+                mplew.writeInt(item.getPrice());
                 mplew.writeInt(hm.getOwnerId());
                 mplew.write(hm.getFreeSlot() == -1 ? 1 : 0);
-                if (item.item.getItemId() / 1000000 == 1) {
+                if (item.getItem().getItemId() / 1000000 == 1) {
                     mplew.write(1);
-                    PacketHelper.addItemInfo(mplew, item.item, true, true);
+                    PacketHelper.addItemInfo(mplew, item.getItem(), true, true);
                 } else {
                     mplew.write(2);
                 }

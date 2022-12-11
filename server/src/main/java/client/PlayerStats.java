@@ -391,55 +391,55 @@ public class PlayerStats implements Serializable {
                     if (i > 0) {
                         pot = ii.getPotentialInfo(i).get(ii.getReqLevel(equip.getItemId()) / 10);
                         if (pot != null) {
-                            localstr += pot.incSTR;
-                            localdex += pot.incDEX;
-                            localint_ += pot.incINT;
-                            localluk += pot.incLUK;
-                            localmaxhp += pot.incMHP;
-                            localmaxmp += pot.incMMP;
-                            watk += pot.incPAD;
-                            magic += pot.incINT + pot.incMAD;
-                            speed += pot.incSpeed;
-                            jump += pot.incJump;
-                            accuracy += pot.incACC;
-                            incAllskill += pot.incAllskill;
-                            percent_hp += pot.incMHPr;
-                            percent_mp += pot.incMMPr;
-                            percent_str += pot.incSTRr;
-                            percent_dex += pot.incDEXr;
-                            percent_int += pot.incINTr;
-                            percent_luk += pot.incLUKr;
-                            percent_acc += pot.incACCr;
-                            percent_atk += pot.incPADr;
-                            percent_matk += pot.incMADr;
-                            added_sharpeye_rate += pot.incCr;
-                            added_sharpeye_dmg += pot.incCr;
-                            if (!pot.boss) {
-                                dam_r = Math.max(pot.incDAMr, dam_r);
+                            localstr += pot.getIncSTR();
+                            localdex += pot.getIncDEX();
+                            localint_ += pot.getIncINT();
+                            localluk += pot.getIncLUK();
+                            localmaxhp += pot.getIncMHP();
+                            localmaxmp += pot.getIncMMP();
+                            watk += pot.getIncPAD();
+                            magic += pot.getIncINT() + pot.getIncMAD();
+                            speed += pot.getIncSpeed();
+                            jump += pot.getIncJump();
+                            accuracy += pot.getIncACC();
+                            incAllskill += pot.getIncAllskill();
+                            percent_hp += pot.getIncMHPr();
+                            percent_mp += pot.getIncMMPr();
+                            percent_str += pot.getIncSTRr();
+                            percent_dex += pot.getIncDEXr();
+                            percent_int += pot.getIncINTr();
+                            percent_luk += pot.getIncLUKr();
+                            percent_acc += pot.getIncACCr();
+                            percent_atk += pot.getIncPADr();
+                            percent_matk += pot.getIncMADr();
+                            added_sharpeye_rate += pot.getIncCr();
+                            added_sharpeye_dmg += pot.getIncCr();
+                            if (!pot.isBoss()) {
+                                dam_r = Math.max(pot.getIncDAMr(), dam_r);
                             } else {
-                                bossdam_r = Math.max(pot.incDAMr, bossdam_r); //SET, not add
+                                bossdam_r = Math.max(pot.getIncDAMr(), bossdam_r); //SET, not add
                             }
-                            recoverHP += pot.RecoveryHP;
-                            recoverMP += pot.RecoveryMP;
-                            RecoveryUP += pot.RecoveryUP;
-                            if (pot.HP > 0) {
-                                hpRecover += pot.HP;
-                                hpRecoverProp += pot.prop;
+                            recoverHP += pot.getRecoveryHP();
+                            recoverMP += pot.getRecoveryMP();
+                            RecoveryUP += pot.getRecoveryUP();
+                            if (pot.getHP() > 0) {
+                                hpRecover += pot.getHP();
+                                hpRecoverProp += pot.getProp();
                             }
-                            if (pot.MP > 0) {
-                                mpRecover += pot.MP;
-                                mpRecoverProp += pot.prop;
+                            if (pot.getMP() > 0) {
+                                mpRecover += pot.getMP();
+                                mpRecoverProp += pot.getProp();
                             }
-                            mpconReduce += pot.mpconReduce;
-                            incMesoProp += pot.incMesoProp;
-                            incRewardProp += pot.incRewardProp;
-                            if (pot.DAMreflect > 0) {
-                                DAMreflect += pot.DAMreflect;
-                                DAMreflect_rate += pot.prop;
+                            mpconReduce += pot.getMpconReduce();
+                            incMesoProp += pot.getIncMesoProp();
+                            incRewardProp += pot.getIncRewardProp();
+                            if (pot.getDAMreflect() > 0) {
+                                DAMreflect += pot.getDAMreflect();
+                                DAMreflect_rate += pot.getProp();
                             }
-                            mpRestore += pot.mpRestore;
-                            if (!first_login && pot.skillID > 0) {
-                                chra.changeSkillLevel_Skip(SkillFactory.getSkill(GameConstants.getSkillByJob(pot.skillID, chra.getJob().getId())), (byte) 1, (byte) 1);
+                            mpRestore += pot.getMpRestore();
+                            if (!first_login && pot.getSkillID() > 0) {
+                                chra.changeSkillLevel_Skip(SkillFactory.getSkill(GameConstants.getSkillByJob(pot.getSkillID(), chra.getJob().getId())), (byte) 1, (byte) 1);
                             }
                         }
                     }

@@ -39,11 +39,11 @@ public class MapleMiniGame extends AbstractPlayerStore {
     private final boolean[] exitAfter;
     private final boolean[] ready;
     private final int[] points;
-    private final List<Integer> matchcards = new ArrayList<Integer>();
+    private final List<Integer> matchCards = new ArrayList<Integer>();
     int loser = 0;
     int turn = 1;
-    int piecetype = 0;
-    int firstslot = 0;
+    int pieceType = 0;
+    int firstSlot = 0;
     int tie = -1;
     private int GameType = 0;
     private int[][] piece = new int[15][15];
@@ -66,11 +66,11 @@ public class MapleMiniGame extends AbstractPlayerStore {
     }
 
     public int getFirstSlot() {
-        return firstslot;
+        return firstSlot;
     }
 
     public void setFirstSlot(int type) {
-        firstslot = type;
+        firstSlot = type;
     }
 
     public int getPoints() {
@@ -113,33 +113,33 @@ public class MapleMiniGame extends AbstractPlayerStore {
     }
 
     public int getPieceType() {
-        return piecetype;
+        return pieceType;
     }
 
     public void setPieceType(int type) {
-        piecetype = type;
+        pieceType = type;
     }
 
     public void setGameType() {
         if (GameType == 2) { //omok = 1
-            matchcards.clear();
+            matchCards.clear();
             for (int i = 0; i < getMatchesToWin(); i++) {
-                matchcards.add(i);
-                matchcards.add(i);
+                matchCards.add(i);
+                matchCards.add(i);
             }
         }
     }
 
     public void shuffleList() {
         if (GameType == 2) {
-            Collections.shuffle(matchcards);
+            Collections.shuffle(matchCards);
         } else {
             piece = new int[15][15];
         }
     }
 
     public int getCardId(int slot) {
-        return matchcards.get(slot - 1);
+        return matchCards.get(slot - 1);
     }
 
     public int getMatchesToWin() {
