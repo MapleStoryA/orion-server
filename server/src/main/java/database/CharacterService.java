@@ -199,8 +199,6 @@ public class CharacterService {
         final List<MapleCharacter> chars = new LinkedList<>();
         final List<Integer> allowedChar = new LinkedList<>();
 
-        var characterData = LoginService.loadCharacterData(serverId, accountId);
-
         for (final CharNameAndId cni : loadCharactersInternal(serverId, accountId)) {
             final MapleCharacter chr = MapleCharacter.loadCharFromDB(cni.id, client, false);
             chars.add(chr);

@@ -4086,7 +4086,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 deleteWhereCharacterId(con, "DELETE FROM skills_cooldowns WHERE charid = ?");
 
             } catch (SQLException e) {
-                log.error(e);
+                log.error("Error on giveCoolDowns", e);
             }
         }
     }
