@@ -36,7 +36,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -67,7 +66,6 @@ public class MapleClient extends BaseMapleClient {
     @Getter
     @Setter
     private long lastNPCTalk;
-    private ScheduledFuture<?> idleTask = null;
 
 
     public MapleClient(byte[] ivSend, byte[] ivRecv, NetworkSession session) {
@@ -167,11 +165,11 @@ public class MapleClient extends BaseMapleClient {
         }
     }
 
-    public final void disconnect(final boolean RemoveInChannelServer, final boolean fromCS) {
-        disconnect(RemoveInChannelServer, fromCS, false);
+    public final void disconnect(final boolean removeFromChannel, final boolean fromCS) {
+        disconnect(removeFromChannel, fromCS, false);
     }
 
-    public final void disconnect(final boolean RemoveInChannelServer, final boolean fromCS, final boolean shutdown) {
+    public final void disconnect(final boolean removeFromChannel, final boolean fromCS, final boolean shutdown) {
         if (player != null && isLoggedIn()) {
             MapleMap map = player.getMap();
             final MapleParty party = player.getParty();
@@ -247,7 +245,7 @@ public class MapleClient extends BaseMapleClient {
                     log.info("Log_AccountStuck.rtf", e);
                     setNotLoggedIn();
                 } finally {
-                    if (RemoveInChannelServer && ch != null) {
+                    if (removeFromChannel && ch != null) {
                         ch.removePlayer(id, name);
                     }
                     player = null;
@@ -255,7 +253,7 @@ public class MapleClient extends BaseMapleClient {
             } else {
                 final int ch = FindCommand.findChannel(id);
                 if (ch > 0) {
-                    disconnect(RemoveInChannelServer, false);
+                    disconnect(removeFromChannel, false);
                     return;
                 }
                 try {
@@ -278,7 +276,7 @@ public class MapleClient extends BaseMapleClient {
                     e.printStackTrace();
                     log.info("Log_AccountStuck.rtf", e);
                 } finally {
-                    if (RemoveInChannelServer && ch > 0) {
+                    if (removeFromChannel && ch > 0) {
                         CashShopServer.getInstance().getPlayerStorage().deregisterPlayer(id, name);
                     }
                     player = null;
@@ -330,14 +328,6 @@ public class MapleClient extends BaseMapleClient {
 
     public final void removeScriptEngine(final String name) {
         engines.remove(name);
-    }
-
-    public final ScheduledFuture<?> getIdleTask() {
-        return idleTask;
-    }
-
-    public final void setIdleTask(final ScheduledFuture<?> idleTask) {
-        this.idleTask = idleTask;
     }
 
     public int getCharacterSlots() {

@@ -8,6 +8,8 @@ import tools.MapleAESOFB;
 import tools.MaplePacketCreator;
 import tools.packet.LoginPacket;
 
+import java.util.concurrent.ScheduledFuture;
+
 public class BaseMapleClient {
     public static final String CLIENT_KEY = "CLIENT";
 
@@ -18,6 +20,7 @@ public class BaseMapleClient {
     private long lastPong = 0;
     @Getter
     private short loginAttempt = 0;
+    private ScheduledFuture<?> idleTask = null;
 
     public BaseMapleClient(MapleAESOFB send, MapleAESOFB receive, NetworkSession session) {
         this.send = send;
@@ -77,4 +80,11 @@ public class BaseMapleClient {
         return session.getRemoteAddress().toString().split(":")[0];
     }
 
+    public final ScheduledFuture<?> getIdleTask() {
+        return idleTask;
+    }
+
+    public final void setIdleTask(final ScheduledFuture<?> idleTask) {
+        this.idleTask = idleTask;
+    }
 }

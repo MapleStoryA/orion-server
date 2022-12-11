@@ -40,6 +40,7 @@ import client.skill.ISkill;
 import client.skill.SkillEntry;
 import client.skill.SkillFactory;
 import client.skill.SkillMacro;
+import constants.FameStatus;
 import constants.GameConstants;
 import constants.JobConstants;
 import constants.MapConstants;
@@ -4199,7 +4200,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public void sendNote(String to, String msg, int fame) {
-        MapleCharacterUtil.sendNote(to, getName(), msg, fame);
+        MapleCharacterHelper.sendNote(to, getName(), msg, fame);
     }
 
     public void showNote() {

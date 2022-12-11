@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package handling.channel;
 
 import client.MapleCharacter;
-import client.MapleCharacterUtil;
+import client.MapleCharacterHelper;
 import handling.world.helper.CharacterTransfer;
 import handling.world.helper.CheaterData;
 import handling.world.helper.FindCommand;
@@ -164,7 +164,7 @@ public class PlayerStorage {
                 chr = itr.next();
 
                 if (chr.getCheatTracker().getPoints() > 0) {
-                    cheaters.add(new CheaterData(chr.getCheatTracker().getPoints(), MapleCharacterUtil.makeMapleReadable(chr.getName()) + " (" + chr.getCheatTracker().getPoints() + ") " + chr.getCheatTracker().getSummary()));
+                    cheaters.add(new CheaterData(chr.getCheatTracker().getPoints(), MapleCharacterHelper.makeMapleReadable(chr.getName()) + " (" + chr.getCheatTracker().getPoints() + ") " + chr.getCheatTracker().getSummary()));
                 }
             }
         } finally {
@@ -184,7 +184,7 @@ public class PlayerStorage {
                 chr = itr.next();
 
                 if (chr.getReportPoints() > 0) {
-                    cheaters.add(new CheaterData(chr.getReportPoints(), MapleCharacterUtil.makeMapleReadable(chr.getName()) + " (" + chr.getReportPoints() + ") " + chr.getReportSummary()));
+                    cheaters.add(new CheaterData(chr.getReportPoints(), MapleCharacterHelper.makeMapleReadable(chr.getName()) + " (" + chr.getReportPoints() + ") " + chr.getReportSummary()));
                 }
             }
         } finally {
@@ -225,7 +225,7 @@ public class PlayerStorage {
             try {
                 final Iterator<MapleCharacter> itr = nameToChar.values().iterator();
                 while (itr.hasNext()) {
-                    sb.append(MapleCharacterUtil.makeMapleReadable(itr.next().getName()));
+                    sb.append(MapleCharacterHelper.makeMapleReadable(itr.next().getName()));
                     sb.append(", ");
                 }
             } finally {
@@ -240,7 +240,7 @@ public class PlayerStorage {
                     chr = itr.next();
 
                     if (!chr.isGameMaster()) {
-                        sb.append(MapleCharacterUtil.makeMapleReadable(chr.getName()));
+                        sb.append(MapleCharacterHelper.makeMapleReadable(chr.getName()));
                         sb.append(", ");
                     }
                 }
