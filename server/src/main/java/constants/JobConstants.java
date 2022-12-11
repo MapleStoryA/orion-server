@@ -18,13 +18,12 @@
 
 package constants;
 
-import client.skill.ISkill;
 import client.MapleJob;
+import client.skill.ISkill;
 import client.skill.SkillEntry;
 import client.skill.SkillFactory;
 import database.DatabaseConnection;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -82,8 +81,7 @@ public class JobConstants {
 
     public static void loadAllSkills() {
         ISkill skil;
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             try (PreparedStatement ps = con.prepareStatement("SELECT skillid, skilllevel, masterlevel FROM wz_fixedskills"); ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     skil = SkillFactory.getSkill(rs.getInt("skillid"));

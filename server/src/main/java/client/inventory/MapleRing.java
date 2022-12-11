@@ -57,8 +57,7 @@ public class MapleRing implements Serializable {
     }
 
     public static MapleRing loadFromDb(int ringId, boolean equipped) {
-        try {
-            Connection con = DatabaseConnection.getConnection(); // Get a connection to the database
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM rings WHERE ringId = ?"); // Get details..
             ps.setInt(1, ringId);
 
@@ -98,6 +97,7 @@ public class MapleRing implements Serializable {
         ps.setInt(5, ringId[0]);
         ps.executeUpdate();
         ps.close();
+        con.close();
     }
 
     public static int createRing(int itemid, MapleCharacter partner1, String partner2, String msg, int id2, int sn) {
@@ -139,8 +139,7 @@ public class MapleRing implements Serializable {
     }
 
     public static void removeRingFromDb(MapleCharacter player) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM rings WHERE partnerChrId = ?");
             ps.setInt(1, player.getId());
             ResultSet rs = ps.executeQuery();

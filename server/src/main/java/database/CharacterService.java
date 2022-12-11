@@ -38,9 +38,8 @@ public class CharacterService {
     }
 
     public static void saveAchievement(FinishedAchievements finishedAchievements, int account_id, int characterId) {
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
             if (finishedAchievements.isChanged()) {
-                Connection con = DatabaseConnection.getConnection();
                 var ps = con.prepareStatement("DELETE FROM achievements WHERE accountid = ?");
                 ps.setInt(1, account_id);
                 ps.executeUpdate();
@@ -60,8 +59,7 @@ public class CharacterService {
     }
 
     public static void saveSkillMacro(SavedSkillMacro savedSkillMacro, int characterId) {
-        Connection con = DatabaseConnection.getConnection();
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
             deleteWhereCharacterId(con, "DELETE FROM skillmacros WHERE characterid = ?", characterId);
             for (int i = 0; i < 5; i++) {
                 final SkillMacro macro = savedSkillMacro.getSkillMacros()[i];
@@ -88,8 +86,7 @@ public class CharacterService {
         EvanSkillPoints sp = new EvanSkillPoints();
         ResultSet rs = null;
         PreparedStatement ps = null;
-        Connection con = DatabaseConnection.getConnection();
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
             ps = con.prepareStatement("SELECT * FROM evan_skillpoints WHERE characterid = ?");
             ps.setInt(1, id);
             rs = ps.executeQuery();
@@ -114,8 +111,7 @@ public class CharacterService {
     }
 
     public static void unban(int accId) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("UPDATE accounts SET banned = 0 and banreason = '' WHERE id = ?");
             ps.setInt(1, accId);
             ps.executeUpdate();
@@ -126,8 +122,7 @@ public class CharacterService {
     }
 
     public static int deleteCharacter(final int cid, int accId) {
-        try {
-            final Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT guildid, guildrank, name FROM characters WHERE id = ? AND accountid = ?");
             ps.setInt(1, cid);
             ps.setInt(2, accId);
@@ -191,8 +186,7 @@ public class CharacterService {
 
     public static List<CharNameAndId> loadCharactersInternal(int serverId, int accountId) {
         List<CharNameAndId> chars = new LinkedList<>();
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT id, name FROM characters WHERE accountid = ? AND world = ?");
             ps.setInt(1, accountId);
             ps.setInt(2, serverId);
@@ -226,8 +220,7 @@ public class CharacterService {
 
     public static void saveLocation(SavedLocations savedLocations, int id) {
         if (savedLocations.isChanged()) {
-            try {
-                var con = DatabaseConnection.getConnection();
+            try (var con = DatabaseConnection.getConnection()) {
                 deleteWhereCharacterId(con, "DELETE FROM savedlocations WHERE characterid = ?", id);
                 var ps = con.prepareStatement("INSERT INTO savedlocations (characterid, `locationtype`, `map`) VALUES (?, ?, ?)");
                 ps.setInt(1, id);

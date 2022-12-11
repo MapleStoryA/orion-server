@@ -571,9 +571,9 @@ public class MapleCharacter extends BaseMapleCharacter {
         PreparedStatement ps = null;
         PreparedStatement pse = null;
         ResultSet rs = null;
-
+        var con = DatabaseConnection.getConnection();
         try {
-            Connection con = DatabaseConnection.getConnection();
+
             ps = con.prepareStatement("SELECT * FROM characters WHERE id = ?");
             ps.setInt(1, charid);
             rs = ps.executeQuery();
@@ -950,6 +950,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 if (rs != null) {
                     rs.close();
                 }
+                con.close();
             } catch (SQLException ignore) {
             }
         }
@@ -1124,6 +1125,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 }
                 con.setAutoCommit(true);
                 con.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+                con.close();
             } catch (SQLException e) {
                 e.printStackTrace();
                 System.err.println("[charsave] Error going back to autocommit mode");
@@ -1132,8 +1134,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public static boolean ban(String id, String reason, boolean accountId, int gmlevel, boolean hellban) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection();) {
             PreparedStatement ps;
             if (id.matches("/[0-9]{1,3}\\..*")) {
                 ps = con.prepareStatement("INSERT INTO ipbans VALUES (DEFAULT, ?)");
@@ -1207,7 +1208,7 @@ public class MapleCharacter extends BaseMapleCharacter {
 
 
     public void saveToDB(boolean dc, boolean fromcs) {
-        Connection con = null;
+        var con = DatabaseConnection.getConnection();
         PreparedStatement ps = null;
         PreparedStatement pse = null;
         ResultSet rs = null;
@@ -1216,7 +1217,6 @@ public class MapleCharacter extends BaseMapleCharacter {
             petPosition += pet.getInventoryPosition() + ";";
         }
         try {
-            con = DatabaseConnection.getConnection();
             con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
             con.setAutoCommit(false);
             ps = con.prepareStatement(
@@ -1448,6 +1448,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 }
                 con.setAutoCommit(true);
                 con.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+                con.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -3509,8 +3510,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public void tempban(String reason, Calendar duration, int greason, boolean IPMac) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("INSERT INTO ipbans VALUES (DEFAULT, ?)");
             ps.setString(1, client.getSession().getRemoteAddress().toString().split(":")[0]);
             ps.execute();
@@ -3527,7 +3527,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             ps.execute();
             ps.close();
         } catch (SQLException ex) {
-            System.err.println("Error while tempbanning" + ex);
+            log.error("Error while tempbanning", ex);
         }
 
     }
@@ -3536,8 +3536,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         if (lastMonthFameIds == null) {
             throw new RuntimeException("Trying to ban a non-loaded character (testhack)");
         }
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("UPDATE accounts SET banned = ?, banreason = ? WHERE id = ?");
             ps.setInt(1, autoban ? 2 : 1);
             ps.setString(2, reason);
@@ -3797,8 +3796,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     public void hasGivenFame(MapleCharacter to) {
         lastFameTime = System.currentTimeMillis();
         lastMonthFameIds.add(Integer.valueOf(to.getId()));
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con
                     .prepareStatement("INSERT INTO famelog (characterid, characterid_to) VALUES (?, ?)");
             ps.setInt(1, getId());
@@ -4081,8 +4079,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 coolDowns.put(cooldown.getSkillId(), cooldown);
             }
         } else {
-            try {
-                Connection con = DatabaseConnection.getConnection();
+            try (var con = DatabaseConnection.getConnection()) {
                 PreparedStatement ps = con
                         .prepareStatement("SELECT SkillID,StartTime,length FROM skills_cooldowns WHERE charid = ?");
                 ps.setInt(1, getId());
@@ -4204,8 +4201,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public void showNote() {
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM notes WHERE `to`=?",
                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ps.setString(1, getName());
@@ -4222,8 +4218,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public void deleteNote(int id, int fame) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT gift FROM notes WHERE `id`=?");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();

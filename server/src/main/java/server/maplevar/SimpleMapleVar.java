@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,9 +28,8 @@ public class SimpleMapleVar implements MapleVar {
 
     @Override
     public void set(String key, String value) {
-        Connection con = DatabaseConnection.getConnection();
         if (get(key) != null) {
-            try {
+            try (var con = DatabaseConnection.getConnection()) {
                 PreparedStatement ps = con.prepareStatement(UPDATE);
                 ps.setString(1, value);
                 ps.setString(2, key);
@@ -43,7 +41,7 @@ public class SimpleMapleVar implements MapleVar {
                 return;
             }
         }
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement(INSERT);
             ps.setInt(1, player.getId());
             ps.setString(2, key);
@@ -57,8 +55,7 @@ public class SimpleMapleVar implements MapleVar {
 
     @Override
     public String get(String key) {
-        Connection con = DatabaseConnection.getConnection();
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement st = con.prepareStatement(SELECT);
             st.setInt(1, player.getId());
             st.setString(2, key);

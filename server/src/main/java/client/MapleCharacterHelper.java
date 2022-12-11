@@ -71,8 +71,7 @@ public class MapleCharacterHelper {
     }
 
     public static final int getIdByName(final String name) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT id FROM characters WHERE name = ?");
             ps.setString(1, name);
             final ResultSet rs = ps.executeQuery();
@@ -95,9 +94,7 @@ public class MapleCharacterHelper {
 
     //id accountid gender
     public static Triple<Integer, Integer, Integer> getInfoByName(String name, int world) {
-        try {
-
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM characters WHERE name = ? AND world = ?");
             ps.setString(1, name);
             ps.setInt(2, world);
@@ -118,8 +115,7 @@ public class MapleCharacterHelper {
     }
 
     public static void sendNote(String to, String name, String msg, int fame) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("INSERT INTO notes (`to`, `from`, `message`, `timestamp`, `gift`) VALUES (?, ?, ?, ?, ?)");
             ps.setString(1, to);
             ps.setString(2, name);

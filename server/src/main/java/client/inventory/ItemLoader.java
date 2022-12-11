@@ -63,9 +63,7 @@ public enum ItemLoader {
     }
 
     private static MerchItemPackage loadItemFrom_Database(final int accountid) {
-        final Connection con = DatabaseConnection.getConnection();
-
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
             ResultSet rs;
 
             final int packageid;
@@ -129,7 +127,8 @@ public enum ItemLoader {
             query.append(MapleInventoryType.EQUIPPED.getType());
         }
 
-        PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query.toString());
+        Connection con = DatabaseConnection.getConnection();
+        PreparedStatement ps = con.prepareStatement(query.toString());
         ps.setInt(1, value);
         for (int i = 0; i < lulz.size(); i++) {
             ps.setInt(i + 2, lulz.get(i));
@@ -208,12 +207,14 @@ public enum ItemLoader {
 
         rs.close();
         ps.close();
+        con.close();
         return items;
     }
 
     public void saveItems(List<Pair<IItem, MapleInventoryType>> items, Integer... id) throws SQLException {
-        final Connection con = DatabaseConnection.getConnection();
-        saveItems(items, con, id);
+        try (Connection con = DatabaseConnection.getConnection();) {
+            saveItems(items, con, id);
+        }
     }
 
     public void saveItems(List<Pair<IItem, MapleInventoryType>> items, final Connection con, Integer... id) throws SQLException {

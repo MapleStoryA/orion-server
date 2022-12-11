@@ -18,19 +18,12 @@
 
 package database;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import server.config.ServerConfig;
-import tools.LockableList;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @lombok.extern.slf4j.Slf4j
 public class DatabaseConnection {
@@ -41,10 +34,11 @@ public class DatabaseConnection {
 
     public static Connection getConnection() {
         try {
+            StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+            log.info(stackTraceElements[2].toString());
             return pool.getConnection();
-        } catch (SQLException e) {
-            log.info("Could not get connection. Error: " + e);
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            log.error("Could not get connection. Error: ", ex);
             return null;
         }
     }
@@ -55,126 +49,51 @@ public class DatabaseConnection {
         } catch (ClassNotFoundException e) {
             throw new SQLException("Unable to find JDBC library. Do you have MySQL Connector/J (if using default JDBC driver)?");
         }
-        String url = config.getProperty("database.url");
-        String user = config.getProperty("database.user");
+
         String password = config.getProperty("database.password");
         if (password == null) {
-            throw new DatabaseException("Database password not provide.");
+            throw new DatabaseException("Database password not provided.");
         }
-        pool = new ThreadLocalConnections(url, user, password);
+
+        var hikariConfig = new HikariConfig();
+        hikariConfig.setJdbcUrl(config.getProperty("database.url"));
+        hikariConfig.setUsername(config.getProperty("database.user"));
+        hikariConfig.setPassword(config.getProperty("database.password"));
+
+        hikariConfig.setConnectionTimeout(30000);
+
+        hikariConfig.setIdleTimeout(10000);
+
+        hikariConfig.setMaximumPoolSize(30);
+
+        hikariConfig.addDataSourceProperty("cachePrepStmts", "true");
+        hikariConfig.addDataSourceProperty("prepStmtCacheSize", "250");
+        hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        hikariConfig.setConnectionTestQuery("SELECT 1");
+
+
+        pool = new HikariConnectionPool(new HikariDataSource(hikariConfig));
     }
 
-    public static Map<Connection, SQLException> closeAll() {
-        Map<Connection, SQLException> exceptions = new HashMap<>();
-        LockableList<Connection> allConnections = pool.allConnections();
-        allConnections.lockWrite();
-        try {
-            for (Iterator<Connection> iter = allConnections.iterator(); iter.hasNext(); ) {
-                Connection con = iter.next();
-                try {
-                    con.close();
-                    iter.remove();
-                } catch (SQLException e) {
-                    exceptions.put(con, e);
-                    e.printStackTrace();
-                }
-            }
-        } finally {
-            allConnections.unlockWrite();
-        }
-        return exceptions;
-    }
 
-    private static boolean connectionCheck(Connection con) {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try {
-            ps = con.prepareStatement("/* ping */ SELECT 1");
-            rs = ps.executeQuery();
-            return rs.next();
-        } catch (SQLException ex) {
-            return false;
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                    if (ps != null) {
-                        ps.close();
-                    }
-                } catch (SQLException ex) {
-                    //nothing we can do!
-                    ex.printStackTrace();
-                }
-            }
-        }
-    }
-
-    private interface ConnectionPool {
-
+    interface ConnectionPool {
         Connection getConnection() throws SQLException;
-
-        LockableList<Connection> allConnections();
     }
 
-    private static class ThreadLocalConnections extends ThreadLocal<Connection> implements ConnectionPool {
+    static class HikariConnectionPool implements ConnectionPool {
 
-        private final LockableList<Connection> allConnections;
-        private final AtomicInteger taken;
-        private final ThreadLocal<SQLException> exceptions;
-        private final String url, user, password;
 
-        protected ThreadLocalConnections(String url, String user, String password) {
-            allConnections = new LockableList<>(new LinkedList<Connection>());
-            taken = new AtomicInteger(0);
-            exceptions = new ThreadLocal<>();
-            this.url = url;
-            this.user = user;
-            this.password = password;
+        private final HikariDataSource hikariDataSource;
+
+        public HikariConnectionPool(HikariDataSource hikariDataSource) {
+            this.hikariDataSource = hikariDataSource;
         }
 
-        @Override
-        protected Connection initialValue() {
-            try {
-                Connection con = DriverManager.getConnection(url, user, password);
-                allConnections.addWhenSafe(con);
-                return con;
-            } catch (SQLException e) {
-                exceptions.set(/*new SQLException("Could not connect to database.", */e/*)*/);
-                e.printStackTrace();
-                return null;
-            }
-        }
 
         @Override
         public Connection getConnection() throws SQLException {
-            Connection con = get();
-            if (con == null) {
-                remove();
-                SQLException ex = exceptions.get();
-                exceptions.remove();
-                throw ex;
-            }
-            if (connectionCheck(con)) {
-                taken.incrementAndGet();
-                return con;
-            } else {
-                try {
-                    con.close();
-                    allConnections.removeWhenSafe(con);
-                } catch (SQLException e) {
-                    throw new SQLException("Could not remove invalid connection to database.", e);
-                }
-                remove();
-                taken.incrementAndGet();
-                return get();
-            }
+            return hikariDataSource.getConnection();
         }
-
-        @Override
-        public LockableList<Connection> allConnections() {
-            return allConnections;
-        }
-
     }
 }
 

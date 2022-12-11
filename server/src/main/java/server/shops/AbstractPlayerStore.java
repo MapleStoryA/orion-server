@@ -138,8 +138,7 @@ public abstract class AbstractPlayerStore extends AbstractMapleMapObject impleme
         if (getShopType() != IMaplePlayerShop.HIRED_MERCHANT) { //hired merch only
             return false;
         }
-        Connection con = DatabaseConnection.getConnection();
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("DELETE FROM hiredmerch WHERE accountid = ? OR characterid = ?");
             ps.setInt(1, owneraccount);
             ps.setInt(2, ownerId);

@@ -38,8 +38,7 @@ public class CashShopCoupon {
 
     public static boolean getCouponCodeValid(String code) {
         boolean validcode = false;
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             try (PreparedStatement ps = con.prepareStatement("SELECT `used` FROM `coupons` WHERE `code` = ?")) {
                 ps.setString(1, code);
                 try (ResultSet rs = ps.executeQuery()) {
@@ -56,8 +55,7 @@ public class CashShopCoupon {
 
     public static List<CashCouponData> getCcData(final String code) {
         List<CashCouponData> all = new ArrayList<>();
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             try (PreparedStatement ps = con.prepareStatement("SELECT `type`, `itemData`, `quantity` FROM `coupons_data` WHERE `code` = ?")) {
                 ps.setString(1, code);
                 try (ResultSet rs = ps.executeQuery()) {
@@ -76,8 +74,7 @@ public class CashShopCoupon {
     }
 
     public static void setCouponCodeUsed(String name, String code) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             try (PreparedStatement ps = con.prepareStatement("UPDATE `coupons` SET `character` = ?, `used` = 1 WHERE code = ?")) {
                 ps.setString(1, name);
                 ps.setString(2, code);
@@ -89,8 +86,7 @@ public class CashShopCoupon {
     }
 
     public static void deleteCouponData(String name, String code) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             try (PreparedStatement ps = con.prepareStatement("DELETE from `coupons_data` WHERE `code` = ?")) {
                 ps.setString(1, code);
                 ps.execute();

@@ -72,8 +72,7 @@ public class MapleKeyLayout implements Serializable {
         if (!changed || keymap.isEmpty()) {
             return;
         }
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             con.setAutoCommit(false);
             PreparedStatement ps = con.prepareStatement("DELETE FROM keymap WHERE characterid = ?");
             ps.setInt(1, charid);

@@ -60,7 +60,8 @@ public class MonsterBook implements Serializable {
     }
 
     public final static MonsterBook loadCards(final int charid) throws SQLException {
-        final PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT * FROM monsterbook WHERE charid = ? ORDER BY cardid ASC");
+        var con = DatabaseConnection.getConnection();
+        var ps = con.prepareStatement("SELECT * FROM monsterbook WHERE charid = ? ORDER BY cardid ASC");
         ps.setInt(1, charid);
         final ResultSet rs = ps.executeQuery();
         Map<Integer, Integer> cards = new LinkedHashMap<Integer, Integer>();
@@ -71,6 +72,7 @@ public class MonsterBook implements Serializable {
         }
         rs.close();
         ps.close();
+        con.close();
         return new MonsterBook(cards);
     }
 
@@ -90,8 +92,8 @@ public class MonsterBook implements Serializable {
         if (!changed || cards.size() == 0) {
             return;
         }
-        final Connection con = DatabaseConnection.getConnection();
-        PreparedStatement ps = con.prepareStatement("DELETE FROM monsterbook WHERE charid = ?");
+        var con = DatabaseConnection.getConnection();
+        var ps = con.prepareStatement("DELETE FROM monsterbook WHERE charid = ?");
         ps.setInt(1, charid);
         ps.execute();
         ps.close();
@@ -116,6 +118,7 @@ public class MonsterBook implements Serializable {
         ps = con.prepareStatement(query.toString());
         ps.execute();
         ps.close();
+        con.close();
     }
 
     private final void calculateLevel() {

@@ -38,7 +38,6 @@ import server.life.PlayerNPC;
 import server.maps.MapleMapFactory;
 import server.quest.MapleQuest;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -74,12 +73,10 @@ public class GameApp {
     }
 
     private static void setAccountsAsLoggedOff() {
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("UPDATE accounts SET loggedin = 0");
             ps.executeUpdate();
             ps.close();
-
         } catch (SQLException ex) {
             throw new RuntimeException("[EXCEPTION] Please check if the SQL server is active.", ex);
         }

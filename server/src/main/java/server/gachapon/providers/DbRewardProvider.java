@@ -1,12 +1,12 @@
 package server.gachapon.providers;
 
+import database.DatabaseConnection;
 import server.gachapon.AbstractRandomEntity;
 import server.gachapon.GachaponLocation;
 import server.gachapon.GachaponReward;
 import server.gachapon.RewardSource;
 import server.gachapon.RewardsProvider;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,12 +18,6 @@ public class DbRewardProvider implements RewardsProvider {
 
     public final String BASIC_QUERY = "SELECT idreward, id, chance, description, location, source from reward_item where enabled = 1";
 
-    private final Connection con;
-
-    public DbRewardProvider(Connection con) {
-        this.con = con;
-    }
-
 
     @Override
     public List<AbstractRandomEntity> getRewards() {
@@ -32,7 +26,7 @@ public class DbRewardProvider implements RewardsProvider {
 
 
     public List<AbstractRandomEntity> getRewards(String query) {
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement st = con.prepareStatement(query);
             ResultSet rs = st.executeQuery();
             List<AbstractRandomEntity> list = new ArrayList<>();

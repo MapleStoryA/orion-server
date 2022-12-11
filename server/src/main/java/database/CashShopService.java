@@ -9,12 +9,11 @@ public class CashShopService {
 
     public static void saveWishList(WishList wishList, int characterId) {
 
-        var con = DatabaseConnection.getConnection();
         if (!wishList.isChanged()) {
             return;
         }
 
-        try {
+        try (var con = DatabaseConnection.getConnection()) {
             CharacterService.deleteWhereCharacterId(con, "DELETE FROM wishlist WHERE characterid = ?", characterId);
             for (var item : wishList.getItems()) {
                 var ps = con.prepareStatement("INSERT INTO wishlist(characterid, sn) VALUES(?, ?) ");

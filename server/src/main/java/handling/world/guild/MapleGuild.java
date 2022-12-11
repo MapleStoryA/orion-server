@@ -66,8 +66,7 @@ public class MapleGuild implements java.io.Serializable {
     public MapleGuild(final int guildid) {
         super();
 
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM guilds WHERE guildid = ?");
             ps.setInt(1, guildid);
             ResultSet rs = ps.executeQuery();
@@ -154,8 +153,7 @@ public class MapleGuild implements java.io.Serializable {
 
     public static final void loadAll() {
         MapleGuild g;
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT guildid FROM guilds");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -177,8 +175,7 @@ public class MapleGuild implements java.io.Serializable {
         if (name.length() > 12) {
             return 0;
         }
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT guildid FROM guilds WHERE name = ?");
             ps.setString(1, name);
             ResultSet rs = ps.executeQuery();
@@ -228,8 +225,7 @@ public class MapleGuild implements java.io.Serializable {
     }
 
     public static void setOfflineGuildStatus(int guildid, byte guildrank, byte alliancerank, int cid) {
-        try {
-            java.sql.Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             java.sql.PreparedStatement ps = con.prepareStatement("UPDATE characters SET guildid = ?, guildrank = ?, alliancerank = ? WHERE id = ?");
             ps.setInt(1, guildid);
             ps.setInt(2, guildrank);
@@ -248,8 +244,7 @@ public class MapleGuild implements java.io.Serializable {
     }
 
     public final void writeToDB(final boolean bDisband) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             if (!bDisband) {
                 StringBuilder buf = new StringBuilder("UPDATE guilds SET GP = ?, logo = ?, logoColor = ?, logoBG = ?, logoBGColor = ?, ");
                 for (int i = 1; i < 6; i++) {
@@ -524,8 +519,7 @@ public class MapleGuild implements java.io.Serializable {
 
     public void setAllianceId(int a) {
         this.allianceid = a;
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("UPDATE guilds SET alliance = ? WHERE guildid = ?");
             ps.setInt(1, a);
             ps.setInt(2, id);
@@ -726,8 +720,7 @@ public class MapleGuild implements java.io.Serializable {
         this.logoColor = logocolor;
         broadcast(null, -1, BCOp.EMBELMCHANGE);
 
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("UPDATE guilds SET logo = ?, logoColor = ?, logoBG = ?, logoBGColor = ? WHERE guildid = ?");
             ps.setInt(1, logo);
             ps.setInt(2, logoColor);
@@ -745,8 +738,7 @@ public class MapleGuild implements java.io.Serializable {
     public final void setGuildName(final String name) {
         this.name = name;
         broadcast(null, -1, BCOp.NAMECHANGE);
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("UPDATE guilds SET `name` = ? WHERE guildid = ?");
             ps.setString(1, name);
             ps.setInt(2, id);
@@ -774,8 +766,7 @@ public class MapleGuild implements java.io.Serializable {
         capacity += 5;
         broadcast(MaplePacketCreator.guildCapacityChange(this.id, this.capacity));
 
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("UPDATE guilds SET capacity = ? WHERE guildid = ?");
             ps.setInt(1, this.capacity);
             ps.setInt(2, this.id);

@@ -289,8 +289,7 @@ public class MapleClient extends BaseMapleClient {
     }
 
     private void setNotLoggedIn() {
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps;
             ps = con.prepareStatement("UPDATE accounts SET loggedin = 0 WHERE id = ?");
             ps.setInt(1, getAccountData().getId());
@@ -337,8 +336,7 @@ public class MapleClient extends BaseMapleClient {
         if (charSlots != DEFAULT_CHAR_SLOT) {
             return charSlots; //save a sql
         }
-        try {
-            Connection con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM character_slots WHERE accid = ? AND worldid = ?");
             ps.setInt(1, this.accountData.getId());
             ps.setInt(2, world);

@@ -1320,8 +1320,8 @@ public class AdminCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            try {
-                PreparedStatement ps = DatabaseConnection.getConnection()
+            try (var con = DatabaseConnection.getConnection()) {
+                PreparedStatement ps = con
                         .prepareStatement(StringUtil.joinStringFrom(splitted, 1));
                 ps.executeUpdate();
                 ps.close();
@@ -3116,8 +3116,7 @@ public class AdminCommand {
                 npc.setRx1(xpos);
                 npc.setFh(fh);
                 npc.setCustom(true);
-                try {
-                    Connection con = DatabaseConnection.getConnection();
+                try (var con = DatabaseConnection.getConnection()) {
                     try (PreparedStatement ps = con.prepareStatement(
                             "INSERT INTO wz_customlife (dataid, f, hide, fh, cy, rx0, rx1, type, x, y, mid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
                         ps.setInt(1, npcId);
@@ -3174,8 +3173,7 @@ public class AdminCommand {
                 npc.setRx0(xpos);
                 npc.setRx1(xpos);
                 npc.setFh(fh);
-                try {
-                    Connection con = DatabaseConnection.getConnection();
+                try (var con = DatabaseConnection.getConnection()) {
                     try (PreparedStatement ps = con.prepareStatement(
                             "INSERT INTO wz_customlife (dataid, f, hide, fh, cy, rx0, rx1, type, x, y, mid, mobtime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
                         ps.setInt(1, mobid);
