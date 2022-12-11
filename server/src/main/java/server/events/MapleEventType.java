@@ -22,6 +22,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package server.events;
 
+import lombok.Getter;
+
+@Getter
 public enum MapleEventType {
 
     Coconut("coconut", new int[]{109080000}), //just using one
@@ -29,20 +32,22 @@ public enum MapleEventType {
     OlaOla("ola", new int[]{109030001, 109030002, 109030003}),
     OxQuiz("ox", new int[]{109020001}),
     Snowball("snowball", new int[]{109060000}); //just using one
-    public String command;
-    public int[] mapids;
+    private String command;
+    private int[] mapIds;
 
-    MapleEventType(String comm, int[] mapids) {
-        this.command = comm;
-        this.mapids = mapids;
+    MapleEventType(String command, int[] mapIds) {
+        this.command = command;
+        this.mapIds = mapIds;
     }
 
     public static final MapleEventType getByString(final String splitted) {
         for (MapleEventType t : MapleEventType.values()) {
-            if (t.command.equalsIgnoreCase(splitted)) {
+            if (t.getCommand().equalsIgnoreCase(splitted)) {
                 return t;
             }
         }
         return null;
     }
+
+
 }

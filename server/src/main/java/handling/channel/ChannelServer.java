@@ -120,11 +120,11 @@ public class ChannelServer extends GameServer {
         if (events.size() != 0) {
             return;
         }
-        events.put(MapleEventType.Coconut, new MapleCoconut(channel, MapleEventType.Coconut.mapids));
-        events.put(MapleEventType.Fitness, new MapleFitness(channel, MapleEventType.Fitness.mapids));
-        events.put(MapleEventType.OlaOla, new MapleOla(channel, MapleEventType.OlaOla.mapids));
-        events.put(MapleEventType.OxQuiz, new MapleOxQuiz(channel, MapleEventType.OxQuiz.mapids));
-        events.put(MapleEventType.Snowball, new MapleSnowball(channel, MapleEventType.Snowball.mapids));
+        events.put(MapleEventType.Coconut, new MapleCoconut(channel, MapleEventType.Coconut.getMapIds()));
+        events.put(MapleEventType.Fitness, new MapleFitness(channel, MapleEventType.Fitness.getMapIds()));
+        events.put(MapleEventType.OlaOla, new MapleOla(channel, MapleEventType.OlaOla.getMapIds()));
+        events.put(MapleEventType.OxQuiz, new MapleOxQuiz(channel, MapleEventType.OxQuiz.getMapIds()));
+        events.put(MapleEventType.Snowball, new MapleSnowball(channel, MapleEventType.Snowball.getMapIds()));
     }
 
     @Override

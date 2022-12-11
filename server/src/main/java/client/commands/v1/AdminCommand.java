@@ -1089,7 +1089,7 @@ public class AdminCommand {
             if (type == null) {
                 final StringBuilder sb = new StringBuilder("Wrong syntax: ");
                 for (MapleEventType t : MapleEventType.values()) {
-                    sb.append(t.command).append(",");
+                    sb.append(t.getCommand()).append(",");
                 }
                 c.getPlayer().dropMessage(5, sb.substring(0, sb.toString().length() - 1));
             }
