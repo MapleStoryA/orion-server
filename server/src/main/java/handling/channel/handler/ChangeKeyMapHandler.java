@@ -59,10 +59,10 @@ public class ChangeKeyMapHandler extends AbstractMaplePacketHandler {
                         var binding = new KeyMapBinding(chr.getId(), key, type, action, 0);
                         if (type > 0) { // User changes a skill key
                             binding.setChanged(true);
-                            chr.getKeyLayout().changeKeyBinding(binding);
+                            chr.getKeyLayout().setBinding(binding);
                         } else { // User unmaps a key
                             binding.setDeleted(true);
-                            chr.getKeyLayout().deleteKeyBinding(binding);
+                            chr.getKeyLayout().setBinding(binding);
                         }
                         chr.getKeyLayout().saveKeys();
                     }

@@ -93,15 +93,6 @@ public class MapleKeyLayout implements Serializable {
 
     }
 
-    public void deleteKeyBinding(KeyMapBinding newBinding) {
-        keyMapBindings.put(newBinding.getKey(), newBinding);
-    }
-
-    public void changeKeyBinding(KeyMapBinding newBinding) {
-        keyMapBindings.put(newBinding.getKey(), newBinding);
-    }
-
-
     public void setBinding(KeyMapBinding binding) {
         keyMapBindings.put(binding.getKey(), binding);
     }
