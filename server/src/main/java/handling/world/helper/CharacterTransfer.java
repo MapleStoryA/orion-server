@@ -31,6 +31,7 @@ import client.anticheat.ReportType;
 import client.inventory.MapleInventory;
 import client.inventory.MapleMount;
 import client.inventory.MaplePet;
+import client.layout.MapleKeyLayout;
 import client.skill.EvanSkillPoints;
 import client.skill.ISkill;
 import client.skill.SkillEntry;
@@ -42,7 +43,6 @@ import lombok.extern.slf4j.Slf4j;
 import server.MapleStorage;
 import server.cashshop.CashShop;
 import server.quest.MapleQuest;
-import tools.Triple;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -136,7 +136,7 @@ public class CharacterTransfer {
     private byte[] petStore;
     private Map<Integer, Integer> mapleBookCards = new LinkedHashMap<>();
     private Map<Byte, Integer> reports = new LinkedHashMap<>();
-    private Map<Integer, Triple<Byte, Integer, Byte>> keyMap = new LinkedHashMap<>();
+    private MapleKeyLayout keyMap;
     private Map<Integer, String> infoQuest = new LinkedHashMap<>();
 
     private int remainingSp;
@@ -239,7 +239,7 @@ public class CharacterTransfer {
         this.setBlessOfFairy(chr.getBlessOfFairyOrigin());
         this.setChalkboard(chr.getChalkboard());
         this.setSkillMacros(chr.getSkillMacros());
-        this.setKeyMap(chr.getKeyLayout().Layout());
+        this.setKeyMap(chr.getKeyLayout());
         this.setSavedLocations(chr.getSavedLocations());
         this.setWishlist(chr.getWishlist());
         this.setVipTeleportRocks(chr.getVipTeleportRock().toArray());

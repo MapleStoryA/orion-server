@@ -1355,13 +1355,12 @@ DROP TABLE IF EXISTS `keymap`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `keymap`
 (
-    `id`          int(11)             NOT NULL AUTO_INCREMENT,
     `characterid` int(11)             NOT NULL DEFAULT '0',
     `key`         tinyint(3) unsigned NOT NULL DEFAULT '0',
     `type`        tinyint(3) unsigned NOT NULL DEFAULT '0',
     `action`      int(11)             NOT NULL DEFAULT '0',
     `fixed`       tinyint(3) unsigned NOT NULL DEFAULT '0',
-    PRIMARY KEY (`id`),
+    PRIMARY KEY (`characterid`,`key`),
     KEY `keymap_ibfk_1` (`characterid`),
     CONSTRAINT `keymap_ibfk_1` FOREIGN KEY (`characterid`) REFERENCES `characters` (`id`) ON DELETE CASCADE
 ) ENGINE = InnoDB
