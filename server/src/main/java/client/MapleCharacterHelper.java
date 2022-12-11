@@ -25,7 +25,6 @@ import constants.GameConstants;
 import database.DatabaseConnection;
 import tools.Triple;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -125,7 +124,7 @@ public class MapleCharacterHelper {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
-            System.err.println("Unable to send note" + e);
+            log.error("Cannot send note", e);
         }
     }
 

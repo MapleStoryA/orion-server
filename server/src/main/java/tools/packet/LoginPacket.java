@@ -245,22 +245,6 @@ public class LoginPacket {
         return mplew.getPacket();
     }
 
-    public static final byte[] getCharList(final boolean secondpw, final List<MapleCharacter> chars, int charslots) {
-        final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
-        mplew.writeShort(SendPacketOpcode.CHARLIST.getValue());
-        mplew.write(0);
-        mplew.write(chars.size()); // 1
-
-        for (final MapleCharacter chr : chars) {
-            boolean isGM = chr.getJob().getId() == 900 || chr.getJob().getId() == 910;
-            addCharEntry(mplew, chr, !isGM && chr.getLevel() >= 10);
-        }
-        mplew.write(2); // second pw request
-        mplew.writeLong(charslots);
-
-        return mplew.getPacket();
-    }
 
     public static final byte[] addNewCharEntry(final MapleCharacter chr, final boolean worked) {
         final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();

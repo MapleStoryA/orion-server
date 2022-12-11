@@ -47,12 +47,21 @@ public class LoginService {
         var characterDataList = result.mapToBean(CharacterData.class)
                 .stream()
                 .collect(Collectors.toList());
+
         for (var characterData : characterDataList) {
-            if (characterData.isEvan()) {
-                characterData.setEvanSkillPoints(loadEvanSkills(characterData.getId()));
+            var inventory = new MapleInventory[MapleInventoryType.values().length];
+            for (MapleInventoryType type : MapleInventoryType.values()) {
+                inventory[type.ordinal()] = new MapleInventory(type);
             }
-            MapleInventory[] inventory = loadInventory(characterData.getId());
-            characterData.setInventory(inventory);
+            try {
+                for (Pair<IItem, MapleInventoryType> mit : ItemLoader.INVENTORY.loadItems(true, characterData.getId()).values()) {
+                    var current = inventory[mit.getRight().ordinal()];
+                    current.addFromDB(mit.getLeft());
+                }
+                characterData.setInventory(inventory);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return new CharacterListResult(characterDataList);
     }

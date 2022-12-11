@@ -20,6 +20,7 @@ public class CharlistViewAllHandler extends AbstractMaplePacketHandler {
 
         List<MapleCharacter> chars = CharacterService.loadCharacters(c, 0, c.getAccountData().getId());
 
+
         if (chars != null) {
             c.getSession().write(MaplePacketCreator.viewAllChar(1, chars.size()));
             c.getSession().write(MaplePacketCreator.viewAllCharShowChars(0, chars));
