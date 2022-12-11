@@ -324,12 +324,6 @@ public class LoginPacket {
         }
     }
 
-
-    /**
-     * TODO: Fix this..
-     */
-
-
     public static byte[] changeBackground(List<Triple<String, Integer, Boolean>> backgrounds) {
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
