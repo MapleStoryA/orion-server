@@ -35,7 +35,6 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MapleMount;
 import client.inventory.MaplePet;
 import client.inventory.MapleRing;
-import client.layout.ExcludedKeyMap;
 import client.layout.KeyMapBinding;
 import client.layout.MapleKeyLayout;
 import client.skill.EvanSkillPoints;
@@ -965,10 +964,11 @@ public class MapleCharacter extends BaseMapleCharacter {
         PreparedStatement ps = null;
         PreparedStatement pse = null;
         ResultSet rs = null;
+        //TODO: fix transaction isolation
         try {
             con = DatabaseConnection.getConnection();
-            con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-            con.setAutoCommit(false);
+            //con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+            //con.setAutoCommit(false);
             ps = con.prepareStatement("INSERT INTO characters (level, fame, str, dex, luk, `int`, exp, hp, mp, maxhp, maxmp, ap, gm, skincolor, gender, job, hair, face, map, meso, hpApUsed, spawnpoint, party, buddyCapacity, monsterbookcover, dojo_pts, dojoRecord, pets, subcategory, marriageId, accountid, name, world) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", DatabaseConnection.RETURN_GENERATED_KEYS);
             ps.setInt(1, 1);
             ps.setShort(2, (short) 0); // Fame
@@ -1070,37 +1070,20 @@ public class MapleCharacter extends BaseMapleCharacter {
                 }
             }
             ItemLoader.INVENTORY.saveItems(listing, con, chr.id);
-
-            final int[] key = {2, 3, 4, 5, 6, 7, 8, 16, 17, 18, 19, 20, 23, 24, 25, 26, 27, 29, 31, 33, 34, 35, 37, 38,
-                    39, 40, 41, 43, 44, 45, 46, 48, 50, 56, 57, 59, 60, 61, 62, 63, 64, 65};
-            final int[] KeyType = {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-                    5, 5, 4, 4, 4, 5, 5, 6, 6, 6, 6, 6, 6, 6};
-            final int[] action = {10, 12, 13, 18, 24, 21, 29, 8, 5, 0, 4, 28, 1, 25, 19, 14, 15, 52, 2, 26, 17, 11, 3,
-                    20, 27, 16, 23, 9, 50, 51, 6, 22, 7, 53, 54, 100, 101, 102, 103, 104, 105, 106};
-
-            ps = con.prepareStatement("INSERT INTO keymap (characterid, `key`, `type`, `action`) VALUES (?, ?, ?, ?)");
-            ps.setInt(1, chr.id);
-            for (int i = 0; i < key.length; i++) {
-                if (ExcludedKeyMap.fromKeyValue(action[i]) != null) {
-                    continue;
-                }
-                ps.setInt(2, key[i]);
-                ps.setInt(3, KeyType[i]);
-                ps.setInt(4, action[i]);
-                ps.execute();
-            }
+            chr.keyLayout = new MapleKeyLayout();
+            chr.keyLayout.setDefaultKeys(chr.id);
+            chr.keyLayout.saveKeys();
             ps.close();
-
-            con.commit();
+           // con.commit();
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("[charsave] Error saving character data");
-            try {
-                con.rollback();
-            } catch (SQLException ex) {
-                e.printStackTrace();
-                System.err.println("[charsave] Error Rolling Back");
-            }
+//            try {
+//                con.rollback();
+//            } catch (SQLException ex) {
+//                e.printStackTrace();
+//                System.err.println("[charsave] Error Rolling Back");
+//            }
         } finally {
             try {
                 if (pse != null) {
@@ -1112,8 +1095,8 @@ public class MapleCharacter extends BaseMapleCharacter {
                 if (rs != null) {
                     rs.close();
                 }
-                con.setAutoCommit(true);
-                con.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+//                con.setAutoCommit(true);
+              //  con.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
                 con.close();
             } catch (SQLException e) {
                 e.printStackTrace();
