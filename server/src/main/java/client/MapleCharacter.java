@@ -56,6 +56,7 @@ import database.DatabaseException;
 import database.LoginService;
 import database.LoginState;
 import database.TeleportRockService;
+import handling.ServerMigration;
 import handling.channel.ChannelServer;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
 import handling.world.WorldServer;
@@ -156,10 +157,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 public class MapleCharacter extends BaseMapleCharacter {
 
-
+    @Getter
+    private AccountData accountData;
     private int id;
     private byte world;
-    private int account_id;
     private String name;
     private String chalkText;
     private String blessOfFairy_Origin;
@@ -384,7 +385,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         ret.level = 1;
         ret.remainingAp = 0;
         ret.fame = 0;
-        ret.account_id = client.getAccountData().getId();
+        ret.accountData = client.getAccountData();
         ret.buddyList = new MapleBuddyList((byte) 20);
         ret.stats.setStr((short) 12);
         ret.stats.setDex((short) 5);
@@ -430,7 +431,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         ret.job = MapleJob.getById(ct.getJob());
         ret.hair = ct.getHair();
         ret.setFace(ct.getFace());
-        ret.account_id = ct.getAccount_id();
+        ret.accountData = ct.getAccountData();
         ret.map_id = ct.getMap_id();
         ret.initialSpawnPoint = ct.getInitialSpawnPoint();
         ret.world = ct.getWorld();
@@ -565,6 +566,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         CharacterData characterData = LoginService.loadCharacterData(charid);
         ret.client = client;
         ret.id = charid;
+        ret.accountData = client.getAccountData();
 
         PreparedStatement ps = null;
         PreparedStatement pse = null;
@@ -593,7 +595,6 @@ public class MapleCharacter extends BaseMapleCharacter {
             ret.job = MapleJob.getById(rs.getShort("job"));
             ret.hair = rs.getInt("hair");
             ret.setFace(rs.getInt("face"));
-            ret.account_id = rs.getInt("accountid");
             ret.map_id = rs.getInt("map");
             ret.initialSpawnPoint = rs.getByte("spawnpoint");
             ret.world = rs.getByte("world");
@@ -668,7 +669,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 rs.close();
                 ps.close();
                 ps = con.prepareStatement("SELECT * FROM achievements WHERE accountid = ?");
-                ps.setInt(1, ret.account_id);
+                ps.setInt(1, client.getAccountData().getId());
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     ret.finishedAchievements.addAchievementFinished(rs.getInt("achievementid"));
@@ -741,10 +742,10 @@ public class MapleCharacter extends BaseMapleCharacter {
                 }
 
                 ps = con.prepareStatement("SELECT * FROM accounts WHERE id = ?");
-                ps.setInt(1, ret.account_id);
+                ps.setInt(1, ret.accountData.getId());
                 rs = ps.executeQuery();
                 if (rs.next()) {
-                    AccountData accountData = LoginService.loadAccountDataById(ret.account_id);
+                    AccountData accountData = LoginService.loadAccountDataById(ret.accountData.getId());
                     ret.getClient().setAccountData(accountData);
                     ret.nx_credit = accountData.getNxCredit();
                     ret.maple_points = accountData.getMPoints();
@@ -761,7 +762,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                     ps.close();
 
                     ps = con.prepareStatement("UPDATE accounts SET lastlogon = CURRENT_TIMESTAMP() WHERE id = ?");
-                    ps.setInt(1, ret.account_id);
+                    ps.setInt(1, ret.accountData.getId());
                     ps.executeUpdate();
                 } else {
                     rs.close();
@@ -805,7 +806,7 @@ public class MapleCharacter extends BaseMapleCharacter {
 
                 // Bless of Fairy handling
                 ps = con.prepareStatement("SELECT * FROM characters WHERE accountid = ? ORDER BY level DESC");
-                ps.setInt(1, ret.account_id);
+                ps.setInt(1, ret.accountData.getId());
                 rs = ps.executeQuery();
                 byte maxlevel_ = 0;
                 while (rs.next()) {
@@ -887,8 +888,8 @@ public class MapleCharacter extends BaseMapleCharacter {
                 ps.close();
 
                 ret.buddyList.loadFromDb(charid);
-                ret.storage = MapleStorage.loadStorage(ret.account_id);
-                ret.cs = new CashShop(ret.account_id, charid, ret.getJob());
+                ret.storage = MapleStorage.loadStorage(ret.accountData.getId());
+                ret.cs = new CashShop(ret.accountData.getId(), charid, ret.getJob());
 
                 ps = con.prepareStatement("SELECT sn FROM wishlist WHERE characterid = ?");
                 ps.setInt(1, charid);
@@ -1374,7 +1375,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             }
 
             CharacterService.saveLocation(savedLocations, id);
-            CharacterService.saveAchievement(finishedAchievements, this.account_id, this.id);
+            CharacterService.saveAchievement(finishedAchievements, this.accountData.getId(), this.id);
 
 
             if (changed_reports) {
@@ -3219,7 +3220,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public int getAccountID() {
-        return account_id;
+        return accountData.getId();
     }
 
     public void mobKilled(final int id, final int skillID) {
@@ -3522,7 +3523,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             ps.setTimestamp(1, TS);
             ps.setString(2, reason);
             ps.setInt(3, greason);
-            ps.setInt(4, account_id);
+            ps.setInt(4, accountData.getId());
             ps.execute();
             ps.close();
         } catch (SQLException ex) {
@@ -3540,7 +3541,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             PreparedStatement ps = con.prepareStatement("UPDATE accounts SET banned = ?, banreason = ? WHERE id = ?");
             ps.setInt(1, autoban ? 2 : 1);
             ps.setString(2, reason);
-            ps.setInt(3, account_id);
+            ps.setInt(3, accountData.getId());
             ps.execute();
             ps.close();
 
@@ -3552,7 +3553,7 @@ public class MapleCharacter extends BaseMapleCharacter {
 
                 if (hellban) {
                     PreparedStatement psa = con.prepareStatement("SELECT * FROM accounts WHERE id = ?");
-                    psa.setInt(1, account_id);
+                    psa.setInt(1, accountData.getId());
                     ResultSet rsa = psa.executeQuery();
                     if (rsa.next()) {
                         PreparedStatement pss = con.prepareStatement(
@@ -4839,6 +4840,9 @@ public class MapleCharacter extends BaseMapleCharacter {
         WorldServer.getInstance().getChangeChannelData(new CharacterTransfer(this), getId(), channel);
         ch.removePlayer(this);
         client.updateLoginState(LoginState.CHANGE_CHANNEL, client.getSessionIPAddress());
+        ServerMigration entry = new ServerMigration(id, client.getAccountData(), client.getSessionIPAddress());
+        entry.setCharacterTransfer(new CharacterTransfer(this));
+        WorldServer.getInstance().getMigrationService().putMigrationEntry(entry);
         client.getSession().write(MaplePacketCreator.getChannelChange(Integer.parseInt(toch.getPublicAddress().split(":")[1])));
         getMap().removePlayer(this);
         saveToDB(false, false);

@@ -29,6 +29,7 @@ import client.skill.SkillFactory;
 import constants.ServerConstants;
 import database.CharacterService;
 import database.LoginState;
+import handling.ServerMigration;
 import handling.channel.ChannelServer;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
 import handling.world.WorldServer;
@@ -61,19 +62,25 @@ import java.util.List;
 public class InterServerHandler {
 
 
-    public static final void onLoggedIn(final int playerid, final MapleClient c) {
+    public static final void onLoggedIn(final int characterId, final MapleClient c) {
         final ChannelServer channelServer = c.getChannelServer();
+
+        ServerMigration serverMigration = WorldServer.getInstance().getMigrationService().getServerMigration(characterId, c.getSessionIPAddress());
+
+        if (serverMigration != null) {
+            c.setAccountData(serverMigration.getAccountData());
+        }
+
         MapleCharacter player;
-        final CharacterTransfer transfer = channelServer.getPlayerStorage().getPendingCharacter(playerid);
+        final CharacterTransfer transfer = serverMigration.getCharacterTransfer();
 
         if (transfer == null) { // Player isn't in storage, probably isn't CC
-            player = MapleCharacter.loadCharFromDB(playerid, c, true);
+            player = MapleCharacter.loadCharFromDB(characterId, c, true);
             player.setLoginTime(System.currentTimeMillis());
         } else {
             player = MapleCharacter.reconstructChr(transfer, c, true);
         }
         c.setPlayer(player);
-        c.loadAccountData(player.getAccountID());
 
 
         if (!c.checkClientIpAddress()) { // Remote hack

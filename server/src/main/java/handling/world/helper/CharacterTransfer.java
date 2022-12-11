@@ -34,6 +34,7 @@ import client.inventory.MaplePet;
 import client.skill.EvanSkillPoints;
 import client.skill.ISkill;
 import client.skill.SkillEntry;
+import database.AccountData;
 import handling.world.buddy.BuddyListEntry;
 import lombok.Getter;
 import lombok.Setter;
@@ -61,7 +62,7 @@ public class CharacterTransfer {
     private final Map<Integer, Object> customQuests = new LinkedHashMap<>();
     private final Map<Integer, SkillEntry> Skills = new LinkedHashMap<>();
     private int character_id;
-    private int account_id;
+    private AccountData accountData;
     private int exp;
     private int meso;
     private int hair;
@@ -144,7 +145,7 @@ public class CharacterTransfer {
 
     public CharacterTransfer(final MapleCharacter chr) {
         this.setCharacter_id(chr.getId());
-        this.setAccount_id(chr.getAccountID());
+        this.setAccountData(chr.getClient().getAccountData());
         this.accountName = chr.getClient().getAccountData().getName();
         this.setChannel((byte) chr.getClient().getChannel());
         this.setNxCredit(chr.getCSPoints(1));

@@ -1,11 +1,14 @@
 package handling.world;
 
+import handling.MigrationService;
+import handling.MigrationServiceImpl;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
 import handling.channel.PlayerStorage;
 import handling.world.helper.CharacterTransfer;
 import handling.world.helper.CheaterData;
 import handling.world.helper.FindCommand;
+import lombok.Getter;
 import tools.CollectionUtil;
 
 import java.util.ArrayList;
@@ -24,9 +27,12 @@ public class WorldServer {
     private static WorldServer INSTANCE;
     private final Map<Integer, ChannelServer> channels = new ConcurrentHashMap<>();
     private final long serverStarTime;
+    @Getter
+    private MigrationService migrationService;
 
     public WorldServer() {
         this.serverStarTime = System.currentTimeMillis();
+        this.migrationService = new MigrationServiceImpl();
     }
 
     public static synchronized WorldServer getInstance() {
