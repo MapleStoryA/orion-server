@@ -24,6 +24,7 @@ public class MigrationServiceImpl implements MigrationService {
         }, 1, TimeUnit.MINUTES);
     }
 
+    // TODO: Check if user is trying to login with another character in the same account
     @Override
     public ServerMigration getServerMigration(int characterId, String host) {
         var serverMigration = cache.remove(host);

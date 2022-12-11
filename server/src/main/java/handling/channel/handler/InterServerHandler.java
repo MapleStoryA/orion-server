@@ -43,7 +43,6 @@ import handling.world.helper.CharacterTransfer;
 import handling.world.helper.FindCommand;
 import handling.world.helper.MapleMessenger;
 import handling.world.helper.MapleMessengerCharacter;
-import handling.world.helper.PlayerBuffStorage;
 import handling.world.messenger.MessengerManager;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
@@ -94,9 +93,12 @@ public class InterServerHandler {
 
 
         try {
-            player.silentGiveBuffs(PlayerBuffStorage.getBuffsFromStorage(player.getId()));
-            player.giveCoolDowns(PlayerBuffStorage.getCooldownsFromStorage(player.getId()));
-            player.giveSilentDebuff(PlayerBuffStorage.getDiseaseFromStorage(player.getId()));
+            if (serverMigration != null) {
+                player.silentGiveBuffs(serverMigration.getBuffsFromStorage(player.getId()));
+                player.giveCoolDowns(serverMigration.getCooldownsFromStorage(player.getId()));
+                player.giveSilentDebuff(serverMigration.getDiseaseFromStorage(player.getId()));
+            }
+
 
             // Start of buddylist
             final int[] buddyIds = player.getBuddyList().getBuddyIds();

@@ -69,7 +69,6 @@ import handling.world.helper.BroadcastHelper;
 import handling.world.helper.CharacterTransfer;
 import handling.world.helper.MapleMessenger;
 import handling.world.helper.MapleMessengerCharacter;
-import handling.world.helper.PlayerBuffStorage;
 import handling.world.helper.PlayerBuffValueHolder;
 import handling.world.messenger.MessengerManager;
 import handling.world.party.MapleParty;
@@ -4834,14 +4833,17 @@ public class MapleCharacter extends BaseMapleCharacter {
         if (getMessenger() != null) {
             MessengerManager.silentLeaveMessenger(getMessenger().getId(), new MapleMessengerCharacter(this));
         }
-        PlayerBuffStorage.addBuffsToStorage(getId(), getAllBuffs());
-        PlayerBuffStorage.addCooldownsToStorage(getId(), getCooldowns());
-        PlayerBuffStorage.addDiseaseToStorage(getId(), getAllDiseases());
+
         WorldServer.getInstance().getChangeChannelData(new CharacterTransfer(this), getId(), channel);
         ch.removePlayer(this);
         client.updateLoginState(LoginState.CHANGE_CHANNEL, client.getSessionIPAddress());
         ServerMigration entry = new ServerMigration(id, client.getAccountData(), client.getSessionIPAddress());
         entry.setCharacterTransfer(new CharacterTransfer(this));
+
+        entry.addBuffsToStorage(getId(), getAllBuffs());
+        entry.addCooldownsToStorage(getId(), getCooldowns());
+        entry.addDiseaseToStorage(getId(), getAllDiseases());
+
         WorldServer.getInstance().getMigrationService().putMigrationEntry(entry);
         client.getSession().write(MaplePacketCreator.getChannelChange(Integer.parseInt(toch.getPublicAddress().split(":")[1])));
         getMap().removePlayer(this);

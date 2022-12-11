@@ -1,9 +1,16 @@
 package handling;
 
+import client.MapleCoolDownValueHolder;
+import client.MapleDiseaseValueHolder;
 import database.AccountData;
 import handling.world.helper.CharacterTransfer;
+import handling.world.helper.PlayerBuffValueHolder;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerMigration {
     @Getter
@@ -19,10 +26,38 @@ public class ServerMigration {
     @Setter
     private CharacterTransfer characterTransfer;
 
+    private Map<Integer, List<PlayerBuffValueHolder>> buffs = new ConcurrentHashMap<>();
+    private Map<Integer, List<MapleCoolDownValueHolder>> coolDowns = new ConcurrentHashMap<>();
+    private Map<Integer, List<MapleDiseaseValueHolder>> diseases = new ConcurrentHashMap<>();
 
     public ServerMigration(int characterId, AccountData accountData, String remoteHost) {
         this.characterId = characterId;
         this.accountData = accountData;
         this.remoteHost = remoteHost;
     }
+
+    public void addBuffsToStorage(final int chrid, final List<PlayerBuffValueHolder> toStore) {
+        buffs.put(chrid, toStore);
+    }
+
+    public void addCooldownsToStorage(final int chrid, final List<MapleCoolDownValueHolder> toStore) {
+        coolDowns.put(chrid, toStore);
+    }
+
+    public final void addDiseaseToStorage(final int chrid, final List<MapleDiseaseValueHolder> toStore) {
+        diseases.put(chrid, toStore);
+    }
+
+    public List<PlayerBuffValueHolder> getBuffsFromStorage(final int chrid) {
+        return buffs.remove(chrid);
+    }
+
+    public List<MapleCoolDownValueHolder> getCooldownsFromStorage(final int chrid) {
+        return coolDowns.remove(chrid);
+    }
+
+    public final List<MapleDiseaseValueHolder> getDiseaseFromStorage(final int chrid) {
+        return diseases.remove(chrid);
+    }
+
 }

@@ -10,7 +10,6 @@ import handling.channel.ChannelServer;
 import handling.world.WorldServer;
 import handling.world.helper.CharacterTransfer;
 import handling.world.helper.MapleMessengerCharacter;
-import handling.world.helper.PlayerBuffStorage;
 import handling.world.messenger.MessengerManager;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -37,9 +36,7 @@ public class EnterCashShopHandler extends AbstractMaplePacketHandler {
             var participant = new MapleMessengerCharacter(chr);
             MessengerManager.leaveMessenger(chr.getMessenger().getId(), participant);
         }
-        PlayerBuffStorage.addBuffsToStorage(chr.getId(), chr.getAllBuffs());
-        PlayerBuffStorage.addCooldownsToStorage(chr.getId(), chr.getCooldowns());
-        PlayerBuffStorage.addDiseaseToStorage(chr.getId(), chr.getAllDiseases());
+
         ch.removePlayer(chr);
         chr.saveToDB(false, false);
         chr.getMap().removePlayer(chr);
@@ -47,6 +44,9 @@ public class EnterCashShopHandler extends AbstractMaplePacketHandler {
 
         ServerMigration entry = new ServerMigration(chr.getId(), c.getAccountData(), c.getSessionIPAddress());
         entry.setCharacterTransfer(new CharacterTransfer(chr));
+        entry.addBuffsToStorage(chr.getId(), chr.getAllBuffs());
+        entry.addCooldownsToStorage(chr.getId(), chr.getCooldowns());
+        entry.addDiseaseToStorage(chr.getId(), chr.getAllDiseases());
         WorldServer.getInstance().getMigrationService().putMigrationEntry(entry);
 
         c.getSession().write(MaplePacketCreator.getChannelChange(Integer.parseInt(CashShopServer.getInstance().getPublicAddress().split(":")[1])));
