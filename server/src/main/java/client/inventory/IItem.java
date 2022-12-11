@@ -64,4 +64,8 @@ public interface IItem extends Comparable<IItem> {
     void setGiftFrom(String gf);
 
     MapleRing getRing();
+
+    default boolean isNotVisible() {
+        return getPosition() < -128;
+    }
 }

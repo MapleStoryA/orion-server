@@ -309,7 +309,7 @@ public class PacketHelper {
             }
 
 
-            if (item.getPosition() < -128) { //not visible
+            if (item.isNotVisible()) {
                 continue;
             }
             byte pos = (byte) (item.getPosition() * -1);

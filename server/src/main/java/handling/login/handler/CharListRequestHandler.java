@@ -109,7 +109,7 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
         MapleInventory equip = chr.getInventory(MapleInventoryType.EQUIPPED);
 
         for (final IItem item : equip.list()) {
-            if (item.getPosition() < -128) { //not visible
+            if (item.isNotVisible()) { //not visible
                 continue;
             }
             byte pos = (byte) (item.getPosition() * -1);
