@@ -568,106 +568,98 @@ public class MapleCharacter extends BaseMapleCharacter {
         ret.id = charid;
         ret.accountData = client.getAccountData();
 
+        ret.setName(characterData.getName());
+        ret.level = characterData.getLevel();
+        ret.fame = characterData.getFame();
+        ret.exp = characterData.getExp();
+        ret.setHpApUsed((short) characterData.getHpApUsed());
+        ret.remainingAp = characterData.getAp();
+        ret.remainingSp = characterData.getSp();
+        ret.meso = characterData.getMeso();
+        ret.gmLevel = (byte) characterData.getGm();
+        ret.setSkinColor(characterData.getSkinColor());
+        ret.gender = (byte) characterData.getGender();
+        ret.job = MapleJob.getById(characterData.getJob());
+        ret.hair = characterData.getHair();
+        ret.face = characterData.getFace();
+        ret.map_id = characterData.getMap();
+        ret.initialSpawnPoint = (byte) characterData.getSpawnPoint();
+        ret.world = (byte) characterData.getWorld();
+        ret.guild_id = characterData.getGuildId();
+        ret.guildRank = (byte) characterData.getGuildRank();
+        ret.allianceRank = (byte) characterData.getAllianceRank();
+        if (ret.guild_id > 0) {
+            ret.mgc = new MapleGuildCharacter(ret);
+        }
+        ret.buddyList = new MapleBuddyList((byte) characterData.getBuddyCapacity());
+        ret.subcategory = (byte) characterData.getSubCategory();
+        ret.mount = new MapleMount(ret, 0, GameConstants.getSkillByJob(1004, ret.job.getId()), (byte) 0, (byte) 1, 0);
+        ret.rank = characterData.getRank();
+        ret.rankMove = characterData.getRankMove();
+        ret.jobRank = characterData.getJobRank();
+        ret.jobRankMove = characterData.getJobRankMove();
+        ret.marriageId = characterData.getMarriageId();
+
+        ret.stats.setStr(characterData.getStr());
+        ret.stats.setDex(characterData.getDex());
+        ret.stats.setInt(characterData.getInt_());
+        ret.stats.setLuk(characterData.getLuk());
+        ret.stats.setMaxMp(characterData.getMaxMp());
+        ret.stats.setMaxHp(characterData.getMaxHp());
+        ret.stats.setHp(characterData.getMaxHp());
+        ret.stats.setMp(characterData.getMaxMp());
+
+        // Evan stuff
+        ret.evanSP = CharacterService.loadEvanSkills(ret.id);
+
+        if (channelserver) {
+            MapleMapFactory mapFactory = WorldServer.getInstance().getChannel(client.getChannel()).getMapFactory();
+            ret.map = mapFactory.getMap(ret.map_id);
+            if (ret.map == null) { // char is on a map that doesn't exist
+                // warp it to henesys
+                ret.map = mapFactory.getMap(100000000);
+            }
+            MaplePortal portal = ret.map.getPortal(ret.initialSpawnPoint);
+            if (portal == null) {
+                portal = ret.map.getPortal(0); // char is on a spawnpoint
+                // that doesn't exist -
+                // select the first
+                // spawnpoint instead
+                ret.initialSpawnPoint = 0;
+            }
+            ret.setPosition(portal.getPosition());
+
+            int partyid = characterData.getParty();
+            if (partyid >= 0) {
+                MapleParty party = PartyManager.getParty(partyid);
+                if (party != null && party.getMemberById(ret.id) != null) {
+                    ret.party = party;
+                }
+            }
+            ret.bookCover = characterData.getMonsterBookCover();
+            ret.dojo = characterData.getDojo_pts();
+            ret.dojoRecord = (byte) characterData.getDojoRecord();
+            String petsValue = characterData.getPets();
+            final String[] petsArr = petsValue.split("\\;");
+            if (!petsValue.isEmpty()) {
+                for (int i = 0; i < petsArr.length; i++) {
+                    String petInventoryId = petsArr[i];
+                    if (petInventoryId.isEmpty()) {
+                        ret.petStore[i] = -1;
+                    } else {
+                        ret.petStore[i] = Byte.parseByte(petsArr[i]);
+                    }
+                }
+            }
+        }
+
+
         PreparedStatement ps = null;
-        PreparedStatement pse = null;
+        PreparedStatement pse;
         ResultSet rs = null;
         var con = DatabaseConnection.getConnection();
         try {
-
-            ps = con.prepareStatement("SELECT * FROM characters WHERE id = ?");
-            ps.setInt(1, charid);
-            rs = ps.executeQuery();
-            if (!rs.next()) {
-                throw new RuntimeException("Loading the Char Failed (char not found)");
-            }
-
-            ret.setName(characterData.getName());
-            ret.level = characterData.getLevel();
-            ret.fame = characterData.getFame();
-            ret.exp = characterData.getExp();
-            ret.setHpApUsed(rs.getShort("hpApUsed"));
-            ret.remainingAp = characterData.getAp();
-            ret.remainingSp = characterData.getSp();
-            ret.meso = characterData.getMeso();
-            ret.gmLevel = rs.getByte("gm");
-            ret.setSkinColor(rs.getByte("skincolor"));
-            ret.gender = rs.getByte("gender");
-            ret.job = MapleJob.getById(rs.getShort("job"));
-            ret.hair = rs.getInt("hair");
-            ret.setFace(rs.getInt("face"));
-            ret.map_id = rs.getInt("map");
-            ret.initialSpawnPoint = rs.getByte("spawnpoint");
-            ret.world = rs.getByte("world");
-            ret.guild_id = rs.getInt("guildid");
-            ret.guildRank = rs.getByte("guildrank");
-            ret.allianceRank = rs.getByte("allianceRank");
-            if (ret.guild_id > 0) {
-                ret.mgc = new MapleGuildCharacter(ret);
-            }
-            ret.buddyList = new MapleBuddyList(rs.getByte("buddyCapacity"));
-            ret.subcategory = rs.getByte("subcategory");
-            ret.mount = new MapleMount(ret, 0, GameConstants.getSkillByJob(1004, ret.job.getId()), (byte) 0, (byte) 1, 0);
-            ret.rank = rs.getInt("rank");
-            ret.rankMove = rs.getInt("rankMove");
-            ret.jobRank = rs.getInt("jobRank");
-            ret.jobRankMove = rs.getInt("jobRankMove");
-            ret.marriageId = rs.getInt("marriageId");
-
-            ret.stats.setStr(characterData.getStr());
-            ret.stats.setDex(characterData.getDex());
-            ret.stats.setInt(characterData.getInt_());
-            ret.stats.setLuk(characterData.getLuk());
-            ret.stats.setMaxMp(characterData.getMaxMp());
-            ret.stats.setMaxHp(characterData.getMaxHp());
-            ret.stats.setHp(characterData.getMaxHp());
-            ret.stats.setMp(characterData.getMaxMp());
-
-            // Evan stuff
-            ret.evanSP = CharacterService.loadEvanSkills(ret.id);
-            //
-
-
             if (channelserver) {
-                MapleMapFactory mapFactory = WorldServer.getInstance().getChannel(client.getChannel()).getMapFactory();
-                ret.map = mapFactory.getMap(ret.map_id);
-                if (ret.map == null) { // char is on a map that doesn't exist
-                    // warp it to henesys
-                    ret.map = mapFactory.getMap(100000000);
-                }
-                MaplePortal portal = ret.map.getPortal(ret.initialSpawnPoint);
-                if (portal == null) {
-                    portal = ret.map.getPortal(0); // char is on a spawnpoint
-                    // that doesn't exist -
-                    // select the first
-                    // spawnpoint instead
-                    ret.initialSpawnPoint = 0;
-                }
-                ret.setPosition(portal.getPosition());
-
-                int partyid = rs.getInt("party");
-                if (partyid >= 0) {
-                    MapleParty party = PartyManager.getParty(partyid);
-                    if (party != null && party.getMemberById(ret.id) != null) {
-                        ret.party = party;
-                    }
-                }
-                ret.bookCover = rs.getInt("monsterbookcover");
-                ret.dojo = rs.getInt("dojo_pts");
-                ret.dojoRecord = rs.getByte("dojoRecord");
-                String field = rs.getString("pets");
-                final String[] petsArr = field.split("\\;");
-                if (!field.isEmpty()) {
-                    for (int i = 0; i < petsArr.length; i++) {
-                        String petInventoryId = petsArr[i];
-                        if (petInventoryId.isEmpty()) {
-                            ret.petStore[i] = -1;
-                        } else {
-                            ret.petStore[i] = Byte.parseByte(petsArr[i]);
-                        }
-                    }
-                }
-                rs.close();
-                ps.close();
                 ps = con.prepareStatement("SELECT * FROM achievements WHERE accountid = ?");
                 ps.setInt(1, client.getAccountData().getId());
                 rs = ps.executeQuery();
@@ -683,10 +675,9 @@ public class MapleCharacter extends BaseMapleCharacter {
                         ret.reports.put(ReportType.getById(rs.getByte("type")), rs.getInt("count"));
                     }
                 }
+                rs.close();
+                ps.close();
             }
-            rs.close();
-            ps.close();
-
             ps = con.prepareStatement("SELECT * FROM queststatus WHERE characterid = ?");
             ps.setInt(1, charid);
             rs = ps.executeQuery();
@@ -4095,7 +4086,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 deleteWhereCharacterId(con, "DELETE FROM skills_cooldowns WHERE charid = ?");
 
             } catch (SQLException e) {
-                System.err.println("Error while retriving cooldown from SQL storage");
+                log.error(e);
             }
         }
     }
