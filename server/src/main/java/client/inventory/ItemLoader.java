@@ -212,8 +212,9 @@ public enum ItemLoader {
     }
 
     public void saveItems(List<Pair<IItem, MapleInventoryType>> items, Integer... id) throws SQLException {
-        final Connection con = DatabaseConnection.getConnection();
-        saveItems(items, con, id);
+        try (Connection con = DatabaseConnection.getConnection();) {
+            saveItems(items, con, id);
+        }
     }
 
     public void saveItems(List<Pair<IItem, MapleInventoryType>> items, final Connection con, Integer... id) throws SQLException {
