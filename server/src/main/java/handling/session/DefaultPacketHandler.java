@@ -61,7 +61,7 @@ public class DefaultPacketHandler {
             case PLAYER_LOGGEDIN:
                 final int playerId = slea.readInt();
                 if (isCashShop) {
-                    CashShopOperationHandlers.enterCashShop(playerId, c);
+                    CashShopOperationHandlers.onEnterCashShop(playerId, c);
                 } else {
                     InterServerHandler.onLoggedIn(playerId, c);
                 }

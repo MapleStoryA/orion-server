@@ -112,8 +112,8 @@ public class PacketHelper {
         final List<MapleCoolDownValueHolder> cd = chr.getCooldowns();
         mplew.writeShort(cd.size());
         for (final MapleCoolDownValueHolder cooling : cd) {
-            mplew.writeInt(cooling.skillId);
-            mplew.writeShort((int) (cooling.length + cooling.startTime - System.currentTimeMillis()) / 1000);
+            mplew.writeInt(cooling.getSkillId());
+            mplew.writeShort((int) (cooling.getLength() + cooling.getStartTime() - System.currentTimeMillis()) / 1000);
         }
     }
 

@@ -3,7 +3,6 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
-import server.ClientStorage;
 import server.maps.FieldLimitType;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -23,8 +22,6 @@ public class ChangeChannelHandler extends AbstractMaplePacketHandler {
             return;
         }
         chr.changeChannel(slea.readByte() + 1);
-        ClientStorage.addClient(c);
-
     }
 
 }

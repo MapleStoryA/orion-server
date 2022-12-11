@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package tools;
 
+import client.AttackPair;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
@@ -1128,11 +1129,11 @@ public class MaplePacketCreator {
 
         if (skill == 4211006) {
             for (AttackPair oned : damage) {
-                if (oned.attack != null) {
-                    mplew.writeInt(oned.objectid);
+                if (oned.getAttack() != null) {
+                    mplew.writeInt(oned.getObjectId());
                     mplew.write(0x07);
-                    mplew.write(oned.attack.size());
-                    for (Pair<Integer, Boolean> eachd : oned.attack) {
+                    mplew.write(oned.getAttack().size());
+                    for (Pair<Integer, Boolean> eachd : oned.getAttack()) {
                         mplew.write(eachd.right ? 1 : 0);
                         mplew.writeInt(eachd.left); // m.e. is never crit
                     }
@@ -1140,10 +1141,10 @@ public class MaplePacketCreator {
             }
         } else {
             for (AttackPair oned : damage) {
-                if (oned.attack != null) {
-                    mplew.writeInt(oned.objectid);
+                if (oned.getAttack() != null) {
+                    mplew.writeInt(oned.getObjectId());
                     mplew.write(0x07);
-                    for (Pair<Integer, Boolean> eachd : oned.attack) {
+                    for (Pair<Integer, Boolean> eachd : oned.getAttack()) {
                         mplew.write(eachd.right ? 1 : 0);
                         mplew.writeInt(eachd.left.intValue());
                     }
@@ -1178,10 +1179,10 @@ public class MaplePacketCreator {
         mplew.writeInt(itemid);
 
         for (AttackPair oned : damage) {
-            if (oned.attack != null) {
-                mplew.writeInt(oned.objectid);
+            if (oned.getAttack() != null) {
+                mplew.writeInt(oned.getObjectId());
                 mplew.write(0x07);
-                for (Pair<Integer, Boolean> eachd : oned.attack) {
+                for (Pair<Integer, Boolean> eachd : oned.getAttack()) {
                     mplew.write(eachd.right ? 1 : 0);
                     mplew.writeInt(eachd.left.intValue());
                 }
@@ -1212,10 +1213,10 @@ public class MaplePacketCreator {
         mplew.writeInt(0);
 
         for (AttackPair oned : damage) {
-            if (oned.attack != null) {
-                mplew.writeInt(oned.objectid);
+            if (oned.getAttack() != null) {
+                mplew.writeInt(oned.getObjectId());
                 mplew.write(7);
-                for (Pair<Integer, Boolean> eachd : oned.attack) {
+                for (Pair<Integer, Boolean> eachd : oned.getAttack()) {
                     mplew.write(eachd.right ? 1 : 0);
                     mplew.writeInt(eachd.left.intValue());
                 }

@@ -24,7 +24,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import scripting.v1.game.NpcScripting;
-import server.ClientStorage;
 import server.maps.MapleMap;
 import server.quest.MapleQuest;
 import server.shops.IMaplePlayerShop;
@@ -47,7 +46,6 @@ public class MapleClient extends BaseMapleClient {
 
     public static final int DEFAULT_CHAR_SLOT = 6;
 
-    private final static Lock login_mutex = new ReentrantLock(true);
     private final Map<String, ScriptEngine> engines = new HashMap<>();
     @Getter
     @Setter
@@ -94,24 +92,6 @@ public class MapleClient extends BaseMapleClient {
         return loggedIn;
     }
 
-    public int finishLogin() {
-        login_mutex.lock();
-        try {
-            final LoginState state = accountData.getLoginState();
-            if ((state.getCode() > LoginState.LOGIN_NOTLOGGEDIN.getCode()) && !state.equals(LoginState.LOGIN_WAITING)) {
-                if (!ClientStorage.isConnected(this)) {
-                    updateLoginState(LoginState.LOGIN_LOGGEDIN, getSessionIPAddress());
-                    return 0;
-                }
-                loggedIn = false;
-                return 7;
-            }
-            updateLoginState(LoginState.LOGIN_LOGGEDIN, getSessionIPAddress());
-        } finally {
-            login_mutex.unlock();
-        }
-        return 0;
-    }
 
     public LoginResult login(String name, String pwd) {
         return LoginService.checkPassword(name, pwd);
@@ -193,7 +173,6 @@ public class MapleClient extends BaseMapleClient {
 
     public final void disconnect(final boolean RemoveInChannelServer, final boolean fromCS, final boolean shutdown) {
         if (player != null && isLoggedIn()) {
-            ClientStorage.removeClient(this);
             MapleMap map = player.getMap();
             final MapleParty party = player.getParty();
             final String name = player.getName();
@@ -324,31 +303,6 @@ public class MapleClient extends BaseMapleClient {
         }
     }
 
-
-    public final boolean checkClientIpAddress() {
-        try {
-            final PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT SessionIP FROM accounts WHERE id = ?");
-            ps.setInt(1, this.accountData.getId());
-            final ResultSet rs = ps.executeQuery();
-
-            boolean canLogin = false;
-
-            if (rs.next()) {
-                final String sessionIP = rs.getString("SessionIP");
-
-                if (sessionIP != null) { // Probably a login proced skipper?
-                    canLogin = getSessionIPAddress().equals(sessionIP.split(":")[0]);
-                }
-            }
-            rs.close();
-            ps.close();
-
-            return canLogin;
-        } catch (final SQLException e) {
-            log.info("Failed in checking IP address for client.");
-        }
-        return true;
-    }
 
     public final int getChannel() {
         return channel;

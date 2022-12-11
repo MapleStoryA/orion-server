@@ -19,18 +19,25 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package tools;
+package client;
+
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import tools.Pair;
 
 import java.util.List;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
+@Getter
 public class AttackPair {
 
-    public int objectid;
-    public List<Pair<Integer, Boolean>> attack;
+    private final int objectId;
+    private final List<Pair<Integer, Boolean>> attack;
 
-    public AttackPair(int objectid, List<Pair<Integer, Boolean>> attack) {
-        this.objectid = objectid;
+    public AttackPair(int objectId, List<Pair<Integer, Boolean>> attack) {
+        this.objectId = objectId;
         this.attack = attack;
     }
+
+
 }

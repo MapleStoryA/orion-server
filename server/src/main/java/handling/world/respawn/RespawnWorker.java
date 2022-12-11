@@ -99,8 +99,8 @@ public class RespawnWorker implements Runnable {
         if (chr.getCooldownSize() > 0) {
             cd = chr.getCooldowns(cd);
             for (MapleCoolDownValueHolder m : cd) {
-                if (m.startTime + m.length < now) {
-                    final int skil = m.skillId;
+                if (m.getStartTime() + m.getLength() < now) {
+                    final int skil = m.getSkillId();
                     chr.removeCooldown(skil);
                     chr.getClient().getSession().write(MaplePacketCreator.skillCooldown(skil, 0));
                 }
@@ -121,8 +121,8 @@ public class RespawnWorker implements Runnable {
         if (chr.getDiseaseSize() > 0) {
             dis = chr.getAllDiseases(dis);
             for (MapleDiseaseValueHolder m : dis) {
-                if (m.startTime + m.length < now) {
-                    chr.dispelDebuff(m.disease);
+                if (m.getStartTime() + m.getLength() < now) {
+                    chr.dispelDebuff(m.getDisease());
                 }
             }
         }

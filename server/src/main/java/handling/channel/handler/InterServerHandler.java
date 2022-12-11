@@ -27,8 +27,8 @@ import client.MapleJob;
 import client.MapleQuestStatus;
 import client.skill.SkillFactory;
 import constants.ServerConstants;
-import database.CharacterService;
 import database.LoginState;
+import handling.ServerMigration;
 import handling.channel.ChannelServer;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
 import handling.world.WorldServer;
@@ -43,12 +43,10 @@ import handling.world.helper.CharacterTransfer;
 import handling.world.helper.FindCommand;
 import handling.world.helper.MapleMessenger;
 import handling.world.helper.MapleMessengerCharacter;
-import handling.world.helper.PlayerBuffStorage;
 import handling.world.messenger.MessengerManager;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import handling.world.party.PartyManager;
-import server.ClientStorage;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
 import tools.packet.MapleUserPackets;
@@ -61,40 +59,28 @@ import java.util.List;
 public class InterServerHandler {
 
 
-    public static final void onLoggedIn(final int playerid, final MapleClient c) {
+    public static final void onLoggedIn(final int characterId, final MapleClient c) {
         final ChannelServer channelServer = c.getChannelServer();
-        MapleCharacter player;
-        final CharacterTransfer transfer = channelServer.getPlayerStorage().getPendingCharacter(playerid);
 
-        if (transfer == null) { // Player isn't in storage, probably isn't CC
-            player = MapleCharacter.loadCharFromDB(playerid, c, true);
+        ServerMigration serverMigration = WorldServer.getInstance().getMigrationService().getServerMigration(characterId, c.getSessionIPAddress());
+        if (serverMigration != null) {
+            c.setAccountData(serverMigration.getAccountData());
+        } else {
+            log.error("Missing server migration: {}", c.getAccountData().getName());
+            return;
+        }
+
+        MapleCharacter player;
+        final CharacterTransfer transfer = serverMigration.getCharacterTransfer();
+
+        if (transfer == null) { // Logged for the first time
+            player = MapleCharacter.loadCharFromDB(characterId, c, true);
             player.setLoginTime(System.currentTimeMillis());
         } else {
             player = MapleCharacter.reconstructChr(transfer, c, true);
         }
         c.setPlayer(player);
-        c.loadAccountData(player.getAccountID());
 
-
-        if (!c.checkClientIpAddress()) { // Remote hack
-            c.getSession().close();
-            return;
-        }
-
-        final LoginState state = c.getAccountData().getLoginState();
-        boolean allowLogin = false;
-
-        if (LoginState.LOGIN_SERVER_TRANSITION.equals(state) || LoginState.CHANGE_CHANNEL.equals(state)) {
-            if (!WorldServer.getInstance().isCharacterListConnected(CharacterService.loadCharacterNames(c.getWorld(), c.getAccountData().getId()))) {
-                allowLogin = true;
-            }
-        }
-        if (!allowLogin) {
-            //  c.setPlayer(null);
-            // c.getSession().close();
-            // return;
-        }
-        ClientStorage.addClient(c);
         c.updateLoginState(LoginState.LOGIN_LOGGEDIN, c.getSessionIPAddress());
         channelServer.addPlayer(player);
 
@@ -107,9 +93,12 @@ public class InterServerHandler {
 
 
         try {
-            player.silentGiveBuffs(PlayerBuffStorage.getBuffsFromStorage(player.getId()));
-            player.giveCoolDowns(PlayerBuffStorage.getCooldownsFromStorage(player.getId()));
-            player.giveSilentDebuff(PlayerBuffStorage.getDiseaseFromStorage(player.getId()));
+            if (serverMigration != null) {
+                player.silentGiveBuffs(serverMigration.getBuffsFromStorage(player.getId()));
+                player.giveCoolDowns(serverMigration.getCooldownsFromStorage(player.getId()));
+                player.giveSilentDebuff(serverMigration.getDiseaseFromStorage(player.getId()));
+            }
+
 
             // Start of buddylist
             final int[] buddyIds = player.getBuddyList().getBuddyIds();

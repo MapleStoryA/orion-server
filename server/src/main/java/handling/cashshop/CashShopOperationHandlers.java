@@ -7,6 +7,7 @@ import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import database.CharacterService;
 import database.LoginState;
+import handling.ServerMigration;
 import handling.world.WorldServer;
 import handling.world.helper.CharacterTransfer;
 import tools.MaplePacketCreator;
@@ -23,7 +24,7 @@ public class CashShopOperationHandlers {
         c.updateLoginState(LoginState.LOGIN_SERVER_TRANSITION, c.getSessionIPAddress());
 
         try {
-            WorldServer.getInstance().getChangeChannelData(new CharacterTransfer(chr), chr.getId(), c.getChannel());
+            WorldServer.getInstance().getMigrationService().putMigrationEntry(new ServerMigration(chr.getId(), c.getAccountData(), c.getSessionIPAddress()));
             c.getSession().write(MaplePacketCreator.getChannelChange(Integer.parseInt(WorldServer.getInstance().getChannel(c.getChannel()).getPublicAddress().split(":")[1])));
         } catch (Exception ex) {
             log.error("Error leaving cash shop", ex);
@@ -33,9 +34,11 @@ public class CashShopOperationHandlers {
         }
     }
 
-    public static void enterCashShop(final int playerid, final MapleClient c) {
-        CharacterTransfer transfer = CashShopServer.getInstance().getPlayerStorage().getPendingCharacter(playerid);
+    public static void onEnterCashShop(final int characterId, final MapleClient c) {
+        ServerMigration serverMigration = WorldServer.getInstance().getMigrationService().getServerMigration(characterId, c.getSessionIPAddress());
+        CharacterTransfer transfer = serverMigration.getCharacterTransfer();
         if (transfer == null) {
+            log.error("Could not find the migration when entering cash shop: {}", c.getAccountData().getName());
             c.getSession().close();
             return;
         }
@@ -43,24 +46,6 @@ public class CashShopOperationHandlers {
 
         c.setPlayer(chr);
         c.loadAccountData(chr.getAccountID());
-
-        if (!c.checkClientIpAddress()) { // Remote hack
-            c.getSession().close();
-            return;
-        }
-
-        final LoginState state = c.getAccountData().getLoginState();
-        boolean allowLogin = false;
-        if (LoginState.LOGIN_SERVER_TRANSITION.equals(state) || LoginState.CHANGE_CHANNEL.equals(state)) {
-            if (!WorldServer.getInstance().isCharacterListConnected(CharacterService.loadCharacterNames(c.getWorld(), c.getAccountData().getId()))) {
-                allowLogin = true;
-            }
-        }
-        if (!allowLogin) {
-            c.setPlayer(null);
-            c.getSession().close();
-            return;
-        }
         c.updateLoginState(LoginState.LOGIN_LOGGEDIN, c.getSessionIPAddress());
         CashShopServer.getInstance().getPlayerStorage().registerPlayer(chr);
         c.getSession().write(MTSCSPacket.warpCS(c));

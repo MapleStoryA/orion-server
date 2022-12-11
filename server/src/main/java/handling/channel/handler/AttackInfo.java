@@ -27,7 +27,7 @@ import client.skill.SkillFactory;
 import constants.GameConstants;
 import server.AutobanManager;
 import server.MapleStatEffect;
-import tools.AttackPair;
+import client.AttackPair;
 
 import java.awt.*;
 import java.util.List;
