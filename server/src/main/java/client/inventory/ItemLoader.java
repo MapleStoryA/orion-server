@@ -24,6 +24,7 @@ package client.inventory;
 
 import constants.GameConstants;
 import database.DatabaseConnection;
+import lombok.extern.slf4j.Slf4j;
 import server.MerchItemPackage;
 import tools.Pair;
 
@@ -39,6 +40,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public enum ItemLoader {
 
     INVENTORY("inventoryitems", "inventoryequipment", 0, "characterid"),
@@ -214,6 +216,8 @@ public enum ItemLoader {
     public void saveItems(List<Pair<IItem, MapleInventoryType>> items, Integer... id) throws SQLException {
         try (Connection con = DatabaseConnection.getConnection();) {
             saveItems(items, con, id);
+        } catch (SQLException ex) {
+            log.error("Error while saving items", ex);
         }
     }
 

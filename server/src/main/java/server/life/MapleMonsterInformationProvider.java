@@ -26,6 +26,7 @@ import constants.GameConstants;
 import constants.ServerConstants;
 import database.DatabaseConnection;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -82,15 +83,15 @@ public class MapleMonsterInformationProvider {
             while (rs.next()) {
                 if (!mobIds.contains(Integer.valueOf(rs.getInt("dropperid")))) {
                     try {
-                        loadDrop(rs.getInt("dropperid"));
+                        loadDrop(con, rs.getInt("dropperid"));
                         mobIds.add(Integer.valueOf(rs.getInt("dropperid")));
                     } catch (Exception e) {
                         //ignore since i'm using bb drops
                     }
                 }
             }
-        } catch (SQLException ignore) {
-            System.err.println("Error retrieving drop" + ignore);
+        } catch (SQLException ex) {
+            log.error("Error loading MapleMonster information", ex);
         } finally {
             try {
                 if (ps != null) {
@@ -104,12 +105,12 @@ public class MapleMonsterInformationProvider {
         }
     }
 
-    private void loadDrop(int monsterId) {
+    private void loadDrop(Connection con, int monsterId) {
         ArrayList<MonsterDropEntry> ret = new ArrayList<>();
 
         PreparedStatement ps = null;
         ResultSet rs = null;
-        try (var con = DatabaseConnection.getConnection()) {
+        try {
             MapleMonsterStats mons = MapleLifeFactory.getMonsterStats(monsterId);
             if (mons == null) {
                 return;

@@ -473,9 +473,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             }
             MaplePortal portal = ret.map.getPortal(ret.initialSpawnPoint);
             if (portal == null) {
-                portal = ret.map.getPortal(0); // char is on a spawnpoint that
-                // doesn't exist - select the
-                // first spawnpoint instead
+                portal = ret.map.getPortal(0);
                 ret.initialSpawnPoint = 0;
             }
             ret.setPosition(portal.getPosition());
@@ -1198,6 +1196,10 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
 
+    /**
+     * TODO: This method is not ready and not executed as a transaction currently
+     * For now, it will autocommit, but once it's refactored it must ran as a transaction.
+     **/
     public void saveToDB(boolean dc, boolean fromcs) {
         var con = DatabaseConnection.getConnection();
         PreparedStatement ps = null;
@@ -1208,8 +1210,8 @@ public class MapleCharacter extends BaseMapleCharacter {
             petPosition += pet.getInventoryPosition() + ";";
         }
         try {
-            con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-            con.setAutoCommit(false);
+            //    con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+            //   con.setAutoCommit(false);
             ps = con.prepareStatement(
                     "UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?, `int` = ?, exp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, ap = ?, gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face = ?, map = ?, meso = ?, hpApUsed = ?, spawnpoint = ?, party = ?, buddyCapacity = ?, monsterbookcover = ?, dojo_pts = ?, dojoRecord = ?, pets = ?, subcategory = ?, marriageId = ?, name = ?, sp = ? WHERE id = ?",
                     DatabaseConnection.RETURN_GENERATED_KEYS);
@@ -1418,7 +1420,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             changed_skills = false;
             changed_reports = false;
 
-            con.commit();
+            //con.commit();
         } catch (Exception e) {
             e.printStackTrace();
             try {

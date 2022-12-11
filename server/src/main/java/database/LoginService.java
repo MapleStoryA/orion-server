@@ -1,17 +1,16 @@
 package database;
 
-import client.skill.EvanSkillPoints;
 import client.MapleJob;
 import client.inventory.IItem;
 import client.inventory.ItemLoader;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
+import client.skill.EvanSkillPoints;
 import lombok.extern.slf4j.Slf4j;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.result.ResultIterable;
 import tools.Pair;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -154,7 +153,7 @@ public class LoginService {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
-            log.error("error updating login state" + e);
+            log.error("error updating login state", e);
         }
     }
 
