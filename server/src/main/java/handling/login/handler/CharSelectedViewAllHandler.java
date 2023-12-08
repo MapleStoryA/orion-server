@@ -4,6 +4,7 @@ import client.MapleClient;
 import database.CharacterService;
 import database.LoginState;
 import handling.AbstractMaplePacketHandler;
+import handling.ServerMigration;
 import handling.world.WorldServer;
 import tools.MaplePacketCreator;
 import tools.data.input.CInPacket;
@@ -30,6 +31,14 @@ public class CharSelectedViewAllHandler extends AbstractMaplePacketHandler {
         if (c.getIdleTask() != null) {
             c.getIdleTask().cancel(true);
         }
+
+        WorldServer.getInstance()
+                .getMigrationService()
+                .putMigrationEntry(
+                        new ServerMigration(
+                                characterId, c.getAccountData(), c.getSessionIPAddress()));
+
+
         c.updateLoginState(LoginState.LOGIN_SERVER_TRANSITION, c.getSessionIPAddress());
         c.getSession()
                 .write(
