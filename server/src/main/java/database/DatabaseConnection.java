@@ -20,9 +20,10 @@ package database;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import server.config.ServerConfig;
+
 import java.sql.Connection;
 import java.sql.SQLException;
-import server.config.ServerConfig;
 
 @lombok.extern.slf4j.Slf4j
 public class DatabaseConnection {
@@ -56,18 +57,15 @@ public class DatabaseConnection {
         }
 
         var hikariConfig = new HikariConfig();
+
         hikariConfig.setJdbcUrl(config.getProperty("database.url"));
         hikariConfig.setUsername(config.getProperty("database.user"));
         hikariConfig.setPassword(config.getProperty("database.password"));
-
-        hikariConfig.setConnectionTimeout(30000);
-
-        hikariConfig.setIdleTimeout(10000);
-
+        hikariConfig.setConnectionTimeout(30 * 1000);
         hikariConfig.setMaximumPoolSize(30);
 
         hikariConfig.addDataSourceProperty("cachePrepStmts", "true");
-        hikariConfig.addDataSourceProperty("prepStmtCacheSize", "250");
+        hikariConfig.addDataSourceProperty("prepStmtCacheSize", "25");
         hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
         hikariConfig.setConnectionTestQuery("SELECT 1");
 
