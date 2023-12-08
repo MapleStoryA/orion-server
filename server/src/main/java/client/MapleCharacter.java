@@ -1584,10 +1584,6 @@ public class MapleCharacter extends BaseMapleCharacter {
                         : -mbsvh.getEffect().getSourceId());
     }
 
-    /*
-     * public final byte getFactionId() { return faction.getTeamId(); }
-     */
-
     public boolean isBuffFrom(MapleBuffStat stat, ISkill skill) {
         final MapleBuffStatValueHolder mbsvh = getEffects().get(stat);
         if (mbsvh == null) {

@@ -62,11 +62,7 @@ public class CharacterData implements Serializable {
     private int reborns;
     private int jumpLevel;
     private int jumpExp;
-    private int factionId;
     private int gainedMsi;
-    private int donatorPoints;
-    private int playerAutoReborn;
-    private int playerSuperDragon;
     private int agentPoints;
     private int contributedFP;
     private int sp;

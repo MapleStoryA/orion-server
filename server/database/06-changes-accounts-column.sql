@@ -17,3 +17,10 @@ ALTER TABLE orion.`characters` DROP COLUMN jobRankMove;
 
 ALTER TABLE orion.`characters` DROP INDEX ranking2;
 ALTER TABLE orion.`characters` DROP COLUMN gm;
+
+ALTER TABLE orion.`characters` DROP COLUMN reborns;
+ALTER TABLE orion.`characters` DROP COLUMN playerAutoReborn;
+ALTER TABLE orion.`characters` DROP COLUMN playerAutoReborn;
+
+ALTER TABLE orion.`characters` DROP COLUMN agentpoints;
+ALTER TABLE orion.`characters` DROP COLUMN donatorpoints;
