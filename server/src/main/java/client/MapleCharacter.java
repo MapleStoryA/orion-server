@@ -24,6 +24,7 @@ import client.skill.SkillMacro;
 import constants.FameStatus;
 import constants.GameConstants;
 import constants.JobConstants;
+import constants.JobUtils;
 import constants.MapConstants;
 import constants.ServerConstants;
 import constants.skills.BladeLord;
@@ -292,6 +293,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     private EventInstance newEventInstance;
     private EventInstanceManager eventInstance;
 
+
     private MapleCharacter(final boolean ChannelServer) {
         setStance(0);
         setPosition(new Point(0, 0));
@@ -300,7 +302,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         for (MapleInventoryType type : MapleInventoryType.values()) {
             inventory[type.ordinal()] = new MapleInventory(type);
         }
-        quests = new LinkedHashMap<MapleQuest, MapleQuestStatus>();
+        quests = new LinkedHashMap<>();
         stats = new PlayerStats(this);
         if (ChannelServer) {
             changed_reports = false;
@@ -336,7 +338,6 @@ public class MapleCharacter extends BaseMapleCharacter {
             controlled = new LinkedHashSet<>();
             summons = new LinkedHashMap<>();
             pendingCarnivalRequests = new LinkedList<>();
-
             questInfo = new LinkedHashMap<>();
             anti_cheat = new CheatTracker(this);
             pets = new ArrayList<>();
@@ -353,14 +354,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         ret.map = null;
         ret.exp = 0;
         ret.gmLevel = 0;
-        ret.job =
-                MapleJob.getById(
-                        (short)
-                                (type == 1
-                                        ? 0
-                                        : (type == 0
-                                        ? 1000
-                                        : (type == 3 ? 2001 : (type == 4 ? 3000 : 2000)))));
+        ret.job = JobUtils.mapTypeToJob(type);
         ret.meso = 0;
         ret.level = 1;
         ret.remainingAp = 0;
