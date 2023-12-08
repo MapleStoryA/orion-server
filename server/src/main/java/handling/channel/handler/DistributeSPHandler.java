@@ -8,16 +8,16 @@ import client.skill.ISkill;
 import client.skill.SkillFactory;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class DistributeSPHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
 
-        slea.skip(4);
-        int skillid = slea.readInt();
+        packet.skip(4);
+        int skillid = packet.readInt();
         MapleCharacter player = c.getPlayer();
         ISkill skill = SkillFactory.getSkill(skillid);
         int curLevel = player.getSkillLevel(skill);

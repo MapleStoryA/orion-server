@@ -4,25 +4,25 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.skill.SkillMacro;
 import handling.AbstractMaplePacketHandler;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class ChangeSkillMacroHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        final int num = slea.readByte();
+        final int num = packet.readByte();
         String name;
         int shout, skill1, skill2, skill3;
         SkillMacro macro;
 
         for (int i = 0; i < num; i++) {
-            name = slea.readMapleAsciiString();
-            shout = slea.readByte();
-            skill1 = slea.readInt();
-            skill2 = slea.readInt();
-            skill3 = slea.readInt();
+            name = packet.readMapleAsciiString();
+            shout = packet.readByte();
+            skill1 = packet.readInt();
+            skill2 = packet.readInt();
+            skill3 = packet.readInt();
 
             macro = new SkillMacro(skill1, skill2, skill3, name, shout, i);
             chr.getSkillMacros().updateMacros(i, macro);

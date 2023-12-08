@@ -7,7 +7,7 @@ package tools.data.input;
  * @version 1.0
  * @since Revision 299
  */
-public interface SeekableLittleEndianAccessor extends LittleEndianAccessor {
+public interface CInPacket extends LittleEndianAccessor {
 
     /**
      * Seeks the stream by <code>offset</code>

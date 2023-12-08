@@ -7,15 +7,15 @@ import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class FaceExpressionHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        final int emote = slea.readInt();
+        final int emote = packet.readInt();
         if (emote > 7) {
             final int emoteid = 5159992 + emote;
             final MapleInventoryType type = GameConstants.getInventoryType(emoteid);

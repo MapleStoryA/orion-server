@@ -12,7 +12,7 @@ import handling.world.helper.FindCommand;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import handling.world.party.PartyManager;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.packet.MapleUserPackets;
 
 @lombok.extern.slf4j.Slf4j
@@ -29,16 +29,16 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
     public static final int MOVE_TO_NEW_PARTY = 0x34;
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null || chr.getMap() == null) {
             return;
         }
 
-        final byte mode = slea.readByte();
+        final byte mode = packet.readByte();
         switch (mode) {
             case CREATING:
-                final ExpeditionType et = ExpeditionType.getById(slea.readInt());
+                final ExpeditionType et = ExpeditionType.getById(packet.readInt());
                 if (chr.getParty() != null || et == null) {
                     c.getSession().write(MapleUserPackets.partyStatusMessage(PartyHandlerUtils.ALREADY_JOINED));
                     return;
@@ -54,7 +54,7 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                         .write(MapleUserPackets.showExpedition(PartyManager.getExped(party.getExpeditionId()), true, false));
                 break;
             case INVITE:
-                final String name = slea.readMapleAsciiString();
+                final String name = packet.readMapleAsciiString();
                 int theCh = FindCommand.findChannel(name);
                 if (theCh <= 0) {
                     c.getSession().write(MapleUserPackets.expeditionStatusMessage(0, name));
@@ -79,8 +79,8 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                 }
                 break;
             case RESPONSE:
-                final String recvName = slea.readMapleAsciiString();
-                final int action = slea.readInt(); // 7 = send invite, 8 = accept, 9
+                final String recvName = packet.readMapleAsciiString();
+                final int action = packet.readInt(); // 7 = send invite, 8 = accept, 9
                 // = deny
 
                 int theChh = FindCommand.findChannel(recvName);
@@ -150,7 +150,7 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                         cfrom.dropMessage(5, "'" + chr.getName() + " has declined the expedition invitation.");
                     }
                 } else {
-                    log.info("Unhandled Expedition Operation found: " + slea);
+                    log.info("Unhandled Expedition Operation found: " + packet);
                 }
                 break;
             case LEAVE:
@@ -197,7 +197,7 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                 }
                 final MapleExpedition currexped = PartyManager.getExped(currentParty.getExpeditionId());
                 if (currexped != null && currexped.getLeader() == chr.getId()) {
-                    final int toKick = slea.readInt();
+                    final int toKick = packet.readInt();
                     for (Integer i : currexped.getParties()) {
                         final MapleParty partyy = PartyManager.getParty(i);
                         if (partyy != null) {
@@ -223,7 +223,7 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                 }
                 final MapleExpedition expedd = PartyManager.getExped(mparty.getExpeditionId());
                 if (expedd != null && expedd.getLeader() == chr.getId()) {
-                    final int cid = slea.readInt();
+                    final int cid = packet.readInt();
                     final MaplePartyCharacter newleader = mparty.getMemberById(cid);
                     if (newleader != null) {
                         PartyManager.updateParty(mparty.getId(), PartyOperation.CHANGE_LEADER, newleader);
@@ -241,7 +241,7 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                 }
                 MapleExpedition expedit = PartyManager.getExped(mparty1.getExpeditionId());
                 if (expedit != null && expedit.getLeader() == chr.getId()) {
-                    final int toCid = slea.readInt();
+                    final int toCid = packet.readInt();
                     for (Integer i : expedit.getParties()) {
                         final MapleParty par = PartyManager.getParty(i);
                         if (par != null) {
@@ -267,9 +267,9 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
                 if (nowExped == null || nowExped.getLeader() != chr.getId()) {
                     break;
                 }
-                final int partyIndexTo = slea.readInt();
+                final int partyIndexTo = packet.readInt();
                 if (partyIndexTo < nowExped.getType().maxParty && partyIndexTo <= nowExped.getParties().size()) {
-                    final int Tcid = slea.readInt();
+                    final int Tcid = packet.readInt();
                     for (Integer i : nowExped.getParties()) {
                         final MapleParty par = PartyManager.getParty(i);
                         if (par == null) {

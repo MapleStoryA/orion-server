@@ -4,15 +4,15 @@ import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class FollowRequestHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        MapleCharacter tt = c.getPlayer().getMap().getCharacterById(slea.readInt());
-        if (slea.readByte() > 0) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        MapleCharacter tt = c.getPlayer().getMap().getCharacterById(packet.readInt());
+        if (packet.readByte() > 0) {
             // 1 when changing map
             tt = c.getPlayer().getMap().getCharacterById(c.getPlayer().getFollowId());
             if (tt != null && tt.getFollowId() == c.getPlayer().getId()) {
@@ -23,7 +23,7 @@ public class FollowRequestHandler extends AbstractMaplePacketHandler {
             }
             return;
         }
-        if (slea.readByte() > 0) { // cancelling follow
+        if (packet.readByte() > 0) { // cancelling follow
             tt = c.getPlayer().getMap().getCharacterById(c.getPlayer().getFollowId());
             if (tt != null && tt.getFollowId() == c.getPlayer().getId() && c.getPlayer().isFollowOn()) {
                 c.getPlayer().checkFollow();

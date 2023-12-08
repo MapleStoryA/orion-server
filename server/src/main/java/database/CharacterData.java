@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-import tools.data.output.MaplePacketLittleEndianWriter;
+import tools.data.output.COutPacket;
 
 @Setter
 @Getter
@@ -87,15 +87,15 @@ public class CharacterData implements Serializable {
         return this.getJob() == MapleJob.GM.getId() || this.getJob() == MapleJob.SUPERGM.getId();
     }
 
-    public final void connectData(final MaplePacketLittleEndianWriter mplew) {
-        mplew.writeShort(str); // str
-        mplew.writeShort(dex); // dex
-        mplew.writeShort(int_); // int
-        mplew.writeShort(luk); // luk
-        mplew.writeShort(hp); // hp
-        mplew.writeShort(maxHp); // maxhp
-        mplew.writeShort(mp); // mp
-        mplew.writeShort(maxHp); // maxmp
+    public final void connectData(final COutPacket packet) {
+        packet.writeShort(str); // str
+        packet.writeShort(dex); // dex
+        packet.writeShort(int_); // int
+        packet.writeShort(luk); // luk
+        packet.writeShort(hp); // hp
+        packet.writeShort(maxHp); // maxhp
+        packet.writeShort(mp); // mp
+        packet.writeShort(maxHp); // maxmp
     }
 
     public final MapleInventory getInventory(MapleInventoryType type) {

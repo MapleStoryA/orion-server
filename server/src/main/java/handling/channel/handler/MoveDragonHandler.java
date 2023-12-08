@@ -6,7 +6,7 @@ import handling.AbstractMaplePacketHandler;
 import server.maps.MapleMap;
 import server.movement.MovePath;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 import java.awt.*;
 
@@ -14,10 +14,10 @@ import java.awt.*;
 public class MoveDragonHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         final MovePath path = new MovePath();
-        path.decode(slea);
+        path.decode(packet);
         if (chr != null && chr.getDragon() != null) {
             final Point pos = chr.getDragon().getPosition();
             updatePosition(path, chr.getDragon(), 0);

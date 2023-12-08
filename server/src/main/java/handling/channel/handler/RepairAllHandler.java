@@ -7,7 +7,7 @@ import client.inventory.MapleInventoryType;
 import handling.AbstractMaplePacketHandler;
 import server.MapleItemInformationProvider;
 import tools.ArrayMap;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -16,7 +16,7 @@ import java.util.Map.Entry;
 public class RepairAllHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         if (c.getPlayer().getMapId() != 240000000) {
             return;
         }

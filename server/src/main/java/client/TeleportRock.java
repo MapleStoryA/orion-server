@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import lombok.Getter;
-import tools.data.output.MaplePacketLittleEndianWriter;
+import tools.data.output.COutPacket;
 
 public class TeleportRock {
 
@@ -49,13 +49,13 @@ public class TeleportRock {
         return map_ids.stream().mapToInt(Integer::intValue).toArray();
     }
 
-    public void encode(MaplePacketLittleEndianWriter mplew) {
+    public void encode(COutPacket packet) {
         var l = new ArrayList<>(map_ids);
         for (int i = 0; i < maxMaps; i++) {
             if (i < l.size()) {
-                mplew.writeInt(l.get(i));
+                packet.writeInt(l.get(i));
             } else {
-                mplew.writeInt(999999999);
+                packet.writeInt(999999999);
             }
         }
     }

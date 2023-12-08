@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
-import tools.data.output.MaplePacketLittleEndianWriter;
+import tools.data.output.COutPacket;
 import tools.packet.MonsterBookPacket;
 
 @lombok.extern.slf4j.Slf4j
@@ -111,22 +111,22 @@ public class MonsterBook implements Serializable {
         }
     }
 
-    public final void addCardPacket(final MaplePacketLittleEndianWriter mplew) {
-        mplew.writeShort(cards.size());
+    public final void addCardPacket(final COutPacket packet) {
+        packet.writeShort(cards.size());
 
         for (Entry<Integer, Integer> all : cards.entrySet()) {
-            mplew.writeShort(GameConstants.getCardShortId(all.getKey())); // Id
-            mplew.write(all.getValue()); // Level
+            packet.writeShort(GameConstants.getCardShortId(all.getKey())); // Id
+            packet.write(all.getValue()); // Level
         }
     }
 
     public final void addCharInfoPacket(
-            final int bookcover, final MaplePacketLittleEndianWriter mplew) {
-        mplew.writeInt(BookLevel);
-        mplew.writeInt(NormalCard);
-        mplew.writeInt(SpecialCard);
-        mplew.writeInt(NormalCard + SpecialCard);
-        mplew.writeInt(MapleItemInformationProvider.getInstance().getCardMobId(bookcover));
+            final int bookcover, final COutPacket packet) {
+        packet.writeInt(BookLevel);
+        packet.writeInt(NormalCard);
+        packet.writeInt(SpecialCard);
+        packet.writeInt(NormalCard + SpecialCard);
+        packet.writeInt(MapleItemInformationProvider.getInstance().getCardMobId(bookcover));
     }
 
     public final void updateCard(final MapleClient c, final int cardid) {

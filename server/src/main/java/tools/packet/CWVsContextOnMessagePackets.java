@@ -3,59 +3,59 @@ package tools.packet;
 import client.MapleJob;
 import client.MapleQuestStatus;
 import handling.SendPacketOpcode;
-import tools.data.output.MaplePacketLittleEndianWriter;
+import tools.data.output.COutPacket;
 
 
 @lombok.extern.slf4j.Slf4j
 public class CWVsContextOnMessagePackets {
 
     public static byte[] onQuestRecordMessage(final MapleQuestStatus quest) {
-        final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        final COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
-        mplew.write(1);
-        mplew.writeShort(quest.getQuest().getId());
-        mplew.write(quest.getStatus());
+        packet.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
+        packet.write(1);
+        packet.writeShort(quest.getQuest().getId());
+        packet.write(quest.getStatus());
         switch (quest.getStatus()) {
             case 0:
-                mplew.writeZeroBytes(10);
+                packet.writeZeroBytes(10);
                 break;
             case 1:
-                mplew.writeMapleAsciiString(quest.getCustomData() != null ? quest.getCustomData() : "");
+                packet.writeMapleAsciiString(quest.getCustomData() != null ? quest.getCustomData() : "");
                 break;
             case 2:
-                mplew.writeLong(PacketHelper.getTime(System.currentTimeMillis()));
+                packet.writeLong(PacketHelper.getTime(System.currentTimeMillis()));
                 break;
         }
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] onIncGPMessage(int points) {
-        final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
-        mplew.write(MessageTypes.OnIncGPMessage);
-        mplew.writeInt(points);
+        final COutPacket packet = new COutPacket();
+        packet.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
+        packet.write(MessageTypes.OnIncGPMessage);
+        packet.writeInt(points);
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] onGiveBuffMessage(int itemId) {
-        final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
-        mplew.write(MessageTypes.OnOnGiveBuffMessage);
-        mplew.writeInt(itemId);
+        final COutPacket packet = new COutPacket();
+        packet.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
+        packet.write(MessageTypes.OnOnGiveBuffMessage);
+        packet.writeInt(itemId);
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] onIncSpMessage(MapleJob job, int amount) {
-        final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
-        mplew.write(MessageTypes.OnIncSPMessage);
-        mplew.writeShort(job.getId());
-        mplew.write(amount);
-        return mplew.getPacket();
+        final COutPacket packet = new COutPacket();
+        packet.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
+        packet.write(MessageTypes.OnIncSPMessage);
+        packet.writeShort(job.getId());
+        packet.write(amount);
+        return packet.getPacket();
     }
 
     /**
@@ -65,11 +65,11 @@ public class CWVsContextOnMessagePackets {
      * @return
      */
     public static byte[] onIncPOPMessage(int amount) {
-        final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
-        mplew.write(MessageTypes.OnIncPOPMessage);
-        mplew.writeInt(amount);
-        return mplew.getPacket();
+        final COutPacket packet = new COutPacket();
+        packet.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
+        packet.write(MessageTypes.OnIncPOPMessage);
+        packet.writeInt(amount);
+        return packet.getPacket();
     }
 
     static final class MessageTypes {

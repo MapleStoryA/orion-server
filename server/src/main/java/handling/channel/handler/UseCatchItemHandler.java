@@ -9,18 +9,18 @@ import server.MapleInventoryManipulator;
 import server.life.MapleMonster;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UseCatchItemHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        c.getPlayer().updateTick(slea.readInt());
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        c.getPlayer().updateTick(packet.readInt());
         MapleCharacter chr = c.getPlayer();
-        final byte slot = (byte) slea.readShort();
-        final int itemid = slea.readInt();
-        final MapleMonster mob = chr.getMap().getMonsterByOid(slea.readInt());
+        final byte slot = (byte) packet.readShort();
+        final int itemid = packet.readInt();
+        final MapleMonster mob = chr.getMap().getMonsterByOid(packet.readInt());
         final IItem toUse = chr.getInventory(MapleInventoryType.USE).getItem(slot);
 
         if (toUse != null && toUse.getQuantity() > 0 && toUse.getItemId() == itemid && mob != null) {

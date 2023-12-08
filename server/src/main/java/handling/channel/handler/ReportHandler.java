@@ -3,18 +3,18 @@ package handling.channel.handler;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.packet.ReportPackets;
 
 @lombok.extern.slf4j.Slf4j
 public class ReportHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        slea.readByte();
-        String victim = slea.readMapleAsciiString();
-        slea.readByte();
-        String description = slea.readMapleAsciiString();
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        packet.readByte();
+        String victim = packet.readMapleAsciiString();
+        packet.readByte();
+        String description = packet.readMapleAsciiString();
         if (c.getPlayer().getPossibleReports() > 0) {
             if (c.getPlayer().getMeso() > 349) {
                 c.getPlayer().gainMeso(349, true);

@@ -1,6 +1,6 @@
 package server.movement;
 
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.data.output.LittleEndianWriter;
 
 import java.awt.*;
@@ -18,7 +18,7 @@ public class MovePath {
     public List<Elem> lElem = new LinkedList<Elem>();
     public Point startPosition, velocity;
 
-    public void decode(SeekableLittleEndianAccessor lea) {
+    public void decode(CInPacket lea) {
         startPosition = lea.readPos();
         velocity = lea.readPos();
         byte size = lea.readByte();

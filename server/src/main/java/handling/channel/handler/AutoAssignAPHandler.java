@@ -9,26 +9,26 @@ import java.util.ArrayList;
 import java.util.List;
 import tools.MaplePacketCreator;
 import tools.Pair;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class AutoAssignAPHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        chr.updateTick(slea.readInt());
-        slea.skip(4);
-        if (slea.available() < 16) {
-            log.info("AutoAssignAP : \n" + slea.toString(true));
-            final String msg = "AutoAssignAP : \n" + slea.toString(true);
+        chr.updateTick(packet.readInt());
+        packet.skip(4);
+        if (packet.available() < 16) {
+            log.info("AutoAssignAP : \n" + packet.toString(true));
+            final String msg = "AutoAssignAP : \n" + packet.toString(true);
             log.info("Log_Packet_Except.rtf" + " : " + msg);
             return;
         }
-        final int PrimaryStat = slea.readInt();
-        final int amount = slea.readInt();
-        final int SecondaryStat = slea.readInt();
-        final int amount2 = slea.readInt();
+        final int PrimaryStat = packet.readInt();
+        final int amount = packet.readInt();
+        final int SecondaryStat = packet.readInt();
+        final int amount2 = packet.readInt();
         if (amount < 0 || amount2 < 0) {
             return;
         }

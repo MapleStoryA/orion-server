@@ -10,7 +10,7 @@ import server.maps.MapleMap;
 import server.movement.MovePath;
 import tools.Pair;
 import tools.Randomizer;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.packet.MobPacket;
 
 import java.awt.*;
@@ -19,7 +19,7 @@ import java.awt.*;
 public class MoveLifeHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null || chr.getMap() == null) {
             return; // ?

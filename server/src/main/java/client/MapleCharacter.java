@@ -125,6 +125,7 @@ import tools.Pair;
 import tools.Randomizer;
 import tools.StringUtil;
 import tools.Triple;
+import tools.data.output.COutPacket;
 import tools.packet.CWVsContextOnMessagePackets;
 import tools.packet.MTSCSPacket;
 import tools.packet.MapleUserPackets;
@@ -1541,12 +1542,12 @@ public class MapleCharacter extends BaseMapleCharacter {
         return playerRandomStream;
     }
 
-    public final void QuestInfoPacket(final tools.data.output.MaplePacketLittleEndianWriter mplew) {
-        mplew.writeShort(questInfo.size());
+    public final void QuestInfoPacket(final COutPacket packet) {
+        packet.writeShort(questInfo.size());
 
         for (final Entry<Integer, String> q : questInfo.entrySet()) {
-            mplew.writeShort(q.getKey());
-            mplew.writeMapleAsciiString(q.getValue() == null ? "" : q.getValue());
+            packet.writeShort(q.getKey());
+            packet.writeMapleAsciiString(q.getValue() == null ? "" : q.getValue());
         }
     }
 

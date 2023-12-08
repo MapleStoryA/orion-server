@@ -9,7 +9,7 @@ import handling.world.guild.GuildManager;
 import handling.world.guild.MapleGuild;
 import handling.world.guild.MapleGuildResponse;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 import java.util.Iterator;
 
@@ -17,7 +17,7 @@ import java.util.Iterator;
 public class GuildOperationHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         if (System.currentTimeMillis() >= GuildHandlerUtils.nextPruneTime) {
             Iterator<Invited> itr = GuildHandlerUtils.invited.iterator();
             Invited inv;
@@ -30,7 +30,7 @@ public class GuildOperationHandler extends AbstractMaplePacketHandler {
             GuildHandlerUtils.nextPruneTime = System.currentTimeMillis() + 20 * 60 * 1000;
         }
 
-        switch (slea.readByte()) {
+        switch (packet.readByte()) {
             case 0x02: // Create guild
                 if (c.getPlayer().getGuildId() > 0 || c.getPlayer().getMapId() != 200000301) {
                     c.getPlayer().dropMessage(1, "You cannot create a new Guild while in one.");
@@ -39,7 +39,7 @@ public class GuildOperationHandler extends AbstractMaplePacketHandler {
                     c.getPlayer().dropMessage(1, "You do not have enough mesos to create a Guild.");
                     return;
                 }
-                final String guildName = slea.readMapleAsciiString();
+                final String guildName = packet.readMapleAsciiString();
 
                 if (!GuildHandlerUtils.isGuildNameAcceptable(guildName)) {
                     c.getPlayer().dropMessage(1, "The Guild name you have chosen is not accepted.");
@@ -63,7 +63,7 @@ public class GuildOperationHandler extends AbstractMaplePacketHandler {
                 if (c.getPlayer().getGuildId() <= 0 || c.getPlayer().getGuildRank() > 2) { // 1 == guild master, 2 == jr
                     return;
                 }
-                String name = slea.readMapleAsciiString();
+                String name = packet.readMapleAsciiString();
                 final MapleGuildResponse mgr = MapleGuild.sendInvite(c, name);
 
                 if (mgr != null) {
@@ -79,8 +79,8 @@ public class GuildOperationHandler extends AbstractMaplePacketHandler {
                 if (c.getPlayer().getGuildId() > 0) {
                     return;
                 }
-                guildId = slea.readInt();
-                int cid = slea.readInt();
+                guildId = packet.readInt();
+                int cid = packet.readInt();
 
                 if (cid != c.getPlayer().getId()) {
                     return;
@@ -115,8 +115,8 @@ public class GuildOperationHandler extends AbstractMaplePacketHandler {
                 }
                 break;
             case 0x07: // leaving
-                cid = slea.readInt();
-                name = slea.readMapleAsciiString();
+                cid = packet.readInt();
+                name = packet.readMapleAsciiString();
 
                 if (cid != c.getPlayer().getId() || !name.equals(c.getPlayer().getName()) || c.getPlayer().getGuildId() <= 0) {
                     return;
@@ -125,8 +125,8 @@ public class GuildOperationHandler extends AbstractMaplePacketHandler {
                 c.getSession().write(MaplePacketCreator.showGuildInfo(null));
                 break;
             case 0x08: // Expel
-                cid = slea.readInt();
-                name = slea.readMapleAsciiString();
+                cid = packet.readInt();
+                name = packet.readMapleAsciiString();
 
                 if (c.getPlayer().getGuildRank() > 2 || c.getPlayer().getGuildId() <= 0) {
                     return;
@@ -139,14 +139,14 @@ public class GuildOperationHandler extends AbstractMaplePacketHandler {
                 }
                 String[] ranks = new String[5];
                 for (int i = 0; i < 5; i++) {
-                    ranks[i] = slea.readMapleAsciiString();
+                    ranks[i] = packet.readMapleAsciiString();
                 }
 
                 GuildManager.changeRankTitle(c.getPlayer().getGuildId(), ranks);
                 break;
             case 0x0e: // Rank change
-                cid = slea.readInt();
-                byte newRank = slea.readByte();
+                cid = packet.readInt();
+                byte newRank = packet.readByte();
 
                 if ((newRank <= 1 || newRank > 5) || c.getPlayer().getGuildRank() > 2 || (newRank <= 2 && c.getPlayer().getGuildRank() != 1) || c.getPlayer().getGuildId() <= 0) {
                     return;
@@ -163,10 +163,10 @@ public class GuildOperationHandler extends AbstractMaplePacketHandler {
                     c.getPlayer().dropMessage(1, "You do not have enough mesos to create a Guild.");
                     return;
                 }
-                final short bg = slea.readShort();
-                final byte bgcolor = slea.readByte();
-                final short logo = slea.readShort();
-                final byte logocolor = slea.readByte();
+                final short bg = packet.readShort();
+                final byte bgcolor = packet.readByte();
+                final short logo = packet.readShort();
+                final byte logocolor = packet.readByte();
 
                 GuildManager.setGuildEmblem(c.getPlayer().getGuildId(), bg, bgcolor, logo, logocolor);
 
@@ -174,7 +174,7 @@ public class GuildOperationHandler extends AbstractMaplePacketHandler {
                 GuildHandlerUtils.respawnPlayer(c.getPlayer());
                 break;
             case 0x10: // guild notice change
-                final String notice = slea.readMapleAsciiString();
+                final String notice = packet.readMapleAsciiString();
                 if (notice.length() > 100 || c.getPlayer().getGuildId() <= 0 || c.getPlayer().getGuildRank() > 2) {
                     return;
                 }

@@ -8,7 +8,7 @@ import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,12 +44,12 @@ public class ItemGatherHandler extends AbstractMaplePacketHandler {
     }
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         // [41 00] [E5 1D 55 00] [01]
         // [32 00] [01] [01] // Sent after
 
-        c.getPlayer().updateTick(slea.readInt());
-        final byte mode = slea.readByte();
+        c.getPlayer().updateTick(packet.readInt());
+        final byte mode = packet.readByte();
         final MapleInventoryType invType = MapleInventoryType.getByType(mode);
         MapleInventory Inv = c.getPlayer().getInventory(invType);
 

@@ -4,16 +4,16 @@ import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MesoDropHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        chr.updateTick(slea.readInt());
-        int meso = slea.readInt();
+        chr.updateTick(packet.readInt());
+        int meso = packet.readInt();
 
 
         if (!chr.isAlive() || (meso < 10 || meso > 50000) || (meso > chr.getMeso())) {

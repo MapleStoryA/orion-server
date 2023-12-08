@@ -6,7 +6,7 @@ import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import handling.AbstractMaplePacketHandler;
 import server.MapleItemInformationProvider;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 import java.util.Map;
 
@@ -14,11 +14,11 @@ import java.util.Map;
 public class RepairHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        if (c.getPlayer().getMapId() != 240000000 || slea.available() < 4) { //leafre for now
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        if (c.getPlayer().getMapId() != 240000000 || packet.available() < 4) { //leafre for now
             return;
         }
-        final int position = slea.readInt(); //who knows why this is a int
+        final int position = packet.readInt(); //who knows why this is a int
         final MapleInventoryType type = position < 0 ? MapleInventoryType.EQUIPPED : MapleInventoryType.EQUIP;
         final IItem item = c.getPlayer().getInventory(type).getItem((byte) position);
         if (item == null) {

@@ -8,19 +8,19 @@ import constants.skills.BladeMaster;
 import handling.AbstractMaplePacketHandler;
 import server.TimerManager;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class SkillEffectHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        final int skill_id = slea.readInt();
-        final byte level = slea.readByte();
-        final byte flags = slea.readByte();
-        final byte speed = slea.readByte();
-        final byte unk = slea.readByte(); // Added on v.82
+        final int skill_id = packet.readInt();
+        final byte level = packet.readByte();
+        final byte flags = packet.readByte();
+        final byte speed = packet.readByte();
+        final byte unk = packet.readByte(); // Added on v.82
 
         final ISkill skill = SkillFactory.getSkill(skill_id);
         if (chr == null) {

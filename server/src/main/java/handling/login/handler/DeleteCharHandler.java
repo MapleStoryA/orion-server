@@ -3,16 +3,16 @@ package handling.login.handler;
 import client.MapleClient;
 import database.CharacterService;
 import handling.AbstractMaplePacketHandler;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.packet.LoginPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class DeleteCharHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        slea.readMapleAsciiString();
-        final int characterId = slea.readInt();
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        packet.readMapleAsciiString();
+        final int characterId = packet.readInt();
 
         if (!CharacterService.checkIfCharacterExist(c.getAccountData().getId(), characterId)) {
             c.getSession().close();

@@ -14,16 +14,16 @@ import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class RewardItemHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        final byte slot = (byte) slea.readShort();
-        final int itemId = slea.readInt();
+        final byte slot = (byte) packet.readShort();
+        final int itemId = packet.readInt();
         final IItem toUse =
                 c.getPlayer().getInventory(GameConstants.getInventoryType(itemId)).getItem(slot);
         c.getSession().write(MaplePacketCreator.enableActions());

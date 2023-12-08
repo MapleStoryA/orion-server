@@ -1,7 +1,7 @@
 package tools.packet;
 
 import handling.SendPacketOpcode;
-import tools.data.output.MaplePacketLittleEndianWriter;
+import tools.data.output.COutPacket;
 
 public final class NettsPyramid {
 
@@ -17,11 +17,11 @@ public final class NettsPyramid {
      * ps: expedia was here, don't remove my ign pl0x
      */
     public static byte[] updatePyramidInfo(NettsInfoType type, int amount) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(SendPacketOpcode.ENERGY.getValue());
-        mplew.writeMapleAsciiString(getTypeValue(type));
-        mplew.writeMapleAsciiString(Integer.toString(amount)); // Just like dojo, nexon sends it like this (30 + amount)
-        return mplew.getPacket();
+        COutPacket packet = new COutPacket();
+        packet.writeShort(SendPacketOpcode.ENERGY.getValue());
+        packet.writeMapleAsciiString(getTypeValue(type));
+        packet.writeMapleAsciiString(Integer.toString(amount)); // Just like dojo, nexon sends it like this (30 + amount)
+        return packet.getPacket();
     }
 
     private static String getTypeValue(NettsInfoType type) {

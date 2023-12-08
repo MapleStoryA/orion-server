@@ -4,14 +4,14 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import scripting.EventManager;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class RequestBoatStatusHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient client) {
-        int mapId = slea.readInt();
+    public void handlePacket(CInPacket packet, MapleClient client) {
+        int mapId = packet.readInt();
 
         if (client.getPlayer().getMap().getId() == mapId) {
 

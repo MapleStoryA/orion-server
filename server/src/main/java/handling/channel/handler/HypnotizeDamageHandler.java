@@ -4,19 +4,19 @@ import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import server.life.MapleMonster;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class HypnotizeDamageHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        final MapleMonster mob_from = chr.getMap().getMonsterByOid(slea.readInt()); // From
-        slea.skip(4); // Player ID
-        final int to = slea.readInt(); // mobto
-        slea.skip(1); // Same as player damage, -1 = bump, integer = skill ID
-        final int damage = slea.readInt();
+        final MapleMonster mob_from = chr.getMap().getMonsterByOid(packet.readInt()); // From
+        packet.skip(4); // Player ID
+        final int to = packet.readInt(); // mobto
+        packet.skip(1); // Same as player damage, -1 = bump, integer = skill ID
+        final int damage = packet.readInt();
         // slea.skip(1); // Facing direction
         // slea.skip(4); // Some type of pos, damage display, I think
 

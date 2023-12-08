@@ -6,16 +6,16 @@ import handling.AbstractMaplePacketHandler;
 import server.life.MapleMonster;
 import server.maps.MapleNodes.MapleNodeInfo;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MobNodeHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        final MapleMonster mob_from = chr.getMap().getMonsterByOid(slea.readInt()); // From
-        final int newNode = slea.readInt();
+        final MapleMonster mob_from = chr.getMap().getMonsterByOid(packet.readInt()); // From
+        final int newNode = packet.readInt();
         final int nodeSize = chr.getMap().getNodes().size();
         if (mob_from != null && nodeSize > 0 && nodeSize >= newNode) {
             final MapleNodeInfo mni = chr.getMap().getNode(newNode);

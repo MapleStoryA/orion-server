@@ -13,13 +13,13 @@ import java.util.List;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class DistributeAPHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         final List<Pair<MapleStat, Integer>> statupdate =
                 new ArrayList<Pair<MapleStat, Integer>>(2);
@@ -27,12 +27,12 @@ public class DistributeAPHandler extends AbstractMaplePacketHandler {
                 .write(
                         MaplePacketCreator.updatePlayerStats(
                                 statupdate, true, chr.getJob().getId()));
-        chr.updateTick(slea.readInt());
+        chr.updateTick(packet.readInt());
 
         final PlayerStats stat = chr.getStat();
         final int job = chr.getJob().getId();
         if (chr.getRemainingAp() > 0) {
-            switch (slea.readInt()) {
+            switch (packet.readInt()) {
                 case 64: // Str
                     if (stat.getStr() >= 999) {
                         return;

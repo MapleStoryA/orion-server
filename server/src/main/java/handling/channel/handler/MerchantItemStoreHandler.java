@@ -6,7 +6,7 @@ import handling.AbstractMaplePacketHandler;
 import handling.channel.handler.utils.HiredMerchantHandlerUtils;
 import server.MapleInventoryManipulator;
 import server.MerchItemPackage;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.packet.PlayerShopPacket;
 
 @lombok.extern.slf4j.Slf4j
@@ -53,11 +53,11 @@ public class MerchantItemStoreHandler extends AbstractMaplePacketHandler {
     }
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         if (c.getPlayer() == null) {
             return;
         }
-        final byte operation = slea.readByte();
+        final byte operation = packet.readByte();
 
         switch (operation) {
             case 20: {

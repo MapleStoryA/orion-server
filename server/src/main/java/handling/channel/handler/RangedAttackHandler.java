@@ -14,13 +14,13 @@ import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MapleStatEffect;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class RangedAttackHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, final MapleClient c) {
+    public void handlePacket(CInPacket packet, final MapleClient c) {
         final MapleCharacter chr = c.getPlayer();
         if (chr == null) {
             return;
@@ -31,7 +31,7 @@ public class RangedAttackHandler extends AbstractMaplePacketHandler {
         }
         c.getPlayer().checkForDarkSight();
         final AttackInfo attack =
-                DamageParse.Modify_AttackCrit(DamageParse.parseDmgR(slea), chr, 2);
+                DamageParse.Modify_AttackCrit(DamageParse.parseDmgR(packet), chr, 2);
         if (!chr.getJob().isSkillBelongToJob(attack.skill, chr.isGameMaster())) {
             chr.dropMessage(5, "This skill cannot be used with the current job.");
             c.getSession().write(MaplePacketCreator.enableActions());

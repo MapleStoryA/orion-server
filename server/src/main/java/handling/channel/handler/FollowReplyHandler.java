@@ -4,19 +4,19 @@ import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class FollowReplyHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        if (c.getPlayer().getFollowId() > 0 && c.getPlayer().getFollowId() == slea.readInt()) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        if (c.getPlayer().getFollowId() > 0 && c.getPlayer().getFollowId() == packet.readInt()) {
             MapleCharacter tt = c.getPlayer().getMap().getCharacterById(c.getPlayer().getFollowId());
             if (tt != null && tt.getPosition().distanceSq(c.getPlayer().getPosition()) < 10000 && tt.getFollowId() == 0
                     && tt.getId() != c.getPlayer().getId()) { // estimate,
                 // should less
-                boolean accepted = slea.readByte() > 0;
+                boolean accepted = packet.readByte() > 0;
                 if (accepted) {
                     tt.setFollowId(c.getPlayer().getId());
                     tt.setFollowOn(true);

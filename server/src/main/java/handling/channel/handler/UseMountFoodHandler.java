@@ -9,17 +9,17 @@ import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UseMountFoodHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        c.getPlayer().updateTick(slea.readInt());
-        final byte slot = (byte) slea.readShort();
-        final int itemid = slea.readInt(); // 2260000 usually
+        c.getPlayer().updateTick(packet.readInt());
+        final byte slot = (byte) packet.readShort();
+        final int itemid = packet.readInt(); // 2260000 usually
         final IItem toUse = chr.getInventory(MapleInventoryType.USE).getItem(slot);
         final MapleMount mount = chr.getMount();
 

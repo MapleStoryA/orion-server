@@ -7,24 +7,24 @@ import handling.cashshop.CashShopOperationHandlers;
 import server.RandomRewards;
 import server.cashshop.CashItemFactory;
 import server.cashshop.CashItemInfo;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.packet.MTSCSPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class CsSurpriseHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         if (c.getPlayer().getCashInventory().getItemsSize() >= 100) {
             c.getSession().write(MTSCSPacket.sendCSFail(0x0A));
             CashShopOperationHandlers.doCSPackets(c);
             return;
         }
-        if (slea.available() <= 2) {
+        if (packet.available() <= 2) {
             CashShopOperationHandlers.doCSPackets(c);
             return;
         }
-        final int uniqueId = (int) slea.readLong();
+        final int uniqueId = (int) packet.readLong();
         final IItem box = c.getPlayer().getCashInventory().findByCashId(uniqueId);
         final CashItemInfo ciibox = CashItemFactory.getInstance().getItem(10102345);
         if (box != null && box.getQuantity() > 0 && box.getItemId() == 5222000 && ciibox != null) {

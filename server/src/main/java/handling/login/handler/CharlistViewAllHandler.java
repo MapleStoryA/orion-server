@@ -6,13 +6,13 @@ import database.CharacterService;
 import handling.AbstractMaplePacketHandler;
 import java.util.List;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class CharlistViewAllHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
 
         c.setWorld(0);
         c.setChannel(1);

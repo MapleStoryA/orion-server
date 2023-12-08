@@ -26,7 +26,7 @@ import server.StructPotentialItem;
 import server.StructSetItem;
 import server.StructSetItem.SetItem;
 import tools.MaplePacketCreator;
-import tools.data.output.MaplePacketLittleEndianWriter;
+import tools.data.output.COutPacket;
 
 @lombok.extern.slf4j.Slf4j
 @Getter
@@ -1364,15 +1364,15 @@ public class PlayerStats implements Serializable {
         shouldHealMP *= 2; // 1.5
     }
 
-    public final void connectData(final MaplePacketLittleEndianWriter mplew) {
-        mplew.writeShort(str); // str
-        mplew.writeShort(dex); // dex
-        mplew.writeShort(int_); // int
-        mplew.writeShort(luk); // luk
-        mplew.writeShort(hp); // hp
-        mplew.writeShort(maxhp); // maxhp
-        mplew.writeShort(mp); // mp
-        mplew.writeShort(maxmp); // maxmp
+    public final void connectData(final COutPacket packet) {
+        packet.writeShort(str); // str
+        packet.writeShort(dex); // dex
+        packet.writeShort(int_); // int
+        packet.writeShort(luk); // luk
+        packet.writeShort(hp); // hp
+        packet.writeShort(maxhp); // maxhp
+        packet.writeShort(mp); // mp
+        packet.writeShort(maxmp); // maxmp
     }
 
     public void setBersek(boolean value) {

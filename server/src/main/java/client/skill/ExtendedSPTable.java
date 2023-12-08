@@ -6,7 +6,7 @@
 package client.skill;
 
 import java.util.HashMap;
-import tools.data.output.MaplePacketLittleEndianWriter;
+import tools.data.output.COutPacket;
 
 /** @author Simon */
 @lombok.extern.slf4j.Slf4j
@@ -90,12 +90,12 @@ public class ExtendedSPTable {
         return res;
     }
 
-    public void addSPData(MaplePacketLittleEndianWriter mplew) {
-        mplew.write(getNonZeroSize());
+    public void addSPData(COutPacket packet) {
+        packet.write(getNonZeroSize());
         for (int i = 1; i < SPTable.size() + 1; i++) {
             if (SPTable.get(i) > 0) {
-                mplew.write(i);
-                mplew.write(SPTable.get(i));
+                packet.write(i);
+                packet.write(SPTable.get(i));
             }
         }
     }

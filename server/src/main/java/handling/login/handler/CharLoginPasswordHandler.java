@@ -7,7 +7,7 @@ import handling.login.LoginServer;
 import java.util.Calendar;
 import lombok.extern.slf4j.Slf4j;
 import tools.KoreanDateUtil;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.packet.LoginPacket;
 
 @Slf4j
@@ -21,9 +21,9 @@ public class CharLoginPasswordHandler implements MaplePacketHandler {
     }
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        final String login = slea.readMapleAsciiString();
-        final String pwd = normalizeStringPassword(slea.readMapleAsciiString());
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        final String login = packet.readMapleAsciiString();
+        final String pwd = normalizeStringPassword(packet.readMapleAsciiString());
 
         LoginResult result = c.login(login, pwd);
 

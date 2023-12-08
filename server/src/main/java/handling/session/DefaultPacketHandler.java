@@ -11,7 +11,7 @@ import server.config.ServerEnvironment;
 import tools.HexTool;
 import tools.data.input.ByteArrayByteStream;
 import tools.data.input.GenericSeekableLittleEndianAccessor;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @Slf4j
 public class DefaultPacketHandler {
@@ -57,7 +57,7 @@ public class DefaultPacketHandler {
 
     public static void handlePacket(
             final RecvPacketOpcode header,
-            final SeekableLittleEndianAccessor slea,
+            final CInPacket slea,
             final MapleClient c,
             boolean isCashShop) {
         switch (header) {

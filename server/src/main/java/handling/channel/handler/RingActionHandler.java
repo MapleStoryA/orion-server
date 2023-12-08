@@ -8,17 +8,17 @@ import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class RingActionHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        final byte mode = slea.readByte();
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        final byte mode = packet.readByte();
         if (mode == 0) {
-            final String name = slea.readMapleAsciiString();
-            final int itemid = slea.readInt();
+            final String name = packet.readMapleAsciiString();
+            final int itemid = packet.readInt();
             final int newItemId = 1112300 + (itemid - 2240004);
             final MapleCharacter chr = c.getChannelServer().getPlayerStorage().getCharacterByName(name);
             int errcode = 0;
@@ -49,9 +49,9 @@ public class RingActionHandler extends AbstractMaplePacketHandler {
         } else if (mode == 1) {
             c.getPlayer().setMarriageItemId(0);
         } else if (mode == 2) { // accept/deny proposal
-            final boolean accepted = slea.readByte() > 0;
-            final String name = slea.readMapleAsciiString();
-            final int id = slea.readInt();
+            final boolean accepted = packet.readByte() > 0;
+            final String name = packet.readMapleAsciiString();
+            final int id = packet.readInt();
             final MapleCharacter chr = c.getChannelServer().getPlayerStorage().getCharacterByName(name);
             if (c.getPlayer().getMarriageId() > 0 || chr == null || chr.getId() != id || chr.getMarriageItemId() <= 0
                     || !chr.haveItem(chr.getMarriageItemId(), 1) || chr.getMarriageId() > 0) {
@@ -81,7 +81,7 @@ public class RingActionHandler extends AbstractMaplePacketHandler {
             c.getSession().write(MaplePacketCreator.enableActions());
             chr.setMarriageItemId(0);
         } else if (mode == 3) { // drop, only works for ETC
-            final int itemId = slea.readInt();
+            final int itemId = packet.readInt();
             final MapleInventoryType type = GameConstants.getInventoryType(itemId);
             final IItem item = c.getPlayer().getInventory(type).findById(itemId);
             if (item != null && type == MapleInventoryType.ETC && itemId / 10000 == 421) {

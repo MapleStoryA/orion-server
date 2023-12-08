@@ -9,16 +9,16 @@ import client.inventory.PetDataFactory;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import tools.Randomizer;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.packet.PetPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class PetCommandHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        final byte petIndex = chr.getPetIndex((int) slea.readLong());
+        final byte petIndex = chr.getPetIndex((int) packet.readLong());
         if (petIndex == -1) {
             return;
         }
@@ -26,8 +26,8 @@ public class PetCommandHandler extends AbstractMaplePacketHandler {
         if (pet == null) {
             return;
         }
-        slea.skip(1);
-        byte command = slea.readByte();
+        packet.skip(1);
+        byte command = packet.readByte();
         if (pet.getPetItemId() == 5000042 && command == 1) {
             command = 9; // kino bug (sit replace with poop)
         }

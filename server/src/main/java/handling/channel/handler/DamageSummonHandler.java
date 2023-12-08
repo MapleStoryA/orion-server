@@ -6,7 +6,7 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import server.maps.MapleSummon;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 import java.util.Iterator;
 
@@ -14,11 +14,11 @@ import java.util.Iterator;
 public class DamageSummonHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        slea.skip(4);
-        final int unkByte = slea.readByte();
-        final int damage = slea.readInt();
-        final int monsterIdFrom = slea.readInt();
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        packet.skip(4);
+        final int unkByte = packet.readByte();
+        final int damage = packet.readInt();
+        final int monsterIdFrom = packet.readInt();
         // slea.readByte(); // stance
         MapleCharacter chr = c.getPlayer();
         final Iterator<MapleSummon> iter = chr.getSummons().values().iterator();

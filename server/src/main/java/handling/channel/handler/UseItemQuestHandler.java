@@ -9,7 +9,7 @@ import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.quest.MapleQuest;
 import tools.Pair;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 import java.util.List;
 
@@ -17,12 +17,12 @@ import java.util.List;
 public class UseItemQuestHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        final short slot = slea.readShort();
-        final int itemId = slea.readInt();
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        final short slot = packet.readShort();
+        final int itemId = packet.readInt();
         final IItem item = c.getPlayer().getInventory(MapleInventoryType.ETC).getItem(slot);
-        final short qid = slea.readShort();
-        slea.readShort();
+        final short qid = packet.readShort();
+        packet.readShort();
         final MapleQuest quest = MapleQuest.getInstance(qid);
         final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         Pair<Integer, List<Integer>> questItemInfo = null;
@@ -37,7 +37,7 @@ public class UseItemQuestHandler extends AbstractMaplePacketHandler {
             }
         }
         if (quest != null && found && item != null && item.getQuantity() > 0 && item.getItemId() == itemId) {
-            final int newData = slea.readInt();
+            final int newData = packet.readInt();
             final MapleQuestStatus stats = c.getPlayer().getQuestNoAdd(quest);
             if (stats != null && stats.getStatus() == 1) {
                 stats.setCustomData(String.valueOf(newData));

@@ -6,15 +6,15 @@ import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UseItemEffectHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        int itemId = slea.readInt();
+        int itemId = packet.readInt();
         final IItem toUse = chr.getInventory(MapleInventoryType.CASH).findById(itemId);
         if (toUse == null || toUse.getItemId() != itemId || toUse.getQuantity() < 1) {
             c.getSession().write(MaplePacketCreator.enableActions());

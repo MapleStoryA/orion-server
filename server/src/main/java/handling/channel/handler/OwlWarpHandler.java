@@ -8,7 +8,7 @@ import server.maps.MapleMapObjectType;
 import server.shops.HiredMerchant;
 import server.shops.IMaplePlayerShop;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.packet.PlayerShopPacket;
 
 import java.util.List;
@@ -21,12 +21,12 @@ public class OwlWarpHandler extends AbstractMaplePacketHandler {
 
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         c.getSession().write(MaplePacketCreator.enableActions());
         if (c.getPlayer().getMapId() >= 910000000 && c.getPlayer().getMapId() <= 910000022
                 && c.getPlayer().getPlayerShop() == null) {
-            final int id = slea.readInt();
-            final int map = slea.readInt();
+            final int id = packet.readInt();
+            final int map = packet.readInt();
             if (map >= 910000001 && map <= 910000022) {
                 final MapleMap mapp = c.getChannelServer().getMapFactory().getMap(map);
                 c.getPlayer().changeMap(mapp, mapp.getPortal(0));

@@ -9,16 +9,16 @@ import handling.world.expedition.MapleExpedition;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import handling.world.party.PartyManager;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.packet.MapleUserPackets;
 
 @lombok.extern.slf4j.Slf4j
 public class PartyOperationHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
 
-        final int operation = slea.readByte();
+        final int operation = packet.readByte();
         final MapleCharacter chr = c.getPlayer();
         final MaplePartyCharacter partyplayer = new MaplePartyCharacter(chr);
         MapleParty party = chr.getParty();
@@ -112,7 +112,7 @@ public class PartyOperationHandler extends AbstractMaplePacketHandler {
                 chr.setParty(null);
                 break;
             case 4: // Invite
-                final String name = slea.readMapleAsciiString();
+                final String name = packet.readMapleAsciiString();
                 final MapleCharacter invited = c.getChannelServer().getPlayerStorage().getCharacterByName(name);
                 if (invited == null) {
                     c.getSession().write(MapleUserPackets.partyStatusMessage(PartyHandlerUtils.NON_EXISTANT));
@@ -138,7 +138,7 @@ public class PartyOperationHandler extends AbstractMaplePacketHandler {
                 }
                 break;
             case 5: // Expel
-                final int cid = slea.readInt();
+                final int cid = packet.readInt();
                 if (party == null || partyplayer == null) {
                     c.getSession().write(MapleUserPackets.partyStatusMessage(PartyHandlerUtils.NOT_IN_PARTY));
                     return;
@@ -163,7 +163,7 @@ public class PartyOperationHandler extends AbstractMaplePacketHandler {
                 }
                 break;
             case 6: // Change leader
-                final int newLeader = slea.readInt();
+                final int newLeader = packet.readInt();
                 if (party == null) {
                     c.getSession().write(MapleUserPackets.partyStatusMessage(PartyHandlerUtils.NOT_IN_PARTY));
                     return;

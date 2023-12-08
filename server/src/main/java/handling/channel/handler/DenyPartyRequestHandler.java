@@ -8,7 +8,7 @@ import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import handling.world.party.PartyManager;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.packet.MapleUserPackets;
 
 @lombok.extern.slf4j.Slf4j
@@ -16,10 +16,10 @@ public class DenyPartyRequestHandler extends AbstractMaplePacketHandler {
 
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         // log.info("party response..." + slea.toString());
-        final int action = slea.readByte();
-        final int partyid = slea.readInt();
+        final int action = packet.readByte();
+        final int partyid = packet.readInt();
         final MapleCharacter chr = c.getPlayer();
         if (chr.getParty() != null) {
             chr.dropMessage(5, "You can't join the party as you are already in one.");

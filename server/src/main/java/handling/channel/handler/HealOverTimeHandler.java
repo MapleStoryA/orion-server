@@ -4,23 +4,23 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.PlayerStats;
 import handling.AbstractMaplePacketHandler;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class HealOverTimeHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null) {
             return;
         }
-        chr.updateTick(slea.readInt());
-        if (slea.available() >= 8) {
-            slea.skip(4);
+        chr.updateTick(packet.readInt());
+        if (packet.available() >= 8) {
+            packet.skip(4);
         }
-        int healHP = slea.readShort();
-        int healMP = slea.readShort();
+        int healHP = packet.readShort();
+        int healMP = packet.readShort();
 
         final PlayerStats stats = chr.getStat();
 

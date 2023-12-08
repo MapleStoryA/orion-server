@@ -13,16 +13,16 @@ import server.MapleItemInformationProvider;
 import server.StructPotentialItem;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UseMagnifyGlassHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        c.getPlayer().updateTick(slea.readInt());
-        byte magnifyId = (byte) slea.readShort();
-        byte position = (byte) slea.readShort();
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        c.getPlayer().updateTick(packet.readInt());
+        byte magnifyId = (byte) packet.readShort();
+        byte position = (byte) packet.readShort();
         final IItem magnify = c.getPlayer().getInventory(MapleInventoryType.USE).getItem(magnifyId);
         IItem toReveal = c.getPlayer().getInventory(MapleInventoryType.EQUIP).getItem(position);
 

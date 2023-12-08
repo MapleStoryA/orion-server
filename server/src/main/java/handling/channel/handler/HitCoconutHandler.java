@@ -6,17 +6,17 @@ import server.events.MapleCoconut;
 import server.events.MapleCoconut.MapleCoconuts;
 import server.events.MapleEventType;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class HitCoconutHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         /*
          * CB 00 A6 00 06 01 A6 00 = coconut id 06 01 = ?
          */
-        int id = slea.readShort();
+        int id = packet.readShort();
         MapleCoconut map = (MapleCoconut) c.getChannelServer().getEvent(MapleEventType.Coconut);
         if (map == null) {
             return;

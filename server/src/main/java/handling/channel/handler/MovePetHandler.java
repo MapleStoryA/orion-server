@@ -5,17 +5,17 @@ import client.MapleClient;
 import client.inventory.MaplePet;
 import handling.AbstractMaplePacketHandler;
 import server.movement.MovePath;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.packet.PetPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MovePetHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        final long petId = slea.readLong();
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        final long petId = packet.readLong();
         MovePath res = new MovePath();
-        res.decode(slea);
+        res.decode(packet);
 
         MapleCharacter chr = c.getPlayer();
 

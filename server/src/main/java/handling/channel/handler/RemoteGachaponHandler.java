@@ -4,15 +4,15 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import scripting.NPCScriptManager;
 import server.gachapon.GachaponLocation;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class RemoteGachaponHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        slea.readInt();
-        byte city = slea.readByte();
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        packet.readInt();
+        byte city = packet.readByte();
         if (city < 0 && city > 8) {
             return;
         }

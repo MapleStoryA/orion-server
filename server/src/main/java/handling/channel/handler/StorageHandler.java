@@ -12,15 +12,15 @@ import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MapleStorage;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class StorageHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        final byte mode = slea.readByte();
+        final byte mode = packet.readByte();
         if (chr == null) {
             return;
         }
@@ -28,8 +28,8 @@ public class StorageHandler extends AbstractMaplePacketHandler {
 
         switch (mode) {
             case 4: { // Take Out
-                final byte type = slea.readByte();
-                final byte slot = storage.getSlot(MapleInventoryType.getByType(type), slea.readByte());
+                final byte type = packet.readByte();
+                final byte slot = storage.getSlot(MapleInventoryType.getByType(type), packet.readByte());
                 final IItem item = storage.takeOut(slot);
 
                 if (item != null) {
@@ -48,9 +48,9 @@ public class StorageHandler extends AbstractMaplePacketHandler {
                 break;
             }
             case 5: { // Store
-                final byte slot = (byte) slea.readShort();
-                final int itemId = slea.readInt();
-                short quantity = slea.readShort();
+                final byte slot = (byte) packet.readShort();
+                final int itemId = packet.readInt();
+                short quantity = packet.readShort();
                 final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
                 if (quantity < 1) {
                     // AutobanManager.getInstance().autoban(c, "Trying to store " +
@@ -103,7 +103,7 @@ public class StorageHandler extends AbstractMaplePacketHandler {
                 break;
             }
             case 7: {
-                int meso = slea.readInt();
+                int meso = packet.readInt();
                 final int storageMesos = storage.getMeso();
                 final int playerMesos = chr.getMeso();
 

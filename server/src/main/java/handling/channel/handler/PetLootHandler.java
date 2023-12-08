@@ -19,13 +19,13 @@ import server.maps.MapleMapItem;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class PetLootHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null) {
             return;
@@ -36,13 +36,13 @@ public class PetLootHandler extends AbstractMaplePacketHandler {
                 || chr.getTrade() != null) { // hack
             // return;
         }
-        int petz = chr.getPetIndex((int) slea.readLong());
+        int petz = chr.getPetIndex((int) packet.readLong());
         final MaplePet pet = chr.getPet(petz);
-        chr.updateTick(slea.readInt());
-        slea.skip(1); // [4] Zero, [4] Seems to be tickcount, [1] Always zero
-        final Point Client_Reportedpos = slea.readPos();
+        chr.updateTick(packet.readInt());
+        packet.skip(1); // [4] Zero, [4] Seems to be tickcount, [1] Always zero
+        final Point Client_Reportedpos = packet.readPos();
         final MapleMapObject ob =
-                chr.getMap().getMapObject(slea.readInt(), MapleMapObjectType.ITEM);
+                chr.getMap().getMapObject(packet.readInt(), MapleMapObjectType.ITEM);
 
         if (ob == null || pet == null) {
             return;

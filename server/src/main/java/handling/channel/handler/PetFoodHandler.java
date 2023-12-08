@@ -8,14 +8,14 @@ import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.packet.PetPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class PetFoodHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         int previousFullness = 100;
         MapleCharacter chr = c.getPlayer();
         MaplePet pet = null;
@@ -35,8 +35,8 @@ public class PetFoodHandler extends AbstractMaplePacketHandler {
             return;
         }
 
-        slea.skip(6);
-        final int itemId = slea.readInt();
+        packet.skip(6);
+        final int itemId = packet.readInt();
 
         boolean gainCloseness = true;
 

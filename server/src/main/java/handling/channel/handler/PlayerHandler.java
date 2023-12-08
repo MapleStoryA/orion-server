@@ -22,7 +22,7 @@ import server.life.MobSkillFactory;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.packet.MTSCSPacket;
 import tools.packet.MobPacket;
 import tools.packet.UIPacket;
@@ -44,7 +44,7 @@ public class PlayerHandler {
     }
 
     public static final void TakeDamage(
-            final SeekableLittleEndianAccessor slea,
+            final CInPacket slea,
             final MapleClient c,
             final MapleCharacter chr) {
         // log.info(slea.toString());
@@ -346,7 +346,7 @@ public class PlayerHandler {
     }
 
     public static final void changeMap(
-            final SeekableLittleEndianAccessor slea,
+            final CInPacket slea,
             final MapleClient c,
             final MapleCharacter chr) {
         if (chr == null) {

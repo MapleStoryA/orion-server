@@ -10,15 +10,15 @@ import handling.world.helper.BroadcastHelper;
 import server.MapleInventoryManipulator;
 import server.RandomRewards;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UseTreasureChestHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        final short slot = slea.readShort();
-        final int itemid = slea.readInt();
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        final short slot = packet.readShort();
+        final int itemid = packet.readInt();
         MapleCharacter chr = c.getPlayer();
 
         final IItem toUse = chr.getInventory(MapleInventoryType.ETC).getItem((byte) slot);

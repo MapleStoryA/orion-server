@@ -2,13 +2,13 @@ package handling.channel.handler;
 
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class EscortResultHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        log.info("", "[ESCORT_RESULT] " + slea.toString());
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        log.info("", "[ESCORT_RESULT] " + packet.toString());
     }
 }

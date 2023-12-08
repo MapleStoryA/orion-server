@@ -11,7 +11,7 @@ import server.life.MapleMonster;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.packet.MonsterCarnivalPacket;
 
 import java.util.List;
@@ -20,13 +20,13 @@ import java.util.List;
 public class MonsterCarnivalHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         if (c.getPlayer().getCarnivalParty() == null) {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
         }
-        final int tab = slea.readByte();
-        final int num = slea.readInt();
+        final int tab = packet.readByte();
+        final int num = packet.readInt();
 
         if (tab == 0) {
             final List<Pair<Integer, Integer>> mobs = c.getPlayer().getMap().getMobsToSpawn();

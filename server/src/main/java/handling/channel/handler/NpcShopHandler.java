@@ -6,15 +6,15 @@ import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import server.MapleItemInformationProvider;
 import server.MapleShop;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class NpcShopHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        final byte bmode = slea.readByte();
+        final byte bmode = packet.readByte();
         if (chr == null) {
             return;
         }
@@ -26,9 +26,9 @@ public class NpcShopHandler extends AbstractMaplePacketHandler {
                 if (shop == null) {
                     return;
                 }
-                final byte slot = (byte) slea.readShort();
-                final int itemId = slea.readInt();
-                final short quantity = slea.readShort();
+                final byte slot = (byte) packet.readShort();
+                final int itemId = packet.readInt();
+                final short quantity = packet.readShort();
                 if (quantity > ii.getSlotMax(c, itemId)) { // packet editing
                     return;
                 }
@@ -45,7 +45,7 @@ public class NpcShopHandler extends AbstractMaplePacketHandler {
                 if (shop == null) {
                     return;
                 }
-                final byte slot = (byte) slea.readShort();
+                final byte slot = (byte) packet.readShort();
                 shop.recharge(c, slot);
                 break;
             }

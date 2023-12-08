@@ -6,7 +6,7 @@ import handling.AbstractMaplePacketHandler;
 import java.util.ArrayList;
 import java.util.List;
 import server.maps.FieldLimitType;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.packet.MTSCSPacket;
 
 @lombok.extern.slf4j.Slf4j
@@ -37,14 +37,14 @@ public class TeleportRockAddMapHandler extends AbstractMaplePacketHandler {
     }
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        final byte addrem = slea.readByte();
-        final byte vip = slea.readByte();
+        final byte addrem = packet.readByte();
+        final byte vip = packet.readByte();
 
         if (vip == 1) {
             if (addrem == DELETE) {
-                chr.getVipTeleportRock().deleteMap(slea.readInt());
+                chr.getVipTeleportRock().deleteMap(packet.readInt());
             } else if (addrem == ADD) {
                 if ((!FieldLimitType.VipRock.check(chr.getMap().getFieldLimit()))
                         && !blockedMaps.contains(chr.getMapId())) {
@@ -55,7 +55,7 @@ public class TeleportRockAddMapHandler extends AbstractMaplePacketHandler {
             }
         } else {
             if (addrem == 0) {
-                chr.getRegTeleportRock().deleteMap(slea.readInt());
+                chr.getRegTeleportRock().deleteMap(packet.readInt());
             } else if (addrem == 1) {
                 if (!FieldLimitType.VipRock.check(chr.getMap().getFieldLimit())) {
                     chr.getRegTeleportRock().addMap(chr.getMapId());

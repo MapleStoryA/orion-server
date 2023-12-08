@@ -17,21 +17,21 @@ import server.MapleStatEffect;
 import server.life.MapleMonster;
 import server.maps.FieldLimitType;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class SpecialMoveHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, final MapleClient c) {
+    public void handlePacket(CInPacket packet, final MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null || !chr.isAlive() || chr.getMap() == null) {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
         }
-        slea.skip(4); // Old X and Y
-        final int skill_id = slea.readInt();
-        final int skillLevel = slea.readByte();
+        packet.skip(4); // Old X and Y
+        final int skill_id = packet.readInt();
+        final int skillLevel = packet.readByte();
         final ISkill skill = SkillFactory.getSkill(skill_id);
         if (!chr.getJob().isSkillBelongToJob(skill_id, chr.isGameMaster())) {
             chr.dropMessage(5, "This skill cannot be used with the current job");
@@ -76,7 +76,7 @@ public class SpecialMoveHandler extends AbstractMaplePacketHandler {
         }
         switch (skill_id) {
             case 2311005: // doom priest
-                final byte mobsCount = slea.readByte();
+                final byte mobsCount = packet.readByte();
                 if (mobsCount > 10 || mobsCount == 0) {
                     c.enableActions();
                     return;
@@ -108,17 +108,17 @@ public class SpecialMoveHandler extends AbstractMaplePacketHandler {
             case 1121001:
             case 1221001:
             case 1321001:
-                final byte number_of_mobs = slea.readByte();
-                slea.skip(3);
+                final byte number_of_mobs = packet.readByte();
+                packet.skip(3);
                 for (int i = 0; i < number_of_mobs; i++) {
-                    int mobId = slea.readInt();
+                    int mobId = packet.readInt();
 
                     final MapleMonster mob = chr.getMap().getMonsterByOid(mobId);
                     if (mob != null) {
                         chr.getMap()
                                 .broadcastMessage(
                                         chr,
-                                        MaplePacketCreator.showMagnet(mobId, slea.readByte()),
+                                        MaplePacketCreator.showMagnet(mobId, packet.readByte()),
                                         chr.getPosition());
                         mob.switchController(chr, mob.isControllerHasAggro());
                     }
@@ -127,7 +127,7 @@ public class SpecialMoveHandler extends AbstractMaplePacketHandler {
                         .broadcastMessage(
                                 chr,
                                 MaplePacketCreator.showBuffeffect(
-                                        chr.getId(), skill_id, 1, slea.readByte()),
+                                        chr.getId(), skill_id, 1, packet.readByte()),
                                 chr.getPosition());
                 c.getSession().write(MaplePacketCreator.enableActions());
                 break;
@@ -142,8 +142,8 @@ public class SpecialMoveHandler extends AbstractMaplePacketHandler {
                 // break;
             default:
                 Point pos = null;
-                if (slea.available() == 7) {
-                    pos = slea.readPos();
+                if (packet.available() == 7) {
+                    pos = packet.readPos();
                 }
                 if (effect.isMagicDoor()) { // Mystic Door
                     if (!FieldLimitType.MysticDoor.check(chr.getMap().getFieldLimit())) {

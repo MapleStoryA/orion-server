@@ -28,7 +28,7 @@ import handling.world.party.PartyManager;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import tools.data.output.MaplePacketLittleEndianWriter;
+import tools.data.output.COutPacket;
 
 /** Store packets for Buddy, Party, Expedition, Guild and Alliance */
 @lombok.extern.slf4j.Slf4j
@@ -140,85 +140,85 @@ public class MapleUserPackets {
     }
 
     public static byte[] updatePartyMemberHP(final int cid, int curhp, int maxhp) {
-        final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(14);
-        mplew.writeShort(SendPacketOpcode.UPDATE_PARTYMEMBER_HP.getValue());
-        mplew.writeInt(cid);
-        mplew.writeInt(curhp);
-        mplew.writeInt(maxhp);
-        return mplew.getPacket();
+        final COutPacket packet = new COutPacket(14);
+        packet.writeShort(SendPacketOpcode.UPDATE_PARTYMEMBER_HP.getValue());
+        packet.writeInt(cid);
+        packet.writeInt(curhp);
+        packet.writeInt(maxhp);
+        return packet.getPacket();
     }
 
     private static byte[] partyPacket(final int type, final Object... data) {
-        final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(SendPacketOpcode.PARTY_OPERATION.getValue());
-        mplew.write(type);
+        final COutPacket packet = new COutPacket();
+        packet.writeShort(SendPacketOpcode.PARTY_OPERATION.getValue());
+        packet.write(type);
         switch (type) {
             case 0x04: // Invite
-                mplew.writeInt((Integer) data[0]); // partyid
-                mplew.writeMapleAsciiString((String) data[1]); // name
-                mplew.writeInt((Short) data[2]); // level
-                mplew.writeInt((Short) data[3]); // jobid
-                mplew.write(0);
+                packet.writeInt((Integer) data[0]); // partyid
+                packet.writeMapleAsciiString((String) data[1]); // name
+                packet.writeInt((Short) data[2]); // level
+                packet.writeInt((Short) data[3]); // jobid
+                packet.write(0);
                 break;
             case 0x07: // Silent Update / Log off
-                mplew.writeInt((Integer) data[1]);
+                packet.writeInt((Integer) data[1]);
                 addPartyStatus(
-                        (Integer) data[2], (MapleParty) data[3], mplew, ((Integer) data[0]) == 0);
+                        (Integer) data[2], (MapleParty) data[3], packet, ((Integer) data[0]) == 0);
                 break;
             case 0x08: // Create
-                mplew.writeInt((Integer) data[0]); // partyid
-                mplew.writeInt(999999999);
-                mplew.writeInt(999999999);
-                mplew.writeLong(0);
+                packet.writeInt((Integer) data[0]); // partyid
+                packet.writeInt(999999999);
+                packet.writeInt(999999999);
+                packet.writeLong(0);
                 break;
             case 0x0C: // Disband, Expel and Leave
                 int operation = (Integer) data[0]; // 0 = disband, 1 = expel, 2 = leave
-                mplew.writeInt((Integer) data[1]); // party id
-                mplew.writeInt((Integer) data[2]); // target id
-                mplew.write(operation != 0 ? 1 : 0); // !disband
+                packet.writeInt((Integer) data[1]); // party id
+                packet.writeInt((Integer) data[2]); // target id
+                packet.write(operation != 0 ? 1 : 0); // !disband
                 if (operation == 0) { // Disband
-                    mplew.writeInt((Integer) data[2]); // target id
+                    packet.writeInt((Integer) data[2]); // target id
                 } else {
-                    mplew.write(operation == 1 ? 1 : 0); // Expel
-                    mplew.writeMapleAsciiString((String) data[3]); // target name
-                    addPartyStatus((Integer) data[4], (MapleParty) data[5], mplew, operation == 2);
+                    packet.write(operation == 1 ? 1 : 0); // Expel
+                    packet.writeMapleAsciiString((String) data[3]); // target name
+                    addPartyStatus((Integer) data[4], (MapleParty) data[5], packet, operation == 2);
                 }
                 break;
             case 0x0F: // Join
-                mplew.writeInt((Integer) data[0]); // party id
-                mplew.writeMapleAsciiString((String) data[1]); // target name
-                addPartyStatus((Integer) data[2], (MapleParty) data[3], mplew, false);
+                packet.writeInt((Integer) data[0]); // party id
+                packet.writeMapleAsciiString((String) data[1]); // target name
+                addPartyStatus((Integer) data[2], (MapleParty) data[3], packet, false);
                 break;
             case 0x16: // Invite Message
-                mplew.writeMapleAsciiString((String) data[0]);
+                packet.writeMapleAsciiString((String) data[0]);
                 break;
             case 0x1F: // Change leader
-                mplew.writeInt((Integer) data[0]); // target id
-                mplew.write((Integer) data[1]);
+                packet.writeInt((Integer) data[0]); // target id
+                packet.write((Integer) data[1]);
                 break;
             case 0x23: // Portal
-                mplew.write(0);
-                mplew.writeInt((Integer) data[0]); // townId
-                mplew.writeInt((Integer) data[1]); // targetId
-                mplew.writeInt((Integer) data[2]); // skillId
-                mplew.writePos((Point) data[3]); // position
+                packet.write(0);
+                packet.writeInt((Integer) data[0]); // townId
+                packet.writeInt((Integer) data[1]); // targetId
+                packet.writeInt((Integer) data[2]); // skillId
+                packet.writePos((Point) data[3]); // position
                 break;
         }
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     private static void addPartyStatus(
             final int forchannel,
             final MapleParty party,
-            final MaplePacketLittleEndianWriter mplew,
+            final COutPacket packet,
             final boolean leaving) {
-        addPartyStatus(forchannel, party, mplew, leaving, false);
+        addPartyStatus(forchannel, party, packet, leaving, false);
     }
 
     private static void addPartyStatus(
             final int forchannel,
             final MapleParty party,
-            final MaplePacketLittleEndianWriter mplew,
+            final COutPacket packet,
             final boolean leaving,
             final boolean exped) {
         final List<MaplePartyCharacter> partymembers;
@@ -231,78 +231,78 @@ public class MapleUserPackets {
             partymembers.add(new MaplePartyCharacter());
         }
         for (final MaplePartyCharacter partychar : partymembers) {
-            mplew.writeInt(partychar.getId());
+            packet.writeInt(partychar.getId());
         }
         for (final MaplePartyCharacter partychar : partymembers) {
-            mplew.writeAsciiString(partychar.getName(), 13);
+            packet.writeAsciiString(partychar.getName(), 13);
         }
         for (final MaplePartyCharacter partychar : partymembers) {
-            mplew.writeInt(partychar.getJobId());
+            packet.writeInt(partychar.getJobId());
         }
         for (final MaplePartyCharacter partychar : partymembers) {
-            mplew.writeInt(partychar.getLevel());
+            packet.writeInt(partychar.getLevel());
         }
         for (final MaplePartyCharacter partychar : partymembers) {
-            mplew.writeInt(partychar.isOnline() ? (partychar.getChannel() - 1) : -2);
+            packet.writeInt(partychar.isOnline() ? (partychar.getChannel() - 1) : -2);
         }
-        mplew.writeInt(party == null ? 0 : party.getLeader().getId());
+        packet.writeInt(party == null ? 0 : party.getLeader().getId());
         if (exped) {
             return;
         }
         for (final MaplePartyCharacter partychar : partymembers) {
-            mplew.writeInt(partychar.getChannel() == forchannel ? partychar.getMapid() : 0);
+            packet.writeInt(partychar.getChannel() == forchannel ? partychar.getMapid() : 0);
         }
         for (final MaplePartyCharacter partychar : partymembers) {
             if (partychar.getChannel() == forchannel && !leaving) {
-                mplew.writeInt(partychar.getDoorTown());
-                mplew.writeInt(partychar.getDoorTarget());
-                mplew.writeInt(partychar.getDoorSkill());
-                mplew.writeInt(partychar.getDoorPosition().x);
-                mplew.writeInt(partychar.getDoorPosition().y);
+                packet.writeInt(partychar.getDoorTown());
+                packet.writeInt(partychar.getDoorTarget());
+                packet.writeInt(partychar.getDoorSkill());
+                packet.writeInt(partychar.getDoorPosition().x);
+                packet.writeInt(partychar.getDoorPosition().y);
             } else {
-                mplew.writeInt(leaving ? 999999999 : 0);
-                mplew.writeLong(leaving ? 999999999 : 0);
-                mplew.writeLong(leaving ? -1 : 0);
+                packet.writeInt(leaving ? 999999999 : 0);
+                packet.writeLong(leaving ? 999999999 : 0);
+                packet.writeLong(leaving ? -1 : 0);
             }
         }
     }
 
     public static byte[] showExpedition(
             final MapleExpedition me, final boolean created, final boolean silent) {
-        final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
-        mplew.write(
+        final COutPacket packet = new COutPacket();
+        packet.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
+        packet.write(
                 silent
                         ? 53
                         : (created
                                 ? 55
                                 : 57)); // 53, 55(A new expedition has been created), 57("You have
         // joined the expedition)
-        mplew.writeInt(me.getType().exped);
-        mplew.writeInt(0);
+        packet.writeInt(me.getType().exped);
+        packet.writeInt(0);
         for (int i = 0; i < 5; i++) {
             if (i < me.getParties().size()) {
                 final MapleParty party = PartyManager.getParty(me.getParties().get(i));
                 if (party != null) {
-                    addPartyStatus(-1, party, mplew, false, true);
+                    addPartyStatus(-1, party, packet, false, true);
                 } else {
-                    mplew.writeZeroBytes(178);
+                    packet.writeZeroBytes(178);
                 }
             } else {
-                mplew.writeZeroBytes(178);
+                packet.writeZeroBytes(178);
             }
         }
-        mplew.writeShort(0);
-        return mplew.getPacket();
+        packet.writeShort(0);
+        return packet.getPacket();
     }
 
     public static byte[] removeExpedition(final int action) {
-        final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(3);
-        mplew.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
-        mplew.write(
+        final COutPacket packet = new COutPacket(3);
+        packet.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
+        packet.write(
                 action); // 54(remove only) , 61 (you have left the expedition), 63(You have been
         // kicked out of the expedition), 64(The Expedition has been disbanded)
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] expeditionNotice(final int type, final String name) {
@@ -310,46 +310,46 @@ public class MapleUserPackets {
         // 58 : You have joined the expedition.
         // 60 : '<Name>' has left the expedition.
         // 62 : '<Name>' has been kicked out of the expedition.
-        final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
-        mplew.write(type);
+        final COutPacket packet = new COutPacket();
+        packet.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
+        packet.write(type);
         if (type != 58) {
-            mplew.writeMapleAsciiString(name);
+            packet.writeMapleAsciiString(name);
         }
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] changeExpeditionLeader(final int newLeader) {
-        final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(7);
-        mplew.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
-        mplew.write(65);
-        mplew.writeInt(newLeader);
-        return mplew.getPacket();
+        final COutPacket packet = new COutPacket(7);
+        packet.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
+        packet.write(65);
+        packet.writeInt(newLeader);
+        return packet.getPacket();
     }
 
     public static byte[] expeditionUpdate(final int partyIndex, final MapleParty party) {
-        final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
-        mplew.write(66);
-        mplew.writeInt(0);
-        mplew.writeInt(partyIndex);
+        final COutPacket packet = new COutPacket();
+        packet.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
+        packet.write(66);
+        packet.writeInt(0);
+        packet.writeInt(partyIndex);
         if (party == null) {
-            mplew.writeZeroBytes(178);
+            packet.writeZeroBytes(178);
         } else {
-            addPartyStatus(-1, party, mplew, false, true);
+            addPartyStatus(-1, party, packet, false, true);
         }
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] expeditionInvite(final MapleCharacter from, final int exped) {
-        final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
-        mplew.write(68);
-        mplew.writeInt(from.getLevel());
-        mplew.writeInt(from.getJob().getId());
-        mplew.writeMapleAsciiString(from.getName());
-        mplew.writeInt(exped);
-        return mplew.getPacket();
+        final COutPacket packet = new COutPacket();
+        packet.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
+        packet.write(68);
+        packet.writeInt(from.getLevel());
+        packet.writeInt(from.getJob().getId());
+        packet.writeMapleAsciiString(from.getName());
+        packet.writeInt(exped);
+        return packet.getPacket();
     }
 
     public static byte[] expeditionStatusMessage(final int errcode, final String name) {
@@ -361,12 +361,12 @@ public class MapleUserPackets {
         // 5 : '<Name>' is taking care of another invitation.
         // 6 : You have already invited '<Name>' to the expedition.
         // 7 : '<Name>' has been invited to the expedition.
-        final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
-        mplew.write(69);
-        mplew.writeInt(errcode);
-        mplew.writeMapleAsciiString(name);
-        return mplew.getPacket();
+        final COutPacket packet = new COutPacket();
+        packet.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
+        packet.write(69);
+        packet.writeInt(errcode);
+        packet.writeMapleAsciiString(name);
+        return packet.getPacket();
     }
 
     public static byte[] updatePartyHpForCharacter(final MapleCharacter partyMate) {

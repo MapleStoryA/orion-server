@@ -6,7 +6,7 @@ import handling.AbstractMaplePacketHandler;
 import server.maps.MapleMap;
 import server.movement.MovePath;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 import java.awt.*;
 
@@ -15,14 +15,14 @@ public class MovePlayerHandler extends AbstractMaplePacketHandler {
 
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null) {
             return;
         }
-        slea.skip(29);
+        packet.skip(29);
         final MovePath path = new MovePath();
-        path.decode(slea);
+        path.decode(packet);
         if (path != null && c.getPlayer().getMap() != null) {
             final MapleMap map = c.getPlayer().getMap();
             if (chr.isHidden()) {

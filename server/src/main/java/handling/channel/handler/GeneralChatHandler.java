@@ -6,16 +6,16 @@ import client.commands.v1.CommandProcessor;
 import constants.ServerConstants.CommandType;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class GeneralChatHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        c.getPlayer().updateTick(slea.readInt());
-        final String text = slea.readMapleAsciiString();
-        final byte unk = slea.readByte();
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        c.getPlayer().updateTick(packet.readInt());
+        final String text = packet.readMapleAsciiString();
+        final byte unk = packet.readByte();
         MapleCharacter chr = c.getPlayer();
         if (chr != null && !CommandProcessor.processCommand(c, text, CommandType.NORMAL)) {
             if (!chr.isGameMaster() && text.length() >= 80) {

@@ -5,13 +5,13 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import server.maps.FieldLimitType;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class ChangeChannelHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null) {
             log.info("Cannot change channel of null character");
@@ -24,6 +24,6 @@ public class ChangeChannelHandler extends AbstractMaplePacketHandler {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
         }
-        chr.changeChannel(slea.readByte() + 1);
+        chr.changeChannel(packet.readByte() + 1);
     }
 }
