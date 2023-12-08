@@ -9,7 +9,7 @@ import constants.GameConstants;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 
-public class GainItem implements Command {
+public class GainItemCommand implements Command {
     @Override
     public void execute(MapleClient c, String[] args) {
         if (args.length < 3) {
