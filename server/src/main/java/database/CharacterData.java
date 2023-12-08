@@ -57,14 +57,6 @@ public class CharacterData implements Serializable {
     private int junior2;
     private int currentRep;
     private int totalRep;
-    private int occupationId;
-    private int occupationEXP;
-    private int reborns;
-    private int jumpLevel;
-    private int jumpExp;
-    private int gainedMsi;
-    private int agentPoints;
-    private int contributedFP;
     private int sp;
 
     private List<PetData> petData = new ArrayList<>();

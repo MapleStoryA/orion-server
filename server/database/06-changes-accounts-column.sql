@@ -24,3 +24,14 @@ ALTER TABLE orion.`characters` DROP COLUMN playerAutoReborn;
 
 ALTER TABLE orion.`characters` DROP COLUMN agentpoints;
 ALTER TABLE orion.`characters` DROP COLUMN donatorpoints;
+
+ALTER TABLE orion.`characters` DROP COLUMN gainedmsi;
+ALTER TABLE orion.`characters` DROP COLUMN factionId;
+
+ALTER TABLE orion.`characters` DROP COLUMN jumpxp;
+ALTER TABLE orion.`characters` DROP COLUMN jumplevel;
+ALTER TABLE orion.`characters` DROP COLUMN contributedFP;
+ALTER TABLE orion.`characters` DROP COLUMN occupationId;
+ALTER TABLE orion.`characters` DROP COLUMN occupationEXP;
+
+DROP TABLE orion.ipvotelog;
