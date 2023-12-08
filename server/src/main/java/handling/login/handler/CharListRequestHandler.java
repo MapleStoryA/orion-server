@@ -9,15 +9,18 @@ import database.CharacterListResult;
 import database.LoginService;
 import handling.AbstractMaplePacketHandler;
 import handling.SendPacketOpcode;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import tools.data.input.CInPacket;
 import tools.data.output.COutPacket;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 @Slf4j
 public class CharListRequestHandler extends AbstractMaplePacketHandler {
+
+    public static final int SECOND_PASSWORD_REQUEST = 2;
 
     @Override
     public void handlePacket(CInPacket packet, MapleClient c) {
@@ -28,7 +31,6 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
         c.setWorld(server);
         c.setChannel(channel);
 
-        // I inlined the char list here because loadCharacterList loads only the necessary
         CharacterListResult list = LoginService.loadCharacterList(c.getAccountData().getId(), 0);
         if (list.getCharacters() != null) {
             c.getSession().write(getCharList(list.getCharacters(), c.getCharacterSlots()));
@@ -45,10 +47,9 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
         packet.write(chars.size()); // 1
 
         for (final CharacterData chr : chars) {
-            boolean isGM = chr.getJob() == 900 || chr.getJob() == 910;
-            addCharEntry(packet, chr, !isGM && chr.getLevel() >= 10);
+            addCharEntry(packet, chr, false);
         }
-        packet.write(2); // second pw request
+        packet.write(SECOND_PASSWORD_REQUEST);
         packet.writeLong(charslots);
 
         return packet.getPacket();
@@ -61,10 +62,10 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
         packet.write(0);
         packet.write(ranking ? 1 : 0);
         if (ranking) {
-            packet.writeInt(chr.getRank());
-            packet.writeInt(chr.getRankMove());
-            packet.writeInt(chr.getJobRank());
-            packet.writeInt(chr.getJobRankMove());
+            packet.writeInt(0);
+            packet.writeInt(0);
+            packet.writeInt(0);
+            packet.writeInt(0);
         }
     }
 

@@ -50,10 +50,6 @@ public class CharacterData implements Serializable {
     private int dojoRecord;
     private String pets;
     private int subCategory;
-    private int rank;
-    private int rankMove;
-    private int jobRank;
-    private int jobRankMove;
     private int marriageId;
     private int familyId;
     private int seniorId;

@@ -197,10 +197,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     private int nx_credit;
     private int chair;
     private int itemEffect;
-    private int rank = 1;
-    private int rankMove = 0;
-    private int jobRank = 1;
-    private int jobRankMove = 0;
     private int marriageId;
     private int marriageItemId = 0;
     private int coconut_team = 0;
@@ -496,7 +492,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             ret.reports.put(ReportType.getById(qs.getKey()), qs.getValue());
         }
         ret.monsterBook = new MonsterBook(ct.getMapleBookCards());
-        ret.inventory = (MapleInventory[]) ct.getInventories();
+        ret.inventory = ct.getInventories();
         ret.blessOfFairy_Origin = ct.getBlessOfFairy();
         ret.skillMacros = ct.getSkillMacros();
         ret.keyLayout = ct.getKeyMap();
@@ -579,10 +575,6 @@ public class MapleCharacter extends BaseMapleCharacter {
                         (byte) 0,
                         (byte) 1,
                         0);
-        ret.rank = characterData.getRank();
-        ret.rankMove = characterData.getRankMove();
-        ret.jobRank = characterData.getJobRank();
-        ret.jobRankMove = characterData.getJobRankMove();
         ret.marriageId = characterData.getMarriageId();
 
         ret.stats.setStr(characterData.getStr());
@@ -5107,22 +5099,6 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public void setNextConsume(long nc) {
         this.nextConsume = nc;
-    }
-
-    public int getRank() {
-        return rank;
-    }
-
-    public int getRankMove() {
-        return rankMove;
-    }
-
-    public int getJobRank() {
-        return jobRank;
-    }
-
-    public int getJobRankMove() {
-        return jobRankMove;
     }
 
     public void changeChannel(final int channel) {

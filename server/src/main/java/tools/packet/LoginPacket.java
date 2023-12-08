@@ -279,13 +279,13 @@ public class LoginPacket {
             final COutPacket packet, final MapleCharacter chr, boolean ranking) {
         PacketHelper.addCharStats(packet, chr);
         PacketHelper.addCharLook(packet, chr, true);
-        packet.write(0); // <-- who knows
+        packet.write(0);
         packet.write(ranking ? 1 : 0);
         if (ranking) {
-            packet.writeInt(chr.getRank());
-            packet.writeInt(chr.getRankMove());
-            packet.writeInt(chr.getJobRank());
-            packet.writeInt(chr.getJobRankMove());
+            packet.writeInt(0);
+            packet.writeInt(0);
+            packet.writeInt(0);
+            packet.writeInt(0);
         }
     }
 

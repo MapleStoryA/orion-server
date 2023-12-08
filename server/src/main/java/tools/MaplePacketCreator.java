@@ -5074,10 +5074,10 @@ public class MaplePacketCreator {
             boolean ranking = !chr.isGameMaster();
             packet.write(ranking ? 1 : 0);
             if (ranking) {
-                packet.writeInt(chr.getRank());
-                packet.writeInt(chr.getRankMove());
-                packet.writeInt(chr.getJobRank());
-                packet.writeInt(chr.getJobRankMove());
+                packet.writeInt(0);
+                packet.writeInt(0);
+                packet.writeInt(0);
+                packet.writeInt(0);
             }
         }
         packet.write(2); // second pw request

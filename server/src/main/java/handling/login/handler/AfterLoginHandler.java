@@ -9,14 +9,16 @@ import tools.packet.LoginPacket;
 @Slf4j
 public class AfterLoginHandler implements MaplePacketHandler {
 
-    @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    private static final byte ACCEPT_OPERATION = 0;
 
-        c.getSession().write(LoginPacket.pinOperation((byte) 0)); // Accept
+    @Override
+    public void handlePacket(CInPacket packet, MapleClient client) {
+        // Write a response to the client to indicate successful login
+        client.getSession().write(LoginPacket.pinOperation(ACCEPT_OPERATION));
     }
 
     @Override
-    public boolean validateState(MapleClient c) {
+    public boolean validateState(MapleClient client) {
         return true;
     }
 }
