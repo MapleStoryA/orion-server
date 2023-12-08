@@ -61,7 +61,7 @@ public class DefaultPacketHandler {
             final MapleClient c,
             boolean isCashShop) {
         switch (header) {
-            case PLAYER_LOGGEDIN:
+            case PLAYER_LOGGED_IN:
                 final int playerId = slea.readInt();
                 if (isCashShop) {
                     CashShopOperationHandlers.onEnterCashShop(playerId, c);

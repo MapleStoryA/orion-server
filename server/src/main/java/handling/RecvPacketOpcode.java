@@ -1,6 +1,6 @@
 /*
 This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 
@@ -24,12 +24,12 @@ package handling;
 public enum RecvPacketOpcode {
     PONG(25, false),
     LOGIN_PASSWORD(1, false),
-    CHARLIST_REQUEST(5),
-    SERVERSTATUS_REQUEST(6),
+    CHAR_LIST_REQUEST(5),
+    SERVER_STATUS_REQUEST(6),
     AFTER_LOGIN(9),
-    SERVERLIST_REQUEST(11),
-    SERVERLIST_REQUEST_2(12),
-    SERVERLIST_REQUEST_3(4),
+    SERVER_LIST_REQUEST(11),
+    SERVER_LIST_REQUEST_2(12),
+    SERVER_LIST_REQUEST_3(4),
     PLAYER_DC(12),
     VIEW_ALL_CHAR(13),
     PICK_ALL_CHAR(15),
@@ -46,7 +46,7 @@ public enum RecvPacketOpcode {
     VIEW_ALL_WITH_PIC(0x0E),
     CLIENT_START(36),
     PACKET_ERROR(38),
-    PLAYER_LOGGEDIN(20, false),
+    PLAYER_LOGGED_IN(20, false),
     CHANGE_MAP(43),
     CHANGE_CHANNEL(44),
     ENTER_CASH_SHOP(45),
@@ -61,7 +61,7 @@ public enum RecvPacketOpcode {
     GENERAL_CHAT(55),
     CLOSE_CHALKBOARD(56),
     FACE_EXPRESSION(57),
-    USE_ITEMEFFECT(58),
+    USE_ITEM_EFFECT(58),
     WHEEL_OF_FORTUNE(59),
     MONSTER_BOOK_COVER(63),
     NPC_TALK(64),
@@ -108,8 +108,8 @@ public enum RecvPacketOpcode {
     USE_INNER_PORTAL(112),
     TELEPORT_ROCK_ADD_MAP(113),
     QUEST_ACTION(118),
-    //119 : Skills with buffstats
-// skill with actions?
+    // 119 : Skills with buffstats
+    // skill with actions?
     THROW_SKILL(120),
     SKILL_MACRO(121),
     REWARD_ITEM(123),
@@ -165,7 +165,7 @@ public enum RecvPacketOpcode {
     PET_LOOT(199),
     PET_AUTO_POT(200),
     PET_IGNORE(201),
-    PET_NAME_CHANGE(1999),//TODO THIS IS WRONG!
+    PET_NAME_CHANGE(1999), // TODO THIS IS WRONG!
     MOVE_SUMMON(204),
     SUMMON_ATTACK(205),
     DAMAGE_SUMMON(206),
@@ -216,10 +216,8 @@ public enum RecvPacketOpcode {
     ADMIN_LOG(149),
     ADMIN_CHAT(136);
 
-
     private boolean checkState;
     private short code = -1;
-
 
     RecvPacketOpcode(int code) {
         this.code = (short) code;

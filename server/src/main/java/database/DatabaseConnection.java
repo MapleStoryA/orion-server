@@ -20,10 +20,9 @@ package database;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import server.config.ServerConfig;
-
 import java.sql.Connection;
 import java.sql.SQLException;
+import server.config.ServerConfig;
 
 @lombok.extern.slf4j.Slf4j
 public class DatabaseConnection {

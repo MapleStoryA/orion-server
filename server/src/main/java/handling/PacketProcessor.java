@@ -229,12 +229,12 @@ public final class PacketProcessor {
         if (mode == Mode.LOGINSERVER) {
             registerHandler(RecvPacketOpcode.LOGIN_PASSWORD, new CharLoginPasswordHandler());
             registerHandler(RecvPacketOpcode.AFTER_LOGIN, new AfterLoginHandler());
-            registerHandler(RecvPacketOpcode.SERVERLIST_REQUEST, new ServerListRequestHandler());
-            registerHandler(RecvPacketOpcode.SERVERLIST_REQUEST_2, new ServerListRequestHandler());
-            registerHandler(RecvPacketOpcode.SERVERLIST_REQUEST_3, new ServerListRequestHandler());
-            registerHandler(RecvPacketOpcode.CHARLIST_REQUEST, new CharListRequestHandler());
+            registerHandler(RecvPacketOpcode.SERVER_LIST_REQUEST, new ServerListRequestHandler());
+            registerHandler(RecvPacketOpcode.SERVER_LIST_REQUEST_2, new ServerListRequestHandler());
+            registerHandler(RecvPacketOpcode.SERVER_LIST_REQUEST_3, new ServerListRequestHandler());
+            registerHandler(RecvPacketOpcode.CHAR_LIST_REQUEST, new CharListRequestHandler());
             registerHandler(
-                    RecvPacketOpcode.SERVERSTATUS_REQUEST, new ServerStatusRequestHandler());
+                    RecvPacketOpcode.SERVER_STATUS_REQUEST, new ServerStatusRequestHandler());
             registerHandler(RecvPacketOpcode.CHECK_CHAR_NAME, new CheckCharNameHandler());
             registerHandler(RecvPacketOpcode.CREATE_CHAR, new CreateCharHandler());
             registerHandler(RecvPacketOpcode.DELETE_CHAR, new DeleteCharHandler());
@@ -268,7 +268,7 @@ public final class PacketProcessor {
             registerHandler(RecvPacketOpcode.CANCEL_ITEM_EFFECT, new CancelItemEffectHandler());
             registerHandler(RecvPacketOpcode.USE_CHAIR, new UseChairHandler());
             registerHandler(RecvPacketOpcode.CANCEL_CHAIR, new CancelChairHandler());
-            registerHandler(RecvPacketOpcode.USE_ITEMEFFECT, new UseItemEffectHandler());
+            registerHandler(RecvPacketOpcode.USE_ITEM_EFFECT, new UseItemEffectHandler());
             registerHandler(RecvPacketOpcode.WHEEL_OF_FORTUNE, new UseItemEffectHandler());
             registerHandler(RecvPacketOpcode.SKILL_EFFECT, new SkillEffectHandler());
             registerHandler(RecvPacketOpcode.MESO_DROP, new MesoDropHandler());
