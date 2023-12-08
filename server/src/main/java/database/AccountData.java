@@ -54,6 +54,6 @@ public class AccountData {
     }
 
     public int getGMLevel() {
-        return this.getGm();
+        return this.gm;
     }
 }

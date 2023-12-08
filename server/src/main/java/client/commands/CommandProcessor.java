@@ -1,6 +1,9 @@
-package client.commands.v2;
+package client.commands;
 
 import client.MapleClient;
+import constants.ServerConstants;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -10,7 +13,6 @@ import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class CommandProcessor {
@@ -96,7 +98,7 @@ public class CommandProcessor {
     /**
      * Recursive method used to find all classes in a given directory and subdirs.
      *
-     * @param directory The base directory
+     * @param directory   The base directory
      * @param packageName The package name for classes found inside the base directory
      * @return The classes
      * @throws ClassNotFoundException
@@ -118,9 +120,17 @@ public class CommandProcessor {
                                 packageName
                                         + '.'
                                         + file.getName()
-                                                .substring(0, file.getName().length() - 6)));
+                                        .substring(0, file.getName().length() - 6)));
             }
         }
         return classes;
+    }
+
+    public static boolean processCommand(MapleClient c, String line, ServerConstants.CommandType type) {
+
+        if (CommandProcessor.getInstance().processLine(c, line)) {
+            return true;
+        }
+        return false;
     }
 }

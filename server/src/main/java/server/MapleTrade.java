@@ -2,18 +2,19 @@ package server;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import client.commands.v1.CommandProcessor;
+import client.commands.CommandProcessor;
 import client.inventory.IItem;
 import client.inventory.ItemFlag;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import constants.MapConstants;
 import constants.ServerConstants.CommandType;
+import tools.MaplePacketCreator;
+import tools.packet.PlayerShopPacket;
+
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
-import tools.MaplePacketCreator;
-import tools.packet.PlayerShopPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleTrade {
@@ -280,9 +281,9 @@ public class MapleTrade {
                 || GameConstants.isPet(item.getItemId())
                 || isLocked()
                 || (GameConstants.getInventoryType(item.getItemId()) == MapleInventoryType.CASH
-                        && quantity != 1)
+                && quantity != 1)
                 || (GameConstants.getInventoryType(item.getItemId()) == MapleInventoryType.EQUIP
-                        && quantity != 1)) {
+                && quantity != 1)) {
             return false;
         }
         final byte flag = item.getFlag();
@@ -297,7 +298,7 @@ public class MapleTrade {
             }
         }
         if (
-        /*!c.getPlayer().isGM() && */ MapConstants.isStorylineMap(c.getPlayer().getMapId())) {
+            /*!c.getPlayer().isGM() && */ MapConstants.isStorylineMap(c.getPlayer().getMapId())) {
             if (GameConstants.isVisitorEquip(item.getItemId())
                     || item.getItemId() == 4031753
                     || item.getItemId() == 4031752

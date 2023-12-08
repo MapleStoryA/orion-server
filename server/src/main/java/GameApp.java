@@ -1,7 +1,7 @@
 import static handling.world.respawn.RespawnWorker.CHANNELS_PER_THREAD;
 
 import ch.qos.logback.classic.ClassicConstants;
-import client.commands.v2.CommandProcessor;
+import client.commands.CommandProcessor;
 import client.skill.SkillFactory;
 import constants.JobConstants;
 import database.DatabaseConnection;

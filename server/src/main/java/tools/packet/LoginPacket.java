@@ -114,7 +114,7 @@ public class LoginPacket {
         // Value = (unsigned __int8)CInPacket::Decode1(v5);
         // v118 = ((unsigned int)(unsigned __int8)Value >> 8) & 1; this is for tester account.
         // v118 will only be 1 if nSubGradeCode is 0x100
-        packet.writeBool(false); // nCountryID, admin accounts?
+        packet.writeBool(true); // nCountryID, admin accounts?
         //
         packet.writeMapleAsciiString(client.getAccountData().getName()); // sNexonClubID
         packet.write(0); // nPurchaseExp

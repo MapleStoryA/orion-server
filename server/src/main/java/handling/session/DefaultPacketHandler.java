@@ -18,6 +18,7 @@ public class DefaultPacketHandler {
 
     public static void handlePacket(MapleClient client, PacketProcessor processor, boolean isCashShop, byte[] message) {
         try {
+
             var slea = new GenericSeekableLittleEndianAccessor(new ByteArrayByteStream(message));
             if (slea.available() < 2) {
                 return;
@@ -31,6 +32,7 @@ public class DefaultPacketHandler {
                 log.info("[" + packetHandler.getClass().getSimpleName() + "]");
             }
             if (packetHandler != null && packetHandler.validateState(client)) {
+                log.info("Handling packet: {}", packetHandler.getClass().getSimpleName());
                 packetHandler.handlePacket(slea, client);
                 return;
             }
