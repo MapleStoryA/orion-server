@@ -1,6 +1,6 @@
 /*
 This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 
@@ -21,16 +21,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package server.maps;
 
-import client.skill.ISkill;
 import client.MapleCharacter;
 import client.MapleClient;
+import client.skill.ISkill;
 import client.skill.SkillFactory;
+import java.awt.*;
 import server.MapleStatEffect;
 import server.life.MapleMonster;
 import server.life.MobSkill;
 import tools.MaplePacketCreator;
-
-import java.awt.*;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleMist extends AbstractMapleMapObject {
@@ -72,13 +71,13 @@ public class MapleMist extends AbstractMapleMapObject {
             case 12111005: // Flame wizard, [Flame Gear]
                 isPoisonMist = 1;
                 break;
-            case 22161003: //Recovery Aura
+            case 22161003: // Recovery Aura
                 isPoisonMist = 2;
                 break;
         }
     }
 
-    //fake
+    // fake
     public MapleMist(Rectangle mistPosition, MapleCharacter owner) {
         this.mistPosition = mistPosition;
         this.ownerId = owner.getId();
@@ -101,8 +100,7 @@ public class MapleMist extends AbstractMapleMapObject {
     }
 
     @Override
-    public void setPosition(Point position) {
-    }
+    public void setPosition(Point position) {}
 
     public ISkill getSourceSkill() {
         return SkillFactory.getSkill(source.getSourceId());

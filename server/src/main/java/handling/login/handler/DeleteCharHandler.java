@@ -18,10 +18,9 @@ public class DeleteCharHandler extends AbstractMaplePacketHandler {
             c.getSession().close();
             return; // Attempting to delete other character
         }
-        final byte state = (byte) CharacterService.deleteCharacter(characterId, c.getAccountData().getId());
+        final byte state =
+                (byte) CharacterService.deleteCharacter(characterId, c.getAccountData().getId());
 
         c.getSession().write(LoginPacket.deleteCharResponse(characterId, state));
-
     }
-
 }

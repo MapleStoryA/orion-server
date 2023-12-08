@@ -8,9 +8,6 @@ import handling.channel.PlayerStorage;
 import handling.world.helper.CharacterTransfer;
 import handling.world.helper.CheaterData;
 import handling.world.helper.FindCommand;
-import lombok.Getter;
-import tools.CollectionUtil;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -19,16 +16,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import lombok.Getter;
+import tools.CollectionUtil;
 
-//TODO: Will do something with this to manage the server instances
+// TODO: Will do something with this to manage the server instances
 @lombok.extern.slf4j.Slf4j
 public class WorldServer {
 
     private static WorldServer INSTANCE;
     private final Map<Integer, ChannelServer> channels = new ConcurrentHashMap<>();
     private final long serverStarTime;
-    @Getter
-    private MigrationService migrationService;
+    @Getter private MigrationService migrationService;
 
     public WorldServer() {
         this.serverStarTime = System.currentTimeMillis();
@@ -63,9 +61,7 @@ public class WorldServer {
     }
 
     public void shutdown() {
-        channels.values()
-                .stream()
-                .forEach(ChannelServer::shutdown);
+        channels.values().stream().forEach(ChannelServer::shutdown);
         channels.clear();
     }
 
@@ -155,6 +151,4 @@ public class WorldServer {
             cs.toggleMegaphoneMuteState();
         }
     }
-
-
 }

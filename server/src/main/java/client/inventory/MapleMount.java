@@ -1,6 +1,6 @@
 /*
 This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 
@@ -24,14 +24,13 @@ package client.inventory;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import database.DatabaseConnection;
-import tools.MaplePacketCreator;
-import tools.Randomizer;
-
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import tools.MaplePacketCreator;
+import tools.Randomizer;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleMount implements Serializable {
@@ -45,7 +44,8 @@ public class MapleMount implements Serializable {
     private transient boolean changed = false;
     private long lastFatigue = 0;
 
-    public MapleMount(MapleCharacter owner, int id, int skillid, byte fatigue, byte level, int exp) {
+    public MapleMount(
+            MapleCharacter owner, int id, int skillid, byte fatigue, byte level, int exp) {
         this.itemid = id;
         this.skillid = skillid;
         this.fatigue = fatigue;
@@ -59,7 +59,10 @@ public class MapleMount implements Serializable {
             return;
         }
         Connection con = DatabaseConnection.getConnection();
-        PreparedStatement ps = con.prepareStatement("UPDATE mountdata set `Level` = ?, `Exp` = ?, `Fatigue` = ? WHERE characterid = ?");
+        PreparedStatement ps =
+                con.prepareStatement(
+                        "UPDATE mountdata set `Level` = ?, `Exp` = ?, `Fatigue` = ? WHERE"
+                                + " characterid = ?");
         ps.setByte(1, level);
         ps.setInt(2, exp);
         ps.setByte(3, fatigue);

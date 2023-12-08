@@ -1,24 +1,24 @@
 package server.maplevar;
 
-
 import client.MapleCharacter;
 import database.DatabaseConnection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 @Slf4j
 public class SimpleMapleVar implements MapleVar {
 
-
     private static final Logger logger = LoggerFactory.getLogger(SimpleMapleVar.class);
-    private static final String UPDATE = "UPDATE maple_var SET value = ? WHERE maple_key = ? AND character_id = ?";
-    private static final String INSERT = "INSERT INTO maple_var(character_id, maple_key, value) VALUES(?, ?, ?);";
-    private static final String SELECT = "SELECT maple_key, value FROM maple_var WHERE character_id = ? AND maple_key = ?";
+    private static final String UPDATE =
+            "UPDATE maple_var SET value = ? WHERE maple_key = ? AND character_id = ?";
+    private static final String INSERT =
+            "INSERT INTO maple_var(character_id, maple_key, value) VALUES(?, ?, ?);";
+    private static final String SELECT =
+            "SELECT maple_key, value FROM maple_var WHERE character_id = ? AND maple_key = ?";
     private final MapleCharacter player;
 
     public SimpleMapleVar(MapleCharacter player) {
@@ -50,7 +50,6 @@ public class SimpleMapleVar implements MapleVar {
         } catch (SQLException ex) {
             logger.info("Error setting maple var", ex);
         }
-
     }
 
     @Override
@@ -60,7 +59,7 @@ public class SimpleMapleVar implements MapleVar {
             st.setInt(1, player.getId());
             st.setString(2, key);
             ResultSet rs = st.executeQuery();
-            //it will never return more than one, since key is a PK.
+            // it will never return more than one, since key is a PK.
             if (rs.next()) {
                 return rs.getString("value");
             }
@@ -69,5 +68,4 @@ public class SimpleMapleVar implements MapleVar {
         }
         return null;
     }
-
 }

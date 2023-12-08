@@ -20,5 +20,4 @@ public class GainSkillPointCommand implements Command {
     public String getTrigger() {
         return "gainsp";
     }
-
 }

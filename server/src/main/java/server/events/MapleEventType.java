@@ -1,6 +1,6 @@
 /*
 This file is part of the ZeroFusion MapleStory Server
-Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 ZeroFusion organized by "RMZero213" <RMZero213@hotmail.com>
@@ -26,12 +26,11 @@ import lombok.Getter;
 
 @Getter
 public enum MapleEventType {
-
-    Coconut("coconut", new int[]{109080000}), //just using one
-    Fitness("fitness", new int[]{109040000, 109040001, 109040002, 109040003, 109040004}),
-    OlaOla("ola", new int[]{109030001, 109030002, 109030003}),
-    OxQuiz("ox", new int[]{109020001}),
-    Snowball("snowball", new int[]{109060000}); //just using one
+    Coconut("coconut", new int[] {109080000}), // just using one
+    Fitness("fitness", new int[] {109040000, 109040001, 109040002, 109040003, 109040004}),
+    OlaOla("ola", new int[] {109030001, 109030002, 109030003}),
+    OxQuiz("ox", new int[] {109020001}),
+    Snowball("snowball", new int[] {109060000}); // just using one
     private String command;
     private int[] mapIds;
 
@@ -48,6 +47,4 @@ public enum MapleEventType {
         }
         return null;
     }
-
-
 }

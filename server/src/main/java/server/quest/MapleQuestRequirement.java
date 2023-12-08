@@ -8,14 +8,13 @@ import client.inventory.MaplePet;
 import client.skill.ISkill;
 import client.skill.SkillFactory;
 import constants.GameConstants;
-import provider.MapleData;
-import provider.MapleDataTool;
-import tools.Pair;
-
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
+import provider.MapleData;
+import provider.MapleDataTool;
+import tools.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleQuestRequirement implements Serializable {
@@ -27,56 +26,69 @@ public class MapleQuestRequirement implements Serializable {
     private String stringStore;
     private List<Pair<Integer, Integer>> dataStore;
 
-    /**
-     * Creates a new instance of MapleQuestRequirement
-     */
+    /** Creates a new instance of MapleQuestRequirement */
     public MapleQuestRequirement(MapleQuest quest, MapleQuestRequirementType type, MapleData data) {
         this.type = type;
         this.quest = quest;
 
         switch (type) {
-            case job: {
-                final List<MapleData> child = data.getChildren();
-                dataStore = new LinkedList<Pair<Integer, Integer>>();
+            case job:
+                {
+                    final List<MapleData> child = data.getChildren();
+                    dataStore = new LinkedList<Pair<Integer, Integer>>();
 
-                for (int i = 0; i < child.size(); i++) {
-                    dataStore.add(new Pair<Integer, Integer>(i, MapleDataTool.getInt(child.get(i), -1)));
+                    for (int i = 0; i < child.size(); i++) {
+                        dataStore.add(
+                                new Pair<Integer, Integer>(
+                                        i, MapleDataTool.getInt(child.get(i), -1)));
+                    }
+                    break;
                 }
-                break;
-            }
-            case skill: {
-                final List<MapleData> child = data.getChildren();
-                dataStore = new LinkedList<Pair<Integer, Integer>>();
+            case skill:
+                {
+                    final List<MapleData> child = data.getChildren();
+                    dataStore = new LinkedList<Pair<Integer, Integer>>();
 
-                for (int i = 0; i < child.size(); i++) {
-                    final MapleData childdata = child.get(i);
-                    dataStore.add(new Pair<Integer, Integer>(MapleDataTool.getInt(childdata.getChildByPath("id"), 0),
-                            MapleDataTool.getInt(childdata.getChildByPath("acquire"), 0)));
+                    for (int i = 0; i < child.size(); i++) {
+                        final MapleData childdata = child.get(i);
+                        dataStore.add(
+                                new Pair<Integer, Integer>(
+                                        MapleDataTool.getInt(childdata.getChildByPath("id"), 0),
+                                        MapleDataTool.getInt(
+                                                childdata.getChildByPath("acquire"), 0)));
+                    }
+                    break;
                 }
-                break;
-            }
-            case quest: {
-                final List<MapleData> child = data.getChildren();
-                dataStore = new LinkedList<Pair<Integer, Integer>>();
+            case quest:
+                {
+                    final List<MapleData> child = data.getChildren();
+                    dataStore = new LinkedList<Pair<Integer, Integer>>();
 
-                for (int i = 0; i < child.size(); i++) {
-                    final MapleData childdata = child.get(i);
-                    dataStore.add(new Pair<Integer, Integer>(MapleDataTool.getInt(childdata.getChildByPath("id")),
-                            MapleDataTool.getInt(childdata.getChildByPath("state"), 0)));
+                    for (int i = 0; i < child.size(); i++) {
+                        final MapleData childdata = child.get(i);
+                        dataStore.add(
+                                new Pair<Integer, Integer>(
+                                        MapleDataTool.getInt(childdata.getChildByPath("id")),
+                                        MapleDataTool.getInt(
+                                                childdata.getChildByPath("state"), 0)));
+                    }
+                    break;
                 }
-                break;
-            }
-            case item: {
-                final List<MapleData> child = data.getChildren();
-                dataStore = new LinkedList<Pair<Integer, Integer>>();
+            case item:
+                {
+                    final List<MapleData> child = data.getChildren();
+                    dataStore = new LinkedList<Pair<Integer, Integer>>();
 
-                for (int i = 0; i < child.size(); i++) {
-                    final MapleData childdata = child.get(i);
-                    dataStore.add(new Pair<Integer, Integer>(MapleDataTool.getInt(childdata.getChildByPath("id")),
-                            MapleDataTool.getInt(childdata.getChildByPath("count"), 0)));
+                    for (int i = 0; i < child.size(); i++) {
+                        final MapleData childdata = child.get(i);
+                        dataStore.add(
+                                new Pair<Integer, Integer>(
+                                        MapleDataTool.getInt(childdata.getChildByPath("id")),
+                                        MapleDataTool.getInt(
+                                                childdata.getChildByPath("count"), 0)));
+                    }
+                    break;
                 }
-                break;
-            }
             case pettamenessmin:
             case npc:
             case questComplete:
@@ -84,53 +96,66 @@ public class MapleQuestRequirement implements Serializable {
             case interval:
             case mbmin:
             case lvmax:
-            case lvmin: {
-                intStore = MapleDataTool.getInt(data, -1);
-                break;
-            }
-            case end: {
-                stringStore = MapleDataTool.getString(data, null);
-                break;
-            }
-            case mob: {
-                final List<MapleData> child = data.getChildren();
-                dataStore = new LinkedList<Pair<Integer, Integer>>();
+            case lvmin:
+                {
+                    intStore = MapleDataTool.getInt(data, -1);
+                    break;
+                }
+            case end:
+                {
+                    stringStore = MapleDataTool.getString(data, null);
+                    break;
+                }
+            case mob:
+                {
+                    final List<MapleData> child = data.getChildren();
+                    dataStore = new LinkedList<Pair<Integer, Integer>>();
 
-                for (int i = 0; i < child.size(); i++) {
-                    final MapleData childdata = child.get(i);
-                    dataStore.add(new Pair<Integer, Integer>(MapleDataTool.getInt(childdata.getChildByPath("id"), 0),
-                            MapleDataTool.getInt(childdata.getChildByPath("count"), 0)));
+                    for (int i = 0; i < child.size(); i++) {
+                        final MapleData childdata = child.get(i);
+                        dataStore.add(
+                                new Pair<Integer, Integer>(
+                                        MapleDataTool.getInt(childdata.getChildByPath("id"), 0),
+                                        MapleDataTool.getInt(
+                                                childdata.getChildByPath("count"), 0)));
+                    }
+                    break;
                 }
-                break;
-            }
-            case fieldEnter: {
-                final MapleData zeroField = data.getChildByPath("0");
-                if (zeroField != null) {
-                    intStore = MapleDataTool.getInt(zeroField);
-                } else {
-                    intStore = -1;
+            case fieldEnter:
+                {
+                    final MapleData zeroField = data.getChildByPath("0");
+                    if (zeroField != null) {
+                        intStore = MapleDataTool.getInt(zeroField);
+                    } else {
+                        intStore = -1;
+                    }
+                    break;
                 }
-                break;
-            }
-            case mbcard: {
-                final List<MapleData> child = data.getChildren();
-                dataStore = new LinkedList<Pair<Integer, Integer>>();
+            case mbcard:
+                {
+                    final List<MapleData> child = data.getChildren();
+                    dataStore = new LinkedList<Pair<Integer, Integer>>();
 
-                for (int i = 0; i < child.size(); i++) {
-                    final MapleData childdata = child.get(i);
-                    dataStore.add(new Pair<Integer, Integer>(MapleDataTool.getInt(childdata.getChildByPath("id"), 0),
-                            MapleDataTool.getInt(childdata.getChildByPath("min"), 0)));
+                    for (int i = 0; i < child.size(); i++) {
+                        final MapleData childdata = child.get(i);
+                        dataStore.add(
+                                new Pair<Integer, Integer>(
+                                        MapleDataTool.getInt(childdata.getChildByPath("id"), 0),
+                                        MapleDataTool.getInt(childdata.getChildByPath("min"), 0)));
+                    }
+                    break;
                 }
-                break;
-            }
-            case pet: {
-                dataStore = new LinkedList<Pair<Integer, Integer>>();
+            case pet:
+                {
+                    dataStore = new LinkedList<Pair<Integer, Integer>>();
 
-                for (MapleData child : data) {
-                    dataStore.add(new Pair<Integer, Integer>(-1, MapleDataTool.getInt("id", child, 0)));
+                    for (MapleData child : data) {
+                        dataStore.add(
+                                new Pair<Integer, Integer>(
+                                        -1, MapleDataTool.getInt("id", child, 0)));
+                    }
+                    break;
                 }
-                break;
-            }
         }
     }
 
@@ -143,29 +168,30 @@ public class MapleQuestRequirement implements Serializable {
                     }
                 }
                 return false;
-            case skill: {
-                for (Pair<Integer, Integer> a : dataStore) {
-                    final boolean acquire = a.getRight() > 0;
-                    final int skill = a.getLeft();
-                    final ISkill skil = SkillFactory.getSkill(skill);
-                    if (acquire) {
-                        if (skil.isFourthJob()) {
-                            if (c.getMasterLevel(skil) == 0) {
-                                return false;
+            case skill:
+                {
+                    for (Pair<Integer, Integer> a : dataStore) {
+                        final boolean acquire = a.getRight() > 0;
+                        final int skill = a.getLeft();
+                        final ISkill skil = SkillFactory.getSkill(skill);
+                        if (acquire) {
+                            if (skil.isFourthJob()) {
+                                if (c.getMasterLevel(skil) == 0) {
+                                    return false;
+                                }
+                            } else {
+                                if (c.getSkillLevel(skil) == 0) {
+                                    return false;
+                                }
                             }
                         } else {
-                            if (c.getSkillLevel(skil) == 0) {
+                            if (c.getSkillLevel(skil) > 0 || c.getMasterLevel(skil) > 0) {
                                 return false;
                             }
                         }
-                    } else {
-                        if (c.getSkillLevel(skil) > 0 || c.getMasterLevel(skil) > 0) {
-                            return false;
-                        }
                     }
+                    return true;
                 }
-                return true;
-            }
             case quest:
                 for (Pair<Integer, Integer> a : dataStore) {
                     final MapleQuestStatus q = c.getQuest(MapleQuest.getInstance(a.getLeft()));
@@ -205,7 +231,12 @@ public class MapleQuestRequirement implements Serializable {
             case end:
                 final String timeStr = stringStore;
                 final Calendar cal = Calendar.getInstance();
-                cal.set(Integer.parseInt(timeStr.substring(0, 4)), Integer.parseInt(timeStr.substring(4, 6)), Integer.parseInt(timeStr.substring(6, 8)), Integer.parseInt(timeStr.substring(8, 10)), 0);
+                cal.set(
+                        Integer.parseInt(timeStr.substring(0, 4)),
+                        Integer.parseInt(timeStr.substring(4, 6)),
+                        Integer.parseInt(timeStr.substring(6, 8)),
+                        Integer.parseInt(timeStr.substring(8, 10)),
+                        0);
                 return cal.getTimeInMillis() >= System.currentTimeMillis();
             case mob:
                 for (Pair<Integer, Integer> a : dataStore) {
@@ -239,7 +270,9 @@ public class MapleQuestRequirement implements Serializable {
             case questComplete:
                 return c.getNumQuest() >= intStore;
             case interval:
-                return c.getQuest(quest).getStatus() != 2 || c.getQuest(quest).getCompletionTime() <= System.currentTimeMillis() - intStore * 60 * 1000L;
+                return c.getQuest(quest).getStatus() != 2
+                        || c.getQuest(quest).getCompletionTime()
+                                <= System.currentTimeMillis() - intStore * 60 * 1000L;
             case pet:
                 for (Pair<Integer, Integer> a : dataStore) {
                     if (c.getPetById(a.getRight()) == -1) {

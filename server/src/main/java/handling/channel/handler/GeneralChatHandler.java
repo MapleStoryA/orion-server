@@ -25,18 +25,27 @@ public class GeneralChatHandler extends AbstractMaplePacketHandler {
                 // Note: This patch is needed to prevent chat packet from being
                 // broadcast to people who might be packet sniffing.
                 if (chr.isHidden()) {
-                    chr.getMap().broadcastGMMessage(chr,
-                            MaplePacketCreator.getChatText(chr.getId(), text, c.getPlayer().isGameMaster(), unk), true);
+                    chr.getMap()
+                            .broadcastGMMessage(
+                                    chr,
+                                    MaplePacketCreator.getChatText(
+                                            chr.getId(), text, c.getPlayer().isGameMaster(), unk),
+                                    true);
                 } else {
                     chr.getCheatTracker().checkMsg();
-                    chr.getMap().broadcastMessage(
-                            MaplePacketCreator.getChatText(chr.getId(), text, c.getPlayer().isGameMaster(), unk),
-                            c.getPlayer().getPosition());
+                    chr.getMap()
+                            .broadcastMessage(
+                                    MaplePacketCreator.getChatText(
+                                            chr.getId(), text, c.getPlayer().isGameMaster(), unk),
+                                    c.getPlayer().getPosition());
                 }
             } else {
-                c.getSession().write(MaplePacketCreator.serverNotice(6, "You have been muted and are therefore unable to talk."));
+                c.getSession()
+                        .write(
+                                MaplePacketCreator.serverNotice(
+                                        6,
+                                        "You have been muted and are therefore unable to talk."));
             }
         }
     }
-
 }

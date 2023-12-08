@@ -1,6 +1,6 @@
 /*
 This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 
@@ -21,20 +21,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package handling.channel.handler;
 
-import client.skill.ISkill;
+import client.AttackPair;
 import client.MapleCharacter;
+import client.skill.ISkill;
 import client.skill.SkillFactory;
 import constants.GameConstants;
-import server.AutobanManager;
-import server.MapleStatEffect;
-import client.AttackPair;
-
 import java.awt.*;
 import java.util.List;
+import server.AutobanManager;
+import server.MapleStatEffect;
 
 @lombok.extern.slf4j.Slf4j
 public class AttackInfo {
-
 
     public int skill, charge, lastAttackTickCount;
     public List<AttackPair> allDamage;
@@ -47,7 +45,8 @@ public class AttackInfo {
         return position;
     }
 
-    public final MapleStatEffect getAttackEffect(final MapleCharacter chr, int skillLevel, final ISkill skill_) {
+    public final MapleStatEffect getAttackEffect(
+            final MapleCharacter chr, int skillLevel, final ISkill skill_) {
         if (GameConstants.isMulungSkill(skill) || GameConstants.isPyramidSkill(skill)) {
             skillLevel = 1;
         } else if (skillLevel <= 0) {
@@ -57,7 +56,11 @@ public class AttackInfo {
             final ISkill skillLink = SkillFactory.getSkill(skill);
             if (display > 80) {
                 if (!skillLink.getAction()) {
-                    AutobanManager.getInstance().autoban(chr.getClient(), "No delay hack, SkillID : " + skill); // 2 of the same autobans? wtf...
+                    AutobanManager.getInstance()
+                            .autoban(
+                                    chr.getClient(),
+                                    "No delay hack, SkillID : "
+                                            + skill); // 2 of the same autobans? wtf...
                     return null;
                 }
             }
@@ -65,7 +68,8 @@ public class AttackInfo {
         }
         if (display > 80) {
             if (!skill_.getAction()) {
-                AutobanManager.getInstance().autoban(chr.getClient(), "No delay hack, SkillID : " + skill);
+                AutobanManager.getInstance()
+                        .autoban(chr.getClient(), "No delay hack, SkillID : " + skill);
                 return null;
             }
         }

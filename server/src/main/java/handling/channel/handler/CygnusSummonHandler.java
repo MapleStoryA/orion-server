@@ -15,7 +15,5 @@ public class CygnusSummonHandler extends AbstractMaplePacketHandler {
         } else if (c.getPlayer().getJob().getId() == 1000) {
             NPCScriptManager.getInstance().start(c, 1101008);
         }
-
     }
-
 }

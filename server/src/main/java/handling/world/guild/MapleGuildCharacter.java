@@ -1,6 +1,6 @@
 /*
 This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 
@@ -50,7 +50,16 @@ public class MapleGuildCharacter implements java.io.Serializable { // alias for 
     }
 
     // or we could just read from the database
-    public MapleGuildCharacter(final int id, final short lv, final String name, final byte channel, final int job, final byte rank, final byte allianceRank, final int gid, final boolean on) {
+    public MapleGuildCharacter(
+            final int id,
+            final short lv,
+            final String name,
+            final byte channel,
+            final int job,
+            final byte rank,
+            final byte allianceRank,
+            final int gid,
+            final boolean on) {
         this.level = lv;
         this.id = id;
         this.name = name;

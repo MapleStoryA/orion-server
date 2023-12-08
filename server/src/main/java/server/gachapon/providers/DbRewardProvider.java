@@ -1,29 +1,28 @@
 package server.gachapon.providers;
 
 import database.DatabaseConnection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import server.gachapon.AbstractRandomEntity;
 import server.gachapon.GachaponLocation;
 import server.gachapon.GachaponReward;
 import server.gachapon.RewardSource;
 import server.gachapon.RewardsProvider;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 @lombok.extern.slf4j.Slf4j
 public class DbRewardProvider implements RewardsProvider {
 
-    public final String BASIC_QUERY = "SELECT idreward, id, chance, description, location, source from reward_item where enabled = 1";
-
+    public final String BASIC_QUERY =
+            "SELECT idreward, id, chance, description, location, source from reward_item where"
+                    + " enabled = 1";
 
     @Override
     public List<AbstractRandomEntity> getRewards() {
         return getRewards(BASIC_QUERY);
     }
-
 
     public List<AbstractRandomEntity> getRewards(String query) {
         try (var con = DatabaseConnection.getConnection()) {
@@ -39,7 +38,8 @@ public class DbRewardProvider implements RewardsProvider {
                 String source = rs.getString("source");
                 RewardSource rw = RewardSource.valueOf(source);
                 GachaponLocation locat = GachaponLocation.valueOf(location);
-                GachaponReward reward = new GachaponReward(idreward, id, 1, chance, description, locat, rw);
+                GachaponReward reward =
+                        new GachaponReward(idreward, id, 1, chance, description, locat, rw);
                 list.add(reward);
             }
             return list;
@@ -50,6 +50,4 @@ public class DbRewardProvider implements RewardsProvider {
 
         return null;
     }
-
-
 }

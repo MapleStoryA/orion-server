@@ -1,7 +1,6 @@
 package client;
 
 public enum MapleStat {
-
     SKIN(0x1),
     FACE(0x2),
     HAIR(0x4),
@@ -41,7 +40,6 @@ public enum MapleStat {
     }
 
     public enum TemporaryMapleStat {
-
         STR(0x1),
         DEX(0x2),
         INT(0x4),

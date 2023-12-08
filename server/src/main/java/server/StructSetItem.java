@@ -47,6 +47,17 @@ public class StructSetItem {
 
     public static class SetItem {
 
-        public int incPDD, incMDD, incSTR, incDEX, incINT, incLUK, incACC, incPAD, incMAD, incSpeed, incMHP, incMMP;
+        public int incPDD,
+                incMDD,
+                incSTR,
+                incDEX,
+                incINT,
+                incLUK,
+                incACC,
+                incPAD,
+                incMAD,
+                incSpeed,
+                incMHP,
+                incMMP;
     }
 }

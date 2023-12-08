@@ -1,6 +1,6 @@
 /*
 This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 
@@ -23,12 +23,11 @@ package client;
 
 import constants.GameConstants;
 import database.DatabaseConnection;
-import tools.Triple;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
+import tools.Triple;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleCharacterHelper {
@@ -37,7 +36,10 @@ public class MapleCharacterHelper {
     private static final Pattern petPattern = Pattern.compile("[a-zA-Z0-9_-]{4,12}");
 
     public static final boolean canCreateChar(final String name) {
-        if (name.length() < 3 || name.length() > 12 || !namePattern.matcher(name).matches() || getIdByName(name) != -1) {
+        if (name.length() < 3
+                || name.length() > 12
+                || !namePattern.matcher(name).matches()
+                || getIdByName(name) != -1) {
             return false;
         }
         for (String z : GameConstants.RESERVED) {
@@ -91,10 +93,11 @@ public class MapleCharacterHelper {
         return -1;
     }
 
-    //id accountid gender
+    // id accountid gender
     public static Triple<Integer, Integer, Integer> getInfoByName(String name, int world) {
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM characters WHERE name = ? AND world = ?");
+            PreparedStatement ps =
+                    con.prepareStatement("SELECT * FROM characters WHERE name = ? AND world = ?");
             ps.setString(1, name);
             ps.setInt(2, world);
             ResultSet rs = ps.executeQuery();
@@ -103,7 +106,8 @@ public class MapleCharacterHelper {
                 ps.close();
                 return null;
             }
-            Triple<Integer, Integer, Integer> id = new Triple<>(rs.getInt("id"), rs.getInt("accountid"), rs.getInt("gender"));
+            Triple<Integer, Integer, Integer> id =
+                    new Triple<>(rs.getInt("id"), rs.getInt("accountid"), rs.getInt("gender"));
             rs.close();
             ps.close();
             return id;
@@ -115,7 +119,10 @@ public class MapleCharacterHelper {
 
     public static void sendNote(String to, String name, String msg, int fame) {
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("INSERT INTO notes (`to`, `from`, `message`, `timestamp`, `gift`) VALUES (?, ?, ?, ?, ?)");
+            PreparedStatement ps =
+                    con.prepareStatement(
+                            "INSERT INTO notes (`to`, `from`, `message`, `timestamp`, `gift`)"
+                                    + " VALUES (?, ?, ?, ?, ?)");
             ps.setString(1, to);
             ps.setString(2, name);
             ps.setString(3, msg);
@@ -127,6 +134,4 @@ public class MapleCharacterHelper {
             log.error("Cannot send note", e);
         }
     }
-
-
 }

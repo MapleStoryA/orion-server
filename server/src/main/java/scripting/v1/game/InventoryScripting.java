@@ -3,9 +3,8 @@ package scripting.v1.game;
 import client.MapleClient;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
-import scripting.v1.game.helper.InventoryHelper;
 import scripting.v1.game.helper.ApiClass;
-
+import scripting.v1.game.helper.InventoryHelper;
 
 @lombok.extern.slf4j.Slf4j
 public class InventoryScripting extends PlayerScripting {
@@ -37,7 +36,7 @@ public class InventoryScripting extends PlayerScripting {
         return InventoryHelper.gainItem(id, quantity, false, 0, -1, "", client);
     }
 
-    //Like in bms, items = item, count * n
+    // Like in bms, items = item, count * n
     @ApiClass
     public int exchange(int money, int... items) {
         if (money != 0) {
@@ -52,7 +51,6 @@ public class InventoryScripting extends PlayerScripting {
                 if (inventoryQuantity < (quantity * -1)) {
                     return 0;
                 }
-
             }
             MapleInventoryType type = GameConstants.getInventoryType(id);
             hasSpace = holdCount(type.getType()) >= quantity;
@@ -66,10 +64,6 @@ public class InventoryScripting extends PlayerScripting {
             InventoryHelper.gainItem(id, quantity, false, 0, -1, "", client);
         }
 
-
         return 1;
-
     }
-
-
 }

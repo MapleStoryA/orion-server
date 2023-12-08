@@ -1,18 +1,16 @@
 package client;
 
-import lombok.Getter;
-import tools.data.output.MaplePacketLittleEndianWriter;
-
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import lombok.Getter;
+import tools.data.output.MaplePacketLittleEndianWriter;
 
 public class WishList {
 
     private Set<Integer> items;
 
-    @Getter
-    private boolean changed;
+    @Getter private boolean changed;
 
     public WishList() {
         this.items = new LinkedHashSet<>(10);
@@ -22,7 +20,6 @@ public class WishList {
         items.add(item);
         changed = true;
     }
-
 
     public void setItem(int item) {
         items.add(item);
@@ -42,7 +39,6 @@ public class WishList {
         }
     }
 
-
     public void encodeToCashShop(MaplePacketLittleEndianWriter mplew) {
         var list = toArray();
         for (int i = 0; i < 10; i++) {
@@ -60,9 +56,7 @@ public class WishList {
 
     private int[] toArray() {
         var list = new int[10];
-        var src = items.stream()
-                .mapToInt(Integer::intValue)
-                .toArray();
+        var src = items.stream().mapToInt(Integer::intValue).toArray();
         System.arraycopy(src, 0, list, 0, src.length);
         return list;
     }

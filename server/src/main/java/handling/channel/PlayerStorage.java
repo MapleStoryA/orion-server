@@ -1,6 +1,6 @@
 /*
 This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 
@@ -26,8 +26,6 @@ import client.MapleCharacterHelper;
 import handling.world.helper.CharacterTransfer;
 import handling.world.helper.CheaterData;
 import handling.world.helper.FindCommand;
-import server.Timer.PingTimer;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -37,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import server.Timer.PingTimer;
 
 @lombok.extern.slf4j.Slf4j
 public class PlayerStorage {
@@ -49,7 +48,6 @@ public class PlayerStorage {
     private final Map<Integer, MapleCharacter> idToChar = new HashMap<Integer, MapleCharacter>();
     private final Map<Integer, CharacterTransfer> pendingCharacter = new HashMap<>();
     private final int channel;
-
 
     public PlayerStorage(int channel) {
         this.channel = channel;
@@ -80,7 +78,7 @@ public class PlayerStorage {
     public final void registerPendingPlayer(final CharacterTransfer chr, final int playerid) {
         wL2.lock();
         try {
-            pendingCharacter.put(playerid, chr);//new Pair(System.currentTimeMillis(), chr));
+            pendingCharacter.put(playerid, chr); // new Pair(System.currentTimeMillis(), chr));
         } finally {
             wL2.unlock();
         }
@@ -121,7 +119,7 @@ public class PlayerStorage {
         final CharacterTransfer toreturn;
         rL2.lock();
         try {
-            toreturn = pendingCharacter.get(charid);//.right;
+            toreturn = pendingCharacter.get(charid); // .right;
         } finally {
             rL2.unlock();
         }
@@ -164,7 +162,14 @@ public class PlayerStorage {
                 chr = itr.next();
 
                 if (chr.getCheatTracker().getPoints() > 0) {
-                    cheaters.add(new CheaterData(chr.getCheatTracker().getPoints(), MapleCharacterHelper.makeMapleReadable(chr.getName()) + " (" + chr.getCheatTracker().getPoints() + ") " + chr.getCheatTracker().getSummary()));
+                    cheaters.add(
+                            new CheaterData(
+                                    chr.getCheatTracker().getPoints(),
+                                    MapleCharacterHelper.makeMapleReadable(chr.getName())
+                                            + " ("
+                                            + chr.getCheatTracker().getPoints()
+                                            + ") "
+                                            + chr.getCheatTracker().getSummary()));
                 }
             }
         } finally {
@@ -184,7 +189,14 @@ public class PlayerStorage {
                 chr = itr.next();
 
                 if (chr.getReportPoints() > 0) {
-                    cheaters.add(new CheaterData(chr.getReportPoints(), MapleCharacterHelper.makeMapleReadable(chr.getName()) + " (" + chr.getReportPoints() + ") " + chr.getReportSummary()));
+                    cheaters.add(
+                            new CheaterData(
+                                    chr.getReportPoints(),
+                                    MapleCharacterHelper.makeMapleReadable(chr.getName())
+                                            + " ("
+                                            + chr.getReportPoints()
+                                            + ") "
+                                            + chr.getReportSummary()));
                 }
             }
         } finally {
@@ -304,7 +316,8 @@ public class PlayerStorage {
             wL2.lock();
             try {
                 final long currenttime = System.currentTimeMillis();
-                final Iterator<Map.Entry<Integer, CharacterTransfer>> itr = pendingCharacter.entrySet().iterator();
+                final Iterator<Map.Entry<Integer, CharacterTransfer>> itr =
+                        pendingCharacter.entrySet().iterator();
 
                 while (itr.hasNext()) {
                     if (currenttime - itr.next().getValue().getTransferTime() > 40000) { // 40 sec

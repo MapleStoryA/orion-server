@@ -1,6 +1,6 @@
 /*
 This file is part of the ZeroFusion MapleStory Server
-Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 ZeroFusion organized by "RMZero213" <RMZero213@hotmail.com>
@@ -31,9 +31,6 @@ import database.DatabaseConnection;
 import handling.channel.ChannelServer;
 import handling.world.WorldServer;
 import handling.world.helper.FindCommand;
-import server.maps.MapleMap;
-import tools.MaplePacketCreator;
-
 import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -43,6 +40,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import server.maps.MapleMap;
+import tools.MaplePacketCreator;
 
 @lombok.extern.slf4j.Slf4j
 public class PlayerNPC extends MapleNPC {
@@ -74,7 +73,8 @@ public class PlayerNPC extends MapleNPC {
         }
 
         Connection con = DatabaseConnection.getConnection();
-        PreparedStatement ps = con.prepareStatement("SELECT * FROM playernpcs_equip WHERE NpcId = ?");
+        PreparedStatement ps =
+                con.prepareStatement("SELECT * FROM playernpcs_equip WHERE NpcId = ?");
         ps.setInt(1, getId());
         ResultSet rs2 = ps.executeQuery();
         while (rs2.next()) {
@@ -89,7 +89,11 @@ public class PlayerNPC extends MapleNPC {
         super(npc, cid.getName());
         this.charId = cid.getId();
         this.mapid = map.getId();
-        setCoords(base.getPosition().x, base.getPosition().y, 0, base.getFH()); //0 = facing dir? no idea, but 1 dosnt work
+        setCoords(
+                base.getPosition().x,
+                base.getPosition().y,
+                0,
+                base.getFH()); // 0 = facing dir? no idea, but 1 dosnt work
         update(cid);
     }
 
@@ -112,8 +116,11 @@ public class PlayerNPC extends MapleNPC {
     }
 
     public static void updateByCharId(MapleCharacter chr) {
-        if (FindCommand.findChannel(chr.getId()) > 0) { //if character is in cserv
-            for (PlayerNPC npc : WorldServer.getInstance().getChannel(FindCommand.findChannel(chr.getId())).getAllPlayerNPC()) {
+        if (FindCommand.findChannel(chr.getId()) > 0) { // if character is in cserv
+            for (PlayerNPC npc :
+                    WorldServer.getInstance()
+                            .getChannel(FindCommand.findChannel(chr.getId()))
+                            .getAllPlayerNPC()) {
                 npc.update(chr);
             }
         }
@@ -142,7 +149,7 @@ public class PlayerNPC extends MapleNPC {
 
     public void update(MapleCharacter chr) {
         if (chr == null || charId != chr.getId()) {
-            return; //cant use name as it mightve been change actually..
+            return; // cant use name as it mightve been change actually..
         }
         setName(chr.getName());
         setHair(chr.getHair());
@@ -162,12 +169,13 @@ public class PlayerNPC extends MapleNPC {
     }
 
     public void destroy() {
-        destroy(false); //just sql
+        destroy(false); // just sql
     }
 
     public void destroy(boolean remove) {
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("DELETE FROM playernpcs WHERE scriptid = ?");
+            PreparedStatement ps =
+                    con.prepareStatement("DELETE FROM playernpcs WHERE scriptid = ?");
             ps.setInt(1, getId());
             ps.executeUpdate();
             ps.close();
@@ -192,7 +200,11 @@ public class PlayerNPC extends MapleNPC {
                 return;
             }
             destroy();
-            PreparedStatement ps = con.prepareStatement("INSERT INTO playernpcs(name, hair, face, skin, x, y, map, charid, scriptid, foothold, dir, gender, pets) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement ps =
+                    con.prepareStatement(
+                            "INSERT INTO playernpcs(name, hair, face, skin, x, y, map, charid,"
+                                + " scriptid, foothold, dir, gender, pets) VALUES (?, ?, ?, ?, ?,"
+                                + " ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, getName());
             ps.setInt(2, getHair());
             ps.setInt(3, getFace());
@@ -215,7 +227,10 @@ public class PlayerNPC extends MapleNPC {
             ps.executeUpdate();
             ps.close();
 
-            ps = con.prepareStatement("INSERT INTO playernpcs_equip(npcid, charid, equipid, equippos) VALUES (?, ?, ?, ?)");
+            ps =
+                    con.prepareStatement(
+                            "INSERT INTO playernpcs_equip(npcid, charid, equipid, equippos) VALUES"
+                                    + " (?, ?, ?, ?)");
             ps.setInt(1, getId());
             ps.setInt(2, getCharId());
             for (Entry<Byte, Integer> equip : equips.entrySet()) {

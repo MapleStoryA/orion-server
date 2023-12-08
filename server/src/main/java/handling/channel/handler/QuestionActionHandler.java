@@ -25,8 +25,8 @@ public class QuestionActionHandler extends AbstractMaplePacketHandler {
         MapleCharacter chr = c.getPlayer();
         final byte action = slea.readByte();
         int quest = slea.readShort();
-        if (quest < 0) { //questid 50000 and above, WILL cast to negative, this was tested.
-            quest += 65536; //probably not the best fix, but whatever
+        if (quest < 0) { // questid 50000 and above, WILL cast to negative, this was tested.
+            quest += 65536; // probably not the best fix, but whatever
         }
         if (chr == null) {
             return;
@@ -36,59 +36,68 @@ public class QuestionActionHandler extends AbstractMaplePacketHandler {
         }
         final MapleQuest q = MapleQuest.getInstance(quest);
         switch (action) {
-            case RESTORE_LOST_ITEM: {
-                chr.updateTick(slea.readInt());
-                final int itemid = slea.readInt();
-                MapleQuest.getInstance(quest).RestoreLostItem(chr, itemid);
-                break;
-            }
-            case START_QUEST: {
-                final int npc = slea.readInt();
-                q.start(chr, npc);
-                break;
-            }
-            case COMPLETE_QUEST: {
-                final int npc = slea.readInt();
-                int tick = slea.readInt();
-                if (q.getId() >= 1009 && q.getId() <= 1015) { // Maple quiz in map 1000000
-                    tick = tick + q.getId();
-                }
-                chr.updateTick(tick);
-
-                if (slea.available() >= 4) {
-                    q.complete(chr, npc, slea.readInt());
-                } else {
-                    q.complete(chr, npc);
-                }
-                break;
-            }
-            case FOREFIT_QUEST: {
-                if (GameConstants.canForfeit(q.getId())) {
-                    q.forfeit(chr);
-                } else {
-                    chr.dropMessage(1, "You may not forfeit this quest.");
-                }
-                break;
-            }
-            case START_SCRIPTED_QUEST: { // Scripted Start Quest
-                final int npc = slea.readInt();
-                if (NpcTalkHelper.isNewQuestScriptAvailable(quest)) {
-                    NpcTalkHelper.startQuestConversation(npc, quest, c);
+            case RESTORE_LOST_ITEM:
+                {
+                    chr.updateTick(slea.readInt());
+                    final int itemid = slea.readInt();
+                    MapleQuest.getInstance(quest).RestoreLostItem(chr, itemid);
                     break;
                 }
-                c.setCurrentNpcScript(null);
-                NPCScriptManager.getInstance().startQuest(c, npc, quest);
-                break;
-            }
-            case END_SCRIPTED_QUEST: {
-                final int npc = slea.readInt();
-                NPCScriptManager.getInstance().endQuest(c, npc, quest, false);
-                c.getSession().write(MaplePacketCreator.showSpecialEffect(9)); // Quest completion
-                chr.getMap().broadcastMessage(chr, MaplePacketCreator.showSpecialEffect(chr.getId(), 9), false);
-                break;
-            }
+            case START_QUEST:
+                {
+                    final int npc = slea.readInt();
+                    q.start(chr, npc);
+                    break;
+                }
+            case COMPLETE_QUEST:
+                {
+                    final int npc = slea.readInt();
+                    int tick = slea.readInt();
+                    if (q.getId() >= 1009 && q.getId() <= 1015) { // Maple quiz in map 1000000
+                        tick = tick + q.getId();
+                    }
+                    chr.updateTick(tick);
+
+                    if (slea.available() >= 4) {
+                        q.complete(chr, npc, slea.readInt());
+                    } else {
+                        q.complete(chr, npc);
+                    }
+                    break;
+                }
+            case FOREFIT_QUEST:
+                {
+                    if (GameConstants.canForfeit(q.getId())) {
+                        q.forfeit(chr);
+                    } else {
+                        chr.dropMessage(1, "You may not forfeit this quest.");
+                    }
+                    break;
+                }
+            case START_SCRIPTED_QUEST:
+                { // Scripted Start Quest
+                    final int npc = slea.readInt();
+                    if (NpcTalkHelper.isNewQuestScriptAvailable(quest)) {
+                        NpcTalkHelper.startQuestConversation(npc, quest, c);
+                        break;
+                    }
+                    c.setCurrentNpcScript(null);
+                    NPCScriptManager.getInstance().startQuest(c, npc, quest);
+                    break;
+                }
+            case END_SCRIPTED_QUEST:
+                {
+                    final int npc = slea.readInt();
+                    NPCScriptManager.getInstance().endQuest(c, npc, quest, false);
+                    c.getSession()
+                            .write(MaplePacketCreator.showSpecialEffect(9)); // Quest completion
+                    chr.getMap()
+                            .broadcastMessage(
+                                    chr,
+                                    MaplePacketCreator.showSpecialEffect(chr.getId(), 9),
+                                    false);
+                    break;
+                }
         }
-
     }
-
 }

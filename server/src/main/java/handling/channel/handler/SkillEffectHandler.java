@@ -40,23 +40,28 @@ public class SkillEffectHandler extends AbstractMaplePacketHandler {
 
         if (skilllevel_serv > 0 && skilllevel_serv == level && skill.isChargeSkill()) {
             chr.setKeyDownSkill_Time(System.currentTimeMillis());
-            chr.getMap().broadcastMessage(chr, MaplePacketCreator.skillEffect(chr, skill_id, level, flags, speed, unk),
-                    false);
+            chr.getMap()
+                    .broadcastMessage(
+                            chr,
+                            MaplePacketCreator.skillEffect(chr, skill_id, level, flags, speed, unk),
+                            false);
         }
-
 
         if (skill_id == BladeMaster.FINAL_CUT) {
-            TimerManager.getInstance().schedule(new Runnable() {
+            TimerManager.getInstance()
+                    .schedule(
+                            new Runnable() {
 
-                @Override
-                public void run() {
-                    c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.skillCancel(c.getPlayer(), skill_id));
-                }
-
-            }, 1000);
+                                @Override
+                                public void run() {
+                                    c.getPlayer()
+                                            .getMap()
+                                            .broadcastMessage(
+                                                    MaplePacketCreator.skillCancel(
+                                                            c.getPlayer(), skill_id));
+                                }
+                            },
+                            1000);
         }
-
     }
-
-
 }

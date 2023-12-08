@@ -21,7 +21,9 @@ public class EnterCashShopHandler extends AbstractMaplePacketHandler {
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
 
-        if (!chr.isAlive() || chr.getEventInstance() != null || c.getChannelServer() == null
+        if (!chr.isAlive()
+                || chr.getEventInstance() != null
+                || c.getChannelServer() == null
                 || MapConstants.isStorylineMap(chr.getMapId())) {
             c.getSession().write(MaplePacketCreator.serverBlocked(2));
             c.getSession().write(MaplePacketCreator.enableActions());
@@ -42,15 +44,20 @@ public class EnterCashShopHandler extends AbstractMaplePacketHandler {
         chr.getMap().removePlayer(chr);
         c.setPlayer(null);
 
-        ServerMigration entry = new ServerMigration(chr.getId(), c.getAccountData(), c.getSessionIPAddress());
+        ServerMigration entry =
+                new ServerMigration(chr.getId(), c.getAccountData(), c.getSessionIPAddress());
         entry.setCharacterTransfer(new CharacterTransfer(chr));
         entry.addBuffsToStorage(chr.getId(), chr.getAllBuffs());
         entry.addCooldownsToStorage(chr.getId(), chr.getCooldowns());
         entry.addDiseaseToStorage(chr.getId(), chr.getAllDiseases());
         WorldServer.getInstance().getMigrationService().putMigrationEntry(entry);
 
-        c.getSession().write(MaplePacketCreator.getChannelChange(Integer.parseInt(CashShopServer.getInstance().getPublicAddress().split(":")[1])));
-
+        c.getSession()
+                .write(
+                        MaplePacketCreator.getChannelChange(
+                                Integer.parseInt(
+                                        CashShopServer.getInstance()
+                                                .getPublicAddress()
+                                                .split(":")[1])));
     }
-
 }

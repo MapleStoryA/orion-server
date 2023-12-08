@@ -1,6 +1,6 @@
 /*
 This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 
@@ -26,18 +26,17 @@ import client.MapleClient;
 import client.inventory.IItem;
 import client.inventory.ItemFlag;
 import handling.world.WorldServer;
-import server.MapleInventoryManipulator;
-import server.Timer.EtcTimer;
-import server.maps.MapleMapObjectType;
-import tools.MaplePacketCreator;
-import tools.packet.PlayerShopPacket;
-
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
+import server.MapleInventoryManipulator;
+import server.Timer.EtcTimer;
+import server.maps.MapleMapObjectType;
+import tools.MaplePacketCreator;
+import tools.packet.PlayerShopPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class HiredMerchant extends AbstractPlayerStore {
@@ -53,33 +52,37 @@ public class HiredMerchant extends AbstractPlayerStore {
         start = System.currentTimeMillis();
         blacklist = new LinkedHashSet<>();
         chatHistory = new ArrayList<>();
-        this.schedule = EtcTimer.getInstance().schedule(new Runnable() {
+        this.schedule =
+                EtcTimer.getInstance()
+                        .schedule(
+                                new Runnable() {
 
-            @Override
-            public void run() {
-                closeShop(true, true);
-            }
-        }, 1000 * 60 * 60 * 24);
+                                    @Override
+                                    public void run() {
+                                        closeShop(true, true);
+                                    }
+                                },
+                                1000 * 60 * 60 * 24);
     }
 
     private static int getFee(int meso) {
         if (meso >= 100000000) {
-            return (int) (meso * (0.97)); //Removing 3%
+            return (int) (meso * (0.97)); // Removing 3%
         }
         if (meso >= 25000000) {
-            return (int) (meso * (0.975)); //Removing 2.5%
+            return (int) (meso * (0.975)); // Removing 2.5%
         }
         if (meso >= 10000000) {
-            return (int) (meso * (0.98)); //Removing 2%
+            return (int) (meso * (0.98)); // Removing 2%
         }
         if (meso >= 5000000) {
-            return (int) (meso * (0.985)); //Removing 1.5%
+            return (int) (meso * (0.985)); // Removing 1.5%
         }
         if (meso >= 1000000) {
-            return (int) (meso * (0.991)); //Removing .9%
+            return (int) (meso * (0.991)); // Removing .9%
         }
         if (meso >= 100000) {
-            return (int) (meso * (0.996)); //Removing .4%
+            return (int) (meso * (0.996)); // Removing .4%
         }
 
         return meso;
@@ -122,10 +125,17 @@ public class HiredMerchant extends AbstractPlayerStore {
             newItem.setFlag((byte) (flag - ItemFlag.KARMA_USE.getValue()));
         }
 
-        if (MapleInventoryManipulator.checkSpace(c, newItem.getItemId(), newItem.getQuantity(), newItem.getOwner()) && MapleInventoryManipulator.addFromDrop(c, newItem, false)) {
-            pItem.setBundles((short) (pItem.getBundles() - quantity)); // Number remaining in the store
-            bought.add(new BoughtItem(newItem.getItemId(), quantity, (pItem.getPrice() * quantity), c.getPlayer().getName()));
-
+        if (MapleInventoryManipulator.checkSpace(
+                        c, newItem.getItemId(), newItem.getQuantity(), newItem.getOwner())
+                && MapleInventoryManipulator.addFromDrop(c, newItem, false)) {
+            pItem.setBundles(
+                    (short) (pItem.getBundles() - quantity)); // Number remaining in the store
+            bought.add(
+                    new BoughtItem(
+                            newItem.getItemId(),
+                            quantity,
+                            (pItem.getPrice() * quantity),
+                            c.getPlayer().getName()));
 
             final int mesos = (getMesos() + (pItem.getPrice() * quantity));
             int fee = getFee(mesos);
@@ -240,6 +250,5 @@ public class HiredMerchant extends AbstractPlayerStore {
         public String toString() {
             return getCharName() + " : " + getText();
         }
-
     }
 }

@@ -3,12 +3,11 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
+import java.util.ArrayList;
+import java.util.List;
 import server.maps.FieldLimitType;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.MTSCSPacket;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @lombok.extern.slf4j.Slf4j
 public class TeleportRockAddMapHandler extends AbstractMaplePacketHandler {
@@ -47,7 +46,8 @@ public class TeleportRockAddMapHandler extends AbstractMaplePacketHandler {
             if (addrem == DELETE) {
                 chr.getVipTeleportRock().deleteMap(slea.readInt());
             } else if (addrem == ADD) {
-                if ((!FieldLimitType.VipRock.check(chr.getMap().getFieldLimit())) && !blockedMaps.contains(chr.getMapId())) {
+                if ((!FieldLimitType.VipRock.check(chr.getMap().getFieldLimit()))
+                        && !blockedMaps.contains(chr.getMapId())) {
                     chr.getVipTeleportRock().addMap(chr.getMapId());
                 } else {
                     chr.dropMessage(1, "You may not add this map.");
@@ -65,7 +65,5 @@ public class TeleportRockAddMapHandler extends AbstractMaplePacketHandler {
             }
         }
         c.getSession().write(MTSCSPacket.getTeleportRockRefresh(chr, vip == 1, addrem == 3));
-
     }
-
 }

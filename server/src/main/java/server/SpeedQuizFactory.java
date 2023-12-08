@@ -19,8 +19,6 @@
 package server;
 
 import database.DatabaseConnection;
-
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
@@ -29,17 +27,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-/**
- * @author AuroX
- */
+/** @author AuroX */
 @lombok.extern.slf4j.Slf4j
 public class SpeedQuizFactory {
 
-    private final static SpeedQuizFactory instance = new SpeedQuizFactory();
+    private static final SpeedQuizFactory instance = new SpeedQuizFactory();
     private final Map<QuizEntry, Integer> quiz = new HashMap<>();
 
-    public SpeedQuizFactory() {
-    }
+    public SpeedQuizFactory() {}
 
     public static SpeedQuizFactory getInstance() {
         return instance;
@@ -51,9 +46,15 @@ public class SpeedQuizFactory {
         }
         log.info("Loading Speed Quiz Data...");
         try (var con = DatabaseConnection.getConnection()) {
-            try (PreparedStatement ps = con.prepareStatement("SELECT * FROM `wz_speedquiz`"); ResultSet rs = ps.executeQuery()) {
+            try (PreparedStatement ps = con.prepareStatement("SELECT * FROM `wz_speedquiz`");
+                    ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    quiz.put(new QuizEntry(rs.getByte("type"), rs.getInt("objectid"), rs.getString("answer")), rs.getInt("questionNo"));
+                    quiz.put(
+                            new QuizEntry(
+                                    rs.getByte("type"),
+                                    rs.getInt("objectid"),
+                                    rs.getString("answer")),
+                            rs.getInt("questionNo"));
                 }
             }
         } catch (Exception e) {

@@ -1,6 +1,6 @@
 /*
 This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 
@@ -25,11 +25,10 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.inventory.IItem;
 import client.inventory.ItemFlag;
-import server.MapleInventoryManipulator;
-import tools.packet.PlayerShopPacket;
-
 import java.util.ArrayList;
 import java.util.List;
+import server.MapleInventoryManipulator;
+import tools.packet.PlayerShopPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MaplePlayerShop extends AbstractPlayerStore {
@@ -56,9 +55,17 @@ public class MaplePlayerShop extends AbstractPlayerStore {
             }
             final int gainmeso = pItem.getPrice() * quantity;
             if (c.getPlayer().getMeso() >= gainmeso) {
-                if (getMCOwner().getMeso() + gainmeso > 0 && MapleInventoryManipulator.checkSpace(c, newItem.getItemId(), newItem.getQuantity(), newItem.getOwner()) && MapleInventoryManipulator.addFromDrop(c, newItem, false)) {
+                if (getMCOwner().getMeso() + gainmeso > 0
+                        && MapleInventoryManipulator.checkSpace(
+                                c, newItem.getItemId(), newItem.getQuantity(), newItem.getOwner())
+                        && MapleInventoryManipulator.addFromDrop(c, newItem, false)) {
                     pItem.setBundles((short) (pItem.getBundles() - quantity));
-                    bought.add(new BoughtItem(newItem.getItemId(), quantity, gainmeso, c.getPlayer().getName()));
+                    bought.add(
+                            new BoughtItem(
+                                    newItem.getItemId(),
+                                    quantity,
+                                    gainmeso,
+                                    c.getPlayer().getName()));
                     c.getPlayer().gainMeso(-gainmeso, false);
                     getMCOwner().gainMeso(gainmeso, false);
                     if (pItem.getBundles() <= 0) {
@@ -73,7 +80,7 @@ public class MaplePlayerShop extends AbstractPlayerStore {
                 }
             } else {
                 c.getPlayer().dropMessage(1, "You do not have enough mesos.");
-                //}
+                // }
             }
             getMCOwner().getClient().getSession().write(PlayerShopPacket.shopItemUpdate(this));
         }
@@ -97,7 +104,7 @@ public class MaplePlayerShop extends AbstractPlayerStore {
                 if (MapleInventoryManipulator.addFromDrop(owner.getClient(), newItem, false)) {
                     items.setBundles((short) 0);
                 } else {
-                    saveItems(); //O_o
+                    saveItems(); // O_o
                     break;
                 }
             }

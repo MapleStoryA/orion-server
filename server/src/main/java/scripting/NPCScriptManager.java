@@ -1,6 +1,6 @@
 /*
 This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 
@@ -22,15 +22,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package scripting;
 
 import client.MapleClient;
-import lombok.extern.slf4j.Slf4j;
-import server.quest.MapleQuest;
-import tools.DateHelper;
-
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
 import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.locks.Lock;
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import lombok.extern.slf4j.Slf4j;
+import server.quest.MapleQuest;
 
 @Slf4j
 public class NPCScriptManager extends AbstractScriptManager {
@@ -50,7 +48,7 @@ public class NPCScriptManager extends AbstractScriptManager {
                 log.info("loading script " + "npc/" + npc + ".js");
                 Invocable iv = getInvocable("npc", String.valueOf(npc), c);
                 if (iv == null) {
-                    iv = getInvocable("npc", "notcoded", c); //safe disposal
+                    iv = getInvocable("npc", "notcoded", c); // safe disposal
                     if (iv == null) {
                         dispose(c);
                         return;
@@ -58,7 +56,8 @@ public class NPCScriptManager extends AbstractScriptManager {
                 }
 
                 final ScriptEngine scriptengine = (ScriptEngine) iv;
-                final NPCConversationManager cm = new NPCConversationManager(c, npc, -1, (byte) -1, iv);
+                final NPCConversationManager cm =
+                        new NPCConversationManager(c, npc, -1, (byte) -1, iv);
                 cms.put(c, cm);
                 scriptengine.put("cm", cm);
                 c.getPlayer().setConversation(1);
@@ -75,14 +74,18 @@ public class NPCScriptManager extends AbstractScriptManager {
 
         } catch (final Exception e) {
             System.err.println("Error executing NPC script, NPC ID : " + npc + "." + e);
-            log.info("Log_Script_Except.rtf" + " : " + ("Error executing NPC script, NPC ID : " + npc + "." + e));
+            log.info(
+                    "Log_Script_Except.rtf"
+                            + " : "
+                            + ("Error executing NPC script, NPC ID : " + npc + "." + e));
             dispose(c);
         } finally {
             lock.unlock();
         }
     }
 
-    public final void action(final MapleClient c, final byte mode, final byte type, final int selection) {
+    public final void action(
+            final MapleClient c, final byte mode, final byte type, final int selection) {
         log.info("Mode: " + mode + " Tyte: " + type + " Selection: " + selection);
         if (mode != -1) {
             final NPCConversationManager cm = cms.get(c);
@@ -123,24 +126,35 @@ public class NPCScriptManager extends AbstractScriptManager {
                     return;
                 }
                 final ScriptEngine scriptengine = (ScriptEngine) iv;
-                final NPCConversationManager cm = new NPCConversationManager(c, npc, quest, (byte) 0, iv);
+                final NPCConversationManager cm =
+                        new NPCConversationManager(c, npc, quest, (byte) 0, iv);
                 cms.put(c, cm);
                 scriptengine.put("qm", cm);
 
                 c.getPlayer().setConversation(1);
-                //log.info("NPCID started: " + npc + " startquest " + quest);
+                // log.info("NPCID started: " + npc + " startquest " + quest);
                 iv.invokeFunction("start", (byte) 1, (byte) 0, 0); // start it off as something
             }
         } catch (final Exception e) {
-            System.err.println("Error executing Quest script. (" + quest + ")..NPCID: " + npc + ":" + e);
-            log.info("Log_Script_Except.rtf" + " : " + ("Error executing Quest script. (" + quest + ")..NPCID: " + npc + ":" + e));
+            System.err.println(
+                    "Error executing Quest script. (" + quest + ")..NPCID: " + npc + ":" + e);
+            log.info(
+                    "Log_Script_Except.rtf"
+                            + " : "
+                            + ("Error executing Quest script. ("
+                                    + quest
+                                    + ")..NPCID: "
+                                    + npc
+                                    + ":"
+                                    + e));
             dispose(c);
         } finally {
             lock.unlock();
         }
     }
 
-    public final void startQuest(final MapleClient c, final byte mode, final byte type, final int selection) {
+    public final void startQuest(
+            final MapleClient c, final byte mode, final byte type, final int selection) {
         final Lock lock = c.getNPCLock();
         final NPCConversationManager cm = cms.get(c);
         if (cm == null || cm.getLastMsg() > -1) {
@@ -154,8 +168,20 @@ public class NPCScriptManager extends AbstractScriptManager {
                 cm.getIv().invokeFunction("start", mode, type, selection);
             }
         } catch (Exception e) {
-            System.err.println("Error executing Quest script. (" + cm.getQuest() + ")...NPC: " + cm.getNpc() + ":" + e);
-            final String msg = "Error executing Quest script. (" + cm.getQuest() + ")..NPCID: " + cm.getNpc() + ":" + e;
+            System.err.println(
+                    "Error executing Quest script. ("
+                            + cm.getQuest()
+                            + ")...NPC: "
+                            + cm.getNpc()
+                            + ":"
+                            + e);
+            final String msg =
+                    "Error executing Quest script. ("
+                            + cm.getQuest()
+                            + ")..NPCID: "
+                            + cm.getNpc()
+                            + ":"
+                            + e;
             log.info("Log_Script_Except.rtf" + " : " + msg);
             dispose(c);
         } finally {
@@ -163,7 +189,8 @@ public class NPCScriptManager extends AbstractScriptManager {
         }
     }
 
-    public final void endQuest(final MapleClient c, final int npc, final int quest, final boolean customEnd) {
+    public final void endQuest(
+            final MapleClient c, final int npc, final int quest, final boolean customEnd) {
         if (!customEnd && !MapleQuest.getInstance(quest).canComplete(c.getPlayer(), null)) {
             return;
         }
@@ -177,24 +204,35 @@ public class NPCScriptManager extends AbstractScriptManager {
                     return;
                 }
                 final ScriptEngine scriptengine = (ScriptEngine) iv;
-                final NPCConversationManager cm = new NPCConversationManager(c, npc, quest, (byte) 1, iv);
+                final NPCConversationManager cm =
+                        new NPCConversationManager(c, npc, quest, (byte) 1, iv);
                 cms.put(c, cm);
                 scriptengine.put("qm", cm);
 
                 c.getPlayer().setConversation(1);
-                //log.info("NPCID started: " + npc + " endquest " + quest);
+                // log.info("NPCID started: " + npc + " endquest " + quest);
                 iv.invokeFunction("end", (byte) 1, (byte) 0, 0); // start it off as something
             }
         } catch (Exception e) {
-            System.err.println("Error executing Quest script. (" + quest + ")..NPCID: " + npc + ":" + e);
-            log.info("Log_Script_Except.rtf" + " : " + ("Error executing Quest script. (" + quest + ")..NPCID: " + npc + ":" + e));
+            System.err.println(
+                    "Error executing Quest script. (" + quest + ")..NPCID: " + npc + ":" + e);
+            log.info(
+                    "Log_Script_Except.rtf"
+                            + " : "
+                            + ("Error executing Quest script. ("
+                                    + quest
+                                    + ")..NPCID: "
+                                    + npc
+                                    + ":"
+                                    + e));
             dispose(c);
         } finally {
             lock.unlock();
         }
     }
 
-    public final void endQuest(final MapleClient c, final byte mode, final byte type, final int selection) {
+    public final void endQuest(
+            final MapleClient c, final byte mode, final byte type, final int selection) {
         final Lock lock = c.getNPCLock();
         final NPCConversationManager cm = cms.get(c);
         if (cm == null || cm.getLastMsg() > -1) {
@@ -208,8 +246,20 @@ public class NPCScriptManager extends AbstractScriptManager {
                 cm.getIv().invokeFunction("end", mode, type, selection);
             }
         } catch (Exception e) {
-            System.err.println("Error executing Quest script. (" + cm.getQuest() + ")...NPC: " + cm.getNpc() + ":" + e);
-            final String msg = "Error executing Quest script. (" + cm.getQuest() + ")..NPCID: " + cm.getNpc() + ":" + e;
+            System.err.println(
+                    "Error executing Quest script. ("
+                            + cm.getQuest()
+                            + ")...NPC: "
+                            + cm.getNpc()
+                            + ":"
+                            + e);
+            final String msg =
+                    "Error executing Quest script. ("
+                            + cm.getQuest()
+                            + ")..NPCID: "
+                            + cm.getNpc()
+                            + ":"
+                            + e;
             log.info("Log_Script_Except.rtf" + " : " + msg);
             dispose(c);
         } finally {
@@ -235,6 +285,5 @@ public class NPCScriptManager extends AbstractScriptManager {
 
     public final NPCConversationManager getCM(final MapleClient c) {
         return cms.get(c);
-
     }
 }

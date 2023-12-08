@@ -1,6 +1,6 @@
 /*
 This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 
@@ -38,6 +38,10 @@ import handling.world.guild.MapleGuild;
 import handling.world.helper.BroadcastHelper;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
+import java.awt.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
@@ -55,11 +59,6 @@ import tools.MaplePacketCreator;
 import tools.Randomizer;
 import tools.packet.PetPacket;
 import tools.packet.UIPacket;
-
-import java.awt.*;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 @Slf4j
 public abstract class AbstractPlayerInteraction {
@@ -105,17 +104,18 @@ public abstract class AbstractPlayerInteraction {
     public final void warp(final int map) {
         final MapleMap mapz = getWarpMap(map);
         try {
-            c.getPlayer().changeMap(mapz, mapz.getPortal(Randomizer.nextInt(mapz.getPortals().size())));
+            c.getPlayer()
+                    .changeMap(mapz, mapz.getPortal(Randomizer.nextInt(mapz.getPortals().size())));
         } catch (Exception e) {
             c.getPlayer().changeMap(mapz, mapz.getPortal(0));
         }
     }
 
-
     public final void warpAndSpawnMonster(final int map, final int monster, Point point) {
         final MapleMap mapz = getWarpMap(map);
         try {
-            c.getPlayer().changeMap(mapz, mapz.getPortal(Randomizer.nextInt(mapz.getPortals().size())));
+            c.getPlayer()
+                    .changeMap(mapz, mapz.getPortal(Randomizer.nextInt(mapz.getPortals().size())));
             spawnMob(monster, 1, point);
         } catch (Exception e) {
             c.getPlayer().changeMap(mapz, mapz.getPortal(0));
@@ -125,7 +125,8 @@ public abstract class AbstractPlayerInteraction {
     public final void warp_Instanced(final int map) {
         final MapleMap mapz = getMap_Instanced(map);
         try {
-            c.getPlayer().changeMap(mapz, mapz.getPortal(Randomizer.nextInt(mapz.getPortals().size())));
+            c.getPlayer()
+                    .changeMap(mapz, mapz.getPortal(Randomizer.nextInt(mapz.getPortals().size())));
         } catch (Exception e) {
             c.getPlayer().changeMap(mapz, mapz.getPortal(0));
         }
@@ -133,10 +134,15 @@ public abstract class AbstractPlayerInteraction {
 
     public final void warp(final int map, final int portal) {
         final MapleMap mapz = getWarpMap(map);
-        if (portal != 0 && map == c.getPlayer().getMapId()) { //test
-            final Point portalPos = new Point(c.getPlayer().getMap().getPortal(portal).getPosition());
-            if (portalPos.distanceSq(getPlayer().getPosition()) < 90000.0) { //estimation
-                c.getSession().write(MaplePacketCreator.instantMapWarp((byte) portal)); //until we get packet for far movement, this will do
+        if (portal != 0 && map == c.getPlayer().getMapId()) { // test
+            final Point portalPos =
+                    new Point(c.getPlayer().getMap().getPortal(portal).getPosition());
+            if (portalPos.distanceSq(getPlayer().getPosition()) < 90000.0) { // estimation
+                c.getSession()
+                        .write(
+                                MaplePacketCreator.instantMapWarp(
+                                        (byte) portal)); // until we get packet for far movement,
+                // this will do
                 c.getPlayer().checkFollow();
                 c.getPlayer().getMap().movePlayer(c.getPlayer(), portalPos);
             } else {
@@ -157,12 +163,20 @@ public abstract class AbstractPlayerInteraction {
         if (map == 109060000 || map == 109060002 || map == 109060004) {
             portal = mapz.getSnowballPortal();
         }
-        if (map == c.getPlayer().getMapId()) { //test
-            final Point portalPos = new Point(c.getPlayer().getMap().getPortal(portal).getPosition());
-            if (portalPos.distanceSq(getPlayer().getPosition()) < 90000.0) { //estimation
+        if (map == c.getPlayer().getMapId()) { // test
+            final Point portalPos =
+                    new Point(c.getPlayer().getMap().getPortal(portal).getPosition());
+            if (portalPos.distanceSq(getPlayer().getPosition()) < 90000.0) { // estimation
                 c.getPlayer().checkFollow();
-                c.getSession().write(MaplePacketCreator.instantMapWarp((byte) c.getPlayer().getMap().getPortal(portal).getId()));
-                c.getPlayer().getMap().movePlayer(c.getPlayer(), new Point(c.getPlayer().getMap().getPortal(portal).getPosition()));
+                c.getSession()
+                        .write(
+                                MaplePacketCreator.instantMapWarp(
+                                        (byte) c.getPlayer().getMap().getPortal(portal).getId()));
+                c.getPlayer()
+                        .getMap()
+                        .movePlayer(
+                                c.getPlayer(),
+                                new Point(c.getPlayer().getMap().getPortal(portal).getPosition()));
             } else {
                 c.getPlayer().changeMap(mapz, mapz.getPortal(portal));
             }
@@ -204,14 +218,17 @@ public abstract class AbstractPlayerInteraction {
     }
 
     public final MapleMap getMap_Instanced(final int map) {
-        return c.getPlayer().getEventInstance() == null ? getMap(map) : c.getPlayer().getEventInstance().getMapInstance(map);
+        return c.getPlayer().getEventInstance() == null
+                ? getMap(map)
+                : c.getPlayer().getEventInstance().getMapInstance(map);
     }
 
     public void spawnMonster(final int id, final int qty) {
         spawnMob(id, qty, new Point(c.getPlayer().getPosition()));
     }
 
-    public final void spawnMobOnMap(final int id, final int qty, final int x, final int y, final int map) {
+    public final void spawnMobOnMap(
+            final int id, final int qty, final int x, final int y, final int map) {
         for (int i = 0; i < qty; i++) {
             getMap(map).spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(id), new Point(x, y));
         }
@@ -231,7 +248,8 @@ public abstract class AbstractPlayerInteraction {
         }
     }
 
-    public void spawnMobWithCustomHP(final int id, final int qty, final Point pos, long hp, int mp) {
+    public void spawnMobWithCustomHP(
+            final int id, final int qty, final Point pos, long hp, int mp) {
         for (int i = 0; i < qty; i++) {
             MapleMonster monster = MapleLifeFactory.getMonster(id);
             monster.setHp(hp);
@@ -307,13 +325,18 @@ public abstract class AbstractPlayerInteraction {
         return haveItem(itemid, quantity, false, true);
     }
 
-    public final boolean haveItem(final int itemid, final int quantity, final boolean checkEquipped, final boolean greaterOrEquals) {
+    public final boolean haveItem(
+            final int itemid,
+            final int quantity,
+            final boolean checkEquipped,
+            final boolean greaterOrEquals) {
         return c.getPlayer().haveItem(itemid, quantity, checkEquipped, greaterOrEquals);
     }
 
     public final boolean canHold() {
         for (int i = 1; i <= 5; i++) {
-            if (c.getPlayer().getInventory(MapleInventoryType.getByType((byte) i)).getNextFreeSlot() <= -1) {
+            if (c.getPlayer().getInventory(MapleInventoryType.getByType((byte) i)).getNextFreeSlot()
+                    <= -1) {
                 return false;
             }
         }
@@ -321,7 +344,8 @@ public abstract class AbstractPlayerInteraction {
     }
 
     public final boolean canHold(final int itemid) {
-        return c.getPlayer().getInventory(GameConstants.getInventoryType(itemid)).getNextFreeSlot() > -1;
+        return c.getPlayer().getInventory(GameConstants.getInventoryType(itemid)).getNextFreeSlot()
+                > -1;
     }
 
     public final boolean canHold(final int itemid, final int quantity) {
@@ -353,7 +377,8 @@ public abstract class AbstractPlayerInteraction {
     }
 
     public final void forceStartQuest(final int id, final int data, final boolean filler) {
-        MapleQuest.getInstance(id).forceStart(c.getPlayer(), 0, filler ? String.valueOf(data) : null);
+        MapleQuest.getInstance(id)
+                .forceStart(c.getPlayer(), 0, filler ? String.valueOf(data) : null);
     }
 
     public void forceStartQuest(final int id) {
@@ -431,11 +456,16 @@ public abstract class AbstractPlayerInteraction {
         c.getPlayer().modifyCSPoints(1, amount, true);
     }
 
-    public final void gainItemPeriod(final int id, final short quantity, final int period) { //period is in days
+    public final void gainItemPeriod(
+            final int id, final short quantity, final int period) { // period is in days
         gainItem(id, quantity, false, period, -1, "");
     }
 
-    public final void gainItemPeriod(final int id, final short quantity, final long period, final String owner) { //period is in days
+    public final void gainItemPeriod(
+            final int id,
+            final short quantity,
+            final long period,
+            final String owner) { // period is in days
         gainItem(id, quantity, false, period, -1, owner);
     }
 
@@ -451,7 +481,8 @@ public abstract class AbstractPlayerInteraction {
         gainItem(id, quantity, randomStats, 0, -1, "");
     }
 
-    public final void gainItem(final int id, final short quantity, final boolean randomStats, final int slots) {
+    public final void gainItem(
+            final int id, final short quantity, final boolean randomStats, final int slots) {
         gainItem(id, quantity, randomStats, 0, slots, "");
     }
 
@@ -459,15 +490,33 @@ public abstract class AbstractPlayerInteraction {
         gainItem(id, quantity, false, period, -1, "");
     }
 
-    public final void gainItem(final int id, final short quantity, final boolean randomStats, final long period, final int slots) {
+    public final void gainItem(
+            final int id,
+            final short quantity,
+            final boolean randomStats,
+            final long period,
+            final int slots) {
         gainItem(id, quantity, randomStats, period, slots, "");
     }
 
-    public final void gainItem(final int id, final short quantity, final boolean randomStats, final long period, final int slots, final String owner) {
+    public final void gainItem(
+            final int id,
+            final short quantity,
+            final boolean randomStats,
+            final long period,
+            final int slots,
+            final String owner) {
         gainItem(id, quantity, randomStats, period, slots, owner, c);
     }
 
-    public final void gainItem(final int id, final short quantity, final boolean randomStats, final long period, final int slots, final String owner, final MapleClient cg) {
+    public final void gainItem(
+            final int id,
+            final short quantity,
+            final boolean randomStats,
+            final long period,
+            final int slots,
+            final String owner,
+            final MapleClient cg) {
         if (quantity >= 0) {
             final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
             final MapleInventoryType type = GameConstants.getInventoryType(id);
@@ -477,9 +526,12 @@ public abstract class AbstractPlayerInteraction {
             }
             if (type.equals(MapleInventoryType.EQUIP)
                     && !GameConstants.isThrowingStar(id)
-                    && !GameConstants.isBullet(id)
-            ) {
-                final Equip item = (Equip) (randomStats ? ii.randomizeStats((Equip) ii.getEquipById(id)) : ii.getEquipById(id));
+                    && !GameConstants.isBullet(id)) {
+                final Equip item =
+                        (Equip)
+                                (randomStats
+                                        ? ii.randomizeStats((Equip) ii.getEquipById(id))
+                                        : ii.getEquipById(id));
                 if (period > 0) {
                     item.setExpiration(System.currentTimeMillis() + (period * 24 * 60 * 60 * 1000));
                 }
@@ -490,17 +542,19 @@ public abstract class AbstractPlayerInteraction {
                     item.setOwner(owner);
                 }
                 final String name = ii.getName(id);
-                if (id / 10000 == 114 && name != null && name.length() > 0) { //medal
+                if (id / 10000 == 114 && name != null && name.length() > 0) { // medal
                     final String msg = "You have attained title <" + name + ">";
                     cg.getPlayer().dropMessage(-1, msg);
                     cg.getPlayer().dropMessage(5, msg);
                 }
                 MapleInventoryManipulator.addbyItem(cg, item.copy());
             } else {
-                MapleInventoryManipulator.addById(cg, id, quantity, owner == null ? "" : owner, null, period);
+                MapleInventoryManipulator.addById(
+                        cg, id, quantity, owner == null ? "" : owner, null, period);
             }
         } else {
-            MapleInventoryManipulator.removeById(cg, GameConstants.getInventoryType(id), id, -quantity, true, false);
+            MapleInventoryManipulator.removeById(
+                    cg, GameConstants.getInventoryType(id), id, -quantity, true, false);
         }
         cg.getSession().write(MaplePacketCreator.getShowItemGain(id, quantity, true));
     }
@@ -536,7 +590,8 @@ public abstract class AbstractPlayerInteraction {
 
     public final void guildMessage(final int type, final String message) {
         if (getPlayer().getGuildId() > 0) {
-            GuildManager.guildPacket(getPlayer().getGuildId(), MaplePacketCreator.serverNotice(type, message));
+            GuildManager.guildPacket(
+                    getPlayer().getGuildId(), MaplePacketCreator.serverNotice(type, message));
         }
     }
 
@@ -622,7 +677,9 @@ public abstract class AbstractPlayerInteraction {
             if (curChar != null) {
                 if (rand) {
                     try {
-                        curChar.changeMap(target, target.getPortal(Randomizer.nextInt(target.getPortals().size())));
+                        curChar.changeMap(
+                                target,
+                                target.getPortal(Randomizer.nextInt(target.getPortals().size())));
                     } catch (Exception e) {
                         curChar.changeMap(target, target.getPortal(0));
                     }
@@ -660,14 +717,27 @@ public abstract class AbstractPlayerInteraction {
         c.getPlayer().gainExp(gain * c.getChannelServer().getExpRate(), true, true, true);
     }
 
-    public final void givePartyItems(final int id, final short quantity, final List<MapleCharacter> party) {
+    public final void givePartyItems(
+            final int id, final short quantity, final List<MapleCharacter> party) {
         for (MapleCharacter chr : party) {
             if (quantity >= 0) {
-                MapleInventoryManipulator.addById(chr.getClient(), id, quantity, "Received from party interaction " + oid + " (" + questid + ")");
+                MapleInventoryManipulator.addById(
+                        chr.getClient(),
+                        id,
+                        quantity,
+                        "Received from party interaction " + oid + " (" + questid + ")");
             } else {
-                MapleInventoryManipulator.removeById(chr.getClient(), GameConstants.getInventoryType(id), id, -quantity, true, false);
+                MapleInventoryManipulator.removeById(
+                        chr.getClient(),
+                        GameConstants.getInventoryType(id),
+                        id,
+                        -quantity,
+                        true,
+                        false);
             }
-            chr.getClient().getSession().write(MaplePacketCreator.getShowItemGain(id, quantity, true));
+            chr.getClient()
+                    .getSession()
+                    .write(MaplePacketCreator.getShowItemGain(id, quantity, true));
         }
     }
 
@@ -684,7 +754,14 @@ public abstract class AbstractPlayerInteraction {
         for (final MaplePartyCharacter chr : getPlayer().getParty().getMembers()) {
             final MapleCharacter curChar = getMap().getCharacterById(chr.getId());
             if (curChar != null) {
-                gainItem(id, (short) (removeAll ? -curChar.itemQuantity(id) : quantity), false, 0, 0, "", curChar.getClient());
+                gainItem(
+                        id,
+                        (short) (removeAll ? -curChar.itemQuantity(id) : quantity),
+                        false,
+                        0,
+                        0,
+                        "",
+                        curChar.getClient());
             }
         }
     }
@@ -750,8 +827,11 @@ public abstract class AbstractPlayerInteraction {
         for (final MapleCharacter chr : party) {
             final int possesed = chr.getInventory(GameConstants.getInventoryType(id)).countById(id);
             if (possesed > 0) {
-                MapleInventoryManipulator.removeById(c, GameConstants.getInventoryType(id), id, possesed, true, false);
-                chr.getClient().getSession().write(MaplePacketCreator.getShowItemGain(id, (short) -possesed, true));
+                MapleInventoryManipulator.removeById(
+                        c, GameConstants.getInventoryType(id), id, possesed, true, false);
+                chr.getClient()
+                        .getSession()
+                        .write(MaplePacketCreator.getShowItemGain(id, (short) -possesed, true));
             }
         }
     }
@@ -773,7 +853,9 @@ public abstract class AbstractPlayerInteraction {
     }
 
     public final void cancelItem(final int id) {
-        c.getPlayer().cancelEffect(MapleItemInformationProvider.getInstance().getItemEffect(id), false, -1);
+        c.getPlayer()
+                .cancelEffect(
+                        MapleItemInformationProvider.getInstance().getItemEffect(id), false, -1);
     }
 
     public final int getMorphState() {
@@ -788,7 +870,14 @@ public abstract class AbstractPlayerInteraction {
         final MaplePet pet = getPlayer().getPet(index);
         if (pet != null) {
             pet.setCloseness(pet.getCloseness() + closeness);
-            getClient().getSession().write(PetPacket.updatePet(pet, getPlayer().getInventory(MapleInventoryType.CASH).getItem((byte) pet.getInventoryPosition())));
+            getClient()
+                    .getSession()
+                    .write(
+                            PetPacket.updatePet(
+                                    pet,
+                                    getPlayer()
+                                            .getInventory(MapleInventoryType.CASH)
+                                            .getItem((byte) pet.getInventoryPosition())));
         }
     }
 
@@ -796,7 +885,14 @@ public abstract class AbstractPlayerInteraction {
         for (final MaplePet pet : getPlayer().getPets()) {
             if (pet != null) {
                 pet.setCloseness(pet.getCloseness() + closeness);
-                getClient().getSession().write(PetPacket.updatePet(pet, getPlayer().getInventory(MapleInventoryType.CASH).getItem((byte) pet.getInventoryPosition())));
+                getClient()
+                        .getSession()
+                        .write(
+                                PetPacket.updatePet(
+                                        pet,
+                                        getPlayer()
+                                                .getInventory(MapleInventoryType.CASH)
+                                                .getItem((byte) pet.getInventoryPosition())));
             }
         }
     }
@@ -852,7 +948,10 @@ public abstract class AbstractPlayerInteraction {
     }
 
     public final void dojo_getUp() {
-        c.getSession().write(MaplePacketCreator.updateInfoQuest(1207, "pt=1;min=4;belt=1;tuto=1")); //todo
+        c.getSession()
+                .write(
+                        MaplePacketCreator.updateInfoQuest(
+                                1207, "pt=1;min=4;belt=1;tuto=1")); // todo
         c.getSession().write(MaplePacketCreator.Mulung_DojoUp2());
         c.getSession().write(MaplePacketCreator.instantMapWarp((byte) 6));
     }
@@ -873,7 +972,10 @@ public abstract class AbstractPlayerInteraction {
     }
 
     public final int getSavedLocation(final String loc) {
-        final Integer ret = c.getPlayer().getSavedLocations().getSavedLocation(SavedLocationType.fromString(loc));
+        final Integer ret =
+                c.getPlayer()
+                        .getSavedLocations()
+                        .getSavedLocation(SavedLocationType.fromString(loc));
         if (ret == null || ret == -1) {
             return 100000000;
         }
@@ -886,7 +988,11 @@ public abstract class AbstractPlayerInteraction {
     }
 
     public final void saveReturnLocation(final String loc) {
-        c.getPlayer().getSavedLocations().saveLocation(SavedLocationType.fromString(loc), c.getPlayer().getMap().getReturnMap().getId());
+        c.getPlayer()
+                .getSavedLocations()
+                .saveLocation(
+                        SavedLocationType.fromString(loc),
+                        c.getPlayer().getMap().getReturnMap().getId());
     }
 
     public final void clearSavedLocation(final String loc) {
@@ -983,7 +1089,20 @@ public abstract class AbstractPlayerInteraction {
             fullness = 100;
         }
         try {
-            MapleInventoryManipulator.addById(c, id, (short) 1, "", MaplePet.createPet(id, name, level, closeness, fullness, MapleInventoryIdentifier.getInstance(), id == 5000054 ? (int) period : 0), 45);
+            MapleInventoryManipulator.addById(
+                    c,
+                    id,
+                    (short) 1,
+                    "",
+                    MaplePet.createPet(
+                            id,
+                            name,
+                            level,
+                            closeness,
+                            fullness,
+                            MapleInventoryIdentifier.getInstance(),
+                            id == 5000054 ? (int) period : 0),
+                    45);
         } catch (NullPointerException ex) {
             ex.printStackTrace();
         }
@@ -997,14 +1116,14 @@ public abstract class AbstractPlayerInteraction {
         if (getPlayer().getGuildId() <= 0) {
             return;
         }
-        GuildManager.gainGP(getPlayer().getGuildId(), gp); //1 for
+        GuildManager.gainGP(getPlayer().getGuildId(), gp); // 1 for
     }
 
     public int getGP() {
         if (getPlayer().getGuildId() <= 0) {
             return 0;
         }
-        return GuildManager.getGP(getPlayer().getGuildId()); //1 for
+        return GuildManager.getGP(getPlayer().getGuildId()); // 1 for
     }
 
     public void showMapEffect(String path) {
@@ -1063,9 +1182,9 @@ public abstract class AbstractPlayerInteraction {
         }
     }
 
-
     public void sendNPCText(final String text, final int npc) {
-        getMap().broadcastMessage(MaplePacketCreator.getNPCTalk(npc, (byte) 0, text, "00 00", (byte) 0));
+        getMap().broadcastMessage(
+                        MaplePacketCreator.getNPCTalk(npc, (byte) 0, text, "00 00", (byte) 0));
     }
 
     public boolean getTempFlag(final int flag) {
@@ -1086,7 +1205,5 @@ public abstract class AbstractPlayerInteraction {
         }
     }
 
-    public void test() {
-
-    }
+    public void test() {}
 }

@@ -1,6 +1,6 @@
 /*
 This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 
@@ -24,7 +24,7 @@ package constants;
 @lombok.extern.slf4j.Slf4j
 public class ServerConstants {
 
-    public static final int ONE_DAY_ITEM = 5062000; //cube
+    public static final int ONE_DAY_ITEM = 5062000; // cube
     // Event Constants
     // Allows all mobs to drop EXP Item Card
     public static final boolean EXPItemDrop = false;
@@ -42,8 +42,9 @@ public class ServerConstants {
     public static final String MAPLE_PATCH = "3";
     public static final boolean Use_Fixed_IV = false;
     public static final String WORLD_MESSAGE = "Welcome to Maple Story Global ";
-    public static final String RECOMMENDED_MESSAGE = "We are still in Tespia testing! Report bugs on our forums.";
-    //Faction Stuff
+    public static final String RECOMMENDED_MESSAGE =
+            "We are still in Tespia testing! Report bugs on our forums.";
+    // Faction Stuff
     public static final float FP_MULTIPLIER = 1.3f; // float = rounding the int
 
     /*
@@ -52,7 +53,7 @@ public class ServerConstants {
      */
     public static byte calculate_bonus_exp(final int job) {
         switch (job) {
-            case 3000: //whenever these arrive, they'll give bonus
+            case 3000: // whenever these arrive, they'll give bonus
             case 3200:
             case 3210:
             case 3211:
@@ -75,7 +76,6 @@ public class ServerConstants {
     }
 
     public enum PlayerGMRank {
-
         NORMAL('@', 0),
         DONOR('!', 1),
         GM('!', 2),
@@ -98,7 +98,6 @@ public class ServerConstants {
     }
 
     public enum CommandType {
-
         NORMAL(0),
         TRADE(1);
         private final int level;
@@ -111,6 +110,4 @@ public class ServerConstants {
             return level;
         }
     }
-
-
 }

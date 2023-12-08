@@ -1,15 +1,18 @@
 package handling.channel.handler;
 
-import client.skill.ISkill;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
-import client.skill.SkillFactory;
 import client.SummonSkillEntry;
 import client.anticheat.CheatingOffense;
+import client.skill.ISkill;
+import client.skill.SkillFactory;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
 import handling.AbstractMaplePacketHandler;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import server.MapleStatEffect;
 import server.life.MapleMonster;
 import server.life.SummonAttackEntry;
@@ -19,10 +22,6 @@ import server.maps.MapleMapObjectType;
 import server.maps.MapleSummon;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @lombok.extern.slf4j.Slf4j
 public class SummonAttackHandler extends AbstractMaplePacketHandler {
@@ -72,7 +71,8 @@ public class SummonAttackHandler extends AbstractMaplePacketHandler {
                 continue;
             }
             if (chr.getPosition().distanceSq(mob.getPosition()) > 400000.0) {
-                chr.getCheatTracker().registerOffense(CheatingOffense.ATTACK_FARAWAY_MONSTER_SUMMON);
+                chr.getCheatTracker()
+                        .registerOffense(CheatingOffense.ATTACK_FARAWAY_MONSTER_SUMMON);
             }
             slea.skip(18); // who knows
             final int damage = slea.readInt();
@@ -80,8 +80,15 @@ public class SummonAttackHandler extends AbstractMaplePacketHandler {
             mob.damage(c.getPlayer(), damage, true);
         }
         if (!summon.isChangedMap()) {
-            map.broadcastMessage(chr, MaplePacketCreator.summonAttack(summon.getOwnerId(), summon.getObjectId(),
-                    animation, allDamage, chr.getLevel()), summon.getPosition());
+            map.broadcastMessage(
+                    chr,
+                    MaplePacketCreator.summonAttack(
+                            summon.getOwnerId(),
+                            summon.getObjectId(),
+                            animation,
+                            allDamage,
+                            chr.getLevel()),
+                    summon.getPosition());
         }
         final ISkill summonSkill = SkillFactory.getSkill(summon.getSkill());
         final MapleStatEffect summonEffect = summonSkill.getEffect(summon.getSkillLevel());
@@ -95,15 +102,18 @@ public class SummonAttackHandler extends AbstractMaplePacketHandler {
 
             if (toDamage > 0 && summonEffect.getMonsterStati().size() > 0) {
                 if (summonEffect.makeChanceResult()) {
-                    for (Map.Entry<MonsterStatus, Integer> z : summonEffect.getMonsterStati().entrySet()) {
-                        mob.applyStatus(chr,
-                                new MonsterStatusEffect(z.getKey(), z.getValue(), summonSkill.getId(), null, false),
-                                summonEffect.isPoison(), 4000, false);
+                    for (Map.Entry<MonsterStatus, Integer> z :
+                            summonEffect.getMonsterStati().entrySet()) {
+                        mob.applyStatus(
+                                chr,
+                                new MonsterStatusEffect(
+                                        z.getKey(), z.getValue(), summonSkill.getId(), null, false),
+                                summonEffect.isPoison(),
+                                4000,
+                                false);
                     }
-
                 }
             }
-
         }
         if (summon.isGaviota()) {
             chr.getMap().broadcastMessage(MaplePacketCreator.removeSummon(summon, true));
@@ -113,7 +123,5 @@ public class SummonAttackHandler extends AbstractMaplePacketHandler {
             chr.cancelEffectFromBuffStat(MapleBuffStat.REAPER);
             // TODO: Multi Summoning, must do something about hack buffstat
         }
-
     }
-
 }

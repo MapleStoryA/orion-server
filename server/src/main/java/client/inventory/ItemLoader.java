@@ -1,6 +1,6 @@
 /*
 This file is part of the ZeroFusion MapleStory Server
-Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 ZeroFusion organized by "RMZero213" <RMZero213@hotmail.com>
@@ -24,9 +24,6 @@ package client.inventory;
 
 import constants.GameConstants;
 import database.DatabaseConnection;
-import lombok.extern.slf4j.Slf4j;
-import tools.Pair;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,16 +34,18 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
+import tools.Pair;
 
 @Slf4j
 public enum ItemLoader {
-
     INVENTORY("inventoryitems", "inventoryequipment", 0, "characterid"),
     STORAGE("inventoryitems", "inventoryequipment", 1, "accountid"),
     CASHSHOP_EXPLORER("csitems", "csequipment", 2, "accountid"),
     CASHSHOP_CYGNUS("csitems", "csequipment", 3, "accountid"),
     CASHSHOP_ARAN("csitems", "csequipment", 4, "accountid"),
-    HIRED_MERCHANT("hiredmerchitems", "hiredmerchequipment", 5, "packageid", "accountid", "characterid"),
+    HIRED_MERCHANT(
+            "hiredmerchitems", "hiredmerchequipment", 5, "packageid", "accountid", "characterid"),
     CASHSHOP_EVAN("csitems", "csequipment", 7, "accountid"),
     CASHSHOP_DB("csitems", "csequipment", 10, "accountid"),
     CASHSHOP_RESIST("csitems", "csequipment", 11, "accountid");
@@ -62,15 +61,16 @@ public enum ItemLoader {
         this.arg = Arrays.asList(arg);
     }
 
-
     public int getValue() {
         return value;
     }
 
-    //does not need connection con to be auto commit
-    public Map<Integer, Pair<IItem, MapleInventoryType>> loadItems(boolean login, Integer... id) throws SQLException {
+    // does not need connection con to be auto commit
+    public Map<Integer, Pair<IItem, MapleInventoryType>> loadItems(boolean login, Integer... id)
+            throws SQLException {
         List<Integer> lulz = Arrays.asList(id);
-        Map<Integer, Pair<IItem, MapleInventoryType>> items = new LinkedHashMap<Integer, Pair<IItem, MapleInventoryType>>();
+        Map<Integer, Pair<IItem, MapleInventoryType>> items =
+                new LinkedHashMap<Integer, Pair<IItem, MapleInventoryType>>();
         if (lulz.size() != arg.size()) {
             return items;
         }
@@ -103,7 +103,12 @@ public enum ItemLoader {
             MapleInventoryType mit = MapleInventoryType.getByType(rs.getByte("inventorytype"));
 
             if (mit.equals(MapleInventoryType.EQUIP) || mit.equals(MapleInventoryType.EQUIPPED)) {
-                Equip equip = new Equip(rs.getInt("itemid"), rs.getShort("position"), rs.getInt("uniqueid"), rs.getByte("flag"));
+                Equip equip =
+                        new Equip(
+                                rs.getInt("itemid"),
+                                rs.getShort("position"),
+                                rs.getInt("uniqueid"),
+                                rs.getByte("flag"));
                 if (!login) {
                     equip.setQuantity((short) 1);
                     equip.setInventoryId(rs.getLong("inventoryitemid"));
@@ -138,16 +143,25 @@ public enum ItemLoader {
                     equip.setGiftFrom(rs.getString("sender"));
                     if (equip.getSN() > -1) {
                         if (GameConstants.isEffectRing(rs.getInt("itemid"))) {
-                            MapleRing ring = MapleRing.loadFromDb(equip.getSN(), mit.equals(MapleInventoryType.EQUIPPED));
+                            MapleRing ring =
+                                    MapleRing.loadFromDb(
+                                            equip.getSN(), mit.equals(MapleInventoryType.EQUIPPED));
                             if (ring != null) {
                                 equip.setRing(ring);
                             }
                         }
                     }
                 }
-                items.put(rs.getInt("inventoryitemid"), new Pair<IItem, MapleInventoryType>(equip.copy(), mit));
+                items.put(
+                        rs.getInt("inventoryitemid"),
+                        new Pair<IItem, MapleInventoryType>(equip.copy(), mit));
             } else {
-                Item item = new Item(rs.getInt("itemid"), rs.getShort("position"), rs.getShort("quantity"), rs.getByte("flag"));
+                Item item =
+                        new Item(
+                                rs.getInt("itemid"),
+                                rs.getShort("position"),
+                                rs.getShort("quantity"),
+                                rs.getByte("flag"));
                 item.setSN(rs.getInt("uniqueid"));
                 item.setOwner(rs.getString("owner"));
                 item.setInventoryId(rs.getLong("inventoryitemid"));
@@ -155,7 +169,9 @@ public enum ItemLoader {
                 item.setGiftFrom(rs.getString("sender"));
                 if (GameConstants.isPet(item.getItemId())) {
                     if (item.getSN() > -1) {
-                        MaplePet pet = MaplePet.loadFromDb(item.getItemId(), item.getSN(), item.getPosition());
+                        MaplePet pet =
+                                MaplePet.loadFromDb(
+                                        item.getItemId(), item.getSN(), item.getPosition());
                         if (pet != null) {
                             item.setPet(pet);
                         }
@@ -165,7 +181,9 @@ public enum ItemLoader {
                         item.setPet(MaplePet.createPet(item.getItemId(), new_unique));
                     }
                 }
-                items.put(rs.getInt("inventoryitemid"), new Pair<IItem, MapleInventoryType>(item.copy(), mit));
+                items.put(
+                        rs.getInt("inventoryitemid"),
+                        new Pair<IItem, MapleInventoryType>(item.copy(), mit));
             }
         }
 
@@ -175,15 +193,18 @@ public enum ItemLoader {
         return items;
     }
 
-    public void saveItems(List<Pair<IItem, MapleInventoryType>> items, Integer... id) throws SQLException {
-        try (Connection con = DatabaseConnection.getConnection();) {
+    public void saveItems(List<Pair<IItem, MapleInventoryType>> items, Integer... id)
+            throws SQLException {
+        try (Connection con = DatabaseConnection.getConnection(); ) {
             saveItems(items, con, id);
         } catch (SQLException ex) {
             log.error("Error while saving items", ex);
         }
     }
 
-    public void saveItems(List<Pair<IItem, MapleInventoryType>> items, final Connection con, Integer... id) throws SQLException {
+    public void saveItems(
+            List<Pair<IItem, MapleInventoryType>> items, final Connection con, Integer... id)
+            throws SQLException {
         List<Integer> lulz = Arrays.asList(id);
         if (lulz.size() != arg.size()) {
             return;
@@ -220,13 +241,20 @@ public enum ItemLoader {
             query_2.append(g);
             query_2.append(", ");
         }
-        query_2.append("itemid, inventorytype, position, quantity, owner, uniqueid, expiredate, flag, `type`, sender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?");
+        query_2.append(
+                "itemid, inventorytype, position, quantity, owner, uniqueid, expiredate, flag,"
+                        + " `type`, sender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?");
         for (String g : arg) {
             query_2.append(", ?");
         }
         query_2.append(")");
         ps = con.prepareStatement(query_2.toString(), Statement.RETURN_GENERATED_KEYS);
-        PreparedStatement pse = con.prepareStatement("INSERT INTO " + table_equip + " VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        PreparedStatement pse =
+                con.prepareStatement(
+                        "INSERT INTO "
+                                + table_equip
+                                + " VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
+                                + " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         final Iterator<Pair<IItem, MapleInventoryType>> iter = items.iterator();
         Pair<IItem, MapleInventoryType> pair;
         while (iter.hasNext()) {
@@ -292,5 +320,4 @@ public enum ItemLoader {
         pse.close();
         ps.close();
     }
-
 }

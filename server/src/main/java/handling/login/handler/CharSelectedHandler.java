@@ -12,7 +12,6 @@ import tools.data.input.SeekableLittleEndianAccessor;
 @lombok.extern.slf4j.Slf4j
 public class CharSelectedHandler extends AbstractMaplePacketHandler {
 
-
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         final int characterId = slea.readInt();
@@ -20,7 +19,9 @@ public class CharSelectedHandler extends AbstractMaplePacketHandler {
         String macAddress = slea.readMapleAsciiString();
         log.info("HardwareID: " + macAddress);
         log.info("MAC: " + hardwareID);
-        if (c.tooManyLogin() || !CharacterService.checkIfCharacterExist(c.getAccountData().getId(), characterId)) {
+        if (c.tooManyLogin()
+                || !CharacterService.checkIfCharacterExist(
+                        c.getAccountData().getId(), characterId)) {
             c.getSession().close();
             return;
         }
@@ -29,12 +30,21 @@ public class CharSelectedHandler extends AbstractMaplePacketHandler {
             c.getIdleTask().cancel(true);
         }
 
-        WorldServer.getInstance().getMigrationService().putMigrationEntry(new ServerMigration(characterId, c.getAccountData(), c.getSessionIPAddress()));
+        WorldServer.getInstance()
+                .getMigrationService()
+                .putMigrationEntry(
+                        new ServerMigration(
+                                characterId, c.getAccountData(), c.getSessionIPAddress()));
 
         c.updateLoginState(LoginState.LOGIN_SERVER_TRANSITION, c.getSessionIPAddress());
-        c.getSession().write(MaplePacketCreator.getServerIP(
-                Integer.parseInt(WorldServer.getInstance().getChannel(c.getChannel()).getPublicAddress().split(":")[1]), characterId));
-
+        c.getSession()
+                .write(
+                        MaplePacketCreator.getServerIP(
+                                Integer.parseInt(
+                                        WorldServer.getInstance()
+                                                .getChannel(c.getChannel())
+                                                .getPublicAddress()
+                                                .split(":")[1]),
+                                characterId));
     }
-
 }

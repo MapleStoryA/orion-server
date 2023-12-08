@@ -19,7 +19,6 @@
 package handling.world.buddy;
 
 import database.DatabaseConnection;
-
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -102,11 +101,19 @@ public class MapleBuddyList implements Serializable {
 
     public void loadFromDb(int characterId) throws SQLException {
         Connection con = DatabaseConnection.getConnection();
-        PreparedStatement ps = con.prepareStatement("SELECT b.buddyid, c.name as buddyname, b.groupname FROM buddyentries as b, characters as c WHERE c.id = b.buddyid AND b.owner = ?");
+        PreparedStatement ps =
+                con.prepareStatement(
+                        "SELECT b.buddyid, c.name as buddyname, b.groupname FROM buddyentries as b,"
+                                + " characters as c WHERE c.id = b.buddyid AND b.owner = ?");
         ps.setInt(1, characterId);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
-            put(new BuddyListEntry(rs.getString("buddyname"), rs.getInt("buddyid"), rs.getString("groupname"), -1));
+            put(
+                    new BuddyListEntry(
+                            rs.getString("buddyname"),
+                            rs.getInt("buddyid"),
+                            rs.getString("groupname"),
+                            -1));
         }
         rs.close();
         ps.close();
@@ -114,12 +121,16 @@ public class MapleBuddyList implements Serializable {
     }
 
     public enum BuddyAddResult {
-
-        BUDDYLIST_FULL, ALREADY_ON_LIST, OK, NOT_FOUND
+        BUDDYLIST_FULL,
+        ALREADY_ON_LIST,
+        OK,
+        NOT_FOUND
     }
 
     public enum BuddyDelResult {
-
-        NOT_ON_LIST, IN_CASH_SHOP, OK, ERROR
+        NOT_ON_LIST,
+        IN_CASH_SHOP,
+        OK,
+        ERROR
     }
 }

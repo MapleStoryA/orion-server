@@ -1,6 +1,6 @@
 /*
 This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 
@@ -21,10 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package client;
 
+import java.io.Serializable;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-
-import java.io.Serializable;
 
 @Slf4j
 @Getter
@@ -35,11 +34,10 @@ public class MapleDiseaseValueHolder implements Serializable {
     private long length;
     private MapleDisease disease;
 
-    public MapleDiseaseValueHolder(final MapleDisease disease, final long startTime, final long length) {
+    public MapleDiseaseValueHolder(
+            final MapleDisease disease, final long startTime, final long length) {
         this.disease = disease;
         this.startTime = startTime;
         this.length = length;
     }
-
-
 }

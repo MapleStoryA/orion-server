@@ -1,6 +1,6 @@
 /*
 This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 
@@ -49,6 +49,18 @@ import handling.world.guild.MapleGuildAlliance;
 import handling.world.helper.BroadcastHelper;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import javax.script.Invocable;
 import server.MapleCarnivalChallenge;
 import server.MapleCarnivalParty;
 import server.MapleInventoryManipulator;
@@ -76,20 +88,6 @@ import tools.Triple;
 import tools.packet.CWVsContextOnMessagePackets;
 import tools.packet.PlayerShopPacket;
 
-import javax.script.Invocable;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 @lombok.extern.slf4j.Slf4j
 public class NPCConversationManager extends AbstractPlayerInteraction {
 
@@ -112,7 +110,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         this.iv = iv;
     }
 
-    public NPCConversationManager(MapleClient c, int npc, int questid, byte type, Invocable iv, String fileName) {
+    public NPCConversationManager(
+            MapleClient c, int npc, int questid, byte type, Invocable iv, String fileName) {
         super(c, npc, questid);
         this.c = c;
         this.npc = npc;
@@ -176,7 +175,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             sendSimple(text);
             return;
         }
-        getClient().sendPacket(ScriptMan.OnSay(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, text, false, true));
+        getClient()
+                .sendPacket(
+                        ScriptMan.OnSay(
+                                ScriptMan.NpcReplayedByNpc, npc, (byte) 0, text, false, true));
         lastMsg = 0;
     }
 
@@ -200,7 +202,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             sendSimple(text);
             return;
         }
-        getClient().sendPacket(ScriptMan.OnSay(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, text, true, false));
+        getClient()
+                .sendPacket(
+                        ScriptMan.OnSay(
+                                ScriptMan.NpcReplayedByNpc, npc, (byte) 0, text, true, false));
         lastMsg = 0;
     }
 
@@ -224,7 +229,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             sendSimple(text);
             return;
         }
-        getClient().sendPacket(ScriptMan.OnSay(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, text, true, true));
+        getClient()
+                .sendPacket(
+                        ScriptMan.OnSay(
+                                ScriptMan.NpcReplayedByNpc, npc, (byte) 0, text, true, true));
         lastMsg = 0;
     }
 
@@ -248,7 +256,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             sendSimple(text);
             return;
         }
-        c.getSession().write(MaplePacketCreator.getNPCTalk(npc, (byte) 0, text, endBytes, type, OtherNPC));
+        c.getSession()
+                .write(
+                        MaplePacketCreator.getNPCTalk(
+                                npc, (byte) 0, text, endBytes, type, OtherNPC));
         lastMsg = 0;
     }
 
@@ -280,7 +291,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             sendSimple(text);
             return;
         }
-        getClient().sendPacket(ScriptMan.OnSay(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, text, false, false));
+        getClient()
+                .sendPacket(
+                        ScriptMan.OnSay(
+                                ScriptMan.NpcReplayedByNpc, npc, (byte) 0, text, false, false));
         lastMsg = 0;
     }
 
@@ -304,7 +318,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             sendSimple(text);
             return;
         }
-        getClient().sendPacket(ScriptMan.OnAskYesNo(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, text));
+        getClient()
+                .sendPacket(ScriptMan.OnAskYesNo(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, text));
         lastMsg = 2;
     }
 
@@ -337,7 +352,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             sendSimple(text);
             return;
         }
-        getClient().sendPacket(ScriptMan.OnAskAccept(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, text));
+        getClient()
+                .sendPacket(ScriptMan.OnAskAccept(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, text));
         lastMsg = 0x0D;
     }
 
@@ -357,7 +373,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             sendNext(text);
             return;
         }
-        getClient().sendPacket(ScriptMan.OnAskMenu(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, text));
+        getClient()
+                .sendPacket(ScriptMan.OnAskMenu(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, text));
         lastMsg = 5;
     }
 
@@ -377,7 +394,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         if (lastMsg > -1) {
             return;
         }
-        getClient().sendPacket(ScriptMan.OnAskAvatar(ScriptMan.NpcReplayedByNpc, npc, text, styles));
+        getClient()
+                .sendPacket(ScriptMan.OnAskAvatar(ScriptMan.NpcReplayedByNpc, npc, text, styles));
         lastMsg = 8;
     }
 
@@ -389,7 +407,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             sendSimple(text);
             return;
         }
-        getClient().sendPacket(ScriptMan.OnAskNumber(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, text, def, min, max));
+        getClient()
+                .sendPacket(
+                        ScriptMan.OnAskNumber(
+                                ScriptMan.NpcReplayedByNpc, npc, (byte) 0, text, def, min, max));
         lastMsg = 4;
     }
 
@@ -431,7 +452,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         getPlayer().equipChanged();
     }
 
-    public void createItem(int itemId, short quantity) {// TODO: Remove from
+    public void createItem(int itemId, short quantity) { // TODO: Remove from
         // here..
         IItem item;
         byte flag = 0;
@@ -511,7 +532,9 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
         gachaponMachine = GachaponFactory.getInstance();
         GachaponReward reward = (GachaponReward) gachaponMachine.getReward(location);
-        final IItem item = MapleInventoryManipulator.addbyId_Gachapon(c, reward.getId(), (short) reward.getQuantity());
+        final IItem item =
+                MapleInventoryManipulator.addbyId_Gachapon(
+                        c, reward.getId(), (short) reward.getQuantity());
         if (item == null) {
             return -1;
         }
@@ -530,16 +553,23 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             gainItem(5220000, (short) -1);
         }
 
-        c.getSession().write(MaplePacketCreator.getShowItemGain(item.getItemId(), (short) reward.getQuantity(), true));
+        c.getSession()
+                .write(
+                        MaplePacketCreator.getShowItemGain(
+                                item.getItemId(), (short) reward.getQuantity(), true));
         if (reward.isRare()) {
             if (isRemote) {
-                BroadcastHelper.broadcastMessage(MaplePacketCreator
-                        .getGachaponMega(c.getPlayer().getName(), "Remote", item, (byte) 0));
+                BroadcastHelper.broadcastMessage(
+                        MaplePacketCreator.getGachaponMega(
+                                c.getPlayer().getName(), "Remote", item, (byte) 0));
             } else {
                 BroadcastHelper.broadcastMessage(
-                        MaplePacketCreator.getGachaponMega(c.getPlayer().getName(), c.getPlayer().getMap().getMapName(), item, (byte) 0));
+                        MaplePacketCreator.getGachaponMega(
+                                c.getPlayer().getName(),
+                                c.getPlayer().getMap().getMapName(),
+                                item,
+                                (byte) 0));
             }
-
         }
 
         return reward.getId();
@@ -561,7 +591,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             final byte rareness = GameConstants.gachaponRareItem(item.getItemId());
             if (rareness >= 0) {
                 String title = "[" + c.getPlayer().getName() + "] ";
-                BroadcastHelper.broadcastMessage(MaplePacketCreator.getGachaponMega(title, msg, item, rareness));
+                BroadcastHelper.broadcastMessage(
+                        MaplePacketCreator.getGachaponMega(title, msg, item, rareness));
             }
             return item.getItemId();
         } catch (Exception e) {
@@ -612,13 +643,20 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
     public void forceCompleteQuest() {
         MapleQuest.getInstance(questid).forceComplete(getPlayer(), getNpc());
-
     }
 
     public void forceCompleteQuest(final int id) {
         MapleQuest.getInstance(id).forceComplete(getPlayer(), getNpc());
-        c.getPlayer().getClient().getSession().write(MaplePacketCreator.showSpecialEffect(9)); // Quest completion
-        c.getPlayer().getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.showSpecialEffect(getPlayer().getId(), 9), false);
+        c.getPlayer()
+                .getClient()
+                .getSession()
+                .write(MaplePacketCreator.showSpecialEffect(9)); // Quest completion
+        c.getPlayer()
+                .getMap()
+                .broadcastMessage(
+                        c.getPlayer(),
+                        MaplePacketCreator.showSpecialEffect(getPlayer().getId(), 9),
+                        false);
     }
 
     public void forceCompleteQuest(final int id, int npcId) {
@@ -733,7 +771,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     public void warpPartyWithExp(int mapId, int exp) {
         MapleMap target = getMap(mapId);
         for (MaplePartyCharacter chr : getPlayer().getParty().getMembers()) {
-            MapleCharacter curChar = c.getChannelServer().getPlayerStorage().getCharacterByName(chr.getName());
+            MapleCharacter curChar =
+                    c.getChannelServer().getPlayerStorage().getCharacterByName(chr.getName());
             if ((curChar.getEventInstance() == null && getPlayer().getEventInstance() == null)
                     || curChar.getEventInstance() == getPlayer().getEventInstance()) {
                 curChar.changeMap(target, target.getPortal(0));
@@ -745,7 +784,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     public void warpPartyWithExpMeso(int mapId, int exp, int meso) {
         MapleMap target = getMap(mapId);
         for (MaplePartyCharacter chr : getPlayer().getParty().getMembers()) {
-            MapleCharacter curChar = c.getChannelServer().getPlayerStorage().getCharacterByName(chr.getName());
+            MapleCharacter curChar =
+                    c.getChannelServer().getPlayerStorage().getCharacterByName(chr.getName());
             if ((curChar.getEventInstance() == null && getPlayer().getEventInstance() == null)
                     || curChar.getEventInstance() == getPlayer().getEventInstance()) {
                 curChar.changeMap(target, target.getPortal(0));
@@ -769,13 +809,15 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public boolean registerSquad(String type, int minutes, String startText) {
-        final MapleSquad squad = new MapleSquad(c.getChannel(), type, c.getPlayer(), minutes * 60 * 1000);
+        final MapleSquad squad =
+                new MapleSquad(c.getChannel(), type, c.getPlayer(), minutes * 60 * 1000);
         final boolean ret = c.getChannelServer().addMapleSquad(squad, type);
         if (ret) {
             final MapleMap map = c.getPlayer().getMap();
 
             map.broadcastMessage(MaplePacketCreator.getClock(minutes * 60));
-            map.broadcastMessage(MaplePacketCreator.serverNotice(6, c.getPlayer().getName() + startText));
+            map.broadcastMessage(
+                    MaplePacketCreator.serverNotice(6, c.getPlayer().getName() + startText));
         } else {
             squad.clear();
         }
@@ -881,7 +923,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
     public void increaseGuildCapacity() {
         if (c.getPlayer().getMeso() < 5000000) {
-            c.getSession().write(MaplePacketCreator.serverNotice(1, "You do not have enough mesos."));
+            c.getSession()
+                    .write(MaplePacketCreator.serverNotice(1, "You do not have enough mesos."));
             return;
         }
         final int gid = c.getPlayer().getGuildId();
@@ -893,7 +936,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public void displayGuildRanks() {
-        c.getSession().write(MaplePacketCreator.showGuildRanks(npc, MapleGuildRanking.getInstance().getRank()));
+        c.getSession()
+                .write(
+                        MaplePacketCreator.showGuildRanks(
+                                npc, MapleGuildRanking.getInstance().getRank()));
     }
 
     public boolean removePlayerFromInstance() {
@@ -989,8 +1035,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     public void giveMerchantMesos() {
         long mesos = 0;
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps = con
-                    .prepareStatement("SELECT * FROM hiredmerchants WHERE merchantid = ?");
+            PreparedStatement ps =
+                    con.prepareStatement("SELECT * FROM hiredmerchants WHERE merchantid = ?");
             ps.setInt(1, getPlayer().getId());
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
@@ -1016,8 +1062,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     public long getMerchantMesos() {
         long mesos = 0;
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps = con
-                    .prepareStatement("SELECT * FROM hiredmerch WHERE characterid = ?");
+            PreparedStatement ps =
+                    con.prepareStatement("SELECT * FROM hiredmerch WHERE characterid = ?");
             ps.setInt(1, getPlayer().getId());
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
@@ -1043,8 +1089,9 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public void openFredrick() {
-        final MerchItemPackage pack = HiredMerchantHandlerUtils.loadItemFrom_Database(c.getPlayer().getId(),
-                c.getPlayer().getAccountID());
+        final MerchItemPackage pack =
+                HiredMerchantHandlerUtils.loadItemFrom_Database(
+                        c.getPlayer().getId(), c.getPlayer().getAccountID());
         if (pack == null) {
             getPlayer().dropMessage(1, "You don't have anything to retrieve");
             return;
@@ -1053,22 +1100,29 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public int requestHiredItems() {
-        final MerchItemPackage pack = HiredMerchantHandlerUtils.loadItemFrom_Database(c.getPlayer().getId(),
-                c.getPlayer().getAccountID());
+        final MerchItemPackage pack =
+                HiredMerchantHandlerUtils.loadItemFrom_Database(
+                        c.getPlayer().getId(), c.getPlayer().getAccountID());
 
         if (pack == null) {
             return 0;
         }
         for (int i = 1; i < 5; i++) {
-            if (isFullInventory(getPlayer().getInventory(MapleInventoryType.getByType((byte) i)), pack.getItems())) {
-                getPlayer().dropMessage(1, MapleInventoryType.getByType((byte) i).name() + " inventory is full");
+            if (isFullInventory(
+                    getPlayer().getInventory(MapleInventoryType.getByType((byte) i)),
+                    pack.getItems())) {
+                getPlayer()
+                        .dropMessage(
+                                1,
+                                MapleInventoryType.getByType((byte) i).name()
+                                        + " inventory is full");
                 dispose();
                 return 2;
             }
         }
 
-        if (HiredMerchantHandlerUtils.deletePackage(c.getPlayer().getId(), c.getPlayer().getAccountID(),
-                pack.getPackageid())) {
+        if (HiredMerchantHandlerUtils.deletePackage(
+                c.getPlayer().getId(), c.getPlayer().getAccountID(), pack.getPackageid())) {
             c.getPlayer().gainMeso(pack.getMesos(), false);
             for (IItem item : pack.getItems()) {
                 MapleInventoryManipulator.addFromDrop(c, item, false);
@@ -1161,7 +1215,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         statup.add(new Pair<MapleStat, Integer>(MapleStat.MP, Integer.valueOf(30000)));
         statup.add(new Pair<MapleStat, Integer>(MapleStat.MAXMP, Integer.valueOf(30000)));
 
-        c.getSession().write(MaplePacketCreator.updatePlayerStats(statup, c.getPlayer().getJob().getId()));
+        c.getSession()
+                .write(
+                        MaplePacketCreator.updatePlayerStats(
+                                statup, c.getPlayer().getJob().getId()));
     }
 
     public Pair<String, Map<Integer, String>> getSpeedRun(String typ) {
@@ -1187,7 +1244,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
     public void setExpiration(Object statsSel, long expire) {
         if (statsSel instanceof Equip) {
-            ((Equip) statsSel).setExpiration(System.currentTimeMillis() + (expire * 24 * 60 * 60 * 1000));
+            ((Equip) statsSel)
+                    .setExpiration(System.currentTimeMillis() + (expire * 24 * 60 * 60 * 1000));
         }
     }
 
@@ -1205,7 +1263,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     public boolean addFromDrop(Object statsSel) {
         if (statsSel instanceof IItem) {
             final IItem it = (IItem) statsSel;
-            return MapleInventoryManipulator.checkSpace(getClient(), it.getItemId(), it.getQuantity(), it.getOwner())
+            return MapleInventoryManipulator.checkSpace(
+                            getClient(), it.getItemId(), it.getQuantity(), it.getOwner())
                     && MapleInventoryManipulator.addFromDrop(getClient(), it, false);
         }
         return false;
@@ -1215,7 +1274,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         return replaceItem(slot, invType, statsSel, offset, type, false);
     }
 
-    public boolean replaceItem(int slot, int invType, Object statsSel, int offset, String type, boolean takeSlot) {
+    public boolean replaceItem(
+            int slot, int invType, Object statsSel, int offset, String type, boolean takeSlot) {
         MapleInventoryType inv = MapleInventoryType.getByType((byte) invType);
         if (inv == null) {
             return false;
@@ -1286,7 +1346,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             }
             item = eq.copy();
         }
-        MapleInventoryManipulator.removeFromSlot(getClient(), inv, (short) slot, item.getQuantity(), false);
+        MapleInventoryManipulator.removeFromSlot(
+                getClient(), inv, (short) slot, item.getQuantity(), false);
         return MapleInventoryManipulator.addFromDrop(getClient(), item, false);
     }
 
@@ -1315,14 +1376,20 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
     public boolean createAlliance(String alliancename) {
         MapleParty pt = c.getPlayer().getParty();
-        MapleCharacter otherChar = c.getChannelServer().getPlayerStorage()
-                .getCharacterById(pt.getMemberByIndex(1).getId());
+        MapleCharacter otherChar =
+                c.getChannelServer()
+                        .getPlayerStorage()
+                        .getCharacterById(pt.getMemberByIndex(1).getId());
         if (otherChar == null || otherChar.getId() == c.getPlayer().getId()) {
             return false;
         }
         try {
-            return AllianceManager.createAlliance(alliancename, c.getPlayer().getId(), otherChar.getId(),
-                    c.getPlayer().getGuildId(), otherChar.getGuildId());
+            return AllianceManager.createAlliance(
+                    alliancename,
+                    c.getPlayer().getId(),
+                    otherChar.getId(),
+                    c.getPlayer().getGuildId(),
+                    otherChar.getGuildId());
         } catch (Exception re) {
             re.printStackTrace();
             return false;
@@ -1332,7 +1399,9 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     public boolean addCapacityToAlliance() {
         try {
             final MapleGuild gs = GuildManager.getGuild(c.getPlayer().getGuildId());
-            if (gs != null && c.getPlayer().getGuildRank() == 1 && c.getPlayer().getAllianceRank() == 1) {
+            if (gs != null
+                    && c.getPlayer().getGuildRank() == 1
+                    && c.getPlayer().getAllianceRank() == 1) {
                 if (AllianceManager.getAllianceLeader(gs.getAllianceId()) == c.getPlayer().getId()
                         && AllianceManager.changeAllianceCapacity(gs.getAllianceId())) {
                     gainMeso(-MapleGuildAlliance.CHANGE_CAPACITY_COST);
@@ -1348,7 +1417,9 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     public boolean disbandAlliance() {
         try {
             final MapleGuild gs = GuildManager.getGuild(c.getPlayer().getGuildId());
-            if (gs != null && c.getPlayer().getGuildRank() == 1 && c.getPlayer().getAllianceRank() == 1) {
+            if (gs != null
+                    && c.getPlayer().getGuildRank() == 1
+                    && c.getPlayer().getAllianceRank() == 1) {
                 if (AllianceManager.getAllianceLeader(gs.getAllianceId()) == c.getPlayer().getId()
                         && AllianceManager.disbandAlliance(gs.getAllianceId())) {
                     return true;
@@ -1373,11 +1444,14 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             if (GameConstants.isApplicableSkill(skil.getId())) { // no
                 // db/additionals/resistance
                 // skills
-                if (skil.getId() >= 22000000 && (GameConstants.isEvan((skil.getId() / 10000))
-                        || GameConstants.isResist((skil.getId() / 10000)))) {
+                if (skil.getId() >= 22000000
+                        && (GameConstants.isEvan((skil.getId() / 10000))
+                                || GameConstants.isResist((skil.getId() / 10000)))) {
                     continue;
                 } // only beginner skills are not maxed!
-                if (skil.getId() < 10000 || ((skil.getId() / 10000) == 1000) || ((skil.getId() / 10000) == 2000)
+                if (skil.getId() < 10000
+                        || ((skil.getId() / 10000) == 1000)
+                        || ((skil.getId() / 10000) == 2000)
                         || ((skil.getId() / 10000) == 2001)) {
                     teachSkill(skil.getId(), skil.getMaxLevel(), skil.getMaxLevel());
                 }
@@ -1402,11 +1476,13 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public final List<Integer> getAllPotentialInfo() {
-        return new ArrayList<Integer>(MapleItemInformationProvider.getInstance().getAllPotentialInfo().keySet());
+        return new ArrayList<Integer>(
+                MapleItemInformationProvider.getInstance().getAllPotentialInfo().keySet());
     }
 
     public final String getPotentialInfo(final int id) {
-        final List<StructPotentialItem> potInfo = MapleItemInformationProvider.getInstance().getPotentialInfo(id);
+        final List<StructPotentialItem> potInfo =
+                MapleItemInformationProvider.getInstance().getPotentialInfo(id);
         final StringBuilder builder = new StringBuilder("#b#ePOTENTIAL INFO FOR ID: ");
         builder.append(id);
         builder.append("#n#k\r\n\r\n");
@@ -1435,67 +1511,100 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
     public final void doWeddingEffect(final Object ch) {
         final MapleCharacter chr = (MapleCharacter) ch;
-        getMap().broadcastMessage(MaplePacketCreator.yellowChat(getPlayer().getName() + ", do you take " + chr.getName()
-                + " as your wife and promise to stay beside her through all downtimes, crashes, and lags?"));
-        CloneTimer.getInstance().schedule(new Runnable() {
+        getMap().broadcastMessage(
+                        MaplePacketCreator.yellowChat(
+                                getPlayer().getName()
+                                        + ", do you take "
+                                        + chr.getName()
+                                        + " as your wife and promise to stay beside her through all"
+                                        + " downtimes, crashes, and lags?"));
+        CloneTimer.getInstance()
+                .schedule(
+                        new Runnable() {
 
-            public void run() {
-                if (chr == null || getPlayer() == null) {
-                    warpMap(680000500, 0);
-                } else {
-                    getMap().broadcastMessage(MaplePacketCreator.yellowChat(chr.getName() + ", do you take "
-                            + getPlayer().getName()
-                            + " as your husband and promise to stay beside him through all downtimes, crashes, and lags?"));
-                }
-            }
-        }, 10000);
-        CloneTimer.getInstance().schedule(new Runnable() {
+                            public void run() {
+                                if (chr == null || getPlayer() == null) {
+                                    warpMap(680000500, 0);
+                                } else {
+                                    getMap().broadcastMessage(
+                                                    MaplePacketCreator.yellowChat(
+                                                            chr.getName()
+                                                                    + ", do you take "
+                                                                    + getPlayer().getName()
+                                                                    + " as your husband and promise"
+                                                                    + " to stay beside him through"
+                                                                    + " all downtimes, crashes, and"
+                                                                    + " lags?"));
+                                }
+                            }
+                        },
+                        10000);
+        CloneTimer.getInstance()
+                .schedule(
+                        new Runnable() {
 
-            public void run() {
-                if (chr == null || getPlayer() == null) {
-                    if (getPlayer() != null) {
-                        setQuestRecord(getPlayer(), 160001, "3");
-                        setQuestRecord(getPlayer(), 160002, "0");
-                    } else if (chr != null) {
-                        setQuestRecord(chr, 160001, "3");
-                        setQuestRecord(chr, 160002, "0");
-                    }
-                    warpMap(680000500, 0);
-                } else {
-                    setQuestRecord(getPlayer(), 160001, "2");
-                    setQuestRecord(chr, 160001, "2");
-                    sendNPCText(getPlayer().getName() + " and " + chr.getName()
-                            + ", I wish you two all the best on your journey together!", 9201002);
-                    getMap().startExtendedMapEffect("You may now kiss the bride, " + getPlayer().getName() + "!",
-                            5120006);
-                    if (chr.getGuildId() > 0) {
-                        GuildManager.guildPacket(chr.getGuildId(),
-                                MaplePacketCreator.sendMarriage(false, chr.getName()));
-                    }
-                    if (getPlayer().getGuildId() > 0) {
-                        GuildManager.guildPacket(getPlayer().getGuildId(),
-                                MaplePacketCreator.sendMarriage(false, getPlayer().getName()));
-                    }
-                }
-            }
-        }, 20000); // 10 sec 10 sec
+                            public void run() {
+                                if (chr == null || getPlayer() == null) {
+                                    if (getPlayer() != null) {
+                                        setQuestRecord(getPlayer(), 160001, "3");
+                                        setQuestRecord(getPlayer(), 160002, "0");
+                                    } else if (chr != null) {
+                                        setQuestRecord(chr, 160001, "3");
+                                        setQuestRecord(chr, 160002, "0");
+                                    }
+                                    warpMap(680000500, 0);
+                                } else {
+                                    setQuestRecord(getPlayer(), 160001, "2");
+                                    setQuestRecord(chr, 160001, "2");
+                                    sendNPCText(
+                                            getPlayer().getName()
+                                                    + " and "
+                                                    + chr.getName()
+                                                    + ", I wish you two all the best on your"
+                                                    + " journey together!",
+                                            9201002);
+                                    getMap().startExtendedMapEffect(
+                                                    "You may now kiss the bride, "
+                                                            + getPlayer().getName()
+                                                            + "!",
+                                                    5120006);
+                                    if (chr.getGuildId() > 0) {
+                                        GuildManager.guildPacket(
+                                                chr.getGuildId(),
+                                                MaplePacketCreator.sendMarriage(
+                                                        false, chr.getName()));
+                                    }
+                                    if (getPlayer().getGuildId() > 0) {
+                                        GuildManager.guildPacket(
+                                                getPlayer().getGuildId(),
+                                                MaplePacketCreator.sendMarriage(
+                                                        false, getPlayer().getName()));
+                                    }
+                                }
+                            }
+                        },
+                        20000); // 10 sec 10 sec
     }
 
     public String startSpeedQuiz() {
         if (c.getPlayer().getSpeedQuiz() != null) {
             c.getPlayer().setSpeedQuiz(null);
-            return "Ahh..it seemed that something was broken. Please let the admins know about this issue right away!";
+            return "Ahh..it seemed that something was broken. Please let the admins know about this"
+                    + " issue right away!";
         }
         if (!ServerConstants.SPEED_QUIZ) {
-            return "Oh dear! You came too late...The event had already ended! But oh well, everything has an ending. Come earlier next time!";
+            return "Oh dear! You came too late...The event had already ended! But oh well,"
+                    + " everything has an ending. Come earlier next time!";
         }
-        final String time = "";//getCQInfo(190011);
+        final String time = ""; // getCQInfo(190011);
         final long now = System.currentTimeMillis();
         if (!time.equals("")) { // Contains data
             boolean can = (Long.parseLong(time) + 3600000) < now;
             if (!can) {
                 int remaining = (int) ((((Long.parseLong(time) + 3600000) - now) / 1000) / 60);
-                return "You've already tried the speed quiz in the past hour. Please come back again in " + remaining
+                return "You've already tried the speed quiz in the past hour. Please come back"
+                        + " again in "
+                        + remaining
                         + " minutes.";
             }
         }
@@ -1505,11 +1614,14 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
     public String populateKeymapValues() {
         if (GameConstants.isEvan(c.getPlayer().getJob().getId())) {
-            return "I'm sorry to say that since you're an Evan, you can't keep any skills as other jobs do not have any dragon. Hence, you cannot keep any skills.";
+            return "I'm sorry to say that since you're an Evan, you can't keep any skills as other"
+                    + " jobs do not have any dragon. Hence, you cannot keep any skills.";
         }
         final Collection<Triple<Byte, Integer, Byte>> keymap = c.getPlayer().getKeymap();
-        StringBuilder sb = new StringBuilder(
-                "Which of the skills would you like to keep? Please note that you can only select the skills which are on your keymap.\r\n");
+        StringBuilder sb =
+                new StringBuilder(
+                        "Which of the skills would you like to keep? Please note that you can only"
+                                + " select the skills which are on your keymap.\r\n");
         Iterator<Triple<Byte, Integer, Byte>> itr = keymap.iterator();
         int sel = -1;
         while (itr.hasNext()) {
@@ -1517,11 +1629,15 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             if (key.getLeft() == 1 && key.getRight() <= 0) {
                 if (!JobConstants.isEvanSkill(key.getMid())) { // not evan
                     // skills
-                    if (key.getMid() >= 30000000 || key.getMid() == 1004 || key.getMid() == 10001004
-                            || key.getMid() == 20001004 || key.getMid() == 20011004) {
+                    if (key.getMid() >= 30000000
+                            || key.getMid() == 1004
+                            || key.getMid() == 10001004
+                            || key.getMid() == 20001004
+                            || key.getMid() == 20011004) {
                         continue;
                     }
-                    if (((key.getMid() / 10000 == 910) || (key.getMid() / 10000 == 900)) && !c.getPlayer().isGameMaster()) { // is
+                    if (((key.getMid() / 10000 == 910) || (key.getMid() / 10000 == 900))
+                            && !c.getPlayer().isGameMaster()) { // is
                         // gm
                         // skills
                         // but
@@ -1530,7 +1646,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                         // gm
                         continue;
                     }
-                    if (GameConstants.getMountItem(key.getMid()) != 0 && key.getMid() != 5221006) { // special
+                    if (GameConstants.getMountItem(key.getMid()) != 0
+                            && key.getMid() != 5221006) { // special
                         // mounts
                         // and
                         // skill
@@ -1550,7 +1667,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             }
         }
         if (sel == -1) {
-            return "Currently, you do not have any skills which can be kept as a reborn skill on your keymap.";
+            return "Currently, you do not have any skills which can be kept as a reborn skill on"
+                    + " your keymap.";
         }
         return sb.toString();
     }
@@ -1567,11 +1685,15 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             if (key.getLeft() == 1 && key.getRight() <= 0) {
                 if (!JobConstants.isEvanSkill(key.getMid())) { // not evan
                     // skills
-                    if (key.getMid() >= 30000000 || key.getMid() == 1004 || key.getMid() == 10001004
-                            || key.getMid() == 20001004 || key.getMid() == 20011004) {
+                    if (key.getMid() >= 30000000
+                            || key.getMid() == 1004
+                            || key.getMid() == 10001004
+                            || key.getMid() == 20001004
+                            || key.getMid() == 20011004) {
                         continue;
                     }
-                    if (((key.getMid() / 10000 == 910) || (key.getMid() / 10000 == 900)) && !c.getPlayer().isGameMaster()) { // is
+                    if (((key.getMid() / 10000 == 910) || (key.getMid() / 10000 == 900))
+                            && !c.getPlayer().isGameMaster()) { // is
                         // gm
                         // skills
                         // but
@@ -1580,7 +1702,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                         // gm
                         continue;
                     }
-                    if (GameConstants.getMountItem(key.getMid()) != 0 && key.getMid() != 5221006) { // special
+                    if (GameConstants.getMountItem(key.getMid()) != 0
+                            && key.getMid() != 5221006) { // special
                         // mounts
                         // and
                         // skill
@@ -1613,7 +1736,11 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         final MapleInventory equip = getPlayer().getInventory(MapleInventoryType.EQUIP);
         int sel = 0;
         for (final IItem item : equip.list()) {
-            str.append("#L").append(item.getPosition()).append("##v").append(item.getItemId()).append("##l");
+            str.append("#L")
+                    .append(item.getPosition())
+                    .append("##v")
+                    .append(item.getItemId())
+                    .append("##l");
             sel++;
             if (sel % 4 == 0) {
                 str.append("\r\n");
@@ -1659,15 +1786,17 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             stat.add(new Pair<>(MapleStat.DEX, 4));
             stat.add(new Pair<>(MapleStat.INT, 4));
             stat.add(new Pair<>(MapleStat.LUK, 4));
-            getClient().getSession().write(MaplePacketCreator.updatePlayerStats(stat, false, getJob()));
+            getClient()
+                    .getSession()
+                    .write(MaplePacketCreator.updatePlayerStats(stat, false, getJob()));
             return true;
         }
         return false;
     }
 
-
     public void upgradeWepAtk(short amount) {
-        final Equip nEquip = (Equip) getPlayer().getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -11);
+        final Equip nEquip =
+                (Equip) getPlayer().getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -11);
         final short watk = nEquip.getWatk();
         nEquip.setWatk((short) (watk + amount));
         getPlayer().forceReAddItem(nEquip, MapleInventoryType.EQUIPPED);
@@ -1697,7 +1826,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public void worldNotice(int type, String Header, String msg) {
-        BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(type, "[" + Header + "] " + msg + ""));
+        BroadcastHelper.broadcastMessage(
+                MaplePacketCreator.serverNotice(type, "[" + Header + "] " + msg + ""));
     }
 
     public short getJobId() {
@@ -1906,7 +2036,9 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
-            sendOk("#eSorry, you have already sent a message before. You are limited to 1 message per person.");
+            sendOk(
+                    "#eSorry, you have already sent a message before. You are limited to 1 message"
+                            + " per person.");
         }
     }
 
@@ -1949,8 +2081,14 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             PreparedStatement ps = con.prepareStatement("SELECT charname, feedback FROM feedback");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                sb.append("#e").append("Player name: ").append(rs.getString("charname")).append(":").append(("\r\n#r"))
-                        .append(rs.getString("feedback")).append("#k").append("\r\n\r\n");
+                sb.append("#e")
+                        .append("Player name: ")
+                        .append(rs.getString("charname"))
+                        .append(":")
+                        .append(("\r\n#r"))
+                        .append(rs.getString("feedback"))
+                        .append("#k")
+                        .append("\r\n\r\n");
             }
             sb.append("\r\n\r\n Reached end of table");
             return sb.toString();
@@ -1964,9 +2102,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         BroadcastHelper.broadcastMessage(MaplePacketCreator.sendBrowser(site));
     }
 
-    public void addNote(int songid, byte note) {
-
-    }
+    public void addNote(int songid, byte note) {}
 
     public void openVoteWebpage() {
         c.getPlayer().getClient().getSession().write(MaplePacketCreator.openVoteWebpage());
@@ -1993,17 +2129,20 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         int newSp = (getPlayer().getRemainingSp() + amount);
         getPlayer().setRemainingSp(newSp);
         getPlayer().updateSingleStat(MapleStat.AVAILABLESP, newSp);
-        byte[] packet = CWVsContextOnMessagePackets.onIncSpMessage(this.getPlayer().getJob(), amount);
+        byte[] packet =
+                CWVsContextOnMessagePackets.onIncSpMessage(this.getPlayer().getJob(), amount);
         getClient().sendPacket(packet);
     }
-
 
     public boolean isQuestComplete(int id) {
         return getQuestStatus(id) == 2;
     }
 
     public void sendGetText(String text, String def, int col, int line) {
-        getClient().sendPacket(ScriptMan.OnAskText(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, text, def, col, line));
+        getClient()
+                .sendPacket(
+                        ScriptMan.OnAskText(
+                                ScriptMan.NpcReplayedByNpc, npc, (byte) 0, text, def, col, line));
     }
 
     public void changeMusic(String music, boolean broadcast) {
@@ -2013,5 +2152,4 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             c.getSession().write(MaplePacketCreator.musicChange(music));
         }
     }
-
 }

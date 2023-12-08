@@ -1,13 +1,11 @@
 package server.gachapon.providers;
 
-import server.gachapon.AbstractRandomEntity;
-import server.gachapon.GachaponLocation;
-import server.gachapon.GachaponReward;
-
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import server.gachapon.AbstractRandomEntity;
+import server.gachapon.GachaponLocation;
+import server.gachapon.GachaponReward;
 
 @lombok.extern.slf4j.Slf4j
 public class CustomRewardsProvider {

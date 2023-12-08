@@ -15,5 +15,4 @@ public class JobUtils {
     public static boolean isDualbladeCashMasteryItem(IItem item) {
         return isDualbladeCashMasteryItem(item.getItemId());
     }
-
 }

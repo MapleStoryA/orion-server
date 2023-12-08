@@ -1,6 +1,6 @@
 /*
 This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 
@@ -23,11 +23,10 @@ package handling.world.party;
 
 import client.MapleCharacter;
 import client.MapleJob;
-import server.maps.MapleDoor;
-
 import java.awt.*;
 import java.io.Serializable;
 import java.util.List;
+import server.maps.MapleDoor;
 
 @lombok.extern.slf4j.Slf4j
 public class MaplePartyCharacter implements Serializable {
@@ -69,7 +68,7 @@ public class MaplePartyCharacter implements Serializable {
 
     public MaplePartyCharacter() {
         this.name = "";
-        //default values for everything
+        // default values for everything
     }
 
     public int getLevel() {

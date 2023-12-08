@@ -1,4 +1,3 @@
 package database;
 
-public class PetData {
-}
+public class PetData {}

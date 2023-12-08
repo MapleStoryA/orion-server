@@ -1,6 +1,6 @@
 /*
 This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 
@@ -22,35 +22,35 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package scripting;
 
 import client.MapleClient;
-import server.MaplePortal;
-import server.config.ServerEnvironment;
-import tools.DateHelper;
-
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.script.Compilable;
 import javax.script.CompiledScript;
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import server.MaplePortal;
+import server.config.ServerEnvironment;
 
 @lombok.extern.slf4j.Slf4j
 public class PortalScriptManager {
 
     private static final PortalScriptManager instance = new PortalScriptManager();
-    private final static ScriptEngineFactory sef = new ScriptEngineManager().getEngineByName("javascript").getFactory();
+    private static final ScriptEngineFactory sef =
+            new ScriptEngineManager().getEngineByName("javascript").getFactory();
     private final Map<String, PortalScript> scripts = new HashMap<String, PortalScript>();
 
-    public final static PortalScriptManager getInstance() {
+    public static final PortalScriptManager getInstance() {
         return instance;
     }
 
     private PortalScript getPortalScript(final String scriptName) {
-        String path = ServerEnvironment.getConfig().getScriptsPath() + "/portal/" + scriptName + ".js";
+        String path =
+                ServerEnvironment.getConfig().getScriptsPath() + "/portal/" + scriptName + ".js";
 
         if (!ServerEnvironment.isDebugEnabled()) {
             if (scripts.containsKey(scriptName)) {
@@ -59,7 +59,6 @@ public class PortalScriptManager {
         } else {
             log.info("Loading script: " + path);
         }
-
 
         final File scriptFile = new File(path);
         if (!scriptFile.exists()) {
@@ -75,7 +74,10 @@ public class PortalScriptManager {
             compiled.eval();
         } catch (final Exception e) {
             System.err.println("Error executing Portalscript: " + scriptName + ":" + e);
-            log.info("Log_Script_Except.rtf" + " : " + ("Error executing Portal script. (" + scriptName + ") " + e));
+            log.info(
+                    "Log_Script_Except.rtf"
+                            + " : "
+                            + ("Error executing Portal script. (" + scriptName + ") " + e));
         } finally {
             if (fr != null) {
                 try {
@@ -97,11 +99,23 @@ public class PortalScriptManager {
             try {
                 script.enter(new PortalPlayerInteraction(c, portal));
             } catch (Exception e) {
-                System.err.println("Error entering Portalscript: " + portal.getScriptName() + ":" + e.getMessage());
+                System.err.println(
+                        "Error entering Portalscript: "
+                                + portal.getScriptName()
+                                + ":"
+                                + e.getMessage());
             }
         } else {
-            log.info("Unhandled portal script " + portal.getScriptName() + " on map " + c.getPlayer().getMapId());
-            final String msg = "Unhandled portal script " + portal.getScriptName() + " on map " + c.getPlayer().getMapId();
+            log.info(
+                    "Unhandled portal script "
+                            + portal.getScriptName()
+                            + " on map "
+                            + c.getPlayer().getMapId());
+            final String msg =
+                    "Unhandled portal script "
+                            + portal.getScriptName()
+                            + " on map "
+                            + c.getPlayer().getMapId();
             log.info("Log_Script_Except.rtf" + " : " + msg);
         }
     }

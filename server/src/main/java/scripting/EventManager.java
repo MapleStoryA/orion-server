@@ -1,6 +1,6 @@
 /*
 This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 
@@ -25,6 +25,16 @@ import client.MapleCharacter;
 import handling.channel.ChannelServer;
 import handling.world.WorldServer;
 import handling.world.party.MapleParty;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.WeakHashMap;
+import java.util.concurrent.ScheduledFuture;
+import javax.script.Invocable;
+import javax.script.ScriptException;
 import lombok.extern.slf4j.Slf4j;
 import server.MapleSquad;
 import server.Timer.EventTimer;
@@ -41,24 +51,14 @@ import server.maps.MapleReactorFactory;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
 
-import javax.script.Invocable;
-import javax.script.ScriptException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.WeakHashMap;
-import java.util.concurrent.ScheduledFuture;
-
 @Slf4j
 public class EventManager {
 
     private static int eventChannel = 1;
     private final Invocable iv;
     private final int channel;
-    private final Map<String, EventInstanceManager> instances = new WeakHashMap<String, EventInstanceManager>();
+    private final Map<String, EventInstanceManager> instances =
+            new WeakHashMap<String, EventInstanceManager>();
     private final Properties props = new Properties();
     private final String name;
 
@@ -73,51 +73,104 @@ public class EventManager {
             iv.invokeFunction("cancelSchedule", (Object) null);
         } catch (Exception ex) {
             log.info("Event name : " + name + ", method Name : cancelSchedule:\n" + ex);
-            log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : cancelSchedule:\n" + ex));
+            log.info(
+                    "Log_Script_Except.rtf"
+                            + " : "
+                            + ("Event name : " + name + ", method Name : cancelSchedule:\n" + ex));
         }
     }
 
     public ScheduledFuture<?> schedule(final String methodName, long delay) {
-        return EventTimer.getInstance().schedule(new Runnable() {
+        return EventTimer.getInstance()
+                .schedule(
+                        new Runnable() {
 
-            public void run() {
-                try {
-                    iv.invokeFunction(methodName, (Object) null);
-                } catch (Exception ex) {
-                    log.info("Event name : " + name + ", method Name : " + methodName + ":\n" + ex);
-                    log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : " + methodName + ":\n" + ex));
-                }
-            }
-        }, delay);
+                            public void run() {
+                                try {
+                                    iv.invokeFunction(methodName, (Object) null);
+                                } catch (Exception ex) {
+                                    log.info(
+                                            "Event name : "
+                                                    + name
+                                                    + ", method Name : "
+                                                    + methodName
+                                                    + ":\n"
+                                                    + ex);
+                                    log.info(
+                                            "Log_Script_Except.rtf"
+                                                    + " : "
+                                                    + ("Event name : "
+                                                            + name
+                                                            + ", method Name : "
+                                                            + methodName
+                                                            + ":\n"
+                                                            + ex));
+                                }
+                            }
+                        },
+                        delay);
     }
 
-    public ScheduledFuture<?> schedule(final String methodName, long delay, final EventInstanceManager eim) {
-        return EventTimer.getInstance().schedule(new Runnable() {
+    public ScheduledFuture<?> schedule(
+            final String methodName, long delay, final EventInstanceManager eim) {
+        return EventTimer.getInstance()
+                .schedule(
+                        new Runnable() {
 
-            public void run() {
-                try {
-                    iv.invokeFunction(methodName, eim);
-                } catch (Exception ex) {
-                    log.info("Event name : " + name + ", method Name : " + methodName + ":\n" + ex);
-                    log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : " + methodName + ":\n" + ex));
-                }
-            }
-        }, delay);
+                            public void run() {
+                                try {
+                                    iv.invokeFunction(methodName, eim);
+                                } catch (Exception ex) {
+                                    log.info(
+                                            "Event name : "
+                                                    + name
+                                                    + ", method Name : "
+                                                    + methodName
+                                                    + ":\n"
+                                                    + ex);
+                                    log.info(
+                                            "Log_Script_Except.rtf"
+                                                    + " : "
+                                                    + ("Event name : "
+                                                            + name
+                                                            + ", method Name : "
+                                                            + methodName
+                                                            + ":\n"
+                                                            + ex));
+                                }
+                            }
+                        },
+                        delay);
     }
 
     public ScheduledFuture<?> scheduleAtTimestamp(final String methodName, long timestamp) {
-        return EventTimer.getInstance().scheduleAtTimestamp(new Runnable() {
+        return EventTimer.getInstance()
+                .scheduleAtTimestamp(
+                        new Runnable() {
 
-            public void run() {
-                try {
-                    iv.invokeFunction(methodName, (Object) null);
-                } catch (ScriptException ex) {
-                    log.info("Event name : " + name + ", method Name : " + methodName + ":\n" + ex);
-                } catch (NoSuchMethodException ex) {
-                    log.info("Event name : " + name + ", method Name : " + methodName + ":\n" + ex);
-                }
-            }
-        }, timestamp);
+                            public void run() {
+                                try {
+                                    iv.invokeFunction(methodName, (Object) null);
+                                } catch (ScriptException ex) {
+                                    log.info(
+                                            "Event name : "
+                                                    + name
+                                                    + ", method Name : "
+                                                    + methodName
+                                                    + ":\n"
+                                                    + ex);
+                                } catch (NoSuchMethodException ex) {
+                                    log.info(
+                                            "Event name : "
+                                                    + name
+                                                    + ", method Name : "
+                                                    + methodName
+                                                    + ":\n"
+                                                    + ex);
+                                }
+                            }
+                        },
+                        timestamp);
     }
 
     public int getChannel() {
@@ -147,11 +200,16 @@ public class EventManager {
         if (getProperty("state") != null && instances.size() == 0) {
             setProperty("state", "0");
         }
-        if (getProperty("leader") != null && instances.size() == 0 && getProperty("leader").equals("false")) {
+        if (getProperty("leader") != null
+                && instances.size() == 0
+                && getProperty("leader").equals("false")) {
             setProperty("leader", "true");
         }
-        if (this.name.equals("CWKPQ")) { //hard code it because i said so
-            final MapleSquad squad = WorldServer.getInstance().getChannel(channel).getMapleSquad("CWKPQ");//so fkin hacky
+        if (this.name.equals("CWKPQ")) { // hard code it because i said so
+            final MapleSquad squad =
+                    WorldServer.getInstance()
+                            .getChannel(channel)
+                            .getMapleSquad("CWKPQ"); // so fkin hacky
             if (squad != null) {
                 squad.clear();
             }
@@ -183,7 +241,10 @@ public class EventManager {
             iv.invokeFunction("setup", (Object) null);
         } catch (Exception ex) {
             ex.printStackTrace();
-            log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : setup:\n" + ex));
+            log.info(
+                    "Log_Script_Except.rtf"
+                            + " : "
+                            + ("Event name : " + name + ", method Name : setup:\n" + ex));
         }
     }
 
@@ -193,54 +254,73 @@ public class EventManager {
             eim.registerCarnivalParty(chr, chr.getMap(), (byte) 0);
         } catch (Exception ex) {
             ex.printStackTrace();
-            log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : setup:\n" + ex));
+            log.info(
+                    "Log_Script_Except.rtf"
+                            + " : "
+                            + ("Event name : " + name + ", method Name : setup:\n" + ex));
         }
     }
 
-    //GPQ
+    // GPQ
     public void startInstance(MapleCharacter character, String leader) {
         try {
-            EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
+            EventInstanceManager eim =
+                    (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
             eim.registerPlayer(character);
             eim.setProperty("leader", leader);
             eim.setProperty("guildid", String.valueOf(character.getGuildId()));
             setProperty("guildid", String.valueOf(character.getGuildId()));
         } catch (Exception ex) {
             log.info("Event name : " + name + ", method Name : setup-Guild:\n" + ex);
-            log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : setup-Guild:\n" + ex));
+            log.info(
+                    "Log_Script_Except.rtf"
+                            + " : "
+                            + ("Event name : " + name + ", method Name : setup-Guild:\n" + ex));
         }
     }
 
     public void startInstance_CharID(MapleCharacter character) {
         try {
-            EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", character.getId()));
+            EventInstanceManager eim =
+                    (EventInstanceManager) (iv.invokeFunction("setup", character.getId()));
             eim.registerPlayer(character);
         } catch (Exception ex) {
             log.info("Event name : " + name + ", method Name : setup-CharID:\n" + ex);
-            log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : setup-CharID:\n" + ex));
+            log.info(
+                    "Log_Script_Except.rtf"
+                            + " : "
+                            + ("Event name : " + name + ", method Name : setup-CharID:\n" + ex));
         }
     }
 
     public void startInstance(MapleCharacter character) {
         try {
-            EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
+            EventInstanceManager eim =
+                    (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
             eim.registerPlayer(character);
         } catch (Exception ex) {
             log.info("Event name : " + name + ", method Name : setup-character:\n" + ex);
-            log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : setup-character:\n" + ex));
+            log.info(
+                    "Log_Script_Except.rtf"
+                            + " : "
+                            + ("Event name : " + name + ", method Name : setup-character:\n" + ex));
         }
     }
 
-    //PQ method: starts a PQ
+    // PQ method: starts a PQ
     public void startInstance(MapleParty party, MapleMap map) {
         try {
-            EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", party.getId()));
+            EventInstanceManager eim =
+                    (EventInstanceManager) (iv.invokeFunction("setup", party.getId()));
             eim.registerParty(party, map);
         } catch (ScriptException ex) {
             log.info("Event name : " + name + ", method Name : setup-partyid:\n" + ex);
-            log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : setup-partyid:\n" + ex));
+            log.info(
+                    "Log_Script_Except.rtf"
+                            + " : "
+                            + ("Event name : " + name + ", method Name : setup-partyid:\n" + ex));
         } catch (Exception ex) {
-            //ignore
+            // ignore
             startInstance_NoID(party, map, ex);
         }
     }
@@ -251,53 +331,69 @@ public class EventManager {
 
     public void startInstance_NoID(MapleParty party, MapleMap map, final Exception old) {
         try {
-            EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
+            EventInstanceManager eim =
+                    (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
             eim.registerParty(party, map);
         } catch (Exception ex) {
             log.info("Event name : " + name + ", method Name : setup-party:\n" + ex);
-            final String msg = "Event name : " + name + ", method Name : setup-party:\n" + ex + "\n" + (old == null ? "no old exception" : old);
+            final String msg =
+                    "Event name : "
+                            + name
+                            + ", method Name : setup-party:\n"
+                            + ex
+                            + "\n"
+                            + (old == null ? "no old exception" : old);
             log.info("Log_Script_Except.rtf" + " : " + msg);
         }
     }
 
-    //non-PQ method for starting instance
+    // non-PQ method for starting instance
     public void startInstance(EventInstanceManager eim, String leader) {
         try {
             iv.invokeFunction("setup", eim);
             eim.setProperty("leader", leader);
         } catch (Exception ex) {
             log.info("Event name : " + name + ", method Name : setup-leader:\n" + ex);
-            log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : setup-leader:\n" + ex));
+            log.info(
+                    "Log_Script_Except.rtf"
+                            + " : "
+                            + ("Event name : " + name + ", method Name : setup-leader:\n" + ex));
         }
     }
 
     public void startInstance(MapleSquad squad, MapleMap map) {
 
         if (squad.getStatus() == 0) {
-            return; //we dont like cleared squads
+            return; // we dont like cleared squads
         }
         if (!squad.getLeader().isGameMaster()) {
-            if (squad.getMembers().size() < 1) { //less than 3
+            if (squad.getMembers().size() < 1) { // less than 3
                 squad.getLeader().dropMessage(5, "The squad has less than 1 people participating.");
                 return;
             }
-            if (name.equals("CWKPQ")) { //so fkin hacky
+            if (name.equals("CWKPQ")) { // so fkin hacky
                 if (squad.getMembers().size() < 10) {
-                    squad.getLeader().dropMessage(5, "The squad has less than 10 people participating.");
+                    squad.getLeader()
+                            .dropMessage(5, "The squad has less than 10 people participating.");
                     return;
                 }
                 if (squad.getJobs().size() < 5) {
-                    squad.getLeader().dropMessage(5, "The squad requires members from every type of job.");
+                    squad.getLeader()
+                            .dropMessage(5, "The squad requires members from every type of job.");
                     return;
                 }
             }
         }
         try {
-            EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", squad.getLeaderName()));
+            EventInstanceManager eim =
+                    (EventInstanceManager) (iv.invokeFunction("setup", squad.getLeaderName()));
             eim.registerSquad(squad, map);
         } catch (Exception ex) {
             log.info("Event name : " + name + ", method Name : setup-squad:\n" + ex);
-            log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : setup-squad:\n" + ex));
+            log.info(
+                    "Log_Script_Except.rtf"
+                            + " : "
+                            + ("Event name : " + name + ", method Name : setup-squad:\n" + ex));
         }
     }
 
@@ -306,7 +402,10 @@ public class EventManager {
             EventInstanceManager eim = (EventInstanceManager) iv.invokeFunction("setup", mapid);
             eim.registerParty(chr.getParty(), chr.getMap());
         } catch (NoSuchMethodException | ScriptException ex) {
-            log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : setup:\r\n" + ex));
+            log.info(
+                    "Log_Script_Except.rtf"
+                            + " : "
+                            + ("Event name : " + name + ", method Name : setup:\r\n" + ex));
         }
     }
 
@@ -385,25 +484,30 @@ public class EventManager {
     }
 
     public void setWorldEvent() {
-        eventChannel = Randomizer.nextInt(7) + 2; //2-8
+        eventChannel = Randomizer.nextInt(7) + 2; // 2-8
     }
 
     public void startInstance(MapleSquad squad, MapleMap map, int questID) {
         if (squad.getStatus() == 0) {
-            return; //we dont like cleared squads
+            return; // we dont like cleared squads
         }
         if (!squad.getLeader().isGameMaster()) {
             if (name.equals("CWKPQ") && squad.getJobs().size() < 5) {
-                squad.getLeader().dropMessage(5, "The squad requires members from every type of job.");
+                squad.getLeader()
+                        .dropMessage(5, "The squad requires members from every type of job.");
                 return;
             }
         }
         try {
-            EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", squad.getLeaderName()));
+            EventInstanceManager eim =
+                    (EventInstanceManager) (iv.invokeFunction("setup", squad.getLeaderName()));
             eim.registerSquad(squad, map);
         } catch (NoSuchMethodException | ScriptException ex) {
             log.info("Event name : " + name + ", method Name : setup-squad:\n" + ex);
-            log.info("Log_Script_Except.rtf" + " : " + ("Event name : " + name + ", method Name : setup-squad:\n" + ex));
+            log.info(
+                    "Log_Script_Except.rtf"
+                            + " : "
+                            + ("Event name : " + name + ", method Name : setup-squad:\n" + ex));
         }
     }
 

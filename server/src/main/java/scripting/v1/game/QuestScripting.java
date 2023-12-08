@@ -37,5 +37,4 @@ public class QuestScripting extends PlayerScripting {
     public final boolean isQuestFinished(final int id) {
         return getQuestStatus(id) == COMPLETE_QUEST;
     }
-
 }

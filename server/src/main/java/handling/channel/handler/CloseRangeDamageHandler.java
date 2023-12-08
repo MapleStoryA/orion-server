@@ -43,15 +43,19 @@ public class CloseRangeDamageHandler extends AbstractMaplePacketHandler {
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, final MapleClient c) {
         final MapleCharacter chr = c.getPlayer();
-        if (chr == null || (energy && chr.getBuffedValue(MapleBuffStat.ENERGY_CHARGE) == null
-                && chr.getBuffedValue(MapleBuffStat.BODY_PRESSURE) == null && !GameConstants.isKOC(chr.getJob().getId()))) {
+        if (chr == null
+                || (energy
+                        && chr.getBuffedValue(MapleBuffStat.ENERGY_CHARGE) == null
+                        && chr.getBuffedValue(MapleBuffStat.BODY_PRESSURE) == null
+                        && !GameConstants.isKOC(chr.getJob().getId()))) {
             return;
         }
         if (!chr.isAlive() || chr.getMap() == null) {
             chr.getCheatTracker().registerOffense(CheatingOffense.ATTACKING_WHILE_DEAD);
             return;
         }
-        final AttackInfo attack = DamageParse.Modify_AttackCrit(DamageParse.parseDmgM(slea), chr, 1);
+        final AttackInfo attack =
+                DamageParse.Modify_AttackCrit(DamageParse.parseDmgM(slea), chr, 1);
         if (!chr.getJob().isSkillBelongToJob(attack.skill, chr.isGameMaster())) {
             chr.dropMessage(5, "This skill cannot be used with the current job");
             c.getSession().write(MaplePacketCreator.enableActions());
@@ -63,17 +67,16 @@ public class CloseRangeDamageHandler extends AbstractMaplePacketHandler {
         }
         final boolean mirror = chr.getBuffedValue(MapleBuffStat.MIRROR_IMAGE) != null;
         double maxdamage = chr.getStat().getCurrentMaxBaseDamage();
-        int attackCount = (chr.getJob().getId() >= 430 && chr.getJob().getId() <= 434 ? 2 : 1), skillLevel = 0;
+        int attackCount = (chr.getJob().getId() >= 430 && chr.getJob().getId() <= 434 ? 2 : 1),
+                skillLevel = 0;
         MapleStatEffect effect = null;
         ISkill skill = null;
         if (c.getPlayer().isActiveBuffedValue(BladeMaster.FINAL_CUT)
-                && attack.skill == BladeMaster.FINAL_CUT
-        ) {
+                && attack.skill == BladeMaster.FINAL_CUT) {
             c.enableActions();
             return;
         }
         c.getPlayer().checkForDarkSight();
-
 
         if (attack.skill != 0) {
             skill = SkillFactory.getSkill(GameConstants.getLinkedAranSkill(attack.skill));
@@ -91,24 +94,30 @@ public class CloseRangeDamageHandler extends AbstractMaplePacketHandler {
                     return;
                 }
                 if (!(BladeMaster.FINAL_CUT == attack.skill)) {
-                    c.getSession().write(MaplePacketCreator.skillCooldown(attack.skill, effect.getCooldown()));
-                    chr.addCooldown(attack.skill, System.currentTimeMillis(), effect.getCooldown() * 1000L);
+                    c.getSession()
+                            .write(
+                                    MaplePacketCreator.skillCooldown(
+                                            attack.skill, effect.getCooldown()));
+                    chr.addCooldown(
+                            attack.skill, System.currentTimeMillis(), effect.getCooldown() * 1000L);
                 } else {
                     if (attack.targets > 0) {
                         int countDown = c.getPlayer().getSkillLevel(BladeMaster.FINAL_CUT);
                         countDown = calculateCountDown(countDown);
-                        c.getSession().write(MaplePacketCreator.skillCooldown(attack.skill, countDown));
-                        chr.addCooldown(BladeMaster.FINAL_CUT, System.currentTimeMillis(), countDown);
+                        c.getSession()
+                                .write(MaplePacketCreator.skillCooldown(attack.skill, countDown));
+                        chr.addCooldown(
+                                BladeMaster.FINAL_CUT, System.currentTimeMillis(), countDown);
                     }
-
                 }
-
             }
         }
 
         attackCount *= (mirror ? 2 : 1);
         if (!energy) {
-            if ((chr.getMapId() == 109060000 || chr.getMapId() == 109060002 || chr.getMapId() == 109060004)
+            if ((chr.getMapId() == 109060000
+                            || chr.getMapId() == 109060002
+                            || chr.getMapId() == 109060004)
                     && attack.skill == 0) {
                 MapleSnowballs.hitSnowball(chr);
             }
@@ -137,16 +146,18 @@ public class CloseRangeDamageHandler extends AbstractMaplePacketHandler {
             }
             switch (chr.getJob().getId()) {
                 case 511:
-                case 512: {
-                    chr.handleEnergyCharge(5110001, attack.targets * attack.hits);
-                    break;
-                }
+                case 512:
+                    {
+                        chr.handleEnergyCharge(5110001, attack.targets * attack.hits);
+                        break;
+                    }
                 case 1510:
                 case 1511:
-                case 1512: {
-                    chr.handleEnergyCharge(15100004, attack.targets * attack.hits);
-                    break;
-                }
+                case 1512:
+                    {
+                        chr.handleEnergyCharge(15100004, attack.targets * attack.hits);
+                        break;
+                    }
             }
             // handle sacrifice hp loss
             // after BIG BANG, TEMP
@@ -155,7 +166,9 @@ public class CloseRangeDamageHandler extends AbstractMaplePacketHandler {
                 // blow
                 final int advcharge_level = chr.getSkillLevel(SkillFactory.getSkill(1220010));
                 if (advcharge_level > 0) {
-                    if (!SkillFactory.getSkill(1220010).getEffect(advcharge_level).makeChanceResult()) {
+                    if (!SkillFactory.getSkill(1220010)
+                            .getEffect(advcharge_level)
+                            .makeChanceResult()) {
                         chr.cancelEffectFromBuffStat(MapleBuffStat.WK_CHARGE);
                         chr.cancelEffectFromBuffStat(MapleBuffStat.LIGHTNING_CHARGE);
                     }
@@ -169,14 +182,20 @@ public class CloseRangeDamageHandler extends AbstractMaplePacketHandler {
                 maxdamage *= numFinisherOrbs;
             } else if (comboBuff != null) {
                 ISkill combo;
-                if (c.getPlayer().getJob().getId() == 1110 || c.getPlayer().getJob().getId() == 1111) {
+                if (c.getPlayer().getJob().getId() == 1110
+                        || c.getPlayer().getJob().getId() == 1111) {
                     combo = SkillFactory.getSkill(11111001);
                 } else {
                     combo = SkillFactory.getSkill(1111002);
                 }
                 if (c.getPlayer().getSkillLevel(combo) > 0) {
-                    maxdamage *= 1.0 + (combo.getEffect(c.getPlayer().getSkillLevel(combo)).getDamage() / 100.0 - 1.0)
-                            * (comboBuff.intValue() - 1);
+                    maxdamage *=
+                            1.0
+                                    + (combo.getEffect(c.getPlayer().getSkillLevel(combo))
+                                                                    .getDamage()
+                                                            / 100.0
+                                                    - 1.0)
+                                            * (comboBuff.intValue() - 1);
                 }
             }
 
@@ -189,15 +208,31 @@ public class CloseRangeDamageHandler extends AbstractMaplePacketHandler {
             }
         }
         chr.checkFollow();
-        chr.getMap().broadcastMessage(chr,
-                MaplePacketCreator.closeRangeAttack(chr.getId(), attack.tbyte, attack.skill, skillLevel, attack.display,
-                        attack.animation, attack.speed, attack.allDamage, energy, chr.getLevel(),
-                        chr.getStat().passive_mastery(), attack.unk, attack.charge),
-                chr.getPosition());
-        DamageParse.applyAttack(attack, skill, c.getPlayer(), attackCount, maxdamage, effect,
+        chr.getMap()
+                .broadcastMessage(
+                        chr,
+                        MaplePacketCreator.closeRangeAttack(
+                                chr.getId(),
+                                attack.tbyte,
+                                attack.skill,
+                                skillLevel,
+                                attack.display,
+                                attack.animation,
+                                attack.speed,
+                                attack.allDamage,
+                                energy,
+                                chr.getLevel(),
+                                chr.getStat().passive_mastery(),
+                                attack.unk,
+                                attack.charge),
+                        chr.getPosition());
+        DamageParse.applyAttack(
+                attack,
+                skill,
+                c.getPlayer(),
+                attackCount,
+                maxdamage,
+                effect,
                 mirror ? AttackType.NON_RANGED_WITH_MIRROR : AttackType.NON_RANGED);
-
-
     }
-
 }

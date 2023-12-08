@@ -22,14 +22,14 @@
 
 package server;
 
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 
 @lombok.extern.slf4j.Slf4j
 public class TimerManager implements TimerManagerMBean {
@@ -52,17 +52,20 @@ public class TimerManager implements TimerManagerMBean {
         if (ses != null && !ses.isShutdown() && !ses.isTerminated()) {
             return;
         }
-        ScheduledThreadPoolExecutor stpe = new ScheduledThreadPoolExecutor(4, new ThreadFactory() {
-            private final AtomicInteger threadNumber = new AtomicInteger(1);
+        ScheduledThreadPoolExecutor stpe =
+                new ScheduledThreadPoolExecutor(
+                        4,
+                        new ThreadFactory() {
+                            private final AtomicInteger threadNumber = new AtomicInteger(1);
 
-            @Override
-            public Thread newThread(Runnable r) {
-                Thread t = new Thread(r);
-                t.setName("TimerManager-Worker-" + threadNumber.getAndIncrement());
-                return t;
-            }
-        });
-        //this is a no-no, it actually does nothing..then why the fuck are you doing it?
+                            @Override
+                            public Thread newThread(Runnable r) {
+                                Thread t = new Thread(r);
+                                t.setName("TimerManager-Worker-" + threadNumber.getAndIncrement());
+                                return t;
+                            }
+                        });
+        // this is a no-no, it actually does nothing..then why the fuck are you doing it?
         stpe.setContinueExistingPeriodicTasksAfterShutdownPolicy(false);
         ses = stpe;
     }
@@ -71,7 +74,7 @@ public class TimerManager implements TimerManagerMBean {
         ses.shutdownNow();
     }
 
-    public Runnable purge() {//Yay?
+    public Runnable purge() { // Yay?
         return new Runnable() {
             public void run() {
                 ses.purge();
@@ -80,11 +83,13 @@ public class TimerManager implements TimerManagerMBean {
     }
 
     public ScheduledFuture<?> register(Runnable r, long repeatTime, long delay) {
-        return ses.scheduleAtFixedRate(new LoggingSaveRunnable(r), delay, repeatTime, TimeUnit.MILLISECONDS);
+        return ses.scheduleAtFixedRate(
+                new LoggingSaveRunnable(r), delay, repeatTime, TimeUnit.MILLISECONDS);
     }
 
     public ScheduledFuture<?> register(Runnable r, long repeatTime) {
-        return ses.scheduleAtFixedRate(new LoggingSaveRunnable(r), 0, repeatTime, TimeUnit.MILLISECONDS);
+        return ses.scheduleAtFixedRate(
+                new LoggingSaveRunnable(r), 0, repeatTime, TimeUnit.MILLISECONDS);
     }
 
     public ScheduledFuture<?> schedule(Runnable r, long delay) {
@@ -99,7 +104,6 @@ public class TimerManager implements TimerManagerMBean {
     public boolean isShutdown() {
         return ses.isShutdown();
     }
-
 
     private static class LoggingSaveRunnable implements Runnable {
         Runnable r;

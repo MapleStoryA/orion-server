@@ -6,6 +6,7 @@ import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
+import java.util.List;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.StructRewardItem;
@@ -15,8 +16,6 @@ import tools.Pair;
 import tools.Randomizer;
 import tools.data.input.SeekableLittleEndianAccessor;
 
-import java.util.List;
-
 @lombok.extern.slf4j.Slf4j
 public class RewardItemHandler extends AbstractMaplePacketHandler {
 
@@ -25,7 +24,8 @@ public class RewardItemHandler extends AbstractMaplePacketHandler {
         MapleCharacter chr = c.getPlayer();
         final byte slot = (byte) slea.readShort();
         final int itemId = slea.readInt();
-        final IItem toUse = c.getPlayer().getInventory(GameConstants.getInventoryType(itemId)).getItem(slot);
+        final IItem toUse =
+                c.getPlayer().getInventory(GameConstants.getInventoryType(itemId)).getItem(slot);
         c.getSession().write(MaplePacketCreator.enableActions());
         if (toUse != null && toUse.getQuantity() >= 1 && toUse.getItemId() == itemId) {
             if (chr.getInventory(MapleInventoryType.EQUIP).getNextFreeSlot() > -1
@@ -39,26 +39,53 @@ public class RewardItemHandler extends AbstractMaplePacketHandler {
                     boolean rewarded = false;
                     while (!rewarded) {
                         for (StructRewardItem reward : rewards.getRight()) {
-                            if (reward.getProb() > 0 && Randomizer.nextInt(rewards.getLeft()) < reward.getProb()) { // Total
+                            if (reward.getProb() > 0
+                                    && Randomizer.nextInt(rewards.getLeft())
+                                            < reward.getProb()) { // Total
                                 // prob
-                                if (GameConstants.getInventoryType(reward.getItemId()) == MapleInventoryType.EQUIP) {
+                                if (GameConstants.getInventoryType(reward.getItemId())
+                                        == MapleInventoryType.EQUIP) {
                                     final IItem item = ii.getEquipById(reward.getItemId());
                                     if (reward.getPeriod() > 0) {
-                                        item.setExpiration(System.currentTimeMillis() + (reward.getPeriod() * 60 * 60 * 10));
+                                        item.setExpiration(
+                                                System.currentTimeMillis()
+                                                        + (reward.getPeriod() * 60 * 60 * 10));
                                     }
                                     MapleInventoryManipulator.addbyItem(c, item);
                                 } else {
-                                    MapleInventoryManipulator.addById(c, reward.getItemId(), reward.getQuantity(), "Reward item: " + itemId + " on " + DateHelper.getCurrentReadableDate());
+                                    MapleInventoryManipulator.addById(
+                                            c,
+                                            reward.getItemId(),
+                                            reward.getQuantity(),
+                                            "Reward item: "
+                                                    + itemId
+                                                    + " on "
+                                                    + DateHelper.getCurrentReadableDate());
                                 }
-                                MapleInventoryManipulator.removeById(c, GameConstants.getInventoryType(itemId), itemId,
-                                        1, false, false);
+                                MapleInventoryManipulator.removeById(
+                                        c,
+                                        GameConstants.getInventoryType(itemId),
+                                        itemId,
+                                        1,
+                                        false,
+                                        false);
 
-                                c.getSession().write(
-                                        MaplePacketCreator.showRewardItemAnimation(reward.getItemId(), reward.getEffect()));
-                                chr.getMap().broadcastMessage(chr, MaplePacketCreator
-                                        .showRewardItemAnimation(reward.getItemId(), reward.getEffect(), chr.getId()), false);
                                 c.getSession()
-                                        .write(MaplePacketCreator.getShowItemGain(reward.getItemId(), (short) 1, true));
+                                        .write(
+                                                MaplePacketCreator.showRewardItemAnimation(
+                                                        reward.getItemId(), reward.getEffect()));
+                                chr.getMap()
+                                        .broadcastMessage(
+                                                chr,
+                                                MaplePacketCreator.showRewardItemAnimation(
+                                                        reward.getItemId(),
+                                                        reward.getEffect(),
+                                                        chr.getId()),
+                                                false);
+                                c.getSession()
+                                        .write(
+                                                MaplePacketCreator.getShowItemGain(
+                                                        reward.getItemId(), (short) 1, true));
                                 rewarded = true;
                             }
                         }
@@ -70,7 +97,5 @@ public class RewardItemHandler extends AbstractMaplePacketHandler {
                 chr.dropMessage(6, "Insufficient inventory slot.");
             }
         }
-
     }
-
 }

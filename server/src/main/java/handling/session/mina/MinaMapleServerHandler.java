@@ -1,6 +1,6 @@
 /*
 This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 
@@ -48,16 +48,13 @@ public class MinaMapleServerHandler extends IoHandlerAdapter {
         this.processor = PacketProcessor.getProcessor(mode);
     }
 
-
     @Override
     public void messageSent(final IoSession session, final Object message) throws Exception {
         super.messageSent(session, message);
     }
 
     @Override
-    public void exceptionCaught(final IoSession session, final Throwable cause) {
-    }
-
+    public void exceptionCaught(final IoSession session, final Throwable cause) {}
 
     @Override
     public void sessionOpened(final IoSession session) {
@@ -73,12 +70,13 @@ public class MinaMapleServerHandler extends IoHandlerAdapter {
             }
         }
         NetworkSession minaSession = new MinaNetworkSession(session);
-        final byte[] ivSend = new byte[]{82, 48, 120, (byte) Randomizer.nextInt(255)};
-        final byte[] ivRecv = new byte[]{70, 114, 122, (byte) Randomizer.nextInt(255)};
+        final byte[] ivSend = new byte[] {82, 48, 120, (byte) Randomizer.nextInt(255)};
+        final byte[] ivRecv = new byte[] {70, 114, 122, (byte) Randomizer.nextInt(255)};
         final var client = new MapleClient(ivSend, ivRecv, minaSession);
         client.setChannel(channel);
 
-        MinaMaplePacketDecoder.DecoderState decoderState = new MinaMaplePacketDecoder.DecoderState();
+        MinaMaplePacketDecoder.DecoderState decoderState =
+                new MinaMaplePacketDecoder.DecoderState();
         session.setAttribute(MinaMaplePacketDecoder.DECODER_STATE_KEY, decoderState);
 
         session.write(LoginPacket.getHello(ServerConstants.MAPLE_VERSION, ivSend, ivRecv));
@@ -105,7 +103,8 @@ public class MinaMapleServerHandler extends IoHandlerAdapter {
     @Override
     public void messageReceived(final IoSession session, final Object message) {
         var client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
-        DefaultPacketHandler.handlePacket(client, processor, PacketProcessor.Mode.CASHSHOP.equals(mode), (byte[]) message);
+        DefaultPacketHandler.handlePacket(
+                client, processor, PacketProcessor.Mode.CASHSHOP.equals(mode), (byte[]) message);
     }
 
     @Override
@@ -117,5 +116,4 @@ public class MinaMapleServerHandler extends IoHandlerAdapter {
         }
         super.sessionIdle(session, status);
     }
-
 }

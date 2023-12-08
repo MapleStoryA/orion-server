@@ -1,8 +1,5 @@
 package database;
 
-import database.DatabaseConnection;
-
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,7 +10,8 @@ public class BanService {
 
     public static final byte unban(String charname) {
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT accountid from characters where name = ?");
+            PreparedStatement ps =
+                    con.prepareStatement("SELECT accountid from characters where name = ?");
             ps.setString(1, charname);
 
             ResultSet rs = ps.executeQuery();
@@ -26,7 +24,9 @@ public class BanService {
             rs.close();
             ps.close();
 
-            ps = con.prepareStatement("UPDATE accounts SET banned = 0 and banreason = '' WHERE id = ?");
+            ps =
+                    con.prepareStatement(
+                            "UPDATE accounts SET banned = 0 and banreason = '' WHERE id = ?");
             ps.setInt(1, accid);
             ps.executeUpdate();
             ps.close();
@@ -74,7 +74,8 @@ public class BanService {
 
     public static final byte unbanIPMacs(String charname) {
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT accountid from characters where name = ?");
+            PreparedStatement ps =
+                    con.prepareStatement("SELECT accountid from characters where name = ?");
             ps.setString(1, charname);
 
             ResultSet rs = ps.executeQuery();
@@ -111,7 +112,8 @@ public class BanService {
                 String[] macz = macs.split(", ");
                 for (String mac : macz) {
                     if (!mac.equals("")) {
-                        PreparedStatement psa = con.prepareStatement("DELETE FROM macbans WHERE mac = ?");
+                        PreparedStatement psa =
+                                con.prepareStatement("DELETE FROM macbans WHERE mac = ?");
                         psa.setString(1, mac);
                         psa.execute();
                         psa.close();
@@ -128,7 +130,8 @@ public class BanService {
 
     public static final byte unHellban(String charname) {
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT accountid from characters where name = ?");
+            PreparedStatement ps =
+                    con.prepareStatement("SELECT accountid from characters where name = ?");
             ps.setString(1, charname);
 
             ResultSet rs = ps.executeQuery();
@@ -153,7 +156,10 @@ public class BanService {
             final String email = rs.getString("email");
             rs.close();
             ps.close();
-            ps = con.prepareStatement("UPDATE accounts SET banned = 0, banreason = '' WHERE email = ?" + (sessionIP == null ? "" : " OR sessionIP = ?"));
+            ps =
+                    con.prepareStatement(
+                            "UPDATE accounts SET banned = 0, banreason = '' WHERE email = ?"
+                                    + (sessionIP == null ? "" : " OR sessionIP = ?"));
             ps.setString(1, email);
             if (sessionIP != null) {
                 ps.setString(2, sessionIP);

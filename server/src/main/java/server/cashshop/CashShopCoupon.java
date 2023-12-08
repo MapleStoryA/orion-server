@@ -21,25 +21,22 @@ package server.cashshop;
 import client.inventory.IItem;
 import client.inventory.Item;
 import database.DatabaseConnection;
-import tools.Pair;
-
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import tools.Pair;
 
-/**
- * @author AuroX
- */
+/** @author AuroX */
 @lombok.extern.slf4j.Slf4j
 public class CashShopCoupon {
 
     public static boolean getCouponCodeValid(String code) {
         boolean validcode = false;
         try (var con = DatabaseConnection.getConnection()) {
-            try (PreparedStatement ps = con.prepareStatement("SELECT `used` FROM `coupons` WHERE `code` = ?")) {
+            try (PreparedStatement ps =
+                    con.prepareStatement("SELECT `used` FROM `coupons` WHERE `code` = ?")) {
                 ps.setString(1, code);
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
@@ -56,7 +53,10 @@ public class CashShopCoupon {
     public static List<CashCouponData> getCcData(final String code) {
         List<CashCouponData> all = new ArrayList<>();
         try (var con = DatabaseConnection.getConnection()) {
-            try (PreparedStatement ps = con.prepareStatement("SELECT `type`, `itemData`, `quantity` FROM `coupons_data` WHERE `code` = ?")) {
+            try (PreparedStatement ps =
+                    con.prepareStatement(
+                            "SELECT `type`, `itemData`, `quantity` FROM `coupons_data` WHERE `code`"
+                                    + " = ?")) {
                 ps.setString(1, code);
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
@@ -75,7 +75,9 @@ public class CashShopCoupon {
 
     public static void setCouponCodeUsed(String name, String code) {
         try (var con = DatabaseConnection.getConnection()) {
-            try (PreparedStatement ps = con.prepareStatement("UPDATE `coupons` SET `character` = ?, `used` = 1 WHERE code = ?")) {
+            try (PreparedStatement ps =
+                    con.prepareStatement(
+                            "UPDATE `coupons` SET `character` = ?, `used` = 1 WHERE code = ?")) {
                 ps.setString(1, name);
                 ps.setString(2, code);
                 ps.execute();
@@ -87,7 +89,8 @@ public class CashShopCoupon {
 
     public static void deleteCouponData(String name, String code) {
         try (var con = DatabaseConnection.getConnection()) {
-            try (PreparedStatement ps = con.prepareStatement("DELETE from `coupons_data` WHERE `code` = ?")) {
+            try (PreparedStatement ps =
+                    con.prepareStatement("DELETE from `coupons_data` WHERE `code` = ?")) {
                 ps.setString(1, code);
                 ps.execute();
             }
@@ -96,7 +99,8 @@ public class CashShopCoupon {
         }
     }
 
-    public static Pair<Pair<Integer, Integer>, Pair<List<IItem>, Integer>> getSize(List<CashCouponData> ccd) {
+    public static Pair<Pair<Integer, Integer>, Pair<List<IItem>, Integer>> getSize(
+            List<CashCouponData> ccd) {
         int MaplePoints = 0, mesos = 0, Cashsize = 0;
         final List<IItem> togiveII = new ArrayList<>();
         for (CashCouponData hmm : ccd) {
@@ -111,7 +115,12 @@ public class CashShopCoupon {
                     break;
                 case 2: // Normal items
                     if (hmm.getQuantity() <= Short.MAX_VALUE && hmm.getQuantity() > 0) {
-                        togiveII.add(new Item(hmm.getData(), (short) 0, (short) hmm.getQuantity(), (byte) 0));
+                        togiveII.add(
+                                new Item(
+                                        hmm.getData(),
+                                        (short) 0,
+                                        (short) hmm.getQuantity(),
+                                        (byte) 0));
                     }
                     break;
                 case 3: // Mesos

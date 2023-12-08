@@ -5,13 +5,10 @@
 
 package client.skill;
 
+import java.util.HashMap;
 import tools.data.output.MaplePacketLittleEndianWriter;
 
-import java.util.HashMap;
-
-/**
- * @author Simon
- */
+/** @author Simon */
 @lombok.extern.slf4j.Slf4j
 public class ExtendedSPTable {
 
@@ -25,12 +22,12 @@ public class ExtendedSPTable {
         if (SPType == ExtendedSPType.EVAN) {
             baseJob = 2210;
         } else {
-            baseJob = 3000; //I don't know enough about it at this stage
+            baseJob = 3000; // I don't know enough about it at this stage
         }
     }
 
-    public ExtendedSPTable(int jobID)//brand new one
-    {
+    public ExtendedSPTable(int jobID) // brand new one
+            {
         SPTable = new HashMap<Integer, Integer>();
         for (int i = 1; i < 11; i++) {
             SPTable.put(i, 0);
@@ -41,19 +38,18 @@ public class ExtendedSPTable {
         if (SPType == ExtendedSPType.EVAN) {
             baseJob = 2210;
         } else {
-            baseJob = 3000; //I don't know enough about it at this stage
+            baseJob = 3000; // I don't know enough about it at this stage
         }
-
     }
 
     public int getSPFromJobID(int jobID) {
         if (jobID == 2200) {
             return SPTable.get(1);
-        } else if (jobID >= 2210 && jobID <= 2218)//evan
+        } else if (jobID >= 2210 && jobID <= 2218) // evan
         {
             return SPTable.get((jobID - baseJob) + 2);
         }
-        return -1; //unsupported atm
+        return -1; // unsupported atm
     }
 
     public int getSPFromSlotID(int slotID) {
@@ -69,7 +65,7 @@ public class ExtendedSPTable {
         if (jobID == 2200) {
             SPTable.remove(1);
             SPTable.put(1, newSP);
-        } else if (jobID >= 2210 && jobID <= 2218)//evan
+        } else if (jobID >= 2210 && jobID <= 2218) // evan
         {
             SPTable.remove((jobID - baseJob) + 2);
             SPTable.put((jobID - baseJob) + 2, newSP);
@@ -103,5 +99,4 @@ public class ExtendedSPTable {
             }
         }
     }
-
 }

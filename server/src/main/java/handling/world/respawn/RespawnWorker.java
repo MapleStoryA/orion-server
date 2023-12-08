@@ -11,19 +11,18 @@ import client.status.MonsterStatusEffect;
 import handling.channel.ChannelServer;
 import handling.world.WorldServer;
 import handling.world.buddy.BuddyManager;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import server.life.MapleMonster;
 import server.maps.MapleMap;
 import server.maps.MapleMapItem;
 import tools.MaplePacketCreator;
 import tools.packet.PetPacket;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 public class RespawnWorker implements Runnable {
 
-    public final static int CHANNELS_PER_THREAD = 3;
+    public static final int CHANNELS_PER_THREAD = 3;
 
     private final List<Integer> cservs = new ArrayList<>(CHANNELS_PER_THREAD);
     private final ArrayList<MonsterStatusEffect> effects = new ArrayList<>();
@@ -54,7 +53,18 @@ public class RespawnWorker implements Runnable {
             if (cserv != null && !cserv.hasFinishedShutdown()) {
                 maps = cserv.getMapFactory().getAllLoadedMaps(maps);
                 for (MapleMap map : maps) {
-                    handleMap(map, numTimes, map.getCharactersSize(), now, effects, items, chrs, mobs, dis, cd, pets);
+                    handleMap(
+                            map,
+                            numTimes,
+                            map.getCharactersSize(),
+                            now,
+                            effects,
+                            items,
+                            chrs,
+                            mobs,
+                            dis,
+                            cd,
+                            pets);
                 }
             }
         }
@@ -63,7 +73,18 @@ public class RespawnWorker implements Runnable {
         }
     }
 
-    public static void handleMap(final MapleMap map, final int numTimes, final int size, final long now, ArrayList<MonsterStatusEffect> effects, ArrayList<MapleMapItem> items, ArrayList<MapleCharacter> chrs, ArrayList<MapleMonster> monsters, ArrayList<MapleDiseaseValueHolder> dis, ArrayList<MapleCoolDownValueHolder> cd, ArrayList<MaplePet> pets) {
+    public static void handleMap(
+            final MapleMap map,
+            final int numTimes,
+            final int size,
+            final long now,
+            ArrayList<MonsterStatusEffect> effects,
+            ArrayList<MapleMapItem> items,
+            ArrayList<MapleCharacter> chrs,
+            ArrayList<MapleMonster> monsters,
+            ArrayList<MapleDiseaseValueHolder> dis,
+            ArrayList<MapleCoolDownValueHolder> cd,
+            ArrayList<MaplePet> pets) {
         if (map.getItemsSize() > 0) {
             items = map.getAllItemsThreadsafe(items);
             for (MapleMapItem item : items) {
@@ -95,7 +116,14 @@ public class RespawnWorker implements Runnable {
         }
     }
 
-    public static void handleCooldowns(final MapleCharacter chr, final int numTimes, final boolean hurt, final long now, ArrayList<MapleDiseaseValueHolder> dis, ArrayList<MapleCoolDownValueHolder> cd, ArrayList<MaplePet> pets) {
+    public static void handleCooldowns(
+            final MapleCharacter chr,
+            final int numTimes,
+            final boolean hurt,
+            final long now,
+            ArrayList<MapleDiseaseValueHolder> dis,
+            ArrayList<MapleCoolDownValueHolder> cd,
+            ArrayList<MaplePet> pets) {
         if (chr.getCooldownSize() > 0) {
             cd = chr.getCooldowns(cd);
             for (MapleCoolDownValueHolder m : cd) {
@@ -107,7 +135,8 @@ public class RespawnWorker implements Runnable {
             }
         }
         if (chr.isAlive()) {
-            if (/*(chr.getJob() == 131 || chr.getJob() == 132) && */chr.canBlood(now)) {
+            if (
+            /*(chr.getJob() == 131 || chr.getJob() == 132) && */ chr.canBlood(now)) {
                 chr.doDragonBlood();
             }
             if (chr.canRecover(now)) {
@@ -116,7 +145,7 @@ public class RespawnWorker implements Runnable {
             if (chr.canFairy(now)) {
                 chr.doFairy();
             }
-            //if (chr.canFish(now)) { chr.doFish(now); }
+            // if (chr.canFish(now)) { chr.doFish(now); }
         }
         if (chr.getDiseaseSize() > 0) {
             dis = chr.getAllDiseases(dis);
@@ -129,7 +158,7 @@ public class RespawnWorker implements Runnable {
         if (numTimes % 7 == 0 && chr.getMount() != null && chr.getMount().canTire(now)) {
             chr.getMount().increaseFatigue();
         }
-        if (numTimes % 13 == 0) { //we're parsing through the characters anyway (:
+        if (numTimes % 13 == 0) { // we're parsing through the characters anyway (:
             pets = chr.getSummonedPets(pets);
             for (MaplePet pet : pets) {
                 if (pet.getPetItemId() == 5000054 && pet.getSecondsLeft() > 0) {
@@ -148,16 +177,31 @@ public class RespawnWorker implements Runnable {
                     chr.unequipPet(pet, true, true);
                 } else {
                     pet.setFullness(newFullness);
-                    chr.getClient().getSession().write(PetPacket.updatePet(pet, chr.getInventory(MapleInventoryType.CASH).getItem(pet.getInventoryPosition())));
+                    chr.getClient()
+                            .getSession()
+                            .write(
+                                    PetPacket.updatePet(
+                                            pet,
+                                            chr.getInventory(MapleInventoryType.CASH)
+                                                    .getItem(pet.getInventoryPosition())));
                 }
             }
         }
         if (hurt && chr.isAlive()) {
-            if (chr.getInventory(MapleInventoryType.EQUIPPED).findById(chr.getMap().getHPDecProtect()) == null) {
-                if (chr.getMapId() == 749040100 && chr.getInventory(MapleInventoryType.CASH).findById(5451000) == null) { //minidungeon
+            if (chr.getInventory(MapleInventoryType.EQUIPPED)
+                            .findById(chr.getMap().getHPDecProtect())
+                    == null) {
+                if (chr.getMapId() == 749040100
+                        && chr.getInventory(MapleInventoryType.CASH).findById(5451000)
+                                == null) { // minidungeon
                     chr.addHP(-chr.getMap().getHPDec());
                 } else if (chr.getMapId() != 749040100) {
-                    chr.addHP(-(chr.getMap().getHPDec() - (chr.getBuffedValue(MapleBuffStat.HP_LOSS_GUARD) == null ? 0 : chr.getBuffedValue(MapleBuffStat.HP_LOSS_GUARD).intValue())));
+                    chr.addHP(
+                            -(chr.getMap().getHPDec()
+                                    - (chr.getBuffedValue(MapleBuffStat.HP_LOSS_GUARD) == null
+                                            ? 0
+                                            : chr.getBuffedValue(MapleBuffStat.HP_LOSS_GUARD)
+                                                    .intValue())));
                 }
             }
         }

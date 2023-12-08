@@ -29,7 +29,9 @@ public class PartyChatHandler extends AbstractMaplePacketHandler {
         final String chattext = slea.readMapleAsciiString();
         if (chr == null || !chr.getCanTalk()) {
             c.getSession()
-                    .write(MaplePacketCreator.serverNotice(6, "You have been muted and are therefore unable to talk."));
+                    .write(
+                            MaplePacketCreator.serverNotice(
+                                    6, "You have been muted and are therefore unable to talk."));
             return;
         }
         if (CommandProcessor.processCommand(c, chattext, CommandType.NORMAL)) {
@@ -56,7 +58,8 @@ public class PartyChatHandler extends AbstractMaplePacketHandler {
                 if (chr.getGuildId() <= 0) {
                     break;
                 }
-                AllianceManager.allianceChat(chr.getGuildId(), chr.getName(), chr.getId(), chattext);
+                AllianceManager.allianceChat(
+                        chr.getGuildId(), chr.getName(), chr.getId(), chattext);
                 break;
             case 6:
                 if (chr.getParty() == null || chr.getParty().getExpeditionId() <= 0) {
@@ -64,7 +67,5 @@ public class PartyChatHandler extends AbstractMaplePacketHandler {
                 }
                 PartyManager.expedChat(chr.getParty().getExpeditionId(), chattext, chr.getName());
         }
-
     }
-
 }

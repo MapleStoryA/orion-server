@@ -1,13 +1,12 @@
 package server;
 
-import lombok.extern.slf4j.Slf4j;
-import tools.Randomizer;
-
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import lombok.extern.slf4j.Slf4j;
+import tools.Randomizer;
 
 public abstract class Timer {
 
@@ -19,18 +18,19 @@ public abstract class Timer {
             return;
         }
         file = "Log_" + name + "_Except.rtf";
-        final String tname = name + Randomizer.nextInt(); //just to randomize it. nothing too big
-        final ThreadFactory thread = new ThreadFactory() {
+        final String tname = name + Randomizer.nextInt(); // just to randomize it. nothing too big
+        final ThreadFactory thread =
+                new ThreadFactory() {
 
-            private final AtomicInteger threadNumber = new AtomicInteger(1);
+                    private final AtomicInteger threadNumber = new AtomicInteger(1);
 
-            @Override
-            public Thread newThread(Runnable r) {
-                final Thread t = new Thread(r);
-                t.setName(tname + "-Worker-" + threadNumber.getAndIncrement());
-                return t;
-            }
-        };
+                    @Override
+                    public Thread newThread(Runnable r) {
+                        final Thread t = new Thread(r);
+                        t.setName(tname + "-Worker-" + threadNumber.getAndIncrement());
+                        return t;
+                    }
+                };
 
         final ScheduledThreadPoolExecutor stpe = new ScheduledThreadPoolExecutor(3, thread);
         stpe.setKeepAliveTime(10, TimeUnit.MINUTES);
@@ -49,14 +49,16 @@ public abstract class Timer {
         if (ses == null) {
             return null;
         }
-        return ses.scheduleAtFixedRate(new LoggingSaveRunnable(r, file), delay, repeatTime, TimeUnit.MILLISECONDS);
+        return ses.scheduleAtFixedRate(
+                new LoggingSaveRunnable(r, file), delay, repeatTime, TimeUnit.MILLISECONDS);
     }
 
     public ScheduledFuture<?> register(Runnable r, long repeatTime) {
         if (ses == null) {
             return null;
         }
-        return ses.scheduleAtFixedRate(new LoggingSaveRunnable(r, file), 0, repeatTime, TimeUnit.MILLISECONDS);
+        return ses.scheduleAtFixedRate(
+                new LoggingSaveRunnable(r, file), 0, repeatTime, TimeUnit.MILLISECONDS);
     }
 
     public ScheduledFuture<?> schedule(Runnable r, long delay) {

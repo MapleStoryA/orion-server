@@ -18,12 +18,52 @@ import tools.packet.LoginPacket;
 @lombok.extern.slf4j.Slf4j
 public class CreateCharHandler extends AbstractMaplePacketHandler {
 
-    private static final int[] IDs = {1302000, 1312004, 1322005, 1442079, 1302132, // weapons
-            1040002, 1040006, 1040010, 1041002, 1041006, 1041010, 1041011, 1042167, 1060138, 1061160, // bottom
-            1060002, 1060006, 1061002, 1061008, 1062115, 1042180, // top
-            1072001, 1072005, 1072037, 1072038, 1072383, 1072418, // shoes
-            30000, 30010, 30020, 30030, 31000, 31040, 31050, // hair
-            20000, 20001, 20002, 21000, 21001, 21002, 21201, 20401, 20402, 21700, 20100 // face
+    private static final int[] IDs = {
+        1302000,
+        1312004,
+        1322005,
+        1442079,
+        1302132, // weapons
+        1040002,
+        1040006,
+        1040010,
+        1041002,
+        1041006,
+        1041010,
+        1041011,
+        1042167,
+        1060138,
+        1061160, // bottom
+        1060002,
+        1060006,
+        1061002,
+        1061008,
+        1062115,
+        1042180, // top
+        1072001,
+        1072005,
+        1072037,
+        1072038,
+        1072383,
+        1072418, // shoes
+        30000,
+        30010,
+        30020,
+        30030,
+        31000,
+        31040,
+        31050, // hair
+        20000,
+        20001,
+        20002,
+        21000,
+        21001,
+        21002,
+        21201,
+        20401,
+        20402,
+        21700,
+        20100 // face
     };
 
     private static boolean isLegal(int toCompare) {
@@ -34,7 +74,6 @@ public class CreateCharHandler extends AbstractMaplePacketHandler {
         }
         return false;
     }
-
 
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
@@ -57,7 +96,7 @@ public class CreateCharHandler extends AbstractMaplePacketHandler {
             return;
         }
 
-        int[] items = new int[]{weapon, top, bottom, shoes, hair, face};
+        int[] items = new int[] {weapon, top, bottom, shoes, hair, face};
         for (int i = 0; i < items.length; i++) {
             if (!isLegal(items[i])) {
                 return;
@@ -76,7 +115,7 @@ public class CreateCharHandler extends AbstractMaplePacketHandler {
         final MapleItemInformationProvider li = MapleItemInformationProvider.getInstance();
 
         final int[] equips = {top, bottom, shoes, weapon, 1003028}; // hat,glove,top,shoes,
-        final byte[] pos = {-5, -6, -7, -11, -1};// -6 bottom
+        final byte[] pos = {-5, -6, -7, -11, -1}; // -6 bottom
         Equip item;
         for (int i = 0; i <= 4; i++) {
             if (JobType != 3 && i == 4) {
@@ -132,13 +171,12 @@ public class CreateCharHandler extends AbstractMaplePacketHandler {
                 break;
         }
 
-        if (MapleCharacterHelper.canCreateChar(name) && !LoginInformationProvider.getInstance().isForbiddenName(name)) {
+        if (MapleCharacterHelper.canCreateChar(name)
+                && !LoginInformationProvider.getInstance().isForbiddenName(name)) {
             MapleCharacter.saveNewCharToDB(newchar, JobType, JobType == 1 && db > 0);
             c.getSession().write(LoginPacket.addNewCharEntry(newchar, true));
         } else {
             c.getSession().write(LoginPacket.addNewCharEntry(newchar, false));
         }
-
     }
-
 }

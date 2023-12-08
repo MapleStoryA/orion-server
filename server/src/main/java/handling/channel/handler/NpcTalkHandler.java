@@ -19,7 +19,9 @@ public class NpcTalkHandler extends AbstractMaplePacketHandler {
         }
         final MapleNPC npc = chr.getMap().getNPCByOid(slea.readInt());
 
-        if (npc == null || npc.isHidden() || (c.getLastNPCTalk() > System.currentTimeMillis() - 1000)) { // 1
+        if (npc == null
+                || npc.isHidden()
+                || (c.getLastNPCTalk() > System.currentTimeMillis() - 1000)) { // 1
             // sec
             return;
         }
@@ -35,7 +37,5 @@ public class NpcTalkHandler extends AbstractMaplePacketHandler {
             c.setCurrentNpcScript(null);
             NPCScriptManager.getInstance().start(c, npc.getId());
         }
-
     }
-
 }

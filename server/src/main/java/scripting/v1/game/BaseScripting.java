@@ -2,14 +2,12 @@ package scripting.v1.game;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import java.util.Random;
 import lombok.extern.slf4j.Slf4j;
 import scripting.v1.game.helper.ApiClass;
 
-import java.util.Random;
-
 @Slf4j
 public class BaseScripting {
-
 
     protected final MapleClient client;
 
@@ -32,13 +30,11 @@ public class BaseScripting {
         public void dispatch(MapleClient client, byte[] packet) {
             client.sendPacket(packet);
         }
-
     }
 
     interface PacketDispatcher {
         void dispatch(MapleClient client, byte[] packet);
     }
-
 
     @ApiClass
     public MapleClient getClient() {

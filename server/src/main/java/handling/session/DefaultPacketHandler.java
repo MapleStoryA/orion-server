@@ -16,7 +16,8 @@ import tools.data.input.SeekableLittleEndianAccessor;
 @Slf4j
 public class DefaultPacketHandler {
 
-    public static void handlePacket(MapleClient client, PacketProcessor processor, boolean isCashShop, byte[] message) {
+    public static void handlePacket(
+            MapleClient client, PacketProcessor processor, boolean isCashShop, byte[] message) {
         try {
             var slea = new GenericSeekableLittleEndianAccessor(new ByteArrayByteStream(message));
             if (slea.available() < 2) {
@@ -54,9 +55,11 @@ public class DefaultPacketHandler {
         }
     }
 
-
-    public static void handlePacket(final RecvPacketOpcode header, final SeekableLittleEndianAccessor slea,
-                                    final MapleClient c, boolean isCashShop) {
+    public static void handlePacket(
+            final RecvPacketOpcode header,
+            final SeekableLittleEndianAccessor slea,
+            final MapleClient c,
+            boolean isCashShop) {
         switch (header) {
             case PLAYER_LOGGEDIN:
                 final int playerId = slea.readInt();

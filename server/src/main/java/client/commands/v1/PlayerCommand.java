@@ -115,8 +115,15 @@ public class PlayerCommand {
             }
             setStat(c.getPlayer(), getStat(c.getPlayer()) + change);
             c.getPlayer().setRemainingAp((c.getPlayer().getRemainingAp() - change));
-            c.getPlayer().updateSingleStat(MapleStat.AVAILABLEAP, Math.min(199, c.getPlayer().getRemainingAp()));
-            c.getPlayer().dropMessage(5, "You've " + c.getPlayer().getRemainingAp() + " remaining ability points.");
+            c.getPlayer()
+                    .updateSingleStat(
+                            MapleStat.AVAILABLEAP, Math.min(199, c.getPlayer().getRemainingAp()));
+            c.getPlayer()
+                    .dropMessage(
+                            5,
+                            "You've "
+                                    + c.getPlayer().getRemainingAp()
+                                    + " remaining ability points.");
 
             return 1;
         }
@@ -125,8 +132,9 @@ public class PlayerCommand {
     public abstract static class OpenNPCCommand extends CommandExecute {
 
         private static final int[] npcs = { // Ish yur job to make sure these are in
-                // order and correct ;(
-                9270035, 9010017, 9000000, 1013105, 1011101, 9000020, 1012117};
+            // order and correct ;(
+            9270035, 9010017, 9000000, 1013105, 1011101, 9000020, 1012117
+        };
         protected int npc = -1;
 
         @Override
@@ -145,22 +153,25 @@ public class PlayerCommand {
                     c.getPlayer().dropMessage(5, "You must be over level 10 to use this command.");
                     return 0;
                 }
-                if (c.getPlayer().getMap().getSquadByMap() != null || c.getPlayer().getEventInstance() != null
-                        || c.getPlayer().getMap().getEMByMap() != null || c.getPlayer()
-                        .getMapId() >= 990000000) {
+                if (c.getPlayer().getMap().getSquadByMap() != null
+                        || c.getPlayer().getEventInstance() != null
+                        || c.getPlayer().getMap().getEMByMap() != null
+                        || c.getPlayer().getMapId() >= 990000000) {
                     c.getPlayer().dropMessage(5, "You may not use this command here.");
                     return 0;
                 }
                 if ((c.getPlayer().getMapId() >= 680000210 && c.getPlayer().getMapId() <= 680000502)
-                        || (c.getPlayer().getMapId() / 1000 == 980000 && c.getPlayer().getMapId() != 980000000)
-                        || (c.getPlayer().getMapId() / 100 == 1030008) || (c.getPlayer().getMapId() / 100 == 922010)
+                        || (c.getPlayer().getMapId() / 1000 == 980000
+                                && c.getPlayer().getMapId() != 980000000)
+                        || (c.getPlayer().getMapId() / 100 == 1030008)
+                        || (c.getPlayer().getMapId() / 100 == 922010)
                         || (c.getPlayer().getMapId() / 10 == 13003000)) {
                     c.getPlayer().dropMessage(5, "You may not use this command here.");
                     return 0;
                 }
             }
-            if (c.getPlayer().getConversation() != 0 || MapConstants.isStorylineMap(c.getPlayer()
-                    .getMapId())/*
+            if (c.getPlayer().getConversation() != 0
+                    || MapConstants.isStorylineMap(c.getPlayer().getMapId()) /*
              * && c.getPlayer().getCustomQuestStatus(200000)
              * != 2
              */) {
@@ -199,7 +210,6 @@ public class PlayerCommand {
         }
     }
 
-
     public static class Report extends CommandExecute {
 
         @Override
@@ -216,7 +226,9 @@ public class PlayerCommand {
 
             final MapleCharacter other = c.getPlayer().getMap().getCharacterByName(splitted[1]);
             final ReportType type = ReportType.getByString(splitted[2]);
-            if (other == null || type == null || (other.isGameMaster() && !c.getPlayer().isGameMaster())
+            if (other == null
+                    || type == null
+                    || (other.isGameMaster() && !c.getPlayer().isGameMaster())
                     || other.getName().equals(c.getPlayer().getName())) {
                 c.getPlayer().dropMessage(5, "You've entered the wrong character name.");
                 return 0;
@@ -226,11 +238,15 @@ public class PlayerCommand {
         }
     }
 
-
     public static class ap extends CommandExecute {
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().dcolormsg(4, "You currently have " + c.getPlayer().getRemainingAp() + " remaining AP");// String.valueOf(chr.getRemainingAp()));
+            c.getPlayer()
+                    .dcolormsg(
+                            4,
+                            "You currently have "
+                                    + c.getPlayer().getRemainingAp()
+                                    + " remaining AP"); // String.valueOf(chr.getRemainingAp()));
             return 0;
         }
     }
@@ -242,7 +258,8 @@ public class PlayerCommand {
             c.getPlayer().dropMessage(6, "Total amount of players connected to er:");
             c.getPlayer().dropMessage(6, "" + WorldServer.getInstance().getConnected() + "");
             c.getPlayer().dropMessage(6, "Characters connected to channel " + c.getChannel() + ":");
-            c.getPlayer().dropMessage(6, c.getChannelServer().getPlayerStorage().getOnlinePlayers(true));
+            c.getPlayer()
+                    .dropMessage(6, c.getChannelServer().getPlayerStorage().getOnlinePlayers(true));
             return 0;
         }
     }
@@ -254,9 +271,7 @@ public class PlayerCommand {
             NpcTalkHelper.startConversation(2121005, c);
             return 0;
         }
-
     }
-
 
     public static class Commands extends CommandExecute {
         @Override
@@ -270,5 +285,4 @@ public class PlayerCommand {
             return 1;
         }
     }
-
 }

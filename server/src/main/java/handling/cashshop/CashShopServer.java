@@ -1,6 +1,6 @@
 /*
 This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 
@@ -30,7 +30,7 @@ import server.config.ServerEnvironment;
 @Slf4j
 public class CashShopServer extends GameServer {
 
-    private final static int PORT = 8799;
+    private static final int PORT = 8799;
     private String ip;
     private PlayerStorage players;
     private boolean finishedShutdown = false;

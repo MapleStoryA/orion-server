@@ -1,6 +1,6 @@
 /*
 This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 
@@ -22,14 +22,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package scripting;
 
 import handling.channel.ChannelServer;
-import lombok.extern.slf4j.Slf4j;
-import tools.DateHelper;
-
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class EventScriptManager extends AbstractScriptManager {
@@ -42,7 +40,10 @@ public class EventScriptManager extends AbstractScriptManager {
             if (!script.equals("")) {
                 final Invocable iv = getInvocable("event", script, null);
                 if (iv != null) {
-                    events.put(script, new EventEntry(script, iv, new EventManager(channelServer, iv, script)));
+                    events.put(
+                            script,
+                            new EventEntry(
+                                    script, iv, new EventManager(channelServer, iv, script)));
                 }
             }
         }
@@ -67,7 +68,10 @@ public class EventScriptManager extends AbstractScriptManager {
                 entry.iv.invokeFunction("init", (Object) null);
             } catch (final Exception ex) {
                 log.info("Error initiating event: " + entry.script + ":" + ex);
-                log.info("Log_Script_Except.rtf" + " : " + ("Error initiating event: " + entry.script + ":" + ex));
+                log.info(
+                        "Log_Script_Except.rtf"
+                                + " : "
+                                + ("Error initiating event: " + entry.script + ":" + ex));
             }
         }
     }

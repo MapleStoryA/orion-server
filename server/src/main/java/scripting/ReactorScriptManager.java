@@ -1,6 +1,6 @@
 /*
 This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 
@@ -23,13 +23,6 @@ package scripting;
 
 import client.MapleClient;
 import database.DatabaseConnection;
-import server.maps.MapleReactor;
-import server.maps.ReactorDropEntry;
-import tools.DateHelper;
-
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,12 +30,17 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import server.maps.MapleReactor;
+import server.maps.ReactorDropEntry;
 
 @lombok.extern.slf4j.Slf4j
 public class ReactorScriptManager extends AbstractScriptManager {
 
     private static final ReactorScriptManager instance = new ReactorScriptManager();
-    private final Map<Integer, List<ReactorDropEntry>> drops = new HashMap<Integer, List<ReactorDropEntry>>();
+    private final Map<Integer, List<ReactorDropEntry>> drops =
+            new HashMap<Integer, List<ReactorDropEntry>>();
 
     public static final ReactorScriptManager getInstance() {
         return instance;
@@ -61,8 +59,20 @@ public class ReactorScriptManager extends AbstractScriptManager {
             scriptengine.put("rm", rm);
             iv.invokeFunction("act");
         } catch (Exception e) {
-            System.err.println("Error executing reactor script. ReactorID: " + reactor.getReactorId() + ", ReactorName: " + reactor.getName() + ":" + e);
-            final String msg = "Error executing reactor script. ReactorID: " + reactor.getReactorId() + ", ReactorName: " + reactor.getName() + ":" + e;
+            System.err.println(
+                    "Error executing reactor script. ReactorID: "
+                            + reactor.getReactorId()
+                            + ", ReactorName: "
+                            + reactor.getName()
+                            + ":"
+                            + e);
+            final String msg =
+                    "Error executing reactor script. ReactorID: "
+                            + reactor.getReactorId()
+                            + ", ReactorName: "
+                            + reactor.getName()
+                            + ":"
+                            + e;
             log.info("Log_Script_Except.rtf" + " : " + msg);
         }
     }
@@ -82,7 +92,9 @@ public class ReactorScriptManager extends AbstractScriptManager {
             ps.setInt(1, rid);
             rs = ps.executeQuery();
             while (rs.next()) {
-                ret.add(new ReactorDropEntry(rs.getInt("itemid"), rs.getInt("chance"), rs.getInt("questid")));
+                ret.add(
+                        new ReactorDropEntry(
+                                rs.getInt("itemid"), rs.getInt("chance"), rs.getInt("questid")));
             }
             rs.close();
             ps.close();

@@ -11,9 +11,7 @@ import client.inventory.MapleInventoryType;
 import constants.ServerConstants.PlayerGMRank;
 import server.MapleInventoryManipulator;
 
-/**
- * @author Oxysoft
- */
+/** @author Oxysoft */
 @lombok.extern.slf4j.Slf4j
 public class DonorCommand {
 
@@ -28,7 +26,8 @@ public class DonorCommand {
             if (player.getMeso() >= 1600000000) { // 1 B
                 if (player.getInventory(MapleInventoryType.ETC).getNumFreeSlot() >= 1) {
                     player.gainMeso(-1600000000, true, true); // item first, then only product LOL
-                    MapleInventoryManipulator.addById(c, 4000465, (short) 1, "Bought using @buycoco");
+                    MapleInventoryManipulator.addById(
+                            c, 4000465, (short) 1, "Bought using @buycoco");
                     player.dropMessage(5, "You've bought a coconut for 2.1 billion mesos.");
                 } else {
                     player.dropMessage(5, "Please make some space.");
@@ -39,5 +38,4 @@ public class DonorCommand {
             return 1;
         }
     }
-
 }

@@ -1,6 +1,6 @@
 /*
 	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+    Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
                        Matthias Butz <matze@odinms.de>
                        Jan Christian Meyer <vimes@odinms.de>
 
@@ -33,7 +33,8 @@ import tools.MapleCustomEncryption;
 public class MinaMaplePacketEncoder implements ProtocolEncoder {
 
     @Override
-    public void encode(final IoSession session, final Object message, final ProtocolEncoderOutput out) {
+    public void encode(
+            final IoSession session, final Object message, final ProtocolEncoderOutput out) {
         final MapleClient client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
 
         if (client != null) {

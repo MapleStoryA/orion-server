@@ -1,6 +1,6 @@
 /*
 This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 
@@ -37,6 +37,10 @@ import client.skill.ISkill;
 import client.skill.SkillEntry;
 import database.AccountData;
 import handling.world.buddy.BuddyListEntry;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -44,16 +48,10 @@ import server.MapleStorage;
 import server.cashshop.CashShop;
 import server.quest.MapleQuest;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 @Slf4j
 @Getter
 @Setter
 public class CharacterTransfer {
-
 
     private final List<Integer> famedCharacters = new ArrayList<>();
     private final List<BuddyListEntry> buddies = new ArrayList<>();
@@ -142,7 +140,6 @@ public class CharacterTransfer {
     private int remainingSp;
     private EvanSkillPoints evanSP;
 
-
     public CharacterTransfer(final MapleCharacter chr) {
         this.setCharacter_id(chr.getId());
         this.setAccountData(chr.getClient().getAccountData());
@@ -194,15 +191,16 @@ public class CharacterTransfer {
             }
             if (pet != null) {
                 uneq = true;
-                this.getPetStore()[i] = (byte) Math.max(this.getPetStore()[i], pet.getInventoryPosition());
+                this.getPetStore()[i] =
+                        (byte) Math.max(this.getPetStore()[i], pet.getInventoryPosition());
             }
-
         }
         if (uneq) {
             chr.unequipAllPets();
         }
         for (final BuddyListEntry qs : chr.getBuddyList().getBuddies()) {
-            this.getBuddies().add(new BuddyListEntry(qs.getName(), qs.getCharacterId(), qs.getGroup(), -1));
+            this.getBuddies()
+                    .add(new BuddyListEntry(qs.getName(), qs.getCharacterId(), qs.getGroup(), -1));
         }
         for (Map.Entry<ReportType, Integer> ss : chr.getReports().entrySet()) {
             this.getReports().put(ss.getKey().i, ss.getValue());
@@ -265,5 +263,4 @@ public class CharacterTransfer {
         this.setMount_exp(mount.getExp());
         setTransferTime(System.currentTimeMillis());
     }
-
 }
