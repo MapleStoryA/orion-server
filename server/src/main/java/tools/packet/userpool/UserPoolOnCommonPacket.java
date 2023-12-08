@@ -1,12 +1,12 @@
 package tools.packet.userpool;
 
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UserPoolOnCommonPacket {
 
     public static byte[] onADBoard(int charId, String text) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
         packet.writeShort(181);
         packet.writeInt(charId);
         packet.write(0);
@@ -15,7 +15,7 @@ public class UserPoolOnCommonPacket {
     }
 
     public static byte[] onADBoardDisable(int charId) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
         packet.writeShort(181);
         packet.writeInt(charId);
         packet.write(0);

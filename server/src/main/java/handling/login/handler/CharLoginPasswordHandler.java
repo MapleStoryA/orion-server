@@ -7,7 +7,7 @@ import handling.login.LoginServer;
 import java.util.Calendar;
 import lombok.extern.slf4j.Slf4j;
 import tools.KoreanDateUtil;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.LoginPacket;
 
 @Slf4j
@@ -21,7 +21,7 @@ public class CharLoginPasswordHandler implements MaplePacketHandler {
     }
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         final String login = packet.readMapleAsciiString();
         final String pwd = normalizeStringPassword(packet.readMapleAsciiString());
 

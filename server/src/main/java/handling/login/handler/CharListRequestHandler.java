@@ -13,8 +13,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import tools.data.input.CInPacket;
-import tools.data.output.COutPacket;
+import tools.data.input.InPacket;
+import tools.data.output.OutPacket;
 
 @Slf4j
 public class CharListRequestHandler extends AbstractMaplePacketHandler {
@@ -22,7 +22,7 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
     public static final int SECOND_PASSWORD_REQUEST = 2;
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         packet.readByte();
         final int server = packet.readByte();
         final int channel = packet.readByte() + 1;
@@ -40,7 +40,7 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
     }
 
     private static byte[] getCharList(final List<CharacterData> chars, int charslots) {
-        final var packet = new COutPacket();
+        final var packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CHARLIST.getValue());
         packet.write(0);
@@ -55,7 +55,7 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
         return packet.getPacket();
     }
 
-    private static void addCharEntry(final COutPacket packet, final CharacterData chr, boolean ranking) {
+    private static void addCharEntry(final OutPacket packet, final CharacterData chr, boolean ranking) {
         addCharStats(packet, chr);
         addCharLook(packet, chr, true);
         packet.write(0);
@@ -68,7 +68,7 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
         }
     }
 
-    private static void addCharStats(final COutPacket packet, final CharacterData chr) {
+    private static void addCharStats(final OutPacket packet, final CharacterData chr) {
         packet.writeInt(chr.getId()); // character id
         packet.writeAsciiString(chr.getName(), 13);
         packet.write(chr.getGender()); // gender (0 = male, 1 = female)
@@ -96,7 +96,7 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
         packet.writeShort(chr.getSubCategory()); // 1 here = db
     }
 
-    private static void addCharLook(final COutPacket packet, final CharacterData chr, final boolean mega) {
+    private static void addCharLook(final OutPacket packet, final CharacterData chr, final boolean mega) {
         packet.write(chr.getGender());
         packet.write(chr.getSkinColor());
         packet.writeInt(chr.getFace());

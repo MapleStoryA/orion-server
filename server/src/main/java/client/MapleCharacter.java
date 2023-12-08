@@ -126,7 +126,7 @@ import tools.Pair;
 import tools.Randomizer;
 import tools.StringUtil;
 import tools.Triple;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 import tools.packet.CWVsContextOnMessagePackets;
 import tools.packet.MTSCSPacket;
 import tools.packet.MapleUserPackets;
@@ -1455,7 +1455,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         return playerRandomStream;
     }
 
-    public final void QuestInfoPacket(final COutPacket packet) {
+    public final void QuestInfoPacket(final OutPacket packet) {
         packet.writeShort(questInfo.size());
 
         for (final Entry<Integer, String> q : questInfo.entrySet()) {

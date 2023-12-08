@@ -20,14 +20,14 @@ import server.MapleItemInformationProvider;
 import server.cashshop.CashItemFactory;
 import server.cashshop.CashItemInfo;
 import tools.Triple;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.MTSCSPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class BuyCSItemHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         final int action = packet.readByte();
         MapleCharacter chr = c.getPlayer();
         final boolean isNxWhore = false;

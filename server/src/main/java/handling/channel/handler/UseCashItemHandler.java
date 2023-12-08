@@ -41,7 +41,7 @@ import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.MTSCSPacket;
 import tools.packet.PetPacket;
 
@@ -148,7 +148,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
     }
 
     @Override
-    public void handlePacket(CInPacket packet, final MapleClient c) {
+    public void handlePacket(InPacket packet, final MapleClient c) {
         c.getPlayer().updateTick(packet.readInt());
         final byte slot = (byte) packet.readShort();
         final int itemId = packet.readInt();

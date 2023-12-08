@@ -7,13 +7,13 @@ import java.awt.*;
 import server.maps.MapleMap;
 import server.movement.MovePath;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MoveDragonHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         final MovePath path = new MovePath();
         path.decode(packet);

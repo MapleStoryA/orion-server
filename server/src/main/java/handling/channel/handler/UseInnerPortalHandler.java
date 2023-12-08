@@ -6,13 +6,13 @@ import client.anticheat.CheatingOffense;
 import handling.AbstractMaplePacketHandler;
 import java.awt.*;
 import server.MaplePortal;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UseInnerPortalHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         packet.skip(1);
         if (chr == null) {

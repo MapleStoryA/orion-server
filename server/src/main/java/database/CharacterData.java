@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 @Setter
 @Getter
@@ -83,7 +83,7 @@ public class CharacterData implements Serializable {
         return this.getJob() == MapleJob.GM.getId() || this.getJob() == MapleJob.SUPERGM.getId();
     }
 
-    public final void connectData(final COutPacket packet) {
+    public final void connectData(final OutPacket packet) {
         packet.writeShort(str); // str
         packet.writeShort(dex); // dex
         packet.writeShort(int_); // int

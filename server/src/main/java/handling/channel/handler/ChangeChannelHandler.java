@@ -5,13 +5,13 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import server.maps.FieldLimitType;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class ChangeChannelHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null) {
             log.info("Cannot change channel of null character");

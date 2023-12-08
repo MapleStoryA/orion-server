@@ -10,13 +10,13 @@ import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.quest.MapleQuest;
 import tools.Pair;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UseItemQuestHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         final short slot = packet.readShort();
         final int itemId = packet.readInt();
         final IItem item = c.getPlayer().getInventory(MapleInventoryType.ETC).getItem(slot);

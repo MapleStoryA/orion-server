@@ -13,7 +13,7 @@ import handling.world.buddy.MapleBuddyList.BuddyDelResult;
 import handling.world.helper.FindCommand;
 import tools.MaplePacketCreator;
 import tools.Pair;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class BuddyListModifyHandler extends AbstractMaplePacketHandler {
@@ -35,7 +35,7 @@ public class BuddyListModifyHandler extends AbstractMaplePacketHandler {
                     0x17; // You have already made the Friend Request. Please try again later.
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         final MapleBuddyList buddylist = c.getPlayer().getBuddyList();
         switch (packet.readByte()) {
             case 1: // Invite / Modify Buddy List

@@ -8,13 +8,13 @@ import java.util.List;
 import server.MapleInventoryManipulator;
 import server.shops.HiredMerchant;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class OwlMinervaHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         final byte slot = (byte) packet.readShort();
         final int itemid = packet.readInt();
         final IItem toUse = c.getPlayer().getInventory(MapleInventoryType.USE).getItem(slot);

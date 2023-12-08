@@ -4,13 +4,13 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import scripting.NPCScriptManager;
 import server.gachapon.GachaponLocation;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class RemoteGachaponHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         packet.readInt();
         byte city = packet.readByte();
         if (city < 0 && city > 8) {

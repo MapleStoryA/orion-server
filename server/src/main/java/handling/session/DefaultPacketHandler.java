@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import server.config.ServerEnvironment;
 import tools.HexTool;
 import tools.data.input.ByteArrayByteStream;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.data.input.GenericSeekableLittleEndianAccessor;
 
 @Slf4j
@@ -57,7 +57,7 @@ public class DefaultPacketHandler {
 
     public static void handlePacket(
             final RecvPacketOpcode header,
-            final CInPacket slea,
+            final InPacket slea,
             final MapleClient c,
             boolean isCashShop) {
         switch (header) {

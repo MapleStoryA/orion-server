@@ -6,13 +6,13 @@ import handling.AbstractMaplePacketHandler;
 import handling.world.WorldServer;
 import handling.world.helper.FindCommand;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class WhisperHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         final byte mode = packet.readByte();
         packet.readInt(); // ticks
         switch (mode) {

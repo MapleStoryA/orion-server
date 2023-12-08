@@ -5,13 +5,13 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import server.maps.MapleDoor;
 import server.maps.MapleMapObject;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UseDoorHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         final int oid = packet.readInt();
         final boolean mode = packet.readByte() == 0; // specifies if backwarp or

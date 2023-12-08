@@ -4,13 +4,13 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import scripting.EventManager;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class RequestBoatStatusHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient client) {
+    public void handlePacket(InPacket packet, MapleClient client) {
         int mapId = packet.readInt();
 
         if (client.getPlayer().getMap().getId() == mapId) {

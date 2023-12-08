@@ -14,13 +14,13 @@ import server.maps.MapleMap;
 import server.maps.SavedLocationType;
 import tools.DateHelper;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UseScriptedNpcItemHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         c.getPlayer().updateTick(packet.readInt());
         final byte slot = (byte) packet.readShort();

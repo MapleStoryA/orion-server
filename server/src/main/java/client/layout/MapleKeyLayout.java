@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.statement.Slf4JSqlLogger;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleKeyLayout implements Serializable {
@@ -34,7 +34,7 @@ public class MapleKeyLayout implements Serializable {
         keyMapBindings = new ConcurrentHashMap<>();
     }
 
-    public void encode(final COutPacket packet) {
+    public void encode(final OutPacket packet) {
         for (int x = 0; x < 90; x++) {
             var binding = keyMapBindings.get(Integer.valueOf(x));
             if (binding != null) {

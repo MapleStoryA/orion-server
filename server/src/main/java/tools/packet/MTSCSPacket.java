@@ -19,7 +19,7 @@ import server.cashshop.CashShop;
 import server.config.ServerEnvironment;
 import tools.Pair;
 import tools.StringUtil;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MTSCSPacket {
@@ -36,7 +36,7 @@ public class MTSCSPacket {
     };
 
     public static void addCashItemInfo(
-            final COutPacket packet, IItem item, int accountId, String giftMessage) {
+            final OutPacket packet, IItem item, int accountId, String giftMessage) {
         boolean isGift = giftMessage != null && !giftMessage.isEmpty();
         boolean isRing = false;
         MapleRing ring = null;
@@ -77,7 +77,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] warpCS(MapleClient c) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CS_OPEN.getValue());
 
@@ -131,7 +131,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] playCashSong(int itemid, String name) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.CASH_SONG.getValue());
         packet.writeInt(itemid);
         packet.writeMapleAsciiString(name);
@@ -139,7 +139,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] useCharm(byte charmsleft, byte daysleft) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SHOW_ITEM_GAIN_INCHAT.getValue());
         packet.write(6);
@@ -152,7 +152,7 @@ public class MTSCSPacket {
 
     public static byte[] useWheel(byte charmsleft) {
         // You have used 1 Wheel of Destiny in order to revive at the current map. (<left> left)
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SHOW_ITEM_GAIN_INCHAT.getValue());
         packet.write(21);
@@ -162,7 +162,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] ViciousHammer(boolean start, int hammered) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.VICIOUS_HAMMER.getValue());
         if (start) {
@@ -178,7 +178,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] VegasScroll(int action) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.VEGAS_SCROLL.getValue());
         packet.write(action);
@@ -188,7 +188,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] changePetName(MapleCharacter chr, String newname, int slot) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.PET_NAMECHANGE.getValue());
 
         packet.writeInt(chr.getId());
@@ -200,7 +200,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] showNotes(ResultSet notes, int count) throws SQLException {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SHOW_NOTES.getValue());
         packet.write(3);
@@ -218,7 +218,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] useChalkboard(final int charid, final String msg) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.CHALKBOARD.getValue());
 
         packet.writeInt(charid);
@@ -234,7 +234,7 @@ public class MTSCSPacket {
 
     public static byte[] receiveGachaponTicket(int amount) {
         // You have acquired <> Gachapon Stamps by purchasing the Gachapon Ticket.
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CS_GACHAPON_STAMPS.getValue());
         packet.write(amount > 0 ? 1 : 0);
@@ -246,7 +246,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] getTeleportRockRefresh(MapleCharacter chr, boolean vip, boolean delete) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.TROCK_LOCATIONS.getValue());
         packet.write(delete ? 2 : 3);
@@ -260,7 +260,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] sendWishList(MapleCharacter chr, boolean update) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
         packet.write(update ? 0x61 : 0x5B);
@@ -269,7 +269,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] showNXMapleTokens(MapleCharacter chr) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         // Combined both NxCredit and NxPrepaid
         packet.writeShort(SendPacketOpcode.CS_UPDATE.getValue());
@@ -281,7 +281,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] showBoughtCSPackage(Map<Integer, IItem> ccc, int accid) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
         packet.write(0x97);
@@ -295,7 +295,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] showBoughtCSItem(IItem item, int accId, String giftFrom, long expire) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
         packet.write(0x63); // use to be 4a
@@ -305,7 +305,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] showBoughtCSItem(IItem item, int sn, int accid) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
         packet.write(0x63);
@@ -315,7 +315,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] redeemResponse(final int sn) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
         packet.write(0xAC);
@@ -327,7 +327,7 @@ public class MTSCSPacket {
 
     public static byte[] cashShopSurpriseFail() {
         // Please check and see if you have exceeded the number of cash items you can have.
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CS_SURPRISE.getValue());
         packet.write(189);
@@ -336,7 +336,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] showCashShopSurprise(int idFirst, IItem item, int accid) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CS_SURPRISE.getValue());
         packet.write(190);
@@ -352,7 +352,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] showTwinDragonEgg(int idFirst) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CS_TWIN_DRAGON_EGG.getValue());
         packet.writeLong(idFirst); // uniqueid of the dragon egg itself
@@ -362,7 +362,7 @@ public class MTSCSPacket {
         return packet.getPacket();
     }
 
-    public static void addModCashItemInfo(COutPacket packet, CashModInfo item) {
+    public static void addModCashItemInfo(OutPacket packet, CashModInfo item) {
         int flags = item.flags;
         packet.writeInt(item.sn);
         packet.writeInt(flags);
@@ -432,7 +432,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] showBoughtCSQuestItem(int price, short quantity, int itemid) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
         packet.write(0x9B);
@@ -445,7 +445,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] sendCouponFail(final MapleClient c, int err) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
         // TODO: Do we need more than one login attempt ? packet.write(c.csAttempt > 2 ? 0x58 :
@@ -457,7 +457,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] sendCSFail(int err) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
         packet.write(0x62);
@@ -472,7 +472,7 @@ public class MTSCSPacket {
             final Map<Integer, IItem> items1,
             final List<Pair<Integer, Integer>> items2,
             final int mesos) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
         packet.write(0x65);
@@ -492,7 +492,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] enableCSUse() {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(0x12);
         packet.write(1);
@@ -502,7 +502,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] getCSInventory(MapleClient c) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
         packet.write(0x57); // use to be 3e
@@ -520,7 +520,7 @@ public class MTSCSPacket {
 
     // work on this packet a little more
     public static byte[] getCSGifts(MapleClient c) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
 
@@ -538,7 +538,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] cashItemExpired(int uniqueid) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
         packet.write(0x7C); // use to be 5d
         packet.writeLong(uniqueid);
@@ -547,7 +547,7 @@ public class MTSCSPacket {
 
     public static byte[] OnCashItemResCoupleDone(
             IItem item, int sn, int accid, String receiver, boolean couple) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
         packet.write(couple ? 0x95 : 0x9F); // Same as friendship. (0x9F)
@@ -562,7 +562,7 @@ public class MTSCSPacket {
     public static byte[] showGiftSucceed(
             int price, int itemid, int quantity, String receiver, boolean packages) {
         // "%d [ %s ] \r\nwas sent to %s. \r\n%d NX Prepaid \r\nwere spent in the process.",
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
         packet.write(packages ? 0x99 : 0x6A);
@@ -578,7 +578,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] increasedInvSlots(int inv, int slots) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
         packet.write(0x6C);
@@ -590,7 +590,7 @@ public class MTSCSPacket {
 
     // also used for character slots !
     public static byte[] increasedStorageSlots(int slots) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
         packet.write(0x6E);
@@ -600,7 +600,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] confirmToCSInventory(IItem item, int accId) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
         packet.write(0x78);
@@ -610,7 +610,7 @@ public class MTSCSPacket {
     }
 
     public static byte[] confirmFromCSInventory(IItem item, short pos) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
         packet.write(0x76);
@@ -621,20 +621,20 @@ public class MTSCSPacket {
     }
 
     public static byte[] sendMesobagFailed() {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.MESOBAG_FAILURE.getValue());
         return packet.getPacket();
     }
 
     public static byte[] sendMesobagSuccess(int mesos) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.MESOBAG_SUCCESS.getValue());
         packet.writeInt(mesos);
         return packet.getPacket();
     }
 
     public static byte[] getOneDayPacket(int remainingHours, int itemSN) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(387);
         packet.writeInt(remainingHours);
         packet.writeInt(itemSN);

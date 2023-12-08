@@ -1,6 +1,6 @@
 package server.movement;
 
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.data.output.LittleEndianWriter;
 
 /**
@@ -16,7 +16,7 @@ public class Elem {
     public short tElapse;
     byte type;
 
-    public void decode(CInPacket lea) {
+    public void decode(InPacket lea) {
         type = lea.readByte(); // nAttr
         // label_12, encode2, goto label_13
         // label_13, write, encode 2

@@ -5,13 +5,13 @@ import handling.AbstractMaplePacketHandler;
 import handling.channel.ChannelServer;
 import handling.world.WorldServer;
 import server.shops.HiredMerchant;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.PlayerShopPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class RemoteStoreHandler extends AbstractMaplePacketHandler {
 
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         ChannelServer ch = WorldServer.getInstance().getChannel(c.getChannel());
         if (ch == null || c == null || c.getPlayer() == null) {
             return;

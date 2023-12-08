@@ -1,13 +1,13 @@
 package tools.packet;
 
 import handling.SendPacketOpcode;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MonsterBookPacket {
 
     public static byte[] addCard(boolean full, int cardid, int level) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.MONSTERBOOK_ADD.getValue());
 
@@ -23,7 +23,7 @@ public class MonsterBookPacket {
     }
 
     public static byte[] showGainCard() {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SHOW_ITEM_GAIN_INCHAT.getValue());
         packet.write(13);
@@ -32,7 +32,7 @@ public class MonsterBookPacket {
     }
 
     public static byte[] showForeginCardEffect(int id) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SHOW_FOREIGN_EFFECT.getValue());
         packet.writeInt(id);
@@ -42,7 +42,7 @@ public class MonsterBookPacket {
     }
 
     public static byte[] changeCover(int cardid) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.MONSTERBOOK_CHANGE_COVER.getValue());
         packet.writeInt(cardid);

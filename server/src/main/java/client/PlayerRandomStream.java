@@ -1,7 +1,7 @@
 package client;
 
 import tools.Randomizer;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class PlayerRandomStream {
@@ -94,7 +94,7 @@ public class PlayerRandomStream {
         return (v8 ^ v9 ^ v10) & 0xffffffffL;
     }
 
-    public final void connectData(final COutPacket packet) {
+    public final void connectData(final OutPacket packet) {
         long v5 = CRand32__Random();
         long s2 = CRand32__Random();
         long v6 = CRand32__Random();

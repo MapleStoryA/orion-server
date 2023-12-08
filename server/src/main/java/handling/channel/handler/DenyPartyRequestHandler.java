@@ -8,14 +8,14 @@ import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import handling.world.party.PartyManager;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.MapleUserPackets;
 
 @lombok.extern.slf4j.Slf4j
 public class DenyPartyRequestHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         // log.info("party response..." + slea.toString());
         final int action = packet.readByte();
         final int partyid = packet.readInt();

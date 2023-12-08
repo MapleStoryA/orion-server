@@ -12,7 +12,7 @@ import handling.world.helper.FindCommand;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import handling.world.party.PartyManager;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.MapleUserPackets;
 
 @lombok.extern.slf4j.Slf4j
@@ -29,7 +29,7 @@ public class ExpeditionOperationHandler extends AbstractMaplePacketHandler {
     public static final int MOVE_TO_NEW_PARTY = 0x34;
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null || chr.getMap() == null) {
             return;

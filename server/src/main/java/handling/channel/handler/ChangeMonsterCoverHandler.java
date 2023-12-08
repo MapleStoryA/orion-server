@@ -4,13 +4,13 @@ import client.MapleCharacter;
 import client.MapleClient;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class ChangeMonsterCoverHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         int bookid = packet.readInt();
         if (bookid == 0 || GameConstants.isMonsterCard(bookid)) {

@@ -6,13 +6,13 @@ import handling.AbstractMaplePacketHandler;
 import scripting.NPCScriptManager;
 import scripting.v1.game.helper.NpcTalkHelper;
 import server.life.MapleNPC;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class NpcTalkHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null || chr.getMap() == null || chr.getConversation() == 1) {
             return;

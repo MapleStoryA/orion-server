@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import lombok.Getter;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 public class TeleportRock {
 
@@ -49,7 +49,7 @@ public class TeleportRock {
         return map_ids.stream().mapToInt(Integer::intValue).toArray();
     }
 
-    public void encode(COutPacket packet) {
+    public void encode(OutPacket packet) {
         var l = new ArrayList<>(map_ids);
         for (int i = 0; i < maxMaps; i++) {
             if (i < l.size()) {

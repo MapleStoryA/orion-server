@@ -6,13 +6,13 @@ import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import server.MapleItemInformationProvider;
 import server.MapleShop;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class NpcShopHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         final byte bmode = packet.readByte();
         if (chr == null) {

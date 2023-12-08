@@ -10,13 +10,13 @@ import client.skill.SkillFactory;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import server.MapleItemInformationProvider;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class ChangeKeyMapHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null || packet.available() < 8) {
             return;

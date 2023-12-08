@@ -10,13 +10,13 @@ import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.maps.FieldLimitType;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class PetAutoPotHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         final int petid = (int) packet.readLong();
         packet.skip(1);

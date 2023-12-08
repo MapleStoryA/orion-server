@@ -9,13 +9,13 @@ import server.MapleInventoryManipulator;
 import server.life.MapleMonster;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UseCatchItemHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         c.getPlayer().updateTick(packet.readInt());
         MapleCharacter chr = c.getPlayer();
         final byte slot = (byte) packet.readShort();

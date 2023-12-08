@@ -17,14 +17,14 @@ import server.life.MobSkill;
 import server.life.MobSkillFactory;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.MobPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class TakeDamageHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         // log.info(slea.toString());
         final MapleCharacter chr = c.getPlayer();
         chr.updateTick(packet.readInt());

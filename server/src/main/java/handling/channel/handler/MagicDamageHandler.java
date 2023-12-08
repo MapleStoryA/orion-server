@@ -9,13 +9,13 @@ import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import server.MapleStatEffect;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MagicDamageHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, final MapleClient c) {
+    public void handlePacket(InPacket packet, final MapleClient c) {
         final MapleCharacter chr = c.getPlayer();
         if (chr == null) {
             return;

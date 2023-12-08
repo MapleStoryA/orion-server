@@ -26,7 +26,7 @@ import server.StructPotentialItem;
 import server.StructSetItem;
 import server.StructSetItem.SetItem;
 import tools.MaplePacketCreator;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 @Getter
@@ -1364,7 +1364,7 @@ public class PlayerStats implements Serializable {
         shouldHealMP *= 2; // 1.5
     }
 
-    public final void connectData(final COutPacket packet) {
+    public final void connectData(final OutPacket packet) {
         packet.writeShort(str); // str
         packet.writeShort(dex); // dex
         packet.writeShort(int_); // int

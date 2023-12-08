@@ -3,7 +3,7 @@ package server.movement;
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.data.output.LittleEndianWriter;
 
 /**
@@ -17,7 +17,7 @@ public class MovePath {
     public List<Elem> lElem = new LinkedList<Elem>();
     public Point startPosition, velocity;
 
-    public void decode(CInPacket lea) {
+    public void decode(InPacket lea) {
         startPosition = lea.readPos();
         velocity = lea.readPos();
         byte size = lea.readByte();

@@ -7,13 +7,13 @@ import handling.AbstractMaplePacketHandler;
 import java.util.Iterator;
 import server.maps.MapleSummon;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class DamageSummonHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         packet.skip(4);
         final int unkByte = packet.readByte();
         final int damage = packet.readInt();

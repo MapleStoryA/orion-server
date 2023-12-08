@@ -2,7 +2,7 @@ package scripting;
 
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 @Slf4j
 public class ScriptMan {
@@ -27,7 +27,7 @@ public class ScriptMan {
             String sText,
             boolean bPrev,
             boolean bNext) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(ScriptMessage);
         packet.write(nSpeakerTypeID);
         packet.writeInt(nSpeakerTemplateID);
@@ -45,7 +45,7 @@ public class ScriptMan {
 
     public static byte[] OnSayImage(
             int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, List<String> asPath) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(ScriptMessage);
         packet.write(nSpeakerTypeID);
         packet.writeInt(nSpeakerTemplateID);
@@ -60,7 +60,7 @@ public class ScriptMan {
 
     public static byte[] OnAskYesNo(
             int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, String sText) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(ScriptMessage);
         packet.write(nSpeakerTypeID);
         packet.writeInt(nSpeakerTemplateID);
@@ -72,7 +72,7 @@ public class ScriptMan {
 
     public static byte[] OnAskAccept(
             int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, String sText) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(ScriptMessage);
         packet.write(nSpeakerTypeID);
         packet.writeInt(nSpeakerTemplateID);
@@ -90,7 +90,7 @@ public class ScriptMan {
             String sMsgDefault,
             int nLenMin,
             int nLenMax) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(ScriptMessage);
         packet.write(nSpeakerTypeID);
         packet.writeInt(nSpeakerTemplateID);
@@ -111,7 +111,7 @@ public class ScriptMan {
             String sMsgDefault,
             int nCol,
             int nLine) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(ScriptMessage);
         packet.write(nSpeakerTypeID);
         packet.writeInt(nSpeakerTemplateID);
@@ -132,7 +132,7 @@ public class ScriptMan {
             int nDef,
             int nMin,
             int nMax) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(ScriptMessage);
         packet.write(nSpeakerTypeID);
         packet.writeInt(nSpeakerTemplateID);
@@ -147,7 +147,7 @@ public class ScriptMan {
 
     public static byte[] OnAskMenu(
             int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, String sMsg) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(ScriptMessage);
         packet.write(nSpeakerTypeID);
         packet.writeInt(nSpeakerTemplateID);
@@ -159,7 +159,7 @@ public class ScriptMan {
 
     public static byte[] OnAskAvatar(
             int nSpeakerTypeID, int nSpeakerTemplateID, String sMsg, int[] anCanadite) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(ScriptMessage);
         packet.write(nSpeakerTypeID);
         packet.writeInt(nSpeakerTemplateID);
@@ -175,7 +175,7 @@ public class ScriptMan {
 
     public static byte[] OnAskMembershopAvatar(
             int nSpeakerTypeID, int nSpeakerTemplateID, String sMsg, int[] aCanadite) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(ScriptMessage);
         packet.write(nSpeakerTypeID);
         packet.writeInt(nSpeakerTemplateID);
@@ -199,7 +199,7 @@ public class ScriptMan {
             int nMinInput,
             int nMaxInput,
             int tRemainInitialQuiz) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(ScriptMessage);
         packet.write(nSpeakerTypeID);
         packet.writeInt(nSpeakerTemplateID);
@@ -226,7 +226,7 @@ public class ScriptMan {
             int nCorrect,
             int nRemain,
             int tRemainInitialQuiz) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(ScriptMessage);
         packet.write(nSpeakerTypeID);
         packet.writeInt(nSpeakerTemplateID);
@@ -249,7 +249,7 @@ public class ScriptMan {
             boolean bSlideDlgEX,
             int nIndex,
             String sMsg) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(ScriptMessage);
         packet.write(nSpeakerTypeID);
         packet.writeInt(nSpeakerTemplateID);

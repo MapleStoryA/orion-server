@@ -21,7 +21,7 @@ import server.shops.MapleMiniGame;
 import server.shops.MaplePlayerShop;
 import server.shops.MaplePlayerShopItem;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.PlayerShopPacket;
 
 @lombok.extern.slf4j.Slf4j
@@ -69,7 +69,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             SELECT_CARD = 0x44;
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null) {
             return;

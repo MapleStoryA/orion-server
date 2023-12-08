@@ -11,14 +11,14 @@ import server.maps.MapleMap;
 import server.movement.MovePath;
 import tools.Pair;
 import tools.Randomizer;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.MobPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MoveLifeHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket slea, MapleClient c) {
+    public void handlePacket(InPacket slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null || chr.getMap() == null) {
             return; // ?

@@ -9,13 +9,13 @@ import handling.world.alliance.AllianceManager;
 import handling.world.buddy.BuddyManager;
 import handling.world.guild.GuildManager;
 import handling.world.party.PartyManager;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class PartyChatHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         c.getPlayer().updateTick(packet.readInt());
         MapleCharacter chr = c.getPlayer();
         final int type = packet.readByte();

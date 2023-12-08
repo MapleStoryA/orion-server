@@ -7,13 +7,13 @@ import client.inventory.MapleInventoryType;
 import handling.AbstractMaplePacketHandler;
 import java.util.Map;
 import server.MapleItemInformationProvider;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class RepairHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         if (c.getPlayer().getMapId() != 240000000 || packet.available() < 4) { // leafre for now
             return;
         }

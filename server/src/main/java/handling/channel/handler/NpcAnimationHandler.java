@@ -3,15 +3,15 @@ package handling.channel.handler;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import handling.SendPacketOpcode;
-import tools.data.input.CInPacket;
-import tools.data.output.COutPacket;
+import tools.data.input.InPacket;
+import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class NpcAnimationHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket slea, MapleClient c) {
-        COutPacket packet = new COutPacket();
+    public void handlePacket(InPacket slea, MapleClient c) {
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.NPC_ACTION.getValue());
         final int length = (int) slea.available();
         if (length == 6) { // NPC Talk

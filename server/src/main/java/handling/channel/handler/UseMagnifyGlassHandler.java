@@ -13,13 +13,13 @@ import server.MapleItemInformationProvider;
 import server.StructPotentialItem;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UseMagnifyGlassHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         c.getPlayer().updateTick(packet.readInt());
         byte magnifyId = (byte) packet.readShort();
         byte position = (byte) packet.readShort();

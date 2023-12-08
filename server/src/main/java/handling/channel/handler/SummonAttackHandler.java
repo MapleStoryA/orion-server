@@ -21,13 +21,13 @@ import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import server.maps.MapleSummon;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class SummonAttackHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null || !chr.isAlive()) {
             return;

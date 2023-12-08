@@ -13,7 +13,7 @@ import server.life.MapleMonster;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MonsterBombHandler extends AbstractMaplePacketHandler {
@@ -21,7 +21,7 @@ public class MonsterBombHandler extends AbstractMaplePacketHandler {
     private static final int MONSTER_BOMB_SKILL = 4341003;
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         final MapleMonster monster = chr.getMap().getMonsterByOid(packet.readInt());
         final int xpos = packet.readInt();

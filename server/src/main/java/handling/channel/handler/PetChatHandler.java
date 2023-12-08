@@ -3,14 +3,14 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.PetPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class PetChatHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         if (packet.available() < 12) {
             return;
         }

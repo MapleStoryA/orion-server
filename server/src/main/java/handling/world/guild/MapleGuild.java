@@ -22,7 +22,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import tools.MaplePacketCreator;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 import tools.packet.UIPacket;
 
 @lombok.extern.slf4j.Slf4j
@@ -864,7 +864,7 @@ public class MapleGuild implements java.io.Serializable {
         }
     }
 
-    public final void addMemberData(final COutPacket packet) {
+    public final void addMemberData(final OutPacket packet) {
         packet.write(members.size());
 
         for (final MapleGuildCharacter mgc : members) {

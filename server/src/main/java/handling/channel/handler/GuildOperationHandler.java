@@ -10,13 +10,13 @@ import handling.world.guild.MapleGuild;
 import handling.world.guild.MapleGuildResponse;
 import java.util.Iterator;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class GuildOperationHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         if (System.currentTimeMillis() >= GuildHandlerUtils.nextPruneTime) {
             Iterator<Invited> itr = GuildHandlerUtils.invited.iterator();
             Invited inv;

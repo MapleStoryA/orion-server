@@ -9,13 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import tools.MaplePacketCreator;
 import tools.Pair;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class AutoAssignAPHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         chr.updateTick(packet.readInt());
         packet.skip(4);

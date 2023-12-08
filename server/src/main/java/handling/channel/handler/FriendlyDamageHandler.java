@@ -6,13 +6,13 @@ import handling.AbstractMaplePacketHandler;
 import server.life.MapleMonster;
 import server.maps.MapleMap;
 import tools.Randomizer;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class FriendlyDamageHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         final MapleMap map = chr.getMap();
         if (map == null) {

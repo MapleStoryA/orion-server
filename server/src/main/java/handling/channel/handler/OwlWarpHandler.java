@@ -9,7 +9,7 @@ import server.maps.MapleMapObjectType;
 import server.shops.HiredMerchant;
 import server.shops.IMaplePlayerShop;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.PlayerShopPacket;
 
 @lombok.extern.slf4j.Slf4j
@@ -19,7 +19,7 @@ public class OwlWarpHandler extends AbstractMaplePacketHandler {
     // ID, 2 = object ID
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         c.getSession().write(MaplePacketCreator.enableActions());
         if (c.getPlayer().getMapId() >= 910000000
                 && c.getPlayer().getMapId() <= 910000022

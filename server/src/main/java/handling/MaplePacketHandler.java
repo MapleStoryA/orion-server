@@ -1,11 +1,11 @@
 package handling;
 
 import client.MapleClient;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 public interface MaplePacketHandler {
 
-    void handlePacket(final CInPacket packet, final MapleClient c);
+    void handlePacket(final InPacket packet, final MapleClient c);
 
     boolean validateState(MapleClient c);
 }

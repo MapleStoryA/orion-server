@@ -8,13 +8,13 @@ import handling.ServerMigration;
 import handling.world.WorldServer;
 import lombok.extern.slf4j.Slf4j;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @Slf4j
 public class CharSelectedHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         final int characterId = packet.readInt();
         String hardwareID = packet.readMapleAsciiString();
         String macAddress = packet.readMapleAsciiString();

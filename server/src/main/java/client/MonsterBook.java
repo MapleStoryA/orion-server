@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 import tools.packet.MonsterBookPacket;
 
 @lombok.extern.slf4j.Slf4j
@@ -111,7 +111,7 @@ public class MonsterBook implements Serializable {
         }
     }
 
-    public final void addCardPacket(final COutPacket packet) {
+    public final void addCardPacket(final OutPacket packet) {
         packet.writeShort(cards.size());
 
         for (Entry<Integer, Integer> all : cards.entrySet()) {
@@ -120,7 +120,7 @@ public class MonsterBook implements Serializable {
         }
     }
 
-    public final void addCharInfoPacket(final int bookcover, final COutPacket packet) {
+    public final void addCharInfoPacket(final int bookcover, final OutPacket packet) {
         packet.writeInt(BookLevel);
         packet.writeInt(NormalCard);
         packet.writeInt(SpecialCard);

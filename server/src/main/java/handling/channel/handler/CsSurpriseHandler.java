@@ -7,14 +7,14 @@ import handling.cashshop.CashShopOperationHandlers;
 import server.RandomRewards;
 import server.cashshop.CashItemFactory;
 import server.cashshop.CashItemInfo;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.MTSCSPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class CsSurpriseHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         if (c.getPlayer().getCashInventory().getItemsSize() >= 100) {
             c.getSession().write(MTSCSPacket.sendCSFail(0x0A));
             CashShopOperationHandlers.doCSPackets(c);

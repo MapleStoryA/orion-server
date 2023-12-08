@@ -11,7 +11,7 @@ import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import server.MapleInventoryManipulator;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.PetPacket;
 
 @Slf4j
@@ -21,7 +21,7 @@ public class PetFoodHandler extends AbstractMaplePacketHandler {
     private static final int MAX_CLOSENESS = 30000;
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient client) {
+    public void handlePacket(InPacket packet, MapleClient client) {
         MapleCharacter player = client.getPlayer();
         if (player == null) {
             log.error("Player not found in PetFoodHandler");

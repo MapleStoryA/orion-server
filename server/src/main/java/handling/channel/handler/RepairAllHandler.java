@@ -9,13 +9,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import server.MapleItemInformationProvider;
 import tools.ArrayMap;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class RepairAllHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         if (c.getPlayer().getMapId() != 240000000) {
             return;
         }

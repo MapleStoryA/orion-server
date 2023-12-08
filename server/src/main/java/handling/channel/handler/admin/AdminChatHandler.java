@@ -3,14 +3,14 @@ package handling.channel.handler.admin;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 /** @author kevintjuh93 */
 @lombok.extern.slf4j.Slf4j
 public class AdminChatHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public final void handlePacket(CInPacket slea, MapleClient c) {
+    public final void handlePacket(InPacket slea, MapleClient c) {
         if (!c.getPlayer()
                 .isGameMaster()) { // if ( (signed int)CWvsContext::GetAdminLevel((void *)v294) > 2
             // )

@@ -12,14 +12,14 @@ import server.life.MapleMonster;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.MonsterCarnivalPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MonsterCarnivalHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         if (c.getPlayer().getCarnivalParty() == null) {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;

@@ -9,13 +9,13 @@ import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.maps.FieldLimitType;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UseReturnScrollHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (!chr.isAlive() || chr.getMapId() == 749040100) {
             c.getSession().write(MaplePacketCreator.enableActions());

@@ -17,13 +17,13 @@ import server.MapleStatEffect;
 import server.life.MapleMonster;
 import server.maps.FieldLimitType;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class SpecialMoveHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, final MapleClient c) {
+    public void handlePacket(InPacket packet, final MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null || !chr.isAlive() || chr.getMap() == null) {
             c.getSession().write(MaplePacketCreator.enableActions());

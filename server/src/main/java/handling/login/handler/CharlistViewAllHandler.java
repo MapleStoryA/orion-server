@@ -7,13 +7,13 @@ import handling.AbstractMaplePacketHandler;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @Slf4j
 public class CharlistViewAllHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
 
         c.setWorld(0);
         c.setChannel(1);

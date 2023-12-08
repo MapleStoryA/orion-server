@@ -28,13 +28,13 @@ import handling.world.alliance.AllianceManager;
 import handling.world.guild.GuildManager;
 import handling.world.guild.MapleGuild;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class AllianceHandlerUtils {
 
     public static final void HandleAlliance(
-            final CInPacket slea, final MapleClient c, boolean denied) {
+            final InPacket slea, final MapleClient c, boolean denied) {
         if (c.getPlayer().getGuildId() <= 0) {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;

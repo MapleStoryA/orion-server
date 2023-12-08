@@ -4,13 +4,13 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.skill.SkillMacro;
 import handling.AbstractMaplePacketHandler;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class ChangeSkillMacroHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         final int num = packet.readByte();
         String name;

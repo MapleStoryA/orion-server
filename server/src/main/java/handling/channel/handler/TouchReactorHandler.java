@@ -4,13 +4,13 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import scripting.ReactorScriptManager;
 import server.maps.MapleReactor;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class TouchReactorHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         final int oid = packet.readInt();
         final boolean touched = packet.readByte() > 0;
         final MapleReactor reactor = c.getPlayer().getMap().getReactorByOid(oid);

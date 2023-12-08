@@ -6,13 +6,13 @@ import java.util.Map.Entry;
 import server.maps.MapleDragon;
 import server.maps.MapleSummon;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class EnterMapRequestHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
 
         if (c.getPlayer().isHidden() && c.getPlayer().isGameMaster()
                 || c.getPlayer().getMap() == null) {

@@ -7,7 +7,7 @@ import org.mozilla.javascript.ContinuationPending;
 import scripting.v1.NpcScriptingManager;
 import scripting.v1.game.NpcScripting;
 import server.config.ServerEnvironment;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @Slf4j
 public class NpcTalkHelper {
@@ -53,7 +53,7 @@ public class NpcTalkHelper {
         }
     }
 
-    public static void proceedConversation(CInPacket slea, MapleClient client) {
+    public static void proceedConversation(InPacket slea, MapleClient client) {
         int talk = slea.readByte();
         Talk type = Talk.from(talk);
         int action = slea.readByte();

@@ -3,14 +3,14 @@ package handling.login.handler;
 import client.MapleClient;
 import database.CharacterService;
 import handling.AbstractMaplePacketHandler;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.LoginPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class DeleteCharHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         packet.readMapleAsciiString();
         final int characterId = packet.readInt();
 

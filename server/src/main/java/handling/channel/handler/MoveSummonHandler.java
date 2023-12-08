@@ -7,13 +7,13 @@ import server.maps.MapleSummon;
 import server.maps.SummonMovementType;
 import server.movement.MovePath;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MoveSummonHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket slea, MapleClient c) {
+    public void handlePacket(InPacket slea, MapleClient c) {
         final int oid = slea.readInt();
         MapleCharacter chr = c.getPlayer();
         final MovePath path = new MovePath();

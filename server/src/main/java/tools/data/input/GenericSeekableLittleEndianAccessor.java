@@ -12,7 +12,7 @@ import java.io.IOException;
  */
 @lombok.extern.slf4j.Slf4j
 public class GenericSeekableLittleEndianAccessor extends GenericLittleEndianAccessor
-        implements CInPacket {
+        implements InPacket {
 
     private final SeekableInputStreamBytestream bs;
 

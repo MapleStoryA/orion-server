@@ -10,13 +10,13 @@ import handling.world.helper.BroadcastHelper;
 import server.MapleInventoryManipulator;
 import server.RandomRewards;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UseTreasureChestHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         final short slot = packet.readShort();
         final int itemid = packet.readInt();
         MapleCharacter chr = c.getPlayer();

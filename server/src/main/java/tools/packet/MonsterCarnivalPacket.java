@@ -3,14 +3,14 @@ package tools.packet;
 import client.MapleCharacter;
 import handling.SendPacketOpcode;
 import server.MapleCarnivalParty;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MonsterCarnivalPacket {
 
     public static byte[] startMonsterCarnival(
             final MapleCharacter chr, final int enemyavailable, final int enemytotal) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.MONSTER_CARNIVAL_START.getValue());
         final MapleCarnivalParty friendly = chr.getCarnivalParty();
@@ -28,7 +28,7 @@ public class MonsterCarnivalPacket {
     }
 
     public static byte[] playerDiedMessage(String name, int lostCP, int team) { // CPQ
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.MONSTER_CARNIVAL_DIED.getValue());
         packet.write(team);
@@ -39,7 +39,7 @@ public class MonsterCarnivalPacket {
     }
 
     public static byte[] CPUpdate(boolean party, int curCP, int totalCP, int team) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         if (!party) {
             packet.writeShort(SendPacketOpcode.MONSTER_CARNIVAL_OBTAINED_CP.getValue());
         } else {
@@ -53,7 +53,7 @@ public class MonsterCarnivalPacket {
     }
 
     public static byte[] playerSummoned(String name, int tab, int number) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.MONSTER_CARNIVAL_SUMMON.getValue());
         packet.write(tab);

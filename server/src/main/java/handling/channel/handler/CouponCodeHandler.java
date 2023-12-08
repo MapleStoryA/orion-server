@@ -14,14 +14,14 @@ import server.cashshop.CashItemFactory;
 import server.cashshop.CashItemInfo;
 import server.cashshop.CashShopCoupon;
 import tools.Pair;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.MTSCSPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class CouponCodeHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         final boolean gift = packet.readShort() > 0;
         if (gift) {
             c.getSession().write(MTSCSPacket.sendCouponFail(c, 0x30));

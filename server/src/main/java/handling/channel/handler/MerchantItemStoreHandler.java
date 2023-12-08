@@ -6,7 +6,7 @@ import handling.AbstractMaplePacketHandler;
 import handling.channel.handler.utils.HiredMerchantHandlerUtils;
 import server.MapleInventoryManipulator;
 import server.MerchItemPackage;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.PlayerShopPacket;
 
 @lombok.extern.slf4j.Slf4j
@@ -55,7 +55,7 @@ public class MerchantItemStoreHandler extends AbstractMaplePacketHandler {
     }
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         if (c.getPlayer() == null) {
             return;
         }

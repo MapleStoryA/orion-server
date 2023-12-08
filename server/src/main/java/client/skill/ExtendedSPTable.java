@@ -6,7 +6,7 @@
 package client.skill;
 
 import java.util.HashMap;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 /** @author Simon */
 @lombok.extern.slf4j.Slf4j
@@ -90,7 +90,7 @@ public class ExtendedSPTable {
         return res;
     }
 
-    public void addSPData(COutPacket packet) {
+    public void addSPData(OutPacket packet) {
         packet.write(getNonZeroSize());
         for (int i = 1; i < SPTable.size() + 1; i++) {
             if (SPTable.get(i) > 0) {

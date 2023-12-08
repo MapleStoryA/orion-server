@@ -4,14 +4,14 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import handling.channel.handler.utils.HiredMerchantHandlerUtils;
 import handling.world.WorldServer;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.PlayerShopPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UseHiredMerchantHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         //		slea.readInt(); // TimeStamp
 
         if (c.getPlayer().getMap().allowPersonalShop()) {

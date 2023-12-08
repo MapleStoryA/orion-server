@@ -8,7 +8,7 @@ import scripting.NPCScriptManager;
 import scripting.v1.game.helper.NpcTalkHelper;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class QuestionActionHandler extends AbstractMaplePacketHandler {
@@ -21,7 +21,7 @@ public class QuestionActionHandler extends AbstractMaplePacketHandler {
     public static final int END_SCRIPTED_QUEST = 5;
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         final byte action = packet.readByte();
         int quest = packet.readShort();

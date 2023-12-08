@@ -11,14 +11,14 @@ import handling.world.WorldServer;
 import handling.world.helper.CharacterTransfer;
 import java.util.List;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.MTSCSPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class CashShopOperationHandlers {
 
     public static void onLeaveCashShop(
-            final CInPacket slea, final MapleClient c, final MapleCharacter chr) {
+            final InPacket slea, final MapleClient c, final MapleCharacter chr) {
         CashShopServer.getInstance().getPlayerStorage().deregisterPlayer(chr);
         c.updateLoginState(LoginState.LOGIN_SERVER_TRANSITION, c.getSessionIPAddress());
 

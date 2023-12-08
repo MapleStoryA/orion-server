@@ -3,14 +3,14 @@ package handling.login.handler;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import handling.login.LoginServer;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.LoginPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class ServerStatusRequestHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         // 0 = Select world normally
         // 1 = "Since there are many users, you may encounter some..."
         // 2 = "The concurrent users in this world have reached the max"

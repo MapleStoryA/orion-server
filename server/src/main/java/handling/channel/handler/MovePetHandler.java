@@ -5,14 +5,14 @@ import client.MapleClient;
 import client.inventory.MaplePet;
 import handling.AbstractMaplePacketHandler;
 import server.movement.MovePath;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.PetPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MovePetHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         final long petId = packet.readLong();
         MovePath res = new MovePath();
         res.decode(packet);

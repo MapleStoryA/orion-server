@@ -28,7 +28,7 @@ import handling.world.party.PartyManager;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 /** Store packets for Buddy, Party, Expedition, Guild and Alliance */
 @lombok.extern.slf4j.Slf4j
@@ -140,7 +140,7 @@ public class MapleUserPackets {
     }
 
     public static byte[] updatePartyMemberHP(final int cid, int curhp, int maxhp) {
-        final COutPacket packet = new COutPacket(14);
+        final OutPacket packet = new OutPacket(14);
         packet.writeShort(SendPacketOpcode.UPDATE_PARTYMEMBER_HP.getValue());
         packet.writeInt(cid);
         packet.writeInt(curhp);
@@ -149,7 +149,7 @@ public class MapleUserPackets {
     }
 
     private static byte[] partyPacket(final int type, final Object... data) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.PARTY_OPERATION.getValue());
         packet.write(type);
         switch (type) {
@@ -210,7 +210,7 @@ public class MapleUserPackets {
     private static void addPartyStatus(
             final int forchannel,
             final MapleParty party,
-            final COutPacket packet,
+            final OutPacket packet,
             final boolean leaving) {
         addPartyStatus(forchannel, party, packet, leaving, false);
     }
@@ -218,7 +218,7 @@ public class MapleUserPackets {
     private static void addPartyStatus(
             final int forchannel,
             final MapleParty party,
-            final COutPacket packet,
+            final OutPacket packet,
             final boolean leaving,
             final boolean exped) {
         final List<MaplePartyCharacter> partymembers;
@@ -269,7 +269,7 @@ public class MapleUserPackets {
 
     public static byte[] showExpedition(
             final MapleExpedition me, final boolean created, final boolean silent) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
         packet.write(
                 silent
@@ -297,7 +297,7 @@ public class MapleUserPackets {
     }
 
     public static byte[] removeExpedition(final int action) {
-        final COutPacket packet = new COutPacket(3);
+        final OutPacket packet = new OutPacket(3);
         packet.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
         packet.write(
                 action); // 54(remove only) , 61 (you have left the expedition), 63(You have been
@@ -310,7 +310,7 @@ public class MapleUserPackets {
         // 58 : You have joined the expedition.
         // 60 : '<Name>' has left the expedition.
         // 62 : '<Name>' has been kicked out of the expedition.
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
         packet.write(type);
         if (type != 58) {
@@ -320,7 +320,7 @@ public class MapleUserPackets {
     }
 
     public static byte[] changeExpeditionLeader(final int newLeader) {
-        final COutPacket packet = new COutPacket(7);
+        final OutPacket packet = new OutPacket(7);
         packet.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
         packet.write(65);
         packet.writeInt(newLeader);
@@ -328,7 +328,7 @@ public class MapleUserPackets {
     }
 
     public static byte[] expeditionUpdate(final int partyIndex, final MapleParty party) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
         packet.write(66);
         packet.writeInt(0);
@@ -342,7 +342,7 @@ public class MapleUserPackets {
     }
 
     public static byte[] expeditionInvite(final MapleCharacter from, final int exped) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
         packet.write(68);
         packet.writeInt(from.getLevel());
@@ -361,7 +361,7 @@ public class MapleUserPackets {
         // 5 : '<Name>' is taking care of another invitation.
         // 6 : You have already invited '<Name>' to the expedition.
         // 7 : '<Name>' has been invited to the expedition.
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
         packet.write(69);
         packet.writeInt(errcode);
