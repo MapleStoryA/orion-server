@@ -13,7 +13,7 @@ import server.shops.MapleMiniGame;
 import server.shops.MaplePlayerShop;
 import server.shops.MaplePlayerShopItem;
 import tools.Pair;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class PlayerShopPacket {
@@ -22,7 +22,7 @@ public class PlayerShopPacket {
     private static final int VISIT_SHOP_WINDOW_MAGIC_INT = 46;
 
     public static final byte[] addCharBox(final MapleCharacter c, final int type) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.UPDATE_CHAR_BOX.getValue());
         packet.writeInt(c.getId());
@@ -32,7 +32,7 @@ public class PlayerShopPacket {
     }
 
     public static final byte[] removeCharBox(final MapleCharacter c) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.UPDATE_CHAR_BOX.getValue());
         packet.writeInt(c.getId());
@@ -42,7 +42,7 @@ public class PlayerShopPacket {
     }
 
     public static final byte[] sendTitleBox() {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.ENTRUSTED_SHOP.getValue());
         packet.write(7);
@@ -51,7 +51,7 @@ public class PlayerShopPacket {
     }
 
     public static final byte[] sendTitleBoxMessage(byte mode) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
         // 9: Please use this after retrieving items from Fredrick of Free Market.
         // 10: Another character is currently using the item. Please log on as a different character
         // and close the store, or empty out the Store Bank.
@@ -82,7 +82,7 @@ public class PlayerShopPacket {
     }
 
     public static final byte[] sendPlayerShopBox(final MapleCharacter c) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.UPDATE_CHAR_BOX.getValue());
         packet.writeInt(c.getId());
@@ -93,7 +93,7 @@ public class PlayerShopPacket {
 
     public static final byte[] getHiredMerch2(
             final MapleCharacter chr, final HiredMerchant merch, final boolean firstTime) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(5);
@@ -140,7 +140,7 @@ public class PlayerShopPacket {
     }
 
     public static byte[] getHiredMerch(MapleCharacter chr, HiredMerchant hm, boolean firstTime) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(5);
         packet.write(5);
@@ -183,7 +183,7 @@ public class PlayerShopPacket {
     }
 
     public static final byte[] getPlayerStore(final MapleCharacter chr, final boolean firstTime) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         IMaplePlayerShop ips = chr.getPlayerShop();
@@ -230,7 +230,7 @@ public class PlayerShopPacket {
     }
 
     public static final byte[] shopChat(final String message, final int slot) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(6);
@@ -242,7 +242,7 @@ public class PlayerShopPacket {
     }
 
     public static final byte[] shopErrorMessage(final int error, final int type) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(0x0A);
@@ -253,7 +253,7 @@ public class PlayerShopPacket {
     }
 
     public static final byte[] spawnHiredMerchant(final HiredMerchant hm) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SPAWN_HIRED_MERCHANT.getValue());
         packet.writeInt(hm.getOwnerId());
@@ -267,7 +267,7 @@ public class PlayerShopPacket {
     }
 
     public static final byte[] destroyHiredMerchant(final int id) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.DESTROY_HIRED_MERCHANT.getValue()); // Same
         packet.writeInt(id);
@@ -276,7 +276,7 @@ public class PlayerShopPacket {
     }
 
     public static final byte[] shopItemUpdate(final IMaplePlayerShop shop) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(25);
@@ -295,7 +295,7 @@ public class PlayerShopPacket {
     }
 
     public static final byte[] shopVisitorAdd(final MapleCharacter chr, final int slot) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(4);
@@ -308,7 +308,7 @@ public class PlayerShopPacket {
     }
 
     public static final byte[] shopVisitorLeave(final byte slot) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(0x0A);
@@ -318,7 +318,7 @@ public class PlayerShopPacket {
     }
 
     public static byte[] hiredMerchantOwnerLeave() {
-        COutPacket packet = new COutPacket(4);
+        OutPacket packet = new OutPacket(4);
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(42);
         packet.write(0);
@@ -326,7 +326,7 @@ public class PlayerShopPacket {
     }
 
     public static final byte[] Merchant_Buy_Error(final byte message) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         // 2 = You have not enough meso
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
@@ -337,7 +337,7 @@ public class PlayerShopPacket {
     }
 
     public static final byte[] updateHiredMerchant(final HiredMerchant shop) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.UPDATE_HIRED_MERCHANT.getValue());
         packet.writeInt(shop.getOwnerId());
@@ -353,7 +353,7 @@ public class PlayerShopPacket {
     // 21: Due to the lack of service fee, you were unable to \r\nretrieve mesos or items.
     // 22: Unable to retrieve mesos and items\r\ndue to full inventory.
     public static final byte[] merchItem_Message(final byte op) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.MERCH_ITEM_MSG.getValue());
         packet.write(op);
@@ -362,7 +362,7 @@ public class PlayerShopPacket {
     }
 
     public static final byte[] merchItemStore(final byte op) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
         // [28 01] [22 01] - Invalid Asiasoft Passport
         // [28 01] [22 00] - Open Asiasoft pin typing
         packet.writeShort(SendPacketOpcode.MERCH_ITEM_STORE.getValue());
@@ -392,7 +392,7 @@ public class PlayerShopPacket {
     }
 
     public static final byte[] merchItemStore_ItemData(final MerchItemPackage pack) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.MERCH_ITEM_STORE.getValue());
         packet.write(0x23);
@@ -412,7 +412,7 @@ public class PlayerShopPacket {
     }
 
     public static byte[] getMiniGame(MapleClient c, MapleMiniGame minigame) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(5);
         packet.write(minigame.getGameType());
@@ -441,21 +441,21 @@ public class PlayerShopPacket {
     }
 
     public static byte[] getMiniGameReady(boolean ready) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(ready ? 0x38 : 0x39);
         return packet.getPacket();
     }
 
     public static byte[] getMiniGameExitAfter(boolean ready) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(ready ? 0x36 : 0x37);
         return packet.getPacket();
     }
 
     public static byte[] getMiniGameStart(int loser) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(0x3B);
         packet.write(loser == 1 ? 0 : 1);
@@ -463,7 +463,7 @@ public class PlayerShopPacket {
     }
 
     public static byte[] getMiniGameSkip(int slot) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(0x3D);
         // owner = 1 visitor = 0?
@@ -472,21 +472,21 @@ public class PlayerShopPacket {
     }
 
     public static byte[] getMiniGameRequestTie() {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(0x30);
         return packet.getPacket();
     }
 
     public static byte[] getMiniGameDenyTie() {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(0x31);
         return packet.getPacket();
     }
 
     public static byte[] getMiniGameFull() {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.writeShort(5);
         packet.write(2);
@@ -494,7 +494,7 @@ public class PlayerShopPacket {
     }
 
     public static byte[] getMiniGameMoveOmok(int move1, int move2, int move3) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(0x3E);
         packet.writeInt(move1);
@@ -504,7 +504,7 @@ public class PlayerShopPacket {
     }
 
     public static byte[] getMiniGameNewVisitor(MapleCharacter c, int slot, MapleMiniGame game) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(4);
         packet.write(slot);
@@ -515,7 +515,7 @@ public class PlayerShopPacket {
         return packet.getPacket();
     }
 
-    public static void addGameInfo(COutPacket packet, MapleCharacter chr, MapleMiniGame game) {
+    public static void addGameInfo(OutPacket packet, MapleCharacter chr, MapleMiniGame game) {
         packet.writeInt(game.getGameType()); // start of visitor; unknown
         packet.writeInt(game.getWins(chr));
         packet.writeInt(game.getTies(chr));
@@ -524,7 +524,7 @@ public class PlayerShopPacket {
     }
 
     public static byte[] getMiniGameClose(byte number) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(0xA);
         packet.write(1);
@@ -533,7 +533,7 @@ public class PlayerShopPacket {
     }
 
     public static byte[] getMatchCardStart(MapleMiniGame game, int loser) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(0x3B);
         packet.write(loser == 1 ? 0 : 1);
@@ -546,7 +546,7 @@ public class PlayerShopPacket {
     }
 
     public static byte[] getMatchCardSelect(int turn, int slot, int firstslot, int type) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(0x42);
         packet.write(turn);
@@ -559,7 +559,7 @@ public class PlayerShopPacket {
     }
 
     public static byte[] getMiniGameResult(MapleMiniGame game, int type, int x) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(0x3C);
         packet.write(type); // lose = 0, tie = 1, win = 2
@@ -583,7 +583,7 @@ public class PlayerShopPacket {
     }
 
     public static final byte[] MerchantBlackListView(final Set<String> blackList) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(BLACK_LIST_SHOP_WINDOW_MAGIC_INT);
         packet.writeShort(blackList.size());
@@ -595,7 +595,7 @@ public class PlayerShopPacket {
     }
 
     public static final byte[] MerchantVisitorView(Set<String> visitor) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(VISIT_SHOP_WINDOW_MAGIC_INT);
@@ -611,7 +611,7 @@ public class PlayerShopPacket {
 
     // BELOW ARE UNUSED PLEASE RECONSIDER.
     public static final byte[] sendHiredMerchantMessage(final byte type) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
         // 07 = send title box
         // 09 = Please pick up your items from Fredrick and then try again.
         // 0A = Your another character is using the item now. Please close the shop with that
@@ -625,7 +625,7 @@ public class PlayerShopPacket {
     }
 
     public static final byte[] shopMessage(final int type) { // show when closed the shop
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
         // 0x28 = All of your belongings are moved successfully.
         packet.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         packet.write(type);

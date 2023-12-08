@@ -2,17 +2,17 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import client.commands.v1.CommandProcessor;
+import client.commands.CommandProcessor;
 import constants.ServerConstants.CommandType;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class GeneralChatHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         c.getPlayer().updateTick(packet.readInt());
         final String text = packet.readMapleAsciiString();
         final byte unk = packet.readByte();

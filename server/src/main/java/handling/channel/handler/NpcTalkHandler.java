@@ -6,22 +6,20 @@ import handling.AbstractMaplePacketHandler;
 import scripting.NPCScriptManager;
 import scripting.v1.game.helper.NpcTalkHelper;
 import server.life.MapleNPC;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class NpcTalkHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null || chr.getMap() == null || chr.getConversation() == 1) {
             return;
         }
         final MapleNPC npc = chr.getMap().getNPCByOid(packet.readInt());
 
-        if (npc == null
-                || npc.isHidden()
-                || (c.getLastNPCTalk() > System.currentTimeMillis() - 1000)) { // 1
+        if (npc == null || npc.isHidden() || (c.getLastNPCTalk() > System.currentTimeMillis() - 1000)) { // 1
             // sec
             return;
         }

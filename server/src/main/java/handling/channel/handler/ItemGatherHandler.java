@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import server.MapleInventoryManipulator;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class ItemGatherHandler extends AbstractMaplePacketHandler {
@@ -43,7 +43,7 @@ public class ItemGatherHandler extends AbstractMaplePacketHandler {
     }
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         // [41 00] [E5 1D 55 00] [01]
         // [32 00] [01] [01] // Sent after
 

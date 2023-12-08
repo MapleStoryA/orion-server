@@ -1,13 +1,13 @@
 package tools.packet.userlocal;
 
 import handling.SendPacketOpcode;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class CUserLocalPackets {
 
     public static byte[] onGoToCommoditySN(int sn) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.GO_TO_CS_BY_SN.getValue());
         packet.writeInt(sn);
 
@@ -16,7 +16,7 @@ public class CUserLocalPackets {
 
     // Shows a effect given the use item id.
     public static byte[] onBuffzoneEffect(int itemId) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.BUFFED_ZONE_EFFECT.getValue());
         packet.writeInt(itemId);
 

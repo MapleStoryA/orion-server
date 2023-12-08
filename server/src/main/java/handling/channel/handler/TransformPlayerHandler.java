@@ -9,13 +9,13 @@ import handling.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class TransformPlayerHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         chr.updateTick(packet.readInt());
         final byte slot = (byte) packet.readShort();
@@ -37,17 +37,14 @@ public class TransformPlayerHandler extends AbstractMaplePacketHandler {
                             MapleItemInformationProvider.getInstance()
                                     .getItemEffect(2212000)
                                     .applyTo(search_chr);
-                            search_chr.dropMessage(
-                                    6, chr.getName() + " had played a prank on you!"); // there's
+                            search_chr.dropMessage(6, chr.getName() + " had played a prank on you!"); // there's
                             // a
                             // packet
                             // for
                             // this!
-                            MapleInventoryManipulator.removeFromSlot(
-                                    c, MapleInventoryType.USE, slot, (short) 1, false);
+                            MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
                         } else {
-                            chr.dropMessage(
-                                    5, "You may not use this item on '" + target + "' right now.");
+                            chr.dropMessage(5, "You may not use this item on '" + target + "' right now.");
                         }
                     } else {
                         chr.dropMessage(5, "'" + target + "' was not found in the current map.");

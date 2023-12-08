@@ -4,13 +4,13 @@ import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import server.life.MapleMonster;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class AutoAggroHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         int monsteroid = packet.readInt();
         MapleCharacter chr = c.getPlayer();
         if (chr == null || chr.getMap() == null || chr.isHidden()) { // no evidence :)

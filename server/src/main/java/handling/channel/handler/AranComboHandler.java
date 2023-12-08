@@ -6,13 +6,13 @@ import client.anticheat.CheatingOffense;
 import client.skill.SkillFactory;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class AranComboHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr != null && chr.getJob().getId() >= 2000 && chr.getJob().getId() <= 2112) {
             short combo = chr.getCombo();
@@ -44,9 +44,7 @@ public class AranComboHandler extends AbstractMaplePacketHandler {
                 case 90:
                 case 100:
                     if (chr.getSkillLevel(21000000) >= (combo / 10)) {
-                        SkillFactory.getSkill(21000000)
-                                .getEffect(combo / 10)
-                                .applyComboBuff(chr, combo);
+                        SkillFactory.getSkill(21000000).getEffect(combo / 10).applyComboBuff(chr, combo);
                     }
                     break;
             }

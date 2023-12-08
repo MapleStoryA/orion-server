@@ -3,14 +3,14 @@ package handling.channel.handler;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.ReportPackets;
 
 @lombok.extern.slf4j.Slf4j
 public class ReportHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         packet.readByte();
         String victim = packet.readMapleAsciiString();
         packet.readByte();
@@ -20,14 +20,8 @@ public class ReportHandler extends AbstractMaplePacketHandler {
                 c.getPlayer().gainMeso(349, true);
                 c.getSession().write(ReportPackets.reportResponse((byte) 2, 1));
                 c.getChannelServer()
-                        .broadcastGMPacket(
-                                MaplePacketCreator.serverNotice(
-                                        6,
-                                        c.getPlayer().getName()
-                                                + " reported "
-                                                + victim
-                                                + " for: "
-                                                + description));
+                        .broadcastGMPacket(MaplePacketCreator.serverNotice(
+                                6, c.getPlayer().getName() + " reported " + victim + " for: " + description));
             }
         } else {
             c.getPlayer().dropMessage(1, "You do not have any reports left.");

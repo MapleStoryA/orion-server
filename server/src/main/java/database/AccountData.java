@@ -21,7 +21,6 @@ public class AccountData {
     private Long tempBan;
     private int banned;
     private int gm;
-    private int points;
     private int nxCredit;
     private int mPoints;
     private byte gender;
@@ -55,6 +54,6 @@ public class AccountData {
     }
 
     public int getGMLevel() {
-        return this.getGm();
+        return this.gm;
     }
 }

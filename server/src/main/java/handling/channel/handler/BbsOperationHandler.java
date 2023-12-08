@@ -3,13 +3,13 @@ package handling.channel.handler;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import handling.channel.handler.utils.BBSHandlerUtils;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class BbsOperationHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         if (c.getPlayer().getGuildId() <= 0) {
             return; // expelled while viewing bbs or hax
         }
@@ -22,8 +22,7 @@ public class BbsOperationHandler extends AbstractMaplePacketHandler {
                     localthreadid = packet.readInt();
                 }
                 final boolean bNotice = packet.readByte() > 0;
-                final String title =
-                        BBSHandlerUtils.correctLength(packet.readMapleAsciiString(), 25);
+                final String title = BBSHandlerUtils.correctLength(packet.readMapleAsciiString(), 25);
                 String text = BBSHandlerUtils.correctLength(packet.readMapleAsciiString(), 600);
                 final int icon = packet.readInt();
                 if (icon >= 0x64 && icon <= 0x6a) {

@@ -4,19 +4,16 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import server.maps.SavedLocationType;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class EnterMTSHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         int map = 910000000;
         if (c.getPlayer().getLevel() < 10) {
-            c.getPlayer()
-                    .dropMessage(
-                            5,
-                            "Characters whose level is below Lv. 10 cannot use the market button.");
+            c.getPlayer().dropMessage(5, "Characters whose level is below Lv. 10 cannot use the market button.");
             c.enableActions();
             return;
         }

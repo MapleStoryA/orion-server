@@ -46,8 +46,7 @@ public class DatabaseConnection {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             throw new SQLException(
-                    "Unable to find JDBC library. Do you have MySQL Connector/J (if using default"
-                            + " JDBC driver)?");
+                    "Unable to find JDBC library. Do you have MySQL Connector/J (if using default" + " DBC driver)?");
         }
 
         String password = config.getProperty("database.password");
@@ -60,7 +59,8 @@ public class DatabaseConnection {
         hikariConfig.setJdbcUrl(config.getProperty("database.url"));
         hikariConfig.setUsername(config.getProperty("database.user"));
         hikariConfig.setPassword(config.getProperty("database.password"));
-        hikariConfig.setConnectionTimeout(30 * 1000);
+        hikariConfig.setConnectionTimeout(30000);
+        hikariConfig.setMinimumIdle(10);
         hikariConfig.setMaximumPoolSize(30);
 
         hikariConfig.addDataSourceProperty("cachePrepStmts", "true");

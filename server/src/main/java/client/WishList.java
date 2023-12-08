@@ -4,13 +4,14 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import lombok.Getter;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 public class WishList {
 
     private Set<Integer> items;
 
-    @Getter private boolean changed;
+    @Getter
+    private boolean changed;
 
     public WishList() {
         this.items = new LinkedHashSet<>(10);
@@ -30,7 +31,7 @@ public class WishList {
         items.clear();
     }
 
-    public void encodeToCharInfo(COutPacket packet) {
+    public void encodeToCharInfo(OutPacket packet) {
         packet.write(items.size());
         if (items.size() > 0) {
             for (var item : items) {
@@ -39,7 +40,7 @@ public class WishList {
         }
     }
 
-    public void encodeToCashShop(COutPacket packet) {
+    public void encodeToCashShop(OutPacket packet) {
         var list = toArray();
         for (int i = 0; i < 10; i++) {
             packet.writeInt(list[i] != -1 ? list[i] : 0);

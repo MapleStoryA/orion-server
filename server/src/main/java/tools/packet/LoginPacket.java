@@ -13,14 +13,13 @@ import java.util.Set;
 import tools.HexTool;
 import tools.Randomizer;
 import tools.Triple;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class LoginPacket {
 
-    public static final byte[] getHello(
-            final short mapleVersion, final byte[] sendIv, final byte[] recvIv) {
-        final COutPacket packet = new COutPacket(16);
+    public static final byte[] getHello(final short mapleVersion, final byte[] sendIv, final byte[] recvIv) {
+        final OutPacket packet = new OutPacket(16);
 
         packet.writeShort(14); // 13 = MSEA, 14 = GlobalMS, 15 = EMS
         packet.writeShort(mapleVersion);
@@ -33,7 +32,7 @@ public class LoginPacket {
     }
 
     public static final byte[] getPing() {
-        final COutPacket packet = new COutPacket(16);
+        final OutPacket packet = new OutPacket(16);
 
         packet.writeShort(SendPacketOpcode.PING.getValue());
 
@@ -41,7 +40,7 @@ public class LoginPacket {
     }
 
     public static final byte[] getLoginFailed(final int reason) {
-        final COutPacket packet = new COutPacket(16);
+        final OutPacket packet = new OutPacket(16);
 
         /*	* 3: ID deleted or blocked
          * 4: Incorrect password
@@ -72,7 +71,7 @@ public class LoginPacket {
     }
 
     public static final byte[] getPermBan(final byte reason) {
-        final COutPacket packet = new COutPacket(16);
+        final OutPacket packet = new OutPacket(16);
 
         packet.writeShort(SendPacketOpcode.LOGIN_STATUS.getValue());
         packet.writeShort(2); // Account is banned
@@ -84,21 +83,20 @@ public class LoginPacket {
     }
 
     public static final byte[] getTempBan(final long timestampTill, final byte reason) {
-        final COutPacket packet = new COutPacket(17);
+        final OutPacket packet = new OutPacket(17);
 
         packet.writeShort(SendPacketOpcode.LOGIN_STATUS.getValue());
         packet.write(2);
         packet.write(HexTool.getByteArrayFromHexString("00 00 00 00 00"));
         packet.write(reason);
-        packet.writeLong(
-                timestampTill); // Tempban date is handled as a 64-bit long, number of 100NS
+        packet.writeLong(timestampTill); // Tempban date is handled as a 64-bit long, number of 100NS
         // intervals since 1/1/1601. Lulz.
 
         return packet.getPacket();
     }
 
     public static final byte[] getAuthSuccessRequest(final MapleClient client) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.LOGIN_STATUS.getValue());
         packet.write(0); // some error code shit, and nNumOfCharacter
         packet.write(0); // sMsg + 500, 0 or 1 decodes a bunch of shit
@@ -106,7 +104,8 @@ public class LoginPacket {
         packet.writeInt(client.getAccountData().getId()); // user id
         packet.write(client.getAccountData().getGender());
         //
-        PlayerGMRanking rank = PlayerGMRanking.getByLevel(client.getAccountData().getGMLevel());
+        PlayerGMRanking rank =
+                PlayerGMRanking.getByLevel(client.getAccountData().getGMLevel());
         byte nSubGradeCode = 0;
         nSubGradeCode |= rank.getSubGrade();
         packet.writeBool(rank.getLevel() >= PlayerGMRanking.GM.getLevel()); // nGradeCode
@@ -115,7 +114,7 @@ public class LoginPacket {
         // Value = (unsigned __int8)CInPacket::Decode1(v5);
         // v118 = ((unsigned int)(unsigned __int8)Value >> 8) & 1; this is for tester account.
         // v118 will only be 1 if nSubGradeCode is 0x100
-        packet.writeBool(false); // nCountryID, admin accounts?
+        packet.writeBool(true); // nCountryID, admin accounts?
         //
         packet.writeMapleAsciiString(client.getAccountData().getName()); // sNexonClubID
         packet.write(0); // nPurchaseExp
@@ -131,7 +130,7 @@ public class LoginPacket {
     }
 
     public static final byte[] deleteCharResponse(final int cid, final int state) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.DELETE_CHAR_RESPONSE.getValue());
         packet.writeInt(cid);
@@ -151,7 +150,7 @@ public class LoginPacket {
     }
 
     public static final byte[] secondPwError(final byte mode) {
-        final COutPacket packet = new COutPacket(3);
+        final OutPacket packet = new OutPacket(3);
 
         /*
          * 14 - Invalid password
@@ -165,7 +164,7 @@ public class LoginPacket {
 
     public static final byte[] getServerList(
             final int serverId, final String serverName, final Map<Integer, Integer> channelLoad) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SERVERLIST.getValue());
         packet.write(serverId); // 0 = Aquilla, 1 = bootes, 2 = cass, 3 = delphinus
@@ -207,7 +206,7 @@ public class LoginPacket {
     }
 
     public static final byte[] getEndOfServerList() {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SERVERLIST.getValue());
         packet.write(0xFF);
@@ -216,7 +215,7 @@ public class LoginPacket {
     }
 
     public static final byte[] getServerStatus(final int status) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         /*	 * 0 - Normal
          * 1 - Highly populated
@@ -228,7 +227,7 @@ public class LoginPacket {
     }
 
     public static final byte[] addNewCharEntry(final MapleCharacter chr, final boolean worked) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.ADD_NEW_CHAR_ENTRY.getValue());
         packet.write(worked ? 0 : 1);
@@ -238,7 +237,7 @@ public class LoginPacket {
     }
 
     public static byte[] pinOperation(final byte mode) {
-        final COutPacket packet = new COutPacket(3);
+        final OutPacket packet = new OutPacket(3);
 
         packet.writeShort(SendPacketOpcode.PIN_OPERATION.getValue());
         packet.write(mode);
@@ -247,7 +246,7 @@ public class LoginPacket {
     }
 
     public static final byte[] charNameResponse(final String charname, final boolean nameUsed) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CHAR_NAME_RESPONSE.getValue());
         packet.writeMapleAsciiString(charname);
@@ -257,7 +256,7 @@ public class LoginPacket {
     }
 
     public static final byte[] getRelogResponse() {
-        final COutPacket packet = new COutPacket(3);
+        final OutPacket packet = new OutPacket(3);
 
         packet.writeShort(SendPacketOpcode.RELOG_RESPONSE.getValue());
         packet.write(1);
@@ -266,7 +265,7 @@ public class LoginPacket {
     }
 
     public static final byte[] blockViewAll() {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.ALL_CHARLIST.getValue());
         packet.write(7);
@@ -275,22 +274,21 @@ public class LoginPacket {
         return packet.getPacket();
     }
 
-    public static final void addCharEntry(
-            final COutPacket packet, final MapleCharacter chr, boolean ranking) {
+    public static final void addCharEntry(final OutPacket packet, final MapleCharacter chr, boolean ranking) {
         PacketHelper.addCharStats(packet, chr);
         PacketHelper.addCharLook(packet, chr, true);
-        packet.write(0); // <-- who knows
+        packet.write(0);
         packet.write(ranking ? 1 : 0);
         if (ranking) {
-            packet.writeInt(chr.getRank());
-            packet.writeInt(chr.getRankMove());
-            packet.writeInt(chr.getJobRank());
-            packet.writeInt(chr.getJobRankMove());
+            packet.writeInt(0);
+            packet.writeInt(0);
+            packet.writeInt(0);
+            packet.writeInt(0);
         }
     }
 
     public static byte[] changeBackground(List<Triple<String, Integer, Boolean>> backgrounds) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CHANGE_BACKGROUND.getValue());
         packet.write(backgrounds.size()); // number of bgs
@@ -310,7 +308,7 @@ public class LoginPacket {
     }
 
     public static byte[] getRecommendedWorldMessage(int worldID, String message) {
-        COutPacket k = new COutPacket();
+        OutPacket k = new OutPacket();
         k.writeShort(SendPacketOpcode.RECOMMENDED_WORLD_MESSAGE.getValue());
         k.write(1);
         k.writeInt(worldID);

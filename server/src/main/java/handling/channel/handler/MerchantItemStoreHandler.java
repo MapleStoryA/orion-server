@@ -6,7 +6,7 @@ import handling.AbstractMaplePacketHandler;
 import handling.channel.handler.utils.HiredMerchantHandlerUtils;
 import server.MapleInventoryManipulator;
 import server.MerchItemPackage;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.PlayerShopPacket;
 
 @lombok.extern.slf4j.Slf4j
@@ -17,9 +17,8 @@ public class MerchantItemStoreHandler extends AbstractMaplePacketHandler {
     private static final int MERCH_RETRIEVED_ITEM_SUCCESS = 30;
 
     public static boolean takeOutMerchantItems(MapleClient c) {
-        final MerchItemPackage pack =
-                HiredMerchantHandlerUtils.loadItemFrom_Database(
-                        c.getPlayer().getId(), c.getPlayer().getAccountID());
+        final MerchItemPackage pack = HiredMerchantHandlerUtils.loadItemFrom_Database(
+                c.getPlayer().getId(), c.getPlayer().getAccountID());
         if (pack == null) {
             c.getPlayer().dropMessage(1, "An unknown error occured.");
             return false;
@@ -45,8 +44,7 @@ public class MerchantItemStoreHandler extends AbstractMaplePacketHandler {
             for (IItem item : pack.getItems()) {
                 MapleInventoryManipulator.addFromDrop(c, item, false);
             }
-            c.getSession()
-                    .write(PlayerShopPacket.merchItem_Message((byte) MERCH_RETRIEVED_ITEM_SUCCESS));
+            c.getSession().write(PlayerShopPacket.merchItem_Message((byte) MERCH_RETRIEVED_ITEM_SUCCESS));
             return true;
         } else {
             c.getPlayer().dropMessage(1, "An unknown error occured.");
@@ -55,36 +53,32 @@ public class MerchantItemStoreHandler extends AbstractMaplePacketHandler {
     }
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         if (c.getPlayer() == null) {
             return;
         }
         final byte operation = packet.readByte();
 
         switch (operation) {
-            case 20:
-                {
-                    c.getPlayer().dropMessage(1, "An unknown error occured.");
-                    break;
+            case 20: {
+                c.getPlayer().dropMessage(1, "An unknown error occured.");
+                break;
+            }
+            case 25: { // Request take out iteme
+                if (c.getPlayer().getConversation() != 3) {
+                    return;
                 }
-            case 25:
-                { // Request take out iteme
-                    if (c.getPlayer().getConversation() != 3) {
-                        return;
-                    }
-                    c.getSession().write(PlayerShopPacket.merchItemStore((byte) 0x24));
-                    break;
-                }
-            case 26:
-                { // Take out item
-                    takeOutMerchantItems(c);
-                    break;
-                }
-            case 28:
-                { // Exit
-                    c.enableActions();
-                    break;
-                }
+                c.getSession().write(PlayerShopPacket.merchItemStore((byte) 0x24));
+                break;
+            }
+            case 26: { // Take out item
+                takeOutMerchantItems(c);
+                break;
+            }
+            case 28: { // Exit
+                c.enableActions();
+                break;
+            }
         }
     }
 }

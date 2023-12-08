@@ -21,13 +21,13 @@ import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import server.maps.MapleSummon;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class SummonAttackHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null || !chr.isAlive()) {
             return;
@@ -71,8 +71,7 @@ public class SummonAttackHandler extends AbstractMaplePacketHandler {
                 continue;
             }
             if (chr.getPosition().distanceSq(mob.getPosition()) > 400000.0) {
-                chr.getCheatTracker()
-                        .registerOffense(CheatingOffense.ATTACK_FARAWAY_MONSTER_SUMMON);
+                chr.getCheatTracker().registerOffense(CheatingOffense.ATTACK_FARAWAY_MONSTER_SUMMON);
             }
             packet.skip(18); // who knows
             final int damage = packet.readInt();
@@ -83,11 +82,7 @@ public class SummonAttackHandler extends AbstractMaplePacketHandler {
             map.broadcastMessage(
                     chr,
                     MaplePacketCreator.summonAttack(
-                            summon.getOwnerId(),
-                            summon.getObjectId(),
-                            animation,
-                            allDamage,
-                            chr.getLevel()),
+                            summon.getOwnerId(), summon.getObjectId(), animation, allDamage, chr.getLevel()),
                     summon.getPosition());
         }
         final ISkill summonSkill = SkillFactory.getSkill(summon.getSkill());
@@ -106,8 +101,7 @@ public class SummonAttackHandler extends AbstractMaplePacketHandler {
                             summonEffect.getMonsterStati().entrySet()) {
                         mob.applyStatus(
                                 chr,
-                                new MonsterStatusEffect(
-                                        z.getKey(), z.getValue(), summonSkill.getId(), null, false),
+                                new MonsterStatusEffect(z.getKey(), z.getValue(), summonSkill.getId(), null, false),
                                 summonEffect.isPoison(),
                                 4000,
                                 false);

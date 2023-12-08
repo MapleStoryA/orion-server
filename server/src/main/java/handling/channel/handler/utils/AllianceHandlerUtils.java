@@ -28,13 +28,12 @@ import handling.world.alliance.AllianceManager;
 import handling.world.guild.GuildManager;
 import handling.world.guild.MapleGuild;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class AllianceHandlerUtils {
 
-    public static final void HandleAlliance(
-            final CInPacket slea, final MapleClient c, boolean denied) {
+    public static final void HandleAlliance(final InPacket slea, final MapleClient c, boolean denied) {
         if (c.getPlayer().getGuildId() <= 0) {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
@@ -46,8 +45,7 @@ public class AllianceHandlerUtils {
         }
         // log.info("Unhandled GuildAlliance \n" + slea.toString());
         byte op = slea.readByte();
-        if (c.getPlayer().getGuildRank() != 1
-                && op != 1) { // only updating doesn't need guild leader
+        if (c.getPlayer().getGuildRank() != 1 && op != 1) { // only updating doesn't need guild leader
             return;
         }
         if (op == 22) {
@@ -62,8 +60,7 @@ public class AllianceHandlerUtils {
             if (gs.getAllianceId() <= 0 || leaderid <= 0) {
                 return;
             }
-        } else if (leaderid > 0
-                || gs.getAllianceId() > 0) { // infact, if they have allianceid it's suspicious
+        } else if (leaderid > 0 || gs.getAllianceId() > 0) { // infact, if they have allianceid it's suspicious
             return;
         }
         if (denied) {
@@ -86,16 +83,13 @@ public class AllianceHandlerUtils {
                         && c.getPlayer().getAllianceRank() == 1
                         && leaderid == c.getPlayer().getId()) {
                     chr = c.getChannelServer().getPlayerStorage().getCharacterById(newGuild);
-                    if (chr != null
-                            && chr.getGuildId() > 0
-                            && AllianceManager.canInvite(gs.getAllianceId())) {
+                    if (chr != null && chr.getGuildId() > 0 && AllianceManager.canInvite(gs.getAllianceId())) {
                         chr.getClient()
                                 .getSession()
-                                .write(
-                                        MaplePacketCreator.sendAllianceInvite(
-                                                AllianceManager.getAlliance(gs.getAllianceId())
-                                                        .getName(),
-                                                c.getPlayer()));
+                                .write(MaplePacketCreator.sendAllianceInvite(
+                                        AllianceManager.getAlliance(gs.getAllianceId())
+                                                .getName(),
+                                        c.getPlayer()));
                         GuildManager.setInvitedId(chr.getGuildId(), gs.getAllianceId());
                     }
                 }
@@ -104,7 +98,8 @@ public class AllianceHandlerUtils {
                 // invited? but we dont care about that
                 inviteid = GuildManager.getInvitedId(c.getPlayer().getGuildId());
                 if (inviteid > 0) {
-                    if (!AllianceManager.addGuildToAlliance(inviteid, c.getPlayer().getGuildId())) {
+                    if (!AllianceManager.addGuildToAlliance(
+                            inviteid, c.getPlayer().getGuildId())) {
                         c.getPlayer().dropMessage(5, "An error occured when adding guild.");
                     }
                     GuildManager.setInvitedId(c.getPlayer().getGuildId(), 0);
@@ -131,14 +126,16 @@ public class AllianceHandlerUtils {
                 }
                 break;
             case 7: // change leader
-                if (c.getPlayer().getAllianceRank() == 1 && leaderid == c.getPlayer().getId()) {
+                if (c.getPlayer().getAllianceRank() == 1
+                        && leaderid == c.getPlayer().getId()) {
                     if (!AllianceManager.changeAllianceLeader(gs.getAllianceId(), slea.readInt())) {
                         c.getPlayer().dropMessage(5, "An error occured when changing leader.");
                     }
                 }
                 break;
             case 8: // title update
-                if (c.getPlayer().getAllianceRank() == 1 && leaderid == c.getPlayer().getId()) {
+                if (c.getPlayer().getAllianceRank() == 1
+                        && leaderid == c.getPlayer().getId()) {
                     String[] ranks = new String[5];
                     for (int i = 0; i < 5; i++) {
                         ranks[i] = slea.readMapleAsciiString();
@@ -148,8 +145,7 @@ public class AllianceHandlerUtils {
                 break;
             case 9:
                 if (c.getPlayer().getAllianceRank() <= 2) {
-                    if (!AllianceManager.changeAllianceRank(
-                            gs.getAllianceId(), slea.readInt(), slea.readByte())) {
+                    if (!AllianceManager.changeAllianceRank(gs.getAllianceId(), slea.readInt(), slea.readByte())) {
                         c.getPlayer().dropMessage(5, "An error occured when changing rank.");
                     }
                 }
@@ -172,8 +168,7 @@ public class AllianceHandlerUtils {
 
     public static final void DenyInvite(
             MapleClient c,
-            final MapleGuild
-                    gs) { // playername that invited -> guildname that was invited but we also don't
+            final MapleGuild gs) { // playername that invited -> guildname that was invited but we also don't
         // care
         final int inviteid = GuildManager.getInvitedId(c.getPlayer().getGuildId());
         if (inviteid > 0) {
@@ -182,8 +177,7 @@ public class AllianceHandlerUtils {
                 final MapleCharacter chr =
                         c.getChannelServer().getPlayerStorage().getCharacterById(newAlliance);
                 if (chr != null) {
-                    chr.dropMessage(
-                            5, gs.getName() + " Guild has rejected the Guild Union invitation.");
+                    chr.dropMessage(5, gs.getName() + " Guild has rejected the Guild Union invitation.");
                 }
                 GuildManager.setInvitedId(c.getPlayer().getGuildId(), 0);
             }

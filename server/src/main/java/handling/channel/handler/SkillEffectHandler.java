@@ -8,13 +8,13 @@ import constants.skills.BladeMaster;
 import handling.AbstractMaplePacketHandler;
 import server.TimerManager;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class SkillEffectHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         final int skill_id = packet.readInt();
         final byte level = packet.readByte();
@@ -42,9 +42,7 @@ public class SkillEffectHandler extends AbstractMaplePacketHandler {
             chr.setKeyDownSkill_Time(System.currentTimeMillis());
             chr.getMap()
                     .broadcastMessage(
-                            chr,
-                            MaplePacketCreator.skillEffect(chr, skill_id, level, flags, speed, unk),
-                            false);
+                            chr, MaplePacketCreator.skillEffect(chr, skill_id, level, flags, speed, unk), false);
         }
 
         if (skill_id == BladeMaster.FINAL_CUT) {
@@ -56,9 +54,7 @@ public class SkillEffectHandler extends AbstractMaplePacketHandler {
                                 public void run() {
                                     c.getPlayer()
                                             .getMap()
-                                            .broadcastMessage(
-                                                    MaplePacketCreator.skillCancel(
-                                                            c.getPlayer(), skill_id));
+                                            .broadcastMessage(MaplePacketCreator.skillCancel(c.getPlayer(), skill_id));
                                 }
                             },
                             1000);

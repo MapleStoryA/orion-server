@@ -5,13 +5,13 @@ import handling.AbstractMaplePacketHandler;
 import scripting.NPCConversationManager;
 import scripting.NPCScriptManager;
 import scripting.v1.game.helper.NpcTalkHelper;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class NpcTalkMoreHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         if (c.getLastNPCTalk() > System.currentTimeMillis() - 400) {
             return;
         }
@@ -19,8 +19,7 @@ public class NpcTalkMoreHandler extends AbstractMaplePacketHandler {
             NpcTalkHelper.proceedConversation(packet, c);
             return;
         }
-        final byte lastMsg =
-                packet.readByte(); // 00 (last msg type I think) 0F = dimensional mirror, 06 =
+        final byte lastMsg = packet.readByte(); // 00 (last msg type I think) 0F = dimensional mirror, 06 =
         // quiz, 07 = speed quiz
         byte action = 0;
         if (lastMsg != 7) {

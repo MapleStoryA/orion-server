@@ -1,7 +1,7 @@
 package tools.packet;
 
 import handling.SendPacketOpcode;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 public final class NettsPyramid {
 
@@ -12,7 +12,7 @@ public final class NettsPyramid {
      * pl0x
      */
     public static byte[] updatePyramidInfo(NettsInfoType type, int amount) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.ENERGY.getValue());
         packet.writeMapleAsciiString(getTypeValue(type));
         packet.writeMapleAsciiString(
@@ -21,10 +21,7 @@ public final class NettsPyramid {
     }
 
     private static String getTypeValue(NettsInfoType type) {
-        return "massacre_"
-                + (type == NettsInfoType.COOL
-                        ? "cool"
-                        : type == NettsInfoType.KILL ? "hit" : "miss");
+        return "massacre_" + (type == NettsInfoType.COOL ? "cool" : type == NettsInfoType.KILL ? "hit" : "miss");
     }
 
     public enum NettsInfoType {

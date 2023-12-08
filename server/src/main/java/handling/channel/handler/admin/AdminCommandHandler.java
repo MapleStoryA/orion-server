@@ -21,14 +21,13 @@ package handling.channel.handler.admin;
 
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 public final class AdminCommandHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
-        if (!c.getPlayer()
-                .isGameMaster()) { // if ( (signed int)CWvsContext::GetAdminLevel((void *)v294) > 2
+    public void handlePacket(InPacket packet, MapleClient c) {
+        if (!c.getPlayer().isGameMaster()) { // if ( (signed int)CWvsContext::GetAdminLevel((void *)v294) > 2
             // )
             return;
         }

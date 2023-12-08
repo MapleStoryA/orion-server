@@ -12,14 +12,14 @@ import server.life.MapleMonster;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.MonsterCarnivalPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MonsterCarnivalHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         if (c.getPlayer().getCarnivalParty() == null) {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
@@ -38,8 +38,7 @@ public class MonsterCarnivalHandler extends AbstractMaplePacketHandler {
             if (mons != null
                     && c.getPlayer()
                             .getMap()
-                            .makeCarnivalSpawn(
-                                    c.getPlayer().getCarnivalParty().getTeam(), mons, num)) {
+                            .makeCarnivalSpawn(c.getPlayer().getCarnivalParty().getTeam(), mons, num)) {
                 c.getPlayer().getCarnivalParty().useCP(c.getPlayer(), mobs.get(num).right);
                 c.getPlayer()
                         .CPUpdate(
@@ -56,9 +55,8 @@ public class MonsterCarnivalHandler extends AbstractMaplePacketHandler {
                 }
                 c.getPlayer()
                         .getMap()
-                        .broadcastMessage(
-                                MonsterCarnivalPacket.playerSummoned(
-                                        c.getPlayer().getName(), tab, num));
+                        .broadcastMessage(MonsterCarnivalPacket.playerSummoned(
+                                c.getPlayer().getName(), tab, num));
                 c.getSession().write(MaplePacketCreator.enableActions());
             } else {
                 c.getPlayer().dropMessage(5, "You may no longer summon the monster.");
@@ -72,8 +70,7 @@ public class MonsterCarnivalHandler extends AbstractMaplePacketHandler {
                 c.getSession().write(MaplePacketCreator.enableActions());
                 return;
             }
-            final MCSkill skil =
-                    MapleCarnivalFactory.getInstance().getSkill(skillid.get(num)); // ugh
+            final MCSkill skil = MapleCarnivalFactory.getInstance().getSkill(skillid.get(num)); // ugh
             // wtf
             if (skil == null || c.getPlayer().getAvailableCP() < skil.cpLoss) {
                 c.getPlayer().dropMessage(5, "You do not have the CP.");
@@ -121,9 +118,8 @@ public class MonsterCarnivalHandler extends AbstractMaplePacketHandler {
                 }
                 c.getPlayer()
                         .getMap()
-                        .broadcastMessage(
-                                MonsterCarnivalPacket.playerSummoned(
-                                        c.getPlayer().getName(), tab, num));
+                        .broadcastMessage(MonsterCarnivalPacket.playerSummoned(
+                                c.getPlayer().getName(), tab, num));
                 c.getSession().write(MaplePacketCreator.enableActions());
             } else {
                 c.getPlayer().dropMessage(5, "An error occurred.");
@@ -155,9 +151,8 @@ public class MonsterCarnivalHandler extends AbstractMaplePacketHandler {
                 }
                 c.getPlayer()
                         .getMap()
-                        .broadcastMessage(
-                                MonsterCarnivalPacket.playerSummoned(
-                                        c.getPlayer().getName(), tab, num));
+                        .broadcastMessage(MonsterCarnivalPacket.playerSummoned(
+                                c.getPlayer().getName(), tab, num));
                 c.getSession().write(MaplePacketCreator.enableActions());
             } else {
                 c.getPlayer().dropMessage(5, "You may no longer summon the being.");

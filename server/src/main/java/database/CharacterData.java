@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 @Setter
 @Getter
@@ -50,10 +50,6 @@ public class CharacterData implements Serializable {
     private int dojoRecord;
     private String pets;
     private int subCategory;
-    private int rank;
-    private int rankMove;
-    private int jobRank;
-    private int jobRankMove;
     private int marriageId;
     private int familyId;
     private int seniorId;
@@ -66,11 +62,7 @@ public class CharacterData implements Serializable {
     private int reborns;
     private int jumpLevel;
     private int jumpExp;
-    private int factionId;
     private int gainedMsi;
-    private int donatorPoints;
-    private int playerAutoReborn;
-    private int playerSuperDragon;
     private int agentPoints;
     private int contributedFP;
     private int sp;
@@ -87,7 +79,7 @@ public class CharacterData implements Serializable {
         return this.getJob() == MapleJob.GM.getId() || this.getJob() == MapleJob.SUPERGM.getId();
     }
 
-    public final void connectData(final COutPacket packet) {
+    public final void connectData(final OutPacket packet) {
         packet.writeShort(str); // str
         packet.writeShort(dex); // dex
         packet.writeShort(int_); // int

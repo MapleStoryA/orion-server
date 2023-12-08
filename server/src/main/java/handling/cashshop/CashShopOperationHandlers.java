@@ -11,31 +11,25 @@ import handling.world.WorldServer;
 import handling.world.helper.CharacterTransfer;
 import java.util.List;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.MTSCSPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class CashShopOperationHandlers {
 
-    public static void onLeaveCashShop(
-            final CInPacket slea, final MapleClient c, final MapleCharacter chr) {
+    public static void onLeaveCashShop(final InPacket slea, final MapleClient c, final MapleCharacter chr) {
         CashShopServer.getInstance().getPlayerStorage().deregisterPlayer(chr);
         c.updateLoginState(LoginState.LOGIN_SERVER_TRANSITION, c.getSessionIPAddress());
 
         try {
             WorldServer.getInstance()
                     .getMigrationService()
-                    .putMigrationEntry(
-                            new ServerMigration(
-                                    chr.getId(), c.getAccountData(), c.getSessionIPAddress()));
+                    .putMigrationEntry(new ServerMigration(chr.getId(), c.getAccountData(), c.getSessionIPAddress()));
             c.getSession()
-                    .write(
-                            MaplePacketCreator.getChannelChange(
-                                    Integer.parseInt(
-                                            WorldServer.getInstance()
-                                                    .getChannel(c.getChannel())
-                                                    .getPublicAddress()
-                                                    .split(":")[1])));
+                    .write(MaplePacketCreator.getChannelChange(Integer.parseInt(WorldServer.getInstance()
+                            .getChannel(c.getChannel())
+                            .getPublicAddress()
+                            .split(":")[1])));
         } catch (Exception ex) {
             log.error("Error leaving cash shop", ex);
         } finally {
@@ -45,10 +39,9 @@ public class CashShopOperationHandlers {
     }
 
     public static void onEnterCashShop(final int characterId, final MapleClient c) {
-        ServerMigration serverMigration =
-                WorldServer.getInstance()
-                        .getMigrationService()
-                        .getServerMigration(characterId, c.getSessionIPAddress());
+        ServerMigration serverMigration = WorldServer.getInstance()
+                .getMigrationService()
+                .getServerMigration(characterId, c.getSessionIPAddress());
         CharacterTransfer transfer = serverMigration.getCharacterTransfer();
         if (transfer == null) {
             log.error(

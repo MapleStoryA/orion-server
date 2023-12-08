@@ -6,13 +6,13 @@ import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import handling.AbstractMaplePacketHandler;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class SpawnPetHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         chr.updateTick(packet.readInt());
         byte position = packet.readByte();

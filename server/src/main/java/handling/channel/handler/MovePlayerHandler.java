@@ -7,13 +7,13 @@ import java.awt.*;
 import server.maps.MapleMap;
 import server.movement.MovePath;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MovePlayerHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null) {
             return;
@@ -24,17 +24,11 @@ public class MovePlayerHandler extends AbstractMaplePacketHandler {
         if (path != null && c.getPlayer().getMap() != null) {
             final MapleMap map = c.getPlayer().getMap();
             if (chr.isHidden()) {
-                c.getPlayer()
-                        .getMap()
-                        .broadcastGMMessage(
-                                chr, MaplePacketCreator.movePlayer(chr.getId(), path), false);
+                c.getPlayer().getMap().broadcastGMMessage(chr, MaplePacketCreator.movePlayer(chr.getId(), path), false);
             } else {
                 c.getPlayer()
                         .getMap()
-                        .broadcastMessage(
-                                c.getPlayer(),
-                                MaplePacketCreator.movePlayer(chr.getId(), path),
-                                false);
+                        .broadcastMessage(c.getPlayer(), MaplePacketCreator.movePlayer(chr.getId(), path), false);
             }
             updatePosition(path, chr, 0);
             final Point pos = chr.getPosition();

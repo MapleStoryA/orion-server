@@ -12,7 +12,7 @@ import handling.AbstractMaplePacketHandler;
 import handling.login.LoginInformationProvider;
 import server.MapleItemInformationProvider;
 import server.quest.MapleQuest;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.LoginPacket;
 
 @lombok.extern.slf4j.Slf4j
@@ -76,7 +76,7 @@ public class CreateCharHandler extends AbstractMaplePacketHandler {
     }
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         final String name = packet.readMapleAsciiString();
         final int JobType = packet.readInt(); // 1 = Adventurer, 0 = Cygnus, 2 =
         // Aran, 3 = evan

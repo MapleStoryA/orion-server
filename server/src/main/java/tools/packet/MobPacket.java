@@ -10,13 +10,13 @@ import java.util.Map;
 import server.life.MapleMonster;
 import server.life.MobSkill;
 import server.movement.MovePath;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MobPacket {
 
     public static byte[] damageMonster(final int oid, final long damage) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.DAMAGE_MONSTER.getValue());
         packet.writeInt(oid);
@@ -30,9 +30,8 @@ public class MobPacket {
         return packet.getPacket();
     }
 
-    public static byte[] damageFriendlyMob(
-            final MapleMonster mob, final long damage, final boolean display) {
-        COutPacket packet = new COutPacket();
+    public static byte[] damageFriendlyMob(final MapleMonster mob, final long damage, final boolean display) {
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.DAMAGE_MONSTER.getValue());
         packet.writeInt(mob.getObjectId());
@@ -57,7 +56,7 @@ public class MobPacket {
     }
 
     public static byte[] killMonster(final int oid, final int animation) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.KILL_MONSTER.getValue());
         packet.writeInt(oid);
@@ -71,7 +70,7 @@ public class MobPacket {
     }
 
     public static byte[] healMonster(final int oid, final int heal) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.DAMAGE_MONSTER.getValue());
         packet.writeInt(oid);
@@ -82,7 +81,7 @@ public class MobPacket {
     }
 
     public static byte[] showMonsterHP(int oid, int remhppercentage) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SHOW_MONSTER_HP.getValue());
         packet.writeInt(oid);
@@ -93,7 +92,7 @@ public class MobPacket {
     }
 
     public static byte[] showBossHP(final MapleMonster mob) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.BOSS_ENV.getValue());
         packet.write(5);
@@ -115,15 +114,8 @@ public class MobPacket {
     }
 
     public static byte[] moveMonster(
-            boolean useskill,
-            int skill,
-            int skill1,
-            int skill2,
-            int skill3,
-            int skill4,
-            int oid,
-            MovePath path) {
-        COutPacket packet = new COutPacket();
+            boolean useskill, int skill, int skill1, int skill2, int skill3, int skill4, int oid, MovePath path) {
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.MOVE_MONSTER.getValue());
         packet.writeInt(oid);
@@ -140,7 +132,7 @@ public class MobPacket {
     }
 
     public static byte[] spawnMonster(MapleMonster life, int spawnType, int effect, int link) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SPAWN_MONSTER.getValue());
         packet.writeInt(life.getObjectId());
@@ -166,7 +158,7 @@ public class MobPacket {
         return packet.getPacket();
     }
 
-    public static void addMonsterStatus(COutPacket packet, MapleMonster life) {
+    public static void addMonsterStatus(OutPacket packet, MapleMonster life) {
         if (life.getStati().size() <= 0) {
             life.addEmpty(); // not done yet lulz ok so we add it now for the lulz
         }
@@ -205,7 +197,7 @@ public class MobPacket {
     }
 
     public static byte[] controlMonster(MapleMonster life, boolean newSpawn, boolean aggro) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SPAWN_MONSTER_CONTROL.getValue());
         packet.write(aggro ? 2 : 1);
@@ -232,7 +224,7 @@ public class MobPacket {
     }
 
     public static byte[] stopControllingMonster(int oid) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SPAWN_MONSTER_CONTROL.getValue());
         packet.write(0);
@@ -245,7 +237,7 @@ public class MobPacket {
     }
 
     public static byte[] makeMonsterInvisible(MapleMonster life) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SPAWN_MONSTER_CONTROL.getValue());
         packet.write(0);
@@ -255,7 +247,7 @@ public class MobPacket {
     }
 
     public static byte[] makeMonsterReal(MapleMonster life) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SPAWN_MONSTER.getValue());
         packet.writeInt(life.getObjectId());
@@ -275,13 +267,8 @@ public class MobPacket {
     }
 
     public static byte[] moveMonsterResponse(
-            int objectid,
-            short moveid,
-            int currentMp,
-            boolean useSkills,
-            int skillId,
-            int skillLevel) {
-        COutPacket packet = new COutPacket();
+            int objectid, short moveid, int currentMp, boolean useSkills, int skillId, int skillLevel) {
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.MOVE_MONSTER_RESPONSE.getValue());
         packet.writeInt(objectid);
@@ -322,18 +309,15 @@ public class MobPacket {
         long mask = 0;
         boolean ignore_imm = false;
         for (MonsterStatus statup : statups) {
-            if (statup == MonsterStatus.MAGIC_DAMAGE_REFLECT
-                    || statup == MonsterStatus.WEAPON_DAMAGE_REFLECT) {
+            if (statup == MonsterStatus.MAGIC_DAMAGE_REFLECT || statup == MonsterStatus.WEAPON_DAMAGE_REFLECT) {
                 ignore_imm = true;
                 break;
             }
         }
         for (MonsterStatus statup : statups) {
-            if (statup != MonsterStatus.MAGIC_DAMAGE_REFLECT
-                    && statup != MonsterStatus.WEAPON_DAMAGE_REFLECT) {
+            if (statup != MonsterStatus.MAGIC_DAMAGE_REFLECT && statup != MonsterStatus.WEAPON_DAMAGE_REFLECT) {
                 if (ignore_imm) {
-                    if (statup == MonsterStatus.MAGIC_IMMUNITY
-                            || statup == MonsterStatus.WEAPON_IMMUNITY) {
+                    if (statup == MonsterStatus.MAGIC_IMMUNITY || statup == MonsterStatus.WEAPON_IMMUNITY) {
                         continue;
                     }
                 }
@@ -346,9 +330,8 @@ public class MobPacket {
         return mask;
     }
 
-    public static byte[] applyMonsterStatus(
-            final int oid, final MonsterStatus mse, int x, MobSkill skil) {
-        COutPacket packet = new COutPacket();
+    public static byte[] applyMonsterStatus(final int oid, final MonsterStatus mse, int x, MobSkill skil) {
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.APPLY_MONSTER_STATUS.getValue());
         packet.writeInt(oid);
@@ -358,10 +341,7 @@ public class MobPacket {
         packet.writeShort(x);
         packet.writeShort(skil.getSkillId());
         packet.writeShort(skil.getSkillLevel());
-        packet.writeShort(
-                mse.isEmpty()
-                        ? 1
-                        : 0); // might actually be the buffTime but it's not displayed anywhere
+        packet.writeShort(mse.isEmpty() ? 1 : 0); // might actually be the buffTime but it's not displayed anywhere
         packet.writeShort(0); // delay in ms
         packet.write(1); // size
         packet.write(1); // ? v97
@@ -370,7 +350,7 @@ public class MobPacket {
     }
 
     public static byte[] applyMonsterStatus(final int oid, final MonsterStatusEffect mse) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.APPLY_MONSTER_STATUS.getValue());
         packet.writeInt(oid);
@@ -385,9 +365,7 @@ public class MobPacket {
             packet.writeInt(mse.getSkill());
         }
         packet.writeShort(
-                mse.getStati().isEmpty()
-                        ? 1
-                        : 0); // might actually be the buffTime but it's not displayed anywhere
+                mse.getStati().isEmpty() ? 1 : 0); // might actually be the buffTime but it's not displayed anywhere
         packet.writeShort(0); // delay in ms
         packet.write(1); // size
         packet.write(1); // ? v97
@@ -396,11 +374,8 @@ public class MobPacket {
     }
 
     public static byte[] applyMonsterStatus(
-            final int oid,
-            final Map<MonsterStatus, Integer> stati,
-            final List<Integer> reflection,
-            MobSkill skil) {
-        COutPacket packet = new COutPacket();
+            final int oid, final Map<MonsterStatus, Integer> stati, final List<Integer> reflection, MobSkill skil) {
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.APPLY_MONSTER_STATUS.getValue());
         packet.writeInt(oid);
@@ -412,9 +387,7 @@ public class MobPacket {
             packet.writeShort(skil.getSkillId());
             packet.writeShort(skil.getSkillLevel());
             packet.writeShort(
-                    mse.getKey().isEmpty()
-                            ? 1
-                            : 0); // might actually be the buffTime but it's not displayed anywhere
+                    mse.getKey().isEmpty() ? 1 : 0); // might actually be the buffTime but it's not displayed anywhere
         }
         for (Integer ref : reflection) {
             packet.writeInt(ref);
@@ -433,7 +406,7 @@ public class MobPacket {
     }
 
     public static byte[] cancelMonsterStatus(int oid, MonsterStatus stat) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CANCEL_MONSTER_STATUS.getValue());
         packet.writeInt(oid);
@@ -446,7 +419,7 @@ public class MobPacket {
     }
 
     public static byte[] talkMonster(int oid, int itemId, String msg) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.TALK_MONSTER.getValue());
         packet.writeInt(oid);
@@ -463,7 +436,7 @@ public class MobPacket {
     }
 
     public static byte[] removeTalkMonster(int oid) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.REMOVE_TALK_MONSTER.getValue());
         packet.writeInt(oid);

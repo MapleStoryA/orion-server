@@ -4,13 +4,13 @@ import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import server.life.MapleMonster;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class HypnotizeDamageHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         final MapleMonster mob_from = chr.getMap().getMonsterByOid(packet.readInt()); // From
         packet.skip(4); // Player ID

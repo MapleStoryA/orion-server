@@ -3,25 +3,22 @@ package handling.channel.handler.admin;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 /** @author kevintjuh93 */
 @lombok.extern.slf4j.Slf4j
 public class AdminChatHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public final void handlePacket(CInPacket slea, MapleClient c) {
-        if (!c.getPlayer()
-                .isGameMaster()) { // if ( (signed int)CWvsContext::GetAdminLevel((void *)v294) > 2
+    public final void handlePacket(InPacket slea, MapleClient c) {
+        if (!c.getPlayer().isGameMaster()) { // if ( (signed int)CWvsContext::GetAdminLevel((void *)v294) > 2
             // )
             return;
         }
         byte mode = slea.readByte();
         // not saving slides...
-        byte[] packet =
-                MaplePacketCreator.serverNotice(
-                        slea.readByte(),
-                        slea.readMapleAsciiString()); // maybe I should make a check for the
+        byte[] packet = MaplePacketCreator.serverNotice(
+                slea.readByte(), slea.readMapleAsciiString()); // maybe I should make a check for the
         // slea.readByte()... but I just hope gm's
         // don't fuck things up :)
         switch (mode) {

@@ -4,13 +4,13 @@ import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class FollowRequestHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter tt = c.getPlayer().getMap().getCharacterById(packet.readInt());
         if (packet.readByte() > 0) {
             // 1 when changing map

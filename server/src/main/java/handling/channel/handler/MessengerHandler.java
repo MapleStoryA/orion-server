@@ -8,13 +8,13 @@ import handling.world.helper.MapleMessenger;
 import handling.world.helper.MapleMessengerCharacter;
 import handling.world.messenger.MessengerManager;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MessengerHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         String input;
         MapleMessenger messenger = c.getPlayer().getMessenger();
 
@@ -25,8 +25,7 @@ public class MessengerHandler extends AbstractMaplePacketHandler {
                     if (messengerid == 0) { // create
                         c.getPlayer()
                                 .setMessenger(
-                                        MessengerManager.createMessenger(
-                                                new MapleMessengerCharacter(c.getPlayer())));
+                                        MessengerManager.createMessenger(new MapleMessengerCharacter(c.getPlayer())));
                     } else { // join
                         messenger = MessengerManager.getMessenger(messengerid);
                         if (messenger != null) {
@@ -45,8 +44,7 @@ public class MessengerHandler extends AbstractMaplePacketHandler {
                 break;
             case 0x02: // exit
                 if (messenger != null) {
-                    final MapleMessengerCharacter messengerplayer =
-                            new MapleMessengerCharacter(c.getPlayer());
+                    final MapleMessengerCharacter messengerplayer = new MapleMessengerCharacter(c.getPlayer());
                     MessengerManager.leaveMessenger(messenger.getId(), messengerplayer);
                     c.getPlayer().setMessenger(null);
                 }
@@ -67,22 +65,19 @@ public class MessengerHandler extends AbstractMaplePacketHandler {
                                 c.getSession().write(MaplePacketCreator.messengerNote(input, 4, 1));
                                 target.getClient()
                                         .getSession()
-                                        .write(
-                                                MaplePacketCreator.messengerInvite(
-                                                        c.getPlayer().getName(),
-                                                        messenger.getId()));
+                                        .write(MaplePacketCreator.messengerInvite(
+                                                c.getPlayer().getName(), messenger.getId()));
                             } else {
                                 c.getSession().write(MaplePacketCreator.messengerNote(input, 4, 0));
                             }
                         } else {
                             c.getSession()
-                                    .write(
-                                            MaplePacketCreator.messengerChat(
-                                                    c.getPlayer().getName()
-                                                            + " : "
-                                                            + target.getName()
-                                                            + " is already using Maple"
-                                                            + " Messenger."));
+                                    .write(MaplePacketCreator.messengerChat(
+                                            c.getPlayer().getName()
+                                                    + " : "
+                                                    + target.getName()
+                                                    + " is already using Maple"
+                                                    + " Messenger."));
                         }
                     } else {
                         if (WorldServer.getInstance().isConnected(input)) {
@@ -106,9 +101,8 @@ public class MessengerHandler extends AbstractMaplePacketHandler {
                     if (target.getMessenger() != null) {
                         target.getClient()
                                 .getSession()
-                                .write(
-                                        MaplePacketCreator.messengerNote(
-                                                c.getPlayer().getName(), 5, 0));
+                                .write(MaplePacketCreator.messengerNote(
+                                        c.getPlayer().getName(), 5, 0));
                     }
                 } else { // Other channel
                     if (!c.getPlayer().isGameMaster()) {

@@ -6,7 +6,7 @@ import handling.AbstractMaplePacketHandler;
 import java.util.ArrayList;
 import java.util.List;
 import server.maps.FieldLimitType;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.MTSCSPacket;
 
 @lombok.extern.slf4j.Slf4j
@@ -37,7 +37,7 @@ public class TeleportRockAddMapHandler extends AbstractMaplePacketHandler {
     }
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         final byte addrem = packet.readByte();
         final byte vip = packet.readByte();

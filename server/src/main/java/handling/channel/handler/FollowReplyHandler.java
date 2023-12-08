@@ -4,13 +4,13 @@ import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class FollowReplyHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         if (c.getPlayer().getFollowId() > 0 && c.getPlayer().getFollowId() == packet.readInt()) {
             MapleCharacter tt =
                     c.getPlayer().getMap().getCharacterById(c.getPlayer().getFollowId());
@@ -28,9 +28,8 @@ public class FollowReplyHandler extends AbstractMaplePacketHandler {
                     c.getPlayer().setFollowInitiator(true);
                     c.getPlayer()
                             .getMap()
-                            .broadcastMessage(
-                                    MaplePacketCreator.followEffect(
-                                            tt.getId(), c.getPlayer().getId(), null));
+                            .broadcastMessage(MaplePacketCreator.followEffect(
+                                    tt.getId(), c.getPlayer().getId(), null));
                 } else {
                     c.getPlayer().setFollowId(0);
                     tt.setFollowId(0);

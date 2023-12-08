@@ -2,13 +2,13 @@ package handling.login.handler;
 
 import client.MapleClient;
 import handling.MaplePacketHandler;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class InvalidPacketRequestHandler implements MaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         c.getSession().close();
     }
 

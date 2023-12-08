@@ -17,13 +17,13 @@ import server.MapleStatEffect;
 import server.life.MapleMonster;
 import server.maps.FieldLimitType;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class SpecialMoveHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, final MapleClient c) {
+    public void handlePacket(InPacket packet, final MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null || !chr.isAlive() || chr.getMap() == null) {
             c.getSession().write(MaplePacketCreator.enableActions());
@@ -38,8 +38,7 @@ public class SpecialMoveHandler extends AbstractMaplePacketHandler {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
         }
-        if (chr.getSkillLevel(skill)
-                <= -1 /*|| chr.getSkillLevel(skill) != skillLevel*/) { // TODO: Fix this
+        if (chr.getSkillLevel(skill) <= -1 /*|| chr.getSkillLevel(skill) != skillLevel*/) { // TODO: Fix this
             if (!GameConstants.isMulungSkill(skill_id) && !GameConstants.isPyramidSkill(skill_id)) {
                 c.getSession().close();
                 return;
@@ -60,8 +59,7 @@ public class SpecialMoveHandler extends AbstractMaplePacketHandler {
                 }
             }
         }
-        final MapleStatEffect effect =
-                skill.getEffect(chr.getSkillLevel(GameConstants.getLinkedAranSkill(skill_id)));
+        final MapleStatEffect effect = skill.getEffect(chr.getSkillLevel(GameConstants.getLinkedAranSkill(skill_id)));
 
         if (effect.getCooldown() > 0 && !chr.isGameMaster()) {
             if (chr.skillisCooling(skill_id)) {
@@ -69,8 +67,7 @@ public class SpecialMoveHandler extends AbstractMaplePacketHandler {
                 return;
             }
             if (skill_id != 5221006) { // Battleship
-                c.getSession()
-                        .write(MaplePacketCreator.skillCooldown(skill_id, effect.getCooldown()));
+                c.getSession().write(MaplePacketCreator.skillCooldown(skill_id, effect.getCooldown()));
                 chr.addCooldown(skill_id, System.currentTimeMillis(), effect.getCooldown() * 1000L);
             }
         }
@@ -86,21 +83,16 @@ public class SpecialMoveHandler extends AbstractMaplePacketHandler {
                 } else {
                     c.getPlayer().removeItem(4006000, -1);
                 }
-                MonsterStatusEffect eff =
-                        new MonsterStatusEffect(
-                                MonsterStatus.DOOM,
-                                (int) c.getPlayer().getPosition().getX(),
-                                skill_id,
-                                null,
-                                false);
+                MonsterStatusEffect eff = new MonsterStatusEffect(
+                        MonsterStatus.DOOM, (int) c.getPlayer().getPosition().getX(), skill_id, null, false);
                 for (int i = 0; i < mobsCount; i++) {
                     List<MapleMonster> mobs = c.getPlayer().getMap().getAllMonster();
                     if (mobs == null || mobs.size() <= 0) {
                         break;
                     }
-                    MapleMonster monster = c.getPlayer().getMap().getAllMonster().get(i);
-                    monster.applyStatus(
-                            c.getPlayer(), eff, false, 10000 + (1000 * skillLevel), false);
+                    MapleMonster monster =
+                            c.getPlayer().getMap().getAllMonster().get(i);
+                    monster.applyStatus(c.getPlayer(), eff, false, 10000 + (1000 * skillLevel), false);
                     Collections.shuffle(mobs);
                 }
                 c.enableActions();
@@ -126,16 +118,13 @@ public class SpecialMoveHandler extends AbstractMaplePacketHandler {
                 chr.getMap()
                         .broadcastMessage(
                                 chr,
-                                MaplePacketCreator.showBuffeffect(
-                                        chr.getId(), skill_id, 1, packet.readByte()),
+                                MaplePacketCreator.showBuffeffect(chr.getId(), skill_id, 1, packet.readByte()),
                                 chr.getPosition());
                 c.getSession().write(MaplePacketCreator.enableActions());
                 break;
             case 4341003:
                 chr.setKeyDownSkill_Time(0);
-                chr.getMap()
-                        .broadcastMessage(
-                                chr, MaplePacketCreator.skillCancel(chr, skill_id), false);
+                chr.getMap().broadcastMessage(chr, MaplePacketCreator.skillCancel(chr, skill_id), false);
                 break;
             case 22141003: // Evan Slow
                 // c.enableActions();
@@ -152,8 +141,7 @@ public class SpecialMoveHandler extends AbstractMaplePacketHandler {
                         c.getSession().write(MaplePacketCreator.enableActions());
                     }
                 } else {
-                    final int mountid =
-                            MapleStatEffect.parseMountInfo(c.getPlayer(), skill.getId());
+                    final int mountid = MapleStatEffect.parseMountInfo(c.getPlayer(), skill.getId());
                     if (mountid != 0
                             && mountid != GameConstants.getMountItem(skill.getId())
                             && !c.getPlayer().isGameMaster()

@@ -27,7 +27,7 @@ import server.shops.AbstractPlayerStore;
 import server.shops.IMaplePlayerShop;
 import tools.KoreanDateUtil;
 import tools.Triple;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class PacketHelper {
@@ -53,7 +53,7 @@ public class PacketHelper {
         return ((time * 10000000) + FT_UT_OFFSET);
     }
 
-    public static void addQuestInfo(final COutPacket packet, final MapleCharacter chr) {
+    public static void addQuestInfo(final OutPacket packet, final MapleCharacter chr) {
         final List<MapleQuestStatus> started = chr.getStartedQuests();
         packet.writeShort(started.size());
 
@@ -73,7 +73,7 @@ public class PacketHelper {
         }
     }
 
-    public static final void addSkillInfo(final COutPacket packet, final MapleCharacter chr) {
+    public static final void addSkillInfo(final OutPacket packet, final MapleCharacter chr) {
         final Map<ISkill, SkillEntry> skills = chr.getSkills();
         packet.writeShort(skills.size());
         for (final Entry<ISkill, SkillEntry> skill : skills.entrySet()) {
@@ -86,32 +86,27 @@ public class PacketHelper {
         }
     }
 
-    public static final void addCoolDownInfo(final COutPacket packet, final MapleCharacter chr) {
+    public static final void addCoolDownInfo(final OutPacket packet, final MapleCharacter chr) {
         final List<MapleCoolDownValueHolder> cd = chr.getCooldowns();
         packet.writeShort(cd.size());
         for (final MapleCoolDownValueHolder cooling : cd) {
             packet.writeInt(cooling.getSkillId());
-            packet.writeShort(
-                    (int)
-                                    (cooling.getLength()
-                                            + cooling.getStartTime()
-                                            - System.currentTimeMillis())
-                            / 1000);
+            packet.writeShort((int) (cooling.getLength() + cooling.getStartTime() - System.currentTimeMillis()) / 1000);
         }
     }
 
-    public static final void addRocksInfo(final COutPacket packet, final MapleCharacter chr) {
+    public static final void addRocksInfo(final OutPacket packet, final MapleCharacter chr) {
         chr.getRegTeleportRock().encode(packet);
         chr.getVipTeleportRock().encode(packet);
     }
 
-    public static final void addMonsterBookInfo(final COutPacket packet, final MapleCharacter chr) {
+    public static final void addMonsterBookInfo(final OutPacket packet, final MapleCharacter chr) {
         packet.writeInt(chr.getMonsterBookCover());
         packet.write(0);
         chr.getMonsterBook().addCardPacket(packet);
     }
 
-    public static final void addRingInfo(final COutPacket packet, final MapleCharacter chr) {
+    public static final void addRingInfo(final OutPacket packet, final MapleCharacter chr) {
         packet.writeShort(0);
         // 01 00 = size
         // 01 00 00 00 = gametype?
@@ -152,7 +147,7 @@ public class PacketHelper {
         }
     }
 
-    public static void addInventoryInfo(COutPacket packet, MapleCharacter chr) {
+    public static void addInventoryInfo(OutPacket packet, MapleCharacter chr) {
         packet.writeInt(chr.getMeso()); // mesos
         packet.write(chr.getInventory(MapleInventoryType.EQUIP).getSlotLimit()); // equip slots
         packet.write(chr.getInventory(MapleInventoryType.USE).getSlotLimit()); // use slots
@@ -214,7 +209,7 @@ public class PacketHelper {
         packet.write(0); // start of extended slots
     }
 
-    public static final void addCharStats(final COutPacket packet, final MapleCharacter chr) {
+    public static final void addCharStats(final OutPacket packet, final MapleCharacter chr) {
         packet.writeInt(chr.getId()); // character id
         packet.writeAsciiString(chr.getName(), 13);
         packet.write(chr.getGender()); // gender (0 = male, 1 = female)
@@ -255,8 +250,7 @@ public class PacketHelper {
         packet.writeShort(chr.getSubCategoryField()); // 1 here = db
     }
 
-    public static final void addCharLook(
-            final COutPacket packet, final MapleCharacter chr, final boolean mega) {
+    public static final void addCharLook(final OutPacket packet, final MapleCharacter chr, final boolean mega) {
         packet.write(chr.getGender());
         packet.write(chr.getSkinColor());
         packet.writeInt(chr.getFace());
@@ -335,7 +329,7 @@ public class PacketHelper {
         }
     }
 
-    public static final void addExpirationTime(final COutPacket packet, final long time) {
+    public static final void addExpirationTime(final OutPacket packet, final long time) {
         packet.write(0);
         packet.writeShort(1408); // 80 05
         if (time != -1) {
@@ -348,15 +342,12 @@ public class PacketHelper {
     }
 
     public static final void addItemInfo(
-            final COutPacket packet,
-            final IItem item,
-            final boolean zeroPosition,
-            final boolean leaveOut) {
+            final OutPacket packet, final IItem item, final boolean zeroPosition, final boolean leaveOut) {
         addItemInfo(packet, item, zeroPosition, leaveOut, false);
     }
 
     public static final void addItemInfo(
-            final COutPacket packet,
+            final OutPacket packet,
             final IItem item,
             final boolean zeroPosition,
             final boolean leaveOut,
@@ -435,15 +426,14 @@ public class PacketHelper {
                 packet.writeShort(item.getQuantity());
                 packet.writeMapleAsciiString(item.getOwner());
                 packet.writeShort(item.getFlag());
-                if (GameConstants.isThrowingStar(item.getItemId())
-                        || GameConstants.isBullet(item.getItemId())) {
+                if (GameConstants.isThrowingStar(item.getItemId()) || GameConstants.isBullet(item.getItemId())) {
                     packet.writeLong(item.getInventoryId() <= 0 ? -1 : item.getInventoryId());
                 }
             }
         }
     }
 
-    public static final void addAnnounceBox(final COutPacket packet, final MapleCharacter chr) {
+    public static final void addAnnounceBox(final OutPacket packet, final MapleCharacter chr) {
         if (chr.getPlayerShop() != null
                 && chr.getPlayerShop().isOwner(chr)
                 && chr.getPlayerShop().getShopType() != 1
@@ -454,7 +444,7 @@ public class PacketHelper {
         }
     }
 
-    public static final void addInteraction(final COutPacket packet, IMaplePlayerShop shop) {
+    public static final void addInteraction(final OutPacket packet, IMaplePlayerShop shop) {
         packet.write(shop.getGameType());
         packet.writeInt(((AbstractPlayerStore) shop).getObjectId());
         packet.writeMapleAsciiString(shop.getDescription());
@@ -469,7 +459,7 @@ public class PacketHelper {
         }
     }
 
-    public static final void addCharacterInfo(final COutPacket packet, final MapleCharacter chr) {
+    public static final void addCharacterInfo(final OutPacket packet, final MapleCharacter chr) {
         packet.writeLong(-1);
         packet.write(0);
         addCharStats(packet, chr);
@@ -493,14 +483,11 @@ public class PacketHelper {
         packet.writeInt(0); // PQ rank
     }
 
-    public static final void addPetItemInfo(
-            final COutPacket packet, final IItem item, final MaplePet pet) {
+    public static final void addPetItemInfo(final OutPacket packet, final IItem item, final MaplePet pet) {
         if (item == null) {
             packet.writeLong(getKoreanTimestamp((long) (System.currentTimeMillis() * 1.5)));
         } else {
-            addExpirationTime(
-                    packet,
-                    item.getExpiration() <= System.currentTimeMillis() ? -1 : item.getExpiration());
+            addExpirationTime(packet, item.getExpiration() <= System.currentTimeMillis() ? -1 : item.getExpiration());
         }
         packet.writeAsciiString(pet.getName(), 13);
         packet.write(pet.getLevel());
@@ -509,16 +496,11 @@ public class PacketHelper {
         if (item == null) {
             packet.writeLong(getKoreanTimestamp((long) (System.currentTimeMillis() * 1.5)));
         } else {
-            addExpirationTime(
-                    packet,
-                    item.getExpiration() <= System.currentTimeMillis() ? -1 : item.getExpiration());
+            addExpirationTime(packet, item.getExpiration() <= System.currentTimeMillis() ? -1 : item.getExpiration());
         }
         packet.writeShort(0);
         packet.writeShort(0); // pet flags
-        packet.writeInt(
-                (pet.getPetItemId() == 5000054 && pet.getSecondsLeft() > 0)
-                        ? pet.getSecondsLeft()
-                        : 0);
+        packet.writeInt((pet.getPetItemId() == 5000054 && pet.getSecondsLeft() > 0) ? pet.getSecondsLeft() : 0);
         packet.writeShort(0);
     }
 }

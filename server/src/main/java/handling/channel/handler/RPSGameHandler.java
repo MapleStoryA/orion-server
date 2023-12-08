@@ -4,13 +4,13 @@ import client.MapleClient;
 import client.events.RockPaperScissors;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class RPSGameHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         if (packet.available() == 0 || !c.getPlayer().getMap().containsNPC(9000019)) {
             if (c.getPlayer().getRPS() != null) {
                 c.getPlayer().getRPS().dispose(c);
@@ -31,8 +31,7 @@ public class RPSGameHandler extends AbstractMaplePacketHandler {
                 }
                 break;
             case 1: // answer
-                if (c.getPlayer().getRPS() == null
-                        || !c.getPlayer().getRPS().answer(c, packet.readByte())) {
+                if (c.getPlayer().getRPS() == null || !c.getPlayer().getRPS().answer(c, packet.readByte())) {
                     c.getSession().write(MaplePacketCreator.getRPSMode((byte) 0x0D, -1, -1, -1));
                 }
                 break;

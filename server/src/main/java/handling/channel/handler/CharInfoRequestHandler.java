@@ -4,14 +4,14 @@ import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.PetPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class CharInfoRequestHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         c.getPlayer().updateTick(packet.readInt());
 
         int objectid = packet.readInt();
@@ -25,17 +25,12 @@ public class CharInfoRequestHandler extends AbstractMaplePacketHandler {
                 if (c.getPlayer().getId() == objectid) {
                     if (player.getPet(0) != null) {
                         c.getSession()
-                                .write(
-                                        PetPacket.loadExceptionList(
-                                                player.getId(),
-                                                player.getPet(0).getUniqueId(),
-                                                ""));
+                                .write(PetPacket.loadExceptionList(
+                                        player.getId(), player.getPet(0).getUniqueId(), ""));
                     }
                 }
                 c.getSession()
-                        .write(
-                                MaplePacketCreator.charInfo(
-                                        player, c.getPlayer().getId() == objectid));
+                        .write(MaplePacketCreator.charInfo(player, c.getPlayer().getId() == objectid));
             }
         }
     }

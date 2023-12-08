@@ -12,13 +12,13 @@ import handling.world.helper.CharacterTransfer;
 import handling.world.helper.MapleMessengerCharacter;
 import handling.world.messenger.MessengerManager;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class EnterCashShopHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
 
         if (!chr.isAlive()
@@ -44,8 +44,7 @@ public class EnterCashShopHandler extends AbstractMaplePacketHandler {
         chr.getMap().removePlayer(chr);
         c.setPlayer(null);
 
-        ServerMigration entry =
-                new ServerMigration(chr.getId(), c.getAccountData(), c.getSessionIPAddress());
+        ServerMigration entry = new ServerMigration(chr.getId(), c.getAccountData(), c.getSessionIPAddress());
         entry.setCharacterTransfer(new CharacterTransfer(chr));
         entry.addBuffsToStorage(chr.getId(), chr.getAllBuffs());
         entry.addCooldownsToStorage(chr.getId(), chr.getCooldowns());
@@ -53,11 +52,7 @@ public class EnterCashShopHandler extends AbstractMaplePacketHandler {
         WorldServer.getInstance().getMigrationService().putMigrationEntry(entry);
 
         c.getSession()
-                .write(
-                        MaplePacketCreator.getChannelChange(
-                                Integer.parseInt(
-                                        CashShopServer.getInstance()
-                                                .getPublicAddress()
-                                                .split(":")[1])));
+                .write(MaplePacketCreator.getChannelChange(Integer.parseInt(
+                        CashShopServer.getInstance().getPublicAddress().split(":")[1])));
     }
 }

@@ -10,13 +10,13 @@ import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.quest.MapleQuest;
 import tools.Pair;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UseItemQuestHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         final short slot = packet.readShort();
         final int itemId = packet.readInt();
         final IItem item = c.getPlayer().getInventory(MapleInventoryType.ETC).getItem(slot);
@@ -37,18 +37,13 @@ public class UseItemQuestHandler extends AbstractMaplePacketHandler {
                 }
             }
         }
-        if (quest != null
-                && found
-                && item != null
-                && item.getQuantity() > 0
-                && item.getItemId() == itemId) {
+        if (quest != null && found && item != null && item.getQuantity() > 0 && item.getItemId() == itemId) {
             final int newData = packet.readInt();
             final MapleQuestStatus stats = c.getPlayer().getQuestNoAdd(quest);
             if (stats != null && stats.getStatus() == 1) {
                 stats.setCustomData(String.valueOf(newData));
                 c.getPlayer().updateQuest(stats, true);
-                MapleInventoryManipulator.removeFromSlot(
-                        c, MapleInventoryType.ETC, slot, (short) 1, false);
+                MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.ETC, slot, (short) 1, false);
             }
         }
     }

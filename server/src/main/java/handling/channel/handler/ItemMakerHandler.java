@@ -19,7 +19,7 @@ import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class ItemMakerHandler extends AbstractMaplePacketHandler {
@@ -147,10 +147,7 @@ public class ItemMakerHandler extends AbstractMaplePacketHandler {
         s = stats.get("randStat");
         if (s > 0) {
             final boolean success = Randomizer.nextBoolean();
-            final int str = item.getStr(),
-                    dex = item.getDex(),
-                    luk = item.getLuk(),
-                    int_ = item.getInt();
+            final int str = item.getStr(), dex = item.getDex(), luk = item.getLuk(), int_ = item.getInt();
             if (str > 0) {
                 item.setStr((short) (success ? (str + s) : (str - s)));
             }
@@ -179,8 +176,7 @@ public class ItemMakerHandler extends AbstractMaplePacketHandler {
         return items.get(Randomizer.nextInt(items.size()));
     }
 
-    private static final int checkRequiredNRemove(
-            final MapleClient c, final List<Pair<Integer, Integer>> recipe) {
+    private static final int checkRequiredNRemove(final MapleClient c, final List<Pair<Integer, Integer>> recipe) {
         int itemid = 0;
         for (final Pair<Integer, Integer> p : recipe) {
             if (!c.getPlayer().haveItem(p.getLeft(), p.getRight(), false, true)) {
@@ -204,231 +200,45 @@ public class ItemMakerHandler extends AbstractMaplePacketHandler {
     }
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         final int makerType = packet.readInt();
 
         switch (makerType) {
-            case 1:
-                { // Gem
-                    final int toCreate = packet.readInt();
+            case 1: { // Gem
+                final int toCreate = packet.readInt();
 
-                    if (GameConstants.isGem(toCreate)) {
-                        final GemCreateEntry gem =
-                                ItemMakerFactory.getInstance().getGemInfo(toCreate);
-                        if (gem == null) {
-                            return;
-                        }
-                        if (!hasSkill(c, gem.getReqSkillLevel())) {
-                            return; // H4x
-                        }
-                        if (c.getPlayer().getMeso() < gem.getCost()) {
-                            return; // H4x
-                        }
-                        final int randGemGiven = getRandomGem(gem.getRandomReward());
-
-                        if (c.getPlayer()
-                                .getInventory(GameConstants.getInventoryType(randGemGiven))
-                                .isFull()) {
-                            return; // We'll do handling for this later
-                        }
-                        final int taken = checkRequiredNRemove(c, gem.getReqRecipes());
-                        if (taken == 0) {
-                            return; // We'll do handling for this later
-                        }
-                        c.getPlayer().gainMeso(-gem.getCost(), false);
-                        MapleInventoryManipulator.addById(
-                                c,
-                                randGemGiven,
-                                (byte) (taken == randGemGiven ? 9 : 1),
-                                "Made by Gem "
-                                        + toCreate
-                                        + " on "
-                                        + DateHelper.getCurrentReadableDate()); // Gem
-                        // is
-                        // always
-                        // 1
-
-                        c.getSession().write(MaplePacketCreator.ItemMaker_Success(true));
-                        c.getPlayer()
-                                .getMap()
-                                .broadcastMessage(
-                                        c.getPlayer(),
-                                        MaplePacketCreator.ItemMaker_Success_3rdParty(
-                                                c.getPlayer().getId(), true),
-                                        false);
-                    } else if (GameConstants.isOtherGem(toCreate)) {
-                        // non-gems that are gems
-                        // stim and numEnchanter always 0
-                        final GemCreateEntry gem =
-                                ItemMakerFactory.getInstance().getGemInfo(toCreate);
-                        if (gem == null) {
-                            return;
-                        }
-                        if (!hasSkill(c, gem.getReqSkillLevel())) {
-                            return; // H4x
-                        }
-                        if (c.getPlayer().getMeso() < gem.getCost()) {
-                            return; // H4x
-                        }
-
-                        if (c.getPlayer()
-                                .getInventory(GameConstants.getInventoryType(toCreate))
-                                .isFull()) {
-                            return; // We'll do handling for this later
-                        }
-                        if (checkRequiredNRemove(c, gem.getReqRecipes()) == 0) {
-                            return; // We'll do handling for this later
-                        }
-                        c.getPlayer().gainMeso(-gem.getCost(), false);
-                        if (GameConstants.getInventoryType(toCreate) == MapleInventoryType.EQUIP) {
-                            final IItem ee =
-                                    MapleItemInformationProvider.getInstance()
-                                            .getEquipById(toCreate);
-                            MapleInventoryManipulator.addbyItem(c, ee);
-                        } else {
-                            MapleInventoryManipulator.addById(
-                                    c,
-                                    toCreate,
-                                    (byte) 1,
-                                    "Made by Gem "
-                                            + toCreate
-                                            + " on "
-                                            + DateHelper.getCurrentReadableDate());
-                        }
-
-                        c.getSession().write(MaplePacketCreator.ItemMaker_Success(true));
-                        c.getPlayer()
-                                .getMap()
-                                .broadcastMessage(
-                                        c.getPlayer(),
-                                        MaplePacketCreator.ItemMaker_Success_3rdParty(
-                                                c.getPlayer().getId(), true),
-                                        false);
-                    } else {
-                        final boolean stimulator = packet.readByte() > 0;
-                        final int numEnchanter = packet.readInt();
-
-                        final ItemMakerCreateEntry create =
-                                ItemMakerFactory.getInstance().getCreateInfo(toCreate);
-                        if (create == null) {
-                            return;
-                        }
-                        if (numEnchanter > create.getTUC()) {
-                            return; // h4x
-                        }
-                        if (!hasSkill(c, create.getReqSkillLevel())) {
-                            return; // H4x
-                        }
-                        if (c.getPlayer().getMeso() < create.getCost()) {
-                            return; // H4x
-                        }
-                        if (c.getPlayer()
-                                .getInventory(GameConstants.getInventoryType(toCreate))
-                                .isFull()) {
-                            return; // We'll do handling for this later
-                        }
-                        if (checkRequiredNRemove(c, create.getReqItems()) == 0) {
-                            return; // We'll do handling for this later
-                        }
-                        c.getPlayer().gainMeso(-create.getCost(), false);
-
-                        final MapleItemInformationProvider ii =
-                                MapleItemInformationProvider.getInstance();
-                        final Equip toGive = (Equip) ii.getEquipById(toCreate);
-
-                        if (stimulator || numEnchanter > 0) {
-                            if (c.getPlayer().haveItem(create.getStimulator(), 1, false, true)) {
-                                ii.randomizeStats(toGive);
-                                MapleInventoryManipulator.removeById(
-                                        c,
-                                        MapleInventoryType.ETC,
-                                        create.getStimulator(),
-                                        1,
-                                        false,
-                                        false);
-                            }
-                            for (int i = 0; i < numEnchanter; i++) {
-                                final int enchant = packet.readInt();
-                                if (c.getPlayer().haveItem(enchant, 1, false, true)) {
-                                    final Map<String, Byte> stats = ii.getItemMakeStats(enchant);
-                                    if (stats != null) {
-                                        addEnchantStats(stats, toGive);
-                                        MapleInventoryManipulator.removeById(
-                                                c,
-                                                MapleInventoryType.ETC,
-                                                enchant,
-                                                1,
-                                                false,
-                                                false);
-                                    }
-                                }
-                            }
-                        }
-                        MapleInventoryManipulator.addbyItem(c, toGive);
-                        c.getSession().write(MaplePacketCreator.ItemMaker_Success(true));
-                        c.getPlayer()
-                                .getMap()
-                                .broadcastMessage(
-                                        c.getPlayer(),
-                                        MaplePacketCreator.ItemMaker_Success_3rdParty(
-                                                c.getPlayer().getId(), true),
-                                        false);
-                    }
-                    break;
-                }
-            case 3:
-                { // Making Crystals
-                    final int etc = packet.readInt(); // todo success rate?
-                    if (c.getPlayer().haveItem(etc, 100, false, true)) {
-                        MapleInventoryManipulator.addById(
-                                c,
-                                getCreateCrystal(etc),
-                                (short) 1,
-                                "Made by Maker "
-                                        + etc
-                                        + " on "
-                                        + DateHelper.getCurrentReadableDate());
-                        MapleInventoryManipulator.removeById(
-                                c, MapleInventoryType.ETC, etc, 100, false, false);
-
-                        c.getSession().write(MaplePacketCreator.ItemMaker_Success(true));
-                        c.getPlayer()
-                                .getMap()
-                                .broadcastMessage(
-                                        c.getPlayer(),
-                                        MaplePacketCreator.ItemMaker_Success_3rdParty(
-                                                c.getPlayer().getId(), true),
-                                        false);
-                    }
-                    break;
-                }
-            case 4:
-                { // Disassembling EQ.
-                    final int itemId = packet.readInt();
-                    c.getPlayer().updateTick(packet.readInt());
-                    final byte slot = (byte) packet.readInt();
-
-                    final IItem toUse =
-                            c.getPlayer().getInventory(MapleInventoryType.EQUIP).getItem(slot);
-                    if (toUse == null || toUse.getItemId() != itemId || toUse.getQuantity() < 1) {
+                if (GameConstants.isGem(toCreate)) {
+                    final GemCreateEntry gem = ItemMakerFactory.getInstance().getGemInfo(toCreate);
+                    if (gem == null) {
                         return;
                     }
-                    final MapleItemInformationProvider ii =
-                            MapleItemInformationProvider.getInstance();
-
-                    if (!ii.isDropRestricted(itemId) && !ii.isAccountShared(itemId)) {
-                        final int[] toGive = getCrystal(itemId, ii.getReqLevel(itemId));
-                        MapleInventoryManipulator.addById(
-                                c,
-                                toGive[0],
-                                (byte) toGive[1],
-                                "Made by disassemble "
-                                        + itemId
-                                        + " on "
-                                        + DateHelper.getCurrentReadableDate());
-                        MapleInventoryManipulator.removeFromSlot(
-                                c, MapleInventoryType.EQUIP, slot, (byte) 1, false);
+                    if (!hasSkill(c, gem.getReqSkillLevel())) {
+                        return; // H4x
                     }
+                    if (c.getPlayer().getMeso() < gem.getCost()) {
+                        return; // H4x
+                    }
+                    final int randGemGiven = getRandomGem(gem.getRandomReward());
+
+                    if (c.getPlayer()
+                            .getInventory(GameConstants.getInventoryType(randGemGiven))
+                            .isFull()) {
+                        return; // We'll do handling for this later
+                    }
+                    final int taken = checkRequiredNRemove(c, gem.getReqRecipes());
+                    if (taken == 0) {
+                        return; // We'll do handling for this later
+                    }
+                    c.getPlayer().gainMeso(-gem.getCost(), false);
+                    MapleInventoryManipulator.addById(
+                            c,
+                            randGemGiven,
+                            (byte) (taken == randGemGiven ? 9 : 1),
+                            "Made by Gem " + toCreate + " on " + DateHelper.getCurrentReadableDate()); // Gem
+                    // is
+                    // always
+                    // 1
+
                     c.getSession().write(MaplePacketCreator.ItemMaker_Success(true));
                     c.getPlayer()
                             .getMap()
@@ -437,8 +247,162 @@ public class ItemMakerHandler extends AbstractMaplePacketHandler {
                                     MaplePacketCreator.ItemMaker_Success_3rdParty(
                                             c.getPlayer().getId(), true),
                                     false);
-                    break;
+                } else if (GameConstants.isOtherGem(toCreate)) {
+                    // non-gems that are gems
+                    // stim and numEnchanter always 0
+                    final GemCreateEntry gem = ItemMakerFactory.getInstance().getGemInfo(toCreate);
+                    if (gem == null) {
+                        return;
+                    }
+                    if (!hasSkill(c, gem.getReqSkillLevel())) {
+                        return; // H4x
+                    }
+                    if (c.getPlayer().getMeso() < gem.getCost()) {
+                        return; // H4x
+                    }
+
+                    if (c.getPlayer()
+                            .getInventory(GameConstants.getInventoryType(toCreate))
+                            .isFull()) {
+                        return; // We'll do handling for this later
+                    }
+                    if (checkRequiredNRemove(c, gem.getReqRecipes()) == 0) {
+                        return; // We'll do handling for this later
+                    }
+                    c.getPlayer().gainMeso(-gem.getCost(), false);
+                    if (GameConstants.getInventoryType(toCreate) == MapleInventoryType.EQUIP) {
+                        final IItem ee =
+                                MapleItemInformationProvider.getInstance().getEquipById(toCreate);
+                        MapleInventoryManipulator.addbyItem(c, ee);
+                    } else {
+                        MapleInventoryManipulator.addById(
+                                c,
+                                toCreate,
+                                (byte) 1,
+                                "Made by Gem " + toCreate + " on " + DateHelper.getCurrentReadableDate());
+                    }
+
+                    c.getSession().write(MaplePacketCreator.ItemMaker_Success(true));
+                    c.getPlayer()
+                            .getMap()
+                            .broadcastMessage(
+                                    c.getPlayer(),
+                                    MaplePacketCreator.ItemMaker_Success_3rdParty(
+                                            c.getPlayer().getId(), true),
+                                    false);
+                } else {
+                    final boolean stimulator = packet.readByte() > 0;
+                    final int numEnchanter = packet.readInt();
+
+                    final ItemMakerCreateEntry create =
+                            ItemMakerFactory.getInstance().getCreateInfo(toCreate);
+                    if (create == null) {
+                        return;
+                    }
+                    if (numEnchanter > create.getTUC()) {
+                        return; // h4x
+                    }
+                    if (!hasSkill(c, create.getReqSkillLevel())) {
+                        return; // H4x
+                    }
+                    if (c.getPlayer().getMeso() < create.getCost()) {
+                        return; // H4x
+                    }
+                    if (c.getPlayer()
+                            .getInventory(GameConstants.getInventoryType(toCreate))
+                            .isFull()) {
+                        return; // We'll do handling for this later
+                    }
+                    if (checkRequiredNRemove(c, create.getReqItems()) == 0) {
+                        return; // We'll do handling for this later
+                    }
+                    c.getPlayer().gainMeso(-create.getCost(), false);
+
+                    final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+                    final Equip toGive = (Equip) ii.getEquipById(toCreate);
+
+                    if (stimulator || numEnchanter > 0) {
+                        if (c.getPlayer().haveItem(create.getStimulator(), 1, false, true)) {
+                            ii.randomizeStats(toGive);
+                            MapleInventoryManipulator.removeById(
+                                    c, MapleInventoryType.ETC, create.getStimulator(), 1, false, false);
+                        }
+                        for (int i = 0; i < numEnchanter; i++) {
+                            final int enchant = packet.readInt();
+                            if (c.getPlayer().haveItem(enchant, 1, false, true)) {
+                                final Map<String, Byte> stats = ii.getItemMakeStats(enchant);
+                                if (stats != null) {
+                                    addEnchantStats(stats, toGive);
+                                    MapleInventoryManipulator.removeById(
+                                            c, MapleInventoryType.ETC, enchant, 1, false, false);
+                                }
+                            }
+                        }
+                    }
+                    MapleInventoryManipulator.addbyItem(c, toGive);
+                    c.getSession().write(MaplePacketCreator.ItemMaker_Success(true));
+                    c.getPlayer()
+                            .getMap()
+                            .broadcastMessage(
+                                    c.getPlayer(),
+                                    MaplePacketCreator.ItemMaker_Success_3rdParty(
+                                            c.getPlayer().getId(), true),
+                                    false);
                 }
+                break;
+            }
+            case 3: { // Making Crystals
+                final int etc = packet.readInt(); // todo success rate?
+                if (c.getPlayer().haveItem(etc, 100, false, true)) {
+                    MapleInventoryManipulator.addById(
+                            c,
+                            getCreateCrystal(etc),
+                            (short) 1,
+                            "Made by Maker " + etc + " on " + DateHelper.getCurrentReadableDate());
+                    MapleInventoryManipulator.removeById(c, MapleInventoryType.ETC, etc, 100, false, false);
+
+                    c.getSession().write(MaplePacketCreator.ItemMaker_Success(true));
+                    c.getPlayer()
+                            .getMap()
+                            .broadcastMessage(
+                                    c.getPlayer(),
+                                    MaplePacketCreator.ItemMaker_Success_3rdParty(
+                                            c.getPlayer().getId(), true),
+                                    false);
+                }
+                break;
+            }
+            case 4: { // Disassembling EQ.
+                final int itemId = packet.readInt();
+                c.getPlayer().updateTick(packet.readInt());
+                final byte slot = (byte) packet.readInt();
+
+                final IItem toUse =
+                        c.getPlayer().getInventory(MapleInventoryType.EQUIP).getItem(slot);
+                if (toUse == null || toUse.getItemId() != itemId || toUse.getQuantity() < 1) {
+                    return;
+                }
+                final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+
+                if (!ii.isDropRestricted(itemId) && !ii.isAccountShared(itemId)) {
+                    final int[] toGive = getCrystal(itemId, ii.getReqLevel(itemId));
+                    MapleInventoryManipulator.addById(
+                            c,
+                            toGive[0],
+                            (byte) toGive[1],
+                            "Made by disassemble " + itemId + " on " + DateHelper.getCurrentReadableDate());
+                    MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.EQUIP, slot, (byte) 1, false);
+                }
+                c.getSession().write(MaplePacketCreator.ItemMaker_Success(true));
+                c.getPlayer()
+                        .getMap()
+                        .broadcastMessage(
+                                c.getPlayer(),
+                                MaplePacketCreator.ItemMaker_Success_3rdParty(
+                                        c.getPlayer().getId(), true),
+                                false);
+                break;
+            }
         }
     }
 }

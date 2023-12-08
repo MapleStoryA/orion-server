@@ -3,13 +3,13 @@ package tools.packet;
 import client.MapleJob;
 import client.MapleQuestStatus;
 import handling.SendPacketOpcode;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class CWVsContextOnMessagePackets {
 
     public static byte[] onQuestRecordMessage(final MapleQuestStatus quest) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
         packet.write(1);
@@ -20,8 +20,7 @@ public class CWVsContextOnMessagePackets {
                 packet.writeZeroBytes(10);
                 break;
             case 1:
-                packet.writeMapleAsciiString(
-                        quest.getCustomData() != null ? quest.getCustomData() : "");
+                packet.writeMapleAsciiString(quest.getCustomData() != null ? quest.getCustomData() : "");
                 break;
             case 2:
                 packet.writeLong(PacketHelper.getTime(System.currentTimeMillis()));
@@ -32,7 +31,7 @@ public class CWVsContextOnMessagePackets {
     }
 
     public static byte[] onIncGPMessage(int points) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
         packet.write(MessageTypes.OnIncGPMessage);
         packet.writeInt(points);
@@ -41,7 +40,7 @@ public class CWVsContextOnMessagePackets {
     }
 
     public static byte[] onGiveBuffMessage(int itemId) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
         packet.write(MessageTypes.OnOnGiveBuffMessage);
         packet.writeInt(itemId);
@@ -50,7 +49,7 @@ public class CWVsContextOnMessagePackets {
     }
 
     public static byte[] onIncSpMessage(MapleJob job, int amount) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
         packet.write(MessageTypes.OnIncSPMessage);
         packet.writeShort(job.getId());
@@ -65,7 +64,7 @@ public class CWVsContextOnMessagePackets {
      * @return
      */
     public static byte[] onIncPOPMessage(int amount) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
         packet.write(MessageTypes.OnIncPOPMessage);
         packet.writeInt(amount);

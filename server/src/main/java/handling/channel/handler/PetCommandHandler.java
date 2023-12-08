@@ -9,14 +9,14 @@ import client.inventory.PetDataFactory;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import tools.Randomizer;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.PetPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class PetCommandHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         final byte petIndex = chr.getPetIndex((int) packet.readLong());
         if (petIndex == -1) {
@@ -51,17 +51,12 @@ public class PetCommandHandler extends AbstractMaplePacketHandler {
                     chr.getMap().broadcastMessage(PetPacket.showPetLevelUp(chr, petIndex));
                 }
                 c.getSession()
-                        .write(
-                                PetPacket.updatePet(
-                                        pet,
-                                        chr.getInventory(MapleInventoryType.CASH)
-                                                .getItem((byte) pet.getInventoryPosition())));
+                        .write(PetPacket.updatePet(
+                                pet,
+                                chr.getInventory(MapleInventoryType.CASH).getItem((byte) pet.getInventoryPosition())));
             }
         }
         chr.getMap()
-                .broadcastMessage(
-                        chr,
-                        PetPacket.commandResponse(chr.getId(), command, petIndex, success, false),
-                        true);
+                .broadcastMessage(chr, PetPacket.commandResponse(chr.getId(), command, petIndex, success, false), true);
     }
 }

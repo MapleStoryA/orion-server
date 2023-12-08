@@ -14,14 +14,14 @@ import server.cashshop.CashItemFactory;
 import server.cashshop.CashItemInfo;
 import server.cashshop.CashShopCoupon;
 import tools.Pair;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 import tools.packet.MTSCSPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class CouponCodeHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         final boolean gift = packet.readShort() > 0;
         if (gift) {
             c.getSession().write(MTSCSPacket.sendCouponFail(c, 0x30));
@@ -51,8 +51,7 @@ public class CouponCodeHandler extends AbstractMaplePacketHandler {
             return;
         }
         // maple point, cs item, normal, mesos
-        final Pair<Pair<Integer, Integer>, Pair<List<IItem>, Integer>> cscsize =
-                CashShopCoupon.getSize(rewards);
+        final Pair<Pair<Integer, Integer>, Pair<List<IItem>, Integer>> cscsize = CashShopCoupon.getSize(rewards);
         if ((c.getPlayer().getCSPoints(2) + cscsize.getLeft().getLeft()) < 0) {
             c.getPlayer().dropMessage(1, "You have too much Maple Points.");
             CashShopOperationHandlers.doCSPackets(c);
@@ -69,7 +68,8 @@ public class CouponCodeHandler extends AbstractMaplePacketHandler {
             CashShopOperationHandlers.doCSPackets(c);
             return;
         }
-        if (!CashShopOperationHandlers.haveSpace(c.getPlayer(), cscsize.getRight().getLeft())) {
+        if (!CashShopOperationHandlers.haveSpace(
+                c.getPlayer(), cscsize.getRight().getLeft())) {
             c.getSession().write(MTSCSPacket.sendCSFail(0x19));
             CashShopOperationHandlers.doCSPackets(c);
             return;
@@ -82,61 +82,47 @@ public class CouponCodeHandler extends AbstractMaplePacketHandler {
         final List<Pair<Integer, Integer>> togiveII = new ArrayList<>();
         for (final CashCouponData reward : rewards) {
             switch (reward.getType()) {
-                case 0:
-                    { // MaplePoints
-                        if (reward.getData() > 0) {
-                            c.getPlayer().modifyCSPoints(2, reward.getData(), false);
-                            MaplePoints = reward.getData();
-                        }
-                        break;
+                case 0: { // MaplePoints
+                    if (reward.getData() > 0) {
+                        c.getPlayer().modifyCSPoints(2, reward.getData(), false);
+                        MaplePoints = reward.getData();
                     }
-                case 1:
-                    { // Cash Shop Items
-                        final CashItemInfo item =
-                                CashItemFactory.getInstance().getItem(reward.getData());
-                        if (item != null) {
-                            final IItem itemz = c.getPlayer().getCashInventory().toItem(item, "");
-                            if (itemz != null && itemz.getSN() > 0) {
-                                togiveCS.put(item.getSN(), itemz);
-                                c.getPlayer().getCashInventory().addToInventory(itemz);
-                            }
+                    break;
+                }
+                case 1: { // Cash Shop Items
+                    final CashItemInfo item = CashItemFactory.getInstance().getItem(reward.getData());
+                    if (item != null) {
+                        final IItem itemz = c.getPlayer().getCashInventory().toItem(item, "");
+                        if (itemz != null && itemz.getSN() > 0) {
+                            togiveCS.put(item.getSN(), itemz);
+                            c.getPlayer().getCashInventory().addToInventory(itemz);
                         }
-                        break;
                     }
-                case 2:
-                    { // Normal Items
-                        if (reward.getQuantity() <= Short.MAX_VALUE && reward.getQuantity() > 0) {
-                            final byte pos =
-                                    MapleInventoryManipulator.addId(
-                                            c,
-                                            reward.getData(),
-                                            (short) reward.getQuantity(),
-                                            "MapleSystem");
-                            if (pos >= 0) { // Failed
-                                togiveII.add(new Pair<>(reward.getData(), reward.getQuantity()));
-                            }
+                    break;
+                }
+                case 2: { // Normal Items
+                    if (reward.getQuantity() <= Short.MAX_VALUE && reward.getQuantity() > 0) {
+                        final byte pos = MapleInventoryManipulator.addId(
+                                c, reward.getData(), (short) reward.getQuantity(), "MapleSystem");
+                        if (pos >= 0) { // Failed
+                            togiveII.add(new Pair<>(reward.getData(), reward.getQuantity()));
                         }
-                        break;
                     }
-                case 3:
-                    { // Mesos
-                        if (reward.getData() > 0) {
-                            c.getPlayer().gainMeso(reward.getData(), false);
-                            mesos = reward.getData();
-                        }
-                        break;
+                    break;
+                }
+                case 3: { // Mesos
+                    if (reward.getData() > 0) {
+                        c.getPlayer().gainMeso(reward.getData(), false);
+                        mesos = reward.getData();
                     }
+                    break;
+                }
             }
         }
         CashShopCoupon.deleteCouponData(c.getPlayer().getName(), code);
         c.getSession()
-                .write(
-                        MTSCSPacket.showCouponRedeemedItem(
-                                c.getAccountData().getId(),
-                                MaplePoints,
-                                togiveCS,
-                                togiveII,
-                                mesos));
+                .write(MTSCSPacket.showCouponRedeemedItem(
+                        c.getAccountData().getId(), MaplePoints, togiveCS, togiveII, mesos));
         CashShopOperationHandlers.doCSPackets(c);
     }
 }

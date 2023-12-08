@@ -7,13 +7,13 @@ import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class FaceExpressionHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         final int emote = packet.readInt();
         if (emote > 7) {
@@ -21,14 +21,12 @@ public class FaceExpressionHandler extends AbstractMaplePacketHandler {
             final MapleInventoryType type = GameConstants.getInventoryType(emoteid);
             if (chr.getInventory(type).findById(emoteid) == null) {
                 chr.getCheatTracker()
-                        .registerOffense(
-                                CheatingOffense.USING_UNAVAILABLE_ITEM, Integer.toString(emoteid));
+                        .registerOffense(CheatingOffense.USING_UNAVAILABLE_ITEM, Integer.toString(emoteid));
                 return;
             }
         }
         if (emote > 0 && chr != null && chr.getMap() != null) { // O_o
-            chr.getMap()
-                    .broadcastMessage(chr, MaplePacketCreator.facialExpression(chr, emote), false);
+            chr.getMap().broadcastMessage(chr, MaplePacketCreator.facialExpression(chr, emote), false);
         }
     }
 }

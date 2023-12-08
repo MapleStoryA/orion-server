@@ -2,20 +2,20 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import client.commands.v1.CommandProcessor;
+import client.commands.CommandProcessor;
 import constants.ServerConstants.CommandType;
 import handling.AbstractMaplePacketHandler;
 import handling.world.alliance.AllianceManager;
 import handling.world.buddy.BuddyManager;
 import handling.world.guild.GuildManager;
 import handling.world.party.PartyManager;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class PartyChatHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         c.getPlayer().updateTick(packet.readInt());
         MapleCharacter chr = c.getPlayer();
         final int type = packet.readByte();
@@ -51,8 +51,7 @@ public class PartyChatHandler extends AbstractMaplePacketHandler {
                 if (chr.getGuildId() <= 0) {
                     break;
                 }
-                AllianceManager.allianceChat(
-                        chr.getGuildId(), chr.getName(), chr.getId(), chattext);
+                AllianceManager.allianceChat(chr.getGuildId(), chr.getName(), chr.getId(), chattext);
                 break;
             case 6:
                 if (chr.getParty() == null || chr.getParty().getExpeditionId() <= 0) {

@@ -1,7 +1,7 @@
 package client;
 
 import tools.Randomizer;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class PlayerRandomStream {
@@ -14,8 +14,7 @@ public class PlayerRandomStream {
 
     public PlayerRandomStream() {
         final int v4 = 5;
-        this.CRand32__Seed(
-                Randomizer.nextLong(), 1170746341L * v4 - 755606699, 1170746341L * v4 - 755606699);
+        this.CRand32__Seed(Randomizer.nextLong(), 1170746341L * v4 - 755606699, 1170746341L * v4 - 755606699);
     }
 
     public final void CRand32__Seed(final long s1, final long s2, final long s3) {
@@ -44,8 +43,7 @@ public class PlayerRandomStream {
         this.seed3_ = v10 & 0xffffffffL;
         this.seed1_ = v8 & 0xffffffffL;
         this.seed2_ = v9 & 0xffffffffL;
-        return (v8 ^ v9 ^ v10)
-                & 0xffffffffL; // to be confirmed, I am not experienced in converting signed >
+        return (v8 ^ v9 ^ v10) & 0xffffffffL; // to be confirmed, I am not experienced in converting signed >
         // unsigned
     }
 
@@ -94,7 +92,7 @@ public class PlayerRandomStream {
         return (v8 ^ v9 ^ v10) & 0xffffffffL;
     }
 
-    public final void connectData(final COutPacket packet) {
+    public final void connectData(final OutPacket packet) {
         long v5 = CRand32__Random();
         long s2 = CRand32__Random();
         long v6 = CRand32__Random();

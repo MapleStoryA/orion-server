@@ -8,7 +8,7 @@ import handling.SendPacketOpcode;
 import java.awt.*;
 import server.movement.MovePath;
 import tools.MaplePacketCreator;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class PetPacket {
@@ -16,7 +16,7 @@ public class PetPacket {
     public static final byte[] ITEM_MAGIC = new byte[] {(byte) 0x80, 5};
 
     public static final byte[] updatePet(final MaplePet pet, final IItem item) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.INVENTORY_OPERATION.getValue());
         packet.write(0);
@@ -36,7 +36,7 @@ public class PetPacket {
     }
 
     public static final byte[] removePet(final MapleCharacter chr, final int slot) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SPAWN_PET.getValue());
         packet.writeInt(chr.getId());
@@ -46,7 +46,7 @@ public class PetPacket {
         return packet.getPacket();
     }
 
-    public static void addPetInfo(final COutPacket packet, MaplePet pet, boolean showpet) {
+    public static void addPetInfo(final OutPacket packet, MaplePet pet, boolean showpet) {
         packet.write(1);
         if (showpet) {
             packet.write(0);
@@ -62,11 +62,8 @@ public class PetPacket {
     }
 
     public static final byte[] showPet(
-            final MapleCharacter chr,
-            final MaplePet pet,
-            final boolean remove,
-            final boolean hunger) {
-        final COutPacket packet = new COutPacket();
+            final MapleCharacter chr, final MaplePet pet, final boolean remove, final boolean hunger) {
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SPAWN_PET.getValue());
         packet.writeInt(chr.getId());
@@ -90,7 +87,7 @@ public class PetPacket {
     }
 
     public static final byte[] removePet(final int cid, final int index) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SPAWN_PET.getValue());
         packet.writeInt(cid);
@@ -100,7 +97,7 @@ public class PetPacket {
     }
 
     public static byte[] movePet(int cid, byte slot, MovePath moves) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.MOVE_PET.getValue());
         packet.writeInt(cid);
         packet.write(slot);
@@ -108,9 +105,8 @@ public class PetPacket {
         return packet.getPacket();
     }
 
-    public static final byte[] petChat(
-            final int cid, final int un, final String text, final byte slot) {
-        final COutPacket packet = new COutPacket();
+    public static final byte[] petChat(final int cid, final int un, final String text, final byte slot) {
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.PET_CHAT.getValue());
         packet.writeInt(cid);
@@ -123,12 +119,8 @@ public class PetPacket {
     }
 
     public static final byte[] commandResponse(
-            final int cid,
-            final byte command,
-            final byte slot,
-            final boolean success,
-            final boolean food) {
-        final COutPacket packet = new COutPacket();
+            final int cid, final byte command, final byte slot, final boolean success, final boolean food) {
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.PET_COMMAND.getValue());
         packet.writeInt(cid);
@@ -145,7 +137,7 @@ public class PetPacket {
     }
 
     public static final byte[] showOwnPetLevelUp(final byte index) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SHOW_ITEM_GAIN_INCHAT.getValue());
         packet.write(4);
@@ -156,7 +148,7 @@ public class PetPacket {
     }
 
     public static final byte[] showPetLevelUp(final MapleCharacter chr, final byte index) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SHOW_FOREIGN_EFFECT.getValue());
         packet.writeInt(chr.getId());
@@ -172,7 +164,7 @@ public class PetPacket {
     }
 
     public static final byte[] petStatUpdate_Empty() {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.UPDATE_STATS.getValue());
         packet.write(0);
@@ -182,7 +174,7 @@ public class PetPacket {
     }
 
     public static final byte[] petStatUpdate(final MapleCharacter chr) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.UPDATE_STATS.getValue());
         packet.write(0);
@@ -204,9 +196,8 @@ public class PetPacket {
         return packet.getPacket();
     }
 
-    public static final byte[] loadExceptionList(
-            final int cid, final int petId, final String data) {
-        final COutPacket packet = new COutPacket();
+    public static final byte[] loadExceptionList(final int cid, final int petId, final String data) {
+        final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.PET_EXCEPTION_LIST.getValue());
         packet.writeInt(cid);
@@ -231,7 +222,7 @@ public class PetPacket {
     }
 
     public static byte[] petAutoHP(int itemId) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.PET_AUTO_HP.getValue());
         packet.writeInt(itemId);
@@ -240,7 +231,7 @@ public class PetPacket {
     }
 
     public static byte[] petAutoMP(int itemId) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.PET_AUTO_MP.getValue());
         packet.writeInt(itemId);

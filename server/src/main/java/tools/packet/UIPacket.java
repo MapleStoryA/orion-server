@@ -2,13 +2,13 @@ package tools.packet;
 
 import handling.SendPacketOpcode;
 import tools.MaplePacketCreator;
-import tools.data.output.COutPacket;
+import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UIPacket {
 
     public static final byte[] EarnTitleMsg(final String msg) {
-        final COutPacket packet = new COutPacket();
+        final OutPacket packet = new OutPacket();
 
         // "You have acquired the Pig's Weakness skill."
         packet.writeShort(SendPacketOpcode.TOP_MSG.getValue());
@@ -18,7 +18,7 @@ public class UIPacket {
     }
 
     public static byte[] getSPMsg(byte sp, short job) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
         packet.write(4);
@@ -29,7 +29,7 @@ public class UIPacket {
     }
 
     public static byte[] getGPMsg(int itemid) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         // Temporary transformed as a dragon, even with the skill ......
         packet.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
@@ -40,7 +40,7 @@ public class UIPacket {
     }
 
     public static byte[] getTopMsg(String msg) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.TOP_MSG.getValue());
         packet.writeMapleAsciiString(msg);
@@ -49,7 +49,7 @@ public class UIPacket {
     }
 
     public static byte[] getStatusMsg(int itemid) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         // Temporary transformed as a dragon, even with the skill ......
         packet.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
@@ -72,7 +72,7 @@ public class UIPacket {
     }
 
     public static final byte[] AranTutInstructionalBalloon(final String data) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SHOW_ITEM_GAIN_INCHAT.getValue());
         packet.write(23);
@@ -83,7 +83,7 @@ public class UIPacket {
     }
 
     public static final byte[] ShowWZEffect(final String data) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SHOW_ITEM_GAIN_INCHAT.getValue());
         packet.write(18);
@@ -93,7 +93,7 @@ public class UIPacket {
     }
 
     public static byte[] summonHelper(boolean summon) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SUMMON_HINT.getValue());
         packet.write(summon ? 1 : 0);
@@ -102,7 +102,7 @@ public class UIPacket {
     }
 
     public static byte[] summonMessage(int type) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SUMMON_HINT_MSG.getValue());
         packet.write(1);
@@ -113,7 +113,7 @@ public class UIPacket {
     }
 
     public static byte[] summonMessage(String message) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SUMMON_HINT_MSG.getValue());
         packet.write(0);
@@ -126,7 +126,7 @@ public class UIPacket {
     }
 
     public static byte[] IntroLock(boolean enable) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CYGNUS_INTRO_LOCK.getValue());
         packet.write(enable ? 1 : 0);
@@ -136,7 +136,7 @@ public class UIPacket {
     }
 
     public static byte[] IntroDisableUI(boolean enable) {
-        COutPacket packet = new COutPacket();
+        OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CYGNUS_INTRO_DISABLE_UI.getValue());
         packet.write(enable ? 1 : 0);

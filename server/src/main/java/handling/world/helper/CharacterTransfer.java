@@ -54,10 +54,8 @@ public class CharacterTransfer {
     private int MaplePoints;
     private int mount_item_id;
     private int mount_exp;
-    private int points;
     private int marriageId;
     private int battleshipHP;
-    private int reborns;
     private int remainingAp;
     private int maxHp;
     private int maxMp;
@@ -66,7 +64,6 @@ public class CharacterTransfer {
     private byte channel;
     private byte dojoRecord;
     private byte gender;
-    private byte gmLevel;
     private byte guildRank;
     private byte allianceRank;
     private byte fairyExp;
@@ -154,8 +151,6 @@ public class CharacterTransfer {
         this.setGuild_id(chr.getGuildId());
         this.setGuildRank(chr.getGuildRank());
         this.setAllianceRank(chr.getAllianceRank());
-        this.setGmLevel((byte) chr.getGMLevel());
-        this.setPoints(chr.getPoints());
         this.setFairyExp(chr.getFairyExp());
         this.setPetStore(chr.getPetStores());
         this.setSubcategory(chr.getSubCategoryField());
@@ -170,16 +165,14 @@ public class CharacterTransfer {
             }
             if (pet != null) {
                 uneq = true;
-                this.getPetStore()[i] =
-                        (byte) Math.max(this.getPetStore()[i], pet.getInventoryPosition());
+                this.getPetStore()[i] = (byte) Math.max(this.getPetStore()[i], pet.getInventoryPosition());
             }
         }
         if (uneq) {
             chr.unequipAllPets();
         }
         for (final BuddyListEntry qs : chr.getBuddyList().getBuddies()) {
-            this.getBuddies()
-                    .add(new BuddyListEntry(qs.getName(), qs.getCharacterId(), qs.getGroup(), -1));
+            this.getBuddies().add(new BuddyListEntry(qs.getName(), qs.getCharacterId(), qs.getGroup(), -1));
         }
         for (Map.Entry<ReportType, Integer> ss : chr.getReports().entrySet()) {
             this.getReports().put(ss.getKey().i, ss.getValue());
@@ -202,7 +195,8 @@ public class CharacterTransfer {
 
         this.setInfoQuest(chr.getInfoQuest_Map());
 
-        for (final Map.Entry<MapleQuest, MapleQuestStatus> qs : chr.getQuest_Map().entrySet()) {
+        for (final Map.Entry<MapleQuest, MapleQuestStatus> qs :
+                chr.getQuest_Map().entrySet()) {
             this.getQuest().put(qs.getKey().getId(), qs.getValue());
         }
 

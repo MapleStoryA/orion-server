@@ -19,13 +19,13 @@ import server.maps.MapleMapItem;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class PetLootHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null) {
             return;
@@ -41,8 +41,7 @@ public class PetLootHandler extends AbstractMaplePacketHandler {
         chr.updateTick(packet.readInt());
         packet.skip(1); // [4] Zero, [4] Seems to be tickcount, [1] Always zero
         final Point Client_Reportedpos = packet.readPos();
-        final MapleMapObject ob =
-                chr.getMap().getMapObject(packet.readInt(), MapleMapObjectType.ITEM);
+        final MapleMapObject ob = chr.getMap().getMapObject(packet.readInt(), MapleMapObjectType.ITEM);
 
         if (ob == null || pet == null) {
             return;
@@ -67,16 +66,13 @@ public class PetLootHandler extends AbstractMaplePacketHandler {
             if (!mapitem.isPlayerDrop()
                     && mapitem.getDropType() == 1
                     && mapitem.getOwner() != chr.getId()
-                    && (chr.getParty() == null
-                            || chr.getParty().getMemberById(mapitem.getOwner()) == null)) {
+                    && (chr.getParty() == null || chr.getParty().getMemberById(mapitem.getOwner()) == null)) {
                 c.getSession().write(MaplePacketCreator.enableActions());
                 return;
             }
             final double Distance = Client_Reportedpos.distanceSq(mapitem.getPosition());
             if (Distance > 2500) {
-                chr.getCheatTracker()
-                        .registerOffense(
-                                CheatingOffense.PET_ITEMVAC_CLIENT, String.valueOf(Distance));
+                chr.getCheatTracker().registerOffense(CheatingOffense.PET_ITEMVAC_CLIENT, String.valueOf(Distance));
 
                 // } else if (pet.getPos().distanceSq(mapitem.getPosition()) >
                 // 90000.0) {
@@ -106,9 +102,7 @@ public class PetLootHandler extends AbstractMaplePacketHandler {
                     for (final MapleCharacter m : toGive) {
                         m.gainMeso(
                                 mapitem.getMeso() / toGive.size()
-                                        + (m.getStat().isHasPartyBonus()
-                                                ? (int) (mapitem.getMeso() / 20.0)
-                                                : 0),
+                                        + (m.getStat().isHasPartyBonus() ? (int) (mapitem.getMeso() / 20.0) : 0),
                                 true,
                                 true);
                     }
@@ -136,18 +130,14 @@ public class PetLootHandler extends AbstractMaplePacketHandler {
                     if (mapitem.getItem().getQuantity() >= 50
                             && GameConstants.isUpgradeScroll(mapitem.getItem().getItemId())) {
                         final String file = chr.getName();
-                        final String msg =
-                                "Pet picked up "
-                                        + mapitem.getItem().getQuantity()
-                                        + " of "
-                                        + mapitem.getItem().getItemId();
+                        final String msg = "Pet picked up "
+                                + mapitem.getItem().getQuantity()
+                                + " of "
+                                + mapitem.getItem().getItemId();
                         log.info(file + " : " + msg);
                     }
                     if (MapleInventoryManipulator.addFromDrop(
-                            c,
-                            mapitem.getItem(),
-                            true,
-                            mapitem.getDropper() instanceof MapleMonster)) {
+                            c, mapitem.getItem(), true, mapitem.getDropper() instanceof MapleMonster)) {
                         InventoryHandlerUtils.removeItem_Pet(chr, mapitem, petz);
                     }
                 }

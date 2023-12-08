@@ -1,4 +1,4 @@
-package client.commands.v2;
+package client.commands;
 
 import client.MapleClient;
 import scripting.v1.game.helper.ApiClass;

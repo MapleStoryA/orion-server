@@ -5,13 +5,13 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import server.TimerManager;
 import tools.MaplePacketCreator;
-import tools.data.input.CInPacket;
+import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class LuckyLogoutHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         // this is only called the when player log outs, i've no idea how to
         // make it disappear, but oh well..just dc the client, since
         // they attempted to log out
