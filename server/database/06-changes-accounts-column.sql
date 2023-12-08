@@ -33,3 +33,5 @@ ALTER TABLE orion.`characters` DROP COLUMN jumplevel;
 ALTER TABLE orion.`characters` DROP COLUMN contributedFP;
 ALTER TABLE orion.`characters` DROP COLUMN occupationId;
 ALTER TABLE orion.`characters` DROP COLUMN occupationEXP;
+
+DROP TABLE orion.ipvotelog;
