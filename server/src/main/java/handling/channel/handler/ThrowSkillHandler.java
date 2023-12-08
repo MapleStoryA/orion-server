@@ -29,9 +29,7 @@ public class ThrowSkillHandler extends AbstractMaplePacketHandler {
         final int skillid = packet.readInt();
         final int skillLevel = packet.readInt();
         if (skillid == 4341003) {
-            c.getPlayer()
-                    .getMap()
-                    .broadcastMessage(MaplePacketCreator.skillCancel(c.getPlayer(), skillid));
+            c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.skillCancel(c.getPlayer(), skillid));
             return;
         }
         if (skillid == 4321002) {
@@ -41,12 +39,7 @@ public class ThrowSkillHandler extends AbstractMaplePacketHandler {
                     .broadcastMessage(
                             c.getPlayer(),
                             MaplePacketCreator.skillEffect(
-                                    c.getPlayer(),
-                                    skillid,
-                                    (byte) skillLevel,
-                                    (byte) 0,
-                                    (byte) 1,
-                                    (byte) left),
+                                    c.getPlayer(), skillid, (byte) skillLevel, (byte) 0, (byte) 1, (byte) left),
                             false);
         }
         if (skillid == 14111006) { // Poison bomb
@@ -57,21 +50,15 @@ public class ThrowSkillHandler extends AbstractMaplePacketHandler {
                 // fully charged projectile, but i'm not
                 // doing rectline thing again.
                 try {
-                    newp =
-                            c.getPlayer()
-                                    .getMap()
-                                    .getGroundBelow(new Point(x + left * charge / 3, y - 30));
+                    newp = c.getPlayer().getMap().getGroundBelow(new Point(x + left * charge / 3, y - 30));
                 } catch (NullPointerException e) {
                     newp = c.getPlayer().getPosition();
                 }
-                final MapleMist mist =
-                        new MapleMist(
-                                calculateBoundingBox(newp),
-                                c.getPlayer(),
-                                skill.getEffect(c.getPlayer().getSkillLevel(skill)));
-                c.getPlayer()
-                        .getMap()
-                        .spawnMist(mist, (int) (4 * (Math.ceil(skillLevel / 3))) * 1000, false);
+                final MapleMist mist = new MapleMist(
+                        calculateBoundingBox(newp),
+                        c.getPlayer(),
+                        skill.getEffect(c.getPlayer().getSkillLevel(skill)));
+                c.getPlayer().getMap().spawnMist(mist, (int) (4 * (Math.ceil(skillLevel / 3))) * 1000, false);
             }
         } // apply monster status effect for monster bomb here? :O
     }

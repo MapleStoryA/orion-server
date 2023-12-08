@@ -49,8 +49,7 @@ public class MapleUserPackets {
         return partyPacket(0x04, params);
     }
 
-    public static byte[] partyPortal(
-            final int townId, final int targetId, final int skillId, final Point position) {
+    public static byte[] partyPortal(final int townId, final int targetId, final int skillId, final Point position) {
         final Object[] params = new Object[4];
         params[0] = townId;
         params[1] = targetId;
@@ -60,10 +59,7 @@ public class MapleUserPackets {
     }
 
     public static byte[] updateParty(
-            final int forChannel,
-            final MapleParty party,
-            final PartyOperation op,
-            final MaplePartyCharacter target) {
+            final int forChannel, final MapleParty party, final PartyOperation op, final MaplePartyCharacter target) {
         Object[] params = null;
         switch (op) {
             case DISBAND:
@@ -71,16 +67,11 @@ public class MapleUserPackets {
             case EXPEL:
             case LEAVE:
             case MOVE_MEMBER:
-                params =
-                        new Object
-                                [(op != PartyOperation.DISBAND
-                                                && op != PartyOperation.DISBAND_IN_EXPEDITION)
-                                        ? 6
-                                        : 3];
-                params[0] =
-                        (op == PartyOperation.DISBAND || op == PartyOperation.DISBAND_IN_EXPEDITION)
-                                ? 0
-                                : ((op == PartyOperation.EXPEL) ? 1 : 2); // Operation
+                params = new Object
+                        [(op != PartyOperation.DISBAND && op != PartyOperation.DISBAND_IN_EXPEDITION) ? 6 : 3];
+                params[0] = (op == PartyOperation.DISBAND || op == PartyOperation.DISBAND_IN_EXPEDITION)
+                        ? 0
+                        : ((op == PartyOperation.EXPEL) ? 1 : 2); // Operation
                 params[1] = party.getId();
                 params[2] = target.getId();
                 if (op != PartyOperation.DISBAND && op != PartyOperation.DISBAND_IN_EXPEDITION) {
@@ -111,8 +102,7 @@ public class MapleUserPackets {
                 params[1] = op == PartyOperation.CHANGE_LEADER_DC ? 1 : 0;
                 return partyPacket(0x1F, params);
         }
-        return partyPacket(
-                0x01, params); // Your request for a party didn't work due to an unexpected error.
+        return partyPacket(0x01, params); // Your request for a party didn't work due to an unexpected error.
     }
 
     /**
@@ -162,8 +152,7 @@ public class MapleUserPackets {
                 break;
             case 0x07: // Silent Update / Log off
                 packet.writeInt((Integer) data[1]);
-                addPartyStatus(
-                        (Integer) data[2], (MapleParty) data[3], packet, ((Integer) data[0]) == 0);
+                addPartyStatus((Integer) data[2], (MapleParty) data[3], packet, ((Integer) data[0]) == 0);
                 break;
             case 0x08: // Create
                 packet.writeInt((Integer) data[0]); // partyid
@@ -208,10 +197,7 @@ public class MapleUserPackets {
     }
 
     private static void addPartyStatus(
-            final int forchannel,
-            final MapleParty party,
-            final OutPacket packet,
-            final boolean leaving) {
+            final int forchannel, final MapleParty party, final OutPacket packet, final boolean leaving) {
         addPartyStatus(forchannel, party, packet, leaving, false);
     }
 
@@ -267,16 +253,10 @@ public class MapleUserPackets {
         }
     }
 
-    public static byte[] showExpedition(
-            final MapleExpedition me, final boolean created, final boolean silent) {
+    public static byte[] showExpedition(final MapleExpedition me, final boolean created, final boolean silent) {
         final OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
-        packet.write(
-                silent
-                        ? 53
-                        : (created
-                                ? 55
-                                : 57)); // 53, 55(A new expedition has been created), 57("You have
+        packet.write(silent ? 53 : (created ? 55 : 57)); // 53, 55(A new expedition has been created), 57("You have
         // joined the expedition)
         packet.writeInt(me.getType().exped);
         packet.writeInt(0);
@@ -299,8 +279,7 @@ public class MapleUserPackets {
     public static byte[] removeExpedition(final int action) {
         final OutPacket packet = new OutPacket(3);
         packet.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
-        packet.write(
-                action); // 54(remove only) , 61 (you have left the expedition), 63(You have been
+        packet.write(action); // 54(remove only) , 61 (you have left the expedition), 63(You have been
         // kicked out of the expedition), 64(The Expedition has been disbanded)
         return packet.getPacket();
     }

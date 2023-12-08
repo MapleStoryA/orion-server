@@ -44,8 +44,7 @@ public class EnterCashShopHandler extends AbstractMaplePacketHandler {
         chr.getMap().removePlayer(chr);
         c.setPlayer(null);
 
-        ServerMigration entry =
-                new ServerMigration(chr.getId(), c.getAccountData(), c.getSessionIPAddress());
+        ServerMigration entry = new ServerMigration(chr.getId(), c.getAccountData(), c.getSessionIPAddress());
         entry.setCharacterTransfer(new CharacterTransfer(chr));
         entry.addBuffsToStorage(chr.getId(), chr.getAllBuffs());
         entry.addCooldownsToStorage(chr.getId(), chr.getCooldowns());
@@ -53,11 +52,7 @@ public class EnterCashShopHandler extends AbstractMaplePacketHandler {
         WorldServer.getInstance().getMigrationService().putMigrationEntry(entry);
 
         c.getSession()
-                .write(
-                        MaplePacketCreator.getChannelChange(
-                                Integer.parseInt(
-                                        CashShopServer.getInstance()
-                                                .getPublicAddress()
-                                                .split(":")[1])));
+                .write(MaplePacketCreator.getChannelChange(Integer.parseInt(
+                        CashShopServer.getInstance().getPublicAddress().split(":")[1])));
     }
 }

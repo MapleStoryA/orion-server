@@ -10,7 +10,8 @@ public class WishList {
 
     private Set<Integer> items;
 
-    @Getter private boolean changed;
+    @Getter
+    private boolean changed;
 
     public WishList() {
         this.items = new LinkedHashSet<>(10);

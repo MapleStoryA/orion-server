@@ -42,9 +42,7 @@ public class SkillEffectHandler extends AbstractMaplePacketHandler {
             chr.setKeyDownSkill_Time(System.currentTimeMillis());
             chr.getMap()
                     .broadcastMessage(
-                            chr,
-                            MaplePacketCreator.skillEffect(chr, skill_id, level, flags, speed, unk),
-                            false);
+                            chr, MaplePacketCreator.skillEffect(chr, skill_id, level, flags, speed, unk), false);
         }
 
         if (skill_id == BladeMaster.FINAL_CUT) {
@@ -56,9 +54,7 @@ public class SkillEffectHandler extends AbstractMaplePacketHandler {
                                 public void run() {
                                     c.getPlayer()
                                             .getMap()
-                                            .broadcastMessage(
-                                                    MaplePacketCreator.skillCancel(
-                                                            c.getPlayer(), skill_id));
+                                            .broadcastMessage(MaplePacketCreator.skillCancel(c.getPlayer(), skill_id));
                                 }
                             },
                             1000);

@@ -35,8 +35,7 @@ public class MTSCSPacket {
         50200112, // Extra char
     };
 
-    public static void addCashItemInfo(
-            final OutPacket packet, IItem item, int accountId, String giftMessage) {
+    public static void addCashItemInfo(final OutPacket packet, IItem item, int accountId, String giftMessage) {
         boolean isGift = giftMessage != null && !giftMessage.isEmpty();
         boolean isRing = false;
         MapleRing ring = null;
@@ -45,10 +44,7 @@ public class MTSCSPacket {
             isRing = ring.getRingId() > -1;
         }
         MaplePet pet = item.getPet();
-        int sn =
-                pet != null && pet.getUniqueId() > -1
-                        ? pet.getUniqueId()
-                        : isRing ? ring.getRingId() : item.getSN();
+        int sn = pet != null && pet.getUniqueId() > -1 ? pet.getUniqueId() : isRing ? ring.getRingId() : item.getSN();
         packet.writeLong(sn);
         if (!isGift) {
             packet.writeInt(accountId);
@@ -342,8 +338,7 @@ public class MTSCSPacket {
         packet.write(190);
         packet.writeLong(idFirst); // uniqueid of the xmas surprise itself
         packet.writeInt(0);
-        addCashItemInfo(
-                packet, item, accid, ""); // info of the new item, but packet shows 0 for sn?
+        addCashItemInfo(packet, item, accid, ""); // info of the new item, but packet shows 0 for sn?
         packet.writeInt(item.getItemId());
         packet.write(1);
         packet.write(1);
@@ -418,8 +413,7 @@ public class MTSCSPacket {
             // TODO: Refactor from here.. Loading xml files inside packet!
             final MapleData rootNode = CashItemFactory.data.getData("CashPackage.img");
             List<MapleData> children = rootNode.getChildren();
-            List<CashItemInfo> pack =
-                    CashItemFactory.getInstance().getPackageItems(item.sn, children);
+            List<CashItemInfo> pack = CashItemFactory.getInstance().getPackageItems(item.sn, children);
             if (pack == null) {
                 packet.write(0);
             } else {
@@ -545,8 +539,7 @@ public class MTSCSPacket {
         return packet.getPacket();
     }
 
-    public static byte[] OnCashItemResCoupleDone(
-            IItem item, int sn, int accid, String receiver, boolean couple) {
+    public static byte[] OnCashItemResCoupleDone(IItem item, int sn, int accid, String receiver, boolean couple) {
         OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
@@ -559,8 +552,7 @@ public class MTSCSPacket {
         return packet.getPacket();
     }
 
-    public static byte[] showGiftSucceed(
-            int price, int itemid, int quantity, String receiver, boolean packages) {
+    public static byte[] showGiftSucceed(int price, int itemid, int quantity, String receiver, boolean packages) {
         // "%d [ %s ] \r\nwas sent to %s. \r\n%d NX Prepaid \r\nwere spent in the process.",
         OutPacket packet = new OutPacket();
 

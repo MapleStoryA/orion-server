@@ -10,14 +10,13 @@ import lombok.extern.slf4j.Slf4j;
 import server.config.ServerEnvironment;
 import tools.HexTool;
 import tools.data.input.ByteArrayByteStream;
-import tools.data.input.InPacket;
 import tools.data.input.GenericSeekableLittleEndianAccessor;
+import tools.data.input.InPacket;
 
 @Slf4j
 public class DefaultPacketHandler {
 
-    public static void handlePacket(
-            MapleClient client, PacketProcessor processor, boolean isCashShop, byte[] message) {
+    public static void handlePacket(MapleClient client, PacketProcessor processor, boolean isCashShop, byte[] message) {
         try {
             var slea = new GenericSeekableLittleEndianAccessor(new ByteArrayByteStream(message));
             if (slea.available() < 2) {
@@ -56,10 +55,7 @@ public class DefaultPacketHandler {
     }
 
     public static void handlePacket(
-            final RecvPacketOpcode header,
-            final InPacket slea,
-            final MapleClient c,
-            boolean isCashShop) {
+            final RecvPacketOpcode header, final InPacket slea, final MapleClient c, boolean isCashShop) {
         switch (header) {
             case PLAYER_LOGGED_IN:
                 final int playerId = slea.readInt();

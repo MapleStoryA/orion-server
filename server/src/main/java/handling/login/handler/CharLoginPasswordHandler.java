@@ -37,11 +37,9 @@ public class CharLoginPasswordHandler implements MaplePacketHandler {
         if (tempBannedUntil.getTimeInMillis() != 0) {
             if (!c.tooManyLogin()) {
                 c.getSession()
-                        .write(
-                                LoginPacket.getTempBan(
-                                        KoreanDateUtil.getTempBanTimestamp(
-                                                tempBannedUntil.getTimeInMillis()),
-                                        c.getAccountData().getGreason()));
+                        .write(LoginPacket.getTempBan(
+                                KoreanDateUtil.getTempBanTimestamp(tempBannedUntil.getTimeInMillis()),
+                                c.getAccountData().getGreason()));
             }
         } else {
             c.resetLoginCount();

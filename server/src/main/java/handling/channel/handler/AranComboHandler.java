@@ -44,9 +44,7 @@ public class AranComboHandler extends AbstractMaplePacketHandler {
                 case 90:
                 case 100:
                     if (chr.getSkillLevel(21000000) >= (combo / 10)) {
-                        SkillFactory.getSkill(21000000)
-                                .getEffect(combo / 10)
-                                .applyComboBuff(chr, combo);
+                        SkillFactory.getSkill(21000000).getEffect(combo / 10).applyComboBuff(chr, combo);
                     }
                     break;
             }

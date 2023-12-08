@@ -14,8 +14,7 @@ public class PlayerRandomStream {
 
     public PlayerRandomStream() {
         final int v4 = 5;
-        this.CRand32__Seed(
-                Randomizer.nextLong(), 1170746341L * v4 - 755606699, 1170746341L * v4 - 755606699);
+        this.CRand32__Seed(Randomizer.nextLong(), 1170746341L * v4 - 755606699, 1170746341L * v4 - 755606699);
     }
 
     public final void CRand32__Seed(final long s1, final long s2, final long s3) {
@@ -44,8 +43,7 @@ public class PlayerRandomStream {
         this.seed3_ = v10 & 0xffffffffL;
         this.seed1_ = v8 & 0xffffffffL;
         this.seed2_ = v9 & 0xffffffffL;
-        return (v8 ^ v9 ^ v10)
-                & 0xffffffffL; // to be confirmed, I am not experienced in converting signed >
+        return (v8 ^ v9 ^ v10) & 0xffffffffL; // to be confirmed, I am not experienced in converting signed >
         // unsigned
     }
 

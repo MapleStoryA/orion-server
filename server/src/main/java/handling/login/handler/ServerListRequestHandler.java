@@ -13,15 +13,11 @@ public class ServerListRequestHandler extends AbstractMaplePacketHandler {
     @Override
     public void handlePacket(InPacket packet, MapleClient c) {
         c.getSession()
-                .write(
-                        LoginPacket.getServerList(
-                                0,
-                                LoginServer.getInstance().getServerName(),
-                                LoginServer.getInstance().getServerLoad()));
+                .write(LoginPacket.getServerList(
+                        0,
+                        LoginServer.getInstance().getServerName(),
+                        LoginServer.getInstance().getServerLoad()));
         c.getSession().write(LoginPacket.getEndOfServerList());
-        c.getSession()
-                .write(
-                        LoginPacket.getRecommendedWorldMessage(
-                                0, ServerConstants.RECOMMENDED_MESSAGE));
+        c.getSession().write(LoginPacket.getRecommendedWorldMessage(0, ServerConstants.RECOMMENDED_MESSAGE));
     }
 }

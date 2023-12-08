@@ -20,8 +20,7 @@ public class RingActionHandler extends AbstractMaplePacketHandler {
             final String name = packet.readMapleAsciiString();
             final int itemid = packet.readInt();
             final int newItemId = 1112300 + (itemid - 2240004);
-            final MapleCharacter chr =
-                    c.getChannelServer().getPlayerStorage().getCharacterByName(name);
+            final MapleCharacter chr = c.getChannelServer().getPlayerStorage().getCharacterByName(name);
             int errcode = 0;
             if (c.getPlayer().getMarriageId() > 0) {
                 errcode = 0x17;
@@ -39,17 +38,15 @@ public class RingActionHandler extends AbstractMaplePacketHandler {
                 errcode = 0x15;
             }
             if (errcode > 0) {
-                c.getSession()
-                        .write(MaplePacketCreator.sendEngagement((byte) errcode, 0, null, null));
+                c.getSession().write(MaplePacketCreator.sendEngagement((byte) errcode, 0, null, null));
                 c.getSession().write(MaplePacketCreator.enableActions());
                 return;
             }
             c.getPlayer().setMarriageItemId(itemid);
             chr.getClient()
                     .getSession()
-                    .write(
-                            MaplePacketCreator.sendEngagementRequest(
-                                    c.getPlayer().getName(), c.getPlayer().getId()));
+                    .write(MaplePacketCreator.sendEngagementRequest(
+                            c.getPlayer().getName(), c.getPlayer().getId()));
             // 1112300 + (itemid - 2240004)
         } else if (mode == 1) {
             c.getPlayer().setMarriageItemId(0);
@@ -57,8 +54,7 @@ public class RingActionHandler extends AbstractMaplePacketHandler {
             final boolean accepted = packet.readByte() > 0;
             final String name = packet.readMapleAsciiString();
             final int id = packet.readInt();
-            final MapleCharacter chr =
-                    c.getChannelServer().getPlayerStorage().getCharacterByName(name);
+            final MapleCharacter chr = c.getChannelServer().getPlayerStorage().getCharacterByName(name);
             if (c.getPlayer().getMarriageId() > 0
                     || chr == null
                     || chr.getId() != id
@@ -72,33 +68,22 @@ public class RingActionHandler extends AbstractMaplePacketHandler {
             if (accepted) {
                 final int newItemId = 1112300 + (chr.getMarriageItemId() - 2240004);
                 if (!MapleInventoryManipulator.checkSpace(c, newItemId, 1, "")
-                        || !MapleInventoryManipulator.checkSpace(
-                                chr.getClient(), newItemId, 1, "")) {
-                    c.getSession()
-                            .write(MaplePacketCreator.sendEngagement((byte) 0x15, 0, null, null));
+                        || !MapleInventoryManipulator.checkSpace(chr.getClient(), newItemId, 1, "")) {
+                    c.getSession().write(MaplePacketCreator.sendEngagement((byte) 0x15, 0, null, null));
                     c.getSession().write(MaplePacketCreator.enableActions());
                     return;
                 }
                 MapleInventoryManipulator.addById(c, newItemId, (short) 1, "");
                 MapleInventoryManipulator.removeById(
-                        chr.getClient(),
-                        MapleInventoryType.USE,
-                        chr.getMarriageItemId(),
-                        1,
-                        false,
-                        false);
+                        chr.getClient(), MapleInventoryType.USE, chr.getMarriageItemId(), 1, false, false);
                 MapleInventoryManipulator.addById(chr.getClient(), newItemId, (short) 1, "");
                 chr.getClient()
                         .getSession()
-                        .write(
-                                MaplePacketCreator.sendEngagement(
-                                        (byte) 0x10, newItemId, chr, c.getPlayer()));
+                        .write(MaplePacketCreator.sendEngagement((byte) 0x10, newItemId, chr, c.getPlayer()));
                 chr.setMarriageId(c.getPlayer().getId());
                 c.getPlayer().setMarriageId(chr.getId());
             } else {
-                chr.getClient()
-                        .getSession()
-                        .write(MaplePacketCreator.sendEngagement((byte) 0x1E, 0, null, null));
+                chr.getClient().getSession().write(MaplePacketCreator.sendEngagement((byte) 0x1E, 0, null, null));
             }
             c.getSession().write(MaplePacketCreator.enableActions());
             chr.setMarriageItemId(0);

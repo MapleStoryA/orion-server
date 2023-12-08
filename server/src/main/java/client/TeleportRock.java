@@ -8,11 +8,14 @@ import tools.data.output.OutPacket;
 
 public class TeleportRock {
 
-    @Getter private Set<Integer> map_ids;
+    @Getter
+    private Set<Integer> map_ids;
 
-    @Getter private boolean changed;
+    @Getter
+    private boolean changed;
 
-    @Getter private String name;
+    @Getter
+    private String name;
 
     private int maxMaps;
 

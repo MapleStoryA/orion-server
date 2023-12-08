@@ -13,10 +13,7 @@ public class EnterMTSHandler extends AbstractMaplePacketHandler {
     public void handlePacket(InPacket packet, MapleClient c) {
         int map = 910000000;
         if (c.getPlayer().getLevel() < 10) {
-            c.getPlayer()
-                    .dropMessage(
-                            5,
-                            "Characters whose level is below Lv. 10 cannot use the market button.");
+            c.getPlayer().dropMessage(5, "Characters whose level is below Lv. 10 cannot use the market button.");
             c.enableActions();
             return;
         }

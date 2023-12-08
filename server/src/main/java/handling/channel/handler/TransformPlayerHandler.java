@@ -37,17 +37,14 @@ public class TransformPlayerHandler extends AbstractMaplePacketHandler {
                             MapleItemInformationProvider.getInstance()
                                     .getItemEffect(2212000)
                                     .applyTo(search_chr);
-                            search_chr.dropMessage(
-                                    6, chr.getName() + " had played a prank on you!"); // there's
+                            search_chr.dropMessage(6, chr.getName() + " had played a prank on you!"); // there's
                             // a
                             // packet
                             // for
                             // this!
-                            MapleInventoryManipulator.removeFromSlot(
-                                    c, MapleInventoryType.USE, slot, (short) 1, false);
+                            MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
                         } else {
-                            chr.dropMessage(
-                                    5, "You may not use this item on '" + target + "' right now.");
+                            chr.dropMessage(5, "You may not use this item on '" + target + "' right now.");
                         }
                     } else {
                         chr.dropMessage(5, "'" + target + "' was not found in the current map.");

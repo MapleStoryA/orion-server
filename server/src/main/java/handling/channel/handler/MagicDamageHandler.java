@@ -24,8 +24,7 @@ public class MagicDamageHandler extends AbstractMaplePacketHandler {
             chr.getCheatTracker().registerOffense(CheatingOffense.ATTACKING_WHILE_DEAD);
             return;
         }
-        final AttackInfo attack =
-                DamageParse.Modify_AttackCrit(DamageParse.parseDmgMa(packet), chr, 3);
+        final AttackInfo attack = DamageParse.Modify_AttackCrit(DamageParse.parseDmgMa(packet), chr, 3);
         if (attack.portals != chr.getPortalCount(false)) { // Portal count
             // didn't match.
             // Ignore
@@ -48,8 +47,7 @@ public class MagicDamageHandler extends AbstractMaplePacketHandler {
                 c.getSession().write(MaplePacketCreator.enableActions());
                 return;
             }
-            c.getSession()
-                    .write(MaplePacketCreator.skillCooldown(attack.skill, effect.getCooldown()));
+            c.getSession().write(MaplePacketCreator.skillCooldown(attack.skill, effect.getCooldown()));
             chr.addCooldown(attack.skill, System.currentTimeMillis(), effect.getCooldown() * 1000L);
         }
         chr.checkFollow();

@@ -24,17 +24,11 @@ public class MovePlayerHandler extends AbstractMaplePacketHandler {
         if (path != null && c.getPlayer().getMap() != null) {
             final MapleMap map = c.getPlayer().getMap();
             if (chr.isHidden()) {
-                c.getPlayer()
-                        .getMap()
-                        .broadcastGMMessage(
-                                chr, MaplePacketCreator.movePlayer(chr.getId(), path), false);
+                c.getPlayer().getMap().broadcastGMMessage(chr, MaplePacketCreator.movePlayer(chr.getId(), path), false);
             } else {
                 c.getPlayer()
                         .getMap()
-                        .broadcastMessage(
-                                c.getPlayer(),
-                                MaplePacketCreator.movePlayer(chr.getId(), path),
-                                false);
+                        .broadcastMessage(c.getPlayer(), MaplePacketCreator.movePlayer(chr.getId(), path), false);
             }
             updatePosition(path, chr, 0);
             final Point pos = chr.getPosition();

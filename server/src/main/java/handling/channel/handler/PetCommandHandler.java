@@ -51,17 +51,12 @@ public class PetCommandHandler extends AbstractMaplePacketHandler {
                     chr.getMap().broadcastMessage(PetPacket.showPetLevelUp(chr, petIndex));
                 }
                 c.getSession()
-                        .write(
-                                PetPacket.updatePet(
-                                        pet,
-                                        chr.getInventory(MapleInventoryType.CASH)
-                                                .getItem((byte) pet.getInventoryPosition())));
+                        .write(PetPacket.updatePet(
+                                pet,
+                                chr.getInventory(MapleInventoryType.CASH).getItem((byte) pet.getInventoryPosition())));
             }
         }
         chr.getMap()
-                .broadcastMessage(
-                        chr,
-                        PetPacket.commandResponse(chr.getId(), command, petIndex, success, false),
-                        true);
+                .broadcastMessage(chr, PetPacket.commandResponse(chr.getId(), command, petIndex, success, false), true);
     }
 }

@@ -34,8 +34,7 @@ public class UseReturnScrollHandler extends AbstractMaplePacketHandler {
             if (MapleItemInformationProvider.getInstance()
                     .getItemEffect(toUse.getItemId())
                     .applyReturnScroll(chr)) {
-                MapleInventoryManipulator.removeFromSlot(
-                        c, MapleInventoryType.USE, slot, (short) 1, false);
+                MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
             } else {
                 c.getSession().write(MaplePacketCreator.enableActions());
             }

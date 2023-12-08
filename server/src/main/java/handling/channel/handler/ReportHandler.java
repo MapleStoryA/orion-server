@@ -20,14 +20,8 @@ public class ReportHandler extends AbstractMaplePacketHandler {
                 c.getPlayer().gainMeso(349, true);
                 c.getSession().write(ReportPackets.reportResponse((byte) 2, 1));
                 c.getChannelServer()
-                        .broadcastGMPacket(
-                                MaplePacketCreator.serverNotice(
-                                        6,
-                                        c.getPlayer().getName()
-                                                + " reported "
-                                                + victim
-                                                + " for: "
-                                                + description));
+                        .broadcastGMPacket(MaplePacketCreator.serverNotice(
+                                6, c.getPlayer().getName() + " reported " + victim + " for: " + description));
             }
         } else {
             c.getPlayer().dropMessage(1, "You do not have any reports left.");

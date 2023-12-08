@@ -36,68 +36,57 @@ public class QuestionActionHandler extends AbstractMaplePacketHandler {
         }
         final MapleQuest q = MapleQuest.getInstance(quest);
         switch (action) {
-            case RESTORE_LOST_ITEM:
-                {
-                    chr.updateTick(packet.readInt());
-                    final int itemid = packet.readInt();
-                    MapleQuest.getInstance(quest).RestoreLostItem(chr, itemid);
-                    break;
+            case RESTORE_LOST_ITEM: {
+                chr.updateTick(packet.readInt());
+                final int itemid = packet.readInt();
+                MapleQuest.getInstance(quest).RestoreLostItem(chr, itemid);
+                break;
+            }
+            case START_QUEST: {
+                final int npc = packet.readInt();
+                q.start(chr, npc);
+                break;
+            }
+            case COMPLETE_QUEST: {
+                final int npc = packet.readInt();
+                int tick = packet.readInt();
+                if (q.getId() >= 1009 && q.getId() <= 1015) { // Maple quiz in map 1000000
+                    tick = tick + q.getId();
                 }
-            case START_QUEST:
-                {
-                    final int npc = packet.readInt();
-                    q.start(chr, npc);
-                    break;
-                }
-            case COMPLETE_QUEST:
-                {
-                    final int npc = packet.readInt();
-                    int tick = packet.readInt();
-                    if (q.getId() >= 1009 && q.getId() <= 1015) { // Maple quiz in map 1000000
-                        tick = tick + q.getId();
-                    }
-                    chr.updateTick(tick);
+                chr.updateTick(tick);
 
-                    if (packet.available() >= 4) {
-                        q.complete(chr, npc, packet.readInt());
-                    } else {
-                        q.complete(chr, npc);
-                    }
+                if (packet.available() >= 4) {
+                    q.complete(chr, npc, packet.readInt());
+                } else {
+                    q.complete(chr, npc);
+                }
+                break;
+            }
+            case FOREFIT_QUEST: {
+                if (GameConstants.canForfeit(q.getId())) {
+                    q.forfeit(chr);
+                } else {
+                    chr.dropMessage(1, "You may not forfeit this quest.");
+                }
+                break;
+            }
+            case START_SCRIPTED_QUEST: { // Scripted Start Quest
+                final int npc = packet.readInt();
+                if (NpcTalkHelper.isNewQuestScriptAvailable(quest)) {
+                    NpcTalkHelper.startQuestConversation(npc, quest, c);
                     break;
                 }
-            case FOREFIT_QUEST:
-                {
-                    if (GameConstants.canForfeit(q.getId())) {
-                        q.forfeit(chr);
-                    } else {
-                        chr.dropMessage(1, "You may not forfeit this quest.");
-                    }
-                    break;
-                }
-            case START_SCRIPTED_QUEST:
-                { // Scripted Start Quest
-                    final int npc = packet.readInt();
-                    if (NpcTalkHelper.isNewQuestScriptAvailable(quest)) {
-                        NpcTalkHelper.startQuestConversation(npc, quest, c);
-                        break;
-                    }
-                    c.setCurrentNpcScript(null);
-                    NPCScriptManager.getInstance().startQuest(c, npc, quest);
-                    break;
-                }
-            case END_SCRIPTED_QUEST:
-                {
-                    final int npc = packet.readInt();
-                    NPCScriptManager.getInstance().endQuest(c, npc, quest, false);
-                    c.getSession()
-                            .write(MaplePacketCreator.showSpecialEffect(9)); // Quest completion
-                    chr.getMap()
-                            .broadcastMessage(
-                                    chr,
-                                    MaplePacketCreator.showSpecialEffect(chr.getId(), 9),
-                                    false);
-                    break;
-                }
+                c.setCurrentNpcScript(null);
+                NPCScriptManager.getInstance().startQuest(c, npc, quest);
+                break;
+            }
+            case END_SCRIPTED_QUEST: {
+                final int npc = packet.readInt();
+                NPCScriptManager.getInstance().endQuest(c, npc, quest, false);
+                c.getSession().write(MaplePacketCreator.showSpecialEffect(9)); // Quest completion
+                chr.getMap().broadcastMessage(chr, MaplePacketCreator.showSpecialEffect(chr.getId(), 9), false);
+                break;
+            }
         }
     }
 }

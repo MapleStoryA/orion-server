@@ -21,10 +21,7 @@ public final class NettsPyramid {
     }
 
     private static String getTypeValue(NettsInfoType type) {
-        return "massacre_"
-                + (type == NettsInfoType.COOL
-                        ? "cool"
-                        : type == NettsInfoType.KILL ? "hit" : "miss");
+        return "massacre_" + (type == NettsInfoType.COOL ? "cool" : type == NettsInfoType.KILL ? "hit" : "miss");
     }
 
     public enum NettsInfoType {

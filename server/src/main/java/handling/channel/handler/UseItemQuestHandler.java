@@ -37,18 +37,13 @@ public class UseItemQuestHandler extends AbstractMaplePacketHandler {
                 }
             }
         }
-        if (quest != null
-                && found
-                && item != null
-                && item.getQuantity() > 0
-                && item.getItemId() == itemId) {
+        if (quest != null && found && item != null && item.getQuantity() > 0 && item.getItemId() == itemId) {
             final int newData = packet.readInt();
             final MapleQuestStatus stats = c.getPlayer().getQuestNoAdd(quest);
             if (stats != null && stats.getStatus() == 1) {
                 stats.setCustomData(String.valueOf(newData));
                 c.getPlayer().updateQuest(stats, true);
-                MapleInventoryManipulator.removeFromSlot(
-                        c, MapleInventoryType.ETC, slot, (short) 1, false);
+                MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.ETC, slot, (short) 1, false);
             }
         }
     }

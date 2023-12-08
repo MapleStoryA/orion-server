@@ -25,17 +25,12 @@ public class CharInfoRequestHandler extends AbstractMaplePacketHandler {
                 if (c.getPlayer().getId() == objectid) {
                     if (player.getPet(0) != null) {
                         c.getSession()
-                                .write(
-                                        PetPacket.loadExceptionList(
-                                                player.getId(),
-                                                player.getPet(0).getUniqueId(),
-                                                ""));
+                                .write(PetPacket.loadExceptionList(
+                                        player.getId(), player.getPet(0).getUniqueId(), ""));
                     }
                 }
                 c.getSession()
-                        .write(
-                                MaplePacketCreator.charInfo(
-                                        player, c.getPlayer().getId() == objectid));
+                        .write(MaplePacketCreator.charInfo(player, c.getPlayer().getId() == objectid));
             }
         }
     }

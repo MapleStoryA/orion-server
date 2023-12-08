@@ -30,8 +30,7 @@ public class MobPacket {
         return packet.getPacket();
     }
 
-    public static byte[] damageFriendlyMob(
-            final MapleMonster mob, final long damage, final boolean display) {
+    public static byte[] damageFriendlyMob(final MapleMonster mob, final long damage, final boolean display) {
         OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.DAMAGE_MONSTER.getValue());
@@ -115,14 +114,7 @@ public class MobPacket {
     }
 
     public static byte[] moveMonster(
-            boolean useskill,
-            int skill,
-            int skill1,
-            int skill2,
-            int skill3,
-            int skill4,
-            int oid,
-            MovePath path) {
+            boolean useskill, int skill, int skill1, int skill2, int skill3, int skill4, int oid, MovePath path) {
         OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.MOVE_MONSTER.getValue());
@@ -275,12 +267,7 @@ public class MobPacket {
     }
 
     public static byte[] moveMonsterResponse(
-            int objectid,
-            short moveid,
-            int currentMp,
-            boolean useSkills,
-            int skillId,
-            int skillLevel) {
+            int objectid, short moveid, int currentMp, boolean useSkills, int skillId, int skillLevel) {
         OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.MOVE_MONSTER_RESPONSE.getValue());
@@ -322,18 +309,15 @@ public class MobPacket {
         long mask = 0;
         boolean ignore_imm = false;
         for (MonsterStatus statup : statups) {
-            if (statup == MonsterStatus.MAGIC_DAMAGE_REFLECT
-                    || statup == MonsterStatus.WEAPON_DAMAGE_REFLECT) {
+            if (statup == MonsterStatus.MAGIC_DAMAGE_REFLECT || statup == MonsterStatus.WEAPON_DAMAGE_REFLECT) {
                 ignore_imm = true;
                 break;
             }
         }
         for (MonsterStatus statup : statups) {
-            if (statup != MonsterStatus.MAGIC_DAMAGE_REFLECT
-                    && statup != MonsterStatus.WEAPON_DAMAGE_REFLECT) {
+            if (statup != MonsterStatus.MAGIC_DAMAGE_REFLECT && statup != MonsterStatus.WEAPON_DAMAGE_REFLECT) {
                 if (ignore_imm) {
-                    if (statup == MonsterStatus.MAGIC_IMMUNITY
-                            || statup == MonsterStatus.WEAPON_IMMUNITY) {
+                    if (statup == MonsterStatus.MAGIC_IMMUNITY || statup == MonsterStatus.WEAPON_IMMUNITY) {
                         continue;
                     }
                 }
@@ -346,8 +330,7 @@ public class MobPacket {
         return mask;
     }
 
-    public static byte[] applyMonsterStatus(
-            final int oid, final MonsterStatus mse, int x, MobSkill skil) {
+    public static byte[] applyMonsterStatus(final int oid, final MonsterStatus mse, int x, MobSkill skil) {
         OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.APPLY_MONSTER_STATUS.getValue());
@@ -358,10 +341,7 @@ public class MobPacket {
         packet.writeShort(x);
         packet.writeShort(skil.getSkillId());
         packet.writeShort(skil.getSkillLevel());
-        packet.writeShort(
-                mse.isEmpty()
-                        ? 1
-                        : 0); // might actually be the buffTime but it's not displayed anywhere
+        packet.writeShort(mse.isEmpty() ? 1 : 0); // might actually be the buffTime but it's not displayed anywhere
         packet.writeShort(0); // delay in ms
         packet.write(1); // size
         packet.write(1); // ? v97
@@ -385,9 +365,7 @@ public class MobPacket {
             packet.writeInt(mse.getSkill());
         }
         packet.writeShort(
-                mse.getStati().isEmpty()
-                        ? 1
-                        : 0); // might actually be the buffTime but it's not displayed anywhere
+                mse.getStati().isEmpty() ? 1 : 0); // might actually be the buffTime but it's not displayed anywhere
         packet.writeShort(0); // delay in ms
         packet.write(1); // size
         packet.write(1); // ? v97
@@ -396,10 +374,7 @@ public class MobPacket {
     }
 
     public static byte[] applyMonsterStatus(
-            final int oid,
-            final Map<MonsterStatus, Integer> stati,
-            final List<Integer> reflection,
-            MobSkill skil) {
+            final int oid, final Map<MonsterStatus, Integer> stati, final List<Integer> reflection, MobSkill skil) {
         OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.APPLY_MONSTER_STATUS.getValue());
@@ -412,9 +387,7 @@ public class MobPacket {
             packet.writeShort(skil.getSkillId());
             packet.writeShort(skil.getSkillLevel());
             packet.writeShort(
-                    mse.getKey().isEmpty()
-                            ? 1
-                            : 0); // might actually be the buffTime but it's not displayed anywhere
+                    mse.getKey().isEmpty() ? 1 : 0); // might actually be the buffTime but it's not displayed anywhere
         }
         for (Integer ref : reflection) {
             packet.writeInt(ref);

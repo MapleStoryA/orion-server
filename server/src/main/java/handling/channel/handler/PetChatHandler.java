@@ -21,10 +21,6 @@ public class PetChatHandler extends AbstractMaplePacketHandler {
         if (chr == null || chr.getMap() == null || chr.getPetIndex(petid) < 0) {
             return;
         }
-        chr.getMap()
-                .broadcastMessage(
-                        chr,
-                        PetPacket.petChat(chr.getId(), command, text, chr.getPetIndex(petid)),
-                        true);
+        chr.getMap().broadcastMessage(chr, PetPacket.petChat(chr.getId(), command, text, chr.getPetIndex(petid)), true);
     }
 }

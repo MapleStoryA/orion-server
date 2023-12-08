@@ -15,9 +15,8 @@ public class UseHiredMerchantHandler extends AbstractMaplePacketHandler {
         //		slea.readInt(); // TimeStamp
 
         if (c.getPlayer().getMap().allowPersonalShop()) {
-            final byte state =
-                    HiredMerchantHandlerUtils.checkExistance(
-                            c.getPlayer().getAccountID(), c.getPlayer().getId());
+            final byte state = HiredMerchantHandlerUtils.checkExistance(
+                    c.getPlayer().getAccountID(), c.getPlayer().getId());
 
             switch (state) {
                 case 1:
@@ -33,8 +32,7 @@ public class UseHiredMerchantHandler extends AbstractMaplePacketHandler {
                         }
                         c.getSession().write(PlayerShopPacket.sendTitleBox());
                     } else {
-                        c.getPlayer()
-                                .dropMessage(1, "Please close the existing store and try again.");
+                        c.getPlayer().dropMessage(1, "Please close the existing store and try again.");
                     }
                     break;
                 default:

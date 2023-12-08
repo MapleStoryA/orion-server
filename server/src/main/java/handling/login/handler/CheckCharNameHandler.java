@@ -14,11 +14,9 @@ public class CheckCharNameHandler extends AbstractMaplePacketHandler {
     public void handlePacket(InPacket packet, MapleClient c) {
         String name = packet.readMapleAsciiString();
         c.getSession()
-                .write(
-                        LoginPacket.charNameResponse(
-                                name,
-                                !MapleCharacterHelper.canCreateChar(name)
-                                        || LoginInformationProvider.getInstance()
-                                                .isForbiddenName(name)));
+                .write(LoginPacket.charNameResponse(
+                        name,
+                        !MapleCharacterHelper.canCreateChar(name)
+                                || LoginInformationProvider.getInstance().isForbiddenName(name)));
     }
 }

@@ -22,13 +22,9 @@ public class MoveDragonHandler extends AbstractMaplePacketHandler {
             updatePosition(path, chr.getDragon(), 0);
             MapleMap map = chr.getMap();
             if (!chr.isHidden()) {
-                map.broadcastMessage(
-                        chr,
-                        MaplePacketCreator.moveDragon(chr.getDragon(), path),
-                        chr.getPosition());
+                map.broadcastMessage(chr, MaplePacketCreator.moveDragon(chr.getDragon(), path), chr.getPosition());
             } else {
-                map.broadcastGMMessage(
-                        chr, MaplePacketCreator.moveDragon(chr.getDragon(), path), false);
+                map.broadcastGMMessage(chr, MaplePacketCreator.moveDragon(chr.getDragon(), path), false);
             }
         }
     }

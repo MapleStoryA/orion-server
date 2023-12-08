@@ -11,17 +11,14 @@ public class AdminChatHandler extends AbstractMaplePacketHandler {
 
     @Override
     public final void handlePacket(InPacket slea, MapleClient c) {
-        if (!c.getPlayer()
-                .isGameMaster()) { // if ( (signed int)CWvsContext::GetAdminLevel((void *)v294) > 2
+        if (!c.getPlayer().isGameMaster()) { // if ( (signed int)CWvsContext::GetAdminLevel((void *)v294) > 2
             // )
             return;
         }
         byte mode = slea.readByte();
         // not saving slides...
-        byte[] packet =
-                MaplePacketCreator.serverNotice(
-                        slea.readByte(),
-                        slea.readMapleAsciiString()); // maybe I should make a check for the
+        byte[] packet = MaplePacketCreator.serverNotice(
+                slea.readByte(), slea.readMapleAsciiString()); // maybe I should make a check for the
         // slea.readByte()... but I just hope gm's
         // don't fuck things up :)
         switch (mode) {

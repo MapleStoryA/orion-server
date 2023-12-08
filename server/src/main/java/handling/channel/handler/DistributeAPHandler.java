@@ -21,12 +21,10 @@ public class DistributeAPHandler extends AbstractMaplePacketHandler {
     @Override
     public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        final List<Pair<MapleStat, Integer>> statupdate =
-                new ArrayList<Pair<MapleStat, Integer>>(2);
+        final List<Pair<MapleStat, Integer>> statupdate = new ArrayList<Pair<MapleStat, Integer>>(2);
         c.getSession()
-                .write(
-                        MaplePacketCreator.updatePlayerStats(
-                                statupdate, true, chr.getJob().getId()));
+                .write(MaplePacketCreator.updatePlayerStats(
+                        statupdate, true, chr.getJob().getId()));
         chr.updateTick(packet.readInt());
 
         final PlayerStats stat = chr.getStat();
@@ -38,32 +36,28 @@ public class DistributeAPHandler extends AbstractMaplePacketHandler {
                         return;
                     }
                     stat.setStr((short) (stat.getStr() + 1));
-                    statupdate.add(
-                            new Pair<MapleStat, Integer>(MapleStat.STR, (int) stat.getStr()));
+                    statupdate.add(new Pair<MapleStat, Integer>(MapleStat.STR, (int) stat.getStr()));
                     break;
                 case 128: // Dex
                     if (stat.getDex() >= 999) {
                         return;
                     }
                     stat.setDex((short) (stat.getDex() + 1));
-                    statupdate.add(
-                            new Pair<MapleStat, Integer>(MapleStat.DEX, (int) stat.getDex()));
+                    statupdate.add(new Pair<MapleStat, Integer>(MapleStat.DEX, (int) stat.getDex()));
                     break;
                 case 256: // Int
                     if (stat.getInt() >= 999) {
                         return;
                     }
                     stat.setInt((short) (stat.getInt() + 1));
-                    statupdate.add(
-                            new Pair<MapleStat, Integer>(MapleStat.INT, (int) stat.getInt()));
+                    statupdate.add(new Pair<MapleStat, Integer>(MapleStat.INT, (int) stat.getInt()));
                     break;
                 case 512: // Luk
                     if (stat.getLuk() >= 999) {
                         return;
                     }
                     stat.setLuk((short) (stat.getLuk() + 1));
-                    statupdate.add(
-                            new Pair<MapleStat, Integer>(MapleStat.LUK, (int) stat.getLuk()));
+                    statupdate.add(new Pair<MapleStat, Integer>(MapleStat.LUK, (int) stat.getLuk()));
                     break;
                 case 2048: // HP
                     int maxhp = stat.getMaxHp();
@@ -72,16 +66,16 @@ public class DistributeAPHandler extends AbstractMaplePacketHandler {
                     }
                     if (job == 0) { // Beginner
                         maxhp += Randomizer.rand(8, 12);
-                    } else if ((job >= 100 && job <= 132)
-                            || (job >= 3200 && job <= 3212)) { // Warrior
+                    } else if ((job >= 100 && job <= 132) || (job >= 3200 && job <= 3212)) { // Warrior
                         ISkill improvingMaxHP = SkillFactory.getSkill(1000001);
                         int improvingMaxHPLevel = c.getPlayer().getSkillLevel(improvingMaxHP);
                         maxhp += Randomizer.rand(20, 25);
                         if (improvingMaxHPLevel >= 1) {
-                            maxhp += improvingMaxHP.getEffect(improvingMaxHPLevel).getX();
+                            maxhp += improvingMaxHP
+                                    .getEffect(improvingMaxHPLevel)
+                                    .getX();
                         }
-                    } else if ((job >= 200 && job <= 232)
-                            || (GameConstants.isEvan(job))) { // Magician
+                    } else if ((job >= 200 && job <= 232) || (GameConstants.isEvan(job))) { // Magician
                         maxhp += Randomizer.rand(10, 20);
                     } else if ((job >= 300 && job <= 322)
                             || (job >= 400 && job <= 434)
@@ -89,27 +83,32 @@ public class DistributeAPHandler extends AbstractMaplePacketHandler {
                             || (job >= 1400 && job <= 1412)
                             || (job >= 3300 && job <= 3312)) { // Bowman
                         maxhp += Randomizer.rand(16, 20);
-                    } else if ((job >= 500 && job <= 522)
-                            || (job >= 3500 && job <= 3512)) { // Pirate
+                    } else if ((job >= 500 && job <= 522) || (job >= 3500 && job <= 3512)) { // Pirate
                         ISkill improvingMaxHP = SkillFactory.getSkill(5100000);
                         int improvingMaxHPLevel = c.getPlayer().getSkillLevel(improvingMaxHP);
                         maxhp += Randomizer.rand(18, 22);
                         if (improvingMaxHPLevel >= 1) {
-                            maxhp += improvingMaxHP.getEffect(improvingMaxHPLevel).getY();
+                            maxhp += improvingMaxHP
+                                    .getEffect(improvingMaxHPLevel)
+                                    .getY();
                         }
                     } else if (job >= 1500 && job <= 1512) { // Pirate
                         ISkill improvingMaxHP = SkillFactory.getSkill(15100000);
                         int improvingMaxHPLevel = c.getPlayer().getSkillLevel(improvingMaxHP);
                         maxhp += Randomizer.rand(18, 22);
                         if (improvingMaxHPLevel >= 1) {
-                            maxhp += improvingMaxHP.getEffect(improvingMaxHPLevel).getY();
+                            maxhp += improvingMaxHP
+                                    .getEffect(improvingMaxHPLevel)
+                                    .getY();
                         }
                     } else if (job >= 1100 && job <= 1112) { // Soul Master
                         ISkill improvingMaxHP = SkillFactory.getSkill(11000000);
                         int improvingMaxHPLevel = c.getPlayer().getSkillLevel(improvingMaxHP);
                         maxhp += Randomizer.rand(36, 42);
                         if (improvingMaxHPLevel >= 1) {
-                            maxhp += improvingMaxHP.getEffect(improvingMaxHPLevel).getY();
+                            maxhp += improvingMaxHP
+                                    .getEffect(improvingMaxHPLevel)
+                                    .getY();
                         }
                     } else if (job >= 1200 && job <= 1212) { // Flame Wizard
                         maxhp += Randomizer.rand(15, 21);
@@ -139,7 +138,10 @@ public class DistributeAPHandler extends AbstractMaplePacketHandler {
                         int improvingMaxMPLevel = c.getPlayer().getSkillLevel(improvingMaxMP);
                         maxmp += Randomizer.rand(18, 20);
                         if (improvingMaxMPLevel >= 1) {
-                            maxmp += improvingMaxMP.getEffect(improvingMaxMPLevel).getY() * 2;
+                            maxmp += improvingMaxMP
+                                            .getEffect(improvingMaxMPLevel)
+                                            .getY()
+                                    * 2;
                         }
                     } else if ((job >= 300 && job <= 322)
                             || (job >= 400 && job <= 434)
@@ -157,7 +159,10 @@ public class DistributeAPHandler extends AbstractMaplePacketHandler {
                         int improvingMaxMPLevel = c.getPlayer().getSkillLevel(improvingMaxMP);
                         maxmp += Randomizer.rand(18, 20);
                         if (improvingMaxMPLevel >= 1) {
-                            maxmp += improvingMaxMP.getEffect(improvingMaxMPLevel).getY() * 2;
+                            maxmp += improvingMaxMP
+                                            .getEffect(improvingMaxMPLevel)
+                                            .getY()
+                                    * 2;
                         }
                     } else if (job >= 2000 && job <= 2112) { // Aran
                         maxmp += Randomizer.rand(6, 9);
@@ -171,20 +176,17 @@ public class DistributeAPHandler extends AbstractMaplePacketHandler {
                     break;
                 default:
                     c.getSession()
-                            .write(
-                                    MaplePacketCreator.updatePlayerStats(
-                                            MaplePacketCreator.EMPTY_STATUPDATE,
-                                            true,
-                                            chr.getJob().getId()));
+                            .write(MaplePacketCreator.updatePlayerStats(
+                                    MaplePacketCreator.EMPTY_STATUPDATE,
+                                    true,
+                                    chr.getJob().getId()));
                     return;
             }
             chr.setRemainingAp((short) (chr.getRemainingAp() - 1));
-            statupdate.add(
-                    new Pair<MapleStat, Integer>(MapleStat.AVAILABLEAP, chr.getRemainingAp()));
+            statupdate.add(new Pair<MapleStat, Integer>(MapleStat.AVAILABLEAP, chr.getRemainingAp()));
             c.getSession()
-                    .write(
-                            MaplePacketCreator.updatePlayerStats(
-                                    statupdate, true, chr.getJob().getId()));
+                    .write(MaplePacketCreator.updatePlayerStats(
+                            statupdate, true, chr.getJob().getId()));
         }
     }
 }

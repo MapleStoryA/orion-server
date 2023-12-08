@@ -18,8 +18,7 @@ public class RepairHandler extends AbstractMaplePacketHandler {
             return;
         }
         final int position = packet.readInt(); // who knows why this is a int
-        final MapleInventoryType type =
-                position < 0 ? MapleInventoryType.EQUIPPED : MapleInventoryType.EQUIP;
+        final MapleInventoryType type = position < 0 ? MapleInventoryType.EQUIPPED : MapleInventoryType.EQUIP;
         final IItem item = c.getPlayer().getInventory(type).getItem((byte) position);
         if (item == null) {
             return;
@@ -33,20 +32,12 @@ public class RepairHandler extends AbstractMaplePacketHandler {
             return;
         }
         final double rPercentage =
-                (100.0
-                        - Math.ceil(
-                                (eq.getDurability() * 1000.0)
-                                        / (eqStats.get("durability") * 10.0)));
+                (100.0 - Math.ceil((eq.getDurability() * 1000.0) / (eqStats.get("durability") * 10.0)));
         // drpq level 105 weapons - ~420k per %; 2k per durability point
         // explorer level 30 weapons - ~10 mesos per %
-        final int price =
-                (int)
-                        Math.ceil(
-                                rPercentage
-                                        * ii.getPrice(eq.getItemId())
-                                        / (ii.getReqLevel(eq.getItemId()) < 70
-                                                ? 100.0
-                                                : 1.0)); // / 100 for level 30?
+        final int price = (int) Math.ceil(rPercentage
+                * ii.getPrice(eq.getItemId())
+                / (ii.getReqLevel(eq.getItemId()) < 70 ? 100.0 : 1.0)); // / 100 for level 30?
         // TODO: need more data on calculating off client
         if (c.getPlayer().getMeso() < price) {
             return;

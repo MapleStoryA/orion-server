@@ -51,8 +51,7 @@ public class PartyChatHandler extends AbstractMaplePacketHandler {
                 if (chr.getGuildId() <= 0) {
                     break;
                 }
-                AllianceManager.allianceChat(
-                        chr.getGuildId(), chr.getName(), chr.getId(), chattext);
+                AllianceManager.allianceChat(chr.getGuildId(), chr.getName(), chr.getId(), chattext);
                 break;
             case 6:
                 if (chr.getParty() == null || chr.getParty().getExpeditionId() <= 0) {

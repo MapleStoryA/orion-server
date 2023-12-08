@@ -13,8 +13,7 @@ public class DenyGuildRequestHandler extends AbstractMaplePacketHandler {
     public void handlePacket(InPacket packet, MapleClient c) {
         packet.skip(1);
         String from = packet.readMapleAsciiString();
-        final MapleCharacter cfrom =
-                c.getChannelServer().getPlayerStorage().getCharacterByName(from);
+        final MapleCharacter cfrom = c.getChannelServer().getPlayerStorage().getCharacterByName(from);
         if (cfrom != null) {
             cfrom.getClient()
                     .getSession()

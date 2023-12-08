@@ -30,8 +30,7 @@ public class RangedAttackHandler extends AbstractMaplePacketHandler {
             return;
         }
         c.getPlayer().checkForDarkSight();
-        final AttackInfo attack =
-                DamageParse.Modify_AttackCrit(DamageParse.parseDmgR(packet), chr, 2);
+        final AttackInfo attack = DamageParse.Modify_AttackCrit(DamageParse.parseDmgR(packet), chr, 2);
         if (!chr.getJob().isSkillBelongToJob(attack.skill, chr.isGameMaster())) {
             chr.dropMessage(5, "This skill cannot be used with the current job.");
             c.getSession().write(MaplePacketCreator.enableActions());
@@ -67,12 +66,8 @@ public class RangedAttackHandler extends AbstractMaplePacketHandler {
                     c.getSession().write(MaplePacketCreator.enableActions());
                     return;
                 }
-                c.getSession()
-                        .write(
-                                MaplePacketCreator.skillCooldown(
-                                        attack.skill, effect.getCooldown()));
-                chr.addCooldown(
-                        attack.skill, System.currentTimeMillis(), effect.getCooldown() * 1000L);
+                c.getSession().write(MaplePacketCreator.skillCooldown(attack.skill, effect.getCooldown()));
+                chr.addCooldown(attack.skill, System.currentTimeMillis(), effect.getCooldown() * 1000L);
             }
         }
         final Integer ShadowPartner = chr.getBuffedValue(MapleBuffStat.SHADOWPARTNER);
@@ -87,16 +82,17 @@ public class RangedAttackHandler extends AbstractMaplePacketHandler {
             if (chr.getInventory(MapleInventoryType.USE).getItem(attack.slot) == null) {
                 return;
             }
-            projectile = chr.getInventory(MapleInventoryType.USE).getItem(attack.slot).getItemId();
+            projectile = chr.getInventory(MapleInventoryType.USE)
+                    .getItem(attack.slot)
+                    .getItemId();
 
             if (attack.csstar > 0) {
                 if (chr.getInventory(MapleInventoryType.CASH).getItem(attack.csstar) == null) {
                     return;
                 }
-                visProjectile =
-                        chr.getInventory(MapleInventoryType.CASH)
-                                .getItem(attack.csstar)
-                                .getItemId();
+                visProjectile = chr.getInventory(MapleInventoryType.CASH)
+                        .getItem(attack.csstar)
+                        .getItemId();
             } else {
                 visProjectile = projectile;
             }
@@ -117,8 +113,7 @@ public class RangedAttackHandler extends AbstractMaplePacketHandler {
         double basedamage;
         int projectileWatk = 0;
         if (projectile != 0) {
-            projectileWatk =
-                    MapleItemInformationProvider.getInstance().getWatkForProjectile(projectile);
+            projectileWatk = MapleItemInformationProvider.getInstance().getWatkForProjectile(projectile);
         }
         final PlayerStats statst = chr.getStat();
         switch (attack.skill) {
@@ -126,9 +121,7 @@ public class RangedAttackHandler extends AbstractMaplePacketHandler {
             case 4121007: // Triple Throw
             case 14001004: // Lucky seven
             case 14111005: // Triple Throw
-                basedamage =
-                        ((statst.getTotalLuk() * 5.0f) * (statst.getTotalWatk() + projectileWatk))
-                                / 100;
+                basedamage = ((statst.getTotalLuk() * 5.0f) * (statst.getTotalWatk() + projectileWatk)) / 100;
                 break;
             case 4111004: // Shadow Meso
                 // basedamage = ((effect.getMoneyCon() * 10) / 100) *
@@ -137,8 +130,7 @@ public class RangedAttackHandler extends AbstractMaplePacketHandler {
                 break;
             default:
                 if (projectileWatk != 0) {
-                    basedamage =
-                            statst.calculateMaxBaseDamage(statst.getTotalWatk() + projectileWatk);
+                    basedamage = statst.calculateMaxBaseDamage(statst.getTotalWatk() + projectileWatk);
                 } else {
                     basedamage = statst.getCurrentMaxBaseDamage();
                 }

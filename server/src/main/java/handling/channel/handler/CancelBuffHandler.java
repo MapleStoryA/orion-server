@@ -22,8 +22,7 @@ public class CancelBuffHandler extends AbstractMaplePacketHandler {
 
         if (skill.isChargeSkill()) {
             chr.setKeyDownSkill_Time(0);
-            chr.getMap()
-                    .broadcastMessage(chr, MaplePacketCreator.skillCancel(chr, sourceid), false);
+            chr.getMap().broadcastMessage(chr, MaplePacketCreator.skillCancel(chr, sourceid), false);
         }
         chr.cancelEffect(skill.getEffect(1), false, -1);
     }

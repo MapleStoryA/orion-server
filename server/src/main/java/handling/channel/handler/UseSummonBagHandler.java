@@ -33,8 +33,7 @@ public class UseSummonBagHandler extends AbstractMaplePacketHandler {
 
         if (toUse != null && toUse.getQuantity() >= 1 && toUse.getItemId() == itemId) {
 
-            MapleInventoryManipulator.removeFromSlot(
-                    c, MapleInventoryType.USE, slot, (short) 1, false);
+            MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
 
             if (c.getPlayer().isGameMaster()
                     || !FieldLimitType.SummoningBag.check(chr.getMap().getFieldLimit())) {

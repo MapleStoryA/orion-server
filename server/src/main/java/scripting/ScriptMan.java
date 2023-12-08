@@ -21,12 +21,7 @@ public class ScriptMan {
     private static final short ScriptMessage = 0x163;
 
     public static byte[] OnSay(
-            int nSpeakerTypeID,
-            int nSpeakerTemplateID,
-            byte bParam,
-            String sText,
-            boolean bPrev,
-            boolean bNext) {
+            int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, String sText, boolean bPrev, boolean bNext) {
         OutPacket packet = new OutPacket();
         packet.writeShort(ScriptMessage);
         packet.write(nSpeakerTypeID);
@@ -43,8 +38,7 @@ public class ScriptMan {
         return packet.getPacket();
     }
 
-    public static byte[] OnSayImage(
-            int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, List<String> asPath) {
+    public static byte[] OnSayImage(int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, List<String> asPath) {
         OutPacket packet = new OutPacket();
         packet.writeShort(ScriptMessage);
         packet.write(nSpeakerTypeID);
@@ -58,8 +52,7 @@ public class ScriptMan {
         return packet.getPacket();
     }
 
-    public static byte[] OnAskYesNo(
-            int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, String sText) {
+    public static byte[] OnAskYesNo(int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, String sText) {
         OutPacket packet = new OutPacket();
         packet.writeShort(ScriptMessage);
         packet.write(nSpeakerTypeID);
@@ -70,8 +63,7 @@ public class ScriptMan {
         return packet.getPacket();
     }
 
-    public static byte[] OnAskAccept(
-            int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, String sText) {
+    public static byte[] OnAskAccept(int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, String sText) {
         OutPacket packet = new OutPacket();
         packet.writeShort(ScriptMessage);
         packet.write(nSpeakerTypeID);
@@ -125,13 +117,7 @@ public class ScriptMan {
     }
 
     public static byte[] OnAskNumber(
-            int nSpeakerTypeID,
-            int nSpeakerTemplateID,
-            byte bParam,
-            String sMsg,
-            int nDef,
-            int nMin,
-            int nMax) {
+            int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, String sMsg, int nDef, int nMin, int nMax) {
         OutPacket packet = new OutPacket();
         packet.writeShort(ScriptMessage);
         packet.write(nSpeakerTypeID);
@@ -145,8 +131,7 @@ public class ScriptMan {
         return packet.getPacket();
     }
 
-    public static byte[] OnAskMenu(
-            int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, String sMsg) {
+    public static byte[] OnAskMenu(int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, String sMsg) {
         OutPacket packet = new OutPacket();
         packet.writeShort(ScriptMessage);
         packet.write(nSpeakerTypeID);
@@ -157,8 +142,7 @@ public class ScriptMan {
         return packet.getPacket();
     }
 
-    public static byte[] OnAskAvatar(
-            int nSpeakerTypeID, int nSpeakerTemplateID, String sMsg, int[] anCanadite) {
+    public static byte[] OnAskAvatar(int nSpeakerTypeID, int nSpeakerTemplateID, String sMsg, int[] anCanadite) {
         OutPacket packet = new OutPacket();
         packet.writeShort(ScriptMessage);
         packet.write(nSpeakerTypeID);
@@ -244,11 +228,7 @@ public class ScriptMan {
     }
 
     public static byte[] OnAskSlideMenu(
-            int nSpeakerTypeID,
-            int nSpeakerTemplateID,
-            boolean bSlideDlgEX,
-            int nIndex,
-            String sMsg) {
+            int nSpeakerTypeID, int nSpeakerTemplateID, boolean bSlideDlgEX, int nIndex, String sMsg) {
         OutPacket packet = new OutPacket();
         packet.writeShort(ScriptMessage);
         packet.write(nSpeakerTypeID);
@@ -256,8 +236,7 @@ public class ScriptMan {
         packet.write(ScriptMessageType.AskSlideMenu.getMsgType());
         packet.write(0);
         packet.writeInt(bSlideDlgEX ? 1 : 0); // Neo City
-        packet.writeInt(
-                nIndex); // Dimensional Mirror.. There's also supportF for potions and such in
+        packet.writeInt(nIndex); // Dimensional Mirror.. There's also supportF for potions and such in
         // higher versions.
         packet.writeMapleAsciiString(sMsg);
         return packet.getPacket();

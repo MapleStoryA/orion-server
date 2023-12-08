@@ -19,18 +19,14 @@ public class EnterMapRequestHandler extends AbstractMaplePacketHandler {
             c.enableActions();
             return;
         }
-        c.getPlayer()
-                .getMap()
-                .broadcastMessage(MaplePacketCreator.spawnPlayerMapobject(c.getPlayer()));
+        c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.spawnPlayerMapobject(c.getPlayer()));
         MapleDragon dragon = c.getPlayer().getDragon();
         if (dragon != null) {
             c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.spawnDragon(dragon));
         }
 
         for (Entry<Integer, MapleSummon> summon : c.getPlayer().getSummons().entrySet()) {
-            c.getPlayer()
-                    .getMap()
-                    .broadcastMessage(MaplePacketCreator.spawnSummon(summon.getValue(), false));
+            c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.spawnSummon(summon.getValue(), false));
         }
     }
 }

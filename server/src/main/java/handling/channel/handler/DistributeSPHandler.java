@@ -49,18 +49,15 @@ public class DistributeSPHandler extends AbstractMaplePacketHandler {
             return;
         }
         if (player.getRemainingSp() > 0 || player.getEvanSP().getSkillPoints().size() > 0) {
-            if (curLevel + 1
-                    <= (skill.hasMastery() ? player.getMasterLevel(skill) : skill.getMaxLevel())) {
+            if (curLevel + 1 <= (skill.hasMastery() ? player.getMasterLevel(skill) : skill.getMaxLevel())) {
                 if (!c.getPlayer().getJob().isEvan()) {
                     player.setRemainingSp(player.getRemainingSp() - 1);
                     player.updateSingleStat(MapleStat.AVAILABLESP, player.getRemainingSp());
-                    player.changeSkillLevel(
-                            skill, (byte) (curLevel + 1), player.getMasterLevel(skill));
+                    player.changeSkillLevel(skill, (byte) (curLevel + 1), player.getMasterLevel(skill));
                 } else {
                     int job = skillid / 10000;
                     if (player.getEvanSP().getSkillPoints(job) > 0) {
-                        player.changeSkillLevel(
-                                skill, (byte) (curLevel + 1), player.getMasterLevel(skill));
+                        player.changeSkillLevel(skill, (byte) (curLevel + 1), player.getMasterLevel(skill));
                     }
                     player.getEvanSP().addSkillPoints(job, -1);
                     c.getSession().write(MaplePacketCreator.updateExtendedSP(player.getEvanSP()));

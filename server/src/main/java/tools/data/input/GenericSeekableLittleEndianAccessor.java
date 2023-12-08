@@ -11,8 +11,7 @@ import java.io.IOException;
  * @since Revision 323
  */
 @lombok.extern.slf4j.Slf4j
-public class GenericSeekableLittleEndianAccessor extends GenericLittleEndianAccessor
-        implements InPacket {
+public class GenericSeekableLittleEndianAccessor extends GenericLittleEndianAccessor implements InPacket {
 
     private final SeekableInputStreamBytestream bs;
 

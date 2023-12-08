@@ -36,8 +36,7 @@ public class ItemPickupHandler extends AbstractMaplePacketHandler {
         packet.skip(1); // [4] Seems to be tickcount, [1] always 0
         final Point Client_Reportedpos = packet.readPos();
 
-        final MapleMapObject ob =
-                chr.getMap().getMapObject(packet.readInt(), MapleMapObjectType.ITEM);
+        final MapleMapObject ob = chr.getMap().getMapObject(packet.readInt(), MapleMapObjectType.ITEM);
         if (ob == null) {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
@@ -66,8 +65,7 @@ public class ItemPickupHandler extends AbstractMaplePacketHandler {
             if (!mapitem.isPlayerDrop()
                     && mapitem.getDropType() == 1
                     && mapitem.getOwner() != chr.getId()
-                    && (chr.getParty() == null
-                            || chr.getParty().getMemberById(mapitem.getOwner()) == null)) {
+                    && (chr.getParty() == null || chr.getParty().getMemberById(mapitem.getOwner()) == null)) {
                 c.getSession().write(MaplePacketCreator.enableActions());
                 return;
             }
@@ -78,9 +76,7 @@ public class ItemPickupHandler extends AbstractMaplePacketHandler {
             if (!vac) {
                 final double Distance = Client_Reportedpos.distanceSq(mapitem.getPosition());
                 if (Distance > 2500) {
-                    chr.getCheatTracker()
-                            .registerOffense(
-                                    CheatingOffense.ITEMVAC_CLIENT, String.valueOf(Distance));
+                    chr.getCheatTracker().registerOffense(CheatingOffense.ITEMVAC_CLIENT, String.valueOf(Distance));
                 } else if (chr.getPosition().distanceSq(mapitem.getPosition()) > 640000.0) {
                     chr.getCheatTracker().registerOffense(CheatingOffense.ITEMVAC_SERVER);
                 }
@@ -96,9 +92,7 @@ public class ItemPickupHandler extends AbstractMaplePacketHandler {
                         for (final MapleCharacter m : toGive) {
                             m.gainMeso(
                                     mapitem.getMeso() / toGive.size()
-                                            + (m.getStat().isHasPartyBonus()
-                                                    ? (int) (mapitem.getMeso() / 20.0)
-                                                    : 0),
+                                            + (m.getStat().isHasPartyBonus() ? (int) (mapitem.getMeso() / 20.0) : 0),
                                     true,
                                     true);
                         }
@@ -119,20 +113,17 @@ public class ItemPickupHandler extends AbstractMaplePacketHandler {
                             mapitem.getItem().getQuantity(),
                             mapitem.getItem().getOwner())) {
                         if (mapitem.getItem().getQuantity() >= 50
-                                && GameConstants.isUpgradeScroll(mapitem.getItem().getItemId())) {
+                                && GameConstants.isUpgradeScroll(
+                                        mapitem.getItem().getItemId())) {
                             final String file = chr.getName();
-                            final String msg =
-                                    "Player picked up "
-                                            + mapitem.getItem().getQuantity()
-                                            + " of "
-                                            + mapitem.getItem().getItemId();
+                            final String msg = "Player picked up "
+                                    + mapitem.getItem().getQuantity()
+                                    + " of "
+                                    + mapitem.getItem().getItemId();
                             log.info(file + " : " + msg);
                         }
                         if (MapleInventoryManipulator.addFromDrop(
-                                c,
-                                mapitem.getItem(),
-                                true,
-                                mapitem.getDropper() instanceof MapleMonster)) {
+                                c, mapitem.getItem(), true, mapitem.getDropper() instanceof MapleMonster)) {
                             InventoryHandlerUtils.removeItem(chr, mapitem, ob);
                         }
                     } else {
@@ -145,10 +136,7 @@ public class ItemPickupHandler extends AbstractMaplePacketHandler {
                 int i = 0;
                 boolean isVortex = false;
                 List<MapleMapObject> items =
-                        chr.getMap()
-                                .getItemsInRange(
-                                        Client_Reportedpos,
-                                        (GameConstants.maxViewRangeSq() * multiplier));
+                        chr.getMap().getItemsInRange(Client_Reportedpos, (GameConstants.maxViewRangeSq() * multiplier));
                 for (MapleMapObject obb : items) {
                     i++;
                     if (!isVortex) {

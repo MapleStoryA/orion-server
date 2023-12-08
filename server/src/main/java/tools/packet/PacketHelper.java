@@ -91,12 +91,7 @@ public class PacketHelper {
         packet.writeShort(cd.size());
         for (final MapleCoolDownValueHolder cooling : cd) {
             packet.writeInt(cooling.getSkillId());
-            packet.writeShort(
-                    (int)
-                                    (cooling.getLength()
-                                            + cooling.getStartTime()
-                                            - System.currentTimeMillis())
-                            / 1000);
+            packet.writeShort((int) (cooling.getLength() + cooling.getStartTime() - System.currentTimeMillis()) / 1000);
         }
     }
 
@@ -255,8 +250,7 @@ public class PacketHelper {
         packet.writeShort(chr.getSubCategoryField()); // 1 here = db
     }
 
-    public static final void addCharLook(
-            final OutPacket packet, final MapleCharacter chr, final boolean mega) {
+    public static final void addCharLook(final OutPacket packet, final MapleCharacter chr, final boolean mega) {
         packet.write(chr.getGender());
         packet.write(chr.getSkinColor());
         packet.writeInt(chr.getFace());
@@ -348,10 +342,7 @@ public class PacketHelper {
     }
 
     public static final void addItemInfo(
-            final OutPacket packet,
-            final IItem item,
-            final boolean zeroPosition,
-            final boolean leaveOut) {
+            final OutPacket packet, final IItem item, final boolean zeroPosition, final boolean leaveOut) {
         addItemInfo(packet, item, zeroPosition, leaveOut, false);
     }
 
@@ -435,8 +426,7 @@ public class PacketHelper {
                 packet.writeShort(item.getQuantity());
                 packet.writeMapleAsciiString(item.getOwner());
                 packet.writeShort(item.getFlag());
-                if (GameConstants.isThrowingStar(item.getItemId())
-                        || GameConstants.isBullet(item.getItemId())) {
+                if (GameConstants.isThrowingStar(item.getItemId()) || GameConstants.isBullet(item.getItemId())) {
                     packet.writeLong(item.getInventoryId() <= 0 ? -1 : item.getInventoryId());
                 }
             }
@@ -493,14 +483,11 @@ public class PacketHelper {
         packet.writeInt(0); // PQ rank
     }
 
-    public static final void addPetItemInfo(
-            final OutPacket packet, final IItem item, final MaplePet pet) {
+    public static final void addPetItemInfo(final OutPacket packet, final IItem item, final MaplePet pet) {
         if (item == null) {
             packet.writeLong(getKoreanTimestamp((long) (System.currentTimeMillis() * 1.5)));
         } else {
-            addExpirationTime(
-                    packet,
-                    item.getExpiration() <= System.currentTimeMillis() ? -1 : item.getExpiration());
+            addExpirationTime(packet, item.getExpiration() <= System.currentTimeMillis() ? -1 : item.getExpiration());
         }
         packet.writeAsciiString(pet.getName(), 13);
         packet.write(pet.getLevel());
@@ -509,16 +496,11 @@ public class PacketHelper {
         if (item == null) {
             packet.writeLong(getKoreanTimestamp((long) (System.currentTimeMillis() * 1.5)));
         } else {
-            addExpirationTime(
-                    packet,
-                    item.getExpiration() <= System.currentTimeMillis() ? -1 : item.getExpiration());
+            addExpirationTime(packet, item.getExpiration() <= System.currentTimeMillis() ? -1 : item.getExpiration());
         }
         packet.writeShort(0);
         packet.writeShort(0); // pet flags
-        packet.writeInt(
-                (pet.getPetItemId() == 5000054 && pet.getSecondsLeft() > 0)
-                        ? pet.getSecondsLeft()
-                        : 0);
+        packet.writeInt((pet.getPetItemId() == 5000054 && pet.getSecondsLeft() > 0) ? pet.getSecondsLeft() : 0);
         packet.writeShort(0);
     }
 }

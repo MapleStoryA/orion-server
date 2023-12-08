@@ -63,8 +63,7 @@ public class OwlWarpHandler extends AbstractMaplePacketHandler {
                         }
                         break;
                     default:
-                        final MapleMapObject ob =
-                                mapp.getMapObject(id, MapleMapObjectType.HIRED_MERCHANT);
+                        final MapleMapObject ob = mapp.getMapObject(id, MapleMapObjectType.HIRED_MERCHANT);
                         if (ob instanceof IMaplePlayerShop) {
                             final IMaplePlayerShop ips = (IMaplePlayerShop) ob;
                             if (ips instanceof HiredMerchant) {
@@ -78,16 +77,10 @@ public class OwlWarpHandler extends AbstractMaplePacketHandler {
                         merchant.setOpen(false);
                         merchant.removeAllVisitors((byte) 16, (byte) 0);
                         c.getPlayer().setPlayerShop(merchant);
-                        c.getSession()
-                                .write(
-                                        PlayerShopPacket.getHiredMerch(
-                                                c.getPlayer(), merchant, false));
+                        c.getSession().write(PlayerShopPacket.getHiredMerch(c.getPlayer(), merchant, false));
                     } else {
                         if (!merchant.isOpen() || !merchant.isAvailable()) {
-                            c.getPlayer()
-                                    .dropMessage(
-                                            1,
-                                            "This shop is in maintenance, please come by later.");
+                            c.getPlayer().dropMessage(1, "This shop is in maintenance, please come by later.");
                         } else {
                             if (merchant.getFreeSlot() == -1) {
                                 c.getPlayer()
@@ -96,21 +89,16 @@ public class OwlWarpHandler extends AbstractMaplePacketHandler {
                                                 "This shop has reached it's maximum capacity,"
                                                         + " please come by later.");
                             } else if (merchant.isInBlackList(c.getPlayer().getName())) {
-                                c.getPlayer()
-                                        .dropMessage(1, "You have been banned from this store.");
+                                c.getPlayer().dropMessage(1, "You have been banned from this store.");
                             } else {
                                 c.getPlayer().setPlayerShop(merchant);
                                 merchant.addVisitor(c.getPlayer());
-                                c.getSession()
-                                        .write(
-                                                PlayerShopPacket.getHiredMerch(
-                                                        c.getPlayer(), merchant, false));
+                                c.getSession().write(PlayerShopPacket.getHiredMerch(c.getPlayer(), merchant, false));
                             }
                         }
                     }
                 } else {
-                    c.getPlayer()
-                            .dropMessage(1, "This shop is in maintenance, please come by later.");
+                    c.getPlayer().dropMessage(1, "This shop is in maintenance, please come by later.");
                 }
             }
         }

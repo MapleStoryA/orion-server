@@ -63,9 +63,8 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
                     && itemz.getQuantity() == item.getCount()) {
                 chr.getCashInventory().addToInventory(itemz);
                 c.getSession()
-                        .write(
-                                MTSCSPacket.showBoughtCSItem(
-                                        itemz, item.getSN(), c.getAccountData().getId()));
+                        .write(MTSCSPacket.showBoughtCSItem(
+                                itemz, item.getSN(), c.getAccountData().getId()));
             } else {
                 c.getSession().write(MTSCSPacket.sendCSFail(0));
             }
@@ -109,13 +108,8 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
                             MapleInventoryIdentifier.getInstance());
             chr.modifyCSPoints(1, -item.getPrice(), false);
             c.getSession()
-                    .write(
-                            MTSCSPacket.showGiftSucceed(
-                                    item.getPrice(),
-                                    item.getId(),
-                                    item.getCount(),
-                                    partnerName,
-                                    action == 32));
+                    .write(MTSCSPacket.showGiftSucceed(
+                            item.getPrice(), item.getId(), item.getCount(), partnerName, action == 32));
         } else if (action == 5) { // Wishlist
             chr.getWishlist().clear();
             if (packet.available() < 40) {
@@ -154,17 +148,16 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
                 chr.getStorage().increaseSlots((byte) (4 * coupon));
                 chr.getStorage().saveToDB();
                 c.getSession()
-                        .write(MTSCSPacket.increasedStorageSlots(chr.getStorage().getSlots()));
+                        .write(MTSCSPacket.increasedStorageSlots(
+                                chr.getStorage().getSlots()));
             } else {
                 c.getSession().write(MTSCSPacket.sendCSFail(0));
             }
-        } else if (action
-                == 14) { // Take from Cash Inventory (UniqueId -> type(byte) -> position(short))
+        } else if (action == 14) { // Take from Cash Inventory (UniqueId -> type(byte) -> position(short))
             final IItem item = chr.getCashInventory().findByCashId((int) packet.readLong());
             if (item != null
                     && item.getQuantity() > 0
-                    && MapleInventoryManipulator.checkSpace(
-                            c, item.getItemId(), item.getQuantity(), item.getOwner())) {
+                    && MapleInventoryManipulator.checkSpace(c, item.getItemId(), item.getQuantity(), item.getOwner())) {
                 final IItem item_ = item.copy();
                 short pos = MapleInventoryManipulator.addbyItem(c, item_, true);
                 if (pos >= 0) {
@@ -219,9 +212,9 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
                 CashShopOperationHandlers.doCSPackets(c);
                 return;
             } /*else if (!item.genderEquals(chr.getGender())) {
-                  c.getSession().write(MTSCSPacket.sendCSFail(0x0B));
-                  CashShopOperationUtils.doCSPackets(c);
-                  return;
+              	c.getSession().write(MTSCSPacket.sendCSFail(0x0B));
+              	CashShopOperationUtils.doCSPackets(c);
+              	return;
               }*/ else if (chr.getCashInventory().getItemsSize() >= 100) {
                 c.getSession().write(MTSCSPacket.sendCSFail(0x0A));
                 CashShopOperationHandlers.doCSPackets(c);
@@ -237,19 +230,13 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
                 CashShopOperationHandlers.doCSPackets(c);
                 return;
             } /*else if (info.getRight().intValue() == chr.getGender() && action == 30) {
-                  c.getSession().write(MTSCSPacket.sendCSFail(0x08));
-                  CashShopOperationUtils.doCSPackets(c);
-                  return;
+              	c.getSession().write(MTSCSPacket.sendCSFail(0x08));
+              	CashShopOperationUtils.doCSPackets(c);
+              	return;
               }*/
 
-            int err =
-                    MapleRing.createRing(
-                            item.getId(),
-                            chr,
-                            partnerName,
-                            msg,
-                            info.getLeft().intValue(),
-                            item.getSN());
+            int err = MapleRing.createRing(
+                    item.getId(), chr, partnerName, msg, info.getLeft().intValue(), item.getSN());
             if (err != 1) {
                 c.getSession().write(MTSCSPacket.sendCSFail(0));
                 CashShopOperationHandlers.doCSPackets(c);
@@ -304,7 +291,9 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
             if (!isNxWhore || useNx != 2) {
                 chr.modifyCSPoints(useNx, -item.getPrice(), false);
             }
-            c.getSession().write(MTSCSPacket.showBoughtCSPackage(ccz, c.getAccountData().getId()));
+            c.getSession()
+                    .write(MTSCSPacket.showBoughtCSPackage(
+                            ccz, c.getAccountData().getId()));
         } else if (action == 33) { // Buying Quest Items
             final int sn = packet.readInt();
             final CashItemInfo item = CashItemFactory.getInstance().getItem(sn);
@@ -325,14 +314,12 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
                 CashShopOperationHandlers.doCSPackets(c);
                 return;
             }
-            final byte pos =
-                    MapleInventoryManipulator.addId(c, item.getId(), (short) item.getCount(), null);
+            final byte pos = MapleInventoryManipulator.addId(c, item.getId(), (short) item.getCount(), null);
             if (pos >= 0) {
                 chr.gainMeso(-item.getPrice(), false);
                 c.getSession()
-                        .write(
-                                MTSCSPacket.showBoughtCSQuestItem(
-                                        item.getPrice(), (short) item.getCount(), item.getId()));
+                        .write(MTSCSPacket.showBoughtCSQuestItem(
+                                item.getPrice(), (short) item.getCount(), item.getId()));
             } else {
                 c.getSession().write(MTSCSPacket.sendCSFail(0x19));
             }
@@ -401,8 +388,8 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
                     c.enableActions();
                     return;
             }
-            int itemsCount =
-                    chr.getInventory(type).getNumFreeSlot() + chr.getInventory(type).list().size();
+            int itemsCount = chr.getInventory(type).getNumFreeSlot()
+                    + chr.getInventory(type).list().size();
             if ((itemsCount + 4) > 96) {
                 c.getPlayer().dropMessage(1, "Your slot is already full");
                 CashShopOperationHandlers.doCSPackets(c);
@@ -421,8 +408,7 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
         } else if (action == 9) { // Pendant Slot Expansion
             c.getSession().write(MTSCSPacket.sendCSFail(0x1A));
         } else if (action == 43) { // Received upon entering Cash Shop
-            final int sn =
-                    CashItemFactory.getInstance().getSNFromItemId(ServerConstants.ONE_DAY_ITEM);
+            final int sn = CashItemFactory.getInstance().getSNFromItemId(ServerConstants.ONE_DAY_ITEM);
             c.getSession().write(MTSCSPacket.getOneDayPacket(60 * 60, sn));
             c.getSession().write(MTSCSPacket.redeemResponse(packet.readInt()));
         } else {

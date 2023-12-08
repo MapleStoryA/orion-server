@@ -62,10 +62,7 @@ public class PetPacket {
     }
 
     public static final byte[] showPet(
-            final MapleCharacter chr,
-            final MaplePet pet,
-            final boolean remove,
-            final boolean hunger) {
+            final MapleCharacter chr, final MaplePet pet, final boolean remove, final boolean hunger) {
         final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.SPAWN_PET.getValue());
@@ -108,8 +105,7 @@ public class PetPacket {
         return packet.getPacket();
     }
 
-    public static final byte[] petChat(
-            final int cid, final int un, final String text, final byte slot) {
+    public static final byte[] petChat(final int cid, final int un, final String text, final byte slot) {
         final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.PET_CHAT.getValue());
@@ -123,11 +119,7 @@ public class PetPacket {
     }
 
     public static final byte[] commandResponse(
-            final int cid,
-            final byte command,
-            final byte slot,
-            final boolean success,
-            final boolean food) {
+            final int cid, final byte command, final byte slot, final boolean success, final boolean food) {
         final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.PET_COMMAND.getValue());
@@ -204,8 +196,7 @@ public class PetPacket {
         return packet.getPacket();
     }
 
-    public static final byte[] loadExceptionList(
-            final int cid, final int petId, final String data) {
+    public static final byte[] loadExceptionList(final int cid, final int petId, final String data) {
         final OutPacket packet = new OutPacket();
 
         packet.writeShort(SendPacketOpcode.PET_EXCEPTION_LIST.getValue());

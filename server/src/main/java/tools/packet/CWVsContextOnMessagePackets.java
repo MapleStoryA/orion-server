@@ -20,8 +20,7 @@ public class CWVsContextOnMessagePackets {
                 packet.writeZeroBytes(10);
                 break;
             case 1:
-                packet.writeMapleAsciiString(
-                        quest.getCustomData() != null ? quest.getCustomData() : "");
+                packet.writeMapleAsciiString(quest.getCustomData() != null ? quest.getCustomData() : "");
                 break;
             case 2:
                 packet.writeLong(PacketHelper.getTime(System.currentTimeMillis()));

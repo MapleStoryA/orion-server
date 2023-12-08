@@ -22,14 +22,13 @@ public class UseChairHandler extends AbstractMaplePacketHandler {
         final IItem toUse = chr.getInventory(MapleInventoryType.SETUP).findById(itemId);
 
         if (toUse == null) {
-            chr.getCheatTracker()
-                    .registerOffense(
-                            CheatingOffense.USING_UNAVAILABLE_ITEM, Integer.toString(itemId));
+            chr.getCheatTracker().registerOffense(CheatingOffense.USING_UNAVAILABLE_ITEM, Integer.toString(itemId));
             return;
         }
         if (itemId == 3011000) {
             boolean haz = false;
-            for (IItem item : c.getPlayer().getInventory(MapleInventoryType.CASH).list()) {
+            for (IItem item :
+                    c.getPlayer().getInventory(MapleInventoryType.CASH).list()) {
                 if (item.getItemId() == 5340000) {
                     haz = true;
                 } else if (item.getItemId() == 5340001) {
@@ -43,8 +42,7 @@ public class UseChairHandler extends AbstractMaplePacketHandler {
             }
         }
         chr.setChair(itemId);
-        chr.getMap()
-                .broadcastMessage(chr, MaplePacketCreator.showChair(chr.getId(), itemId), false);
+        chr.getMap().broadcastMessage(chr, MaplePacketCreator.showChair(chr.getId(), itemId), false);
         c.getSession().write(MaplePacketCreator.enableActions());
     }
 }

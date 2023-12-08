@@ -59,8 +59,7 @@ public class GuildOperationHandler extends AbstractMaplePacketHandler {
                 GuildHandlerUtils.respawnPlayer(c.getPlayer());
                 break;
             case 0x05: // invitation
-                if (c.getPlayer().getGuildId() <= 0
-                        || c.getPlayer().getGuildRank() > 2) { // 1 == guild master, 2 == jr
+                if (c.getPlayer().getGuildId() <= 0 || c.getPlayer().getGuildRank() > 2) { // 1 == guild master, 2 == jr
                     return;
                 }
                 String name = packet.readMapleAsciiString();
@@ -97,16 +96,13 @@ public class GuildOperationHandler extends AbstractMaplePacketHandler {
 
                         int s = GuildManager.addGuildMember(c.getPlayer().getMGC());
                         if (s == 0) {
-                            c.getPlayer()
-                                    .dropMessage(
-                                            1, "The Guild you are trying to join is already full.");
+                            c.getPlayer().dropMessage(1, "The Guild you are trying to join is already full.");
                             c.getPlayer().setGuildId(0);
                             return;
                         }
                         c.getSession().write(MaplePacketCreator.showGuildInfo(c.getPlayer()));
                         final MapleGuild gs = GuildManager.getGuild(guildId);
-                        for (byte[] pack :
-                                AllianceManager.getAllianceInfo(gs.getAllianceId(), true)) {
+                        for (byte[] pack : AllianceManager.getAllianceInfo(gs.getAllianceId(), true)) {
                             if (pack != null) {
                                 c.getSession().write(pack);
                             }
@@ -178,8 +174,7 @@ public class GuildOperationHandler extends AbstractMaplePacketHandler {
                 final short logo = packet.readShort();
                 final byte logocolor = packet.readByte();
 
-                GuildManager.setGuildEmblem(
-                        c.getPlayer().getGuildId(), bg, bgcolor, logo, logocolor);
+                GuildManager.setGuildEmblem(c.getPlayer().getGuildId(), bg, bgcolor, logo, logocolor);
 
                 c.getPlayer().gainMeso(-15000000, true, false, true);
                 GuildHandlerUtils.respawnPlayer(c.getPlayer());

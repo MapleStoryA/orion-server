@@ -37,9 +37,7 @@ public class MonsterBook implements Serializable {
 
     public static final MonsterBook loadCards(final int charid) throws SQLException {
         var con = DatabaseConnection.getConnection();
-        var ps =
-                con.prepareStatement(
-                        "SELECT * FROM monsterbook WHERE charid = ? ORDER BY cardid ASC");
+        var ps = con.prepareStatement("SELECT * FROM monsterbook WHERE charid = ? ORDER BY cardid ASC");
         ps.setInt(1, charid);
         final ResultSet rs = ps.executeQuery();
         Map<Integer, Integer> cards = new LinkedHashMap<Integer, Integer>();

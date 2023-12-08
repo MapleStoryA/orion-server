@@ -45,11 +45,7 @@ public class DamageSummonHandler extends AbstractMaplePacketHandler {
                         .broadcastMessage(
                                 chr,
                                 MaplePacketCreator.damageSummon(
-                                        chr.getId(),
-                                        summon.getSkill(),
-                                        damage,
-                                        unkByte,
-                                        monsterIdFrom),
+                                        chr.getId(), summon.getSkill(), damage, unkByte, monsterIdFrom),
                                 summon.getPosition());
                 break;
             }

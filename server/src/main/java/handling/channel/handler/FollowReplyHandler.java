@@ -28,9 +28,8 @@ public class FollowReplyHandler extends AbstractMaplePacketHandler {
                     c.getPlayer().setFollowInitiator(true);
                     c.getPlayer()
                             .getMap()
-                            .broadcastMessage(
-                                    MaplePacketCreator.followEffect(
-                                            tt.getId(), c.getPlayer().getId(), null));
+                            .broadcastMessage(MaplePacketCreator.followEffect(
+                                    tt.getId(), c.getPlayer().getId(), null));
                 } else {
                     c.getPlayer().setFollowId(0);
                     tt.setFollowId(0);

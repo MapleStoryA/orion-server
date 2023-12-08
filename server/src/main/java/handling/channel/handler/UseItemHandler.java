@@ -41,15 +41,13 @@ public class UseItemHandler extends AbstractMaplePacketHandler {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
         }
-        if (!FieldLimitType.PotionUse.check(chr.getMap().getFieldLimit())
-                || chr.getMapId() == 610030600) { // cwk
+        if (!FieldLimitType.PotionUse.check(chr.getMap().getFieldLimit()) || chr.getMapId() == 610030600) { // cwk
             // quick
             // hack
             if (MapleItemInformationProvider.getInstance()
                     .getItemEffect(toUse.getItemId())
                     .applyTo(chr)) {
-                MapleInventoryManipulator.removeFromSlot(
-                        c, MapleInventoryType.USE, slot, (short) 1, false);
+                MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
                 if (chr.getMap().getConsumeItemCoolTime() > 0) {
                     chr.setNextConsume(time + (chr.getMap().getConsumeItemCoolTime() * 1000L));
                 }
