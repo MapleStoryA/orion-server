@@ -80,12 +80,11 @@ public class GameApp {
     }
 
     private static void printLoad(String thread) {
-        log.info(
-                "[Loading Completed] "
-                        + thread
-                        + " | Completed in "
-                        + (System.currentTimeMillis() - startTime)
-                        + " Milliseconds.");
+        log.info("[Loading Completed] "
+                + thread
+                + " | Completed in "
+                + (System.currentTimeMillis() - startTime)
+                + " Milliseconds.");
     }
 
     public static void listenCommand() {
@@ -131,58 +130,51 @@ public class GameApp {
         TimerManager.getInstance().start();
 
         var executorService = Executors.newFixedThreadPool(10);
-        executorService.submit(
-                () -> {
-                    printLoad("WorldLoader");
-                    MapleGuildRanking.getInstance().getRank();
-                    MapleGuild.loadAll();
-                });
+        executorService.submit(() -> {
+            printLoad("WorldLoader");
+            MapleGuildRanking.getInstance().getRank();
+            MapleGuild.loadAll();
+        });
 
-        executorService.submit(
-                () -> {
-                    printLoad("QuestLoader");
-                    MapleQuest.initQuests();
-                    MapleLifeFactory.loadQuestCounts();
-                });
+        executorService.submit(() -> {
+            printLoad("QuestLoader");
+            MapleQuest.initQuests();
+            MapleLifeFactory.loadQuestCounts();
+        });
 
-        executorService.submit(
-                () -> {
-                    printLoad("ProviderLoader");
-                    MapleItemInformationProvider.getInstance().load();
-                });
+        executorService.submit(() -> {
+            printLoad("ProviderLoader");
+            MapleItemInformationProvider.getInstance().load();
+        });
 
-        executorService.submit(
-                () -> {
-                    printLoad("MonsterLoader");
-                    MapleMonsterInformationProvider.getInstance().load();
-                });
+        executorService.submit(() -> {
+            printLoad("MonsterLoader");
+            MapleMonsterInformationProvider.getInstance().load();
+        });
 
-        executorService.submit(
-                () -> {
-                    printLoad("SkillFactoryLoader");
-                    SkillFactory.getSkill(99999999);
-                    JobConstants.loadAllSkills();
-                });
+        executorService.submit(() -> {
+            printLoad("SkillFactoryLoader");
+            SkillFactory.getSkill(99999999);
+            JobConstants.loadAllSkills();
+        });
 
-        executorService.submit(
-                () -> {
-                    printLoad("BasicLoader");
-                    LoginInformationProvider.getInstance();
-                    RandomRewards.getInstance();
-                    MapleOxQuizFactory.getInstance().initialize();
-                    MapleCarnivalFactory.getInstance().initialize();
-                    SpeedRunner.getInstance().loadSpeedRuns();
-                    SpeedQuizFactory.getInstance().initialize();
-                    ItemMakerFactory.getInstance();
-                    MapleMapFactory.loadCustomLife();
-                    GachaponFactory.getInstance();
-                });
+        executorService.submit(() -> {
+            printLoad("BasicLoader");
+            LoginInformationProvider.getInstance();
+            RandomRewards.getInstance();
+            MapleOxQuizFactory.getInstance().initialize();
+            MapleCarnivalFactory.getInstance().initialize();
+            SpeedRunner.getInstance().loadSpeedRuns();
+            SpeedQuizFactory.getInstance().initialize();
+            ItemMakerFactory.getInstance();
+            MapleMapFactory.loadCustomLife();
+            GachaponFactory.getInstance();
+        });
 
-        executorService.submit(
-                () -> {
-                    printLoad("CashItemLoader");
-                    CashItemFactory.getInstance().loadCashShopData();
-                });
+        executorService.submit(() -> {
+            printLoad("CashItemLoader");
+            CashItemFactory.getInstance().loadCashShopData();
+        });
 
         executorService.shutdown();
 
@@ -194,18 +186,10 @@ public class GameApp {
 
         WorldServer worldServer = WorldServer.getInstance();
 
-        for (int i = 0;
-                i
-                        < Integer.parseInt(
-                                ServerEnvironment.getConfig().getProperty("channel.count", "0"));
-                i++) {
+        for (int i = 0; i < Integer.parseInt(ServerEnvironment.getConfig().getProperty("channel.count", "0")); i++) {
             int channel = i + 1;
-            int port =
-                    Short.parseShort(
-                            ServerEnvironment.getConfig()
-                                    .getProperty(
-                                            "channel.net.port" + channel,
-                                            String.valueOf(ChannelServer.DEFAULT_PORT + channel)));
+            int port = Short.parseShort(ServerEnvironment.getConfig()
+                    .getProperty("channel.net.port" + channel, String.valueOf(ChannelServer.DEFAULT_PORT + channel)));
             ChannelServer ch = new ChannelServer(channel, port);
             worldServer.registerChannel(channel, ch);
             ch.onStart();
@@ -222,8 +206,7 @@ public class GameApp {
 
         Integer[] chs = WorldServer.getInstance().getAllChannelIds().toArray(new Integer[0]);
         for (int i = 0; i < chs.length; i += CHANNELS_PER_THREAD) {
-            Timer.WorldTimer.getInstance()
-                    .register(new RespawnWorker(chs, i), 1125); // divisible by 9000 if possible.
+            Timer.WorldTimer.getInstance().register(new RespawnWorker(chs, i), 1125); // divisible by 9000 if possible.
         }
 
         if (ShutdownServer.getInstance() == null) {
@@ -232,10 +215,7 @@ public class GameApp {
             log.info("--MBean server was already active--");
         }
         PlayerNPC.loadAll();
-        log.info(
-                "[Fully Initialized in "
-                        + (System.currentTimeMillis() - startTime) / 1000L
-                        + " seconds]");
+        log.info("[Fully Initialized in " + (System.currentTimeMillis() - startTime) / 1000L + " seconds]");
 
         log.info("[/////////////////////////////////////////////////]");
         log.info("Console Commands: ");

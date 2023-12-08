@@ -2,8 +2,6 @@ package client.commands;
 
 import client.MapleClient;
 import constants.ServerConstants;
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -13,6 +11,7 @@ import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class CommandProcessor {
@@ -36,13 +35,11 @@ public class CommandProcessor {
             INSTANCE = new CommandProcessor();
             try {
                 Class[] classes = getClasses(INSTANCE.getClass().getPackageName());
-                Arrays.stream(classes)
-                        .forEach(
-                                c -> {
-                                    if (Command.class.isAssignableFrom(c) && !c.isInterface()) {
-                                        INSTANCE.register(c);
-                                    }
-                                });
+                Arrays.stream(classes).forEach(c -> {
+                    if (Command.class.isAssignableFrom(c) && !c.isInterface()) {
+                        INSTANCE.register(c);
+                    }
+                });
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -103,8 +100,7 @@ public class CommandProcessor {
      * @return The classes
      * @throws ClassNotFoundException
      */
-    private static List<Class> findClasses(File directory, String packageName)
-            throws ClassNotFoundException {
+    private static List<Class> findClasses(File directory, String packageName) throws ClassNotFoundException {
         List<Class> classes = new ArrayList<Class>();
         if (!directory.exists()) {
             return classes;
@@ -115,12 +111,9 @@ public class CommandProcessor {
                 assert !file.getName().contains(".");
                 classes.addAll(findClasses(file, packageName + "." + file.getName()));
             } else if (file.getName().endsWith(".class")) {
-                classes.add(
-                        Class.forName(
-                                packageName
-                                        + '.'
-                                        + file.getName()
-                                        .substring(0, file.getName().length() - 6)));
+                classes.add(Class.forName(packageName
+                        + '.'
+                        + file.getName().substring(0, file.getName().length() - 6)));
             }
         }
         return classes;
