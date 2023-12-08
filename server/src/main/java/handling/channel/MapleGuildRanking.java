@@ -1,29 +1,6 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package handling.channel;
 
 import database.DatabaseConnection;
-
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -50,17 +27,19 @@ public class MapleGuildRanking {
     private void reload() {
         ranks.clear();
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM guilds ORDER BY `GP` DESC LIMIT 50");
+            PreparedStatement ps =
+                    con.prepareStatement("SELECT * FROM guilds ORDER BY `GP` DESC LIMIT 50");
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                final GuildRankingInfo rank = new GuildRankingInfo(
-                        rs.getString("name"),
-                        rs.getInt("GP"),
-                        rs.getInt("logo"),
-                        rs.getInt("logoColor"),
-                        rs.getInt("logoBG"),
-                        rs.getInt("logoBGColor"));
+                final GuildRankingInfo rank =
+                        new GuildRankingInfo(
+                                rs.getString("name"),
+                                rs.getInt("GP"),
+                                rs.getInt("logo"),
+                                rs.getInt("logoColor"),
+                                rs.getInt("logoBG"),
+                                rs.getInt("logoBGColor"));
 
                 ranks.add(rank);
             }
@@ -81,7 +60,8 @@ public class MapleGuildRanking {
         private final int logobg;
         private final int logobgcolor;
 
-        public GuildRankingInfo(String name, int gp, int logo, int logocolor, int logobg, int logobgcolor) {
+        public GuildRankingInfo(
+                String name, int gp, int logo, int logocolor, int logobg, int logobgcolor) {
             this.name = name;
             this.gp = gp;
             this.logo = logo;

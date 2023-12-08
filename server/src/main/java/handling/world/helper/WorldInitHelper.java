@@ -10,7 +10,6 @@ import server.Timer.WorldTimer;
 @Slf4j
 public class WorldInitHelper {
 
-
     public static void initCommunity() {
         FindCommand.findChannel(0);
         AllianceManager.lock.toString();
@@ -28,6 +27,4 @@ public class WorldInitHelper {
         Timer.BuffTimer.getInstance().start();
         Timer.PingTimer.getInstance().start();
     }
-
-
 }

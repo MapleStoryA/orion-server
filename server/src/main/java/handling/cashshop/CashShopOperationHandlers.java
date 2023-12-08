@@ -5,27 +5,39 @@ import client.MapleClient;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
-import database.CharacterService;
 import database.LoginState;
 import handling.ServerMigration;
 import handling.world.WorldServer;
 import handling.world.helper.CharacterTransfer;
+import java.util.List;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.MTSCSPacket;
 
-import java.util.List;
-
 @lombok.extern.slf4j.Slf4j
 public class CashShopOperationHandlers {
 
-    public static void onLeaveCashShop(final SeekableLittleEndianAccessor slea, final MapleClient c, final MapleCharacter chr) {
+    public static void onLeaveCashShop(
+            final SeekableLittleEndianAccessor slea,
+            final MapleClient c,
+            final MapleCharacter chr) {
         CashShopServer.getInstance().getPlayerStorage().deregisterPlayer(chr);
         c.updateLoginState(LoginState.LOGIN_SERVER_TRANSITION, c.getSessionIPAddress());
 
         try {
-            WorldServer.getInstance().getMigrationService().putMigrationEntry(new ServerMigration(chr.getId(), c.getAccountData(), c.getSessionIPAddress()));
-            c.getSession().write(MaplePacketCreator.getChannelChange(Integer.parseInt(WorldServer.getInstance().getChannel(c.getChannel()).getPublicAddress().split(":")[1])));
+            WorldServer.getInstance()
+                    .getMigrationService()
+                    .putMigrationEntry(
+                            new ServerMigration(
+                                    chr.getId(), c.getAccountData(), c.getSessionIPAddress()));
+            c.getSession()
+                    .write(
+                            MaplePacketCreator.getChannelChange(
+                                    Integer.parseInt(
+                                            WorldServer.getInstance()
+                                                    .getChannel(c.getChannel())
+                                                    .getPublicAddress()
+                                                    .split(":")[1])));
         } catch (Exception ex) {
             log.error("Error leaving cash shop", ex);
         } finally {
@@ -35,10 +47,15 @@ public class CashShopOperationHandlers {
     }
 
     public static void onEnterCashShop(final int characterId, final MapleClient c) {
-        ServerMigration serverMigration = WorldServer.getInstance().getMigrationService().getServerMigration(characterId, c.getSessionIPAddress());
+        ServerMigration serverMigration =
+                WorldServer.getInstance()
+                        .getMigrationService()
+                        .getServerMigration(characterId, c.getSessionIPAddress());
         CharacterTransfer transfer = serverMigration.getCharacterTransfer();
         if (transfer == null) {
-            log.error("Could not find the migration when entering cash shop: {}", c.getAccountData().getName());
+            log.error(
+                    "Could not find the migration when entering cash shop: {}",
+                    c.getAccountData().getName());
             c.getSession().close();
             return;
         }
@@ -58,7 +75,6 @@ public class CashShopOperationHandlers {
         c.getSession().write(MTSCSPacket.sendWishList(c.getPlayer(), false));
     }
 
-
     public static boolean haveSpace(final MapleCharacter chr, final List<IItem> items) {
         byte eq = 0, use = 0, setup = 0, etc = 0, cash = 0;
         for (IItem item : items) {
@@ -75,9 +91,12 @@ public class CashShopOperationHandlers {
                 cash++;
             }
         }
-        return chr.getInventory(MapleInventoryType.EQUIP).getNumFreeSlot() >= eq && chr.getInventory(MapleInventoryType.USE).getNumFreeSlot() >= use && chr.getInventory(MapleInventoryType.SETUP).getNumFreeSlot() >= setup && chr.getInventory(MapleInventoryType.ETC).getNumFreeSlot() >= etc && chr.getInventory(MapleInventoryType.CASH).getNumFreeSlot() >= cash;
+        return chr.getInventory(MapleInventoryType.EQUIP).getNumFreeSlot() >= eq
+                && chr.getInventory(MapleInventoryType.USE).getNumFreeSlot() >= use
+                && chr.getInventory(MapleInventoryType.SETUP).getNumFreeSlot() >= setup
+                && chr.getInventory(MapleInventoryType.ETC).getNumFreeSlot() >= etc
+                && chr.getInventory(MapleInventoryType.CASH).getNumFreeSlot() >= cash;
     }
-
 
     public static void doCSPackets(final MapleClient c) {
         c.getSession().write(MTSCSPacket.getCSInventory(c));

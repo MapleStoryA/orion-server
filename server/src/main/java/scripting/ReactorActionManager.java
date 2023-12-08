@@ -1,24 +1,3 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package scripting;
 
 import client.MapleClient;
@@ -28,6 +7,10 @@ import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import handling.world.WorldServer;
+import java.awt.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import server.MapleCarnivalFactory;
 import server.MapleCarnivalFactory.MCSkill;
 import server.MapleItemInformationProvider;
@@ -36,11 +19,6 @@ import server.life.MapleMonster;
 import server.maps.MapleReactor;
 import server.maps.ReactorDropEntry;
 import tools.Randomizer;
-
-import java.awt.*;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 @lombok.extern.slf4j.Slf4j
 public class ReactorActionManager extends AbstractPlayerInteraction {
@@ -62,7 +40,8 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
     }
 
     public void dropItems(boolean meso, int mesoChance, int minMeso, int maxMeso, int minItems) {
-        final List<ReactorDropEntry> chances = ReactorScriptManager.getInstance().getDrops(reactor.getReactorId());
+        final List<ReactorDropEntry> chances =
+                ReactorScriptManager.getInstance().getDrops(reactor.getReactorId());
         final List<ReactorDropEntry> items = new LinkedList<ReactorDropEntry>();
         if (meso) {
             if (Math.random() < (1 / (double) mesoChance)) {
@@ -104,8 +83,14 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         for (final ReactorDropEntry d : items) {
             if (d.itemId == 0) {
                 range = maxMeso - minMeso;
-                mesoDrop = Randomizer.nextInt(range) + minMeso * WorldServer.getInstance().getChannel(getClient().getChannel()).getMesoRate();
-                reactor.getMap().spawnMesoDrop(mesoDrop, dropPos, reactor, getPlayer(), false, (byte) 0);
+                mesoDrop =
+                        Randomizer.nextInt(range)
+                                + minMeso
+                                        * WorldServer.getInstance()
+                                                .getChannel(getClient().getChannel())
+                                                .getMesoRate();
+                reactor.getMap()
+                        .spawnMesoDrop(mesoDrop, dropPos, reactor, getPlayer(), false, (byte) 0);
             } else {
                 IItem drop;
                 if (GameConstants.getInventoryType(d.itemId) != MapleInventoryType.EQUIP) {
@@ -127,7 +112,8 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         } else {
             drop = ii.randomizeStats((Equip) ii.getEquipById(itemId));
         }
-        reactor.getMap().spawnItemDrop(reactor, getPlayer(), drop, reactor.getPosition(), false, false);
+        reactor.getMap()
+                .spawnItemDrop(reactor, getPlayer(), drop, reactor.getPosition(), false, false);
     }
 
     @Override
@@ -196,7 +182,7 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         spawnMonster(id, qty, getPosition());
     }
 
-    public void dispelAllMonsters(final int num) { //dispels all mobs, cpq
+    public void dispelAllMonsters(final int num) { // dispels all mobs, cpq
         final MCSkill skil = MapleCarnivalFactory.getInstance().getGuardian(num);
         if (skil != null) {
             for (MapleMonster mons : getMap().getAllMonstersThreadsafe()) {

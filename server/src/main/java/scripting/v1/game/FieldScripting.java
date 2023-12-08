@@ -1,12 +1,11 @@
 package scripting.v1.game;
 
 import client.MapleCharacter;
+import java.awt.*;
+import java.util.Collection;
 import scripting.v1.game.helper.ApiClass;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
-
-import java.awt.*;
-import java.util.Collection;
 
 @lombok.extern.slf4j.Slf4j
 public class FieldScripting {
@@ -94,6 +93,4 @@ public class FieldScripting {
     public void clearEventInstance() {
         map.clearEventInstance();
     }
-
-
 }

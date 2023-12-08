@@ -1,24 +1,3 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package client;
 
 import tools.Randomizer;
@@ -31,11 +10,12 @@ public class PlayerRandomStream {
     private transient long seed1_, seed2_, seed3_;
     private transient long seed1__, seed2__, seed3__;
     private transient long seed1___, seed2___, seed3___;
-//    private transient int past_s1 = -1, past_s2 = -1, past_s3 = -1;
+    //    private transient int past_s1 = -1, past_s2 = -1, past_s3 = -1;
 
     public PlayerRandomStream() {
         final int v4 = 5;
-        this.CRand32__Seed(Randomizer.nextLong(), 1170746341L * v4 - 755606699, 1170746341L * v4 - 755606699);
+        this.CRand32__Seed(
+                Randomizer.nextLong(), 1170746341L * v4 - 755606699, 1170746341L * v4 - 755606699);
     }
 
     public final void CRand32__Seed(final long s1, final long s2, final long s3) {
@@ -64,7 +44,9 @@ public class PlayerRandomStream {
         this.seed3_ = v10 & 0xffffffffL;
         this.seed1_ = v8 & 0xffffffffL;
         this.seed2_ = v9 & 0xffffffffL;
-        return (v8 ^ v9 ^ v10) & 0xffffffffL; // to be confirmed, I am not experienced in converting signed > unsigned
+        return (v8 ^ v9 ^ v10)
+                & 0xffffffffL; // to be confirmed, I am not experienced in converting signed >
+        // unsigned
     }
 
     public final long CRand32__Random_Character() {

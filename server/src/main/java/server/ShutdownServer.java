@@ -1,6 +1,5 @@
 package server;
 
-import database.DatabaseConnection;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
 import handling.login.LoginServer;
@@ -9,11 +8,10 @@ import handling.world.alliance.AllianceManager;
 import handling.world.guild.GuildManager;
 import handling.world.helper.BroadcastHelper;
 import handling.world.helper.WorldInitHelper;
-import tools.MaplePacketCreator;
-
+import java.lang.management.ManagementFactory;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
-import java.lang.management.ManagementFactory;
+import tools.MaplePacketCreator;
 
 @lombok.extern.slf4j.Slf4j
 public class ShutdownServer implements ShutdownServerMBean {
@@ -38,7 +36,9 @@ public class ShutdownServer implements ShutdownServerMBean {
 
     public void run() {
         if (this.mode == 0) {
-            BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(0, "The world is going to shutdown soon. Please log off safely."));
+            BroadcastHelper.broadcastMessage(
+                    MaplePacketCreator.serverNotice(
+                            0, "The world is going to shutdown soon. Please log off safely."));
             for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
                 cs.setShutdown();
                 cs.setServerMessage("The world is going to shutdown soon. Please log off safely.");
@@ -52,7 +52,9 @@ public class ShutdownServer implements ShutdownServerMBean {
             log.info("Shutdown 2 commencing...");
 
             try {
-                BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(0, "The world is going to shutdown now. Please log off safely."));
+                BroadcastHelper.broadcastMessage(
+                        MaplePacketCreator.serverNotice(
+                                0, "The world is going to shutdown now. Please log off safely."));
                 for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
                     synchronized (this) {
                         cs.shutdown();

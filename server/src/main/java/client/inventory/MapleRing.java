@@ -1,37 +1,15 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package client.inventory;
 
 import client.MapleCharacter;
 import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import database.DatabaseConnection;
-import server.MapleInventoryManipulator;
-
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Comparator;
+import server.MapleInventoryManipulator;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleRing implements Serializable {
@@ -58,13 +36,20 @@ public class MapleRing implements Serializable {
 
     public static MapleRing loadFromDb(int ringId, boolean equipped) {
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM rings WHERE ringId = ?"); // Get details..
+            PreparedStatement ps =
+                    con.prepareStatement("SELECT * FROM rings WHERE ringId = ?"); // Get details..
             ps.setInt(1, ringId);
 
             ResultSet rs = ps.executeQuery();
             MapleRing ret = null;
             if (rs.next()) {
-                ret = new MapleRing(ringId, rs.getInt("partnerRingId"), rs.getInt("partnerChrId"), rs.getInt("itemid"), rs.getString("partnerName"));
+                ret =
+                        new MapleRing(
+                                ringId,
+                                rs.getInt("partnerRingId"),
+                                rs.getInt("partnerChrId"),
+                                rs.getInt("itemid"),
+                                rs.getString("partnerName"));
                 ret.setEquipped(equipped);
             }
             rs.close();
@@ -78,9 +63,13 @@ public class MapleRing implements Serializable {
         }
     }
 
-    public static void addToDB(int itemid, MapleCharacter chr, String player, int id, int[] ringId) throws SQLException {
+    public static void addToDB(int itemid, MapleCharacter chr, String player, int id, int[] ringId)
+            throws SQLException {
         Connection con = DatabaseConnection.getConnection();
-        PreparedStatement ps = con.prepareStatement("INSERT INTO rings (ringId, itemid, partnerChrId, partnerName, partnerRingId) VALUES (?, ?, ?, ?, ?)");
+        PreparedStatement ps =
+                con.prepareStatement(
+                        "INSERT INTO rings (ringId, itemid, partnerChrId, partnerName,"
+                                + " partnerRingId) VALUES (?, ?, ?, ?, ?)");
         ps.setInt(1, ringId[0]);
         ps.setInt(2, itemid);
         ps.setInt(3, chr.getId());
@@ -89,7 +78,10 @@ public class MapleRing implements Serializable {
         ps.executeUpdate();
         ps.close();
 
-        ps = con.prepareStatement("INSERT INTO rings (ringId, itemid, partnerChrId, partnerName, partnerRingId) VALUES (?, ?, ?, ?, ?)");
+        ps =
+                con.prepareStatement(
+                        "INSERT INTO rings (ringId, itemid, partnerChrId, partnerName,"
+                                + " partnerRingId) VALUES (?, ?, ?, ?, ?)");
         ps.setInt(1, ringId[1]);
         ps.setInt(2, itemid);
         ps.setInt(3, id);
@@ -100,7 +92,8 @@ public class MapleRing implements Serializable {
         con.close();
     }
 
-    public static int createRing(int itemid, MapleCharacter partner1, String partner2, String msg, int id2, int sn) {
+    public static int createRing(
+            int itemid, MapleCharacter partner1, String partner2, String msg, int id2, int sn) {
         try {
             if (partner1 == null) {
                 return -2;
@@ -114,9 +107,12 @@ public class MapleRing implements Serializable {
         }
     }
 
-    public static int[] makeRing(int itemid, MapleCharacter partner1, MapleCharacter partner2) throws Exception {
-        int[] ringID = {MapleInventoryIdentifier.getInstance(), MapleInventoryIdentifier.getInstance()};
-        //[1] = partner1, [0] = partner2
+    public static int[] makeRing(int itemid, MapleCharacter partner1, MapleCharacter partner2)
+            throws Exception {
+        int[] ringID = {
+            MapleInventoryIdentifier.getInstance(), MapleInventoryIdentifier.getInstance()
+        };
+        // [1] = partner1, [0] = partner2
         try {
             addToDB(itemid, partner1, partner2.getName(), partner2.getId(), ringID);
         } catch (MySQLIntegrityConstraintViolationException mslcve) {
@@ -125,9 +121,13 @@ public class MapleRing implements Serializable {
         return ringID;
     }
 
-    public static int makeRing(int itemid, MapleCharacter partner1, String partner2, int id2, String msg, int sn) throws Exception { //return partner1 the id
-        int[] ringID = {MapleInventoryIdentifier.getInstance(), MapleInventoryIdentifier.getInstance()};
-        //[1] = partner1, [0] = partner2
+    public static int makeRing(
+            int itemid, MapleCharacter partner1, String partner2, int id2, String msg, int sn)
+            throws Exception { // return partner1 the id
+        int[] ringID = {
+            MapleInventoryIdentifier.getInstance(), MapleInventoryIdentifier.getInstance()
+        };
+        // [1] = partner1, [0] = partner2
         try {
             addToDB(itemid, partner1, partner2, id2, ringID);
         } catch (MySQLIntegrityConstraintViolationException mslcve) {
@@ -140,7 +140,8 @@ public class MapleRing implements Serializable {
 
     public static void removeRingFromDb(MapleCharacter player) {
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM rings WHERE partnerChrId = ?");
+            PreparedStatement ps =
+                    con.prepareStatement("SELECT * FROM rings WHERE partnerChrId = ?");
             ps.setInt(1, player.getId());
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {

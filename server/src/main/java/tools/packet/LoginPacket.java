@@ -1,24 +1,3 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package tools.packet;
 
 import client.MapleCharacter;
@@ -27,20 +6,20 @@ import constants.PlayerGMRanking;
 import constants.ServerConstants;
 import handling.SendPacketOpcode;
 import handling.login.LoginServer;
+import java.awt.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import tools.HexTool;
 import tools.Randomizer;
 import tools.Triple;
 import tools.data.output.MaplePacketLittleEndianWriter;
 
-import java.awt.*;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 @lombok.extern.slf4j.Slf4j
 public class LoginPacket {
 
-    public static final byte[] getHello(final short mapleVersion, final byte[] sendIv, final byte[] recvIv) {
+    public static final byte[] getHello(
+            final short mapleVersion, final byte[] sendIv, final byte[] recvIv) {
         final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(16);
 
         mplew.writeShort(14); // 13 = MSEA, 14 = GlobalMS, 15 = EMS
@@ -111,7 +90,8 @@ public class LoginPacket {
         mplew.write(2);
         mplew.write(HexTool.getByteArrayFromHexString("00 00 00 00 00"));
         mplew.write(reason);
-        mplew.writeLong(timestampTill); // Tempban date is handled as a 64-bit long, number of 100NS intervals since 1/1/1601. Lulz.
+        mplew.writeLong(timestampTill); // Tempban date is handled as a 64-bit long, number of 100NS
+        // intervals since 1/1/1601. Lulz.
 
         return mplew.getPacket();
     }
@@ -119,35 +99,34 @@ public class LoginPacket {
     public static final byte[] getAuthSuccessRequest(final MapleClient client) {
         final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
         mplew.writeShort(SendPacketOpcode.LOGIN_STATUS.getValue());
-        mplew.write(0);// some error code shit, and nNumOfCharacter
-        mplew.write(0);// sMsg + 500, 0 or 1 decodes a bunch of shit
-        mplew.writeInt(0);// not read
+        mplew.write(0); // some error code shit, and nNumOfCharacter
+        mplew.write(0); // sMsg + 500, 0 or 1 decodes a bunch of shit
+        mplew.writeInt(0); // not read
         mplew.writeInt(client.getAccountData().getId()); // user id
         mplew.write(client.getAccountData().getGender());
         //
         PlayerGMRanking rank = PlayerGMRanking.getByLevel(client.getAccountData().getGMLevel());
         byte nSubGradeCode = 0;
         nSubGradeCode |= rank.getSubGrade();
-        mplew.writeBool(rank.getLevel() >= PlayerGMRanking.GM.getLevel());// nGradeCode
-        mplew.write(nSubGradeCode);// a short in v95
+        mplew.writeBool(rank.getLevel() >= PlayerGMRanking.GM.getLevel()); // nGradeCode
+        mplew.write(nSubGradeCode); // a short in v95
         // v90;
         // Value = (unsigned __int8)CInPacket::Decode1(v5);
         // v118 = ((unsigned int)(unsigned __int8)Value >> 8) & 1; this is for tester account.
         // v118 will only be 1 if nSubGradeCode is 0x100
-        mplew.writeBool(false);// nCountryID, admin accounts?
+        mplew.writeBool(false); // nCountryID, admin accounts?
         //
-        mplew.writeMapleAsciiString(client.getAccountData().getName());// sNexonClubID
-        mplew.write(0);// nPurchaseExp
+        mplew.writeMapleAsciiString(client.getAccountData().getName()); // sNexonClubID
+        mplew.write(0); // nPurchaseExp
         mplew.write(0); // isquietbanned, nChatBlockReason
-        mplew.writeLong(0);// isquietban time, dtChatUnblockDate
+        mplew.writeLong(0); // isquietban time, dtChatUnblockDate
         mplew.writeLong(0); // creation time, dtRegisterDate
-        mplew.writeInt(0);// nNumOfCharacter? or just reusing a variable
-        mplew.write(2);// pin
+        mplew.writeInt(0); // nNumOfCharacter? or just reusing a variable
+        mplew.write(2); // pin
         mplew.write(0);
-        mplew.writeLong(0);// LABEL_120
+        mplew.writeLong(0); // LABEL_120
 
         return mplew.getPacket();
-
     }
 
     public static final byte[] deleteCharResponse(final int cid, final int state) {
@@ -157,7 +136,8 @@ public class LoginPacket {
         mplew.writeInt(cid);
         // 6 : Trouble logging in? Try logging in again from maplestory.nexon.net.
         // 9 : Failed due to unknown reason.
-        // 10 : Could not be processed due to too many connection requests to the server. Please try again later.
+        // 10 : Could not be processed due to too many connection requests to the server. Please try
+        // again later.
         // 18 : The 8-digit birthday code you have entered is incorrect.
         // 20 : You have entered an incorrect PIC.
         // 22 : Cannot delete Guild Master character.
@@ -182,12 +162,13 @@ public class LoginPacket {
         return mplew.getPacket();
     }
 
-    public static final byte[] getServerList(final int serverId, final String serverName, final Map<Integer, Integer> channelLoad) {
+    public static final byte[] getServerList(
+            final int serverId, final String serverName, final Map<Integer, Integer> channelLoad) {
         final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
         mplew.writeShort(SendPacketOpcode.SERVERLIST.getValue());
         mplew.write(serverId); // 0 = Aquilla, 1 = bootes, 2 = cass, 3 = delphinus
-        final String worldName = serverName.substring(0, serverName.length() - 3); //remove the SEA
+        final String worldName = serverName.substring(0, serverName.length() - 3); // remove the SEA
         mplew.writeMapleAsciiString(worldName);
         mplew.write(LoginServer.getInstance().getServerFlag());
         mplew.writeMapleAsciiString(LoginServer.getInstance().getServerEventMessage());
@@ -245,7 +226,6 @@ public class LoginPacket {
         return mplew.getPacket();
     }
 
-
     public static final byte[] addNewCharEntry(final MapleCharacter chr, final boolean worked) {
         final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
@@ -294,11 +274,11 @@ public class LoginPacket {
         return mplew.getPacket();
     }
 
-
-    public static final void addCharEntry(final MaplePacketLittleEndianWriter mplew, final MapleCharacter chr, boolean ranking) {
+    public static final void addCharEntry(
+            final MaplePacketLittleEndianWriter mplew, final MapleCharacter chr, boolean ranking) {
         PacketHelper.addCharStats(mplew, chr);
         PacketHelper.addCharLook(mplew, chr, true);
-        mplew.write(0); //<-- who knows
+        mplew.write(0); // <-- who knows
         mplew.write(ranking ? 1 : 0);
         if (ranking) {
             mplew.writeInt(chr.getRank());
@@ -312,23 +292,21 @@ public class LoginPacket {
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
         mplew.writeShort(SendPacketOpcode.CHANGE_BACKGROUND.getValue());
-        mplew.write(backgrounds.size()); //number of bgs
-
+        mplew.write(backgrounds.size()); // number of bgs
 
         for (Triple<String, Integer, Boolean> background : backgrounds) {
             mplew.writeMapleAsciiString(background.getLeft());
             mplew.write(background.getRight() ? Randomizer.nextInt(2) : background.getMid());
         }
-        /* 
-         Map.wz/Obj/login.img/WorldSelect/background/background number
-         Backgrounds ids sometime have more than one background anumation
-         Background are like layers, backgrounds in the packets are
-         removed, so the background which was hiden by the last one
-         is shown.
-         */
+        /*
+        Map.wz/Obj/login.img/WorldSelect/background/background number
+        Backgrounds ids sometime have more than one background anumation
+        Background are like layers, backgrounds in the packets are
+        removed, so the background which was hiden by the last one
+        is shown.
+        */
         return mplew.getPacket();
     }
-
 
     public static byte[] getRecommendedWorldMessage(int worldID, String message) {
         MaplePacketLittleEndianWriter k = new MaplePacketLittleEndianWriter();
@@ -339,6 +317,4 @@ public class LoginPacket {
 
         return k.getPacket();
     }
-
-
 }

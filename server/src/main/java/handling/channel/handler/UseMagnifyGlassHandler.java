@@ -6,15 +6,14 @@ import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
+import java.util.LinkedList;
+import java.util.List;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.StructPotentialItem;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
 import tools.data.input.SeekableLittleEndianAccessor;
-
-import java.util.LinkedList;
-import java.util.List;
 
 @lombok.extern.slf4j.Slf4j
 public class UseMagnifyGlassHandler extends AbstractMaplePacketHandler {
@@ -37,11 +36,13 @@ public class UseMagnifyGlassHandler extends AbstractMaplePacketHandler {
         final Equip eqq = (Equip) toReveal;
         final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         final int reqLevel = ii.getReqLevel(eqq.getItemId()) / 10;
-        if (eqq.getState() == 1 && (magnify.getItemId() == 2460003 || (magnify.getItemId() == 2460002 && reqLevel <= 12)
-                || (magnify.getItemId() == 2460001 && reqLevel <= 7)
-                || (magnify.getItemId() == 2460000 && reqLevel <= 3))) {
-            final List<List<StructPotentialItem>> pots = new LinkedList<List<StructPotentialItem>>(
-                    ii.getAllPotentialInfo().values());
+        if (eqq.getState() == 1
+                && (magnify.getItemId() == 2460003
+                        || (magnify.getItemId() == 2460002 && reqLevel <= 12)
+                        || (magnify.getItemId() == 2460001 && reqLevel <= 7)
+                        || (magnify.getItemId() == 2460000 && reqLevel <= 3))) {
+            final List<List<StructPotentialItem>> pots =
+                    new LinkedList<List<StructPotentialItem>>(ii.getAllPotentialInfo().values());
             int new_state = Math.abs(eqq.getPotential1());
             if (new_state > 7 || new_state < 5) { // luls
                 new_state = 5;
@@ -54,10 +55,14 @@ public class UseMagnifyGlassHandler extends AbstractMaplePacketHandler {
                 for (int i = 0; i < lines; i++) { // 2 or 3 line
                     boolean rewarded = false;
                     while (!rewarded) {
-                        StructPotentialItem pot = pots.get(Randomizer.nextInt(pots.size())).get(reqLevel);
-                        if (pot != null && pot.getReqLevel() / 10 <= reqLevel
-                                && GameConstants.optionTypeFits(pot.getOptionType(), eqq.getItemId())
-                                && GameConstants.potentialIDFits(pot.getPotentialID(), new_state, i)) { // optionType
+                        StructPotentialItem pot =
+                                pots.get(Randomizer.nextInt(pots.size())).get(reqLevel);
+                        if (pot != null
+                                && pot.getReqLevel() / 10 <= reqLevel
+                                && GameConstants.optionTypeFits(
+                                        pot.getOptionType(), eqq.getItemId())
+                                && GameConstants.potentialIDFits(
+                                        pot.getPotentialID(), new_state, i)) { // optionType
                             // have to research optionType before making this
                             // truely sea-like
                             if (i == 0) {
@@ -73,12 +78,15 @@ public class UseMagnifyGlassHandler extends AbstractMaplePacketHandler {
                 }
             }
             c.getSession().write(MaplePacketCreator.scrolledItem(magnify, toReveal, false, true));
-            c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.getMagnifyingEffect(c.getPlayer().getId(), eqq.getPosition()));
-            MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, magnify.getPosition(), (short) 1, false);
+            c.getPlayer()
+                    .getMap()
+                    .broadcastMessage(
+                            MaplePacketCreator.getMagnifyingEffect(
+                                    c.getPlayer().getId(), eqq.getPosition()));
+            MapleInventoryManipulator.removeFromSlot(
+                    c, MapleInventoryType.USE, magnify.getPosition(), (short) 1, false);
         } else {
             c.getSession().write(MaplePacketCreator.getInventoryFull());
         }
-
     }
-
 }

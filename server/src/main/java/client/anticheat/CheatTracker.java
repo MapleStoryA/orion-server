@@ -1,35 +1,9 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package client.anticheat;
 
 import client.MapleCharacter;
 import client.MapleCharacterHelper;
 import constants.GameConstants;
 import handling.world.helper.BroadcastHelper;
-import server.AutobanManager;
-import server.Timer.CheatTimer;
-import tools.MaplePacketCreator;
-import tools.StringUtil;
-
 import java.awt.*;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -41,13 +15,18 @@ import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import server.AutobanManager;
+import server.Timer.CheatTimer;
+import tools.MaplePacketCreator;
+import tools.StringUtil;
 
 @lombok.extern.slf4j.Slf4j
 public class CheatTracker {
 
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     private final Lock rL = lock.readLock(), wL = lock.writeLock();
-    private final Map<CheatingOffense, CheatingOffenseEntry> offenses = new LinkedHashMap<CheatingOffense, CheatingOffenseEntry>();
+    private final Map<CheatingOffense, CheatingOffenseEntry> offenses =
+            new LinkedHashMap<CheatingOffense, CheatingOffenseEntry>();
     private final WeakReference<MapleCharacter> chr;
     // For keeping track of speed attack hack.
     private int lastAttackTickCount = 0;
@@ -91,7 +70,8 @@ public class CheatTracker {
         // For lagging, it isn't an issue since TIME is running simotaniously, client
         // will be sending values of older time
 
-//	log.info("Delay [" + skillId + "] = " + (tickcount - lastAttackTickCount) + ", " + (Server_ClientAtkTickDiff - STime_TC));
+        //	log.info("Delay [" + skillId + "] = " + (tickcount - lastAttackTickCount) + ", " +
+        // (Server_ClientAtkTickDiff - STime_TC));
         Attack_tickResetCount++; // Without this, the difference will always be at 100
         if (Attack_tickResetCount >= (AtkDelay <= 200 ? 2 : 4)) {
             Attack_tickResetCount = 0;
@@ -166,9 +146,10 @@ public class CheatTracker {
 
     public final boolean checkSummonAttack() {
         numSequentialSummonAttack++;
-        //estimated
+        // estimated
         // log.info(numMPRegens + "/" + allowedRegens);
-        if ((System.currentTimeMillis() - summonSummonTime) / (2000 + 1) < numSequentialSummonAttack) {
+        if ((System.currentTimeMillis() - summonSummonTime) / (2000 + 1)
+                < numSequentialSummonAttack) {
             registerOffense(CheatingOffense.FAST_SUMMON_ATTACK);
             return false;
         }
@@ -182,7 +163,9 @@ public class CheatTracker {
     public final void checkDrop(final boolean dc) {
         if ((System.currentTimeMillis() - lastDropTime) < 1000) {
             dropsPerSecond++;
-            if (dropsPerSecond >= (dc ? 32 : 16) && chr.get() != null && !chr.get().isGameMaster()) {
+            if (dropsPerSecond >= (dc ? 32 : 16)
+                    && chr.get() != null
+                    && !chr.get().isGameMaster()) {
                 if (dc) {
                     chr.get().getClient().getSession().close();
                 } else {
@@ -196,8 +179,9 @@ public class CheatTracker {
         lastDropTime = System.currentTimeMillis();
     }
 
-    public final void checkMsg() { //ALL types of msg. caution with number of  msgsPerSecond
-        if ((System.currentTimeMillis() - lastMsgTime) < 1000) { //luckily maplestory has auto-check for too much msging
+    public final void checkMsg() { // ALL types of msg. caution with number of  msgsPerSecond
+        if ((System.currentTimeMillis() - lastMsgTime)
+                < 1000) { // luckily maplestory has auto-check for too much msging
             msgsPerSecond++;
             if (msgsPerSecond > 10 && chr.get() != null) {
                 chr.get().getClient().getSession().close();
@@ -250,7 +234,10 @@ public class CheatTracker {
         if (offense.shouldAutoban(entry.getCount())) {
             final byte type = offense.getBanType();
             if (type == 1) {
-                AutobanManager.getInstance().autoban(chrhardref.getClient(), StringUtil.makeEnumHumanReadable(offense.name()));
+                AutobanManager.getInstance()
+                        .autoban(
+                                chrhardref.getClient(),
+                                StringUtil.makeEnumHumanReadable(offense.name()));
             } else if (type == 2) {
                 chrhardref.getClient().getSession().close();
             }
@@ -264,9 +251,9 @@ public class CheatTracker {
             wL.unlock();
         }
         switch (offense) {
-            //case HIGH_DAMAGE_MAGIC:
+                // case HIGH_DAMAGE_MAGIC:
             case HIGH_DAMAGE_MAGIC_2:
-                //case HIGH_DAMAGE:
+                // case HIGH_DAMAGE:
             case HIGH_DAMAGE_2:
             case ATTACK_FARAWAY_MONSTER:
             case ATTACK_FARAWAY_MONSTER_SUMMON:
@@ -274,7 +261,15 @@ public class CheatTracker {
             case SAME_DAMAGE:
                 gm_message--;
                 if (gm_message == 0) {
-                    BroadcastHelper.broadcastGMMessage(MaplePacketCreator.serverNotice(6, "[GM Message] " + MapleCharacterHelper.makeMapleReadable(chrhardref.getName()) + " suspected of hacking! " + StringUtil.makeEnumHumanReadable(offense.name()) + (param == null ? "" : (" - " + param))));
+                    BroadcastHelper.broadcastGMMessage(
+                            MaplePacketCreator.serverNotice(
+                                    6,
+                                    "[GM Message] "
+                                            + MapleCharacterHelper.makeMapleReadable(
+                                                    chrhardref.getName())
+                                            + " suspected of hacking! "
+                                            + StringUtil.makeEnumHumanReadable(offense.name())
+                                            + (param == null ? "" : (" - " + param))));
                     gm_message = 100;
                 }
                 break;
@@ -283,9 +278,13 @@ public class CheatTracker {
     }
 
     public void updateTick(int newTick) {
-        if (newTick == lastTickCount) { //definitely packet spamming
+        if (newTick == lastTickCount) { // definitely packet spamming
             if (tickSame >= 5) {
-                chr.get().getClient().getSession().close(); //i could also add a check for less than, but i'm not too worried at the moment :)
+                chr.get()
+                        .getClient()
+                        .getSession()
+                        .close(); // i could also add a check for less than, but i'm not too worried
+                // at the moment :)
             } else {
                 tickSame++;
             }
@@ -340,15 +339,18 @@ public class CheatTracker {
         } finally {
             rL.unlock();
         }
-        Collections.sort(offenseList, new Comparator<CheatingOffenseEntry>() {
+        Collections.sort(
+                offenseList,
+                new Comparator<CheatingOffenseEntry>() {
 
-            @Override
-            public int compare(final CheatingOffenseEntry o1, final CheatingOffenseEntry o2) {
-                final int thisVal = o1.getPoints();
-                final int anotherVal = o2.getPoints();
-                return (thisVal < anotherVal ? 1 : (thisVal == anotherVal ? 0 : -1));
-            }
-        });
+                    @Override
+                    public int compare(
+                            final CheatingOffenseEntry o1, final CheatingOffenseEntry o2) {
+                        final int thisVal = o1.getPoints();
+                        final int anotherVal = o2.getPoints();
+                        return (thisVal < anotherVal ? 1 : (thisVal == anotherVal ? 0 : -1));
+                    }
+                });
         final int to = Math.min(offenseList.size(), 4);
         for (int x = 0; x < to; x++) {
             ret.append(StringUtil.makeEnumHumanReadable(offenseList.get(x).getOffense().name()));
@@ -375,7 +377,8 @@ public class CheatTracker {
             CheatingOffenseEntry[] offenses_copy;
             rL.lock();
             try {
-                offenses_copy = offenses.values().toArray(new CheatingOffenseEntry[offenses.size()]);
+                offenses_copy =
+                        offenses.values().toArray(new CheatingOffenseEntry[offenses.size()]);
             } finally {
                 rL.unlock();
             }

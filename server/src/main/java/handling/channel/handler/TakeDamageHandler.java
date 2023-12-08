@@ -25,10 +25,10 @@ public class TakeDamageHandler extends AbstractMaplePacketHandler {
 
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        //log.info(slea.toString());
+        // log.info(slea.toString());
         final MapleCharacter chr = c.getPlayer();
         chr.updateTick(slea.readInt());
-        final byte type = slea.readByte(); //-4 is mist, -3 and -2 are map damage.
+        final byte type = slea.readByte(); // -4 is mist, -3 and -2 are map damage.
         slea.skip(1); // Element - 0x00 = elementless, 0x01 = ice, 0x02 = fire, 0x03 = lightning
         int damage = slea.readInt();
 
@@ -61,7 +61,8 @@ public class TakeDamageHandler extends AbstractMaplePacketHandler {
                 return;
             }
             if (type != -1) { // Bump damage
-                final MobAttackInfo attackInfo = MobAttackInfoFactory.getInstance().getMobAttackInfo(attacker, type);
+                final MobAttackInfo attackInfo =
+                        MobAttackInfoFactory.getInstance().getMobAttackInfo(attacker, type);
                 if (attackInfo != null) {
                     if (attackInfo.isDeadlyAttack()) {
                         isDeadlyAttack = true;
@@ -69,7 +70,9 @@ public class TakeDamageHandler extends AbstractMaplePacketHandler {
                     } else {
                         mpattack += attackInfo.getMpBurn();
                     }
-                    final MobSkill skill = MobSkillFactory.getMobSkill(attackInfo.getDiseaseSkill(), attackInfo.getDiseaseLevel());
+                    final MobSkill skill =
+                            MobSkillFactory.getMobSkill(
+                                    attackInfo.getDiseaseSkill(), attackInfo.getDiseaseLevel());
                     if (skill != null && (damage == -1 || damage > 0)) {
                         skill.applyEffect(chr, attacker, false);
                     }
@@ -81,7 +84,15 @@ public class TakeDamageHandler extends AbstractMaplePacketHandler {
         if (damage == -1) {
             fake = 4020002 + ((chr.getJob().getId() / 10 - 40) * 100000);
         } else if (damage < -1 || damage > 60000) {
-            AutobanManager.getInstance().addPoints(c, 1000, 60000, "Taking abnormal amounts of damge from " + monsteridfrom + ": " + damage);
+            AutobanManager.getInstance()
+                    .addPoints(
+                            c,
+                            1000,
+                            60000,
+                            "Taking abnormal amounts of damge from "
+                                    + monsteridfrom
+                                    + ": "
+                                    + damage);
             return;
         }
         chr.getCheatTracker().checkTakeDamage(damage);
@@ -91,11 +102,17 @@ public class TakeDamageHandler extends AbstractMaplePacketHandler {
 
             if (MapConstants.isStorylineMap(chr.getMapId())) {
                 if (chr.getMapId() == 502010200) {
-                    chr.dropMessage(-1, "You're being protected by the powerful visitor suit, thus does not gain any damage.");
+                    chr.dropMessage(
+                            -1,
+                            "You're being protected by the powerful visitor suit, thus does not"
+                                    + " gain any damage.");
                     c.getSession().write(MaplePacketCreator.enableActions());
                     return;
                 } else if (chr.getMapId() == 502040100 || chr.getMapId() == 502030004) {
-                    chr.dropMessage(-1, "You're being protected by the powerful visitor suit, thus reducing damage gained.");
+                    chr.dropMessage(
+                            -1,
+                            "You're being protected by the powerful visitor suit, thus reducing"
+                                    + " damage gained.");
                     if (chr.getMapId() == 502030004) {
                         damage = 50;
                     } else {
@@ -116,39 +133,71 @@ public class TakeDamageHandler extends AbstractMaplePacketHandler {
                 }
             }
             if (type != -2 && type != -3 && type != -4) {
-                final int bouncedam_ = (Randomizer.nextInt(100) < chr.getStat().getDAMreflect_rate() ? chr.getStat().getDAMreflect() : 0) + (type == -1 && chr.getBuffedValue(MapleBuffStat.POWERGUARD) != null ? chr.getBuffedValue(MapleBuffStat.POWERGUARD) : 0) + (type == -1 && chr.getBuffedValue(MapleBuffStat.PERFECT_ARMOR) != null ? chr.getBuffedValue(MapleBuffStat.PERFECT_ARMOR) : 0);
+                final int bouncedam_ =
+                        (Randomizer.nextInt(100) < chr.getStat().getDAMreflect_rate()
+                                        ? chr.getStat().getDAMreflect()
+                                        : 0)
+                                + (type == -1
+                                                && chr.getBuffedValue(MapleBuffStat.POWERGUARD)
+                                                        != null
+                                        ? chr.getBuffedValue(MapleBuffStat.POWERGUARD)
+                                        : 0)
+                                + (type == -1
+                                                && chr.getBuffedValue(MapleBuffStat.PERFECT_ARMOR)
+                                                        != null
+                                        ? chr.getBuffedValue(MapleBuffStat.PERFECT_ARMOR)
+                                        : 0);
                 if (bouncedam_ > 0 && attacker != null) {
                     long bouncedamage = (long) damage * bouncedam_ / 100;
                     bouncedamage = Math.min(bouncedamage, attacker.getMobMaxHp() / 10);
                     attacker.damage(chr, bouncedamage, true);
                     damage -= bouncedamage;
-                    chr.getMap().broadcastMessage(chr, MobPacket.damageMonster(oid, bouncedamage), chr.getPosition());
+                    chr.getMap()
+                            .broadcastMessage(
+                                    chr,
+                                    MobPacket.damageMonster(oid, bouncedamage),
+                                    chr.getPosition());
                     is_pg = true;
                 }
             }
             if (type != -1 && type != -2 && type != -3 && type != -4) {
                 switch (chr.getJob().getId()) {
-                    case 112: {
-                        final ISkill skill = SkillFactory.getSkill(1120004);
-                        if (chr.getSkillLevel(skill) > 0) {
-                            damage = (int) ((skill.getEffect(chr.getSkillLevel(skill)).getX() / 1000.0) * damage);
+                    case 112:
+                        {
+                            final ISkill skill = SkillFactory.getSkill(1120004);
+                            if (chr.getSkillLevel(skill) > 0) {
+                                damage =
+                                        (int)
+                                                ((skill.getEffect(chr.getSkillLevel(skill)).getX()
+                                                                / 1000.0)
+                                                        * damage);
+                            }
+                            break;
                         }
-                        break;
-                    }
-                    case 122: {
-                        final ISkill skill = SkillFactory.getSkill(1220005);
-                        if (chr.getSkillLevel(skill) > 0) {
-                            damage = (int) ((skill.getEffect(chr.getSkillLevel(skill)).getX() / 1000.0) * damage);
+                    case 122:
+                        {
+                            final ISkill skill = SkillFactory.getSkill(1220005);
+                            if (chr.getSkillLevel(skill) > 0) {
+                                damage =
+                                        (int)
+                                                ((skill.getEffect(chr.getSkillLevel(skill)).getX()
+                                                                / 1000.0)
+                                                        * damage);
+                            }
+                            break;
                         }
-                        break;
-                    }
-                    case 132: {
-                        final ISkill skill = SkillFactory.getSkill(1320005);
-                        if (chr.getSkillLevel(skill) > 0) {
-                            damage = (int) ((skill.getEffect(chr.getSkillLevel(skill)).getX() / 1000.0) * damage);
+                    case 132:
+                        {
+                            final ISkill skill = SkillFactory.getSkill(1320005);
+                            if (chr.getSkillLevel(skill) > 0) {
+                                damage =
+                                        (int)
+                                                ((skill.getEffect(chr.getSkillLevel(skill)).getX()
+                                                                / 1000.0)
+                                                        * damage);
+                            }
+                            break;
                         }
-                        break;
-                    }
                 }
             }
             final MapleStatEffect magicShield = chr.getStatForBuff(MapleBuffStat.MAGIC_SHIELD);
@@ -159,7 +208,8 @@ public class TakeDamageHandler extends AbstractMaplePacketHandler {
             if (blueAura != null) {
                 damage -= (int) ((blueAura.getY() / 100.0) * damage);
             }
-            if (chr.getBuffedValue(MapleBuffStat.SATELLITESAFE_PROC) != null && chr.getBuffedValue(MapleBuffStat.SATELLITESAFE_ABSORB) != null) {
+            if (chr.getBuffedValue(MapleBuffStat.SATELLITESAFE_PROC) != null
+                    && chr.getBuffedValue(MapleBuffStat.SATELLITESAFE_ABSORB) != null) {
                 double buff = chr.getBuffedValue(MapleBuffStat.SATELLITESAFE_PROC).doubleValue();
                 double buffz = chr.getBuffedValue(MapleBuffStat.SATELLITESAFE_ABSORB).doubleValue();
                 if ((int) ((buff / 100.0) * chr.getStat().getMaxHp()) <= damage) {
@@ -181,10 +231,16 @@ public class TakeDamageHandler extends AbstractMaplePacketHandler {
                         mploss = 0;
                     }
                     chr.addMPHP(-hploss, -mploss);
-                    //} else if (mpattack > 0) {
+                    // } else if (mpattack > 0) {
                     //    chr.addMPHP(-damage, -mpattack);
                 } else {
-                    mploss = (int) (damage * (chr.getBuffedValue(MapleBuffStat.MAGIC_GUARD).doubleValue() / 100.0)) + mpattack;
+                    mploss =
+                            (int)
+                                            (damage
+                                                    * (chr.getBuffedValue(MapleBuffStat.MAGIC_GUARD)
+                                                                    .doubleValue()
+                                                            / 100.0))
+                                    + mpattack;
                     hploss = damage - mploss;
                     if (chr.getBuffedValue(MapleBuffStat.INFINITY) != null) {
                         mploss = 0;
@@ -198,7 +254,11 @@ public class TakeDamageHandler extends AbstractMaplePacketHandler {
             } else if (chr.getBuffedValue(MapleBuffStat.MESOGUARD) != null) {
                 damage = (damage % 2 == 0) ? damage / 2 : (damage / 2 + 1);
 
-                final int mesoloss = (int) (damage * (chr.getBuffedValue(MapleBuffStat.MESOGUARD).doubleValue() / 100.0));
+                final int mesoloss =
+                        (int)
+                                (damage
+                                        * (chr.getBuffedValue(MapleBuffStat.MESOGUARD).doubleValue()
+                                                / 100.0));
                 if (chr.getMeso() < mesoloss) {
                     chr.gainMeso(-chr.getMeso(), false);
                     chr.cancelBuffStats(MapleBuffStat.MESOGUARD);
@@ -211,7 +271,9 @@ public class TakeDamageHandler extends AbstractMaplePacketHandler {
                 chr.addMPHP(-damage, -mpattack);
             } else {
                 if (isDeadlyAttack) {
-                    chr.addMPHP(stats.getHp() > 1 ? -(stats.getHp() - 1) : 0, stats.getMp() > 1 ? -(stats.getMp() - 1) : 0);
+                    chr.addMPHP(
+                            stats.getHp() > 1 ? -(stats.getHp() - 1) : 0,
+                            stats.getMp() > 1 ? -(stats.getMp() - 1) : 0);
                 } else {
                     chr.addMPHP(-damage, -mpattack);
                 }
@@ -219,9 +281,22 @@ public class TakeDamageHandler extends AbstractMaplePacketHandler {
             chr.handleBattleshipHP(-damage);
         }
         if (!chr.isHidden()) {
-            chr.getMap().broadcastMessage(chr, MaplePacketCreator.damagePlayer(type, monsteridfrom, chr.getId(), damage, fake, direction, reflect, is_pg, oid, pos_x, pos_y), false);
+            chr.getMap()
+                    .broadcastMessage(
+                            chr,
+                            MaplePacketCreator.damagePlayer(
+                                    type,
+                                    monsteridfrom,
+                                    chr.getId(),
+                                    damage,
+                                    fake,
+                                    direction,
+                                    reflect,
+                                    is_pg,
+                                    oid,
+                                    pos_x,
+                                    pos_y),
+                            false);
         }
-
     }
-
 }

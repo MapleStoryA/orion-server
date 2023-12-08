@@ -10,7 +10,5 @@ public class EscortResultHandler extends AbstractMaplePacketHandler {
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         log.info("", "[ESCORT_RESULT] " + slea.toString());
-
     }
-
 }

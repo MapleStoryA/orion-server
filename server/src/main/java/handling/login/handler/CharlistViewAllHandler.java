@@ -4,10 +4,9 @@ import client.MapleCharacter;
 import client.MapleClient;
 import database.CharacterService;
 import handling.AbstractMaplePacketHandler;
+import java.util.List;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
-
-import java.util.List;
 
 @lombok.extern.slf4j.Slf4j
 public class CharlistViewAllHandler extends AbstractMaplePacketHandler {
@@ -18,8 +17,8 @@ public class CharlistViewAllHandler extends AbstractMaplePacketHandler {
         c.setWorld(0);
         c.setChannel(1);
 
-        List<MapleCharacter> chars = CharacterService.loadCharacters(c, 0, c.getAccountData().getId());
-
+        List<MapleCharacter> chars =
+                CharacterService.loadCharacters(c, 0, c.getAccountData().getId());
 
         if (chars != null) {
             c.getSession().write(MaplePacketCreator.viewAllChar(1, chars.size()));
@@ -27,8 +26,5 @@ public class CharlistViewAllHandler extends AbstractMaplePacketHandler {
         } else {
             c.getSession().close();
         }
-
-
     }
-
 }

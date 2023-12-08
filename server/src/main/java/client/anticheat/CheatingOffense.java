@@ -1,28 +1,6 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package client.anticheat;
 
 public enum CheatingOffense {
-
     FAST_SUMMON_ATTACK((byte) 5, 6000, 10, (byte) 2),
     FASTATTACK((byte) 5, 6000, 50, (byte) 2),
     FASTATTACK2((byte) 5, 9000, 50, (byte) 2),
@@ -46,7 +24,7 @@ public enum CheatingOffense {
     USING_FARAWAY_PORTAL((byte) 1, 60000, 100, (byte) 0),
     FAST_TAKE_DAMAGE((byte) 1, 60000, 100),
     HIGH_AVOID((byte) 20, 180000, 100),
-    //FAST_MOVE((byte) 1, 60000),
+    // FAST_MOVE((byte) 1, 60000),
     HIGH_JUMP((byte) 1, 60000),
     MISMATCHING_BULLETCOUNT((byte) 1, 300000),
     ETC_EXPLOSION((byte) 1, 300000),
@@ -72,7 +50,11 @@ public enum CheatingOffense {
         this(points, validityDuration, autobancount, (byte) 1);
     }
 
-    CheatingOffense(final byte points, final long validityDuration, final int autobancount, final byte bantype) {
+    CheatingOffense(
+            final byte points,
+            final long validityDuration,
+            final int autobancount,
+            final byte bantype) {
         this.points = points;
         this.validityDuration = validityDuration;
         this.autobancount = autobancount;

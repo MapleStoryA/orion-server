@@ -5,6 +5,7 @@ import client.MapleClient;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import handling.AbstractMaplePacketHandler;
+import java.util.List;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.life.MapleLifeFactory;
@@ -14,8 +15,6 @@ import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
 import tools.data.input.SeekableLittleEndianAccessor;
-
-import java.util.List;
 
 @lombok.extern.slf4j.Slf4j
 public class UseSummonBagHandler extends AbstractMaplePacketHandler {
@@ -34,11 +33,13 @@ public class UseSummonBagHandler extends AbstractMaplePacketHandler {
 
         if (toUse != null && toUse.getQuantity() >= 1 && toUse.getItemId() == itemId) {
 
-            MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
+            MapleInventoryManipulator.removeFromSlot(
+                    c, MapleInventoryType.USE, slot, (short) 1, false);
 
-            if (c.getPlayer().isGameMaster() || !FieldLimitType.SummoningBag.check(chr.getMap().getFieldLimit())) {
-                final List<Pair<Integer, Integer>> toSpawn = MapleItemInformationProvider.getInstance()
-                        .getSummonMobs(itemId);
+            if (c.getPlayer().isGameMaster()
+                    || !FieldLimitType.SummoningBag.check(chr.getMap().getFieldLimit())) {
+                final List<Pair<Integer, Integer>> toSpawn =
+                        MapleItemInformationProvider.getInstance().getSummonMobs(itemId);
 
                 if (toSpawn == null) {
                     c.getSession().write(MaplePacketCreator.enableActions());
@@ -56,7 +57,5 @@ public class UseSummonBagHandler extends AbstractMaplePacketHandler {
             }
         }
         c.getSession().write(MaplePacketCreator.enableActions());
-
     }
-
 }

@@ -26,5 +26,4 @@ public class PingThread implements Runnable {
         }
         client.sendPing();
     }
-
 }

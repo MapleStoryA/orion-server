@@ -1,10 +1,9 @@
 package database;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.time.LocalDate;
 import java.util.Calendar;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -27,11 +26,9 @@ public class AccountData {
     private int mPoints;
     private byte gender;
 
-
     public LoginState getLoginState() {
         return LoginState.fromCode(loggedIn);
     }
-
 
     public boolean isOnline() {
         return loggedIn > LoginState.LOGIN_NOTLOGGEDIN.getCode();
@@ -53,7 +50,6 @@ public class AccountData {
         return lTempban;
     }
 
-
     public boolean isGameMaster() {
         return this.gm > 0;
     }
@@ -61,6 +57,4 @@ public class AccountData {
     public int getGMLevel() {
         return this.getGm();
     }
-
-
 }

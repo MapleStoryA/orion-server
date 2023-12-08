@@ -1,13 +1,13 @@
 package handling.channel.handler;
 
-import client.skill.ISkill;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.PlayerStats;
-import client.skill.SkillFactory;
 import client.anticheat.CheatingOffense;
 import client.inventory.MapleInventoryType;
+import client.skill.ISkill;
+import client.skill.SkillFactory;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
@@ -30,7 +30,8 @@ public class RangedAttackHandler extends AbstractMaplePacketHandler {
             return;
         }
         c.getPlayer().checkForDarkSight();
-        final AttackInfo attack = DamageParse.Modify_AttackCrit(DamageParse.parseDmgR(slea), chr, 2);
+        final AttackInfo attack =
+                DamageParse.Modify_AttackCrit(DamageParse.parseDmgR(slea), chr, 2);
         if (!chr.getJob().isSkillBelongToJob(attack.skill, chr.isGameMaster())) {
             chr.dropMessage(5, "This skill cannot be used with the current job.");
             c.getSession().write(MaplePacketCreator.enableActions());
@@ -66,8 +67,12 @@ public class RangedAttackHandler extends AbstractMaplePacketHandler {
                     c.getSession().write(MaplePacketCreator.enableActions());
                     return;
                 }
-                c.getSession().write(MaplePacketCreator.skillCooldown(attack.skill, effect.getCooldown()));
-                chr.addCooldown(attack.skill, System.currentTimeMillis(), effect.getCooldown() * 1000L);
+                c.getSession()
+                        .write(
+                                MaplePacketCreator.skillCooldown(
+                                        attack.skill, effect.getCooldown()));
+                chr.addCooldown(
+                        attack.skill, System.currentTimeMillis(), effect.getCooldown() * 1000L);
             }
         }
         final Integer ShadowPartner = chr.getBuffedValue(MapleBuffStat.SHADOWPARTNER);
@@ -75,7 +80,9 @@ public class RangedAttackHandler extends AbstractMaplePacketHandler {
             bulletCount *= 2;
         }
         int projectile = 0, visProjectile = 0;
-        if (attack.AOE != 0 && chr.getBuffedValue(MapleBuffStat.SOULARROW) == null && attack.skill != 4111004
+        if (attack.AOE != 0
+                && chr.getBuffedValue(MapleBuffStat.SOULARROW) == null
+                && attack.skill != 4111004
                 && !GameConstants.isVisitorSkill(attack.skill)) {
             if (chr.getInventory(MapleInventoryType.USE).getItem(attack.slot) == null) {
                 return;
@@ -86,7 +93,10 @@ public class RangedAttackHandler extends AbstractMaplePacketHandler {
                 if (chr.getInventory(MapleInventoryType.CASH).getItem(attack.csstar) == null) {
                     return;
                 }
-                visProjectile = chr.getInventory(MapleInventoryType.CASH).getItem(attack.csstar).getItemId();
+                visProjectile =
+                        chr.getInventory(MapleInventoryType.CASH)
+                                .getItem(attack.csstar)
+                                .getItemId();
             } else {
                 visProjectile = projectile;
             }
@@ -96,8 +106,8 @@ public class RangedAttackHandler extends AbstractMaplePacketHandler {
                 if (effect != null && effect.getBulletConsume() != 0) {
                     bulletConsume = effect.getBulletConsume() * (ShadowPartner != null ? 2 : 1);
                 }
-                if (!MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, projectile, bulletConsume, false,
-                        true)) {
+                if (!MapleInventoryManipulator.removeById(
+                        c, MapleInventoryType.USE, projectile, bulletConsume, false, true)) {
                     chr.dropMessage(5, "You do not have enough arrows/bullets/stars.");
                     return;
                 }
@@ -107,7 +117,8 @@ public class RangedAttackHandler extends AbstractMaplePacketHandler {
         double basedamage;
         int projectileWatk = 0;
         if (projectile != 0) {
-            projectileWatk = MapleItemInformationProvider.getInstance().getWatkForProjectile(projectile);
+            projectileWatk =
+                    MapleItemInformationProvider.getInstance().getWatkForProjectile(projectile);
         }
         final PlayerStats statst = chr.getStat();
         switch (attack.skill) {
@@ -115,8 +126,9 @@ public class RangedAttackHandler extends AbstractMaplePacketHandler {
             case 4121007: // Triple Throw
             case 14001004: // Lucky seven
             case 14111005: // Triple Throw
-                basedamage = ((statst.getTotalLuk() * 5.0f) * (statst.getTotalWatk() + projectileWatk))
-                        / 100;
+                basedamage =
+                        ((statst.getTotalLuk() * 5.0f) * (statst.getTotalWatk() + projectileWatk))
+                                / 100;
                 break;
             case 4111004: // Shadow Meso
                 // basedamage = ((effect.getMoneyCon() * 10) / 100) *
@@ -125,7 +137,8 @@ public class RangedAttackHandler extends AbstractMaplePacketHandler {
                 break;
             default:
                 if (projectileWatk != 0) {
-                    basedamage = statst.calculateMaxBaseDamage(statst.getTotalWatk() + projectileWatk);
+                    basedamage =
+                            statst.calculateMaxBaseDamage(statst.getTotalWatk() + projectileWatk);
                 } else {
                     basedamage = statst.getCurrentMaxBaseDamage();
                 }
@@ -147,13 +160,31 @@ public class RangedAttackHandler extends AbstractMaplePacketHandler {
         }
 
         chr.checkFollow();
-        chr.getMap().broadcastMessage(chr,
-                MaplePacketCreator.rangedAttack(chr.getId(), attack.tbyte, attack.skill, skillLevel, attack.display,
-                        attack.animation, attack.speed, visProjectile, attack.allDamage, attack.position,
-                        chr.getLevel(), chr.getStat().passive_mastery(), attack.unk),
-                chr.getPosition());
-        DamageParse.applyAttack(attack, skill, chr, bulletCount, basedamage, effect,
+        chr.getMap()
+                .broadcastMessage(
+                        chr,
+                        MaplePacketCreator.rangedAttack(
+                                chr.getId(),
+                                attack.tbyte,
+                                attack.skill,
+                                skillLevel,
+                                attack.display,
+                                attack.animation,
+                                attack.speed,
+                                visProjectile,
+                                attack.allDamage,
+                                attack.position,
+                                chr.getLevel(),
+                                chr.getStat().passive_mastery(),
+                                attack.unk),
+                        chr.getPosition());
+        DamageParse.applyAttack(
+                attack,
+                skill,
+                chr,
+                bulletCount,
+                basedamage,
+                effect,
                 ShadowPartner != null ? AttackType.RANGED_WITH_SHADOWPARTNER : AttackType.RANGED);
     }
-
 }

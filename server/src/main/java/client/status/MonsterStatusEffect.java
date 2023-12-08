@@ -1,29 +1,7 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package client.status;
 
-import server.life.MobSkill;
-
 import java.util.concurrent.ScheduledFuture;
+import server.life.MobSkill;
 
 @lombok.extern.slf4j.Slf4j
 public class MonsterStatusEffect {
@@ -36,7 +14,12 @@ public class MonsterStatusEffect {
     private ScheduledFuture<?> cancelTask;
     private ScheduledFuture<?> poisonSchedule;
 
-    public MonsterStatusEffect(final MonsterStatus stat, final Integer x, final int skillId, final MobSkill mobskill, final boolean monsterSkill) {
+    public MonsterStatusEffect(
+            final MonsterStatus stat,
+            final Integer x,
+            final int skillId,
+            final MobSkill mobskill,
+            final boolean monsterSkill) {
         this.stati = stat;
         this.skill = skillId;
         this.monsterSkill = monsterSkill;
@@ -89,7 +72,7 @@ public class MonsterStatusEffect {
             try {
                 this.poisonSchedule.cancel(false);
             } catch (NullPointerException e) {
-            } //set to null anyway.
+            } // set to null anyway.
         }
         this.poisonSchedule = null;
     }

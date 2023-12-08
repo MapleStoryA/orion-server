@@ -1,24 +1,3 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package handling.channel;
 
 import client.MapleCharacter;
@@ -27,6 +6,16 @@ import handling.PacketProcessor;
 import handling.login.LoginServer;
 import handling.world.WorldServer;
 import handling.world.helper.CheaterData;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import scripting.EventScriptManager;
 import scripting.v1.event.EventCenter;
 import server.MapleSquad;
@@ -47,17 +36,6 @@ import server.shops.HiredMerchant;
 import tools.CollectionUtil;
 import tools.MaplePacketCreator;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-
 @lombok.extern.slf4j.Slf4j
 public class ChannelServer extends GameServer {
 
@@ -77,11 +55,13 @@ public class ChannelServer extends GameServer {
     private int running_MerchantID = 0;
     private int flags = 0;
     private String serverMessage;
-    private boolean shutdown = false, finishedShutdown = false, MegaphoneMuteState = false, adminOnly = false;
+    private boolean shutdown = false,
+            finishedShutdown = false,
+            MegaphoneMuteState = false,
+            adminOnly = false;
     private PlayerStorage players;
     private EventScriptManager eventSM;
     private int eventmap = -1;
-
 
     public ChannelServer(int channel, int port) {
         super(channel, port, PacketProcessor.Mode.CHANNELSERVER);
@@ -90,17 +70,23 @@ public class ChannelServer extends GameServer {
         this.dropRate = Integer.parseInt(ServerEnvironment.getConfig().getProperty("world.drop"));
         this.cashRate = Integer.parseInt(ServerEnvironment.getConfig().getProperty("world.cash"));
         this.serverMessage = ServerEnvironment.getConfig().getProperty("world.serverMessage");
-        this.flags = Integer.parseInt(ServerEnvironment.getConfig().getProperty("world.flags", "0"));
-        this.adminOnly = Boolean.parseBoolean(ServerEnvironment.getConfig().getProperty("world.admin", "false"));
-        this.publicAddress = ServerEnvironment.getConfig().getProperty("channel.net.interface") + ":" + port;
+        this.flags =
+                Integer.parseInt(ServerEnvironment.getConfig().getProperty("world.flags", "0"));
+        this.adminOnly =
+                Boolean.parseBoolean(
+                        ServerEnvironment.getConfig().getProperty("world.admin", "false"));
+        this.publicAddress =
+                ServerEnvironment.getConfig().getProperty("channel.net.interface") + ":" + port;
         this.mapFactory = new MapleMapFactory();
         this.aramiaEvent = new AramiaFireWorks();
         this.eventCenter = new EventCenter(channel);
-        this.eventSM = new EventScriptManager(this, ServerEnvironment.getConfig().getProperty("channel.events").split(","));
+        this.eventSM =
+                new EventScriptManager(
+                        this,
+                        ServerEnvironment.getConfig().getProperty("channel.events").split(","));
         this.mapFactory.setChannel(channel);
         this.players = new PlayerStorage(channel);
         this.serverStartTime = System.currentTimeMillis();
-
     }
 
     @Override
@@ -115,16 +101,22 @@ public class ChannelServer extends GameServer {
         log.info("Cash:" + cashRate);
     }
 
-
     public void loadEvents() {
         if (events.size() != 0) {
             return;
         }
-        events.put(MapleEventType.Coconut, new MapleCoconut(channel, MapleEventType.Coconut.getMapIds()));
-        events.put(MapleEventType.Fitness, new MapleFitness(channel, MapleEventType.Fitness.getMapIds()));
+        events.put(
+                MapleEventType.Coconut,
+                new MapleCoconut(channel, MapleEventType.Coconut.getMapIds()));
+        events.put(
+                MapleEventType.Fitness,
+                new MapleFitness(channel, MapleEventType.Fitness.getMapIds()));
         events.put(MapleEventType.OlaOla, new MapleOla(channel, MapleEventType.OlaOla.getMapIds()));
-        events.put(MapleEventType.OxQuiz, new MapleOxQuiz(channel, MapleEventType.OxQuiz.getMapIds()));
-        events.put(MapleEventType.Snowball, new MapleSnowball(channel, MapleEventType.Snowball.getMapIds()));
+        events.put(
+                MapleEventType.OxQuiz, new MapleOxQuiz(channel, MapleEventType.OxQuiz.getMapIds()));
+        events.put(
+                MapleEventType.Snowball,
+                new MapleSnowball(channel, MapleEventType.Snowball.getMapIds()));
     }
 
     @Override
@@ -145,13 +137,12 @@ public class ChannelServer extends GameServer {
 
         log.info("Channel " + channel + ", Unbinding...");
 
-       super.shutdown();
+        super.shutdown();
 
         WorldServer.getInstance().removeChannel(channel);
         LoginServer.getInstance().removeChannel(channel);
         setFinishShutdown();
     }
-
 
     public boolean hasFinishedShutdown() {
         return finishedShutdown;
@@ -175,12 +166,10 @@ public class ChannelServer extends GameServer {
 
     public void removePlayer(final MapleCharacter chr) {
         getPlayerStorage().deregisterPlayer(chr);
-
     }
 
     public void removePlayer(final int idz, final String namez) {
         getPlayerStorage().deregisterPlayer(idz, namez);
-
     }
 
     public void setServerMessage(final String newMessage) {
@@ -234,7 +223,10 @@ public class ChannelServer extends GameServer {
 
     public void reloadEvents() {
         eventSM.cancel();
-        eventSM = new EventScriptManager(this, ServerEnvironment.getConfig().getProperty("channel.events").split(","));
+        eventSM =
+                new EventScriptManager(
+                        this,
+                        ServerEnvironment.getConfig().getProperty("channel.events").split(","));
         eventSM.init();
     }
 
@@ -253,7 +245,6 @@ public class ChannelServer extends GameServer {
     public void setDropRate(final int dropRate) {
         this.dropRate = dropRate;
     }
-
 
     public Map<String, MapleSquad> getAllSquads() {
         squadLock.readLock().lock();
@@ -355,7 +346,6 @@ public class ChannelServer extends GameServer {
         return contains;
     }
 
-
     public List<HiredMerchant> searchMerchant(final int itemSearch) {
         final List<HiredMerchant> list = new LinkedList<HiredMerchant>();
         merchLock.readLock().lock();
@@ -398,7 +388,6 @@ public class ChannelServer extends GameServer {
         return playerNPCs.values();
     }
 
-
     public void addPlayerNPC(final PlayerNPC npc) {
         if (playerNPCs.containsKey(npc.getId())) {
             removePlayerNPC(npc);
@@ -428,7 +417,6 @@ public class ChannelServer extends GameServer {
     public boolean isAdminOnly() {
         return adminOnly;
     }
-
 
     public int getTempFlag() {
         return flags;
@@ -465,7 +453,8 @@ public class ChannelServer extends GameServer {
     }
 
     public void broadcastYellowMsg(String msg) {
-        for (@SuppressWarnings("unused") MapleCharacter mc : getPlayerStorage().getAllCharacters()) {
+        for (@SuppressWarnings("unused")
+        MapleCharacter mc : getPlayerStorage().getAllCharacters()) {
             broadcastPacket(MaplePacketCreator.yellowChat(msg));
         }
     }
@@ -482,7 +471,6 @@ public class ChannelServer extends GameServer {
         }
         return null;
     }
-
 
     public EventCenter getEventCenter() {
         return this.eventCenter;

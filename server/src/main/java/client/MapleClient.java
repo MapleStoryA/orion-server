@@ -20,16 +20,6 @@ import handling.world.messenger.MessengerManager;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import handling.world.party.PartyManager;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
-import scripting.v1.game.NpcScripting;
-import server.maps.MapleMap;
-import server.quest.MapleQuest;
-import server.shops.IMaplePlayerShop;
-
-import javax.script.ScriptEngine;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,24 +28,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import javax.script.ScriptEngine;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import scripting.v1.game.NpcScripting;
+import server.maps.MapleMap;
+import server.quest.MapleQuest;
+import server.shops.IMaplePlayerShop;
 
 @Slf4j
 public class MapleClient extends BaseMapleClient {
 
-
     public static final int DEFAULT_CHAR_SLOT = 6;
 
     private final Map<String, ScriptEngine> engines = new HashMap<>();
-    @Getter
-    @Setter
-    private NpcScripting currentNpcScript;
+    @Getter @Setter private NpcScripting currentNpcScript;
     private final Lock npc_mutex = new ReentrantLock();
 
     // Account and player fields
     private MapleCharacter player;
-    @Getter
-    @Setter
-    private AccountData accountData;
+    @Getter @Setter private AccountData accountData;
     private int charSlots = DEFAULT_CHAR_SLOT;
 
     // Channel and world related fields.
@@ -63,15 +56,11 @@ public class MapleClient extends BaseMapleClient {
     private int channel = 1;
     private boolean serverTransition = false;
     private boolean loggedIn = false;
-    @Getter
-    @Setter
-    private long lastNPCTalk;
-
+    @Getter @Setter private long lastNPCTalk;
 
     public MapleClient(byte[] ivSend, byte[] ivRecv, NetworkSession session) {
         super(ivSend, ivRecv, session);
     }
-
 
     public final Lock getNPCLock() {
         return npc_mutex;
@@ -85,16 +74,13 @@ public class MapleClient extends BaseMapleClient {
         this.player = player;
     }
 
-
     public boolean isLoggedIn() {
         return loggedIn;
     }
 
-
     public LoginResult login(String name, String pwd) {
         return LoginService.checkPassword(name, pwd);
     }
-
 
     public void loadAccountData(int id) {
         this.accountData = LoginService.loadAccountDataById(id);
@@ -107,12 +93,12 @@ public class MapleClient extends BaseMapleClient {
             loggedIn = false;
             serverTransition = false;
         } else {
-            var transitionStates = List.of(LoginState.LOGIN_SERVER_TRANSITION, LoginState.CHANGE_CHANNEL);
+            var transitionStates =
+                    List.of(LoginState.LOGIN_SERVER_TRANSITION, LoginState.CHANGE_CHANNEL);
             serverTransition = transitionStates.contains(loginState);
             loggedIn = !serverTransition;
         }
     }
-
 
     public void removalTask() {
         try {
@@ -121,8 +107,10 @@ public class MapleClient extends BaseMapleClient {
             if (player.getMarriageId() > 0) {
                 final MapleQuestStatus stat1 = player.getQuestNAdd(MapleQuest.getInstance(160001));
                 final MapleQuestStatus stat2 = player.getQuestNAdd(MapleQuest.getInstance(160002));
-                if (stat1.getCustomData() != null && (stat1.getCustomData().equals("2_") || stat1.getCustomData().equals("2"))) {
-                    //dc in process of marriage
+                if (stat1.getCustomData() != null
+                        && (stat1.getCustomData().equals("2_")
+                                || stat1.getCustomData().equals("2"))) {
+                    // dc in process of marriage
                     if (stat2.getCustomData() != null) {
                         stat2.setCustomData("0");
                     }
@@ -138,10 +126,10 @@ public class MapleClient extends BaseMapleClient {
             }
             if (player.getMap() != null) {
                 switch (player.getMapId()) {
-                    case 541010100: //latanica
-                    case 541020800: //scar/targa
-                    case 551030200: //krexel
-                    case 220080001: //pap
+                    case 541010100: // latanica
+                    case 541020800: // scar/targa
+                    case 551030200: // krexel
+                    case 220080001: // pap
                         player.getMap().addDisconnected(player.getId());
                         break;
                 }
@@ -169,7 +157,8 @@ public class MapleClient extends BaseMapleClient {
         disconnect(removeFromChannel, fromCS, false);
     }
 
-    public final void disconnect(final boolean removeFromChannel, final boolean fromCS, final boolean shutdown) {
+    public final void disconnect(
+            final boolean removeFromChannel, final boolean fromCS, final boolean shutdown) {
         if (player != null && isLoggedIn()) {
             MapleMap map = player.getMap();
             final MapleParty party = player.getParty();
@@ -184,7 +173,6 @@ public class MapleClient extends BaseMapleClient {
             final MapleMessengerCharacter chrm = new MapleMessengerCharacter(player);
             final MapleGuildCharacter chrg = player.getMGC();
 
-
             removalTask();
             player.saveToDB(true, fromCS);
             if (shutdown) {
@@ -193,12 +181,14 @@ public class MapleClient extends BaseMapleClient {
             }
 
             if (!fromCS) {
-                final ChannelServer ch = WorldServer.getInstance().getChannel(map == null ? channel : map.getChannel());
+                final ChannelServer ch =
+                        WorldServer.getInstance()
+                                .getChannel(map == null ? channel : map.getChannel());
 
                 try {
                     if (ch == null || ch.isShutdown()) {
                         player = null;
-                        return;//no idea
+                        return; // no idea
                     }
                     if (messengerId > 0) {
                         MessengerManager.leaveMessenger(messengerId, chrm);
@@ -210,19 +200,31 @@ public class MapleClient extends BaseMapleClient {
                         if (map != null && party.getLeader().getId() == player.getId()) {
                             MaplePartyCharacter lchr = null;
                             for (final MaplePartyCharacter pchr : party.getMembers()) {
-                                if (pchr.getId() != chrp.getId() && pchr != null && map.getCharacterById(pchr.getId()) != null && (lchr == null || lchr.getLevel() < pchr.getLevel())) {
+                                if (pchr.getId() != chrp.getId()
+                                        && pchr != null
+                                        && map.getCharacterById(pchr.getId()) != null
+                                        && (lchr == null || lchr.getLevel() < pchr.getLevel())) {
                                     lchr = pchr;
                                 }
                             }
                             if (party.getMembers().size() > 0) {
                                 if (lchr != null) {
-                                    PartyManager.updateParty(party.getId(), PartyOperation.CHANGE_LEADER_DC, lchr);
+                                    PartyManager.updateParty(
+                                            party.getId(), PartyOperation.CHANGE_LEADER_DC, lchr);
                                 } else {
                                     for (MaplePartyCharacter partychar : party.getMembers()) {
                                         if (partychar.getChannel() == getChannel()) {
-                                            final MapleCharacter chr = getChannelServer().getPlayerStorage().getCharacterByName(partychar.getName());
+                                            final MapleCharacter chr =
+                                                    getChannelServer()
+                                                            .getPlayerStorage()
+                                                            .getCharacterByName(
+                                                                    partychar.getName());
                                             if (chr != null) {
-                                                chr.dropMessage(5, "There is no party member in the same field with party leader for the hand over.");
+                                                chr.dropMessage(
+                                                        5,
+                                                        "There is no party member in the same field"
+                                                                + " with party leader for the hand"
+                                                                + " over.");
                                             }
                                         }
                                     }
@@ -232,9 +234,11 @@ public class MapleClient extends BaseMapleClient {
                     }
                     if (bl != null) {
                         if (!serverTransition && isLoggedIn()) {
-                            BuddyManager.loggedOff(name, id, channel, bl.getBuddyIds(), gmLevel, hidden);
+                            BuddyManager.loggedOff(
+                                    name, id, channel, bl.getBuddyIds(), gmLevel, hidden);
                         } else { // Change channel
-                            BuddyManager.loggedOn(name, id, channel, bl.getBuddyIds(), gmLevel, hidden);
+                            BuddyManager.loggedOn(
+                                    name, id, channel, bl.getBuddyIds(), gmLevel, hidden);
                         }
                     }
                     if (gid > 0) {
@@ -262,7 +266,8 @@ public class MapleClient extends BaseMapleClient {
                         PartyManager.updateParty(party.getId(), PartyOperation.LOG_ONOFF, chrp);
                     }
                     if (!serverTransition && isLoggedIn()) {
-                        BuddyManager.loggedOff(name, id, channel, bl.getBuddyIds(), gmLevel, hidden);
+                        BuddyManager.loggedOff(
+                                name, id, channel, bl.getBuddyIds(), gmLevel, hidden);
                     } else { // Change channel
                         BuddyManager.loggedOn(name, id, channel, bl.getBuddyIds(), gmLevel, hidden);
                     }
@@ -300,7 +305,6 @@ public class MapleClient extends BaseMapleClient {
         }
     }
 
-
     public final int getChannel() {
         return channel;
     }
@@ -334,17 +338,22 @@ public class MapleClient extends BaseMapleClient {
             return 15;
         }
         if (charSlots != DEFAULT_CHAR_SLOT) {
-            return charSlots; //save a sql
+            return charSlots; // save a sql
         }
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM character_slots WHERE accid = ? AND worldid = ?");
+            PreparedStatement ps =
+                    con.prepareStatement(
+                            "SELECT * FROM character_slots WHERE accid = ? AND worldid = ?");
             ps.setInt(1, this.accountData.getId());
             ps.setInt(2, world);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 charSlots = rs.getInt("charslots");
             } else {
-                PreparedStatement psu = con.prepareStatement("INSERT INTO character_slots (accid, worldid, charslots) VALUES (?, ?, ?)");
+                PreparedStatement psu =
+                        con.prepareStatement(
+                                "INSERT INTO character_slots (accid, worldid, charslots) VALUES (?,"
+                                        + " ?, ?)");
                 psu.setInt(1, this.accountData.getId());
                 psu.setInt(2, world);
                 psu.setInt(3, charSlots);
@@ -367,6 +376,4 @@ public class MapleClient extends BaseMapleClient {
     public void setLastNPCTalk() {
         lastNPCTalk = System.currentTimeMillis();
     }
-
-
 }

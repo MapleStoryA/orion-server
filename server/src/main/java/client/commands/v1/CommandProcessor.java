@@ -1,24 +1,3 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package client.commands.v1;
 
 import client.MapleCharacter;
@@ -26,31 +5,32 @@ import client.MapleClient;
 import constants.ServerConstants.CommandType;
 import constants.ServerConstants.PlayerGMRank;
 import database.DatabaseConnection;
-import server.config.ServerEnvironment;
-
 import java.lang.reflect.Modifier;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import server.config.ServerEnvironment;
 
 @lombok.extern.slf4j.Slf4j
 @SuppressWarnings("non-varargs")
 public class CommandProcessor {
 
-    private final static HashMap<String, CommandObject> commands = new HashMap<String, CommandObject>();
-    private final static HashMap<Integer, ArrayList<String>> commandList = new HashMap<Integer, ArrayList<String>>();
+    private static final HashMap<String, CommandObject> commands =
+            new HashMap<String, CommandObject>();
+    private static final HashMap<Integer, ArrayList<String>> commandList =
+            new HashMap<Integer, ArrayList<String>>();
 
     static {
-
         Class<?>[] CommandFiles = {
-                PlayerCommand.class, DonorCommand.class, GMCommand.class, AdminCommand.class
+            PlayerCommand.class, DonorCommand.class, GMCommand.class, AdminCommand.class
         };
 
         for (Class<?> clasz : CommandFiles) {
             try {
-                PlayerGMRank rankNeeded = (PlayerGMRank) clasz.getMethod("getPlayerLevelRequired").invoke(null, null);
+                PlayerGMRank rankNeeded =
+                        (PlayerGMRank) clasz.getMethod("getPlayerLevelRequired").invoke(null, null);
                 Class<?>[] a = clasz.getDeclaredClasses();
                 ArrayList<String> cL = new ArrayList<String>();
                 for (Class<?> c : a) {
@@ -59,24 +39,35 @@ public class CommandProcessor {
                             Object o = c.newInstance();
                             boolean enabled;
                             try {
-                                enabled = c.getDeclaredField("enabled").getBoolean(c.getDeclaredField("enabled"));
+                                enabled =
+                                        c.getDeclaredField("enabled")
+                                                .getBoolean(c.getDeclaredField("enabled"));
                             } catch (NoSuchFieldException ex) {
-                                enabled = true; //Enable all coded commands by default.
+                                enabled = true; // Enable all coded commands by default.
                             }
                             if (o instanceof CommandExecute && enabled) {
-                                cL.add(rankNeeded.getCommandPrefix() + c.getSimpleName().toLowerCase());
-                                commands.put(rankNeeded.getCommandPrefix() + c.getSimpleName().toLowerCase(), new CommandObject(rankNeeded.getCommandPrefix() + c.getSimpleName().toLowerCase(), (CommandExecute) o, rankNeeded.getLevel()));
+                                cL.add(
+                                        rankNeeded.getCommandPrefix()
+                                                + c.getSimpleName().toLowerCase());
+                                commands.put(
+                                        rankNeeded.getCommandPrefix()
+                                                + c.getSimpleName().toLowerCase(),
+                                        new CommandObject(
+                                                rankNeeded.getCommandPrefix()
+                                                        + c.getSimpleName().toLowerCase(),
+                                                (CommandExecute) o,
+                                                rankNeeded.getLevel()));
                             }
                         }
                     } catch (Exception ex) {
-                        //ex.printStackTrace();
+                        // ex.printStackTrace();
                         log.info("Log_Script_Except.rtf", ex);
                     }
                 }
                 Collections.sort(cL);
                 commandList.put(rankNeeded.getLevel(), cL);
             } catch (Exception ex) {
-                //ex.printStackTrace();
+                // ex.printStackTrace();
                 log.info("Log_Script_Except.rtf", ex);
             }
         }
@@ -94,7 +85,6 @@ public class CommandProcessor {
                 c.getPlayer().dropMessage(-2, "Error : " + msg);
                 break;
         }
-
     }
 
     public static boolean processCommand(MapleClient c, String line, CommandType type) {
@@ -113,7 +103,7 @@ public class CommandProcessor {
                 return true;
             }
             try {
-                co.execute(c, splitted); //Don't really care about the return value. ;D
+                co.execute(c, splitted); // Don't really care about the return value. ;D
 
             } catch (Exception e) {
                 sendDisplayMessage(c, "There was an error.", type);
@@ -124,24 +114,34 @@ public class CommandProcessor {
             return true;
         }
 
-        if (c.getPlayer().getGMLevel() > PlayerGMRank.NORMAL.getLevel() || ServerEnvironment.isDebugEnabled()) {
-            if (line.charAt(0) == PlayerGMRank.DONOR.getCommandPrefix() || line.charAt(0) == PlayerGMRank.GM.getCommandPrefix() || line.charAt(0) == PlayerGMRank.ADMIN.getCommandPrefix()) { //Redundant for now, but in case we change symbols later. This will become extensible.
+        if (c.getPlayer().getGMLevel() > PlayerGMRank.NORMAL.getLevel()
+                || ServerEnvironment.isDebugEnabled()) {
+            if (line.charAt(0) == PlayerGMRank.DONOR.getCommandPrefix()
+                    || line.charAt(0) == PlayerGMRank.GM.getCommandPrefix()
+                    || line.charAt(0)
+                            == PlayerGMRank.ADMIN
+                                    .getCommandPrefix()) { // Redundant for now, but in case we
+                // change symbols later. This will become
+                // extensible.
                 String[] splitted = line.split(" ");
                 splitted[0] = splitted[0].toLowerCase();
 
-                if (line.charAt(0) == '!') { //GM Commands
+                if (line.charAt(0) == '!') { // GM Commands
                     CommandObject co = commands.get(splitted[0]);
                     if (co == null || co.getType() != type) {
                         sendDisplayMessage(c, "That command does not exist.", type);
                         return true;
                     }
-                    if (c.getPlayer().getGMLevel() >= co.getReqGMLevel() || ServerEnvironment.isDebugEnabled()) {
+                    if (c.getPlayer().getGMLevel() >= co.getReqGMLevel()
+                            || ServerEnvironment.isDebugEnabled()) {
                         int ret = co.execute(c, splitted);
-                        if (ret > 0 && c.getPlayer() != null) { //incase d/c after command or something
+                        if (ret > 0
+                                && c.getPlayer() != null) { // incase d/c after command or something
                             logGMCommandToDB(c.getPlayer(), line);
                         }
                     } else {
-                        sendDisplayMessage(c, "You do not have the privileges to use that command.", type);
+                        sendDisplayMessage(
+                                c, "You do not have the privileges to use that command.", type);
                     }
                     return true;
                 }
@@ -160,7 +160,7 @@ public class CommandProcessor {
             ps.executeUpdate();
         } catch (SQLException ex) {
             log.info("Log_Packet_Except.rtf", ex);
-            //ex.printStackTrace();
+            // ex.printStackTrace();
         } finally {
             try {
                 ps.close();

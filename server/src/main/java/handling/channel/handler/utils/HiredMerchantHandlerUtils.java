@@ -1,24 +1,3 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package handling.channel.handler.utils;
 
 import client.MapleCharacter;
@@ -27,28 +6,26 @@ import client.inventory.ItemLoader;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import database.DatabaseConnection;
-import server.MerchItemPackage;
-import tools.Pair;
-
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import server.MerchItemPackage;
+import tools.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class HiredMerchantHandlerUtils {
 
-
     public static final byte checkExistance(final int accid, final int charid) {
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT * from hiredmerch where accountid = ? OR characterid = ?");
+            PreparedStatement ps =
+                    con.prepareStatement(
+                            "SELECT * from hiredmerch where accountid = ? OR characterid = ?");
             ps.setInt(1, accid);
             ps.setInt(2, charid);
             ResultSet rs = ps.executeQuery();
-
 
             if (rs.next()) {
                 ps.close();
@@ -62,7 +39,6 @@ public class HiredMerchantHandlerUtils {
             return -1;
         }
     }
-
 
     public static final boolean check(final MapleCharacter chr, final MerchItemPackage pack) {
         if (chr.getMeso() + pack.getMesos() < 0) {
@@ -83,13 +59,21 @@ public class HiredMerchantHandlerUtils {
                 cash++;
             }
         }
-        return chr.getInventory(MapleInventoryType.EQUIP).getNumFreeSlot() >= eq && chr.getInventory(MapleInventoryType.USE).getNumFreeSlot() >= use && chr.getInventory(MapleInventoryType.SETUP).getNumFreeSlot() >= setup && chr.getInventory(MapleInventoryType.ETC).getNumFreeSlot() >= etc && chr.getInventory(MapleInventoryType.CASH).getNumFreeSlot() >= cash;
+        return chr.getInventory(MapleInventoryType.EQUIP).getNumFreeSlot() >= eq
+                && chr.getInventory(MapleInventoryType.USE).getNumFreeSlot() >= use
+                && chr.getInventory(MapleInventoryType.SETUP).getNumFreeSlot() >= setup
+                && chr.getInventory(MapleInventoryType.ETC).getNumFreeSlot() >= etc
+                && chr.getInventory(MapleInventoryType.CASH).getNumFreeSlot() >= cash;
     }
 
-    public static final boolean deletePackage(final int charid, final int accid, final int packageid) {
+    public static final boolean deletePackage(
+            final int charid, final int accid, final int packageid) {
 
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("DELETE from hiredmerch where characterid = ? OR accountid = ? OR packageid = ?");
+            PreparedStatement ps =
+                    con.prepareStatement(
+                            "DELETE from hiredmerch where characterid = ? OR accountid = ? OR"
+                                    + " packageid = ?");
             ps.setInt(1, charid);
             ps.setInt(2, accid);
             ps.setInt(3, packageid);
@@ -103,9 +87,12 @@ public class HiredMerchantHandlerUtils {
         }
     }
 
-    public static final MerchItemPackage loadItemFrom_Database(final int charid, final int accountid) {
+    public static final MerchItemPackage loadItemFrom_Database(
+            final int charid, final int accountid) {
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT * from hiredmerch where characterid = ? OR accountid = ?");
+            PreparedStatement ps =
+                    con.prepareStatement(
+                            "SELECT * from hiredmerch where characterid = ? OR accountid = ?");
             ps.setInt(1, charid);
             ps.setInt(2, accountid);
 
@@ -125,7 +112,8 @@ public class HiredMerchantHandlerUtils {
             ps.close();
             rs.close();
 
-            Map<Integer, Pair<IItem, MapleInventoryType>> items = ItemLoader.HIRED_MERCHANT.loadItems(false, packageid, accountid, charid);
+            Map<Integer, Pair<IItem, MapleInventoryType>> items =
+                    ItemLoader.HIRED_MERCHANT.loadItems(false, packageid, accountid, charid);
             if (items != null) {
                 List<IItem> iters = new ArrayList<IItem>();
                 for (Pair<IItem, MapleInventoryType> z : items.values()) {
@@ -133,7 +121,6 @@ public class HiredMerchantHandlerUtils {
                 }
                 pack.setItems(iters);
             }
-
 
             return pack;
         } catch (SQLException e) {

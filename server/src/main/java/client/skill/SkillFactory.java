@@ -1,27 +1,11 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package client.skill;
 
 import client.SummonSkillEntry;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import provider.MapleData;
 import provider.MapleDataDirectoryEntry;
 import provider.MapleDataFileEntry;
@@ -30,26 +14,24 @@ import provider.MapleDataTool;
 import server.config.ServerEnvironment;
 import tools.StringUtil;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 @lombok.extern.slf4j.Slf4j
 public class SkillFactory {
 
     private static final Map<Integer, ISkill> skills = new HashMap<Integer, ISkill>();
-    private static final Map<Integer, List<Integer>> skillsByJob = new HashMap<Integer, List<Integer>>();
-    private static final Map<Integer, SummonSkillEntry> SummonSkillInformation = new HashMap<Integer, SummonSkillEntry>();
-    private final static MapleData stringData = ServerEnvironment.getConfig().getDataProvider("wz/String").getData("Skill.img");
+    private static final Map<Integer, List<Integer>> skillsByJob =
+            new HashMap<Integer, List<Integer>>();
+    private static final Map<Integer, SummonSkillEntry> SummonSkillInformation =
+            new HashMap<Integer, SummonSkillEntry>();
+    private static final MapleData stringData =
+            ServerEnvironment.getConfig().getDataProvider("wz/String").getData("Skill.img");
 
     public static final ISkill getSkill(final int id) {
         if (!skills.isEmpty()) {
             return skills.get(Integer.valueOf(id));
         }
         // log.info("Loading SkillFactory :::");
-        final MapleDataProvider datasource = ServerEnvironment.getConfig().getDataProvider("wz/Skill");
+        final MapleDataProvider datasource =
+                ServerEnvironment.getConfig().getDataProvider("wz/Skill");
         final MapleDataDirectoryEntry root = datasource.getRoot();
 
         int skillid;
@@ -78,9 +60,13 @@ public class SkillFactory {
                                 summon_data = data2.getChildByPath("summon/attack1/info");
                                 if (summon_data != null) {
                                     sse = new SummonSkillEntry();
-                                    sse.attackAfter = (short) MapleDataTool.getInt("attackAfter", summon_data, 999999);
+                                    sse.attackAfter =
+                                            (short)
+                                                    MapleDataTool.getInt(
+                                                            "attackAfter", summon_data, 999999);
                                     sse.type = (byte) MapleDataTool.getInt("type", summon_data, 0);
-                                    sse.mobCount = (byte) MapleDataTool.getInt("mobCount", summon_data, 1);
+                                    sse.mobCount =
+                                            (byte) MapleDataTool.getInt("mobCount", summon_data, 1);
                                     SummonSkillInformation.put(skillid, sse);
                                 }
                             }

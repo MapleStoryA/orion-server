@@ -11,7 +11,6 @@ import tools.data.input.SeekableLittleEndianAccessor;
 @lombok.extern.slf4j.Slf4j
 public class CharSelectedViewAllHandler extends AbstractMaplePacketHandler {
 
-
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         int characterId = slea.readInt();
@@ -21,7 +20,9 @@ public class CharSelectedViewAllHandler extends AbstractMaplePacketHandler {
         c.setChannel(channel);
         String mac = slea.readMapleAsciiString();
         log.info("Mac connected: {}", mac);
-        if (c.tooManyLogin() || !CharacterService.checkIfCharacterExist(c.getAccountData().getId(), characterId)) {
+        if (c.tooManyLogin()
+                || !CharacterService.checkIfCharacterExist(
+                        c.getAccountData().getId(), characterId)) {
             c.getSession().close();
             return;
         }
@@ -30,9 +31,14 @@ public class CharSelectedViewAllHandler extends AbstractMaplePacketHandler {
             c.getIdleTask().cancel(true);
         }
         c.updateLoginState(LoginState.LOGIN_SERVER_TRANSITION, c.getSessionIPAddress());
-        c.getSession().write(MaplePacketCreator.getServerIP(
-                Integer.parseInt(WorldServer.getInstance().getChannel(c.getChannel()).getPublicAddress().split(":")[1]), characterId));
-
+        c.getSession()
+                .write(
+                        MaplePacketCreator.getServerIP(
+                                Integer.parseInt(
+                                        WorldServer.getInstance()
+                                                .getChannel(c.getChannel())
+                                                .getPublicAddress()
+                                                .split(":")[1]),
+                                characterId));
     }
-
 }

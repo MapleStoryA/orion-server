@@ -1,24 +1,3 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package server.maps;
 
 import client.MapleCharacter;
@@ -26,10 +5,9 @@ import client.MapleClient;
 import client.anticheat.CheatingOffense;
 import constants.GameConstants;
 import constants.skills.BladeMaster;
+import java.awt.*;
 import server.MapleStatEffect;
 import tools.MaplePacketCreator;
-
-import java.awt.*;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleSummon extends AbstractAnimatedMapleMapObject {
@@ -37,7 +15,7 @@ public class MapleSummon extends AbstractAnimatedMapleMapObject {
     private final int ownerid, skillLevel, ownerLevel, skill;
     private final SummonMovementType movementType;
     private int fh;
-    private MapleMap map; //required for instanceMaps
+    private MapleMap map; // required for instanceMaps
     private short hp;
     private boolean changedMap = false;
     // Since player can have more than 1 summon [Pirate]
@@ -46,7 +24,11 @@ public class MapleSummon extends AbstractAnimatedMapleMapObject {
     private byte Summon_tickResetCount;
     private long Server_ClientSummonTickDiff;
 
-    public MapleSummon(final MapleCharacter owner, final MapleStatEffect skill, final Point pos, final SummonMovementType movementType) {
+    public MapleSummon(
+            final MapleCharacter owner,
+            final MapleStatEffect skill,
+            final Point pos,
+            final SummonMovementType movementType) {
         super();
         this.ownerid = owner.getId();
         this.ownerLevel = owner.getLevel();
@@ -58,7 +40,7 @@ public class MapleSummon extends AbstractAnimatedMapleMapObject {
         try {
             this.fh = owner.getMap().getFootholds().findBelow(pos).getId();
         } catch (NullPointerException e) {
-            this.fh = 0; //lol, it can be fixed by movement
+            this.fh = 0; // lol, it can be fixed by movement
         }
 
         if (!isPuppet()) { // Safe up 12 bytes of data, since puppet doesn't attack.
@@ -69,8 +51,7 @@ public class MapleSummon extends AbstractAnimatedMapleMapObject {
     }
 
     @Override
-    public final void sendSpawnData(final MapleClient client) {
-    }
+    public final void sendSpawnData(final MapleClient client) {}
 
     @Override
     public final void sendDestroyData(final MapleClient client) {
@@ -144,7 +125,7 @@ public class MapleSummon extends AbstractAnimatedMapleMapObject {
     public final boolean isSummon() {
         switch (skill) {
             case 12111004:
-            case 1321007: //beholder
+            case 1321007: // beholder
             case 2311006:
             case 2321003:
             case 2121005:
@@ -162,14 +143,14 @@ public class MapleSummon extends AbstractAnimatedMapleMapObject {
             case 35111001:
             case 35111010:
             case 35111009:
-            case 35111002: //pre-bb = 35111002, 35111004(amp?), 35111005(accel)
-            case 35111005: //TEMP
-            case 35111004: //TEMP
-                //case 35111011: //TEMP
+            case 35111002: // pre-bb = 35111002, 35111004(amp?), 35111005(accel)
+            case 35111005: // TEMP
+            case 35111004: // TEMP
+                // case 35111011: //TEMP
             case 35121009:
-                //case 35121010: //TEMP
+                // case 35121010: //TEMP
             case 35121011:
-                //case 4111007: //TEMP
+                // case 4111007: //TEMP
             case 32111006:
                 return true;
         }
@@ -187,14 +168,14 @@ public class MapleSummon extends AbstractAnimatedMapleMapObject {
         switch (skill) {
             case 1321007:
                 return 2;
-            case 35111001: //satellite.
+            case 35111001: // satellite.
             case 35111009:
             case 35111010:
                 return 3;
-            case 35121009: //bots n. tots
+            case 35121009: // bots n. tots
                 return 4;
-            //case 4111007: //TEMP
-            //	return 6; //TEMP
+                // case 4111007: //TEMP
+                //	return 6; //TEMP
         }
         return 1;
     }

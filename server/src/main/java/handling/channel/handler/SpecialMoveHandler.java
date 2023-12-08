@@ -1,24 +1,23 @@
 package handling.channel.handler;
 
-import client.skill.ISkill;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
-import client.skill.SkillFactory;
 import client.inventory.MapleInventoryType;
+import client.skill.ISkill;
+import client.skill.SkillFactory;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
+import java.awt.*;
+import java.util.Collections;
+import java.util.List;
 import server.MapleStatEffect;
 import server.life.MapleMonster;
 import server.maps.FieldLimitType;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
-
-import java.awt.*;
-import java.util.Collections;
-import java.util.List;
 
 @lombok.extern.slf4j.Slf4j
 public class SpecialMoveHandler extends AbstractMaplePacketHandler {
@@ -39,26 +38,30 @@ public class SpecialMoveHandler extends AbstractMaplePacketHandler {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
         }
-        if (chr.getSkillLevel(skill) <= -1 /*|| chr.getSkillLevel(skill) != skillLevel*/) {//TODO: Fix this
+        if (chr.getSkillLevel(skill)
+                <= -1 /*|| chr.getSkillLevel(skill) != skillLevel*/) { // TODO: Fix this
             if (!GameConstants.isMulungSkill(skill_id) && !GameConstants.isPyramidSkill(skill_id)) {
                 c.getSession().close();
                 return;
             }
             if (GameConstants.isMulungSkill(skill_id)) {
                 if (chr.getMapId() / 10000 != 92502) {
-                    //AutobanManager.getInstance().autoban(c, "Using Mu Lung dojo skill out of dojo maps.");
+                    // AutobanManager.getInstance().autoban(c, "Using Mu Lung dojo skill out of dojo
+                    // maps.");
                     return;
                 } else {
                     chr.mulung_EnergyModify(false);
                 }
             } else if (GameConstants.isPyramidSkill(skill_id)) {
                 if (chr.getMapId() / 10000 != 92602) {
-                    //AutobanManager.getInstance().autoban(c, "Using Pyramid skill out of pyramid maps.");
+                    // AutobanManager.getInstance().autoban(c, "Using Pyramid skill out of pyramid
+                    // maps.");
                     return;
                 }
             }
         }
-        final MapleStatEffect effect = skill.getEffect(chr.getSkillLevel(GameConstants.getLinkedAranSkill(skill_id)));
+        final MapleStatEffect effect =
+                skill.getEffect(chr.getSkillLevel(GameConstants.getLinkedAranSkill(skill_id)));
 
         if (effect.getCooldown() > 0 && !chr.isGameMaster()) {
             if (chr.skillisCooling(skill_id)) {
@@ -66,12 +69,13 @@ public class SpecialMoveHandler extends AbstractMaplePacketHandler {
                 return;
             }
             if (skill_id != 5221006) { // Battleship
-                c.getSession().write(MaplePacketCreator.skillCooldown(skill_id, effect.getCooldown()));
+                c.getSession()
+                        .write(MaplePacketCreator.skillCooldown(skill_id, effect.getCooldown()));
                 chr.addCooldown(skill_id, System.currentTimeMillis(), effect.getCooldown() * 1000L);
             }
         }
         switch (skill_id) {
-            case 2311005: //doom priest
+            case 2311005: // doom priest
                 final byte mobsCount = slea.readByte();
                 if (mobsCount > 10 || mobsCount == 0) {
                     c.enableActions();
@@ -82,14 +86,21 @@ public class SpecialMoveHandler extends AbstractMaplePacketHandler {
                 } else {
                     c.getPlayer().removeItem(4006000, -1);
                 }
-                MonsterStatusEffect eff = new MonsterStatusEffect(MonsterStatus.DOOM, (int) c.getPlayer().getPosition().getX(), skill_id, null, false);
+                MonsterStatusEffect eff =
+                        new MonsterStatusEffect(
+                                MonsterStatus.DOOM,
+                                (int) c.getPlayer().getPosition().getX(),
+                                skill_id,
+                                null,
+                                false);
                 for (int i = 0; i < mobsCount; i++) {
                     List<MapleMonster> mobs = c.getPlayer().getMap().getAllMonster();
                     if (mobs == null || mobs.size() <= 0) {
                         break;
                     }
                     MapleMonster monster = c.getPlayer().getMap().getAllMonster().get(i);
-                    monster.applyStatus(c.getPlayer(), eff, false, 10000 + (1000 * skillLevel), false);
+                    monster.applyStatus(
+                            c.getPlayer(), eff, false, 10000 + (1000 * skillLevel), false);
                     Collections.shuffle(mobs);
                 }
                 c.enableActions();
@@ -104,20 +115,31 @@ public class SpecialMoveHandler extends AbstractMaplePacketHandler {
 
                     final MapleMonster mob = chr.getMap().getMonsterByOid(mobId);
                     if (mob != null) {
-                        chr.getMap().broadcastMessage(chr, MaplePacketCreator.showMagnet(mobId, slea.readByte()), chr.getPosition());
+                        chr.getMap()
+                                .broadcastMessage(
+                                        chr,
+                                        MaplePacketCreator.showMagnet(mobId, slea.readByte()),
+                                        chr.getPosition());
                         mob.switchController(chr, mob.isControllerHasAggro());
                     }
                 }
-                chr.getMap().broadcastMessage(chr, MaplePacketCreator.showBuffeffect(chr.getId(), skill_id, 1, slea.readByte()), chr.getPosition());
+                chr.getMap()
+                        .broadcastMessage(
+                                chr,
+                                MaplePacketCreator.showBuffeffect(
+                                        chr.getId(), skill_id, 1, slea.readByte()),
+                                chr.getPosition());
                 c.getSession().write(MaplePacketCreator.enableActions());
                 break;
             case 4341003:
                 chr.setKeyDownSkill_Time(0);
-                chr.getMap().broadcastMessage(chr, MaplePacketCreator.skillCancel(chr, skill_id), false);
+                chr.getMap()
+                        .broadcastMessage(
+                                chr, MaplePacketCreator.skillCancel(chr, skill_id), false);
                 break;
-            case 22141003://Evan Slow
-                //c.enableActions();
-                //break;
+            case 22141003: // Evan Slow
+                // c.enableActions();
+                // break;
             default:
                 Point pos = null;
                 if (slea.available() == 7) {
@@ -130,9 +152,18 @@ public class SpecialMoveHandler extends AbstractMaplePacketHandler {
                         c.getSession().write(MaplePacketCreator.enableActions());
                     }
                 } else {
-                    final int mountid = MapleStatEffect.parseMountInfo(c.getPlayer(), skill.getId());
-                    if (mountid != 0 && mountid != GameConstants.getMountItem(skill.getId()) && !c.getPlayer().isGameMaster() && c.getPlayer().getBuffedValue(MapleBuffStat.MONSTER_RIDING) == null && c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -118) == null) {
-                        if (!GameConstants.isMountItemAvailable(mountid, c.getPlayer().getJob().getId())) {
+                    final int mountid =
+                            MapleStatEffect.parseMountInfo(c.getPlayer(), skill.getId());
+                    if (mountid != 0
+                            && mountid != GameConstants.getMountItem(skill.getId())
+                            && !c.getPlayer().isGameMaster()
+                            && c.getPlayer().getBuffedValue(MapleBuffStat.MONSTER_RIDING) == null
+                            && c.getPlayer()
+                                            .getInventory(MapleInventoryType.EQUIPPED)
+                                            .getItem((byte) -118)
+                                    == null) {
+                        if (!GameConstants.isMountItemAvailable(
+                                mountid, c.getPlayer().getJob().getId())) {
                             c.getSession().write(MaplePacketCreator.enableActions());
                             return;
                         }
@@ -142,7 +173,5 @@ public class SpecialMoveHandler extends AbstractMaplePacketHandler {
                 }
                 break;
         }
-
     }
-
 }

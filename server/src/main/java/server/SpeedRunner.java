@@ -1,16 +1,15 @@
 package server;
 
 import database.DatabaseConnection;
-import server.maps.SpeedRunType;
-import tools.Pair;
-import tools.StringUtil;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import server.maps.SpeedRunType;
+import tools.Pair;
+import tools.StringUtil;
 
 @lombok.extern.slf4j.Slf4j
 public class SpeedRunner {
@@ -19,7 +18,8 @@ public class SpeedRunner {
     private final Map<SpeedRunType, Pair<String, Map<Integer, String>>> speedRunData;
 
     private SpeedRunner() {
-        speedRunData = new EnumMap<SpeedRunType, Pair<String, Map<Integer, String>>>(SpeedRunType.class);
+        speedRunData =
+                new EnumMap<SpeedRunType, Pair<String, Map<Integer, String>>>(SpeedRunType.class);
     }
 
     public static final SpeedRunner getInstance() {
@@ -30,8 +30,11 @@ public class SpeedRunner {
         return speedRunData.get(type);
     }
 
-    public final void addSpeedRunData(SpeedRunType type, Pair<StringBuilder, Map<Integer, String>> mib) {
-        speedRunData.put(type, new Pair<String, Map<Integer, String>>(mib.getLeft().toString(), mib.getRight()));
+    public final void addSpeedRunData(
+            SpeedRunType type, Pair<StringBuilder, Map<Integer, String>> mib) {
+        speedRunData.put(
+                type,
+                new Pair<String, Map<Integer, String>>(mib.getLeft().toString(), mib.getRight()));
     }
 
     public final void removeSpeedRunData(SpeedRunType type) {
@@ -49,34 +52,59 @@ public class SpeedRunner {
 
     public final void loadSpeedRunData(SpeedRunType type) {
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM speedruns WHERE type = ? ORDER BY time LIMIT 25"); //or should we do less
+            PreparedStatement ps =
+                    con.prepareStatement(
+                            "SELECT * FROM speedruns WHERE type = ? ORDER BY time LIMIT 25"); // or
+            // should we do less
             ps.setString(1, type.name());
-            StringBuilder ret = new StringBuilder("#rThese are the speedrun times for " + StringUtil.makeEnumHumanReadable(type.name()) + ".#k\r\n\r\n");
+            StringBuilder ret =
+                    new StringBuilder(
+                            "#rThese are the speedrun times for "
+                                    + StringUtil.makeEnumHumanReadable(type.name())
+                                    + ".#k\r\n\r\n");
             Map<Integer, String> rett = new LinkedHashMap<Integer, String>();
             ResultSet rs = ps.executeQuery();
             int rank = 1;
             boolean cont = rs.first();
             boolean changed = cont;
             while (cont) {
-                addSpeedRunData(ret, rett, rs.getString("members"), rs.getString("leader"), rank, rs.getString("timestring"));
+                addSpeedRunData(
+                        ret,
+                        rett,
+                        rs.getString("members"),
+                        rs.getString("leader"),
+                        rank,
+                        rs.getString("timestring"));
                 rank++;
                 cont = rs.next();
             }
             rs.close();
             ps.close();
             if (changed) {
-                speedRunData.put(type, new Pair<String, Map<Integer, String>>(ret.toString(), rett));
+                speedRunData.put(
+                        type, new Pair<String, Map<Integer, String>>(ret.toString(), rett));
             }
         } catch (SQLException e) {
             log.info("Failed to load speed runs.." + e);
         }
     }
 
-    public final Pair<StringBuilder, Map<Integer, String>> addSpeedRunData(StringBuilder ret, Map<Integer, String> rett, String members, String leader, int rank, String timestring) {
+    public final Pair<StringBuilder, Map<Integer, String>> addSpeedRunData(
+            StringBuilder ret,
+            Map<Integer, String> rett,
+            String members,
+            String leader,
+            int rank,
+            String timestring) {
         StringBuilder rettt = new StringBuilder();
 
         String[] membrz = members.split(",");
-        rettt.append("#bThese are the squad members of " + leader + "'s squad at rank " + rank + ".#k\r\n\r\n");
+        rettt.append(
+                "#bThese are the squad members of "
+                        + leader
+                        + "'s squad at rank "
+                        + rank
+                        + ".#k\r\n\r\n");
         for (int i = 0; i < membrz.length; i++) {
             rettt.append("#r#e");
             rettt.append(i + 1);

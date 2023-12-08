@@ -1,38 +1,5 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package provider.WzXML;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-import provider.MapleData;
-import provider.MapleDataEntity;
-import tools.DateHelper;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,14 +8,23 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+import provider.MapleData;
+import provider.MapleDataEntity;
 
 @lombok.extern.slf4j.Slf4j
 public class XMLDomMapleData implements MapleData, Serializable {
 
-    /**
-     *
-     */
+    /** */
     private static final long serialVersionUID = 1L;
+
     private final Node node;
     private File imageDataDir;
 
@@ -87,13 +63,19 @@ public class XMLDomMapleData implements MapleData, Serializable {
             for (int i = 0; i < childNodes.getLength(); i++) {
                 try {
                     final Node childNode = childNodes.item(i);
-                    if (childNode != null && childNode.getNodeType() == Node.ELEMENT_NODE && childNode.getAttributes().getNamedItem("name").getNodeValue().equals(segments[x])) {
+                    if (childNode != null
+                            && childNode.getNodeType() == Node.ELEMENT_NODE
+                            && childNode
+                                    .getAttributes()
+                                    .getNamedItem("name")
+                                    .getNodeValue()
+                                    .equals(segments[x])) {
                         myNode = childNode;
                         foundChild = true;
                         break;
                     }
                 } catch (NullPointerException e) {
-                    //ugh.
+                    // ugh.
                     log.info("Log_Packet_Except.rtf", e);
                 }
             }
@@ -126,32 +108,46 @@ public class XMLDomMapleData implements MapleData, Serializable {
         final NamedNodeMap attributes = node.getAttributes();
         final MapleDataType type = getType();
         switch (type) {
-            case DOUBLE: {
-                String value = attributes.getNamedItem("value").getNodeValue();
-                value = value.replace(",", ".");
-                return Double.valueOf(Double.parseDouble(value));
-            }
-            case FLOAT: {
-                String value = attributes.getNamedItem("value").getNodeValue();
-                value = value.replace(",", ".");
-                return Float.valueOf(Float.parseFloat(value));
-            }
-            case INT: {
-                return Integer.valueOf(Integer.parseInt(attributes.getNamedItem("value").getNodeValue()));
-            }
-            case SHORT: {
-                return Short.valueOf(Short.parseShort(attributes.getNamedItem("value").getNodeValue()));
-            }
+            case DOUBLE:
+                {
+                    String value = attributes.getNamedItem("value").getNodeValue();
+                    value = value.replace(",", ".");
+                    return Double.valueOf(Double.parseDouble(value));
+                }
+            case FLOAT:
+                {
+                    String value = attributes.getNamedItem("value").getNodeValue();
+                    value = value.replace(",", ".");
+                    return Float.valueOf(Float.parseFloat(value));
+                }
+            case INT:
+                {
+                    return Integer.valueOf(
+                            Integer.parseInt(attributes.getNamedItem("value").getNodeValue()));
+                }
+            case SHORT:
+                {
+                    return Short.valueOf(
+                            Short.parseShort(attributes.getNamedItem("value").getNodeValue()));
+                }
             case STRING:
-            case UOL: {
-                return attributes.getNamedItem("value").getNodeValue();
-            }
-            case VECTOR: {
-                return new Point(Integer.parseInt(attributes.getNamedItem("x").getNodeValue()), Integer.parseInt(attributes.getNamedItem("y").getNodeValue()));
-            }
-            case CANVAS: {
-                return new FileStoredPngMapleCanvas(Integer.parseInt(attributes.getNamedItem("width").getNodeValue()), Integer.parseInt(attributes.getNamedItem("height").getNodeValue()), new File(imageDataDir, getName() + ".png"));
-            }
+            case UOL:
+                {
+                    return attributes.getNamedItem("value").getNodeValue();
+                }
+            case VECTOR:
+                {
+                    return new Point(
+                            Integer.parseInt(attributes.getNamedItem("x").getNodeValue()),
+                            Integer.parseInt(attributes.getNamedItem("y").getNodeValue()));
+                }
+            case CANVAS:
+                {
+                    return new FileStoredPngMapleCanvas(
+                            Integer.parseInt(attributes.getNamedItem("width").getNodeValue()),
+                            Integer.parseInt(attributes.getNamedItem("height").getNodeValue()),
+                            new File(imageDataDir, getName() + ".png"));
+                }
             default:
                 break;
         }

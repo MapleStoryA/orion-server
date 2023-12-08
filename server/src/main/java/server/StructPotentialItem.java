@@ -53,8 +53,8 @@ public class StructPotentialItem {
     private short potentialID;
     private short skillID;
     private int optionType;
-    private int reqLevel; //probably the slot
-    private String face; //angry, cheers, love, blaze, glitter
+    private int reqLevel; // probably the slot
+    private String face; // angry, cheers, love, blaze, glitter
 
     @Override
     public final String toString() {
@@ -132,17 +132,17 @@ public class StructPotentialItem {
             ret.append(getRecoveryMP());
             ret.append(" ");
         }
-        if (getHP() > 0) { //no idea
+        if (getHP() > 0) { // no idea
             ret.append("Recovers HP: ");
             ret.append(getHP());
             ret.append(" ");
         }
-        if (getMP() > 0) { //no idea
+        if (getMP() > 0) { // no idea
             ret.append("Recovers MP: ");
             ret.append(getMP());
             ret.append(" ");
         }
-        if (getMpRestore() > 0) { //no idea
+        if (getMpRestore() > 0) { // no idea
             ret.append("Recovers MP: ");
             ret.append(getMpRestore());
             ret.append(" ");

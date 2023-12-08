@@ -23,7 +23,6 @@ import client.skill.ISkill;
 import client.skill.SkillEntry;
 import client.skill.SkillFactory;
 import database.DatabaseConnection;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,44 +33,42 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * @author AuroX
- */
+/** @author AuroX */
 @lombok.extern.slf4j.Slf4j
 public class JobConstants {
 
-    public final static int[] evanSkills = {
-            22001001, 20, // Magic Missile
-            22000000, 20, // Dragon Soul
-            22101000, 20, // Fire Circle
-            22101001, 20, // Teleport
-            22111000, 20, // Lightning bolt
-            22111001, 20, // Magic guard
-            22121000, 20, // Ice Breath
-            22121001, 20, // Elemental Reset
-            22131000, 20, // Magic Flare
-            22131001, 20, // Magic Shield
-            22140000, 15, // Critical Magic
-            22141001, 20, // Dragon Thrust
-            22141002, 15, // Magic Booster
-            22141003, 15, // Slow
-            22150000, 15, // Magic Amplifier
-            22151001, 20, // Fire Breath
-            22151002, 20, // Killer Wings
-            22151003, 10, // Magic Resistance
-            22160000, 10, // Dragon Fury
-            22161001, 20, // Earthquake
-            22161002, 20, // Phantom Imprint
-            22161003, 15, // Recovery Aura
-            22171000, 30, // Maple Warrior
-            22170001, 30, // Magic Mastery
-            22171002, 30, // Illusion
-            22171003, 30, // Flame Wheel
-            22171004, 5, // Hero's Will
-            22181000, 30, // Blessing of onyx
-            22181001, 30, // Blaze
-            22181002, 30, // Dark Fog
-            22181003, 30 // Soul Stone
+    public static final int[] evanSkills = {
+        22001001, 20, // Magic Missile
+        22000000, 20, // Dragon Soul
+        22101000, 20, // Fire Circle
+        22101001, 20, // Teleport
+        22111000, 20, // Lightning bolt
+        22111001, 20, // Magic guard
+        22121000, 20, // Ice Breath
+        22121001, 20, // Elemental Reset
+        22131000, 20, // Magic Flare
+        22131001, 20, // Magic Shield
+        22140000, 15, // Critical Magic
+        22141001, 20, // Dragon Thrust
+        22141002, 15, // Magic Booster
+        22141003, 15, // Slow
+        22150000, 15, // Magic Amplifier
+        22151001, 20, // Fire Breath
+        22151002, 20, // Killer Wings
+        22151003, 10, // Magic Resistance
+        22160000, 10, // Dragon Fury
+        22161001, 20, // Earthquake
+        22161002, 20, // Phantom Imprint
+        22161003, 15, // Recovery Aura
+        22171000, 30, // Maple Warrior
+        22170001, 30, // Magic Mastery
+        22171002, 30, // Illusion
+        22171003, 30, // Flame Wheel
+        22171004, 5, // Hero's Will
+        22181000, 30, // Blessing of onyx
+        22181001, 30, // Blaze
+        22181002, 30, // Dark Fog
+        22181003, 30 // Soul Stone
     };
     private static final Map<ISkill, SkillEntry> evanSkillMap = new LinkedHashMap<>();
     private static final Map<ISkill, SkillEntry> gmSkillMap = new LinkedHashMap<>();
@@ -82,17 +79,32 @@ public class JobConstants {
     public static void loadAllSkills() {
         ISkill skil;
         try (var con = DatabaseConnection.getConnection()) {
-            try (PreparedStatement ps = con.prepareStatement("SELECT skillid, skilllevel, masterlevel FROM wz_fixedskills"); ResultSet rs = ps.executeQuery()) {
+            try (PreparedStatement ps =
+                            con.prepareStatement(
+                                    "SELECT skillid, skilllevel, masterlevel FROM wz_fixedskills");
+                    ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     skil = SkillFactory.getSkill(rs.getInt("skillid"));
                     if (skil != null && GameConstants.isApplicableSkill(rs.getInt("skillid"))) {
-                        if ((rs.getInt("skillid") / 10000 == 900) || (rs.getInt("skillid") / 10000 == 910)) {
-                            gmSkillMap.put(skil, new SkillEntry(rs.getByte("skilllevel"), rs.getByte("masterlevel"), -1));
+                        if ((rs.getInt("skillid") / 10000 == 900)
+                                || (rs.getInt("skillid") / 10000 == 910)) {
+                            gmSkillMap.put(
+                                    skil,
+                                    new SkillEntry(
+                                            rs.getByte("skilllevel"),
+                                            rs.getByte("masterlevel"),
+                                            -1));
                         } else {
-                            if (rs.getInt("skillid") == 4341003) { // This don't even work (Monster bomb)
+                            if (rs.getInt("skillid")
+                                    == 4341003) { // This don't even work (Monster bomb)
                                 // continue;
                             }
-                            normalSkillMap.put(skil, new SkillEntry(rs.getByte("skilllevel"), rs.getByte("masterlevel"), -1));
+                            normalSkillMap.put(
+                                    skil,
+                                    new SkillEntry(
+                                            rs.getByte("skilllevel"),
+                                            rs.getByte("masterlevel"),
+                                            -1));
                         }
                         fixedSkill.add(rs.getInt("skillid"));
                     }
@@ -114,13 +126,17 @@ public class JobConstants {
                 skil = SkillFactory.getSkill(lastId);
                 if (skil != null && GameConstants.isApplicableSkill(lastId)) {
                     evanSkillId.add(lastId);
-                    evanSkillMap.put(skil, new SkillEntry((byte) evanSkills[i], (byte) evanSkills[i], -1));
+                    evanSkillMap.put(
+                            skil, new SkillEntry((byte) evanSkills[i], (byte) evanSkills[i], -1));
                     fixedSkill.add(lastId);
                 }
                 lastId = 0;
             }
         }
-        log.info("Successfully loaded " + (evanSkillMap.size() + normalSkillMap.size() + gmSkillMap.size()) + " skills.");
+        log.info(
+                "Successfully loaded "
+                        + (evanSkillMap.size() + normalSkillMap.size() + gmSkillMap.size())
+                        + " skills.");
     }
 
     public static boolean isFixedSkill(final int skillId) {
@@ -138,18 +154,18 @@ public class JobConstants {
 
     public static Map<ISkill, SkillEntry> getSkillsFromJob(MapleJob job) {
 
-        List<ISkill> list = normalSkillMap.keySet()
-                .stream()
-                .filter(o -> GameConstants.skillBelongToJob(o.getId(), job))
-                .collect(Collectors.toList());
+        List<ISkill> list =
+                normalSkillMap.keySet().stream()
+                        .filter(o -> GameConstants.skillBelongToJob(o.getId(), job))
+                        .collect(Collectors.toList());
 
         Map<ISkill, SkillEntry> newEntries = new HashMap<>();
 
         list.stream()
-                .forEach(o -> {
-                    newEntries.put(o, normalSkillMap.get(o));
-                });
-
+                .forEach(
+                        o -> {
+                            newEntries.put(o, normalSkillMap.get(o));
+                        });
 
         return newEntries;
     }
@@ -166,6 +182,4 @@ public class JobConstants {
         Map<ISkill, SkillEntry> map = new HashMap<>();
         return map;
     }
-
-
 }

@@ -1,31 +1,6 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package client.inventory;
 
 import database.DatabaseConnection;
-import server.MapleItemInformationProvider;
-import server.movement.Elem;
-import server.movement.MovePath;
-
 import java.awt.*;
 import java.io.Serializable;
 import java.sql.PreparedStatement;
@@ -33,6 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import server.MapleItemInformationProvider;
+import server.movement.Elem;
+import server.movement.MovePath;
 
 @lombok.extern.slf4j.Slf4j
 public class MaplePet implements Serializable {
@@ -64,7 +42,8 @@ public class MaplePet implements Serializable {
         try (var con = DatabaseConnection.getConnection()) {
             final MaplePet ret = new MaplePet(itemid, petid, inventorypos);
 
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM pets WHERE petid = ?"); // Get pet details..
+            PreparedStatement ps =
+                    con.prepareStatement("SELECT * FROM pets WHERE petid = ?"); // Get pet details..
             ps.setInt(1, petid);
 
             final ResultSet rs = ps.executeQuery();
@@ -92,15 +71,32 @@ public class MaplePet implements Serializable {
     }
 
     public static MaplePet createPet(final int itemid, final int uniqueid) {
-        return createPet(itemid, MapleItemInformationProvider.getInstance().getName(itemid), 1, 0, 100, uniqueid, itemid == 5000054 ? 18000 : 0);
+        return createPet(
+                itemid,
+                MapleItemInformationProvider.getInstance().getName(itemid),
+                1,
+                0,
+                100,
+                uniqueid,
+                itemid == 5000054 ? 18000 : 0);
     }
 
-    public static MaplePet createPet(int itemid, String name, int level, int closeness, int fullness, int uniqueid, int secondsLeft) {
-        if (uniqueid <= -1) { //wah
+    public static MaplePet createPet(
+            int itemid,
+            String name,
+            int level,
+            int closeness,
+            int fullness,
+            int uniqueid,
+            int secondsLeft) {
+        if (uniqueid <= -1) { // wah
             uniqueid = MapleInventoryIdentifier.getInstance();
         }
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement pse = con.prepareStatement("INSERT INTO pets (petid, name, level, closeness, fullness, seconds, summoned) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement pse =
+                    con.prepareStatement(
+                            "INSERT INTO pets (petid, name, level, closeness, fullness, seconds,"
+                                    + " summoned) VALUES (?, ?, ?, ?, ?, ?, ?)");
             pse.setInt(1, uniqueid);
             pse.setString(2, name);
             pse.setByte(3, (byte) level);
@@ -126,7 +122,10 @@ public class MaplePet implements Serializable {
 
     public final void saveToDb() {
         try (var con = DatabaseConnection.getConnection()) {
-            final PreparedStatement ps = con.prepareStatement("UPDATE pets SET name = ?, level = ?, closeness = ?, fullness = ?, seconds = ?, summoned = ? WHERE petid = ?");
+            final PreparedStatement ps =
+                    con.prepareStatement(
+                            "UPDATE pets SET name = ?, level = ?, closeness = ?, fullness = ?,"
+                                    + " seconds = ?, summoned = ? WHERE petid = ?");
             ps.setString(1, name); // Set name
             ps.setByte(2, level); // Set Level
             ps.setShort(3, closeness); // Set Closeness

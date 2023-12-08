@@ -25,15 +25,12 @@ import handling.world.expedition.MapleExpedition;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import handling.world.party.PartyManager;
-import tools.data.output.MaplePacketLittleEndianWriter;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import tools.data.output.MaplePacketLittleEndianWriter;
 
-/**
- * Store packets for Buddy, Party, Expedition, Guild and Alliance
- */
+/** Store packets for Buddy, Party, Expedition, Guild and Alliance */
 @lombok.extern.slf4j.Slf4j
 public class MapleUserPackets {
 
@@ -52,7 +49,8 @@ public class MapleUserPackets {
         return partyPacket(0x04, params);
     }
 
-    public static byte[] partyPortal(final int townId, final int targetId, final int skillId, final Point position) {
+    public static byte[] partyPortal(
+            final int townId, final int targetId, final int skillId, final Point position) {
         final Object[] params = new Object[4];
         params[0] = townId;
         params[1] = targetId;
@@ -61,7 +59,11 @@ public class MapleUserPackets {
         return partyPacket(0x23, params);
     }
 
-    public static byte[] updateParty(final int forChannel, final MapleParty party, final PartyOperation op, final MaplePartyCharacter target) {
+    public static byte[] updateParty(
+            final int forChannel,
+            final MapleParty party,
+            final PartyOperation op,
+            final MaplePartyCharacter target) {
         Object[] params = null;
         switch (op) {
             case DISBAND:
@@ -69,8 +71,16 @@ public class MapleUserPackets {
             case EXPEL:
             case LEAVE:
             case MOVE_MEMBER:
-                params = new Object[(op != PartyOperation.DISBAND && op != PartyOperation.DISBAND_IN_EXPEDITION) ? 6 : 3];
-                params[0] = (op == PartyOperation.DISBAND || op == PartyOperation.DISBAND_IN_EXPEDITION) ? 0 : ((op == PartyOperation.EXPEL) ? 1 : 2); // Operation
+                params =
+                        new Object
+                                [(op != PartyOperation.DISBAND
+                                                && op != PartyOperation.DISBAND_IN_EXPEDITION)
+                                        ? 6
+                                        : 3];
+                params[0] =
+                        (op == PartyOperation.DISBAND || op == PartyOperation.DISBAND_IN_EXPEDITION)
+                                ? 0
+                                : ((op == PartyOperation.EXPEL) ? 1 : 2); // Operation
                 params[1] = party.getId();
                 params[2] = target.getId();
                 if (op != PartyOperation.DISBAND && op != PartyOperation.DISBAND_IN_EXPEDITION) {
@@ -101,22 +111,21 @@ public class MapleUserPackets {
                 params[1] = op == PartyOperation.CHANGE_LEADER_DC ? 1 : 0;
                 return partyPacket(0x1F, params);
         }
-        return partyPacket(0x01, params); // Your request for a party didn't work due to an unexpected error.
+        return partyPacket(
+                0x01, params); // Your request for a party didn't work due to an unexpected error.
     }
 
     /**
-     * 0x0A : A beginner can't create a party.
-     * 0x0D : You have yet to join a party.
-     * 0x10 : You have joined the party.
-     * 0x11 : Already have joined a party.
-     * 0x12 : The party you're trying to join is already in full capacity.
-     * 0x16 : You have invited <name> to your party. (Popup)
-     * 0x17 : <Name>
-     * 0x1D : Cannot kick another user in this map | Expel function is not available in this map.
-     * 0x20 : This can only be given to a party member within the vicinity. | The Party Leader can only be handed over to the party member in the same map.
-     * 0x21 : Unable to hand over the leadership post; No party member is currently within the vicinity of the party leader | There is no party member in the same field with party leader for the hand over.
-     * 0x22 : You may only change with the party member that's on the same channel. | You can only hand over to the party member within the same map.
-     * 0x24 : As a GM, you're forbidden from creating a party.
+     * 0x0A : A beginner can't create a party. 0x0D : You have yet to join a party. 0x10 : You have
+     * joined the party. 0x11 : Already have joined a party. 0x12 : The party you're trying to join
+     * is already in full capacity. 0x16 : You have invited <name> to your party. (Popup) 0x17 :
+     * <Name> 0x1D : Cannot kick another user in this map | Expel function is not available in this
+     * map. 0x20 : This can only be given to a party member within the vicinity. | The Party Leader
+     * can only be handed over to the party member in the same map. 0x21 : Unable to hand over the
+     * leadership post; No party member is currently within the vicinity of the party leader | There
+     * is no party member in the same field with party leader for the hand over. 0x22 : You may only
+     * change with the party member that's on the same channel. | You can only hand over to the
+     * party member within the same map. 0x24 : As a GM, you're forbidden from creating a party.
      * 0x25 : Unable to find the character.
      */
     public static byte[] partyStatusMessage(final byte message) {
@@ -145,26 +154,27 @@ public class MapleUserPackets {
         mplew.write(type);
         switch (type) {
             case 0x04: // Invite
-                mplew.writeInt((Integer) data[0]); //partyid
-                mplew.writeMapleAsciiString((String) data[1]); //name
-                mplew.writeInt((Short) data[2]); //level
-                mplew.writeInt((Short) data[3]); //jobid
+                mplew.writeInt((Integer) data[0]); // partyid
+                mplew.writeMapleAsciiString((String) data[1]); // name
+                mplew.writeInt((Short) data[2]); // level
+                mplew.writeInt((Short) data[3]); // jobid
                 mplew.write(0);
                 break;
             case 0x07: // Silent Update / Log off
                 mplew.writeInt((Integer) data[1]);
-                addPartyStatus((Integer) data[2], (MapleParty) data[3], mplew, ((Integer) data[0]) == 0);
+                addPartyStatus(
+                        (Integer) data[2], (MapleParty) data[3], mplew, ((Integer) data[0]) == 0);
                 break;
             case 0x08: // Create
-                mplew.writeInt((Integer) data[0]); //partyid
+                mplew.writeInt((Integer) data[0]); // partyid
                 mplew.writeInt(999999999);
                 mplew.writeInt(999999999);
                 mplew.writeLong(0);
                 break;
             case 0x0C: // Disband, Expel and Leave
                 int operation = (Integer) data[0]; // 0 = disband, 1 = expel, 2 = leave
-                mplew.writeInt((Integer) data[1]); //party id
-                mplew.writeInt((Integer) data[2]); //target id
+                mplew.writeInt((Integer) data[1]); // party id
+                mplew.writeInt((Integer) data[2]); // target id
                 mplew.write(operation != 0 ? 1 : 0); // !disband
                 if (operation == 0) { // Disband
                     mplew.writeInt((Integer) data[2]); // target id
@@ -175,7 +185,7 @@ public class MapleUserPackets {
                 }
                 break;
             case 0x0F: // Join
-                mplew.writeInt((Integer) data[0]); //party id
+                mplew.writeInt((Integer) data[0]); // party id
                 mplew.writeMapleAsciiString((String) data[1]); // target name
                 addPartyStatus((Integer) data[2], (MapleParty) data[3], mplew, false);
                 break;
@@ -188,20 +198,29 @@ public class MapleUserPackets {
                 break;
             case 0x23: // Portal
                 mplew.write(0);
-                mplew.writeInt((Integer) data[0]); //townId
-                mplew.writeInt((Integer) data[1]); //targetId
-                mplew.writeInt((Integer) data[2]); //skillId
-                mplew.writePos((Point) data[3]); //position
+                mplew.writeInt((Integer) data[0]); // townId
+                mplew.writeInt((Integer) data[1]); // targetId
+                mplew.writeInt((Integer) data[2]); // skillId
+                mplew.writePos((Point) data[3]); // position
                 break;
         }
         return mplew.getPacket();
     }
 
-    private static void addPartyStatus(final int forchannel, final MapleParty party, final MaplePacketLittleEndianWriter mplew, final boolean leaving) {
+    private static void addPartyStatus(
+            final int forchannel,
+            final MapleParty party,
+            final MaplePacketLittleEndianWriter mplew,
+            final boolean leaving) {
         addPartyStatus(forchannel, party, mplew, leaving, false);
     }
 
-    private static void addPartyStatus(final int forchannel, final MapleParty party, final MaplePacketLittleEndianWriter mplew, final boolean leaving, final boolean exped) {
+    private static void addPartyStatus(
+            final int forchannel,
+            final MapleParty party,
+            final MaplePacketLittleEndianWriter mplew,
+            final boolean leaving,
+            final boolean exped) {
         final List<MaplePartyCharacter> partymembers;
         if (party == null) {
             partymembers = new ArrayList<>();
@@ -248,10 +267,17 @@ public class MapleUserPackets {
         }
     }
 
-    public static byte[] showExpedition(final MapleExpedition me, final boolean created, final boolean silent) {
+    public static byte[] showExpedition(
+            final MapleExpedition me, final boolean created, final boolean silent) {
         final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
         mplew.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
-        mplew.write(silent ? 53 : (created ? 55 : 57)); // 53, 55(A new expedition has been created), 57("You have joined the expedition)
+        mplew.write(
+                silent
+                        ? 53
+                        : (created
+                                ? 55
+                                : 57)); // 53, 55(A new expedition has been created), 57("You have
+        // joined the expedition)
         mplew.writeInt(me.getType().exped);
         mplew.writeInt(0);
         for (int i = 0; i < 5; i++) {
@@ -273,7 +299,9 @@ public class MapleUserPackets {
     public static byte[] removeExpedition(final int action) {
         final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(3);
         mplew.writeShort(SendPacketOpcode.EXPEDITION_OPERATION.getValue());
-        mplew.write(action); // 54(remove only) , 61 (you have left the expedition), 63(You have been kicked out of the expedition), 64(The Expedition has been disbanded)
+        mplew.write(
+                action); // 54(remove only) , 61 (you have left the expedition), 63(You have been
+        // kicked out of the expedition), 64(The Expedition has been disbanded)
         return mplew.getPacket();
     }
 
@@ -342,8 +370,9 @@ public class MapleUserPackets {
     }
 
     public static byte[] updatePartyHpForCharacter(final MapleCharacter partyMate) {
-        return MapleUserPackets.updatePartyMemberHP(partyMate.getId(), partyMate.getStat().getHp(), partyMate.getStat().getCurrentMaxHp());
+        return MapleUserPackets.updatePartyMemberHP(
+                partyMate.getId(),
+                partyMate.getStat().getHp(),
+                partyMate.getStat().getCurrentMaxHp());
     }
-
-
 }

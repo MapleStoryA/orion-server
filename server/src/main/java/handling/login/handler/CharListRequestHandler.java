@@ -9,13 +9,12 @@ import database.CharacterListResult;
 import database.LoginService;
 import handling.AbstractMaplePacketHandler;
 import handling.SendPacketOpcode;
-import lombok.extern.slf4j.Slf4j;
-import tools.data.input.SeekableLittleEndianAccessor;
-import tools.data.output.MaplePacketLittleEndianWriter;
-
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
+import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.output.MaplePacketLittleEndianWriter;
 
 @Slf4j
 public class CharListRequestHandler extends AbstractMaplePacketHandler {
@@ -36,7 +35,6 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
         } else {
             c.getSession().close();
         }
-
     }
 
     private static byte[] getCharList(final List<CharacterData> chars, int charslots) {
@@ -56,7 +54,8 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
         return mplew.getPacket();
     }
 
-    private static void addCharEntry(final MaplePacketLittleEndianWriter mplew, final CharacterData chr, boolean ranking) {
+    private static void addCharEntry(
+            final MaplePacketLittleEndianWriter mplew, final CharacterData chr, boolean ranking) {
         addCharStats(mplew, chr);
         addCharLook(mplew, chr, true);
         mplew.write(0);
@@ -69,7 +68,8 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
         }
     }
 
-    private static void addCharStats(final MaplePacketLittleEndianWriter mplew, final CharacterData chr) {
+    private static void addCharStats(
+            final MaplePacketLittleEndianWriter mplew, final CharacterData chr) {
         mplew.writeInt(chr.getId()); // character id
         mplew.writeAsciiString(chr.getName(), 13);
         mplew.write(chr.getGender()); // gender (0 = male, 1 = female)
@@ -94,10 +94,13 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
         mplew.writeInt(chr.getMap()); // current map id
         mplew.write(chr.getSpawnPoint()); // spawnpoint
         mplew.writeInt(0);
-        mplew.writeShort(chr.getSubCategory()); //1 here = db
+        mplew.writeShort(chr.getSubCategory()); // 1 here = db
     }
 
-    private static void addCharLook(final MaplePacketLittleEndianWriter mplew, final CharacterData chr, final boolean mega) {
+    private static void addCharLook(
+            final MaplePacketLittleEndianWriter mplew,
+            final CharacterData chr,
+            final boolean mega) {
         mplew.write(chr.getGender());
         mplew.write(chr.getSkinColor());
         mplew.writeInt(chr.getFace());
@@ -109,7 +112,7 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
         MapleInventory equip = chr.getInventory(MapleInventoryType.EQUIPPED);
 
         for (final IItem item : equip.list()) {
-            if (item.isNotVisible()) { //not visible
+            if (item.isNotVisible()) { // not visible
                 continue;
             }
             byte pos = (byte) (item.getPosition() * -1);
@@ -138,10 +141,8 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
         for (final Map.Entry<Byte, Integer> entry : maskedEquip.entrySet()) {
             mplew.write(entry.getKey());
             mplew.writeInt(entry.getValue());
-
         }
         mplew.write(0xFF); // ending markers
-
 
         final IItem cWeapon = equip.getItem((byte) -111);
         mplew.writeInt(cWeapon != null ? cWeapon.getItemId() : 0);
@@ -149,5 +150,4 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
             mplew.writeInt(0);
         }
     }
-
 }

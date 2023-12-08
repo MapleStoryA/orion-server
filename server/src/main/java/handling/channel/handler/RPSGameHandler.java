@@ -31,7 +31,8 @@ public class RPSGameHandler extends AbstractMaplePacketHandler {
                 }
                 break;
             case 1: // answer
-                if (c.getPlayer().getRPS() == null || !c.getPlayer().getRPS().answer(c, slea.readByte())) {
+                if (c.getPlayer().getRPS() == null
+                        || !c.getPlayer().getRPS().answer(c, slea.readByte())) {
                     c.getSession().write(MaplePacketCreator.getRPSMode((byte) 0x0D, -1, -1, -1));
                 }
                 break;
@@ -53,7 +54,5 @@ public class RPSGameHandler extends AbstractMaplePacketHandler {
                 }
                 break;
         }
-
     }
-
 }

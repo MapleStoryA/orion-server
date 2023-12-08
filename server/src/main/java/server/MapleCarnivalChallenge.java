@@ -2,9 +2,8 @@ package server;
 
 import client.MapleCharacter;
 import handling.world.party.MaplePartyCharacter;
-import lombok.extern.slf4j.Slf4j;
-
 import java.lang.ref.WeakReference;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class MapleCarnivalChallenge {
@@ -18,7 +17,12 @@ public class MapleCarnivalChallenge {
         for (MaplePartyCharacter pc : challenger.getParty().getMembers()) {
             MapleCharacter c = challenger.getMap().getCharacterById(pc.getId());
             if (c != null) {
-                challengeinfo += (c.getName() + " / Level" + c.getLevel() + " / " + getJobNameById(c.getJob().getId()));
+                challengeinfo +=
+                        (c.getName()
+                                + " / Level"
+                                + c.getLevel()
+                                + " / "
+                                + getJobNameById(c.getJob().getId()));
             }
         }
         challengeinfo += "#k";
@@ -38,7 +42,7 @@ public class MapleCarnivalChallenge {
                 return "Citizen";
 
             case 100:
-                return "Warrior";// Warrior
+                return "Warrior"; // Warrior
             case 110:
                 return "Fighter";
             case 111:
@@ -214,7 +218,6 @@ public class MapleCarnivalChallenge {
             case 3000:
                 return "Beginner";
 
-
             case 2100:
             case 2110:
             case 2111:
@@ -264,7 +267,6 @@ public class MapleCarnivalChallenge {
             case 231:
             case 232:
                 return "Magician";
-
 
             case 3300:
             case 3310:
@@ -317,7 +319,6 @@ public class MapleCarnivalChallenge {
             case 521:
             case 522:
                 return "Pirate";
-
 
             default:
                 return "Unknown Job";

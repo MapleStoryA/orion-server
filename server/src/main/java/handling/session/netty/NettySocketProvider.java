@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class NettySocketProvider implements SocketProvider {
 
-
     private EventLoopGroup eventLoopGroupBoss, eventLoopGroupWorker;
 
     private ChannelFuture serverChannel;
@@ -28,12 +27,15 @@ public class NettySocketProvider implements SocketProvider {
 
         b.group(eventLoopGroupBoss, eventLoopGroupWorker)
                 .channel(NioServerSocketChannel.class)
-                .childHandler(new ChannelInitializer<SocketChannel>() {
+                .childHandler(
+                        new ChannelInitializer<SocketChannel>() {
 
-                    protected void initChannel(SocketChannel socketChannel) {
-                        socketChannel.pipeline().addLast(new NettyMapleServerHandler(channel, mode));
-                    }
-                })
+                            protected void initChannel(SocketChannel socketChannel) {
+                                socketChannel
+                                        .pipeline()
+                                        .addLast(new NettyMapleServerHandler(channel, mode));
+                            }
+                        })
                 .option(ChannelOption.SO_BACKLOG, 128)
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
 

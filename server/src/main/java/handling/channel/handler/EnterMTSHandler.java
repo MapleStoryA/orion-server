@@ -13,17 +13,20 @@ public class EnterMTSHandler extends AbstractMaplePacketHandler {
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         int map = 910000000;
         if (c.getPlayer().getLevel() < 10) {
-            c.getPlayer().dropMessage(5, "Characters whose level is below Lv. 10 cannot use the market button.");
+            c.getPlayer()
+                    .dropMessage(
+                            5,
+                            "Characters whose level is below Lv. 10 cannot use the market button.");
             c.enableActions();
             return;
         }
         if (c.getPlayer().getMapId() == map) {
             c.getSession().write(MaplePacketCreator.enableActions());
         } else {
-            c.getPlayer().getSavedLocations().saveLocation(SavedLocationType.FREE_MARKET, c.getPlayer().getMapId());
+            c.getPlayer()
+                    .getSavedLocations()
+                    .saveLocation(SavedLocationType.FREE_MARKET, c.getPlayer().getMapId());
             c.getPlayer().changeMap(map, "out00");
         }
-
     }
-
 }

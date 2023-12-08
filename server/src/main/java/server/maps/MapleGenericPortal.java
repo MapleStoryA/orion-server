@@ -1,34 +1,12 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package server.maps;
 
 import client.MapleClient;
 import client.anticheat.CheatingOffense;
 import handling.world.WorldServer;
+import java.awt.*;
 import scripting.PortalScriptManager;
 import server.MaplePortal;
 import tools.MaplePacketCreator;
-
-import java.awt.*;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleGenericPortal implements MaplePortal {
@@ -119,11 +97,25 @@ public class MapleGenericPortal implements MaplePortal {
                     e.printStackTrace();
                 }
             } else if (getTargetMapId() != 999999999) {
-                final MapleMap to = WorldServer.getInstance().getChannel(c.getChannel()).getMapFactory().getMap(getTargetMapId());
-                c.getPlayer().changeMapPortal(to, to.getPortal(getTarget()) == null ? to.getPortal(0) : to.getPortal(getTarget())); //late resolving makes this harder but prevents us from loading the whole world at once
+                final MapleMap to =
+                        WorldServer.getInstance()
+                                .getChannel(c.getChannel())
+                                .getMapFactory()
+                                .getMap(getTargetMapId());
+                c.getPlayer()
+                        .changeMapPortal(
+                                to,
+                                to.getPortal(getTarget()) == null
+                                        ? to.getPortal(0)
+                                        : to.getPortal(
+                                                getTarget())); // late resolving makes this harder
+                // but prevents us from loading the
+                // whole world at once
             }
         }
-        if (c != null && c.getPlayer() != null && c.getPlayer().getMap() == currentmap) { // Character is still on the same map.
+        if (c != null
+                && c.getPlayer() != null
+                && c.getPlayer().getMap() == currentmap) { // Character is still on the same map.
             c.getSession().write(MaplePacketCreator.enableActions());
         }
     }

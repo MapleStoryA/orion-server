@@ -13,9 +13,12 @@ public class CheckCharNameHandler extends AbstractMaplePacketHandler {
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         String name = slea.readMapleAsciiString();
-        c.getSession().write(LoginPacket.charNameResponse(name, !MapleCharacterHelper.canCreateChar(name)
-                || LoginInformationProvider.getInstance().isForbiddenName(name)));
-
+        c.getSession()
+                .write(
+                        LoginPacket.charNameResponse(
+                                name,
+                                !MapleCharacterHelper.canCreateChar(name)
+                                        || LoginInformationProvider.getInstance()
+                                                .isForbiddenName(name)));
     }
-
 }

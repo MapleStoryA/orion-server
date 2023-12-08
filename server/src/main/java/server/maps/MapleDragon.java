@@ -1,6 +1,6 @@
 /*
 This file is part of the ZeroFusion MapleStory Server
-Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 ZeroFusion organized by "RMZero213" <RMZero213@hotmail.com>
@@ -29,9 +29,8 @@ package server.maps;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import tools.MaplePacketCreator;
-
 import java.awt.*;
+import tools.MaplePacketCreator;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleDragon extends AbstractAnimatedMapleMapObject {
@@ -45,8 +44,7 @@ public class MapleDragon extends AbstractAnimatedMapleMapObject {
         this.jobid = jobid;
     }
 
-    public MapleDragon() {
-    }
+    public MapleDragon() {}
 
     public MapleDragon(MapleCharacter owner) {
         super();

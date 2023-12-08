@@ -19,7 +19,8 @@ public class GiveFameHandler extends AbstractMaplePacketHandler {
         final int mode = slea.readByte();
 
         final int famechange = mode == 0 ? -1 : 1;
-        final MapleCharacter target = (MapleCharacter) chr.getMap().getMapObject(who, MapleMapObjectType.PLAYER);
+        final MapleCharacter target =
+                (MapleCharacter) chr.getMap().getMapObject(who, MapleMapObjectType.PLAYER);
 
         if (target == chr) { // faming self
             chr.getCheatTracker().registerOffense(CheatingOffense.FAMING_SELF);
@@ -37,8 +38,13 @@ public class GiveFameHandler extends AbstractMaplePacketHandler {
                 if (!chr.isGameMaster()) {
                     chr.hasGivenFame(target);
                 }
-                c.getSession().write(MaplePacketCreator.giveFameResponse(mode, target.getName(), target.getFame()));
-                target.getClient().getSession().write(MaplePacketCreator.receiveFame(mode, chr.getName()));
+                c.getSession()
+                        .write(
+                                MaplePacketCreator.giveFameResponse(
+                                        mode, target.getName(), target.getFame()));
+                target.getClient()
+                        .getSession()
+                        .write(MaplePacketCreator.receiveFame(mode, chr.getName()));
                 break;
             case NOT_TODAY:
                 c.getSession().write(MaplePacketCreator.giveFameErrorResponse(3));
@@ -47,7 +53,5 @@ public class GiveFameHandler extends AbstractMaplePacketHandler {
                 c.getSession().write(MaplePacketCreator.giveFameErrorResponse(4));
                 break;
         }
-
     }
-
 }

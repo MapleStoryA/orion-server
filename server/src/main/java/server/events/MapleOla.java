@@ -23,23 +23,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package server.events;
 
 import client.MapleCharacter;
+import java.util.concurrent.ScheduledFuture;
 import server.Timer.EventTimer;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
-
-import java.util.concurrent.ScheduledFuture;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleOla extends MapleEvent {
 
     private static final long serialVersionUID = 845748150824L;
-    private final long time = 600000; //reduce for less time
+    private final long time = 600000; // reduce for less time
     private long timeStarted = 0;
     private transient ScheduledFuture<?> olaSchedule;
     private int[] stages = new int[3];
-    //stg1 = ch00-ch04 = 5 ports
-    //stg2 = ch00-ch07 = 8 ports
-    //stg3 = ch00-ch15 = 16 ports
+    // stg1 = ch00-ch04 = 5 ports
+    // stg2 = ch00-ch07 = 8 ports
+    // stg3 = ch00-ch15 = 16 ports
 
     public MapleOla(final int channel, final int[] mapid) {
         super(channel, mapid);
@@ -48,37 +47,48 @@ public class MapleOla extends MapleEvent {
     @Override
     public void finished(final MapleCharacter chr) {
         givePrize(chr);
-        chr.getFinishedAchievements().finishAchievement(chr,21);
+        chr.getFinishedAchievements().finishAchievement(chr, 21);
     }
 
     @Override
     public void onMapLoad(MapleCharacter chr) {
         if (isTimerStarted()) {
-            chr.getClient().getSession().write(MaplePacketCreator.getClock((int) (getTimeLeft() / 1000)));
+            chr.getClient()
+                    .getSession()
+                    .write(MaplePacketCreator.getClock((int) (getTimeLeft() / 1000)));
         }
     }
 
     @Override
     public void startEvent() { // TODO: Messages
         unreset();
-        super.reset(); //isRunning = true
+        super.reset(); // isRunning = true
         broadcast(MaplePacketCreator.getClock((int) (time / 1000)));
         this.timeStarted = System.currentTimeMillis();
 
-        olaSchedule = EventTimer.getInstance().schedule(new Runnable() {
+        olaSchedule =
+                EventTimer.getInstance()
+                        .schedule(
+                                new Runnable() {
 
-            @Override
-            public void run() {
-                for (int i = 0; i < mapid.length; i++) {
-                    for (MapleCharacter chr : getMap(i).getCharactersThreadsafe()) {
-                        warpBack(chr);
-                    }
-                    unreset();
-                }
-            }
-        }, this.time);
+                                    @Override
+                                    public void run() {
+                                        for (int i = 0; i < mapid.length; i++) {
+                                            for (MapleCharacter chr :
+                                                    getMap(i).getCharactersThreadsafe()) {
+                                                warpBack(chr);
+                                            }
+                                            unreset();
+                                        }
+                                    }
+                                },
+                                this.time);
 
-        broadcast(MaplePacketCreator.serverNotice(0, "The portal has now opened. Press the up arrow key at the portal to enter."));
+        broadcast(
+                MaplePacketCreator.serverNotice(
+                        0,
+                        "The portal has now opened. Press the up arrow key at the portal to"
+                                + " enter."));
     }
 
     public boolean isTimerStarted() {
@@ -102,7 +112,7 @@ public class MapleOla extends MapleEvent {
         super.reset();
         resetSchedule();
         getMap(0).getPortal("join00").setPortalState(false);
-        stages = new int[]{0, 0, 0};
+        stages = new int[] {0, 0, 0};
     }
 
     @Override
@@ -110,7 +120,7 @@ public class MapleOla extends MapleEvent {
         super.unreset();
         resetSchedule();
         getMap(0).getPortal("join00").setPortalState(true);
-        stages = new int[]{Randomizer.nextInt(5), Randomizer.nextInt(8), Randomizer.nextInt(15)};
+        stages = new int[] {Randomizer.nextInt(5), Randomizer.nextInt(8), Randomizer.nextInt(15)};
     }
 
     public long getTimeLeft() {

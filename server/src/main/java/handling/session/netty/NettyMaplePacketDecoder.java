@@ -4,10 +4,9 @@ import client.MapleClient;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import java.util.List;
 import tools.MapleAESOFB;
 import tools.MapleCustomEncryption;
-
-import java.util.List;
 
 public class NettyMaplePacketDecoder extends ByteToMessageDecoder {
 
@@ -19,7 +18,8 @@ public class NettyMaplePacketDecoder extends ByteToMessageDecoder {
     }
 
     @Override
-    protected void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> out) throws Exception {
+    protected void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> out)
+            throws Exception {
         if (length <= 0) {
             if (buf.readableBytes() < 4) {
                 return;

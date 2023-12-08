@@ -31,75 +31,120 @@ public class UseScriptedNpcItemHandler extends AbstractMaplePacketHandler {
 
         if (toUse != null && toUse.getQuantity() >= 1 && toUse.getItemId() == itemId) {
             switch (toUse.getItemId()) {
-                case 2430007: { // Blank Compass
-                    final MapleInventory inventory = chr.getInventory(MapleInventoryType.SETUP);
-                    MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (byte) 1, false);
+                case 2430007:
+                    { // Blank Compass
+                        final MapleInventory inventory = chr.getInventory(MapleInventoryType.SETUP);
+                        MapleInventoryManipulator.removeFromSlot(
+                                c, MapleInventoryType.USE, slot, (byte) 1, false);
 
-                    if (inventory.countById(3994102) >= 20 // Compass Letter "North"
-                            && inventory.countById(3994103) >= 20 // Compass Letter
-                            // "South"
-                            && inventory.countById(3994104) >= 20 // Compass Letter
-                            // "East"
-                            && inventory.countById(3994105) >= 20) { // Compass
-                        // Letter
-                        // "West"
-                        MapleInventoryManipulator.addById(c, 2430008, (short) 1,
-                                "Scripted item: " + itemId + " on " + DateHelper.getCurrentReadableDate()); // Gold
-                        // Compass
-                        MapleInventoryManipulator.removeById(c, MapleInventoryType.SETUP, 3994102, 20, false, false);
-                        MapleInventoryManipulator.removeById(c, MapleInventoryType.SETUP, 3994103, 20, false, false);
-                        MapleInventoryManipulator.removeById(c, MapleInventoryType.SETUP, 3994104, 20, false, false);
-                        MapleInventoryManipulator.removeById(c, MapleInventoryType.SETUP, 3994105, 20, false, false);
-                    } else {
-                        MapleInventoryManipulator.addById(c, 2430007, (short) 1,
-                                "Scripted item: " + itemId + " on " + DateHelper.getCurrentReadableDate()); // Blank
-                        // Compass
-                    }
-                    NPCScriptManager.getInstance().start(c, 2084001);
-                    break;
-                }
-                case 2430008: { // Gold Compass
-                    chr.getSavedLocations().saveLocation(SavedLocationType.RICHIE, chr);
-                    MapleMap map;
-                    boolean warped = false;
-
-                    for (int i = 390001000; i <= 390001004; i++) {
-                        map = c.getChannelServer().getMapFactory().getMap(i);
-
-                        if (map.getCharactersSize() == 0) {
-                            chr.changeMap(map, map.getPortal(0));
-                            warped = true;
-                            break;
+                        if (inventory.countById(3994102) >= 20 // Compass Letter "North"
+                                && inventory.countById(3994103) >= 20 // Compass Letter
+                                // "South"
+                                && inventory.countById(3994104) >= 20 // Compass Letter
+                                // "East"
+                                && inventory.countById(3994105) >= 20) { // Compass
+                            // Letter
+                            // "West"
+                            MapleInventoryManipulator.addById(
+                                    c,
+                                    2430008,
+                                    (short) 1,
+                                    "Scripted item: "
+                                            + itemId
+                                            + " on "
+                                            + DateHelper.getCurrentReadableDate()); // Gold
+                            // Compass
+                            MapleInventoryManipulator.removeById(
+                                    c, MapleInventoryType.SETUP, 3994102, 20, false, false);
+                            MapleInventoryManipulator.removeById(
+                                    c, MapleInventoryType.SETUP, 3994103, 20, false, false);
+                            MapleInventoryManipulator.removeById(
+                                    c, MapleInventoryType.SETUP, 3994104, 20, false, false);
+                            MapleInventoryManipulator.removeById(
+                                    c, MapleInventoryType.SETUP, 3994105, 20, false, false);
+                        } else {
+                            MapleInventoryManipulator.addById(
+                                    c,
+                                    2430007,
+                                    (short) 1,
+                                    "Scripted item: "
+                                            + itemId
+                                            + " on "
+                                            + DateHelper.getCurrentReadableDate()); // Blank
+                            // Compass
                         }
+                        NPCScriptManager.getInstance().start(c, 2084001);
+                        break;
                     }
-                    if (warped) { // Removal of gold compass
-                        MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, 2430008, 1, false, false);
-                    } else { // Or mabe some other message.
-                        c.getPlayer().dropMessage(5, "All maps are currently in use, please try again later.");
+                case 2430008:
+                    { // Gold Compass
+                        chr.getSavedLocations().saveLocation(SavedLocationType.RICHIE, chr);
+                        MapleMap map;
+                        boolean warped = false;
+
+                        for (int i = 390001000; i <= 390001004; i++) {
+                            map = c.getChannelServer().getMapFactory().getMap(i);
+
+                            if (map.getCharactersSize() == 0) {
+                                chr.changeMap(map, map.getPortal(0));
+                                warped = true;
+                                break;
+                            }
+                        }
+                        if (warped) { // Removal of gold compass
+                            MapleInventoryManipulator.removeById(
+                                    c, MapleInventoryType.USE, 2430008, 1, false, false);
+                        } else { // Or mabe some other message.
+                            c.getPlayer()
+                                    .dropMessage(
+                                            5,
+                                            "All maps are currently in use, please try again"
+                                                    + " later.");
+                        }
+                        break;
                     }
-                    break;
-                }
                 case 2430112: // miracle cube
                     if (c.getPlayer().getInventory(MapleInventoryType.USE).getNumFreeSlot() >= 1) {
-                        if (c.getPlayer().getInventory(MapleInventoryType.USE).countById(2430112) >= 25) {
-                            if (MapleInventoryManipulator.checkSpace(c, 2049400, 1, "") && MapleInventoryManipulator
-                                    .removeById(c, MapleInventoryType.USE, 2430112, 25, true, false)) {
-                                MapleInventoryManipulator.addById(c, 2049400, (short) 1,
-                                        "Scripted item: " + itemId + " on " + DateHelper.getCurrentReadableDate());
+                        if (c.getPlayer().getInventory(MapleInventoryType.USE).countById(2430112)
+                                >= 25) {
+                            if (MapleInventoryManipulator.checkSpace(c, 2049400, 1, "")
+                                    && MapleInventoryManipulator.removeById(
+                                            c, MapleInventoryType.USE, 2430112, 25, true, false)) {
+                                MapleInventoryManipulator.addById(
+                                        c,
+                                        2049400,
+                                        (short) 1,
+                                        "Scripted item: "
+                                                + itemId
+                                                + " on "
+                                                + DateHelper.getCurrentReadableDate());
                             } else {
                                 c.getPlayer().dropMessage(5, "Please make some space.");
                             }
-                        } else if (c.getPlayer().getInventory(MapleInventoryType.USE).countById(2430112) >= 10) {
-                            if (MapleInventoryManipulator.checkSpace(c, 2049400, 1, "") && MapleInventoryManipulator
-                                    .removeById(c, MapleInventoryType.USE, 2430112, 10, true, false)) {
-                                MapleInventoryManipulator.addById(c, 2049401, (short) 1,
-                                        "Scripted item: " + itemId + " on " + DateHelper.getCurrentReadableDate());
+                        } else if (c.getPlayer()
+                                        .getInventory(MapleInventoryType.USE)
+                                        .countById(2430112)
+                                >= 10) {
+                            if (MapleInventoryManipulator.checkSpace(c, 2049400, 1, "")
+                                    && MapleInventoryManipulator.removeById(
+                                            c, MapleInventoryType.USE, 2430112, 10, true, false)) {
+                                MapleInventoryManipulator.addById(
+                                        c,
+                                        2049401,
+                                        (short) 1,
+                                        "Scripted item: "
+                                                + itemId
+                                                + " on "
+                                                + DateHelper.getCurrentReadableDate());
                             } else {
                                 c.getPlayer().dropMessage(5, "Please make some space.");
                             }
                         } else {
-                            c.getPlayer().dropMessage(5,
-                                    "There needs to be 10 Fragments for a Potential Scroll, 25 for Advanced Potential Scroll.");
+                            c.getPlayer()
+                                    .dropMessage(
+                                            5,
+                                            "There needs to be 10 Fragments for a Potential Scroll,"
+                                                    + " 25 for Advanced Potential Scroll.");
                         }
                     } else {
                         c.getPlayer().dropMessage(5, "Please make some space.");
@@ -141,7 +186,7 @@ public class UseScriptedNpcItemHandler extends AbstractMaplePacketHandler {
                     mountid = 1035;
                     expiration_days = 30;
                     break;
-                // race kart 30 day? unknown 2430057
+                    // race kart 30 day? unknown 2430057
                 case 2430072: // ZD tiger 7 day
                     mountid = 1034;
                     expiration_days = 7;
@@ -239,7 +284,8 @@ public class UseScriptedNpcItemHandler extends AbstractMaplePacketHandler {
                     expiration_days = 360;
                     break;
                 case 2430014:
-                    c.getPlayer().dropMessage(5, "The barrier was removed and the forces released.");
+                    c.getPlayer()
+                            .dropMessage(5, "The barrier was removed and the forces released.");
                     if (c.getPlayer().getMapId() == 106020300) {
                         c.getPlayer().set("KILLER_SPORE", "1");
                         c.getPlayer().removeItem(2430014, -1);
@@ -248,21 +294,32 @@ public class UseScriptedNpcItemHandler extends AbstractMaplePacketHandler {
             }
         }
         if (mountid > 0) {
-            mountid += (GameConstants.isAran(c.getPlayer().getJob().getId()) ? 20000000
-                    : (GameConstants.isEvan(c.getPlayer().getJob().getId()) ? 20010000
-                    : (GameConstants.isKOC(c.getPlayer().getJob().getId()) ? 10000000
-                    : (GameConstants.isResist(c.getPlayer().getJob().getId()) ? 30000000 : 0))));
+            mountid +=
+                    (GameConstants.isAran(c.getPlayer().getJob().getId())
+                            ? 20000000
+                            : (GameConstants.isEvan(c.getPlayer().getJob().getId())
+                                    ? 20010000
+                                    : (GameConstants.isKOC(c.getPlayer().getJob().getId())
+                                            ? 10000000
+                                            : (GameConstants.isResist(
+                                                            c.getPlayer().getJob().getId())
+                                                    ? 30000000
+                                                    : 0))));
             if (c.getPlayer().getSkillLevel(mountid) > 0) {
                 c.getPlayer().dropMessage(5, "You already have this skill.");
             } else if (expiration_days > 0) {
-                MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (byte) 1, false);
-                c.getPlayer().changeSkillLevel(SkillFactory.getSkill(mountid), (byte) 1, (byte) 1,
-                        System.currentTimeMillis() + (expiration_days * 24 * 60 * 60 * 1000));
+                MapleInventoryManipulator.removeFromSlot(
+                        c, MapleInventoryType.USE, slot, (byte) 1, false);
+                c.getPlayer()
+                        .changeSkillLevel(
+                                SkillFactory.getSkill(mountid),
+                                (byte) 1,
+                                (byte) 1,
+                                System.currentTimeMillis()
+                                        + (expiration_days * 24 * 60 * 60 * 1000));
                 c.getPlayer().dropMessage(5, "The skill has been attained.");
             }
         }
         c.getSession().write(MaplePacketCreator.enableActions());
-
     }
-
 }

@@ -1,24 +1,3 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package tools.data.input;
 
 import java.awt.*;
@@ -112,8 +91,14 @@ public class GenericLittleEndianAccessor implements LittleEndianAccessor {
         final int byte7 = bs.readByte();
         final int byte8 = bs.readByte();
 
-        return ((long) byte8 << 56) + ((long) byte7 << 48) + ((long) byte6 << 40) + ((long) byte5 << 32) + ((long) byte4 << 24) + ((long) byte3 << 16) +
-                ((long) byte2 << 8) + byte1;
+        return ((long) byte8 << 56)
+                + ((long) byte7 << 48)
+                + ((long) byte6 << 40)
+                + ((long) byte5 << 32)
+                + ((long) byte4 << 24)
+                + ((long) byte3 << 16)
+                + ((long) byte2 << 8)
+                + byte1;
     }
 
     /**
@@ -161,9 +146,8 @@ public class GenericLittleEndianAccessor implements LittleEndianAccessor {
     }
 
     /**
-     * Reads a MapleStory convention lengthed ASCII string.
-     * This consists of a short integer telling the length of the string,
-     * then the string itself.
+     * Reads a MapleStory convention lengthed ASCII string. This consists of a short integer telling
+     * the length of the string, then the string itself.
      *
      * @return The string read.
      */
@@ -173,8 +157,7 @@ public class GenericLittleEndianAccessor implements LittleEndianAccessor {
     }
 
     /**
-     * Reads a MapleStory Position information.
-     * This consists of 2 short integer.
+     * Reads a MapleStory Position information. This consists of 2 short integer.
      *
      * @return The Position read.
      */
@@ -212,17 +195,13 @@ public class GenericLittleEndianAccessor implements LittleEndianAccessor {
         }
     }
 
-    /**
-     * @see net.sf.odinms.tools.data.input.ByteInputStream#available
-     */
+    /** @see net.sf.odinms.tools.data.input.ByteInputStream#available */
     @Override
     public final long available() {
         return bs.available();
     }
 
-    /**
-     * @see java.lang.Object#toString
-     */
+    /** @see java.lang.Object#toString */
     @Override
     public final String toString() {
         return bs.toString();

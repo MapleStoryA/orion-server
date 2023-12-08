@@ -1,24 +1,24 @@
 /*
- This file is part of the OdinMS Maple Story Server
- Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
- Matthias Butz <matze@odinms.de>
- Jan Christian Meyer <vimes@odinms.de>
+This file is part of the OdinMS Maple Story Server
+Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
+Matthias Butz <matze@odinms.de>
+Jan Christian Meyer <vimes@odinms.de>
 
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU Affero General Public License as
- published by the Free Software Foundation version 3 as published by
- the Free Software Foundation. You may not use, modify or distribute
- this program under any other version of the GNU Affero General Public
- License.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation version 3 as published by
+the Free Software Foundation. You may not use, modify or distribute
+this program under any other version of the GNU Affero General Public
+License.
 
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Affero General Public License for more details.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
 
- You should have received a copy of the GNU Affero General Public License
- along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 package handling;
 
@@ -179,8 +179,8 @@ import handling.login.handler.DeleteCharHandler;
 import handling.login.handler.InvalidPacketRequestHandler;
 import handling.login.handler.KeepAliveHandler;
 import handling.login.handler.RelogRequestHandler;
-import handling.login.handler.ServerStatusRequestHandler;
 import handling.login.handler.ServerListRequestHandler;
+import handling.login.handler.ServerStatusRequestHandler;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -199,7 +199,7 @@ public final class PacketProcessor {
         handlers = new MaplePacketHandler[maxRecvOp + 1];
     }
 
-    public synchronized static PacketProcessor getProcessor(Mode mode) {
+    public static synchronized PacketProcessor getProcessor(Mode mode) {
         if (instance == null) {
             instance = new PacketProcessor();
         }
@@ -229,11 +229,12 @@ public final class PacketProcessor {
         if (mode == Mode.LOGINSERVER) {
             registerHandler(RecvPacketOpcode.LOGIN_PASSWORD, new CharLoginPasswordHandler());
             registerHandler(RecvPacketOpcode.AFTER_LOGIN, new AfterLoginHandler());
-            registerHandler(RecvPacketOpcode.SERVERLIST_REQUEST, new ServerListRequestHandler());
-            registerHandler(RecvPacketOpcode.SERVERLIST_REQUEST_2, new ServerListRequestHandler());
-            registerHandler(RecvPacketOpcode.SERVERLIST_REQUEST_3, new ServerListRequestHandler());
-            registerHandler(RecvPacketOpcode.CHARLIST_REQUEST, new CharListRequestHandler());
-            registerHandler(RecvPacketOpcode.SERVERSTATUS_REQUEST, new ServerStatusRequestHandler());
+            registerHandler(RecvPacketOpcode.SERVER_LIST_REQUEST, new ServerListRequestHandler());
+            registerHandler(RecvPacketOpcode.SERVER_LIST_REQUEST_2, new ServerListRequestHandler());
+            registerHandler(RecvPacketOpcode.SERVER_LIST_REQUEST_3, new ServerListRequestHandler());
+            registerHandler(RecvPacketOpcode.CHAR_LIST_REQUEST, new CharListRequestHandler());
+            registerHandler(
+                    RecvPacketOpcode.SERVER_STATUS_REQUEST, new ServerStatusRequestHandler());
             registerHandler(RecvPacketOpcode.CHECK_CHAR_NAME, new CheckCharNameHandler());
             registerHandler(RecvPacketOpcode.CREATE_CHAR, new CreateCharHandler());
             registerHandler(RecvPacketOpcode.DELETE_CHAR, new DeleteCharHandler());
@@ -241,7 +242,8 @@ public final class PacketProcessor {
             registerHandler(RecvPacketOpcode.CHAR_SELECT_WITH_PIC, new CharSelectedHandler());
             registerHandler(RecvPacketOpcode.PICK_ALL_CHAR, new ViewAllCharPacket());
             registerHandler(RecvPacketOpcode.VIEW_ALL_WITH_PIC, new CharSelectedViewAllHandler());
-            registerHandler(RecvPacketOpcode.VIEW_ALL_PIC_REGISTER, new InvalidPacketRequestHandler());
+            registerHandler(
+                    RecvPacketOpcode.VIEW_ALL_PIC_REGISTER, new InvalidPacketRequestHandler());
             registerHandler(RecvPacketOpcode.RELOG, new RelogRequestHandler());
             registerHandler(RecvPacketOpcode.VIEW_ALL_CHAR, new CharlistViewAllHandler());
         } else if (mode == Mode.CHANNELSERVER) {
@@ -252,7 +254,8 @@ public final class PacketProcessor {
             registerHandler(RecvPacketOpcode.MOVE_PLAYER, new MovePlayerHandler());
             registerHandler(RecvPacketOpcode.REMOTE_GACHAPON, new RemoteGachaponHandler());
             registerHandler(RecvPacketOpcode.CHAR_INFO_REQUEST, new CharInfoRequestHandler());
-            registerHandler(RecvPacketOpcode.CLOSE_RANGE_ATTACK, new CloseRangeDamageHandler(false));
+            registerHandler(
+                    RecvPacketOpcode.CLOSE_RANGE_ATTACK, new CloseRangeDamageHandler(false));
             registerHandler(RecvPacketOpcode.PASSIVE_ENERGY, new CloseRangeDamageHandler(true));
             registerHandler(RecvPacketOpcode.RANGED_ATTACK, new RangedAttackHandler());
             registerHandler(RecvPacketOpcode.MAGIC_ATTACK, new MagicDamageHandler());
@@ -265,7 +268,7 @@ public final class PacketProcessor {
             registerHandler(RecvPacketOpcode.CANCEL_ITEM_EFFECT, new CancelItemEffectHandler());
             registerHandler(RecvPacketOpcode.USE_CHAIR, new UseChairHandler());
             registerHandler(RecvPacketOpcode.CANCEL_CHAIR, new CancelChairHandler());
-            registerHandler(RecvPacketOpcode.USE_ITEMEFFECT, new UseItemEffectHandler());
+            registerHandler(RecvPacketOpcode.USE_ITEM_EFFECT, new UseItemEffectHandler());
             registerHandler(RecvPacketOpcode.WHEEL_OF_FORTUNE, new UseItemEffectHandler());
             registerHandler(RecvPacketOpcode.SKILL_EFFECT, new SkillEffectHandler());
             registerHandler(RecvPacketOpcode.MESO_DROP, new MesoDropHandler());
@@ -276,7 +279,8 @@ public final class PacketProcessor {
             registerHandler(RecvPacketOpcode.SKILL_MACRO, new ChangeSkillMacroHandler());
             registerHandler(RecvPacketOpcode.QUICK_SLOT, new QuickSlotHandler());
             registerHandler(RecvPacketOpcode.UPDATE_CHARACTER, new UpdateCharacterHandler());
-            registerHandler(RecvPacketOpcode.TELEPORT_ROCK_ADD_MAP, new TeleportRockAddMapHandler());
+            registerHandler(
+                    RecvPacketOpcode.TELEPORT_ROCK_ADD_MAP, new TeleportRockAddMapHandler());
             registerHandler(RecvPacketOpcode.ARAN_COMBO, new AranComboHandler());
             registerHandler(RecvPacketOpcode.GIVE_FAME, new GiveFameHandler());
             registerHandler(RecvPacketOpcode.TRANSFORM_PLAYER, new TransformPlayerHandler());
@@ -302,7 +306,8 @@ public final class PacketProcessor {
             registerHandler(RecvPacketOpcode.USE_CASH_ITEM, new UseCashItemHandler());
             registerHandler(RecvPacketOpcode.USE_ITEM, new UseItemHandler());
             registerHandler(RecvPacketOpcode.USE_MAGNIFY_GLASS, new UseMagnifyGlassHandler());
-            registerHandler(RecvPacketOpcode.USE_SCRIPTED_NPC_ITEM, new UseScriptedNpcItemHandler());
+            registerHandler(
+                    RecvPacketOpcode.USE_SCRIPTED_NPC_ITEM, new UseScriptedNpcItemHandler());
             registerHandler(RecvPacketOpcode.USE_RETURN_SCROLL, new UseReturnScrollHandler());
             registerHandler(RecvPacketOpcode.ESCORT_RESULT, new EscortResultHandler());
             registerHandler(RecvPacketOpcode.SELF_DESTRUCT, new SelfDestructHandler());
@@ -311,7 +316,8 @@ public final class PacketProcessor {
             registerHandler(RecvPacketOpcode.VICIOUS_HAMMER, new ViciousHammerHandler());
             registerHandler(RecvPacketOpcode.PARTY_LISTING, new PartyListingHandler());
             registerHandler(RecvPacketOpcode.USE_SUMMON_BAG, new UseSummonBagHandler());
-            registerHandler(RecvPacketOpcode.EXPEDITION_OPERATION, new ExpeditionOperationHandler());
+            registerHandler(
+                    RecvPacketOpcode.EXPEDITION_OPERATION, new ExpeditionOperationHandler());
             registerHandler(RecvPacketOpcode.NPC_ACTION, new NpcAnimationHandler());
             registerHandler(RecvPacketOpcode.NPC_SHOP, new NpcShopHandler());
             registerHandler(RecvPacketOpcode.NPC_TALK, new NpcTalkHandler());

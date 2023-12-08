@@ -1,30 +1,29 @@
 package database;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import lombok.extern.slf4j.Slf4j;
-
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Simple class to hash the password with Bcrypt.
- * <p>
- * salt = SHA-256(uuid + seed)
- * hashed password = bcrypt(salt + password)
- * decrypted password = bcrypt_verify((salt + raw password), hashed password)
- **/
+ *
+ * <p>salt = SHA-256(uuid + seed) hashed password = bcrypt(salt + password) decrypted password =
+ * bcrypt_verify((salt + raw password), hashed password)
+ */
 @Slf4j
 public class PasswordEncryptor {
-
 
     public String encrypt(String password, String salt) {
         return BCrypt.withDefaults().hashToString(10, salt.concat(password).toCharArray());
     }
 
     public boolean verifyPassword(String rawPassword, String hashedPassword, String salt) {
-        return BCrypt.verifyer().verify(salt.concat(rawPassword).toCharArray(), hashedPassword).verified;
+        return BCrypt.verifyer()
+                .verify(salt.concat(rawPassword).toCharArray(), hashedPassword)
+                .verified;
     }
 
     private String createSha256(String seed) throws NoSuchAlgorithmException {

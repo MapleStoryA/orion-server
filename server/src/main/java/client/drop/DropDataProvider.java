@@ -1,20 +1,21 @@
 package client.drop;
 
+import java.util.ArrayList;
+import java.util.List;
 import server.MapleItemInformationProvider;
 import server.life.MapleMonster;
 import server.life.MapleMonsterInformationProvider;
 import server.life.MonsterDropEntry;
 import tools.Pair;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @lombok.extern.slf4j.Slf4j
 public class DropDataProvider implements MapleDropProvider {
 
-    private final MapleMonsterInformationProvider mi = MapleMonsterInformationProvider.getInstance();
+    private final MapleMonsterInformationProvider mi =
+            MapleMonsterInformationProvider.getInstance();
 
-    private final MapleItemInformationProvider itemProvider = MapleItemInformationProvider.getInstance();
+    private final MapleItemInformationProvider itemProvider =
+            MapleItemInformationProvider.getInstance();
 
     @Override
     public List<MapleDropData> search(MapleMonster monster) {
@@ -32,8 +33,6 @@ public class DropDataProvider implements MapleDropProvider {
             dataList.add(new MapleDropData(name, monster, entry.chance));
         }
 
-
         return dataList;
     }
-
 }

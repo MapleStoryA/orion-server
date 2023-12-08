@@ -6,12 +6,12 @@
 package client.skill;
 
 /**
- * @author Simon
- * I'm putting this here because Resistance uses an extended SP section too.
- * We need to think about forward compatibility!
+ * @author Simon I'm putting this here because Resistance uses an extended SP section too. We need
+ *     to think about forward compatibility!
  */
 public enum ExtendedSPType {
-    EVAN, RESISTANCE;
+    EVAN,
+    RESISTANCE;
 
     public static ExtendedSPType getFromJobID(int jobID) {
         if (jobID == 2001 || jobID / 100 == 22) {

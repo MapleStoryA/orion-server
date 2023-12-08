@@ -1,28 +1,6 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package client.inventory;
 
 import constants.GameConstants;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,9 +17,7 @@ public class MapleInventory implements Iterable<IItem>, Serializable {
     private final MapleInventoryType type;
     private byte slotLimit = 0;
 
-    /**
-     * Creates a new instance of MapleInventory
-     */
+    /** Creates a new instance of MapleInventory */
     public MapleInventory(MapleInventoryType type) {
         this.inventory = new LinkedHashMap<Short, IItem>();
         this.type = type;
@@ -67,7 +43,8 @@ public class MapleInventory implements Iterable<IItem>, Serializable {
     }
 
     /**
-     * Returns the item with its slot id if it exists within the inventory, otherwise null is returned
+     * Returns the item with its slot id if it exists within the inventory, otherwise null is
+     * returned
      */
     public IItem findById(int itemId) {
         for (IItem item : inventory.values()) {
@@ -104,8 +81,10 @@ public class MapleInventory implements Iterable<IItem>, Serializable {
                 ret.add(item);
             }
         }
-        // the linkedhashmap does impose insert order as returned order but we can not guarantee that this is still the
-        // correct order - blargh, we could empty the map and reinsert in the correct order after each inventory
+        // the linkedhashmap does impose insert order as returned order but we can not guarantee
+        // that this is still the
+        // correct order - blargh, we could empty the map and reinsert in the correct order after
+        // each inventory
         // addition, or we could use an array/list, it's only 255 entries anyway...
         if (ret.size() > 1) {
             Collections.sort(ret);
@@ -117,9 +96,7 @@ public class MapleInventory implements Iterable<IItem>, Serializable {
         return inventory.values();
     }
 
-    /**
-     * Adds the item to the inventory and returns the assigned slot id
-     */
+    /** Adds the item to the inventory and returns the assigned slot id */
     public short addItem(IItem item) {
         short slotId = getNextFreeSlot();
         if (slotId < 0) {
@@ -151,11 +128,17 @@ public class MapleInventory implements Iterable<IItem>, Serializable {
             source.setPosition(dSlot);
             inventory.put(dSlot, source);
             inventory.remove(sSlot);
-        } else if (target.getItemId() == source.getItemId() && !GameConstants.isThrowingStar(source.getItemId()) && !GameConstants.isBullet(source.getItemId()) && target.getOwner().equals(source.getOwner()) && target.getExpiration() == source.getExpiration()) {
-            if (type.getType() == MapleInventoryType.EQUIP.getType() || type.getType() == MapleInventoryType.CASH.getType()) {
+        } else if (target.getItemId() == source.getItemId()
+                && !GameConstants.isThrowingStar(source.getItemId())
+                && !GameConstants.isBullet(source.getItemId())
+                && target.getOwner().equals(source.getOwner())
+                && target.getExpiration() == source.getExpiration()) {
+            if (type.getType() == MapleInventoryType.EQUIP.getType()
+                    || type.getType() == MapleInventoryType.CASH.getType()) {
                 swap(target, source);
             } else if (source.getQuantity() + target.getQuantity() > slotMax) {
-                source.setQuantity((short) ((source.getQuantity() + target.getQuantity()) - slotMax));
+                source.setQuantity(
+                        (short) ((source.getQuantity() + target.getQuantity()) - slotMax));
                 target.setQuantity(slotMax);
             } else {
                 target.setQuantity((short) (source.getQuantity() + target.getQuantity()));
@@ -210,9 +193,7 @@ public class MapleInventory implements Iterable<IItem>, Serializable {
         return inventory.size() + margin >= slotLimit;
     }
 
-    /**
-     * Returns the next empty slot id, -1 if the inventory is full
-     */
+    /** Returns the next empty slot id, -1 if the inventory is full */
     public short getNextFreeSlot() {
         if (isFull()) {
             return -1;

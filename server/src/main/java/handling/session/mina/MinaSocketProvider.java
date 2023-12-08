@@ -2,6 +2,8 @@ package handling.session.mina;
 
 import handling.PacketProcessor;
 import handling.session.SocketProvider;
+import java.io.IOException;
+import java.net.InetSocketAddress;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.IoAcceptor;
@@ -9,9 +11,6 @@ import org.apache.mina.common.SimpleByteBufferAllocator;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.SocketAcceptor;
 import org.apache.mina.transport.socket.nio.SocketAcceptorConfig;
-
-import java.io.IOException;
-import java.net.InetSocketAddress;
 
 @Slf4j
 @SuppressWarnings("unused")
@@ -36,7 +35,6 @@ public class MinaSocketProvider implements SocketProvider {
             System.err.println("Binding to port " + port + " failed" + e);
         }
     }
-
 
     @Override
     public void shutdown() {

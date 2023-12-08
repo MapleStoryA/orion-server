@@ -20,17 +20,15 @@ package database;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import server.config.ServerConfig;
-
 import java.sql.Connection;
 import java.sql.SQLException;
+import server.config.ServerConfig;
 
 @lombok.extern.slf4j.Slf4j
 public class DatabaseConnection {
 
     public static final int RETURN_GENERATED_KEYS = 1;
     private static ConnectionPool pool;
-
 
     public static Connection getConnection() {
         try {
@@ -47,7 +45,9 @@ public class DatabaseConnection {
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            throw new SQLException("Unable to find JDBC library. Do you have MySQL Connector/J (if using default JDBC driver)?");
+            throw new SQLException(
+                    "Unable to find JDBC library. Do you have MySQL Connector/J (if using default"
+                            + " JDBC driver)?");
         }
 
         String password = config.getProperty("database.password");
@@ -56,25 +56,20 @@ public class DatabaseConnection {
         }
 
         var hikariConfig = new HikariConfig();
+
         hikariConfig.setJdbcUrl(config.getProperty("database.url"));
         hikariConfig.setUsername(config.getProperty("database.user"));
         hikariConfig.setPassword(config.getProperty("database.password"));
-
-        hikariConfig.setConnectionTimeout(30000);
-
-        hikariConfig.setIdleTimeout(10000);
-
+        hikariConfig.setConnectionTimeout(30 * 1000);
         hikariConfig.setMaximumPoolSize(30);
 
         hikariConfig.addDataSourceProperty("cachePrepStmts", "true");
-        hikariConfig.addDataSourceProperty("prepStmtCacheSize", "250");
+        hikariConfig.addDataSourceProperty("prepStmtCacheSize", "25");
         hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
         hikariConfig.setConnectionTestQuery("SELECT 1");
 
-
         pool = new HikariConnectionPool(new HikariDataSource(hikariConfig));
     }
-
 
     interface ConnectionPool {
         Connection getConnection() throws SQLException;
@@ -82,13 +77,11 @@ public class DatabaseConnection {
 
     static class HikariConnectionPool implements ConnectionPool {
 
-
         private final HikariDataSource hikariDataSource;
 
         public HikariConnectionPool(HikariDataSource hikariDataSource) {
             this.hikariDataSource = hikariDataSource;
         }
-
 
         @Override
         public Connection getConnection() throws SQLException {
@@ -96,4 +89,3 @@ public class DatabaseConnection {
         }
     }
 }
-

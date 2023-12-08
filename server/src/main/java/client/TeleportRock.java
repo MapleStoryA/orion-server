@@ -1,22 +1,18 @@
 package client;
 
-import lombok.Getter;
-import tools.data.output.MaplePacketLittleEndianWriter;
-
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import lombok.Getter;
+import tools.data.output.MaplePacketLittleEndianWriter;
 
 public class TeleportRock {
 
-    @Getter
-    private Set<Integer> map_ids;
+    @Getter private Set<Integer> map_ids;
 
-    @Getter
-    private boolean changed;
+    @Getter private boolean changed;
 
-    @Getter
-    private String name;
+    @Getter private String name;
 
     private int maxMaps;
 
@@ -50,9 +46,7 @@ public class TeleportRock {
     }
 
     public int[] toArray() {
-        return map_ids.stream()
-                .mapToInt(Integer::intValue)
-                .toArray();
+        return map_ids.stream().mapToInt(Integer::intValue).toArray();
     }
 
     public void encode(MaplePacketLittleEndianWriter mplew) {

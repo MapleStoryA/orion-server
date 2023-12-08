@@ -1,7 +1,6 @@
 package server.maps;
 
 public enum SavedLocationType {
-
     FREE_MARKET(0),
     MULUNG_TC(1),
     WORLDTOUR(2),

@@ -27,7 +27,6 @@ public class GameServer {
 
     protected final int channel, port;
 
-
     public GameServer(int channel, int port, PacketProcessor.Mode mode) {
         this.channel = channel;
         this.port = port;
@@ -36,14 +35,10 @@ public class GameServer {
         this.socketThread.start();
     }
 
-
-    public void onStart() {
-
-    }
+    public void onStart() {}
 
     public void shutdown() {
         this.socketProvider.shutdown();
         this.socketThread.interrupt();
     }
-
 }

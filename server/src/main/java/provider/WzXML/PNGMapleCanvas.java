@@ -1,27 +1,4 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package provider.WzXML;
-
-import provider.MapleCanvas;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -33,11 +10,12 @@ import java.awt.image.SampleModel;
 import java.awt.image.WritableRaster;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
+import provider.MapleCanvas;
 
 @lombok.extern.slf4j.Slf4j
 public class PNGMapleCanvas implements MapleCanvas {
 
-    private static final int[] ZAHLEN = new int[]{2, 1, 0, 3};
+    private static final int[] ZAHLEN = new int[] {2, 1, 0, 3};
     private final int height;
     private final int width;
     private final int dataLength;
@@ -157,8 +135,11 @@ public class PNGMapleCanvas implements MapleCanvas {
 
         DataBufferByte imgData = new DataBufferByte(writeBuf, sizeUncompressed);
 
-        //SampleModel sm = new PixelInterleavedSampleModel(DataBuffer.TYPE_BYTE, c.getWidth(), c.getHeight(), 4, c.getWidth() * 4, new int[] {2, 1, 0, 3});
-        SampleModel sm = new PixelInterleavedSampleModel(DataBuffer.TYPE_BYTE, getWidth(), getHeight(), 4, getWidth() * 4, ZAHLEN);
+        // SampleModel sm = new PixelInterleavedSampleModel(DataBuffer.TYPE_BYTE, c.getWidth(),
+        // c.getHeight(), 4, c.getWidth() * 4, new int[] {2, 1, 0, 3});
+        SampleModel sm =
+                new PixelInterleavedSampleModel(
+                        DataBuffer.TYPE_BYTE, getWidth(), getHeight(), 4, getWidth() * 4, ZAHLEN);
         WritableRaster imgRaster = Raster.createWritableRaster(sm, imgData, new Point(0, 0));
 
         BufferedImage aa = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);

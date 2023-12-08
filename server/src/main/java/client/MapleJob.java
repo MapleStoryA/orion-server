@@ -128,7 +128,6 @@ public enum MapleJob {
         this.name = name;
     }
 
-
     public static MapleJob getById(int id) {
         for (var state : MapleJob.values()) {
             if (state.getId() == id) {
@@ -177,7 +176,6 @@ public enum MapleJob {
         return isExtendSPJob(job.getId());
     }
 
-
     public int getId() {
         return jobid;
     }
@@ -202,7 +200,6 @@ public enum MapleJob {
         return getId() >= 430 && getId() <= 434;
     }
 
-
     public boolean isEvan() {
         return (getId() == 2001 || getId() / 100 == 22);
     }
@@ -220,7 +217,11 @@ public enum MapleJob {
     }
 
     public boolean isBeginner() {
-        return getId() == 0 || getId() == 1000 || getId() == 2000 || getId() == 2001 || getId() == 3000;
+        return getId() == 0
+                || getId() == 1000
+                || getId() == 2000
+                || getId() == 2001
+                || getId() == 3000;
     }
 
     public int getJobCategoryForEquips() {

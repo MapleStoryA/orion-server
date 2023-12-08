@@ -1,29 +1,7 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package tools;
 
-import org.apache.mina.common.ByteBuffer;
-
 import java.io.ByteArrayOutputStream;
+import org.apache.mina.common.ByteBuffer;
 
 /**
  * Provides a class for manipulating hexadecimal numbers.
@@ -35,7 +13,9 @@ import java.io.ByteArrayOutputStream;
 @lombok.extern.slf4j.Slf4j
 public class HexTool {
 
-    private static final char[] HEX = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+    private static final char[] HEX = {
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
+    };
 
     /**
      * Turns a byte into a hexadecimal string.
@@ -45,16 +25,14 @@ public class HexTool {
      */
     public static final String toString(final byte byteValue) {
         final int tmp = byteValue << 8;
-        char[] retstr = new char[]{HEX[(tmp >> 12) & 0x0F], HEX[(tmp >> 8) & 0x0F]};
+        char[] retstr = new char[] {HEX[(tmp >> 12) & 0x0F], HEX[(tmp >> 8) & 0x0F]};
         return String.valueOf(retstr);
     }
 
     /**
-     * Turns a <code>org.apache.mina.common.ByteBuffer</code> into a
-     * hexadecimal string.
+     * Turns a <code>org.apache.mina.common.ByteBuffer</code> into a hexadecimal string.
      *
-     * @param buf The <code>org.apache.mina.common.ByteBuffer</code> to
-     *            convert.
+     * @param buf The <code>org.apache.mina.common.ByteBuffer</code> to convert.
      * @return The hexadecimal representation of <code>buf</code>
      */
     public static final String toString(final ByteBuffer buf) {
@@ -93,8 +71,8 @@ public class HexTool {
     }
 
     /**
-     * Turns an array of bytes into a ASCII string. Any non-printable characters
-     * are replaced by a period (<code>.</code>)
+     * Turns an array of bytes into a ASCII string. Any non-printable characters are replaced by a
+     * period (<code>.</code>)
      *
      * @param bytes The bytes to convert.
      * @return The ASCII hexadecimal representation of <code>bytes</code>

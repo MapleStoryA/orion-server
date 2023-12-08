@@ -19,7 +19,9 @@ public class NpcTalkMoreHandler extends AbstractMaplePacketHandler {
             NpcTalkHelper.proceedConversation(slea, c);
             return;
         }
-        final byte lastMsg = slea.readByte(); // 00 (last msg type I think) 0F = dimensional mirror, 06 = quiz, 07 = speed quiz
+        final byte lastMsg =
+                slea.readByte(); // 00 (last msg type I think) 0F = dimensional mirror, 06 =
+        // quiz, 07 = speed quiz
         byte action = 0;
         if (lastMsg != 7) {
             action = slea.readByte(); // 00 = end chat, 01 == follow
@@ -59,7 +61,7 @@ public class NpcTalkMoreHandler extends AbstractMaplePacketHandler {
             }
             if (lastMsg == 4 && selection <= -1) {
                 cm.dispose();
-                return;//h4x
+                return; // h4x
             }
             if (selection >= -1 && action != -1) {
                 if (cm.getType() == 0) {
@@ -73,7 +75,5 @@ public class NpcTalkMoreHandler extends AbstractMaplePacketHandler {
                 cm.dispose();
             }
         }
-
     }
-
 }

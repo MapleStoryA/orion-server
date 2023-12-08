@@ -27,11 +27,13 @@ public class ThirdJobUtils {
     }
 
     public static boolean isPirateSecondJob(MapleCharacter player) {
-        return player.getJob().equals(MapleJob.BRAWLER) || player.getJob().equals(MapleJob.GUNSLINGER);
+        return player.getJob().equals(MapleJob.BRAWLER)
+                || player.getJob().equals(MapleJob.GUNSLINGER);
     }
 
     public static boolean isBowmanSecondJob(MapleCharacter player) {
-        return player.getJob().equals(MapleJob.HUNTER) || player.getJob().equals(MapleJob.CROSSBOWMAN);
+        return player.getJob().equals(MapleJob.HUNTER)
+                || player.getJob().equals(MapleJob.CROSSBOWMAN);
     }
 
     public static boolean isClassicThiefSecondJob(MapleCharacter player) {
@@ -39,13 +41,14 @@ public class ThirdJobUtils {
     }
 
     public static boolean isSecondJobWarrior(MapleCharacter player) {
-        return player.getJob().equals(MapleJob.FIGHTER) || player.getJob().equals(MapleJob.PAGE)
+        return player.getJob().equals(MapleJob.FIGHTER)
+                || player.getJob().equals(MapleJob.PAGE)
                 || player.getJob().equals(MapleJob.SPEARMAN);
     }
 
     public static boolean isSecondJobMage(MapleCharacter player) {
-        return player.getJob().equals(MapleJob.FP_WIZARD) || player.getJob().equals(MapleJob.IL_WIZARD)
+        return player.getJob().equals(MapleJob.FP_WIZARD)
+                || player.getJob().equals(MapleJob.IL_WIZARD)
                 || player.getJob().equals(MapleJob.CLERIC);
     }
-
 }

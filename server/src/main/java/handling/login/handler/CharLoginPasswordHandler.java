@@ -4,16 +4,14 @@ import client.MapleClient;
 import database.LoginResult;
 import handling.MaplePacketHandler;
 import handling.login.LoginServer;
+import java.util.Calendar;
 import lombok.extern.slf4j.Slf4j;
 import tools.KoreanDateUtil;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.LoginPacket;
 
-import java.util.Calendar;
-
 @Slf4j
 public class CharLoginPasswordHandler implements MaplePacketHandler {
-
 
     private String normalizeStringPassword(String password) {
         if (password == null) {
@@ -38,20 +36,22 @@ public class CharLoginPasswordHandler implements MaplePacketHandler {
 
         if (tempBannedUntil.getTimeInMillis() != 0) {
             if (!c.tooManyLogin()) {
-                c.getSession().write(LoginPacket.getTempBan(
-                        KoreanDateUtil.getTempBanTimestamp(tempBannedUntil.getTimeInMillis()), c.getAccountData().getGreason()));
+                c.getSession()
+                        .write(
+                                LoginPacket.getTempBan(
+                                        KoreanDateUtil.getTempBanTimestamp(
+                                                tempBannedUntil.getTimeInMillis()),
+                                        c.getAccountData().getGreason()));
             }
         } else {
             c.resetLoginCount();
             c.setAccountData(result.getAccountData());
             LoginServer.getInstance().registerClient(c);
         }
-
     }
 
     @Override
     public boolean validateState(MapleClient c) {
         return !c.isLoggedIn();
     }
-
 }

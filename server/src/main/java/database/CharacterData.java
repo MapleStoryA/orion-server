@@ -1,17 +1,16 @@
 package database;
 
-import client.skill.EvanSkillPoints;
 import client.MapleJob;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
-import lombok.Getter;
-import lombok.Setter;
-import tools.data.output.MaplePacketLittleEndianWriter;
-
+import client.skill.EvanSkillPoints;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import tools.data.output.MaplePacketLittleEndianWriter;
 
 @Setter
 @Getter
@@ -32,7 +31,7 @@ public class CharacterData implements Serializable {
     private int mpApUsed;
     private int job;
     private byte skinColor;
-    private int gender;  // gender (0 = male, 1 = female)
+    private int gender; // gender (0 = male, 1 = female)
     private short fame;
     private int hair;
     private int face;

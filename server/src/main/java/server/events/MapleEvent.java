@@ -1,6 +1,6 @@
 /*
 This file is part of the ZeroFusion MapleStory Server
-Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 ZeroFusion organized by "RMZero213" <RMZero213@hotmail.com>
@@ -52,14 +52,19 @@ public abstract class MapleEvent {
                 if (e.isRunning) {
                     for (int i : e.mapid) {
                         if (cserv.getEvent() == i) {
-                            e.broadcast(MaplePacketCreator.serverNotice(0, "The event will start in 30 seconds!"));
+                            e.broadcast(
+                                    MaplePacketCreator.serverNotice(
+                                            0, "The event will start in 30 seconds!"));
                             e.broadcast(MaplePacketCreator.getClock(30));
-                            EventTimer.getInstance().schedule(new Runnable() {
+                            EventTimer.getInstance()
+                                    .schedule(
+                                            new Runnable() {
 
-                                public void run() {
-                                    e.startEvent();
-                                }
-                            }, 30000);
+                                                public void run() {
+                                                    e.startEvent();
+                                                }
+                                            },
+                                            30000);
                             break;
                         }
                     }
@@ -72,11 +77,11 @@ public abstract class MapleEvent {
     public static final void mapLoad(final MapleCharacter chr, final int channel) {
         if (chr == null) {
             return;
-        } //o_o
+        } // o_o
         for (MapleEventType t : MapleEventType.values()) {
             final MapleEvent e = WorldServer.getInstance().getChannel(channel).getEvent(t);
             if (e.isRunning) {
-                if (chr.getMapId() == 109050000) { //finished map
+                if (chr.getMapId() == 109050000) { // finished map
                     e.finished(chr);
                 }
                 for (int i : e.mapid) {
@@ -102,7 +107,8 @@ public abstract class MapleEvent {
         }
     }
 
-    public static final String scheduleEvent(final MapleEventType event, final ChannelServer cserv) {
+    public static final String scheduleEvent(
+            final MapleEventType event, final ChannelServer cserv) {
         if (cserv.getEvent() != -1 || cserv.getEvent(event) == null) {
             return "The event must not have been already scheduled.";
         }
@@ -113,7 +119,16 @@ public abstract class MapleEvent {
         }
         cserv.setEvent(cserv.getEvent(event).mapid[0]);
         cserv.getEvent(event).reset();
-        BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(0, "Hello! Let's play a " + event + " event in channel " + cserv.getChannel() + "! Change to channel " + cserv.getChannel() + " and use @event command!"));
+        BroadcastHelper.broadcastMessage(
+                MaplePacketCreator.serverNotice(
+                        0,
+                        "Hello! Let's play a "
+                                + event
+                                + " event in channel "
+                                + cserv.getChannel()
+                                + "! Change to channel "
+                                + cserv.getChannel()
+                                + " and use @event command!"));
         return "";
     }
 
@@ -168,26 +183,29 @@ public abstract class MapleEvent {
             }
             final int quantity = (max_quantity > 1 ? Randomizer.nextInt(max_quantity) : 0) + 1;
             if (MapleInventoryManipulator.checkSpace(chr.getClient(), reward, quantity, "")) {
-                MapleInventoryManipulator.addById(chr.getClient(), reward, (short) quantity, "Event prize on " + DateHelper.getCurrentReadableDate());
+                MapleInventoryManipulator.addById(
+                        chr.getClient(),
+                        reward,
+                        (short) quantity,
+                        "Event prize on " + DateHelper.getCurrentReadableDate());
             } else {
-                givePrize(chr); //do again until they get
+                givePrize(chr); // do again until they get
             }
-            //5062000 = 1-3
-            //5220000 = 1-25
-            //5050000 = 1-5
-            //2022121 = 1-10
-            //4031307 = 1-5
+            // 5062000 = 1-3
+            // 5220000 = 1-25
+            // 5050000 = 1-5
+            // 2022121 = 1-10
+            // 4031307 = 1-5
         }
     }
 
-    public void finished(MapleCharacter chr) { //most dont do shit here
+    public void finished(MapleCharacter chr) { // most dont do shit here
     }
 
-    public void onMapLoad(MapleCharacter chr) { //most dont do shit here
+    public void onMapLoad(MapleCharacter chr) { // most dont do shit here
     }
 
-    public void startEvent() {
-    }
+    public void startEvent() {}
 
     public void warpBack(MapleCharacter chr) {
         int map = chr.getSavedLocations().getSavedLocation(SavedLocationType.EVENT);

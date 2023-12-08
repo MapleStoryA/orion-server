@@ -1,6 +1,7 @@
 package scripting.v1.game.helper;
 
 import client.MapleClient;
+import java.io.File;
 import lombok.extern.slf4j.Slf4j;
 import org.mozilla.javascript.ContinuationPending;
 import scripting.v1.NpcScriptingManager;
@@ -8,11 +9,8 @@ import scripting.v1.game.NpcScripting;
 import server.config.ServerEnvironment;
 import tools.data.input.SeekableLittleEndianAccessor;
 
-import java.io.File;
-
 @Slf4j
 public class NpcTalkHelper {
-
 
     class ChatAction {
         public static final int ACTION_END_CHAT = -1;
@@ -21,12 +19,19 @@ public class NpcTalkHelper {
     }
 
     public static boolean isNewNpcScriptAvailable(int npc) {
-        var file = new File(ServerEnvironment.getConfig().getScriptsPath() + "/npcNew/" + npc + ".js");
+        var file =
+                new File(ServerEnvironment.getConfig().getScriptsPath() + "/npcNew/" + npc + ".js");
         return file.exists();
     }
 
     public static boolean isNewQuestScriptAvailable(int npc) {
-        var file = new File(ServerEnvironment.getConfig().getScriptsPath() + "/" + "questNew/" + npc + ".js");
+        var file =
+                new File(
+                        ServerEnvironment.getConfig().getScriptsPath()
+                                + "/"
+                                + "questNew/"
+                                + npc
+                                + ".js");
         return file.exists();
     }
 
@@ -58,16 +63,17 @@ public class NpcTalkHelper {
             return;
         }
         switch (type) {
-            case SAY: {
-                switch (action) {
-                    case ChatAction.ACTION_END_CHAT:
-                    case ChatAction.ACTION_BACK_OR_NO:
-                        break;
-                    case ChatAction.ACTION_NEXT:
-                        script.resume(1);
+            case SAY:
+                {
+                    switch (action) {
+                        case ChatAction.ACTION_END_CHAT:
+                        case ChatAction.ACTION_BACK_OR_NO:
+                            break;
+                        case ChatAction.ACTION_NEXT:
+                            script.resume(1);
+                    }
+                    break;
                 }
-                break;
-            }
             case ASK_ACCEPT_NO_ESC:
             case ASK_ACCEPT:
             case ASK_YES_NO:
@@ -83,7 +89,9 @@ public class NpcTalkHelper {
                 switch (action) {
                     case ChatAction.ACTION_BACK_OR_NO:
                     case ChatAction.ACTION_NEXT:
-                        int result = AskAvatarHelper.processAskAvatar(client.getPlayer(), slea.readByte(), false);
+                        int result =
+                                AskAvatarHelper.processAskAvatar(
+                                        client.getPlayer(), slea.readByte(), false);
                         script.resume(result);
                 }
                 break;
@@ -96,30 +104,31 @@ public class NpcTalkHelper {
                         break;
                 }
                 break;
-            case ASK_NUMBER: {
-                switch (action) {
-                    case ChatAction.ACTION_NEXT:
-                        script.resume(slea.readInt());
-                    case ChatAction.ACTION_BACK_OR_NO:
-                        break;
+            case ASK_NUMBER:
+                {
+                    switch (action) {
+                        case ChatAction.ACTION_NEXT:
+                            script.resume(slea.readInt());
+                        case ChatAction.ACTION_BACK_OR_NO:
+                            break;
+                    }
+                    break;
                 }
-                break;
-            }
-            case ASK_TEXT: {
-                switch (action) {
-                    case ChatAction.ACTION_NEXT:
-                        script.resume(slea.readMapleAsciiString());
-                    case ChatAction.ACTION_BACK_OR_NO:
-                        break;
+            case ASK_TEXT:
+                {
+                    switch (action) {
+                        case ChatAction.ACTION_NEXT:
+                            script.resume(slea.readMapleAsciiString());
+                        case ChatAction.ACTION_BACK_OR_NO:
+                            break;
+                    }
+                    break;
                 }
-                break;
-            }
             case UNDEFINED:
             default:
                 break;
         }
     }
-
 
     enum Talk {
         SAY(0x00),
@@ -151,5 +160,4 @@ public class NpcTalkHelper {
             return UNDEFINED;
         }
     }
-
 }

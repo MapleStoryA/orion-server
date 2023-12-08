@@ -1,12 +1,11 @@
 package client;
 
-import server.maps.AbstractAnimatedMapleMapObject;
-import server.maps.MapleMapObject;
-
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import server.maps.AbstractAnimatedMapleMapObject;
+import server.maps.MapleMapObject;
 
 public abstract class BaseMapleCharacter extends AbstractAnimatedMapleMapObject {
 

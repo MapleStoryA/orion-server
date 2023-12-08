@@ -6,6 +6,7 @@ import client.MapleJob;
 import client.MapleStat;
 import handling.world.WorldServer;
 import handling.world.party.MaplePartyCharacter;
+import java.awt.*;
 import lombok.extern.slf4j.Slf4j;
 import scripting.v1.event.EventCenter;
 import scripting.v1.event.EventInstance;
@@ -14,9 +15,6 @@ import server.maps.MapleMap;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
 import tools.packet.CWVsContextOnMessagePackets;
-
-import java.awt.*;
-
 
 @Slf4j
 public class TargetScripting extends PlayerScripting {
@@ -152,7 +150,6 @@ public class TargetScripting extends PlayerScripting {
         return nAP();
     }
 
-
     @ApiClass
     public int incAP(int value, int a) {
         player.gainAp(value);
@@ -229,7 +226,10 @@ public class TargetScripting extends PlayerScripting {
     @ApiClass
     public int transferParty(int map, String portal, int option) {
         for (MaplePartyCharacter mate : player.getParty().getMembers()) {
-            MapleCharacter chr = WorldServer.getInstance().getStorage(client.getChannel()).getCharacterById(mate.getId());
+            MapleCharacter chr =
+                    WorldServer.getInstance()
+                            .getStorage(client.getChannel())
+                            .getCharacterById(mate.getId());
             chr.changeMap(map, portal);
         }
         return 1;
@@ -250,8 +250,12 @@ public class TargetScripting extends PlayerScripting {
             final Point portalPos = new Point(player.getMap().getPortal(portal).getPosition());
             if (portalPos.distanceSq(player.getPosition()) < 90000.0) { // estimation
                 player.checkFollow();
-                sendPacket(MaplePacketCreator.instantMapWarp((byte) player.getMap().getPortal(portal).getId()));
-                player.getMap().movePlayer(player, new Point(player.getMap().getPortal(portal).getPosition()));
+                sendPacket(
+                        MaplePacketCreator.instantMapWarp(
+                                (byte) player.getMap().getPortal(portal).getId()));
+                player.getMap()
+                        .movePlayer(
+                                player, new Point(player.getMap().getPortal(portal).getPosition()));
             } else {
                 player.changeMap(mapz, mapz.getPortal(portal));
             }
@@ -279,7 +283,6 @@ public class TargetScripting extends PlayerScripting {
     public int incMoney(int meso, int show) {
         return incMoney(meso, meso == 1);
     }
-
 
     @ApiClass
     public int incMoney(int meso, boolean show) {
@@ -350,7 +353,10 @@ public class TargetScripting extends PlayerScripting {
     @ApiClass
     public boolean isNightWalker() {
         int job = nJob();
-        return job == MapleJob.NIGHTWALKER1.getId() || job == MapleJob.NIGHTWALKER2.getId() || job == MapleJob.NIGHTWALKER3.getId() || job == MapleJob.NIGHTWALKER4.getId();
+        return job == MapleJob.NIGHTWALKER1.getId()
+                || job == MapleJob.NIGHTWALKER2.getId()
+                || job == MapleJob.NIGHTWALKER3.getId()
+                || job == MapleJob.NIGHTWALKER4.getId();
     }
 
     @ApiClass
@@ -374,7 +380,10 @@ public class TargetScripting extends PlayerScripting {
     }
 
     private MapleMap getWarpMap(final int map) {
-        return WorldServer.getInstance().getChannel(client.getChannel()).getMapFactory().getMap(map);
+        return WorldServer.getInstance()
+                .getChannel(client.getChannel())
+                .getMapFactory()
+                .getMap(map);
     }
 
     @ApiClass
@@ -416,6 +425,4 @@ public class TargetScripting extends PlayerScripting {
     public void changeMusic(String music) {
         sendPacket(MaplePacketCreator.musicChange(music));
     }
-
-
 }

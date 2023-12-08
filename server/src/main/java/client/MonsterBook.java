@@ -1,41 +1,17 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package client;
 
 import constants.GameConstants;
 import database.DatabaseConnection;
-import server.MapleItemInformationProvider;
-import tools.MaplePacketCreator;
-import tools.data.output.MaplePacketLittleEndianWriter;
-import tools.packet.MonsterBookPacket;
-
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import server.MapleItemInformationProvider;
+import tools.MaplePacketCreator;
+import tools.data.output.MaplePacketLittleEndianWriter;
+import tools.packet.MonsterBookPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MonsterBook implements Serializable {
@@ -59,9 +35,11 @@ public class MonsterBook implements Serializable {
         calculateLevel();
     }
 
-    public final static MonsterBook loadCards(final int charid) throws SQLException {
+    public static final MonsterBook loadCards(final int charid) throws SQLException {
         var con = DatabaseConnection.getConnection();
-        var ps = con.prepareStatement("SELECT * FROM monsterbook WHERE charid = ? ORDER BY cardid ASC");
+        var ps =
+                con.prepareStatement(
+                        "SELECT * FROM monsterbook WHERE charid = ? ORDER BY cardid ASC");
         ps.setInt(1, charid);
         final ResultSet rs = ps.executeQuery();
         Map<Integer, Integer> cards = new LinkedHashMap<Integer, Integer>();
@@ -142,7 +120,8 @@ public class MonsterBook implements Serializable {
         }
     }
 
-    public final void addCharInfoPacket(final int bookcover, final MaplePacketLittleEndianWriter mplew) {
+    public final void addCharInfoPacket(
+            final int bookcover, final MaplePacketLittleEndianWriter mplew) {
         mplew.writeInt(BookLevel);
         mplew.writeInt(NormalCard);
         mplew.writeInt(SpecialCard);
@@ -156,7 +135,12 @@ public class MonsterBook implements Serializable {
 
     public final void addCard(final MapleClient c, final int cardid) {
         changed = true;
-        c.getPlayer().getMap().broadcastMessage(c.getPlayer(), MonsterBookPacket.showForeginCardEffect(c.getPlayer().getId()), false);
+        c.getPlayer()
+                .getMap()
+                .broadcastMessage(
+                        c.getPlayer(),
+                        MonsterBookPacket.showForeginCardEffect(c.getPlayer().getId()),
+                        false);
 
         if (cards.containsKey(cardid)) {
             final int levels = cards.get(cardid);

@@ -36,6 +36,5 @@ public class NettyMaplePacketEncoder extends MessageToByteEncoder<byte[]> {
             // no client object created yet, send unencrypted (hello)
             out.writeBytes(message);
         }
-
     }
 }

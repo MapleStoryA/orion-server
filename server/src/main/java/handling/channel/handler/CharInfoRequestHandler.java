@@ -24,13 +24,19 @@ public class CharInfoRequestHandler extends AbstractMaplePacketHandler {
             if (!player.isGameMaster() || c.getPlayer().isGameMaster()) {
                 if (c.getPlayer().getId() == objectid) {
                     if (player.getPet(0) != null) {
-                        c.getSession().write(PetPacket.loadExceptionList(player.getId(), player.getPet(0).getUniqueId(), ""));
+                        c.getSession()
+                                .write(
+                                        PetPacket.loadExceptionList(
+                                                player.getId(),
+                                                player.getPet(0).getUniqueId(),
+                                                ""));
                     }
                 }
-                c.getSession().write(MaplePacketCreator.charInfo(player, c.getPlayer().getId() == objectid));
+                c.getSession()
+                        .write(
+                                MaplePacketCreator.charInfo(
+                                        player, c.getPlayer().getId() == objectid));
             }
         }
-
     }
-
 }

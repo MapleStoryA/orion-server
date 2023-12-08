@@ -1,8 +1,7 @@
 package client.drop;
 
-import server.life.MapleMonster;
-
 import java.util.List;
+import server.life.MapleMonster;
 
 public interface MapleDropProvider {
 

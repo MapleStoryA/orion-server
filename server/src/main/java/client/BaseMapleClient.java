@@ -2,24 +2,21 @@ package client;
 
 import constants.ServerConstants;
 import handling.session.NetworkSession;
+import java.util.concurrent.ScheduledFuture;
 import lombok.Getter;
 import server.Timer;
 import tools.MapleAESOFB;
 import tools.MaplePacketCreator;
 import tools.packet.LoginPacket;
 
-import java.util.concurrent.ScheduledFuture;
-
 public class BaseMapleClient {
     public static final String CLIENT_KEY = "CLIENT";
-
 
     protected final MapleAESOFB send;
     protected final MapleAESOFB receive;
     protected NetworkSession session;
     private long lastPong = 0;
-    @Getter
-    private short loginAttempt = 0;
+    @Getter private short loginAttempt = 0;
     private ScheduledFuture<?> idleTask = null;
 
     public BaseMapleClient(MapleAESOFB send, MapleAESOFB receive, NetworkSession session) {
@@ -28,10 +25,11 @@ public class BaseMapleClient {
         this.session = session;
     }
 
-
     public BaseMapleClient(byte[] ivSend, byte[] ivRecv, NetworkSession session) {
-        this(new MapleAESOFB(ivSend, (short) (0xFFFF - ServerConstants.MAPLE_VERSION)),
-                new MapleAESOFB(ivRecv, ServerConstants.MAPLE_VERSION), session);
+        this(
+                new MapleAESOFB(ivSend, (short) (0xFFFF - ServerConstants.MAPLE_VERSION)),
+                new MapleAESOFB(ivRecv, ServerConstants.MAPLE_VERSION),
+                session);
     }
 
     public final MapleAESOFB getReceiveCrypto() {

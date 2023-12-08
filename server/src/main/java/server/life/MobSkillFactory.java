@@ -1,51 +1,39 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package server.life;
-
-import provider.MapleData;
-import provider.MapleDataProvider;
-import provider.MapleDataTool;
-import server.config.ServerEnvironment;
-import tools.Pair;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import provider.MapleData;
+import provider.MapleDataProvider;
+import provider.MapleDataTool;
+import server.config.ServerEnvironment;
+import tools.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class MobSkillFactory {
 
-    private static final Map<Pair<Integer, Integer>, MobSkill> mobSkills = new HashMap<Pair<Integer, Integer>, MobSkill>();
-    private static final MapleDataProvider dataSource = ServerEnvironment.getConfig().getDataProvider("wz/Skill");
+    private static final Map<Pair<Integer, Integer>, MobSkill> mobSkills =
+            new HashMap<Pair<Integer, Integer>, MobSkill>();
+    private static final MapleDataProvider dataSource =
+            ServerEnvironment.getConfig().getDataProvider("wz/Skill");
     private static final MapleData skillRoot = dataSource.getData("MobSkill.img");
 
     public static MobSkill getMobSkill(int skillId, int level) {
-        MobSkill ret = mobSkills.get(new Pair<Integer, Integer>(Integer.valueOf(skillId), Integer.valueOf(level)));
+        MobSkill ret =
+                mobSkills.get(
+                        new Pair<Integer, Integer>(
+                                Integer.valueOf(skillId), Integer.valueOf(level)));
         if (ret != null) {
             return ret;
         }
-        if (skillRoot == null || skillRoot.getChildren() == null || skillRoot.getChildByPath(String.valueOf(skillId)) == null || skillRoot.getChildByPath(String.valueOf(skillId)).getChildren() == null || skillRoot.getChildByPath(String.valueOf(skillId)).getChildByPath("level") == null) {
+        if (skillRoot == null
+                || skillRoot.getChildren() == null
+                || skillRoot.getChildByPath(String.valueOf(skillId)) == null
+                || skillRoot.getChildByPath(String.valueOf(skillId)).getChildren() == null
+                || skillRoot.getChildByPath(String.valueOf(skillId)).getChildByPath("level")
+                        == null) {
             return null;
         }
         final MapleData skillData = skillRoot.getChildByPath(skillId + "/level/" + level);
@@ -55,7 +43,10 @@ public class MobSkillFactory {
                 if (skillData.getChildByPath(String.valueOf(i)) == null) {
                     break;
                 }
-                toSummon.add(Integer.valueOf(MapleDataTool.getInt(skillData.getChildByPath(String.valueOf(i)), 0)));
+                toSummon.add(
+                        Integer.valueOf(
+                                MapleDataTool.getInt(
+                                        skillData.getChildByPath(String.valueOf(i)), 0)));
             }
             final MapleData ltd = skillData.getChildByPath("lt");
             Point lt = null;
@@ -77,7 +68,9 @@ public class MobSkillFactory {
             ret.setLimit((short) MapleDataTool.getInt("limit", skillData, 0));
             ret.setLtRb(lt, rb);
 
-            mobSkills.put(new Pair<Integer, Integer>(Integer.valueOf(skillId), Integer.valueOf(level)), ret);
+            mobSkills.put(
+                    new Pair<Integer, Integer>(Integer.valueOf(skillId), Integer.valueOf(level)),
+                    ret);
         }
         return ret;
     }

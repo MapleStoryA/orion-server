@@ -1,30 +1,10 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package tools.packet;
 
 import client.MapleCharacter;
 import client.MapleClient;
 import client.inventory.IItem;
 import handling.SendPacketOpcode;
+import java.util.Set;
 import server.MerchItemPackage;
 import server.shops.AbstractPlayerStore.BoughtItem;
 import server.shops.HiredMerchant;
@@ -34,8 +14,6 @@ import server.shops.MaplePlayerShop;
 import server.shops.MaplePlayerShopItem;
 import tools.Pair;
 import tools.data.output.MaplePacketLittleEndianWriter;
-
-import java.util.Set;
 
 @lombok.extern.slf4j.Slf4j
 public class PlayerShopPacket {
@@ -75,22 +53,25 @@ public class PlayerShopPacket {
     public static final byte[] sendTitleBoxMessage(byte mode) {
         final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
         // 9: Please use this after retrieving items from Fredrick of Free Market.
-        // 10: Another character is currently using the item. Please log on as a different character and close the store, or empty out the Store Bank.
+        // 10: Another character is currently using the item. Please log on as a different character
+        // and close the store, or empty out the Store Bank.
         // 11: You are currently unable to open the store.
         // 15: Please retrieve your items from Fredrick.
         mplew.writeShort(SendPacketOpcode.ENTRUSTED_SHOP.getValue());
         mplew.write(mode);
         if (mode == 8 || mode == 16) {
-            // 8: Your store is currently open in Channel 2, Free Market 10. Please use this after closing the store.
+            // 8: Your store is currently open in Channel 2, Free Market 10. Please use this after
+            // closing the store.
             mplew.writeInt(0); // Room
             mplew.write(0); // (channel - 1)
-            // If mode == 16 and channel -1 = -1/-2/-3 : Unable to use this due to the Remote Shop not being open.
+            // If mode == 16 and channel -1 = -1/-2/-3 : Unable to use this due to the Remote Shop
+            // not being open.
             // The store is open at Channel 2. Would you like to change to that channel?
         } else if (mode == 13) { // Minimap stuffs
             mplew.writeInt(0); // ?? object id?
         } else if (mode == 14) {
-            //0: Renaming Failed - Can't find the Hired Mercahtn
-            //1: Renaming Successful.
+            // 0: Renaming Failed - Can't find the Hired Mercahtn
+            // 1: Renaming Successful.
             mplew.write(0);
         } else if (mode == 18) { // Normal popup message
             mplew.write(1);
@@ -110,7 +91,8 @@ public class PlayerShopPacket {
         return mplew.getPacket();
     }
 
-    public static final byte[] getHiredMerch2(final MapleCharacter chr, final HiredMerchant merch, final boolean firstTime) {
+    public static final byte[] getHiredMerch2(
+            final MapleCharacter chr, final HiredMerchant merch, final boolean firstTime) {
         final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
         mplew.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
@@ -287,7 +269,7 @@ public class PlayerShopPacket {
     public static final byte[] destroyHiredMerchant(final int id) {
         final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
-        mplew.writeShort(SendPacketOpcode.DESTROY_HIRED_MERCHANT.getValue());//Same
+        mplew.writeShort(SendPacketOpcode.DESTROY_HIRED_MERCHANT.getValue()); // Same
         mplew.writeInt(id);
 
         return mplew.getPacket();
@@ -364,11 +346,12 @@ public class PlayerShopPacket {
         return mplew.getPacket();
     }
 
-    //18: You have retrieved your items and mesos.
-    //19: Unable to retrieve mesos and items due to\r\ntoo much money stored\r\nat the Store Bank.
-    //20: Unable to retrieve mesos and items due to\r\none of the items\r\nthat can only be possessed one at a time.
-    //21: Due to the lack of service fee, you were unable to \r\nretrieve mesos or items.
-    //22: Unable to retrieve mesos and items\r\ndue to full inventory.
+    // 18: You have retrieved your items and mesos.
+    // 19: Unable to retrieve mesos and items due to\r\ntoo much money stored\r\nat the Store Bank.
+    // 20: Unable to retrieve mesos and items due to\r\none of the items\r\nthat can only be
+    // possessed one at a time.
+    // 21: Due to the lack of service fee, you were unable to \r\nretrieve mesos or items.
+    // 22: Unable to retrieve mesos and items\r\ndue to full inventory.
     public static final byte[] merchItem_Message(final byte op) {
         final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
@@ -397,7 +380,7 @@ public class PlayerShopPacket {
                 // Your Personal Store is open #bin Channel %s, Free Market
                 // %d#k.\r\nIf you need me, then please close your personal store
                 // first before seeing me.
-                //mplew.writeMapleAsciiString("test");
+                // mplew.writeMapleAsciiString("test");
                 break;
             case 36:
                 mplew.writeInt(0); // % tax or days, 1 day = 1%
@@ -483,7 +466,7 @@ public class PlayerShopPacket {
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
         mplew.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         mplew.write(0x3D);
-        //owner = 1 visitor = 0?
+        // owner = 1 visitor = 0?
         mplew.write(slot);
         return mplew.getPacket();
     }
@@ -532,7 +515,8 @@ public class PlayerShopPacket {
         return mplew.getPacket();
     }
 
-    public static void addGameInfo(MaplePacketLittleEndianWriter mplew, MapleCharacter chr, MapleMiniGame game) {
+    public static void addGameInfo(
+            MaplePacketLittleEndianWriter mplew, MapleCharacter chr, MapleMiniGame game) {
         mplew.writeInt(game.getGameType()); // start of visitor; unknown
         mplew.writeInt(game.getWins(chr));
         mplew.writeInt(game.getTies(chr));
@@ -579,14 +563,14 @@ public class PlayerShopPacket {
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
         mplew.writeShort(SendPacketOpcode.PLAYER_INTERACTION.getValue());
         mplew.write(0x3C);
-        mplew.write(type); //lose = 0, tie = 1, win = 2
+        mplew.write(type); // lose = 0, tie = 1, win = 2
         game.setPoints(x, type);
         if (type != 0) {
             game.setPoints(x == 1 ? 0 : 1, type == 2 ? 0 : 1);
         }
         if (type != 1) {
             if (type == 0) {
-                mplew.write(x == 1 ? 0 : 1); //who did it?
+                mplew.write(x == 1 ? 0 : 1); // who did it?
             } else {
                 mplew.write(x);
             }
@@ -626,12 +610,13 @@ public class PlayerShopPacket {
         return mplew.getPacket();
     }
 
-    //BELOW ARE UNUSED PLEASE RECONSIDER.
+    // BELOW ARE UNUSED PLEASE RECONSIDER.
     public static final byte[] sendHiredMerchantMessage(final byte type) {
         final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
         // 07 = send title box
         // 09 = Please pick up your items from Fredrick and then try again.
-        // 0A = Your another character is using the item now. Please close the shop with that character or empty your store bank.
+        // 0A = Your another character is using the item now. Please close the shop with that
+        // character or empty your store bank.
         // 0B = You cannot open it now.
         // 0F = Please retrieve your items from Fredrick.
         mplew.writeShort(SendPacketOpcode.MERCH_ITEM_MSG.getValue());

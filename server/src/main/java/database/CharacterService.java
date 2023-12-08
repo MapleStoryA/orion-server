@@ -10,41 +10,46 @@ import client.SavedSkillMacro;
 import client.skill.EvanSkillPoints;
 import client.skill.SkillMacro;
 import handling.world.guild.GuildManager;
-import lombok.extern.slf4j.Slf4j;
-import server.maps.SavedLocationType;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import server.maps.SavedLocationType;
 
 @Slf4j
 public class CharacterService {
 
-    public static void deleteWhereCharacterId(Connection con, String sql, int id) throws SQLException {
+    public static void deleteWhereCharacterId(Connection con, String sql, int id)
+            throws SQLException {
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setInt(1, id);
         ps.executeUpdate();
         ps.close();
     }
 
-    public static void deleteWhereCharacterName(Connection con, String sql, String name) throws SQLException {
+    public static void deleteWhereCharacterName(Connection con, String sql, String name)
+            throws SQLException {
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setString(1, name);
         ps.executeUpdate();
         ps.close();
     }
 
-    public static void saveAchievement(FinishedAchievements finishedAchievements, int account_id, int characterId) {
+    public static void saveAchievement(
+            FinishedAchievements finishedAchievements, int account_id, int characterId) {
         try (var con = DatabaseConnection.getConnection()) {
             if (finishedAchievements.isChanged()) {
                 var ps = con.prepareStatement("DELETE FROM achievements WHERE accountid = ?");
                 ps.setInt(1, account_id);
                 ps.executeUpdate();
                 ps.close();
-                ps = con.prepareStatement("INSERT INTO achievements(charid, achievementid, accountid) VALUES(?, ?, ?)");
+                ps =
+                        con.prepareStatement(
+                                "INSERT INTO achievements(charid, achievementid, accountid)"
+                                        + " VALUES(?, ?, ?)");
                 for (Integer achievementid : finishedAchievements.getFinishedAchievements()) {
                     ps.setInt(1, characterId);
                     ps.setInt(2, achievementid);
@@ -60,12 +65,15 @@ public class CharacterService {
 
     public static void saveSkillMacro(SavedSkillMacro savedSkillMacro, int characterId) {
         try (var con = DatabaseConnection.getConnection()) {
-            deleteWhereCharacterId(con, "DELETE FROM skillmacros WHERE characterid = ?", characterId);
+            deleteWhereCharacterId(
+                    con, "DELETE FROM skillmacros WHERE characterid = ?", characterId);
             for (int i = 0; i < 5; i++) {
                 final SkillMacro macro = savedSkillMacro.getSkillMacros()[i];
                 if (macro != null) {
-                    var ps = con.prepareStatement(
-                            "INSERT INTO skillmacros (characterid, skill1, skill2, skill3, name, shout, position) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                    var ps =
+                            con.prepareStatement(
+                                    "INSERT INTO skillmacros (characterid, skill1, skill2, skill3,"
+                                        + " name, shout, position) VALUES (?, ?, ?, ?, ?, ?, ?)");
                     ps.setInt(1, characterId);
                     ps.setInt(2, macro.getSkill1());
                     ps.setInt(3, macro.getSkill2());
@@ -107,12 +115,13 @@ public class CharacterService {
             e.printStackTrace();
         }
         return null;
-
     }
 
     public static void unban(int accId) {
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("UPDATE accounts SET banned = 0 and banreason = '' WHERE id = ?");
+            PreparedStatement ps =
+                    con.prepareStatement(
+                            "UPDATE accounts SET banned = 0 and banreason = '' WHERE id = ?");
             ps.setInt(1, accId);
             ps.executeUpdate();
             ps.close();
@@ -123,7 +132,10 @@ public class CharacterService {
 
     public static int deleteCharacter(final int cid, int accId) {
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT guildid, guildrank, name FROM characters WHERE id = ? AND accountid = ?");
+            PreparedStatement ps =
+                    con.prepareStatement(
+                            "SELECT guildid, guildrank, name FROM characters WHERE id = ? AND"
+                                    + " accountid = ?");
             ps.setInt(1, cid);
             ps.setInt(2, accId);
             ResultSet rs = ps.executeQuery();
@@ -133,7 +145,7 @@ public class CharacterService {
                 return 9;
             }
             if (rs.getInt("guildid") > 0) { // is in a guild when deleted
-                if (rs.getInt("guildrank") == 1) { //cant delete when leader
+                if (rs.getInt("guildrank") == 1) { // cant delete when leader
                     rs.close();
                     ps.close();
                     return 22;
@@ -142,32 +154,54 @@ public class CharacterService {
             }
 
             final String name = rs.getString("name");
-            CharacterService.deleteWhereCharacterName(con, "DELETE FROM `notes` WHERE `to` = ?", name);
-            CharacterService.deleteWhereCharacterName(con, "DELETE FROM `notes` WHERE `from` = ?", name);
+            CharacterService.deleteWhereCharacterName(
+                    con, "DELETE FROM `notes` WHERE `to` = ?", name);
+            CharacterService.deleteWhereCharacterName(
+                    con, "DELETE FROM `notes` WHERE `from` = ?", name);
 
             rs.close();
             ps.close();
 
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM characters WHERE id = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM monsterbook WHERE charid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM hiredmerch WHERE characterid = ?", cid);
-            //CharacterService.deleteWhereCharacterId(con, "DELETE FROM cheatlog WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM mountdata WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM inventoryitems WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM famelog WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM famelog WHERE characterid_to = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM wishlist WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM buddyentries WHERE owner = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM buddyentries WHERE buddyid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM keymap WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM savedlocations WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM skills WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM mountdata WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM skillmacros WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM trocklocations WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM queststatus WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM customqueststatus WHERE characterid = ?", cid);
-            CharacterService.deleteWhereCharacterId(con, "DELETE FROM inventoryslot WHERE characterid = ?", cid);
+            CharacterService.deleteWhereCharacterId(
+                    con, "DELETE FROM characters WHERE id = ?", cid);
+            CharacterService.deleteWhereCharacterId(
+                    con, "DELETE FROM monsterbook WHERE charid = ?", cid);
+            CharacterService.deleteWhereCharacterId(
+                    con, "DELETE FROM hiredmerch WHERE characterid = ?", cid);
+            // CharacterService.deleteWhereCharacterId(con, "DELETE FROM cheatlog WHERE characterid
+            // = ?", cid);
+            CharacterService.deleteWhereCharacterId(
+                    con, "DELETE FROM mountdata WHERE characterid = ?", cid);
+            CharacterService.deleteWhereCharacterId(
+                    con, "DELETE FROM inventoryitems WHERE characterid = ?", cid);
+            CharacterService.deleteWhereCharacterId(
+                    con, "DELETE FROM famelog WHERE characterid = ?", cid);
+            CharacterService.deleteWhereCharacterId(
+                    con, "DELETE FROM famelog WHERE characterid_to = ?", cid);
+            CharacterService.deleteWhereCharacterId(
+                    con, "DELETE FROM wishlist WHERE characterid = ?", cid);
+            CharacterService.deleteWhereCharacterId(
+                    con, "DELETE FROM buddyentries WHERE owner = ?", cid);
+            CharacterService.deleteWhereCharacterId(
+                    con, "DELETE FROM buddyentries WHERE buddyid = ?", cid);
+            CharacterService.deleteWhereCharacterId(
+                    con, "DELETE FROM keymap WHERE characterid = ?", cid);
+            CharacterService.deleteWhereCharacterId(
+                    con, "DELETE FROM savedlocations WHERE characterid = ?", cid);
+            CharacterService.deleteWhereCharacterId(
+                    con, "DELETE FROM skills WHERE characterid = ?", cid);
+            CharacterService.deleteWhereCharacterId(
+                    con, "DELETE FROM mountdata WHERE characterid = ?", cid);
+            CharacterService.deleteWhereCharacterId(
+                    con, "DELETE FROM skillmacros WHERE characterid = ?", cid);
+            CharacterService.deleteWhereCharacterId(
+                    con, "DELETE FROM trocklocations WHERE characterid = ?", cid);
+            CharacterService.deleteWhereCharacterId(
+                    con, "DELETE FROM queststatus WHERE characterid = ?", cid);
+            CharacterService.deleteWhereCharacterId(
+                    con, "DELETE FROM customqueststatus WHERE characterid = ?", cid);
+            CharacterService.deleteWhereCharacterId(
+                    con, "DELETE FROM inventoryslot WHERE characterid = ?", cid);
             return 0;
         } catch (Exception e) {
             log.info("Log_Packet_Except.rtf", e);
@@ -179,7 +213,9 @@ public class CharacterService {
     public static List<CharNameAndId> loadCharactersInternal(int serverId, int accountId) {
         List<CharNameAndId> chars = new LinkedList<>();
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT id, name FROM characters WHERE accountid = ? AND world = ?");
+            PreparedStatement ps =
+                    con.prepareStatement(
+                            "SELECT id, name FROM characters WHERE accountid = ? AND world = ?");
             ps.setInt(1, accountId);
             ps.setInt(2, serverId);
 
@@ -195,7 +231,8 @@ public class CharacterService {
         return chars;
     }
 
-    public static List<MapleCharacter> loadCharacters(MapleClient client, final int serverId, int accountId) {
+    public static List<MapleCharacter> loadCharacters(
+            MapleClient client, final int serverId, int accountId) {
         final List<MapleCharacter> chars = new LinkedList<>();
         final List<Integer> allowedChar = new LinkedList<>();
 
@@ -215,7 +252,10 @@ public class CharacterService {
         if (savedLocations.isChanged()) {
             try (var con = DatabaseConnection.getConnection()) {
                 deleteWhereCharacterId(con, "DELETE FROM savedlocations WHERE characterid = ?", id);
-                var ps = con.prepareStatement("INSERT INTO savedlocations (characterid, `locationtype`, `map`) VALUES (?, ?, ?)");
+                var ps =
+                        con.prepareStatement(
+                                "INSERT INTO savedlocations (characterid, `locationtype`, `map`)"
+                                        + " VALUES (?, ?, ?)");
                 ps.setInt(1, id);
                 for (final SavedLocationType savedLocationType : SavedLocationType.values()) {
                     if (savedLocations.getSavedLocation(savedLocationType.getValue()) != -1) {

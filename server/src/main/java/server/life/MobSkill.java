@@ -1,34 +1,9 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package server.life;
 
 import client.MapleCharacter;
 import client.MapleDisease;
 import client.status.MonsterStatus;
 import constants.GameConstants;
-import server.maps.MapleMapObject;
-import server.maps.MapleMapObjectType;
-import server.maps.MapleMist;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,6 +11,9 @@ import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import server.maps.MapleMapObject;
+import server.maps.MapleMapObjectType;
+import server.maps.MapleMist;
 
 @lombok.extern.slf4j.Slf4j
 public class MobSkill {
@@ -99,14 +77,17 @@ public class MobSkill {
             case 153:
                 stop = monster.isBuffed(MonsterStatus.MAGIC_DEFENSE_UP);
                 break;
-            //154-157, don't stop it
+                // 154-157, don't stop it
             case 140:
             case 141:
             case 142:
             case 143:
             case 144:
             case 145:
-                stop = monster.isBuffed(MonsterStatus.DAMAGE_IMMUNITY) || monster.isBuffed(MonsterStatus.MAGIC_IMMUNITY) || monster.isBuffed(MonsterStatus.WEAPON_IMMUNITY);
+                stop =
+                        monster.isBuffed(MonsterStatus.DAMAGE_IMMUNITY)
+                                || monster.isBuffed(MonsterStatus.MAGIC_IMMUNITY)
+                                || monster.isBuffed(MonsterStatus.WEAPON_IMMUNITY);
                 break;
             case 200:
                 stop = player.getMap().getNumMonsters() >= limit;
@@ -117,7 +98,8 @@ public class MobSkill {
 
     public void applyEffect(MapleCharacter player, MapleMonster monster, boolean skill) {
         MapleDisease disease = null;
-        Map<MonsterStatus, Integer> stats = new EnumMap<MonsterStatus, Integer>(MonsterStatus.class);
+        Map<MonsterStatus, Integer> stats =
+                new EnumMap<MonsterStatus, Integer>(MonsterStatus.class);
         List<Integer> reflection = new LinkedList<Integer>();
 
         switch (skillId) {
@@ -151,11 +133,12 @@ public class MobSkill {
                 stats.put(MonsterStatus.SPEED, Integer.valueOf(x));
                 break;
             case 157:
-                stats.put(MonsterStatus.SEAL, Integer.valueOf(x)); //o.o
+                stats.put(MonsterStatus.SEAL, Integer.valueOf(x)); // o.o
                 break;
             case 114:
                 if (lt != null && rb != null && skill && monster != null) {
-                    List<MapleMapObject> objects = getObjectsInRange(monster, MapleMapObjectType.MONSTER);
+                    List<MapleMapObject> objects =
+                            getObjectsInRange(monster, MapleMapObjectType.MONSTER);
                     final int hp = (getX() / 1000) * (int) (950 + 1050 * Math.random());
                     for (MapleMapObject mons : objects) {
                         ((MapleMonster) mons).heal(hp, getY(), true);
@@ -192,7 +175,8 @@ public class MobSkill {
 
             case 129: // Banish
                 if (monster != null) {
-                    if (monster.getEventInstance() != null && monster.getEventInstance().getName().indexOf("BossQuest") != -1) {
+                    if (monster.getEventInstance() != null
+                            && monster.getEventInstance().getName().indexOf("BossQuest") != -1) {
                         break;
                     }
                     final BanishInfo info = monster.getStats().getBanishInfo();
@@ -209,7 +193,14 @@ public class MobSkill {
                 break;
             case 131: // Mist
                 if (monster != null) {
-                    monster.getMap().spawnMist(new MapleMist(calculateBoundingBox(monster.getPosition(), true), monster, this), x * 10, false);
+                    monster.getMap()
+                            .spawnMist(
+                                    new MapleMist(
+                                            calculateBoundingBox(monster.getPosition(), true),
+                                            monster,
+                                            this),
+                                    x * 10,
+                                    false);
                 }
                 break;
             case 140:
@@ -246,15 +237,18 @@ public class MobSkill {
                 for (Integer mobId : getSummons()) {
                     MapleMonster toSpawn = null;
                     try {
-                        toSpawn = MapleLifeFactory.getMonster(GameConstants.getCustomSpawnID(monster.getId(), mobId));
-                    } catch (RuntimeException e) { //monster doesn't exist
+                        toSpawn =
+                                MapleLifeFactory.getMonster(
+                                        GameConstants.getCustomSpawnID(monster.getId(), mobId));
+                    } catch (RuntimeException e) { // monster doesn't exist
                         continue;
                     }
                     if (toSpawn == null) {
                         continue;
                     }
                     toSpawn.setPosition(monster.getPosition());
-                    int ypos = (int) monster.getPosition().getY(), xpos = (int) monster.getPosition().getX();
+                    int ypos = (int) monster.getPosition().getY(),
+                            xpos = (int) monster.getPosition().getX();
 
                     switch (mobId) {
                         case 8500003: // Pap bomb high
@@ -262,25 +256,35 @@ public class MobSkill {
                             ypos = -590;
                             break;
                         case 8500004: // Pap bomb
-                            //Spawn between -500 and 500 from the monsters X position
-                            xpos = (int) (monster.getPosition().getX() + Math.ceil(Math.random() * 1000.0) - 500);
+                            // Spawn between -500 and 500 from the monsters X position
+                            xpos =
+                                    (int)
+                                            (monster.getPosition().getX()
+                                                    + Math.ceil(Math.random() * 1000.0)
+                                                    - 500);
                             ypos = (int) monster.getPosition().getY();
                             break;
-                        case 8510100: //Pianus bomb
+                        case 8510100: // Pianus bomb
                             if (Math.ceil(Math.random() * 5) == 1) {
                                 ypos = 78;
-                                xpos = (int) (0 + Math.ceil(Math.random() * 5)) + ((Math.ceil(Math.random() * 2) == 1) ? 180 : 0);
+                                xpos =
+                                        (int) (0 + Math.ceil(Math.random() * 5))
+                                                + ((Math.ceil(Math.random() * 2) == 1) ? 180 : 0);
                             } else {
-                                xpos = (int) (monster.getPosition().getX() + Math.ceil(Math.random() * 1000.0) - 500);
+                                xpos =
+                                        (int)
+                                                (monster.getPosition().getX()
+                                                        + Math.ceil(Math.random() * 1000.0)
+                                                        - 500);
                             }
                             break;
-                        case 8820007: //mini bean
+                        case 8820007: // mini bean
                             continue;
                     }
                     // Get spawn coordinates (This fixes monster lock)
                     // TODO get map left and right wall.
                     switch (monster.getMap().getId()) {
-                        case 220080001: //Pap map
+                        case 220080001: // Pap map
                             if (xpos < -890) {
                                 xpos = (int) (-890 + Math.ceil(Math.random() * 150));
                             } else if (xpos > 230) {
@@ -295,7 +299,11 @@ public class MobSkill {
                             }
                             break;
                     }
-                    monster.getMap().spawnMonsterWithEffect(toSpawn, getSpawnEffect(), monster.getMap().calcPointBelow(new Point(xpos, ypos - 1)));
+                    monster.getMap()
+                            .spawnMonsterWithEffect(
+                                    toSpawn,
+                                    getSpawnEffect(),
+                                    monster.getMap().calcPointBelow(new Point(xpos, ypos - 1)));
                 }
                 break;
         }
@@ -303,7 +311,8 @@ public class MobSkill {
         if (stats.size() > 0 && monster != null) {
             if (lt != null && rb != null && skill) {
                 for (MapleMapObject mons : getObjectsInRange(monster, MapleMapObjectType.MONSTER)) {
-                    ((MapleMonster) mons).applyMonsterBuff(stats, getSkillId(), getDuration(), this, reflection);
+                    ((MapleMonster) mons)
+                            .applyMonsterBuff(stats, getSkillId(), getDuration(), this, reflection);
                 }
             } else {
                 monster.applyMonsterBuff(stats, getSkillId(), getDuration(), this, reflection);
@@ -427,14 +436,17 @@ public class MobSkill {
     }
 
     private List<MapleCharacter> getPlayersInRange(MapleMonster monster, MapleCharacter player) {
-        final Rectangle bounds = calculateBoundingBox(monster.getPosition(), monster.isFacingLeft());
+        final Rectangle bounds =
+                calculateBoundingBox(monster.getPosition(), monster.isFacingLeft());
         List<MapleCharacter> players = new ArrayList<MapleCharacter>();
         players.add(player);
         return monster.getMap().getPlayersInRectAndInList(bounds, players);
     }
 
-    private List<MapleMapObject> getObjectsInRange(MapleMonster monster, MapleMapObjectType objectType) {
-        final Rectangle bounds = calculateBoundingBox(monster.getPosition(), monster.isFacingLeft());
+    private List<MapleMapObject> getObjectsInRange(
+            MapleMonster monster, MapleMapObjectType objectType) {
+        final Rectangle bounds =
+                calculateBoundingBox(monster.getPosition(), monster.isFacingLeft());
         List<MapleMapObjectType> objectTypes = new ArrayList<MapleMapObjectType>();
         objectTypes.add(objectType);
         return monster.getMap().getMapObjectsInRect(bounds, objectTypes);
