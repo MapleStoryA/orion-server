@@ -55,9 +55,9 @@ public class ShutdownServer implements ShutdownServerMBean {
                 BroadcastHelper.broadcastMessage(
                         MaplePacketCreator.serverNotice(
                                 0, "The world is going to shutdown now. Please log off safely."));
-                for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
+                for (ChannelServer channelServer : WorldServer.getInstance().getAllChannels()) {
                     synchronized (this) {
-                        cs.shutdown();
+                        channelServer.shutdown();
                     }
                 }
                 LoginServer.getInstance().shutdown();
