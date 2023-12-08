@@ -27,6 +27,11 @@ public class CharLoginPasswordHandler implements MaplePacketHandler {
 
         LoginResult result = c.login(login, pwd);
 
+        if (result.isPermanentBan()) {
+            c.getSession().write(LoginPacket.getPermBan((byte) 1));
+            return;
+        }
+
         if (result.isLoginError()) {
             c.getSession().write(LoginPacket.getLoginFailed(result.getResult()));
             return;

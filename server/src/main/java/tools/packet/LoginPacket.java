@@ -74,10 +74,10 @@ public class LoginPacket {
         final OutPacket packet = new OutPacket(16);
 
         packet.writeShort(SendPacketOpcode.LOGIN_STATUS.getValue());
-        packet.writeShort(2); // Account is banned
-        packet.writeInt(0);
-        packet.writeShort(reason);
-        packet.write(HexTool.getByteArrayFromHexString("01 01 01 01 00"));
+        packet.write(2);
+        packet.write(HexTool.getByteArrayFromHexString("00 00 00 00 00"));
+        packet.write(reason);
+        packet.writeLong(150841440000000000L);
 
         return packet.getPacket();
     }
