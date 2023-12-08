@@ -25,7 +25,6 @@ import server.ItemMakerFactory;
 import server.MapleCarnivalFactory;
 import server.MapleItemInformationProvider;
 import server.RandomRewards;
-import server.RankingWorker;
 import server.ShutdownServer;
 import server.SpeedQuizFactory;
 import server.SpeedRunner;
@@ -237,7 +236,6 @@ public class GameApp {
                 "[Fully Initialized in "
                         + (System.currentTimeMillis() - startTime) / 1000L
                         + " seconds]");
-        RankingWorker.getInstance().run();
 
         log.info("[/////////////////////////////////////////////////]");
         log.info("Console Commands: ");
