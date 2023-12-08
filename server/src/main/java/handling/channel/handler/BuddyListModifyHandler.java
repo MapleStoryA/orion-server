@@ -13,7 +13,7 @@ import handling.world.buddy.MapleBuddyList.BuddyDelResult;
 import handling.world.helper.FindCommand;
 import tools.MaplePacketCreator;
 import tools.Pair;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class BuddyListModifyHandler extends AbstractMaplePacketHandler {
@@ -35,12 +35,12 @@ public class BuddyListModifyHandler extends AbstractMaplePacketHandler {
                     0x17; // You have already made the Friend Request. Please try again later.
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         final MapleBuddyList buddylist = c.getPlayer().getBuddyList();
-        switch (slea.readByte()) {
+        switch (packet.readByte()) {
             case 1: // Invite / Modify Buddy List
-                final String addName = slea.readMapleAsciiString();
-                final String groupName = slea.readMapleAsciiString();
+                final String addName = packet.readMapleAsciiString();
+                final String groupName = packet.readMapleAsciiString();
                 if (addName.length() > 13 || groupName.length() > 16) {
                     return;
                 }
@@ -117,7 +117,7 @@ public class BuddyListModifyHandler extends AbstractMaplePacketHandler {
                 }
                 break;
             case 2: // Accept
-                final int otherCid = slea.readInt();
+                final int otherCid = packet.readInt();
                 boolean isOnPending_ =
                         BuddyManager.isBuddyPending(
                                 new BuddyInvitedEntry(c.getPlayer().getName(), otherCid));
@@ -147,7 +147,7 @@ public class BuddyListModifyHandler extends AbstractMaplePacketHandler {
                 c.getSession().write(MaplePacketCreator.enableActions());
                 break;
             case 3: // Delete / Deny
-                final int otherCID = slea.readInt();
+                final int otherCID = packet.readInt();
                 boolean isInvited =
                         BuddyManager.isBuddyPending(
                                 new BuddyInvitedEntry(c.getPlayer().getName(), otherCID));
@@ -200,7 +200,7 @@ public class BuddyListModifyHandler extends AbstractMaplePacketHandler {
                 c.getSession().write(MaplePacketCreator.enableActions());
                 break;
             default:
-                log.info("Unknown buddylist action: " + slea);
+                log.info("Unknown buddylist action: " + packet);
                 break;
         }
     }

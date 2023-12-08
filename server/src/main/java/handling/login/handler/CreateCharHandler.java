@@ -12,7 +12,7 @@ import handling.AbstractMaplePacketHandler;
 import handling.login.LoginInformationProvider;
 import server.MapleItemInformationProvider;
 import server.quest.MapleQuest;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.packet.LoginPacket;
 
 @lombok.extern.slf4j.Slf4j
@@ -76,20 +76,20 @@ public class CreateCharHandler extends AbstractMaplePacketHandler {
     }
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        final String name = slea.readMapleAsciiString();
-        final int JobType = slea.readInt(); // 1 = Adventurer, 0 = Cygnus, 2 =
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        final String name = packet.readMapleAsciiString();
+        final int JobType = packet.readInt(); // 1 = Adventurer, 0 = Cygnus, 2 =
         // Aran, 3 = evan
-        final short db = slea.readShort(); // whether dual blade = 1 or
+        final short db = packet.readShort(); // whether dual blade = 1 or
         // adventurer = 0
-        final int face = slea.readInt();
-        final int hair = slea.readInt();
-        final int hairColor = slea.readInt();
-        final byte skinColor = (byte) slea.readInt();
-        final int top = slea.readInt();
-        final int bottom = slea.readInt();
-        final int shoes = slea.readInt();
-        final int weapon = slea.readInt();
+        final int face = packet.readInt();
+        final int hair = packet.readInt();
+        final int hairColor = packet.readInt();
+        final byte skinColor = (byte) packet.readInt();
+        final int top = packet.readInt();
+        final int bottom = packet.readInt();
+        final int shoes = packet.readInt();
+        final int weapon = packet.readInt();
         final byte gender = c.getAccountData().getGender();
 
         if (JobType < 0 || JobType > 3 || (db == 1 && JobType != 1)) {
@@ -107,7 +107,7 @@ public class CreateCharHandler extends AbstractMaplePacketHandler {
         newchar.setWorld((byte) c.getWorld());
         newchar.setFace(face);
         newchar.setHair(hair + hairColor);
-        newchar.setGender(slea.readByte());
+        newchar.setGender(packet.readByte());
         newchar.setName(name);
         newchar.setSkinColor(skinColor);
 

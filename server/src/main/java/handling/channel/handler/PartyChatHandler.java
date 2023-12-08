@@ -9,31 +9,24 @@ import handling.world.alliance.AllianceManager;
 import handling.world.buddy.BuddyManager;
 import handling.world.guild.GuildManager;
 import handling.world.party.PartyManager;
-import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class PartyChatHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        c.getPlayer().updateTick(slea.readInt());
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        c.getPlayer().updateTick(packet.readInt());
         MapleCharacter chr = c.getPlayer();
-        final int type = slea.readByte();
-        final byte numRecipients = slea.readByte();
+        final int type = packet.readByte();
+        final byte numRecipients = packet.readByte();
         int[] recipients = new int[numRecipients];
 
         for (byte i = 0; i < numRecipients; i++) {
-            recipients[i] = slea.readInt();
+            recipients[i] = packet.readInt();
         }
-        final String chattext = slea.readMapleAsciiString();
-        if (chr == null || !chr.getCanTalk()) {
-            c.getSession()
-                    .write(
-                            MaplePacketCreator.serverNotice(
-                                    6, "You have been muted and are therefore unable to talk."));
-            return;
-        }
+        final String chattext = packet.readMapleAsciiString();
+
         if (CommandProcessor.processCommand(c, chattext, CommandType.NORMAL)) {
             return;
         }

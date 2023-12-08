@@ -1,26 +1,25 @@
 package tools.packet.userpool;
 
-import tools.data.output.MaplePacketLittleEndianWriter;
+import tools.data.output.COutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UserPoolOnCommonPacket {
 
     public static byte[] onADBoard(int charId, String text) {
-        final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(181);
-        mplew.writeInt(charId);
-        mplew.write(0);
-        mplew.writeMapleAsciiString(text);
-        return mplew.getPacket();
+        final COutPacket packet = new COutPacket();
+        packet.writeShort(181);
+        packet.writeInt(charId);
+        packet.write(0);
+        packet.writeMapleAsciiString(text);
+        return packet.getPacket();
     }
 
     public static byte[] onADBoardDisable(int charId) {
-        final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(181);
-        mplew.writeInt(charId);
-        mplew.write(0);
+        final COutPacket packet = new COutPacket();
+        packet.writeShort(181);
+        packet.writeInt(charId);
+        packet.write(0);
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
-
 }

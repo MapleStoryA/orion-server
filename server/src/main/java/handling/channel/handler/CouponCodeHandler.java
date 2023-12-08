@@ -14,21 +14,21 @@ import server.cashshop.CashItemFactory;
 import server.cashshop.CashItemInfo;
 import server.cashshop.CashShopCoupon;
 import tools.Pair;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.packet.MTSCSPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class CouponCodeHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        final boolean gift = slea.readShort() > 0;
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        final boolean gift = packet.readShort() > 0;
         if (gift) {
             c.getSession().write(MTSCSPacket.sendCouponFail(c, 0x30));
             CashShopOperationHandlers.doCSPackets(c);
             return;
         }
-        final String code = slea.readMapleAsciiString();
+        final String code = packet.readMapleAsciiString();
         if (code == null
                 || code.length() < 16
                 || code.length() > 32) { // Please check and see if the coupon id is correct or not.

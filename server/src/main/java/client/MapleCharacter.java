@@ -125,6 +125,7 @@ import tools.Pair;
 import tools.Randomizer;
 import tools.StringUtil;
 import tools.Triple;
+import tools.data.output.COutPacket;
 import tools.packet.CWVsContextOnMessagePackets;
 import tools.packet.MTSCSPacket;
 import tools.packet.MapleUserPackets;
@@ -253,8 +254,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     private boolean changed_skills;
     private boolean changed_reports;
 
-    private boolean invincible = false;
-    private boolean canTalk = true;
     private boolean follow_initiator = false;
     private boolean follow_on = false;
 
@@ -1543,12 +1542,12 @@ public class MapleCharacter extends BaseMapleCharacter {
         return playerRandomStream;
     }
 
-    public final void QuestInfoPacket(final tools.data.output.MaplePacketLittleEndianWriter mplew) {
-        mplew.writeShort(questInfo.size());
+    public final void QuestInfoPacket(final COutPacket packet) {
+        packet.writeShort(questInfo.size());
 
         for (final Entry<Integer, String> q : questInfo.entrySet()) {
-            mplew.writeShort(q.getKey());
-            mplew.writeMapleAsciiString(q.getValue() == null ? "" : q.getValue());
+            packet.writeShort(q.getKey());
+            packet.writeMapleAsciiString(q.getValue() == null ? "" : q.getValue());
         }
     }
 
@@ -2524,14 +2523,6 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public void setFace(int face) {
         this.face = face;
-    }
-
-    public boolean isInvincible() {
-        return invincible;
-    }
-
-    public void setInvincible(boolean invinc) {
-        invincible = invinc;
     }
 
     public CheatTracker getCheatTracker() {
@@ -4796,14 +4787,6 @@ public class MapleCharacter extends BaseMapleCharacter {
                 maple_points += quantity;
                 break;
         }
-    }
-
-    public boolean getCanTalk() {
-        return this.canTalk;
-    }
-
-    public void canTalk(boolean talk) {
-        this.canTalk = talk;
     }
 
     public int getEXPMod() {

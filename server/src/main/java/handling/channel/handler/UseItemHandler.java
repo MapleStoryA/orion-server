@@ -10,15 +10,18 @@ import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.maps.FieldLimitType;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UseItemHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        if (chr == null || !chr.isAlive() || chr.getMapId() == 749040100 || chr.getMap() == null
+        if (chr == null
+                || !chr.isAlive()
+                || chr.getMapId() == 749040100
+                || chr.getMap() == null
                 || chr.hasDisease(MapleDisease.POTION)) {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
@@ -29,20 +32,24 @@ public class UseItemHandler extends AbstractMaplePacketHandler {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
         }
-        c.getPlayer().updateTick(slea.readInt());
-        final byte slot = (byte) slea.readShort();
-        final int itemId = slea.readInt();
+        c.getPlayer().updateTick(packet.readInt());
+        final byte slot = (byte) packet.readShort();
+        final int itemId = packet.readInt();
         final IItem toUse = chr.getInventory(MapleInventoryType.USE).getItem(slot);
 
         if (toUse == null || toUse.getQuantity() < 1 || toUse.getItemId() != itemId) {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
         }
-        if (!FieldLimitType.PotionUse.check(chr.getMap().getFieldLimit()) || chr.getMapId() == 610030600) { // cwk
+        if (!FieldLimitType.PotionUse.check(chr.getMap().getFieldLimit())
+                || chr.getMapId() == 610030600) { // cwk
             // quick
             // hack
-            if (MapleItemInformationProvider.getInstance().getItemEffect(toUse.getItemId()).applyTo(chr)) {
-                MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
+            if (MapleItemInformationProvider.getInstance()
+                    .getItemEffect(toUse.getItemId())
+                    .applyTo(chr)) {
+                MapleInventoryManipulator.removeFromSlot(
+                        c, MapleInventoryType.USE, slot, (short) 1, false);
                 if (chr.getMap().getConsumeItemCoolTime() > 0) {
                     chr.setNextConsume(time + (chr.getMap().getConsumeItemCoolTime() * 1000L));
                 }
@@ -51,7 +58,5 @@ public class UseItemHandler extends AbstractMaplePacketHandler {
         } else {
             c.getSession().write(MaplePacketCreator.enableActions());
         }
-
     }
-
 }

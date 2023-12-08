@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import lombok.Getter;
-import tools.data.output.MaplePacketLittleEndianWriter;
+import tools.data.output.COutPacket;
 
 public class WishList {
 
@@ -30,19 +30,19 @@ public class WishList {
         items.clear();
     }
 
-    public void encodeToCharInfo(MaplePacketLittleEndianWriter mplew) {
-        mplew.write(items.size());
+    public void encodeToCharInfo(COutPacket packet) {
+        packet.write(items.size());
         if (items.size() > 0) {
             for (var item : items) {
-                mplew.writeInt(item);
+                packet.writeInt(item);
             }
         }
     }
 
-    public void encodeToCashShop(MaplePacketLittleEndianWriter mplew) {
+    public void encodeToCashShop(COutPacket packet) {
         var list = toArray();
         for (int i = 0; i < 10; i++) {
-            mplew.writeInt(list[i] != -1 ? list[i] : 0);
+            packet.writeInt(list[i] != -1 ? list[i] : 0);
         }
     }
 

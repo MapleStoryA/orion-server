@@ -17,20 +17,20 @@ import server.life.MobSkill;
 import server.life.MobSkillFactory;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.packet.MobPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class TakeDamageHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         // log.info(slea.toString());
         final MapleCharacter chr = c.getPlayer();
-        chr.updateTick(slea.readInt());
-        final byte type = slea.readByte(); // -4 is mist, -3 and -2 are map damage.
-        slea.skip(1); // Element - 0x00 = elementless, 0x01 = ice, 0x02 = fire, 0x03 = lightning
-        int damage = slea.readInt();
+        chr.updateTick(packet.readInt());
+        final byte type = packet.readByte(); // -4 is mist, -3 and -2 are map damage.
+        packet.skip(1); // Element - 0x00 = elementless, 0x01 = ice, 0x02 = fire, 0x03 = lightning
+        int damage = packet.readInt();
 
         int oid = 0;
         int monsteridfrom = 0;
@@ -47,15 +47,15 @@ public class TakeDamageHandler extends AbstractMaplePacketHandler {
             return;
         }
 
-        if (chr.isGameMaster() && chr.isInvincible()) {
+        if (chr.isGameMaster()) {
             return;
         }
         final PlayerStats stats = chr.getStat();
         if (type != -2 && type != -3 && type != -4) { // Not map damage
-            monsteridfrom = slea.readInt();
-            oid = slea.readInt();
+            monsteridfrom = packet.readInt();
+            oid = packet.readInt();
             attacker = chr.getMap().getMonsterByOid(oid);
-            direction = slea.readByte();
+            direction = packet.readByte();
 
             if (attacker == null) {
                 return;
@@ -123,10 +123,10 @@ public class TakeDamageHandler extends AbstractMaplePacketHandler {
             if (chr.getBuffedValue(MapleBuffStat.MORPH) != null) {
                 chr.cancelMorphs(); // die = cancel
             }
-            if (slea.available() == 3) {
-                byte level = slea.readByte();
+            if (packet.available() == 3) {
+                byte level = packet.readByte();
                 if (level > 0) {
-                    final MobSkill skill = MobSkillFactory.getMobSkill(slea.readShort(), level);
+                    final MobSkill skill = MobSkillFactory.getMobSkill(packet.readShort(), level);
                     if (skill != null) {
                         skill.applyEffect(chr, attacker, false);
                     }

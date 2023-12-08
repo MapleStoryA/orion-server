@@ -12,7 +12,7 @@ import handling.AbstractMaplePacketHandler;
 import server.MapleStatEffect;
 import server.events.MapleSnowball.MapleSnowballs;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class CloseRangeDamageHandler extends AbstractMaplePacketHandler {
@@ -41,7 +41,7 @@ public class CloseRangeDamageHandler extends AbstractMaplePacketHandler {
     }
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, final MapleClient c) {
+    public void handlePacket(CInPacket packet, final MapleClient c) {
         final MapleCharacter chr = c.getPlayer();
         if (chr == null
                 || (energy
@@ -55,7 +55,7 @@ public class CloseRangeDamageHandler extends AbstractMaplePacketHandler {
             return;
         }
         final AttackInfo attack =
-                DamageParse.Modify_AttackCrit(DamageParse.parseDmgM(slea), chr, 1);
+                DamageParse.Modify_AttackCrit(DamageParse.parseDmgM(packet), chr, 1);
         if (!chr.getJob().isSkillBelongToJob(attack.skill, chr.isGameMaster())) {
             chr.dropMessage(5, "This skill cannot be used with the current job");
             c.getSession().write(MaplePacketCreator.enableActions());

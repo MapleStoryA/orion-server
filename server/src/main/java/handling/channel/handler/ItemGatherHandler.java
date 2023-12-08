@@ -6,14 +6,13 @@ import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
-import server.MapleInventoryManipulator;
-import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import server.MapleInventoryManipulator;
+import tools.MaplePacketCreator;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class ItemGatherHandler extends AbstractMaplePacketHandler {
@@ -44,12 +43,12 @@ public class ItemGatherHandler extends AbstractMaplePacketHandler {
     }
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         // [41 00] [E5 1D 55 00] [01]
         // [32 00] [01] [01] // Sent after
 
-        c.getPlayer().updateTick(slea.readInt());
-        final byte mode = slea.readByte();
+        c.getPlayer().updateTick(packet.readInt());
+        final byte mode = packet.readByte();
         final MapleInventoryType invType = MapleInventoryType.getByType(mode);
         MapleInventory Inv = c.getPlayer().getInventory(invType);
 
@@ -64,8 +63,8 @@ public class ItemGatherHandler extends AbstractMaplePacketHandler {
             if (GameConstants.isPet(itemStats.getItemId())) {
                 continue;
             }
-            MapleInventoryManipulator.removeById(c, invType, itemStats.getItemId(), itemStats.getQuantity(), true,
-                    false);
+            MapleInventoryManipulator.removeById(
+                    c, invType, itemStats.getItemId(), itemStats.getQuantity(), true, false);
         }
 
         final List<IItem> sortedItems = sortItems(itemMap);
@@ -79,7 +78,5 @@ public class ItemGatherHandler extends AbstractMaplePacketHandler {
         c.getSession().write(MaplePacketCreator.enableActions());
         itemMap.clear();
         sortedItems.clear();
-
     }
-
 }

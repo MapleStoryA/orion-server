@@ -10,21 +10,26 @@ import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.maps.FieldLimitType;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class PetAutoPotHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        final int petid = (int) slea.readLong();
-        slea.skip(1);
-        c.getPlayer().updateTick(slea.readInt());
-        final byte slot = (byte) slea.readShort();
-        final int itemId = slea.readInt();
-        if (chr == null || !chr.isAlive() || chr.getPetIndex(petid) < 0 || chr.getMap() == null
-                || chr.getMapId() == 749040100 || chr.getMap() == null || chr.hasDisease(MapleDisease.POTION)) {
+        final int petid = (int) packet.readLong();
+        packet.skip(1);
+        c.getPlayer().updateTick(packet.readInt());
+        final byte slot = (byte) packet.readShort();
+        final int itemId = packet.readInt();
+        if (chr == null
+                || !chr.isAlive()
+                || chr.getPetIndex(petid) < 0
+                || chr.getMap() == null
+                || chr.getMapId() == 749040100
+                || chr.getMap() == null
+                || chr.hasDisease(MapleDisease.POTION)) {
             return;
         }
         final IItem toUse = chr.getInventory(MapleInventoryType.USE).getItem(slot);
@@ -38,11 +43,15 @@ public class PetAutoPotHandler extends AbstractMaplePacketHandler {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
         }
-        if (!FieldLimitType.PotionUse.check(chr.getMap().getFieldLimit()) || chr.getMapId() == 610030600) { // cwk
+        if (!FieldLimitType.PotionUse.check(chr.getMap().getFieldLimit())
+                || chr.getMapId() == 610030600) { // cwk
             // quick
             // hack
-            if (MapleItemInformationProvider.getInstance().getItemEffect(toUse.getItemId()).applyTo(chr)) {
-                MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
+            if (MapleItemInformationProvider.getInstance()
+                    .getItemEffect(toUse.getItemId())
+                    .applyTo(chr)) {
+                MapleInventoryManipulator.removeFromSlot(
+                        c, MapleInventoryType.USE, slot, (short) 1, false);
                 if (chr.getMap().getConsumeItemCoolTime() > 0) {
                     chr.setNextConsume(time + (chr.getMap().getConsumeItemCoolTime() * 1000L));
                 }
@@ -50,7 +59,5 @@ public class PetAutoPotHandler extends AbstractMaplePacketHandler {
         } else {
             c.getSession().write(MaplePacketCreator.enableActions());
         }
-
     }
-
 }

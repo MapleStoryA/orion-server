@@ -4,24 +4,23 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.anticheat.CheatingOffense;
 import handling.AbstractMaplePacketHandler;
-import server.MaplePortal;
-import tools.data.input.SeekableLittleEndianAccessor;
-
 import java.awt.*;
+import server.MaplePortal;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UseInnerPortalHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        slea.skip(1);
+        packet.skip(1);
         if (chr == null) {
             return;
         }
-        final MaplePortal portal = chr.getMap().getPortal(slea.readMapleAsciiString());
-        final int toX = slea.readShort();
-        final int toY = slea.readShort();
+        final MaplePortal portal = chr.getMap().getPortal(packet.readMapleAsciiString());
+        final int toX = packet.readShort();
+        final int toY = packet.readShort();
 
         if (portal == null) {
             return;
@@ -30,7 +29,5 @@ public class UseInnerPortalHandler extends AbstractMaplePacketHandler {
         }
         chr.getMap().movePlayer(chr, new Point(toX, toY));
         chr.checkFollow();
-
     }
-
 }

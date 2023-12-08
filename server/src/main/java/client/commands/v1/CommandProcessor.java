@@ -23,9 +23,7 @@ public class CommandProcessor {
             new HashMap<Integer, ArrayList<String>>();
 
     static {
-        Class<?>[] CommandFiles = {
-            PlayerCommand.class, DonorCommand.class, GMCommand.class, AdminCommand.class
-        };
+        Class<?>[] CommandFiles = {PlayerCommand.class, GMCommand.class, AdminCommand.class};
 
         for (Class<?> clasz : CommandFiles) {
             try {

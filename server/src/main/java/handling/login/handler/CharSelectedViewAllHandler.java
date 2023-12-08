@@ -6,19 +6,19 @@ import database.LoginState;
 import handling.AbstractMaplePacketHandler;
 import handling.world.WorldServer;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class CharSelectedViewAllHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        int characterId = slea.readInt();
-        slea.readInt();
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        int characterId = packet.readInt();
+        packet.readInt();
         c.setWorld(0); // world
         int channel = 1;
         c.setChannel(channel);
-        String mac = slea.readMapleAsciiString();
+        String mac = packet.readMapleAsciiString();
         log.info("Mac connected: {}", mac);
         if (c.tooManyLogin()
                 || !CharacterService.checkIfCharacterExist(

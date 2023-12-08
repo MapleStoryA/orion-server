@@ -8,20 +8,20 @@ import handling.world.helper.MapleMessenger;
 import handling.world.helper.MapleMessengerCharacter;
 import handling.world.messenger.MessengerManager;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MessengerHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         String input;
         MapleMessenger messenger = c.getPlayer().getMessenger();
 
-        switch (slea.readByte()) {
+        switch (packet.readByte()) {
             case 0x00: // open
                 if (messenger == null) {
-                    int messengerid = slea.readInt();
+                    int messengerid = packet.readInt();
                     if (messengerid == 0) { // create
                         c.getPlayer()
                                 .setMessenger(
@@ -57,7 +57,7 @@ public class MessengerHandler extends AbstractMaplePacketHandler {
                     if (position <= -1 || position >= 4) {
                         return;
                     }
-                    input = slea.readMapleAsciiString();
+                    input = packet.readMapleAsciiString();
                     final MapleCharacter target =
                             c.getChannelServer().getPlayerStorage().getCharacterByName(input);
 
@@ -99,7 +99,7 @@ public class MessengerHandler extends AbstractMaplePacketHandler {
                 }
                 break;
             case 0x05: // decline
-                final String targeted = slea.readMapleAsciiString();
+                final String targeted = packet.readMapleAsciiString();
                 final MapleCharacter target =
                         c.getChannelServer().getPlayerStorage().getCharacterByName(targeted);
                 if (target != null) { // This channel
@@ -120,7 +120,7 @@ public class MessengerHandler extends AbstractMaplePacketHandler {
                 if (messenger != null) {
                     MessengerManager.messengerChat(
                             messenger.getId(),
-                            slea.readMapleAsciiString(),
+                            packet.readMapleAsciiString(),
                             c.getPlayer().getName());
                 }
                 break;

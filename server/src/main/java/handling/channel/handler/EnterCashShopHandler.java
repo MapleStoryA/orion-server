@@ -12,13 +12,13 @@ import handling.world.helper.CharacterTransfer;
 import handling.world.helper.MapleMessengerCharacter;
 import handling.world.messenger.MessengerManager;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class EnterCashShopHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
 
         if (!chr.isAlive()

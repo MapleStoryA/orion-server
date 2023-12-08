@@ -1,6 +1,6 @@
 /*
 This file is part of the ZeroFusion MapleStory Server
-Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 ZeroFusion organized by "RMZero213" <RMZero213@hotmail.com>
@@ -28,12 +28,13 @@ import handling.world.alliance.AllianceManager;
 import handling.world.guild.GuildManager;
 import handling.world.guild.MapleGuild;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class AllianceHandlerUtils {
 
-    public static final void HandleAlliance(final SeekableLittleEndianAccessor slea, final MapleClient c, boolean denied) {
+    public static final void HandleAlliance(
+            final CInPacket slea, final MapleClient c, boolean denied) {
         if (c.getPlayer().getGuildId() <= 0) {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
@@ -43,9 +44,10 @@ public class AllianceHandlerUtils {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
         }
-        //log.info("Unhandled GuildAlliance \n" + slea.toString());
+        // log.info("Unhandled GuildAlliance \n" + slea.toString());
         byte op = slea.readByte();
-        if (c.getPlayer().getGuildRank() != 1 && op != 1) { //only updating doesn't need guild leader
+        if (c.getPlayer().getGuildRank() != 1
+                && op != 1) { // only updating doesn't need guild leader
             return;
         }
         if (op == 22) {
@@ -55,12 +57,13 @@ public class AllianceHandlerUtils {
         if (gs.getAllianceId() > 0) {
             leaderid = AllianceManager.getAllianceLeader(gs.getAllianceId());
         }
-        //accept invite, and deny invite don't need allianceid.
+        // accept invite, and deny invite don't need allianceid.
         if (op != 4 && !denied) {
             if (gs.getAllianceId() <= 0 || leaderid <= 0) {
                 return;
             }
-        } else if (leaderid > 0 || gs.getAllianceId() > 0) { //infact, if they have allianceid it's suspicious
+        } else if (leaderid > 0
+                || gs.getAllianceId() > 0) { // infact, if they have allianceid it's suspicious
             return;
         }
         if (denied) {
@@ -70,25 +73,35 @@ public class AllianceHandlerUtils {
         MapleCharacter chr;
         int inviteid;
         switch (op) {
-            case 1: //load... must be in world op
-
+            case 1: // load... must be in world op
                 for (byte[] pack : AllianceManager.getAllianceInfo(gs.getAllianceId(), false)) {
                     if (pack != null) {
                         c.getSession().write(pack);
                     }
                 }
                 break;
-            case 3: //invite
+            case 3: // invite
                 final int newGuild = GuildManager.getGuildLeader(slea.readMapleAsciiString());
-                if (newGuild > 0 && c.getPlayer().getAllianceRank() == 1 && leaderid == c.getPlayer().getId()) {
+                if (newGuild > 0
+                        && c.getPlayer().getAllianceRank() == 1
+                        && leaderid == c.getPlayer().getId()) {
                     chr = c.getChannelServer().getPlayerStorage().getCharacterById(newGuild);
-                    if (chr != null && chr.getGuildId() > 0 && AllianceManager.canInvite(gs.getAllianceId())) {
-                        chr.getClient().getSession().write(MaplePacketCreator.sendAllianceInvite(AllianceManager.getAlliance(gs.getAllianceId()).getName(), c.getPlayer()));
+                    if (chr != null
+                            && chr.getGuildId() > 0
+                            && AllianceManager.canInvite(gs.getAllianceId())) {
+                        chr.getClient()
+                                .getSession()
+                                .write(
+                                        MaplePacketCreator.sendAllianceInvite(
+                                                AllianceManager.getAlliance(gs.getAllianceId())
+                                                        .getName(),
+                                                c.getPlayer()));
                         GuildManager.setInvitedId(chr.getGuildId(), gs.getAllianceId());
                     }
                 }
                 break;
-            case 4: //accept invite... guildid that invited(int, a/b check) -> guildname that was invited? but we dont care about that
+            case 4: // accept invite... guildid that invited(int, a/b check) -> guildname that was
+                // invited? but we dont care about that
                 inviteid = GuildManager.getInvitedId(c.getPlayer().getGuildId());
                 if (inviteid > 0) {
                     if (!AllianceManager.addGuildToAlliance(inviteid, c.getPlayer().getGuildId())) {
@@ -97,8 +110,8 @@ public class AllianceHandlerUtils {
                     GuildManager.setInvitedId(c.getPlayer().getGuildId(), 0);
                 }
                 break;
-            case 2: //leave; nothing
-            case 6: //expel, guildid(int) -> allianceid(don't care, a/b check)
+            case 2: // leave; nothing
+            case 6: // expel, guildid(int) -> allianceid(don't care, a/b check)
                 final int gid;
                 if (op == 6 && slea.available() >= 4) {
                     gid = slea.readInt();
@@ -108,20 +121,23 @@ public class AllianceHandlerUtils {
                 } else {
                     gid = c.getPlayer().getGuildId();
                 }
-                if (c.getPlayer().getAllianceRank() <= 2 && (c.getPlayer().getAllianceRank() == 1 || c.getPlayer().getGuildId() == gid)) {
-                    if (!AllianceManager.removeGuildFromAlliance(gs.getAllianceId(), gid, c.getPlayer().getGuildId() != gid)) {
+                if (c.getPlayer().getAllianceRank() <= 2
+                        && (c.getPlayer().getAllianceRank() == 1
+                                || c.getPlayer().getGuildId() == gid)) {
+                    if (!AllianceManager.removeGuildFromAlliance(
+                            gs.getAllianceId(), gid, c.getPlayer().getGuildId() != gid)) {
                         c.getPlayer().dropMessage(5, "An error occured when removing guild.");
                     }
                 }
                 break;
-            case 7: //change leader
+            case 7: // change leader
                 if (c.getPlayer().getAllianceRank() == 1 && leaderid == c.getPlayer().getId()) {
                     if (!AllianceManager.changeAllianceLeader(gs.getAllianceId(), slea.readInt())) {
                         c.getPlayer().dropMessage(5, "An error occured when changing leader.");
                     }
                 }
                 break;
-            case 8: //title update
+            case 8: // title update
                 if (c.getPlayer().getAllianceRank() == 1 && leaderid == c.getPlayer().getId()) {
                     String[] ranks = new String[5];
                     for (int i = 0; i < 5; i++) {
@@ -132,12 +148,13 @@ public class AllianceHandlerUtils {
                 break;
             case 9:
                 if (c.getPlayer().getAllianceRank() <= 2) {
-                    if (!AllianceManager.changeAllianceRank(gs.getAllianceId(), slea.readInt(), slea.readByte())) {
+                    if (!AllianceManager.changeAllianceRank(
+                            gs.getAllianceId(), slea.readInt(), slea.readByte())) {
                         c.getPlayer().dropMessage(5, "An error occured when changing rank.");
                     }
                 }
                 break;
-            case 10: //notice update
+            case 10: // notice update
                 if (c.getPlayer().getAllianceRank() <= 2) {
                     final String notice = slea.readMapleAsciiString();
                     if (notice.length() > 100) {
@@ -150,17 +167,23 @@ public class AllianceHandlerUtils {
                 log.info("Unhandled GuildAlliance op: " + op + ", \n" + slea);
                 break;
         }
-        //c.getSession().write(MaplePacketCreator.enableActions());
+        // c.getSession().write(MaplePacketCreator.enableActions());
     }
 
-    public static final void DenyInvite(MapleClient c, final MapleGuild gs) { //playername that invited -> guildname that was invited but we also don't care
+    public static final void DenyInvite(
+            MapleClient c,
+            final MapleGuild
+                    gs) { // playername that invited -> guildname that was invited but we also don't
+        // care
         final int inviteid = GuildManager.getInvitedId(c.getPlayer().getGuildId());
         if (inviteid > 0) {
             final int newAlliance = AllianceManager.getAllianceLeader(inviteid);
             if (newAlliance > 0) {
-                final MapleCharacter chr = c.getChannelServer().getPlayerStorage().getCharacterById(newAlliance);
+                final MapleCharacter chr =
+                        c.getChannelServer().getPlayerStorage().getCharacterById(newAlliance);
                 if (chr != null) {
-                    chr.dropMessage(5, gs.getName() + " Guild has rejected the Guild Union invitation.");
+                    chr.dropMessage(
+                            5, gs.getName() + " Guild has rejected the Guild Union invitation.");
                 }
                 GuildManager.setInvitedId(c.getPlayer().getGuildId(), 0);
             }

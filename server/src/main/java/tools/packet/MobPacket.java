@@ -10,108 +10,108 @@ import java.util.Map;
 import server.life.MapleMonster;
 import server.life.MobSkill;
 import server.movement.MovePath;
-import tools.data.output.MaplePacketLittleEndianWriter;
+import tools.data.output.COutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MobPacket {
 
     public static byte[] damageMonster(final int oid, final long damage) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.DAMAGE_MONSTER.getValue());
-        mplew.writeInt(oid);
-        mplew.write(0);
+        packet.writeShort(SendPacketOpcode.DAMAGE_MONSTER.getValue());
+        packet.writeInt(oid);
+        packet.write(0);
         if (damage > Integer.MAX_VALUE) {
-            mplew.writeInt(Integer.MAX_VALUE);
+            packet.writeInt(Integer.MAX_VALUE);
         } else {
-            mplew.writeInt((int) damage);
+            packet.writeInt((int) damage);
         }
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] damageFriendlyMob(
             final MapleMonster mob, final long damage, final boolean display) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.DAMAGE_MONSTER.getValue());
-        mplew.writeInt(mob.getObjectId());
-        mplew.write(display ? 1 : 2); // false for when shammos changes map!
+        packet.writeShort(SendPacketOpcode.DAMAGE_MONSTER.getValue());
+        packet.writeInt(mob.getObjectId());
+        packet.write(display ? 1 : 2); // false for when shammos changes map!
         if (damage > Integer.MAX_VALUE) {
-            mplew.writeInt(Integer.MAX_VALUE);
+            packet.writeInt(Integer.MAX_VALUE);
         } else {
-            mplew.writeInt((int) damage);
+            packet.writeInt((int) damage);
         }
         if (mob.getHp() > Integer.MAX_VALUE) {
-            mplew.writeInt((int) (((double) mob.getHp() / mob.getMobMaxHp()) * Integer.MAX_VALUE));
+            packet.writeInt((int) (((double) mob.getHp() / mob.getMobMaxHp()) * Integer.MAX_VALUE));
         } else {
-            mplew.writeInt((int) mob.getHp());
+            packet.writeInt((int) mob.getHp());
         }
         if (mob.getMobMaxHp() > Integer.MAX_VALUE) {
-            mplew.writeInt(Integer.MAX_VALUE);
+            packet.writeInt(Integer.MAX_VALUE);
         } else {
-            mplew.writeInt((int) mob.getMobMaxHp());
+            packet.writeInt((int) mob.getMobMaxHp());
         }
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] killMonster(final int oid, final int animation) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.KILL_MONSTER.getValue());
-        mplew.writeInt(oid);
-        mplew.write(animation); // 0 = dissapear, 1 = fade out, 2+ = special
+        packet.writeShort(SendPacketOpcode.KILL_MONSTER.getValue());
+        packet.writeInt(oid);
+        packet.write(animation); // 0 = dissapear, 1 = fade out, 2+ = special
         if (animation == 4) {
-            mplew.writeInt(-1);
+            packet.writeInt(-1);
         }
-        mplew.writeLong(0);
-        mplew.writeLong(0);
-        return mplew.getPacket();
+        packet.writeLong(0);
+        packet.writeLong(0);
+        return packet.getPacket();
     }
 
     public static byte[] healMonster(final int oid, final int heal) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.DAMAGE_MONSTER.getValue());
-        mplew.writeInt(oid);
-        mplew.write(0);
-        mplew.writeInt(-heal);
+        packet.writeShort(SendPacketOpcode.DAMAGE_MONSTER.getValue());
+        packet.writeInt(oid);
+        packet.write(0);
+        packet.writeInt(-heal);
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] showMonsterHP(int oid, int remhppercentage) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.SHOW_MONSTER_HP.getValue());
-        mplew.writeInt(oid);
-        mplew.write(remhppercentage);
-        mplew.writeLong(0);
-        mplew.writeLong(0);
-        return mplew.getPacket();
+        packet.writeShort(SendPacketOpcode.SHOW_MONSTER_HP.getValue());
+        packet.writeInt(oid);
+        packet.write(remhppercentage);
+        packet.writeLong(0);
+        packet.writeLong(0);
+        return packet.getPacket();
     }
 
     public static byte[] showBossHP(final MapleMonster mob) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.BOSS_ENV.getValue());
-        mplew.write(5);
-        mplew.writeInt(mob.getId());
+        packet.writeShort(SendPacketOpcode.BOSS_ENV.getValue());
+        packet.write(5);
+        packet.writeInt(mob.getId());
         if (mob.getHp() > Integer.MAX_VALUE) {
-            mplew.writeInt((int) (((double) mob.getHp() / mob.getMobMaxHp()) * Integer.MAX_VALUE));
+            packet.writeInt((int) (((double) mob.getHp() / mob.getMobMaxHp()) * Integer.MAX_VALUE));
         } else {
-            mplew.writeInt((int) mob.getHp());
+            packet.writeInt((int) mob.getHp());
         }
         if (mob.getMobMaxHp() > Integer.MAX_VALUE) {
-            mplew.writeInt(Integer.MAX_VALUE);
+            packet.writeInt(Integer.MAX_VALUE);
         } else {
-            mplew.writeInt((int) mob.getMobMaxHp());
+            packet.writeInt((int) mob.getMobMaxHp());
         }
-        mplew.write(mob.getStats().getTagColor());
-        mplew.write(mob.getStats().getTagBgColor());
+        packet.write(mob.getStats().getTagColor());
+        packet.write(mob.getStats().getTagBgColor());
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] moveMonster(
@@ -123,55 +123,55 @@ public class MobPacket {
             int skill4,
             int oid,
             MovePath path) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.MOVE_MONSTER.getValue());
-        mplew.writeInt(oid);
-        mplew.writeShort(0); // moveid but always 0
-        mplew.write(useskill ? 1 : 0); // ?? I THINK
-        mplew.write(skill);
-        mplew.write(skill1);
-        mplew.write(skill2);
-        mplew.write(skill3);
-        mplew.write(skill4);
-        mplew.writeZeroBytes(8); // o.o?
-        path.encode(mplew);
-        return mplew.getPacket();
+        packet.writeShort(SendPacketOpcode.MOVE_MONSTER.getValue());
+        packet.writeInt(oid);
+        packet.writeShort(0); // moveid but always 0
+        packet.write(useskill ? 1 : 0); // ?? I THINK
+        packet.write(skill);
+        packet.write(skill1);
+        packet.write(skill2);
+        packet.write(skill3);
+        packet.write(skill4);
+        packet.writeZeroBytes(8); // o.o?
+        path.encode(packet);
+        return packet.getPacket();
     }
 
     public static byte[] spawnMonster(MapleMonster life, int spawnType, int effect, int link) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.SPAWN_MONSTER.getValue());
-        mplew.writeInt(life.getObjectId());
-        mplew.write(1); // 1 = Control normal, 5 = Control none
-        mplew.writeInt(life.getId());
-        addMonsterStatus(mplew, life);
-        mplew.writeShort(life.getPosition().x);
-        mplew.writeShort(life.getPosition().y);
-        mplew.write(life.getStance());
-        mplew.writeShort(0); // FH
-        mplew.writeShort(life.getFh()); // Origin FH
-        mplew.write(spawnType);
+        packet.writeShort(SendPacketOpcode.SPAWN_MONSTER.getValue());
+        packet.writeInt(life.getObjectId());
+        packet.write(1); // 1 = Control normal, 5 = Control none
+        packet.writeInt(life.getId());
+        addMonsterStatus(packet, life);
+        packet.writeShort(life.getPosition().x);
+        packet.writeShort(life.getPosition().y);
+        packet.write(life.getStance());
+        packet.writeShort(0); // FH
+        packet.writeShort(life.getFh()); // Origin FH
+        packet.write(spawnType);
         if (spawnType == -3 || spawnType >= 0) {
-            mplew.writeInt(link);
+            packet.writeInt(link);
         }
-        mplew.write(life.getCarnivalTeam());
-        mplew.writeInt(63000); // v102 - another int here
-        mplew.writeInt(0); // v89
-        mplew.writeInt(0);
-        mplew.write(-1);
-        mplew.writeLong(0);
-        mplew.writeLong(0);
-        return mplew.getPacket();
+        packet.write(life.getCarnivalTeam());
+        packet.writeInt(63000); // v102 - another int here
+        packet.writeInt(0); // v89
+        packet.writeInt(0);
+        packet.write(-1);
+        packet.writeLong(0);
+        packet.writeLong(0);
+        return packet.getPacket();
     }
 
-    public static void addMonsterStatus(MaplePacketLittleEndianWriter mplew, MapleMonster life) {
+    public static void addMonsterStatus(COutPacket packet, MapleMonster life) {
         if (life.getStati().size() <= 0) {
             life.addEmpty(); // not done yet lulz ok so we add it now for the lulz
         }
-        mplew.writeLong(getSpecialLongMask(life.getStati().keySet()));
-        mplew.writeLong(getLongMask_NoRef(life.getStati().keySet()));
+        packet.writeLong(getSpecialLongMask(life.getStati().keySet()));
+        packet.writeLong(getLongMask_NoRef(life.getStati().keySet()));
         boolean ignore_imm = false;
         for (MonsterStatusEffect buff : life.getStati().values()) {
             if (buff.getStati() == MonsterStatus.MAGIC_DAMAGE_REFLECT
@@ -189,15 +189,15 @@ public class MobPacket {
                         continue;
                     }
                 }
-                mplew.writeShort(buff.getX().shortValue());
+                packet.writeShort(buff.getX().shortValue());
                 if (buff.getStati() != MonsterStatus.SUMMON) {
                     if (buff.getMobSkill() != null) {
-                        mplew.writeShort(buff.getMobSkill().getSkillId());
-                        mplew.writeShort(buff.getMobSkill().getSkillLevel());
+                        packet.writeShort(buff.getMobSkill().getSkillId());
+                        packet.writeShort(buff.getMobSkill().getSkillLevel());
                     } else if (buff.getSkill() > 0) {
-                        mplew.writeInt(buff.getSkill());
+                        packet.writeInt(buff.getSkill());
                     }
-                    mplew.writeShort(buff.getStati().isEmpty() ? 0 : 1);
+                    packet.writeShort(buff.getStati().isEmpty() ? 0 : 1);
                 }
             }
         }
@@ -205,73 +205,73 @@ public class MobPacket {
     }
 
     public static byte[] controlMonster(MapleMonster life, boolean newSpawn, boolean aggro) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.SPAWN_MONSTER_CONTROL.getValue());
-        mplew.write(aggro ? 2 : 1);
-        mplew.writeInt(life.getObjectId());
-        mplew.write(1); // 1 = Control normal, 5 = Control none
-        mplew.writeInt(life.getId());
-        addMonsterStatus(mplew, life);
-        mplew.writeShort(life.getPosition().x);
-        mplew.writeShort(life.getPosition().y);
-        mplew.write(life.getStance()); // Bitfield
-        mplew.writeShort(0); // FH
-        mplew.writeShort(life.getFh()); // Origin FH
-        mplew.write(life.isFake() ? 0xfc : newSpawn ? -2 : -1);
-        mplew.write(life.getCarnivalTeam());
-        mplew.writeInt(63000);
-        mplew.writeInt(0);
-        mplew.writeInt(0);
-        mplew.write(-1);
-        mplew.writeLong(0);
-        mplew.writeLong(0);
-        mplew.writeLong(0);
+        packet.writeShort(SendPacketOpcode.SPAWN_MONSTER_CONTROL.getValue());
+        packet.write(aggro ? 2 : 1);
+        packet.writeInt(life.getObjectId());
+        packet.write(1); // 1 = Control normal, 5 = Control none
+        packet.writeInt(life.getId());
+        addMonsterStatus(packet, life);
+        packet.writeShort(life.getPosition().x);
+        packet.writeShort(life.getPosition().y);
+        packet.write(life.getStance()); // Bitfield
+        packet.writeShort(0); // FH
+        packet.writeShort(life.getFh()); // Origin FH
+        packet.write(life.isFake() ? 0xfc : newSpawn ? -2 : -1);
+        packet.write(life.getCarnivalTeam());
+        packet.writeInt(63000);
+        packet.writeInt(0);
+        packet.writeInt(0);
+        packet.write(-1);
+        packet.writeLong(0);
+        packet.writeLong(0);
+        packet.writeLong(0);
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] stopControllingMonster(int oid) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.SPAWN_MONSTER_CONTROL.getValue());
-        mplew.write(0);
-        mplew.writeInt(oid);
-        mplew.writeLong(0);
-        mplew.writeLong(0);
-        mplew.writeLong(0);
+        packet.writeShort(SendPacketOpcode.SPAWN_MONSTER_CONTROL.getValue());
+        packet.write(0);
+        packet.writeInt(oid);
+        packet.writeLong(0);
+        packet.writeLong(0);
+        packet.writeLong(0);
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] makeMonsterInvisible(MapleMonster life) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.SPAWN_MONSTER_CONTROL.getValue());
-        mplew.write(0);
-        mplew.writeInt(life.getObjectId());
+        packet.writeShort(SendPacketOpcode.SPAWN_MONSTER_CONTROL.getValue());
+        packet.write(0);
+        packet.writeInt(life.getObjectId());
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] makeMonsterReal(MapleMonster life) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.SPAWN_MONSTER.getValue());
-        mplew.writeInt(life.getObjectId());
-        mplew.write(1); // 1 = Control normal, 5 = Control none
-        mplew.writeInt(life.getId());
-        addMonsterStatus(mplew, life);
-        mplew.writeShort(life.getPosition().x);
-        mplew.writeShort(life.getPosition().y);
-        mplew.write(life.getStance());
-        mplew.writeShort(0); // FH
-        mplew.writeShort(life.getFh()); // Origin FH
-        mplew.writeShort(-1);
-        mplew.writeInt(0);
-        mplew.writeInt(0); // v89
+        packet.writeShort(SendPacketOpcode.SPAWN_MONSTER.getValue());
+        packet.writeInt(life.getObjectId());
+        packet.write(1); // 1 = Control normal, 5 = Control none
+        packet.writeInt(life.getId());
+        addMonsterStatus(packet, life);
+        packet.writeShort(life.getPosition().x);
+        packet.writeShort(life.getPosition().y);
+        packet.write(life.getStance());
+        packet.writeShort(0); // FH
+        packet.writeShort(life.getFh()); // Origin FH
+        packet.writeShort(-1);
+        packet.writeInt(0);
+        packet.writeInt(0); // v89
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] moveMonsterResponse(
@@ -281,21 +281,21 @@ public class MobPacket {
             boolean useSkills,
             int skillId,
             int skillLevel) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.MOVE_MONSTER_RESPONSE.getValue());
-        mplew.writeInt(objectid);
-        mplew.writeShort(moveid);
-        mplew.write(useSkills ? 1 : 0);
-        mplew.writeShort(currentMp);
-        mplew.write(skillId);
-        mplew.write(skillLevel);
-        mplew.writeInt(0);
-        mplew.writeLong(0);
-        mplew.writeLong(0);
-        mplew.writeLong(0);
+        packet.writeShort(SendPacketOpcode.MOVE_MONSTER_RESPONSE.getValue());
+        packet.writeInt(objectid);
+        packet.writeShort(moveid);
+        packet.write(useSkills ? 1 : 0);
+        packet.writeShort(currentMp);
+        packet.write(skillId);
+        packet.write(skillLevel);
+        packet.writeInt(0);
+        packet.writeLong(0);
+        packet.writeLong(0);
+        packet.writeLong(0);
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     private static long getSpecialLongMask(Collection<MonsterStatus> statups) {
@@ -348,51 +348,51 @@ public class MobPacket {
 
     public static byte[] applyMonsterStatus(
             final int oid, final MonsterStatus mse, int x, MobSkill skil) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.APPLY_MONSTER_STATUS.getValue());
-        mplew.writeInt(oid);
-        mplew.writeLong(getSpecialLongMask(Collections.singletonList(mse)));
-        mplew.writeLong(getLongMask(Collections.singletonList(mse)));
+        packet.writeShort(SendPacketOpcode.APPLY_MONSTER_STATUS.getValue());
+        packet.writeInt(oid);
+        packet.writeLong(getSpecialLongMask(Collections.singletonList(mse)));
+        packet.writeLong(getLongMask(Collections.singletonList(mse)));
 
-        mplew.writeShort(x);
-        mplew.writeShort(skil.getSkillId());
-        mplew.writeShort(skil.getSkillLevel());
-        mplew.writeShort(
+        packet.writeShort(x);
+        packet.writeShort(skil.getSkillId());
+        packet.writeShort(skil.getSkillLevel());
+        packet.writeShort(
                 mse.isEmpty()
                         ? 1
                         : 0); // might actually be the buffTime but it's not displayed anywhere
-        mplew.writeShort(0); // delay in ms
-        mplew.write(1); // size
-        mplew.write(1); // ? v97
+        packet.writeShort(0); // delay in ms
+        packet.write(1); // size
+        packet.write(1); // ? v97
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] applyMonsterStatus(final int oid, final MonsterStatusEffect mse) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.APPLY_MONSTER_STATUS.getValue());
-        mplew.writeInt(oid);
-        mplew.writeLong(getSpecialLongMask(Collections.singletonList(mse.getStati())));
-        mplew.writeLong(getLongMask(Collections.singletonList(mse.getStati())));
+        packet.writeShort(SendPacketOpcode.APPLY_MONSTER_STATUS.getValue());
+        packet.writeInt(oid);
+        packet.writeLong(getSpecialLongMask(Collections.singletonList(mse.getStati())));
+        packet.writeLong(getLongMask(Collections.singletonList(mse.getStati())));
 
-        mplew.writeShort(mse.getX());
+        packet.writeShort(mse.getX());
         if (mse.isMonsterSkill()) {
-            mplew.writeShort(mse.getMobSkill().getSkillId());
-            mplew.writeShort(mse.getMobSkill().getSkillLevel());
+            packet.writeShort(mse.getMobSkill().getSkillId());
+            packet.writeShort(mse.getMobSkill().getSkillLevel());
         } else if (mse.getSkill() > 0) {
-            mplew.writeInt(mse.getSkill());
+            packet.writeInt(mse.getSkill());
         }
-        mplew.writeShort(
+        packet.writeShort(
                 mse.getStati().isEmpty()
                         ? 1
                         : 0); // might actually be the buffTime but it's not displayed anywhere
-        mplew.writeShort(0); // delay in ms
-        mplew.write(1); // size
-        mplew.write(1); // ? v97
+        packet.writeShort(0); // delay in ms
+        packet.write(1); // size
+        packet.write(1); // ? v97
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] applyMonsterStatus(
@@ -400,73 +400,73 @@ public class MobPacket {
             final Map<MonsterStatus, Integer> stati,
             final List<Integer> reflection,
             MobSkill skil) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.APPLY_MONSTER_STATUS.getValue());
-        mplew.writeInt(oid);
-        mplew.writeLong(getSpecialLongMask(stati.keySet()));
-        mplew.writeLong(getLongMask(stati.keySet()));
+        packet.writeShort(SendPacketOpcode.APPLY_MONSTER_STATUS.getValue());
+        packet.writeInt(oid);
+        packet.writeLong(getSpecialLongMask(stati.keySet()));
+        packet.writeLong(getLongMask(stati.keySet()));
 
         for (Map.Entry<MonsterStatus, Integer> mse : stati.entrySet()) {
-            mplew.writeShort(mse.getValue());
-            mplew.writeShort(skil.getSkillId());
-            mplew.writeShort(skil.getSkillLevel());
-            mplew.writeShort(
+            packet.writeShort(mse.getValue());
+            packet.writeShort(skil.getSkillId());
+            packet.writeShort(skil.getSkillLevel());
+            packet.writeShort(
                     mse.getKey().isEmpty()
                             ? 1
                             : 0); // might actually be the buffTime but it's not displayed anywhere
         }
         for (Integer ref : reflection) {
-            mplew.writeInt(ref);
+            packet.writeInt(ref);
         }
-        mplew.writeInt(0);
-        mplew.writeShort(0); // delay in ms
+        packet.writeInt(0);
+        packet.writeShort(0); // delay in ms
 
         int size = stati.size(); // size
         if (reflection.size() > 0) {
             size /= 2; // This gives 2 buffs per reflection but it's really one buff
         }
-        mplew.write(size); // size
-        mplew.write(1); // ? v97
+        packet.write(size); // size
+        packet.write(1); // ? v97
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] cancelMonsterStatus(int oid, MonsterStatus stat) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.CANCEL_MONSTER_STATUS.getValue());
-        mplew.writeInt(oid);
-        mplew.writeLong(getSpecialLongMask(Collections.singletonList(stat)));
-        mplew.writeLong(getLongMask(Collections.singletonList(stat)));
-        mplew.write(1); // reflector is 3~!??
-        mplew.write(2); // ? v97
+        packet.writeShort(SendPacketOpcode.CANCEL_MONSTER_STATUS.getValue());
+        packet.writeInt(oid);
+        packet.writeLong(getSpecialLongMask(Collections.singletonList(stat)));
+        packet.writeLong(getLongMask(Collections.singletonList(stat)));
+        packet.write(1); // reflector is 3~!??
+        packet.write(2); // ? v97
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] talkMonster(int oid, int itemId, String msg) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.TALK_MONSTER.getValue());
-        mplew.writeInt(oid);
-        mplew.writeInt(500); // ?
-        mplew.writeInt(itemId);
-        mplew.write(itemId <= 0 ? 0 : 1);
-        mplew.write(msg == null || msg.length() <= 0 ? 0 : 1);
+        packet.writeShort(SendPacketOpcode.TALK_MONSTER.getValue());
+        packet.writeInt(oid);
+        packet.writeInt(500); // ?
+        packet.writeInt(itemId);
+        packet.write(itemId <= 0 ? 0 : 1);
+        packet.write(msg == null || msg.length() <= 0 ? 0 : 1);
         if (msg != null && msg.length() > 0) {
-            mplew.writeMapleAsciiString(msg);
+            packet.writeMapleAsciiString(msg);
         }
-        mplew.writeInt(1); // ?
+        packet.writeInt(1); // ?
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] removeTalkMonster(int oid) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.REMOVE_TALK_MONSTER.getValue());
-        mplew.writeInt(oid);
-        return mplew.getPacket();
+        packet.writeShort(SendPacketOpcode.REMOVE_TALK_MONSTER.getValue());
+        packet.writeInt(oid);
+        return packet.getPacket();
     }
 }

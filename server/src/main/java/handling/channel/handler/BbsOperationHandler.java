@@ -3,28 +3,29 @@ package handling.channel.handler;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import handling.channel.handler.utils.BBSHandlerUtils;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class BbsOperationHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         if (c.getPlayer().getGuildId() <= 0) {
             return; // expelled while viewing bbs or hax
         }
         int localthreadid = 0;
-        final byte action = slea.readByte();
+        final byte action = packet.readByte();
         switch (action) {
             case 0: // start a new post
-                final boolean bEdit = slea.readByte() > 0;
+                final boolean bEdit = packet.readByte() > 0;
                 if (bEdit) {
-                    localthreadid = slea.readInt();
+                    localthreadid = packet.readInt();
                 }
-                final boolean bNotice = slea.readByte() > 0;
-                final String title = BBSHandlerUtils.correctLength(slea.readMapleAsciiString(), 25);
-                String text = BBSHandlerUtils.correctLength(slea.readMapleAsciiString(), 600);
-                final int icon = slea.readInt();
+                final boolean bNotice = packet.readByte() > 0;
+                final String title =
+                        BBSHandlerUtils.correctLength(packet.readMapleAsciiString(), 25);
+                String text = BBSHandlerUtils.correctLength(packet.readMapleAsciiString(), 600);
+                final int icon = packet.readInt();
                 if (icon >= 0x64 && icon <= 0x6a) {
                     if (!c.getPlayer().haveItem(5290000 + icon - 0x64, 1, false, true)) {
                         return; // hax, using an nx icon that s/he doesn't have
@@ -39,29 +40,27 @@ public class BbsOperationHandler extends AbstractMaplePacketHandler {
                 }
                 break;
             case 1: // delete a thread
-                localthreadid = slea.readInt();
+                localthreadid = packet.readInt();
                 BBSHandlerUtils.deleteBBSThread(c, localthreadid);
                 break;
             case 2: // list threads
-                int start = slea.readInt();
+                int start = packet.readInt();
                 BBSHandlerUtils.listBBSThreads(c, start * 10);
                 break;
             case 3: // list thread + reply, followed by id (int)
-                localthreadid = slea.readInt();
+                localthreadid = packet.readInt();
                 BBSHandlerUtils.displayThread(c, localthreadid);
                 break;
             case 4: // reply
-                localthreadid = slea.readInt();
-                text = BBSHandlerUtils.correctLength(slea.readMapleAsciiString(), 25);
+                localthreadid = packet.readInt();
+                text = BBSHandlerUtils.correctLength(packet.readMapleAsciiString(), 25);
                 BBSHandlerUtils.newBBSReply(c, localthreadid, text);
                 break;
             case 5: // delete reply
-                localthreadid = slea.readInt();
-                int replyid = slea.readInt();
+                localthreadid = packet.readInt();
+                int replyid = packet.readInt();
                 BBSHandlerUtils.deleteBBSReply(c, localthreadid, replyid);
                 break;
         }
-
     }
-
 }

@@ -6,16 +6,16 @@ import handling.AbstractMaplePacketHandler;
 import server.life.MapleMonster;
 import server.maps.MapleNodes.MapleNodeInfo;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MobNodeHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        final MapleMonster mob_from = chr.getMap().getMonsterByOid(slea.readInt()); // From
-        final int newNode = slea.readInt();
+        final MapleMonster mob_from = chr.getMap().getMonsterByOid(packet.readInt()); // From
+        final int newNode = packet.readInt();
         final int nodeSize = chr.getMap().getNodes().size();
         if (mob_from != null && nodeSize > 0 && nodeSize >= newNode) {
             final MapleNodeInfo mni = chr.getMap().getNode(newNode);
@@ -23,7 +23,11 @@ public class MobNodeHandler extends AbstractMaplePacketHandler {
                 return;
             }
             if (mni.attr == 2) { // talk
-                chr.getMap().talkMonster("Please escort me carefully.", 5120035, mob_from.getObjectId()); // temporary
+                chr.getMap()
+                        .talkMonster(
+                                "Please escort me carefully.",
+                                5120035,
+                                mob_from.getObjectId()); // temporary
             }
             if (mob_from.getLastNode() >= newNode) {
                 return;
@@ -47,15 +51,15 @@ public class MobNodeHandler extends AbstractMaplePacketHandler {
                     case 9211204:
                         chr.getMap().removeMonster(mob_from);
                         break;
-
                 }
                 if (newMap > 0) {
-                    chr.getMap().broadcastMessage(MaplePacketCreator.serverNotice(5, "Proceed to the next stage."));
+                    chr.getMap()
+                            .broadcastMessage(
+                                    MaplePacketCreator.serverNotice(
+                                            5, "Proceed to the next stage."));
                     chr.getMap().removeMonster(mob_from);
                 }
             }
         }
-
     }
-
 }

@@ -3,26 +3,25 @@ package handling.channel.handler;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import handling.SendPacketOpcode;
-import tools.data.input.SeekableLittleEndianAccessor;
-import tools.data.output.MaplePacketLittleEndianWriter;
+import tools.data.input.CInPacket;
+import tools.data.output.COutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class NpcAnimationHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(SendPacketOpcode.NPC_ACTION.getValue());
+    public void handlePacket(CInPacket slea, MapleClient c) {
+        COutPacket packet = new COutPacket();
+        packet.writeShort(SendPacketOpcode.NPC_ACTION.getValue());
         final int length = (int) slea.available();
         if (length == 6) { // NPC Talk
-            mplew.writeInt(slea.readInt());
-            mplew.writeShort(slea.readShort());
+            packet.writeInt(slea.readInt());
+            packet.writeShort(slea.readShort());
         } else if (length > 6) { // NPC Move
-            mplew.write(slea.read(length - 9));
+            packet.write(slea.read(length - 9));
         } else {
             return;
         }
-        c.sendPacket(mplew.getPacket());
+        c.sendPacket(packet.getPacket());
     }
-
 }

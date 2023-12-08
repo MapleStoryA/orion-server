@@ -2,61 +2,61 @@ package tools.packet;
 
 import handling.SendPacketOpcode;
 import tools.MaplePacketCreator;
-import tools.data.output.MaplePacketLittleEndianWriter;
+import tools.data.output.COutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UIPacket {
 
     public static final byte[] EarnTitleMsg(final String msg) {
-        final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        final COutPacket packet = new COutPacket();
 
         // "You have acquired the Pig's Weakness skill."
-        mplew.writeShort(SendPacketOpcode.TOP_MSG.getValue());
-        mplew.writeMapleAsciiString(msg);
+        packet.writeShort(SendPacketOpcode.TOP_MSG.getValue());
+        packet.writeMapleAsciiString(msg);
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] getSPMsg(byte sp, short job) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
-        mplew.write(4);
-        mplew.writeShort(job);
-        mplew.write(sp);
+        packet.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
+        packet.write(4);
+        packet.writeShort(job);
+        packet.write(sp);
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] getGPMsg(int itemid) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
         // Temporary transformed as a dragon, even with the skill ......
-        mplew.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
-        mplew.write(7);
-        mplew.writeInt(itemid);
+        packet.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
+        packet.write(7);
+        packet.writeInt(itemid);
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] getTopMsg(String msg) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.TOP_MSG.getValue());
-        mplew.writeMapleAsciiString(msg);
+        packet.writeShort(SendPacketOpcode.TOP_MSG.getValue());
+        packet.writeMapleAsciiString(msg);
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] getStatusMsg(int itemid) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
         // Temporary transformed as a dragon, even with the skill ......
-        mplew.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
-        mplew.write(8);
-        mplew.writeInt(itemid);
+        packet.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
+        packet.write(8);
+        packet.writeInt(itemid);
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static final byte[] MapEff(final String path) {
@@ -72,75 +72,75 @@ public class UIPacket {
     }
 
     public static final byte[] AranTutInstructionalBalloon(final String data) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.SHOW_ITEM_GAIN_INCHAT.getValue());
-        mplew.write(23);
-        mplew.writeMapleAsciiString(data);
-        mplew.writeInt(1);
+        packet.writeShort(SendPacketOpcode.SHOW_ITEM_GAIN_INCHAT.getValue());
+        packet.write(23);
+        packet.writeMapleAsciiString(data);
+        packet.writeInt(1);
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static final byte[] ShowWZEffect(final String data) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.SHOW_ITEM_GAIN_INCHAT.getValue());
-        mplew.write(18);
-        mplew.writeMapleAsciiString(data);
+        packet.writeShort(SendPacketOpcode.SHOW_ITEM_GAIN_INCHAT.getValue());
+        packet.write(18);
+        packet.writeMapleAsciiString(data);
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] summonHelper(boolean summon) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.SUMMON_HINT.getValue());
-        mplew.write(summon ? 1 : 0);
+        packet.writeShort(SendPacketOpcode.SUMMON_HINT.getValue());
+        packet.write(summon ? 1 : 0);
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] summonMessage(int type) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.SUMMON_HINT_MSG.getValue());
-        mplew.write(1);
-        mplew.writeInt(type);
-        mplew.writeInt(7000); // probably the delay
+        packet.writeShort(SendPacketOpcode.SUMMON_HINT_MSG.getValue());
+        packet.write(1);
+        packet.writeInt(type);
+        packet.writeInt(7000); // probably the delay
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] summonMessage(String message) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.SUMMON_HINT_MSG.getValue());
-        mplew.write(0);
-        mplew.writeMapleAsciiString(message);
-        mplew.writeInt(200); // IDK
-        mplew.writeShort(0);
-        mplew.writeInt(10000); // Probably delay
+        packet.writeShort(SendPacketOpcode.SUMMON_HINT_MSG.getValue());
+        packet.write(0);
+        packet.writeMapleAsciiString(message);
+        packet.writeInt(200); // IDK
+        packet.writeShort(0);
+        packet.writeInt(10000); // Probably delay
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] IntroLock(boolean enable) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.CYGNUS_INTRO_LOCK.getValue());
-        mplew.write(enable ? 1 : 0);
-        mplew.writeInt(0);
+        packet.writeShort(SendPacketOpcode.CYGNUS_INTRO_LOCK.getValue());
+        packet.write(enable ? 1 : 0);
+        packet.writeInt(0);
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] IntroDisableUI(boolean enable) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.CYGNUS_INTRO_DISABLE_UI.getValue());
-        mplew.write(enable ? 1 : 0);
+        packet.writeShort(SendPacketOpcode.CYGNUS_INTRO_DISABLE_UI.getValue());
+        packet.write(enable ? 1 : 0);
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 }

@@ -8,7 +8,7 @@ import scripting.NPCScriptManager;
 import scripting.v1.game.helper.NpcTalkHelper;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class QuestionActionHandler extends AbstractMaplePacketHandler {
@@ -21,10 +21,10 @@ public class QuestionActionHandler extends AbstractMaplePacketHandler {
     public static final int END_SCRIPTED_QUEST = 5;
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        final byte action = slea.readByte();
-        int quest = slea.readShort();
+        final byte action = packet.readByte();
+        int quest = packet.readShort();
         if (quest < 0) { // questid 50000 and above, WILL cast to negative, this was tested.
             quest += 65536; // probably not the best fix, but whatever
         }
@@ -38,28 +38,28 @@ public class QuestionActionHandler extends AbstractMaplePacketHandler {
         switch (action) {
             case RESTORE_LOST_ITEM:
                 {
-                    chr.updateTick(slea.readInt());
-                    final int itemid = slea.readInt();
+                    chr.updateTick(packet.readInt());
+                    final int itemid = packet.readInt();
                     MapleQuest.getInstance(quest).RestoreLostItem(chr, itemid);
                     break;
                 }
             case START_QUEST:
                 {
-                    final int npc = slea.readInt();
+                    final int npc = packet.readInt();
                     q.start(chr, npc);
                     break;
                 }
             case COMPLETE_QUEST:
                 {
-                    final int npc = slea.readInt();
-                    int tick = slea.readInt();
+                    final int npc = packet.readInt();
+                    int tick = packet.readInt();
                     if (q.getId() >= 1009 && q.getId() <= 1015) { // Maple quiz in map 1000000
                         tick = tick + q.getId();
                     }
                     chr.updateTick(tick);
 
-                    if (slea.available() >= 4) {
-                        q.complete(chr, npc, slea.readInt());
+                    if (packet.available() >= 4) {
+                        q.complete(chr, npc, packet.readInt());
                     } else {
                         q.complete(chr, npc);
                     }
@@ -76,7 +76,7 @@ public class QuestionActionHandler extends AbstractMaplePacketHandler {
                 }
             case START_SCRIPTED_QUEST:
                 { // Scripted Start Quest
-                    final int npc = slea.readInt();
+                    final int npc = packet.readInt();
                     if (NpcTalkHelper.isNewQuestScriptAvailable(quest)) {
                         NpcTalkHelper.startQuestConversation(npc, quest, c);
                         break;
@@ -87,7 +87,7 @@ public class QuestionActionHandler extends AbstractMaplePacketHandler {
                 }
             case END_SCRIPTED_QUEST:
                 {
-                    final int npc = slea.readInt();
+                    final int npc = packet.readInt();
                     NPCScriptManager.getInstance().endQuest(c, npc, quest, false);
                     c.getSession()
                             .write(MaplePacketCreator.showSpecialEffect(9)); // Quest completion

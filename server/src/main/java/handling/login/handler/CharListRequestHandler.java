@@ -13,17 +13,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import tools.data.input.SeekableLittleEndianAccessor;
-import tools.data.output.MaplePacketLittleEndianWriter;
+import tools.data.input.CInPacket;
+import tools.data.output.COutPacket;
 
 @Slf4j
 public class CharListRequestHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        slea.readByte();
-        final int server = slea.readByte();
-        final int channel = slea.readByte() + 1;
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        packet.readByte();
+        final int server = packet.readByte();
+        final int channel = packet.readByte() + 1;
 
         c.setWorld(server);
         c.setChannel(channel);
@@ -38,74 +38,71 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
     }
 
     private static byte[] getCharList(final List<CharacterData> chars, int charslots) {
-        final var mplew = new MaplePacketLittleEndianWriter();
+        final var packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.CHARLIST.getValue());
-        mplew.write(0);
-        mplew.write(chars.size()); // 1
+        packet.writeShort(SendPacketOpcode.CHARLIST.getValue());
+        packet.write(0);
+        packet.write(chars.size()); // 1
 
         for (final CharacterData chr : chars) {
             boolean isGM = chr.getJob() == 900 || chr.getJob() == 910;
-            addCharEntry(mplew, chr, !isGM && chr.getLevel() >= 10);
+            addCharEntry(packet, chr, !isGM && chr.getLevel() >= 10);
         }
-        mplew.write(2); // second pw request
-        mplew.writeLong(charslots);
+        packet.write(2); // second pw request
+        packet.writeLong(charslots);
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     private static void addCharEntry(
-            final MaplePacketLittleEndianWriter mplew, final CharacterData chr, boolean ranking) {
-        addCharStats(mplew, chr);
-        addCharLook(mplew, chr, true);
-        mplew.write(0);
-        mplew.write(ranking ? 1 : 0);
+            final COutPacket packet, final CharacterData chr, boolean ranking) {
+        addCharStats(packet, chr);
+        addCharLook(packet, chr, true);
+        packet.write(0);
+        packet.write(ranking ? 1 : 0);
         if (ranking) {
-            mplew.writeInt(chr.getRank());
-            mplew.writeInt(chr.getRankMove());
-            mplew.writeInt(chr.getJobRank());
-            mplew.writeInt(chr.getJobRankMove());
+            packet.writeInt(chr.getRank());
+            packet.writeInt(chr.getRankMove());
+            packet.writeInt(chr.getJobRank());
+            packet.writeInt(chr.getJobRankMove());
         }
     }
 
-    private static void addCharStats(
-            final MaplePacketLittleEndianWriter mplew, final CharacterData chr) {
-        mplew.writeInt(chr.getId()); // character id
-        mplew.writeAsciiString(chr.getName(), 13);
-        mplew.write(chr.getGender()); // gender (0 = male, 1 = female)
-        mplew.write(chr.getSkinColor()); // skin color
-        mplew.writeInt(chr.getFace()); // face
-        mplew.writeInt(chr.getHair()); // hair
+    private static void addCharStats(final COutPacket packet, final CharacterData chr) {
+        packet.writeInt(chr.getId()); // character id
+        packet.writeAsciiString(chr.getName(), 13);
+        packet.write(chr.getGender()); // gender (0 = male, 1 = female)
+        packet.write(chr.getSkinColor()); // skin color
+        packet.writeInt(chr.getFace()); // face
+        packet.writeInt(chr.getHair()); // hair
         for (int i = 0; i < 3; i++) {
-            mplew.writeLong(0);
+            packet.writeLong(0);
         }
-        mplew.write(chr.getLevel()); // level
-        mplew.writeShort(chr.getJob()); // job
-        chr.connectData(mplew);
-        mplew.writeShort(Math.min(199, chr.getAp())); // Avoid Popup
+        packet.write(chr.getLevel()); // level
+        packet.writeShort(chr.getJob()); // job
+        chr.connectData(packet);
+        packet.writeShort(Math.min(199, chr.getAp())); // Avoid Popup
         if (chr.getJob() == 2001 || chr.isEvan()) {
-            mplew.write(0);
+            packet.write(0);
         } else {
-            mplew.writeShort(chr.getSp()); // remaining sp
+            packet.writeShort(chr.getSp()); // remaining sp
         }
-        mplew.writeInt(chr.getExp()); // exp
-        mplew.writeShort(chr.getFame()); // fame
-        mplew.writeInt(0); // Gachapon exp
-        mplew.writeInt(chr.getMap()); // current map id
-        mplew.write(chr.getSpawnPoint()); // spawnpoint
-        mplew.writeInt(0);
-        mplew.writeShort(chr.getSubCategory()); // 1 here = db
+        packet.writeInt(chr.getExp()); // exp
+        packet.writeShort(chr.getFame()); // fame
+        packet.writeInt(0); // Gachapon exp
+        packet.writeInt(chr.getMap()); // current map id
+        packet.write(chr.getSpawnPoint()); // spawnpoint
+        packet.writeInt(0);
+        packet.writeShort(chr.getSubCategory()); // 1 here = db
     }
 
     private static void addCharLook(
-            final MaplePacketLittleEndianWriter mplew,
-            final CharacterData chr,
-            final boolean mega) {
-        mplew.write(chr.getGender());
-        mplew.write(chr.getSkinColor());
-        mplew.writeInt(chr.getFace());
-        mplew.write(mega ? 0 : 1);
-        mplew.writeInt(chr.getHair());
+            final COutPacket packet, final CharacterData chr, final boolean mega) {
+        packet.write(chr.getGender());
+        packet.write(chr.getSkinColor());
+        packet.writeInt(chr.getFace());
+        packet.write(mega ? 0 : 1);
+        packet.writeInt(chr.getHair());
 
         final Map<Byte, Integer> myEquip = new LinkedHashMap<Byte, Integer>();
         final Map<Byte, Integer> maskedEquip = new LinkedHashMap<Byte, Integer>();
@@ -130,24 +127,24 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
             }
         }
         for (final Map.Entry<Byte, Integer> entry : myEquip.entrySet()) {
-            mplew.write(entry.getKey());
-            mplew.writeInt(entry.getValue());
+            packet.write(entry.getKey());
+            packet.writeInt(entry.getValue());
         }
 
-        mplew.write(0xFF);
+        packet.write(0xFF);
 
         // end of visible itens
         // masked itens
         for (final Map.Entry<Byte, Integer> entry : maskedEquip.entrySet()) {
-            mplew.write(entry.getKey());
-            mplew.writeInt(entry.getValue());
+            packet.write(entry.getKey());
+            packet.writeInt(entry.getValue());
         }
-        mplew.write(0xFF); // ending markers
+        packet.write(0xFF); // ending markers
 
         final IItem cWeapon = equip.getItem((byte) -111);
-        mplew.writeInt(cWeapon != null ? cWeapon.getItemId() : 0);
+        packet.writeInt(cWeapon != null ? cWeapon.getItemId() : 0);
         for (int i = 0; i < 3; i++) {
-            mplew.writeInt(0);
+            packet.writeInt(0);
         }
     }
 }

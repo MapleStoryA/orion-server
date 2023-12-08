@@ -18,13 +18,13 @@ import server.maps.MapleMapItem;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class ItemPickupHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr.getPlayerShop() != null
                 || chr.getConversation() > 0
@@ -32,12 +32,12 @@ public class ItemPickupHandler extends AbstractMaplePacketHandler {
                 || !chr.isAlive()) { // hack
             return;
         }
-        chr.updateTick(slea.readInt());
-        slea.skip(1); // [4] Seems to be tickcount, [1] always 0
-        final Point Client_Reportedpos = slea.readPos();
+        chr.updateTick(packet.readInt());
+        packet.skip(1); // [4] Seems to be tickcount, [1] always 0
+        final Point Client_Reportedpos = packet.readPos();
 
         final MapleMapObject ob =
-                chr.getMap().getMapObject(slea.readInt(), MapleMapObjectType.ITEM);
+                chr.getMap().getMapObject(packet.readInt(), MapleMapObjectType.ITEM);
         if (ob == null) {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;

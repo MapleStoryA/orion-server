@@ -1,9 +1,8 @@
 package scripting;
 
-import lombok.extern.slf4j.Slf4j;
-import tools.data.output.MaplePacketLittleEndianWriter;
-
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import tools.data.output.COutPacket;
 
 @Slf4j
 public class ScriptMan {
@@ -21,190 +20,247 @@ public class ScriptMan {
     public static final int FlipImage = 0x8;
     private static final short ScriptMessage = 0x163;
 
-    public static byte[] OnSay(int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, String sText, boolean bPrev, boolean bNext) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(ScriptMessage);
-        mplew.write(nSpeakerTypeID);
-        mplew.writeInt(nSpeakerTemplateID);
-        mplew.write(ScriptMessageType.Say.getMsgType());
-        mplew.write(bParam);
-        if ((bParam & 0x4) > 0)//idek xd, its a 2nd template for something
+    public static byte[] OnSay(
+            int nSpeakerTypeID,
+            int nSpeakerTemplateID,
+            byte bParam,
+            String sText,
+            boolean bPrev,
+            boolean bNext) {
+        COutPacket packet = new COutPacket();
+        packet.writeShort(ScriptMessage);
+        packet.write(nSpeakerTypeID);
+        packet.writeInt(nSpeakerTemplateID);
+        packet.write(ScriptMessageType.Say.getMsgType());
+        packet.write(bParam);
+        if ((bParam & 0x4) > 0) // idek xd, its a 2nd template for something
         {
-            mplew.writeInt(nSpeakerTemplateID);
+            packet.writeInt(nSpeakerTemplateID);
         }
-        mplew.writeMapleAsciiString(sText);
-        mplew.writeBool(bPrev);
-        mplew.writeBool(bNext);
-        return mplew.getPacket();
+        packet.writeMapleAsciiString(sText);
+        packet.writeBool(bPrev);
+        packet.writeBool(bNext);
+        return packet.getPacket();
     }
 
-    public static byte[] OnSayImage(int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, List<String> asPath) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(ScriptMessage);
-        mplew.write(nSpeakerTypeID);
-        mplew.writeInt(nSpeakerTemplateID);
-        mplew.write(ScriptMessageType.SayImage.getMsgType());
-        mplew.write(bParam);
-        mplew.write(asPath.size());
+    public static byte[] OnSayImage(
+            int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, List<String> asPath) {
+        COutPacket packet = new COutPacket();
+        packet.writeShort(ScriptMessage);
+        packet.write(nSpeakerTypeID);
+        packet.writeInt(nSpeakerTemplateID);
+        packet.write(ScriptMessageType.SayImage.getMsgType());
+        packet.write(bParam);
+        packet.write(asPath.size());
         for (String sPath : asPath) {
-            mplew.writeMapleAsciiString(sPath);//CUtilDlgEx::AddImageList(v8, sPath);
+            packet.writeMapleAsciiString(sPath); // CUtilDlgEx::AddImageList(v8, sPath);
         }
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
-    public static byte[] OnAskYesNo(int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, String sText) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(ScriptMessage);
-        mplew.write(nSpeakerTypeID);
-        mplew.writeInt(nSpeakerTemplateID);
-        mplew.write(ScriptMessageType.AskYesNo.getMsgType());
-        mplew.write(bParam);//(bParam & 0x6)
-        mplew.writeMapleAsciiString(sText);
-        return mplew.getPacket();
+    public static byte[] OnAskYesNo(
+            int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, String sText) {
+        COutPacket packet = new COutPacket();
+        packet.writeShort(ScriptMessage);
+        packet.write(nSpeakerTypeID);
+        packet.writeInt(nSpeakerTemplateID);
+        packet.write(ScriptMessageType.AskYesNo.getMsgType());
+        packet.write(bParam); // (bParam & 0x6)
+        packet.writeMapleAsciiString(sText);
+        return packet.getPacket();
     }
 
-    public static byte[] OnAskAccept(int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, String sText) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(ScriptMessage);
-        mplew.write(nSpeakerTypeID);
-        mplew.writeInt(nSpeakerTemplateID);
-        mplew.write(ScriptMessageType.AskAccept.getMsgType());
-        mplew.write(bParam);
-        mplew.writeMapleAsciiString(sText);
-        return mplew.getPacket();
+    public static byte[] OnAskAccept(
+            int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, String sText) {
+        COutPacket packet = new COutPacket();
+        packet.writeShort(ScriptMessage);
+        packet.write(nSpeakerTypeID);
+        packet.writeInt(nSpeakerTemplateID);
+        packet.write(ScriptMessageType.AskAccept.getMsgType());
+        packet.write(bParam);
+        packet.writeMapleAsciiString(sText);
+        return packet.getPacket();
     }
 
-    public static byte[] OnAskText(int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, String sMsg, String sMsgDefault, int nLenMin, int nLenMax) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(ScriptMessage);
-        mplew.write(nSpeakerTypeID);
-        mplew.writeInt(nSpeakerTemplateID);
-        mplew.write(ScriptMessageType.AskText.getMsgType());
-        mplew.write(bParam);//(bParam & 0x6)
-        mplew.writeMapleAsciiString(sMsg);
-        mplew.writeMapleAsciiString(sMsgDefault);
-        mplew.writeShort(nLenMin);
-        mplew.writeShort(nLenMax);
-        return mplew.getPacket();
+    public static byte[] OnAskText(
+            int nSpeakerTypeID,
+            int nSpeakerTemplateID,
+            byte bParam,
+            String sMsg,
+            String sMsgDefault,
+            int nLenMin,
+            int nLenMax) {
+        COutPacket packet = new COutPacket();
+        packet.writeShort(ScriptMessage);
+        packet.write(nSpeakerTypeID);
+        packet.writeInt(nSpeakerTemplateID);
+        packet.write(ScriptMessageType.AskText.getMsgType());
+        packet.write(bParam); // (bParam & 0x6)
+        packet.writeMapleAsciiString(sMsg);
+        packet.writeMapleAsciiString(sMsgDefault);
+        packet.writeShort(nLenMin);
+        packet.writeShort(nLenMax);
+        return packet.getPacket();
     }
 
-    public static byte[] OnAskBoxText(int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, String sMsg, String sMsgDefault, int nCol, int nLine) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(ScriptMessage);
-        mplew.write(nSpeakerTypeID);
-        mplew.writeInt(nSpeakerTemplateID);
-        mplew.write(ScriptMessageType.AskBoxText.getMsgType());
-        mplew.write(bParam);//(bParam & 0x6)
-        mplew.writeMapleAsciiString(sMsg);
-        mplew.writeMapleAsciiString(sMsgDefault);
-        mplew.writeShort(nCol);
-        mplew.writeShort(nLine);
-        return mplew.getPacket();
+    public static byte[] OnAskBoxText(
+            int nSpeakerTypeID,
+            int nSpeakerTemplateID,
+            byte bParam,
+            String sMsg,
+            String sMsgDefault,
+            int nCol,
+            int nLine) {
+        COutPacket packet = new COutPacket();
+        packet.writeShort(ScriptMessage);
+        packet.write(nSpeakerTypeID);
+        packet.writeInt(nSpeakerTemplateID);
+        packet.write(ScriptMessageType.AskBoxText.getMsgType());
+        packet.write(bParam); // (bParam & 0x6)
+        packet.writeMapleAsciiString(sMsg);
+        packet.writeMapleAsciiString(sMsgDefault);
+        packet.writeShort(nCol);
+        packet.writeShort(nLine);
+        return packet.getPacket();
     }
 
-    public static byte[] OnAskNumber(int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, String sMsg, int nDef, int nMin, int nMax) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(ScriptMessage);
-        mplew.write(nSpeakerTypeID);
-        mplew.writeInt(nSpeakerTemplateID);
-        mplew.write(ScriptMessageType.AskNumber.getMsgType());
-        mplew.write(bParam);//(bParam & 0x6)
-        mplew.writeMapleAsciiString(sMsg);
-        mplew.writeInt(nDef);
-        mplew.writeInt(nMin);
-        mplew.writeInt(nMax);
-        return mplew.getPacket();
+    public static byte[] OnAskNumber(
+            int nSpeakerTypeID,
+            int nSpeakerTemplateID,
+            byte bParam,
+            String sMsg,
+            int nDef,
+            int nMin,
+            int nMax) {
+        COutPacket packet = new COutPacket();
+        packet.writeShort(ScriptMessage);
+        packet.write(nSpeakerTypeID);
+        packet.writeInt(nSpeakerTemplateID);
+        packet.write(ScriptMessageType.AskNumber.getMsgType());
+        packet.write(bParam); // (bParam & 0x6)
+        packet.writeMapleAsciiString(sMsg);
+        packet.writeInt(nDef);
+        packet.writeInt(nMin);
+        packet.writeInt(nMax);
+        return packet.getPacket();
     }
 
-    public static byte[] OnAskMenu(int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, String sMsg) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(ScriptMessage);
-        mplew.write(nSpeakerTypeID);
-        mplew.writeInt(nSpeakerTemplateID);
-        mplew.write(ScriptMessageType.AskMenu.getMsgType());
-        mplew.write(bParam);//(bParam & 0x6)
-        mplew.writeMapleAsciiString(sMsg);
-        return mplew.getPacket();
+    public static byte[] OnAskMenu(
+            int nSpeakerTypeID, int nSpeakerTemplateID, byte bParam, String sMsg) {
+        COutPacket packet = new COutPacket();
+        packet.writeShort(ScriptMessage);
+        packet.write(nSpeakerTypeID);
+        packet.writeInt(nSpeakerTemplateID);
+        packet.write(ScriptMessageType.AskMenu.getMsgType());
+        packet.write(bParam); // (bParam & 0x6)
+        packet.writeMapleAsciiString(sMsg);
+        return packet.getPacket();
     }
 
-    public static byte[] OnAskAvatar(int nSpeakerTypeID, int nSpeakerTemplateID, String sMsg, int[] anCanadite) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(ScriptMessage);
-        mplew.write(nSpeakerTypeID);
-        mplew.writeInt(nSpeakerTemplateID);
-        mplew.write(ScriptMessageType.AskAvatar.getMsgType());
-        mplew.write(0);
-        mplew.writeMapleAsciiString(sMsg);
-        mplew.write(anCanadite.length);
+    public static byte[] OnAskAvatar(
+            int nSpeakerTypeID, int nSpeakerTemplateID, String sMsg, int[] anCanadite) {
+        COutPacket packet = new COutPacket();
+        packet.writeShort(ScriptMessage);
+        packet.write(nSpeakerTypeID);
+        packet.writeInt(nSpeakerTemplateID);
+        packet.write(ScriptMessageType.AskAvatar.getMsgType());
+        packet.write(0);
+        packet.writeMapleAsciiString(sMsg);
+        packet.write(anCanadite.length);
         for (int nCanadite : anCanadite) {
-            mplew.writeInt(nCanadite);//hair id's and stuff lol
+            packet.writeInt(nCanadite); // hair id's and stuff lol
         }
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
-    public static byte[] OnAskMembershopAvatar(int nSpeakerTypeID, int nSpeakerTemplateID, String sMsg, int[] aCanadite) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(ScriptMessage);
-        mplew.write(nSpeakerTypeID);
-        mplew.writeInt(nSpeakerTemplateID);
-        mplew.write(ScriptMessageType.AskMemberShopAvatar.getMsgType());
-        mplew.write(0);
-        mplew.writeMapleAsciiString(sMsg);
-        mplew.write(aCanadite.length);
+    public static byte[] OnAskMembershopAvatar(
+            int nSpeakerTypeID, int nSpeakerTemplateID, String sMsg, int[] aCanadite) {
+        COutPacket packet = new COutPacket();
+        packet.writeShort(ScriptMessage);
+        packet.write(nSpeakerTypeID);
+        packet.writeInt(nSpeakerTemplateID);
+        packet.write(ScriptMessageType.AskMemberShopAvatar.getMsgType());
+        packet.write(0);
+        packet.writeMapleAsciiString(sMsg);
+        packet.write(aCanadite.length);
         for (int nCanadite : aCanadite) {
-            mplew.writeInt(nCanadite);//hair id's and stuff lol
+            packet.writeInt(nCanadite); // hair id's and stuff lol
         }
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
-    public static byte[] OnAskQuiz(int nSpeakerTypeID, int nSpeakerTemplateID, int nResCode, String sTitle, String sProblemText, String sHintText, int nMinInput, int nMaxInput, int tRemainInitialQuiz) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(ScriptMessage);
-        mplew.write(nSpeakerTypeID);
-        mplew.writeInt(nSpeakerTemplateID);
-        mplew.write(ScriptMessageType.AskQuiz.getMsgType());
-        mplew.write(0);
-        mplew.write(nResCode);
-        if (nResCode == InitialQuizRes_Request) {//fail has no bytes <3
-            mplew.writeMapleAsciiString(sTitle);
-            mplew.writeMapleAsciiString(sProblemText);
-            mplew.writeMapleAsciiString(sHintText);
-            mplew.writeShort(nMinInput);
-            mplew.writeShort(nMaxInput);
-            mplew.writeInt(tRemainInitialQuiz);
+    public static byte[] OnAskQuiz(
+            int nSpeakerTypeID,
+            int nSpeakerTemplateID,
+            int nResCode,
+            String sTitle,
+            String sProblemText,
+            String sHintText,
+            int nMinInput,
+            int nMaxInput,
+            int tRemainInitialQuiz) {
+        COutPacket packet = new COutPacket();
+        packet.writeShort(ScriptMessage);
+        packet.write(nSpeakerTypeID);
+        packet.writeInt(nSpeakerTemplateID);
+        packet.write(ScriptMessageType.AskQuiz.getMsgType());
+        packet.write(0);
+        packet.write(nResCode);
+        if (nResCode == InitialQuizRes_Request) { // fail has no bytes <3
+            packet.writeMapleAsciiString(sTitle);
+            packet.writeMapleAsciiString(sProblemText);
+            packet.writeMapleAsciiString(sHintText);
+            packet.writeShort(nMinInput);
+            packet.writeShort(nMaxInput);
+            packet.writeInt(tRemainInitialQuiz);
         }
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
-    public static byte[] OnAskSpeedQuiz(int nSpeakerTypeID, int nSpeakerTemplateID, int nResCode, int nType, int dwAnswer, int nCorrect, int nRemain, int tRemainInitialQuiz) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(ScriptMessage);
-        mplew.write(nSpeakerTypeID);
-        mplew.writeInt(nSpeakerTemplateID);
-        mplew.write(ScriptMessageType.AskSpeedQuiz.getMsgType());
-        mplew.write(0);
-        mplew.write(nResCode);
-        if (nResCode == InitialQuizRes_Request) {//fail has no bytes <3
-            mplew.writeInt(nType);
-            mplew.writeInt(dwAnswer);
-            mplew.writeInt(nCorrect);
-            mplew.writeInt(nRemain);
-            mplew.writeInt(tRemainInitialQuiz);
+    public static byte[] OnAskSpeedQuiz(
+            int nSpeakerTypeID,
+            int nSpeakerTemplateID,
+            int nResCode,
+            int nType,
+            int dwAnswer,
+            int nCorrect,
+            int nRemain,
+            int tRemainInitialQuiz) {
+        COutPacket packet = new COutPacket();
+        packet.writeShort(ScriptMessage);
+        packet.write(nSpeakerTypeID);
+        packet.writeInt(nSpeakerTemplateID);
+        packet.write(ScriptMessageType.AskSpeedQuiz.getMsgType());
+        packet.write(0);
+        packet.write(nResCode);
+        if (nResCode == InitialQuizRes_Request) { // fail has no bytes <3
+            packet.writeInt(nType);
+            packet.writeInt(dwAnswer);
+            packet.writeInt(nCorrect);
+            packet.writeInt(nRemain);
+            packet.writeInt(tRemainInitialQuiz);
         }
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
-    public static byte[] OnAskSlideMenu(int nSpeakerTypeID, int nSpeakerTemplateID, boolean bSlideDlgEX, int nIndex, String sMsg) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(ScriptMessage);
-        mplew.write(nSpeakerTypeID);
-        mplew.writeInt(nSpeakerTemplateID);
-        mplew.write(ScriptMessageType.AskSlideMenu.getMsgType());
-        mplew.write(0);
-        mplew.writeInt(bSlideDlgEX ? 1 : 0);//Neo City
-        mplew.writeInt(nIndex);//Dimensional Mirror.. There's also supportF for potions and such in higher versions.
-        mplew.writeMapleAsciiString(sMsg);
-        return mplew.getPacket();
+    public static byte[] OnAskSlideMenu(
+            int nSpeakerTypeID,
+            int nSpeakerTemplateID,
+            boolean bSlideDlgEX,
+            int nIndex,
+            String sMsg) {
+        COutPacket packet = new COutPacket();
+        packet.writeShort(ScriptMessage);
+        packet.write(nSpeakerTypeID);
+        packet.writeInt(nSpeakerTemplateID);
+        packet.write(ScriptMessageType.AskSlideMenu.getMsgType());
+        packet.write(0);
+        packet.writeInt(bSlideDlgEX ? 1 : 0); // Neo City
+        packet.writeInt(
+                nIndex); // Dimensional Mirror.. There's also supportF for potions and such in
+        // higher versions.
+        packet.writeMapleAsciiString(sMsg);
+        return packet.getPacket();
     }
 
     private enum ScriptMessageType {
@@ -235,4 +291,4 @@ public class ScriptMan {
             return nMsgType;
         }
     }
-}  
+}

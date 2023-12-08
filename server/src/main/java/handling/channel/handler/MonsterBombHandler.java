@@ -13,7 +13,7 @@ import server.life.MapleMonster;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MonsterBombHandler extends AbstractMaplePacketHandler {
@@ -21,11 +21,11 @@ public class MonsterBombHandler extends AbstractMaplePacketHandler {
     private static final int MONSTER_BOMB_SKILL = 4341003;
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        final MapleMonster monster = chr.getMap().getMonsterByOid(slea.readInt());
-        final int xpos = slea.readInt();
-        final int ypos = slea.readInt();
+        final MapleMonster monster = chr.getMap().getMonsterByOid(packet.readInt());
+        final int xpos = packet.readInt();
+        final int ypos = packet.readInt();
         if (!chr.isGameMaster()) {
             if ((monster == null
                     || chr.getJob().getId() != 434

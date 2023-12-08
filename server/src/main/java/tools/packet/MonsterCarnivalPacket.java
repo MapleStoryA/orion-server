@@ -3,63 +3,63 @@ package tools.packet;
 import client.MapleCharacter;
 import handling.SendPacketOpcode;
 import server.MapleCarnivalParty;
-import tools.data.output.MaplePacketLittleEndianWriter;
+import tools.data.output.COutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MonsterCarnivalPacket {
 
     public static byte[] startMonsterCarnival(
             final MapleCharacter chr, final int enemyavailable, final int enemytotal) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.MONSTER_CARNIVAL_START.getValue());
+        packet.writeShort(SendPacketOpcode.MONSTER_CARNIVAL_START.getValue());
         final MapleCarnivalParty friendly = chr.getCarnivalParty();
-        mplew.write(friendly.getTeam());
-        mplew.writeShort(chr.getAvailableCP());
-        mplew.writeShort(chr.getTotalCP());
-        mplew.writeShort(friendly.getAvailableCP());
-        mplew.writeShort(friendly.getTotalCP());
-        mplew.writeShort(enemyavailable);
-        mplew.writeShort(enemytotal);
-        mplew.writeLong(0);
-        mplew.writeShort(0);
+        packet.write(friendly.getTeam());
+        packet.writeShort(chr.getAvailableCP());
+        packet.writeShort(chr.getTotalCP());
+        packet.writeShort(friendly.getAvailableCP());
+        packet.writeShort(friendly.getTotalCP());
+        packet.writeShort(enemyavailable);
+        packet.writeShort(enemytotal);
+        packet.writeLong(0);
+        packet.writeShort(0);
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] playerDiedMessage(String name, int lostCP, int team) { // CPQ
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.MONSTER_CARNIVAL_DIED.getValue());
-        mplew.write(team);
-        mplew.writeMapleAsciiString(name);
-        mplew.write(lostCP);
+        packet.writeShort(SendPacketOpcode.MONSTER_CARNIVAL_DIED.getValue());
+        packet.write(team);
+        packet.writeMapleAsciiString(name);
+        packet.write(lostCP);
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] CPUpdate(boolean party, int curCP, int totalCP, int team) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
         if (!party) {
-            mplew.writeShort(SendPacketOpcode.MONSTER_CARNIVAL_OBTAINED_CP.getValue());
+            packet.writeShort(SendPacketOpcode.MONSTER_CARNIVAL_OBTAINED_CP.getValue());
         } else {
-            mplew.writeShort(SendPacketOpcode.MONSTER_CARNIVAL_PARTY_CP.getValue());
-            mplew.write(team);
+            packet.writeShort(SendPacketOpcode.MONSTER_CARNIVAL_PARTY_CP.getValue());
+            packet.write(team);
         }
-        mplew.writeShort(curCP);
-        mplew.writeShort(totalCP);
+        packet.writeShort(curCP);
+        packet.writeShort(totalCP);
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 
     public static byte[] playerSummoned(String name, int tab, int number) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        COutPacket packet = new COutPacket();
 
-        mplew.writeShort(SendPacketOpcode.MONSTER_CARNIVAL_SUMMON.getValue());
-        mplew.write(tab);
-        mplew.write(number);
-        mplew.writeMapleAsciiString(name);
+        packet.writeShort(SendPacketOpcode.MONSTER_CARNIVAL_SUMMON.getValue());
+        packet.write(tab);
+        packet.write(number);
+        packet.writeMapleAsciiString(name);
 
-        return mplew.getPacket();
+        return packet.getPacket();
     }
 }

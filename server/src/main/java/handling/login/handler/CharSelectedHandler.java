@@ -7,16 +7,16 @@ import handling.AbstractMaplePacketHandler;
 import handling.ServerMigration;
 import handling.world.WorldServer;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class CharSelectedHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        final int characterId = slea.readInt();
-        String hardwareID = slea.readMapleAsciiString();
-        String macAddress = slea.readMapleAsciiString();
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        final int characterId = packet.readInt();
+        String hardwareID = packet.readMapleAsciiString();
+        String macAddress = packet.readMapleAsciiString();
         log.info("HardwareID: " + macAddress);
         log.info("MAC: " + hardwareID);
         if (c.tooManyLogin()

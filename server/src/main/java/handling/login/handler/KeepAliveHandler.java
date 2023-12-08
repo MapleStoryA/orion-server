@@ -24,11 +24,11 @@ package handling.login.handler;
 
 import client.MapleClient;
 import handling.MaplePacketHandler;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class KeepAliveHandler implements MaplePacketHandler {
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         c.pongReceived();
     }
 

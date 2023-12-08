@@ -1,11 +1,11 @@
 package server.movement;
 
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.data.output.LittleEndianWriter;
 
 /**
- * @Author Arnah
- * @Website http://Vertisy.ca/
+ * @Author Arnah @Website http://Vertisy.ca/
+ *
  * @since Jun 22, 2017
  */
 @lombok.extern.slf4j.Slf4j
@@ -16,8 +16,8 @@ public class Elem {
     public short tElapse;
     byte type;
 
-    public void decode(SeekableLittleEndianAccessor lea) {
-        type = lea.readByte();// nAttr
+    public void decode(CInPacket lea) {
+        type = lea.readByte(); // nAttr
         // label_12, encode2, goto label_13
         // label_13, write, encode 2
         switch (type) {

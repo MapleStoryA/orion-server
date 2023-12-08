@@ -6,16 +6,16 @@ import client.inventory.MapleInventoryType;
 import handling.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class ItemSortHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        c.getPlayer().updateTick(slea.readInt());
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        c.getPlayer().updateTick(packet.readInt());
 
-        final MapleInventoryType pInvType = MapleInventoryType.getByType(slea.readByte());
+        final MapleInventoryType pInvType = MapleInventoryType.getByType(packet.readByte());
         if (pInvType == MapleInventoryType.UNDEFINED) {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
@@ -48,7 +48,5 @@ public class ItemSortHandler extends AbstractMaplePacketHandler {
         }
         c.getSession().write(MaplePacketCreator.finishedSort(pInvType.getType()));
         c.getSession().write(MaplePacketCreator.enableActions());
-
     }
-
 }

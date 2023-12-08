@@ -8,14 +8,14 @@ import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.packet.PetPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class PetFoodHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         int previousFullness = 100;
         MapleCharacter chr = c.getPlayer();
         MaplePet pet = null;
@@ -35,8 +35,8 @@ public class PetFoodHandler extends AbstractMaplePacketHandler {
             return;
         }
 
-        slea.skip(6);
-        final int itemId = slea.readInt();
+        packet.skip(6);
+        final int itemId = packet.readInt();
 
         boolean gainCloseness = true;
 
@@ -61,10 +61,17 @@ public class PetFoodHandler extends AbstractMaplePacketHandler {
                     chr.getMap().broadcastMessage(PetPacket.showPetLevelUp(chr, index));
                 }
             }
-            c.getSession().write(PetPacket.updatePet(pet,
-                    chr.getInventory(MapleInventoryType.CASH).getItem((byte) pet.getInventoryPosition())));
-            chr.getMap().broadcastMessage(c.getPlayer(),
-                    PetPacket.commandResponse(chr.getId(), (byte) 1, index, true, true), true);
+            c.getSession()
+                    .write(
+                            PetPacket.updatePet(
+                                    pet,
+                                    chr.getInventory(MapleInventoryType.CASH)
+                                            .getItem((byte) pet.getInventoryPosition())));
+            chr.getMap()
+                    .broadcastMessage(
+                            c.getPlayer(),
+                            PetPacket.commandResponse(chr.getId(), (byte) 1, index, true, true),
+                            true);
         } else {
             if (gainCloseness) {
                 int newCloseness = pet.getCloseness() - 1;
@@ -76,14 +83,20 @@ public class PetFoodHandler extends AbstractMaplePacketHandler {
                     pet.setLevel(pet.getLevel() - 1);
                 }
             }
-            c.getSession().write(PetPacket.updatePet(pet,
-                    chr.getInventory(MapleInventoryType.CASH).getItem((byte) pet.getInventoryPosition())));
-            chr.getMap().broadcastMessage(chr,
-                    PetPacket.commandResponse(chr.getId(), (byte) 1, chr.getPetIndex(pet), false, true), true);
+            c.getSession()
+                    .write(
+                            PetPacket.updatePet(
+                                    pet,
+                                    chr.getInventory(MapleInventoryType.CASH)
+                                            .getItem((byte) pet.getInventoryPosition())));
+            chr.getMap()
+                    .broadcastMessage(
+                            chr,
+                            PetPacket.commandResponse(
+                                    chr.getId(), (byte) 1, chr.getPetIndex(pet), false, true),
+                            true);
         }
         MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, itemId, 1, true, false);
         c.getSession().write(MaplePacketCreator.enableActions());
-
     }
-
 }

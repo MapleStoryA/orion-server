@@ -22,7 +22,7 @@ import server.life.MobSkillFactory;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.packet.MTSCSPacket;
 import tools.packet.MobPacket;
 import tools.packet.UIPacket;
@@ -44,9 +44,7 @@ public class PlayerHandler {
     }
 
     public static final void TakeDamage(
-            final SeekableLittleEndianAccessor slea,
-            final MapleClient c,
-            final MapleCharacter chr) {
+            final CInPacket slea, final MapleClient c, final MapleCharacter chr) {
         // log.info(slea.toString());
         chr.updateTick(slea.readInt());
         final byte type = slea.readByte(); // -4 is mist, -3 and -2 are map
@@ -70,7 +68,7 @@ public class PlayerHandler {
             return;
         }
 
-        if (chr.isGameMaster() && chr.isInvincible()) {
+        if (chr.isGameMaster()) {
             return;
         }
         final PlayerStats stats = chr.getStat();
@@ -346,9 +344,7 @@ public class PlayerHandler {
     }
 
     public static final void changeMap(
-            final SeekableLittleEndianAccessor slea,
-            final MapleClient c,
-            final MapleCharacter chr) {
+            final CInPacket slea, final MapleClient c, final MapleCharacter chr) {
         if (chr == null) {
             return;
         }

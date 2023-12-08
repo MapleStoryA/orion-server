@@ -6,20 +6,20 @@ import handling.AbstractMaplePacketHandler;
 import handling.world.WorldServer;
 import handling.world.helper.FindCommand;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class WhisperHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        final byte mode = slea.readByte();
-        slea.readInt(); // ticks
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        final byte mode = packet.readByte();
+        packet.readInt(); // ticks
         switch (mode) {
             case 68: // buddy
             case 5:
                 { // Find
-                    final String recipient = slea.readMapleAsciiString();
+                    final String recipient = packet.readMapleAsciiString();
                     MapleCharacter player =
                             c.getChannelServer().getPlayerStorage().getCharacterByName(recipient);
                     if (player != null) {
@@ -83,18 +83,9 @@ public class WhisperHandler extends AbstractMaplePacketHandler {
                 }
             case 6:
                 { // Whisper
-                    if (!c.getPlayer().getCanTalk()) {
-                        c.getSession()
-                                .write(
-                                        MaplePacketCreator.serverNotice(
-                                                6,
-                                                "You have been muted and are therefore unable to"
-                                                        + " talk."));
-                        return;
-                    }
                     c.getPlayer().getCheatTracker().checkMsg();
-                    final String recipient = slea.readMapleAsciiString();
-                    final String text = slea.readMapleAsciiString();
+                    final String recipient = packet.readMapleAsciiString();
+                    final String text = packet.readMapleAsciiString();
                     final int ch = FindCommand.findChannel(recipient);
                     if (ch > 0) {
                         MapleCharacter player =

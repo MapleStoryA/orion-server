@@ -4,24 +4,25 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.inventory.IItem;
 import handling.AbstractMaplePacketHandler;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class NoteActionHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        final byte type = slea.readByte();
+        final byte type = packet.readByte();
 
         switch (type) {
             case 0:
-                String name = slea.readMapleAsciiString();
-                String msg = slea.readMapleAsciiString();
-                boolean fame = slea.readByte() > 0;
-                slea.readInt(); // 0?
-                IItem itemz = chr.getCashInventory().findByCashId((int) slea.readLong());
-                if (itemz == null || !itemz.getGiftFrom().equalsIgnoreCase(name)
+                String name = packet.readMapleAsciiString();
+                String msg = packet.readMapleAsciiString();
+                boolean fame = packet.readByte() > 0;
+                packet.readInt(); // 0?
+                IItem itemz = chr.getCashInventory().findByCashId((int) packet.readLong());
+                if (itemz == null
+                        || !itemz.getGiftFrom().equalsIgnoreCase(name)
                         || !chr.getCashInventory().canSendNote(itemz.getSN())) {
                     return;
                 }
@@ -33,18 +34,16 @@ public class NoteActionHandler extends AbstractMaplePacketHandler {
                 }
                 break;
             case 1:
-                final byte num = slea.readByte();
-                slea.skip(2);
+                final byte num = packet.readByte();
+                packet.skip(2);
 
                 for (int i = 0; i < num; i++) {
-                    final int id = slea.readInt();
-                    chr.deleteNote(id, slea.readByte() > 0 ? 1 : 0);
+                    final int id = packet.readInt();
+                    chr.deleteNote(id, packet.readByte() > 0 ? 1 : 0);
                 }
                 break;
             default:
                 log.info("Unhandled note action, " + type + "");
         }
-
     }
-
 }

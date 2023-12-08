@@ -21,19 +21,19 @@ import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import server.maps.MapleSummon;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class SummonAttackHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null || !chr.isAlive()) {
             return;
         }
         final MapleMap map = chr.getMap();
-        final MapleMapObject obj = map.getMapObject(slea.readInt(), MapleMapObjectType.SUMMON);
+        final MapleMapObject obj = map.getMapObject(packet.readInt(), MapleMapObjectType.SUMMON);
         if (obj == null) {
             return;
         }
@@ -45,14 +45,14 @@ public class SummonAttackHandler extends AbstractMaplePacketHandler {
         if (sse == null) {
             return;
         }
-        slea.skip(8);
-        int tick = slea.readInt();
+        packet.skip(8);
+        int tick = packet.readInt();
         chr.updateTick(tick);
         summon.CheckSummonAttackFrequency(chr, tick);
-        slea.skip(8);
-        final byte animation = slea.readByte();
-        slea.skip(8);
-        final byte numAttacked = slea.readByte();
+        packet.skip(8);
+        final byte animation = packet.readByte();
+        packet.skip(8);
+        final byte numAttacked = packet.readByte();
         if (numAttacked > sse.mobCount) {
             chr.getCheatTracker().registerOffense(CheatingOffense.SUMMON_HACK_MOBS);
             // AutobanManager.getInstance().autoban(c, "Attacking more monster
@@ -60,12 +60,12 @@ public class SummonAttackHandler extends AbstractMaplePacketHandler {
             // numAttacked + ", allowed : " + sse.mobCount + ")");
             return;
         }
-        slea.skip(8); // some pos stuff
+        packet.skip(8); // some pos stuff
         final List<SummonAttackEntry> allDamage = new ArrayList<SummonAttackEntry>();
         chr.getCheatTracker().checkSummonAttack();
 
         for (int i = 0; i < numAttacked; i++) {
-            final MapleMonster mob = map.getMonsterByOid(slea.readInt());
+            final MapleMonster mob = map.getMonsterByOid(packet.readInt());
 
             if (mob == null) {
                 continue;
@@ -74,8 +74,8 @@ public class SummonAttackHandler extends AbstractMaplePacketHandler {
                 chr.getCheatTracker()
                         .registerOffense(CheatingOffense.ATTACK_FARAWAY_MONSTER_SUMMON);
             }
-            slea.skip(18); // who knows
-            final int damage = slea.readInt();
+            packet.skip(18); // who knows
+            final int damage = packet.readInt();
             allDamage.add(new SummonAttackEntry(mob, damage));
             mob.damage(c.getPlayer(), damage, true);
         }

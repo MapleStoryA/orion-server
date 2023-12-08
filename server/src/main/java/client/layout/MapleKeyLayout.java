@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.statement.Slf4JSqlLogger;
-import tools.data.output.MaplePacketLittleEndianWriter;
+import tools.data.output.COutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleKeyLayout implements Serializable {
@@ -34,15 +34,15 @@ public class MapleKeyLayout implements Serializable {
         keyMapBindings = new ConcurrentHashMap<>();
     }
 
-    public void encode(final MaplePacketLittleEndianWriter mplew) {
+    public void encode(final COutPacket packet) {
         for (int x = 0; x < 90; x++) {
             var binding = keyMapBindings.get(Integer.valueOf(x));
             if (binding != null) {
-                mplew.write(binding.getType());
-                mplew.writeInt(binding.getAction());
+                packet.write(binding.getType());
+                packet.writeInt(binding.getAction());
             } else {
-                mplew.write(0);
-                mplew.writeInt(0);
+                packet.write(0);
+                packet.writeInt(0);
             }
         }
     }

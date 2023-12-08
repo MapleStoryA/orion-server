@@ -10,26 +10,26 @@ import client.skill.SkillFactory;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import server.MapleItemInformationProvider;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class ChangeKeyMapHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        if (chr == null || slea.available() < 8) {
+        if (chr == null || packet.available() < 8) {
             return;
         }
-        final int actiontype = slea.readInt();
+        final int actiontype = packet.readInt();
         switch (actiontype) {
             case 0:
                 { // Normal Key Map
-                    final int numChanges = slea.readInt();
+                    final int numChanges = packet.readInt();
                     for (int i = 0; i < numChanges; i++) {
-                        final int key = slea.readInt();
-                        final byte type = slea.readByte();
-                        final int action = slea.readInt();
+                        final int key = packet.readInt();
+                        final byte type = packet.readByte();
+                        final int action = packet.readInt();
 
                         if (ExcludedKeyMap.fromKeyValue(action) != null) {
                             continue;
@@ -78,7 +78,7 @@ public class ChangeKeyMapHandler extends AbstractMaplePacketHandler {
             case 1: // Pet Auto HP
             case 2:
                 { // Pet Auto MP
-                    final int data = slea.readInt();
+                    final int data = packet.readInt();
                     boolean isHp = actiontype == 1;
 
                     if (data == 0) {

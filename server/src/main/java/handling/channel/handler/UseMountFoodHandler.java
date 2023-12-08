@@ -9,21 +9,24 @@ import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UseMountFoodHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        c.getPlayer().updateTick(slea.readInt());
-        final byte slot = (byte) slea.readShort();
-        final int itemid = slea.readInt(); // 2260000 usually
+        c.getPlayer().updateTick(packet.readInt());
+        final byte slot = (byte) packet.readShort();
+        final int itemid = packet.readInt(); // 2260000 usually
         final IItem toUse = chr.getInventory(MapleInventoryType.USE).getItem(slot);
         final MapleMount mount = chr.getMount();
 
-        if ((itemid / 10000 == 226) && toUse != null && toUse.getQuantity() > 0 && toUse.getItemId() == itemid
+        if ((itemid / 10000 == 226)
+                && toUse != null
+                && toUse.getQuantity() > 0
+                && toUse.getItemId() == itemid
                 && mount != null) {
             final int fatigue = mount.getFatigue();
 
@@ -33,16 +36,16 @@ public class UseMountFoodHandler extends AbstractMaplePacketHandler {
             if (fatigue > 0) {
                 mount.increaseExp();
                 final int level = mount.getLevel();
-                if (mount.getExp() >= GameConstants.getMountExpNeededForLevel(level + 1) && level < 31) {
+                if (mount.getExp() >= GameConstants.getMountExpNeededForLevel(level + 1)
+                        && level < 31) {
                     mount.setLevel((byte) (level + 1));
                     levelup = true;
                 }
             }
             chr.getMap().broadcastMessage(MaplePacketCreator.updateMount(chr, levelup));
-            MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
+            MapleInventoryManipulator.removeFromSlot(
+                    c, MapleInventoryType.USE, slot, (short) 1, false);
         }
         c.getSession().write(MaplePacketCreator.enableActions());
-
     }
-
 }

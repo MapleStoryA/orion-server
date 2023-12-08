@@ -6,18 +6,18 @@ import handling.AbstractMaplePacketHandler;
 import scripting.NPCScriptManager;
 import scripting.v1.game.helper.NpcTalkHelper;
 import server.life.MapleNPC;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class NpcTalkHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null || chr.getMap() == null || chr.getConversation() == 1) {
             return;
         }
-        final MapleNPC npc = chr.getMap().getNPCByOid(slea.readInt());
+        final MapleNPC npc = chr.getMap().getNPCByOid(packet.readInt());
 
         if (npc == null
                 || npc.isHidden()

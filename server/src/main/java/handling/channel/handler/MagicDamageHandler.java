@@ -9,13 +9,13 @@ import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import server.MapleStatEffect;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MagicDamageHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, final MapleClient c) {
+    public void handlePacket(CInPacket packet, final MapleClient c) {
         final MapleCharacter chr = c.getPlayer();
         if (chr == null) {
             return;
@@ -25,7 +25,7 @@ public class MagicDamageHandler extends AbstractMaplePacketHandler {
             return;
         }
         final AttackInfo attack =
-                DamageParse.Modify_AttackCrit(DamageParse.parseDmgMa(slea), chr, 3);
+                DamageParse.Modify_AttackCrit(DamageParse.parseDmgMa(packet), chr, 3);
         if (attack.portals != chr.getPortalCount(false)) { // Portal count
             // didn't match.
             // Ignore

@@ -7,7 +7,7 @@ import handling.AbstractMaplePacketHandler;
 import java.awt.*;
 import server.maps.MapleMist;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class ThrowSkillHandler extends AbstractMaplePacketHandler {
@@ -19,15 +19,15 @@ public class ThrowSkillHandler extends AbstractMaplePacketHandler {
     }
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         // Poisonbomb, flashbang, monsterbomb, grenade
-        final int x = slea.readInt(); // bomb
-        final int y = slea.readInt(); // bomb
-        slea.readInt(); // player's y pos (place to land for bomb)
-        final int charge = slea.readInt(); // 1200 for monster bomb and 800 for
+        final int x = packet.readInt(); // bomb
+        final int y = packet.readInt(); // bomb
+        packet.readInt(); // player's y pos (place to land for bomb)
+        final int charge = packet.readInt(); // 1200 for monster bomb and 800 for
         // flashbang
-        final int skillid = slea.readInt();
-        final int skillLevel = slea.readInt();
+        final int skillid = packet.readInt();
+        final int skillLevel = packet.readInt();
         if (skillid == 4341003) {
             c.getPlayer()
                     .getMap()

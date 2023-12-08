@@ -7,16 +7,16 @@ import client.anticheat.CheatingOffense;
 import handling.AbstractMaplePacketHandler;
 import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class GiveFameHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        final int who = slea.readInt();
-        final int mode = slea.readByte();
+        final int who = packet.readInt();
+        final int mode = packet.readByte();
 
         final int famechange = mode == 0 ? -1 : 1;
         final MapleCharacter target =

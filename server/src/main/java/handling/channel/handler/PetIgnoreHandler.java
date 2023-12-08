@@ -5,15 +5,15 @@ import client.MapleClient;
 import client.inventory.MaplePet;
 import handling.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class PetIgnoreHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        final int petId = (int) slea.readLong();
+        final int petId = (int) packet.readLong();
         if (chr == null || chr.getMap() == null || chr.getPetIndex(petId) < 0) {
             return;
         }
@@ -27,20 +27,18 @@ public class PetIgnoreHandler extends AbstractMaplePacketHandler {
             return;
         }
         // Store in quest data will do
-        final byte size = slea.readByte();
+        final byte size = packet.readByte();
         if (size <= 0) {
-            //TODO: pet ignore
+            // TODO: pet ignore
         } else {
             final StringBuilder st = new StringBuilder();
             for (int i = 0; i < size; i++) {
                 if (i > 10) {
                     break;
                 }
-                st.append(slea.readInt()).append(",");
+                st.append(packet.readInt()).append(",");
             }
             st.deleteCharAt(st.length() - 1);
         }
-
     }
-
 }

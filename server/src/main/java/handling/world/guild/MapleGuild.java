@@ -22,7 +22,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import tools.MaplePacketCreator;
-import tools.data.output.MaplePacketLittleEndianWriter;
+import tools.data.output.COutPacket;
 import tools.packet.UIPacket;
 
 @lombok.extern.slf4j.Slf4j
@@ -864,20 +864,20 @@ public class MapleGuild implements java.io.Serializable {
         }
     }
 
-    public final void addMemberData(final MaplePacketLittleEndianWriter mplew) {
-        mplew.write(members.size());
+    public final void addMemberData(final COutPacket packet) {
+        packet.write(members.size());
 
         for (final MapleGuildCharacter mgc : members) {
-            mplew.writeInt(mgc.getId());
+            packet.writeInt(mgc.getId());
         }
         for (final MapleGuildCharacter mgc : members) {
-            mplew.writeAsciiString(mgc.getName(), 13);
-            mplew.writeInt(mgc.getJobId());
-            mplew.writeInt(mgc.getLevel());
-            mplew.writeInt(mgc.getGuildRank());
-            mplew.writeInt(mgc.isOnline() ? 1 : 0);
-            mplew.writeInt(signature);
-            mplew.writeInt(mgc.getAllianceRank());
+            packet.writeAsciiString(mgc.getName(), 13);
+            packet.writeInt(mgc.getJobId());
+            packet.writeInt(mgc.getLevel());
+            packet.writeInt(mgc.getGuildRank());
+            packet.writeInt(mgc.isOnline() ? 1 : 0);
+            packet.writeInt(signature);
+            packet.writeInt(mgc.getAllianceRank());
         }
     }
 

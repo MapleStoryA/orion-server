@@ -2,15 +2,14 @@ package handling.channel.handler;
 
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class ViewAllCharPacket extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        //c.enableActions();
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        // c.enableActions();
 
     }
-
 }

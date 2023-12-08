@@ -5,26 +5,26 @@ import handling.AbstractMaplePacketHandler;
 import scripting.NPCConversationManager;
 import scripting.NPCScriptManager;
 import scripting.v1.game.helper.NpcTalkHelper;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class NpcTalkMoreHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         if (c.getLastNPCTalk() > System.currentTimeMillis() - 400) {
             return;
         }
         if (c.getCurrentNpcScript() != null && c.getCurrentNpcScript().getContinuation() != null) {
-            NpcTalkHelper.proceedConversation(slea, c);
+            NpcTalkHelper.proceedConversation(packet, c);
             return;
         }
         final byte lastMsg =
-                slea.readByte(); // 00 (last msg type I think) 0F = dimensional mirror, 06 =
+                packet.readByte(); // 00 (last msg type I think) 0F = dimensional mirror, 06 =
         // quiz, 07 = speed quiz
         byte action = 0;
         if (lastMsg != 7) {
-            action = slea.readByte(); // 00 = end chat, 01 == follow
+            action = packet.readByte(); // 00 = end chat, 01 == follow
         }
 
         final NPCConversationManager cm = NPCScriptManager.getInstance().getCM(c);
@@ -35,7 +35,7 @@ public class NpcTalkMoreHandler extends AbstractMaplePacketHandler {
         cm.setLastMsg((byte) -1);
         if (lastMsg == 3 || lastMsg == 6) {
             if (action != 0) {
-                cm.setGetText(slea.readMapleAsciiString());
+                cm.setGetText(packet.readMapleAsciiString());
                 if (cm.getType() == 0) {
                     NPCScriptManager.getInstance().startQuest(c, action, lastMsg, -1);
                 } else if (cm.getType() == 1) {
@@ -51,13 +51,13 @@ public class NpcTalkMoreHandler extends AbstractMaplePacketHandler {
                 cm.dispose();
                 return;
             }
-            c.getPlayer().getSpeedQuiz().nextRound(c, slea.readMapleAsciiString());
+            c.getPlayer().getSpeedQuiz().nextRound(c, packet.readMapleAsciiString());
         } else {
             int selection = -1;
-            if (slea.available() >= 4) {
-                selection = slea.readInt();
-            } else if (slea.available() > 0) {
-                selection = slea.readByte();
+            if (packet.available() >= 4) {
+                selection = packet.readInt();
+            } else if (packet.available() > 0) {
+                selection = packet.readByte();
             }
             if (lastMsg == 4 && selection <= -1) {
                 cm.dispose();

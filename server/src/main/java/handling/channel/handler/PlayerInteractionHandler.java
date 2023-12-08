@@ -21,7 +21,7 @@ import server.shops.MapleMiniGame;
 import server.shops.MaplePlayerShop;
 import server.shops.MaplePlayerShopItem;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.packet.PlayerShopPacket;
 
 @lombok.extern.slf4j.Slf4j
@@ -69,12 +69,12 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             SELECT_CARD = 0x44;
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null) {
             return;
         }
-        final byte action = slea.readByte();
+        final byte action = packet.readByte();
         switch (action) { // Mode
             case CREATE:
                 {
@@ -82,7 +82,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                         c.getSession().write(MaplePacketCreator.enableActions());
                         return;
                     }
-                    final byte createType = slea.readByte();
+                    final byte createType = packet.readByte();
                     if (createType == 3) { // trade
                         MapleTrade.startTrade(chr);
                     } else if (createType == 1
@@ -114,13 +114,13 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                                 return;
                             }
                         }
-                        final String desc = slea.readMapleAsciiString();
+                        final String desc = packet.readMapleAsciiString();
                         String pass = "";
-                        if (slea.readByte() > 0 && (createType == 1 || createType == 2)) {
-                            pass = slea.readMapleAsciiString();
+                        if (packet.readByte() > 0 && (createType == 1 || createType == 2)) {
+                            pass = packet.readMapleAsciiString();
                         }
                         if (createType == 1 || createType == 2) {
-                            final int piece = slea.readByte();
+                            final int piece = packet.readByte();
                             final int itemId = createType == 1 ? (4080000 + piece) : 4080100;
                             if (!chr.haveItem(itemId)
                                     || (c.getPlayer().getMapId() >= 910000001
@@ -141,10 +141,10 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                             IItem shop =
                                     c.getPlayer()
                                             .getInventory(MapleInventoryType.CASH)
-                                            .getItem((byte) slea.readShort());
+                                            .getItem((byte) packet.readShort());
                             if (shop == null
                                     || shop.getQuantity() <= 0
-                                    || shop.getItemId() != slea.readInt()
+                                    || shop.getItemId() != packet.readInt()
                                     || c.getPlayer().getMapId() < 910000001
                                     || c.getPlayer().getMapId() > 910000022) {
                                 return;
@@ -173,7 +173,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                         c.getSession().write(MaplePacketCreator.enableActions());
                         return;
                     }
-                    MapleTrade.inviteTrade(chr, chr.getMap().getCharacterById(slea.readInt()));
+                    MapleTrade.inviteTrade(chr, chr.getMap().getCharacterById(packet.readInt()));
                     break;
                 }
             case DENY_TRADE:
@@ -190,7 +190,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     if (chr.getTrade() != null && chr.getTrade().getPartner() != null) {
                         MapleTrade.visitTrade(chr, chr.getTrade().getPartner().getChr());
                     } else if (chr.getMap() != null) {
-                        final int obid = slea.readInt();
+                        final int obid = packet.readInt();
                         MapleMapObject ob =
                                 chr.getMap().getMapObject(obid, MapleMapObjectType.HIRED_MERCHANT);
                         if (ob == null) {
@@ -249,12 +249,12 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                                             || !ips.isAvailable()) {
                                         c.getSession().write(PlayerShopPacket.getMiniGameFull());
                                     } else {
-                                        if (slea.available() > 0 && slea.readByte() > 0) { // a
+                                        if (packet.available() > 0 && packet.readByte() > 0) { // a
                                             // password
                                             // has
                                             // been
                                             // entered
-                                            String pass = slea.readMapleAsciiString();
+                                            String pass = packet.readMapleAsciiString();
                                             if (!pass.equals(ips.getPassword())) {
                                                 c.getPlayer()
                                                         .dropMessage(
@@ -290,12 +290,12 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                 }
             case CHAT:
                 {
-                    slea.readInt();
+                    packet.readInt();
                     if (chr.getTrade() != null) {
-                        chr.getTrade().chat(slea.readMapleAsciiString());
+                        chr.getTrade().chat(packet.readMapleAsciiString());
                     } else if (chr.getPlayerShop() != null) {
                         final HiredMerchant ips = (HiredMerchant) chr.getPlayerShop();
-                        String text = slea.readMapleAsciiString();
+                        String text = packet.readMapleAsciiString();
                         ips.addChatHistory(chr.getName(), text);
                         if (ips.isOwner(chr)) {
                             c.getSession()
@@ -366,10 +366,11 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                 }
             case SET_ITEMS:
                 {
-                    final MapleInventoryType ivType = MapleInventoryType.getByType(slea.readByte());
-                    final IItem item = chr.getInventory(ivType).getItem((byte) slea.readShort());
-                    final short quantity = slea.readShort();
-                    final byte targetSlot = slea.readByte();
+                    final MapleInventoryType ivType =
+                            MapleInventoryType.getByType(packet.readByte());
+                    final IItem item = chr.getInventory(ivType).getItem((byte) packet.readShort());
+                    final short quantity = packet.readShort();
+                    final byte targetSlot = packet.readByte();
 
                     if (chr.getTrade() != null && item != null) {
                         if ((quantity <= item.getQuantity() && quantity >= 0)
@@ -384,7 +385,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                 {
                     final MapleTrade trade = chr.getTrade();
                     if (trade != null) {
-                        trade.setMeso(slea.readInt());
+                        trade.setMeso(packet.readInt());
                     }
                     break;
                 }
@@ -407,14 +408,14 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             case PLAYER_SHOP_ADD_ITEM:
             case ADD_ITEM:
                 {
-                    if (slea.available() < 11) {
+                    if (packet.available() < 11) {
                         break;
                     }
-                    final MapleInventoryType type = MapleInventoryType.getByType(slea.readByte());
-                    final byte slot = (byte) slea.readShort();
-                    final short bundles = slea.readShort(); // How many in a bundle
-                    final short perBundle = slea.readShort(); // Price per bundle
-                    final int price = slea.readInt();
+                    final MapleInventoryType type = MapleInventoryType.getByType(packet.readByte());
+                    final byte slot = (byte) packet.readShort();
+                    final short bundles = packet.readShort(); // How many in a bundle
+                    final short perBundle = packet.readShort(); // Price per bundle
+                    final int price = packet.readInt();
 
                     if (price <= 0 || bundles <= 0 || perBundle <= 0) {
                         return;
@@ -489,8 +490,8 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             case BUY_ITEM_STORE:
             case BUY_ITEM_HIREDMERCHANT:
                 { // Buy and Merchant buy
-                    final int item = slea.readByte();
-                    final short quantity = slea.readShort();
+                    final int item = packet.readByte();
+                    final short quantity = packet.readShort();
                     if (item < 0 || quantity < 0) {
                         c.enableActions();
                         return;
@@ -558,7 +559,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                 }
             case REMOVE_ITEM:
                 {
-                    int slot = slea.readShort(); // 0
+                    int slot = packet.readShort(); // 0
                     final IMaplePlayerShop shop = chr.getPlayerShop();
 
                     if (shop == null
@@ -683,7 +684,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                 {
                     final IMaplePlayerShop merchant = chr.getPlayerShop();
                     if (merchant != null && merchant.getShopType() == 1 && merchant.isOwner(chr)) {
-                        ((HiredMerchant) merchant).addBlackList(slea.readMapleAsciiString());
+                        ((HiredMerchant) merchant).addBlackList(packet.readMapleAsciiString());
                     }
                     break;
                 }
@@ -691,7 +692,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                 {
                     final IMaplePlayerShop merchant = chr.getPlayerShop();
                     if (merchant != null && merchant.getShopType() == 1 && merchant.isOwner(chr)) {
-                        ((HiredMerchant) merchant).removeBlackList(slea.readMapleAsciiString());
+                        ((HiredMerchant) merchant).removeBlackList(packet.readMapleAsciiString());
                     }
                     break;
                 }
@@ -796,7 +797,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                         }
                         if (game.getRequestedTie() > -1
                                 && game.getRequestedTie() != game.getVisitorSlot(chr)) {
-                            if (slea.readByte() > 0) {
+                            if (packet.readByte() > 0) {
                                 game.broadcastToVisitors(
                                         PlayerShopPacket.getMiniGameResult(
                                                 game, 1, game.getRequestedTie()));
@@ -858,7 +859,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                                             game.getVisitorSlot(chr)));
                             return;
                         }
-                        game.setPiece(slea.readInt(), slea.readInt(), slea.readByte(), chr);
+                        game.setPiece(packet.readInt(), packet.readInt(), packet.readByte(), chr);
                     }
                     break;
                 }
@@ -882,7 +883,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                                             game.getVisitorSlot(chr)));
                             return;
                         }
-                        if (slea.readByte() != game.getTurn()) {
+                        if (packet.readByte() != game.getTurn()) {
                             game.broadcastToVisitors(
                                     PlayerShopPacket.shopChat(
                                             "Omok could not be placed by "
@@ -896,7 +897,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                                             game.getVisitorSlot(chr)));
                             return;
                         }
-                        final int slot = slea.readByte();
+                        final int slot = packet.readByte();
                         final int turn = game.getTurn();
                         final int fs = game.getFirstSlot();
                         if (turn == 1) {

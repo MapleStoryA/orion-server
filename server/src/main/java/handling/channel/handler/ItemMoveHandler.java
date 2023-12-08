@@ -4,22 +4,23 @@ import client.MapleClient;
 import client.inventory.MapleInventoryType;
 import handling.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class ItemMoveHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        if (c.getPlayer().getPlayerShop() != null || c.getPlayer().getConversation() > 0
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        if (c.getPlayer().getPlayerShop() != null
+                || c.getPlayer().getConversation() > 0
                 || c.getPlayer().getTrade() != null) { // hack
             return;
         }
-        c.getPlayer().updateTick(slea.readInt());
-        final MapleInventoryType type = MapleInventoryType.getByType(slea.readByte()); // 04
-        final short src = slea.readShort(); // 01 00
-        final short dst = slea.readShort(); // 00 00
-        final short quantity = slea.readShort(); // 53 01
+        c.getPlayer().updateTick(packet.readInt());
+        final MapleInventoryType type = MapleInventoryType.getByType(packet.readByte()); // 04
+        final short src = packet.readShort(); // 01 00
+        final short dst = packet.readShort(); // 00 00
+        final short quantity = packet.readShort(); // 53 01
 
         if (src < 0 && dst > 0) {
             MapleInventoryManipulator.unequip(c, src, dst);
@@ -30,7 +31,5 @@ public class ItemMoveHandler extends AbstractMaplePacketHandler {
         } else {
             MapleInventoryManipulator.move(c, type, src, dst);
         }
-
     }
-
 }

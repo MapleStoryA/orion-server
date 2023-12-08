@@ -11,12 +11,12 @@ import tools.HexTool;
  * @since Revision 352
  */
 @lombok.extern.slf4j.Slf4j
-public class MaplePacketLittleEndianWriter extends GenericLittleEndianWriter {
+public class COutPacket extends GenericLittleEndianWriter {
 
     private final ByteArrayOutputStream baos;
 
     /** Constructor - initializes this stream with a default size. */
-    public MaplePacketLittleEndianWriter() {
+    public COutPacket() {
         this(32);
     }
 
@@ -25,7 +25,7 @@ public class MaplePacketLittleEndianWriter extends GenericLittleEndianWriter {
      *
      * @param size The size of the underlying stream.
      */
-    public MaplePacketLittleEndianWriter(final int size) {
+    public COutPacket(final int size) {
         this.baos = new ByteArrayOutputStream(size);
         setByteOutputStream(new BAOSByteOutputStream(baos));
     }

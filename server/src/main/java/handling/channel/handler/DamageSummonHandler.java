@@ -4,26 +4,24 @@ import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
+import java.util.Iterator;
 import server.maps.MapleSummon;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
-
-import java.util.Iterator;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class DamageSummonHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        slea.skip(4);
-        final int unkByte = slea.readByte();
-        final int damage = slea.readInt();
-        final int monsterIdFrom = slea.readInt();
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        packet.skip(4);
+        final int unkByte = packet.readByte();
+        final int damage = packet.readInt();
+        final int monsterIdFrom = packet.readInt();
         // slea.readByte(); // stance
         MapleCharacter chr = c.getPlayer();
         final Iterator<MapleSummon> iter = chr.getSummons().values().iterator();
         MapleSummon summon;
-
 
         while (iter.hasNext()) {
             summon = iter.next();
@@ -43,13 +41,18 @@ public class DamageSummonHandler extends AbstractMaplePacketHandler {
                 if (summon.getHP() <= 0) {
                     chr.cancelEffectFromBuffStat(MapleBuffStat.PUPPET);
                 }
-                chr.getMap().broadcastMessage(chr,
-                        MaplePacketCreator.damageSummon(chr.getId(), summon.getSkill(), damage, unkByte, monsterIdFrom),
-                        summon.getPosition());
+                chr.getMap()
+                        .broadcastMessage(
+                                chr,
+                                MaplePacketCreator.damageSummon(
+                                        chr.getId(),
+                                        summon.getSkill(),
+                                        damage,
+                                        unkByte,
+                                        monsterIdFrom),
+                                summon.getPosition());
                 break;
             }
         }
-
     }
-
 }

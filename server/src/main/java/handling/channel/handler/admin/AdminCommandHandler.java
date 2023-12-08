@@ -21,23 +21,23 @@ package handling.channel.handler.admin;
 
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 public final class AdminCommandHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         if (!c.getPlayer()
                 .isGameMaster()) { // if ( (signed int)CWvsContext::GetAdminLevel((void *)v294) > 2
             // )
             return;
         }
 
-        byte mode = slea.readByte();
+        byte mode = packet.readByte();
         switch (mode) {
             case 0x00:
             case 0x02:
-                c.getPlayer().setExp(slea.readInt());
+                c.getPlayer().setExp(packet.readInt());
                 break;
             case 18:
                 c.getPlayer().isHidden();

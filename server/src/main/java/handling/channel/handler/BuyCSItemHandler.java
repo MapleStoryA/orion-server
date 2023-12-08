@@ -20,21 +20,21 @@ import server.MapleItemInformationProvider;
 import server.cashshop.CashItemFactory;
 import server.cashshop.CashItemInfo;
 import tools.Triple;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 import tools.packet.MTSCSPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class BuyCSItemHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        final int action = slea.readByte();
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        final int action = packet.readByte();
         MapleCharacter chr = c.getPlayer();
         final boolean isNxWhore = false;
         if (action == 3) { // Buy Cash Item
-            slea.skip(1);
-            final int toCharge = slea.readInt();
-            final int itemId = slea.readInt();
+            packet.skip(1);
+            final int toCharge = packet.readInt();
+            final int itemId = packet.readInt();
             final CashItemInfo item = CashItemFactory.getInstance().getItem(itemId);
             if (item == null
                     || (!isNxWhore && chr.getCSPoints(toCharge) < item.getPrice())
@@ -70,13 +70,13 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
                 c.getSession().write(MTSCSPacket.sendCSFail(0));
             }
         } else if (action == 4 || action == 32) { // Gifting Items / Package
-            slea.skip(4); // birthday
-            final CashItemInfo item = CashItemFactory.getInstance().getItem(slea.readInt());
+            packet.skip(4); // birthday
+            final CashItemInfo item = CashItemFactory.getInstance().getItem(packet.readInt());
             if (action == 4) {
-                slea.skip(1); // size?
+                packet.skip(1); // size?
             }
-            final String partnerName = slea.readMapleAsciiString();
-            final String msg = slea.readMapleAsciiString();
+            final String partnerName = packet.readMapleAsciiString();
+            final String msg = packet.readMapleAsciiString();
             if (item == null
                     || chr.getCSPoints(1) < item.getPrice()
                     || msg.length() > 73
@@ -118,28 +118,28 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
                                     action == 32));
         } else if (action == 5) { // Wishlist
             chr.getWishlist().clear();
-            if (slea.available() < 40) {
+            if (packet.available() < 40) {
                 c.getSession().write(MTSCSPacket.sendCSFail(0));
                 CashShopOperationHandlers.doCSPackets(c);
                 return;
             }
             int[] wishlist = new int[10];
             for (int i = 0; i < 10; i++) {
-                wishlist[i] = slea.readInt();
+                wishlist[i] = packet.readInt();
             }
             chr.getWishlist().update(wishlist);
             c.getSession().write(MTSCSPacket.sendWishList(chr, true));
         } else if (action == 7) { // Increase Storage Slots
-            slea.skip(1);
-            final int toCharge = slea.readInt();
+            packet.skip(1);
+            final int toCharge = packet.readInt();
             if (toCharge == 2) { // Maple Points
                 chr.dropMessage(1, "You cannot use MaplePoints to buy this item.");
                 CashShopOperationHandlers.doCSPackets(c);
                 return;
             }
-            final int coupon = slea.readByte() > 0 ? 2 : 1;
+            final int coupon = packet.readByte() > 0 ? 2 : 1;
             if (coupon > 1) {
-                final CashItemInfo item = CashItemFactory.getInstance().getItem(slea.readInt());
+                final CashItemInfo item = CashItemFactory.getInstance().getItem(packet.readInt());
                 if (item == null
                         || chr.getCSPoints(toCharge) < item.getPrice()
                         || chr.getStorage().getSlots() >= 41
@@ -160,7 +160,7 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
             }
         } else if (action
                 == 14) { // Take from Cash Inventory (UniqueId -> type(byte) -> position(short))
-            final IItem item = chr.getCashInventory().findByCashId((int) slea.readLong());
+            final IItem item = chr.getCashInventory().findByCashId((int) packet.readLong());
             if (item != null
                     && item.getQuantity() > 0
                     && MapleInventoryManipulator.checkSpace(
@@ -181,9 +181,9 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
                 c.getSession().write(MTSCSPacket.sendCSFail(0x19));
             }
         } else if (action == 15) { // Put Into Cash Inventory
-            final int uniqueid = slea.readInt();
-            slea.readInt();
-            final MapleInventoryType type = MapleInventoryType.getByType(slea.readByte());
+            final int uniqueid = packet.readInt();
+            packet.readInt();
+            final MapleInventoryType type = MapleInventoryType.getByType(packet.readByte());
             final IItem item = chr.getInventory(type).findByUniqueId(uniqueid);
             if (item != null
                     && item.getQuantity() > 0
@@ -203,11 +203,11 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
             }
         } else if (action == 36 || action == 30) { // 36 = friendship, 30 = crush
             // c.getSession().write(MTSCSPacket.sendCSFail(0));
-            slea.readInt(); // birthday
-            final int useNx = slea.readInt();
-            final CashItemInfo item = CashItemFactory.getInstance().getItem(slea.readInt());
-            final String partnerName = slea.readMapleAsciiString();
-            final String msg = slea.readMapleAsciiString();
+            packet.readInt(); // birthday
+            final int useNx = packet.readInt();
+            final CashItemInfo item = CashItemFactory.getInstance().getItem(packet.readInt());
+            final String partnerName = packet.readMapleAsciiString();
+            final String msg = packet.readMapleAsciiString();
             if (item == null
                     || !GameConstants.isEffectRing(item.getId())
                     || (!isNxWhore && chr.getCSPoints(useNx) < item.getPrice())
@@ -259,9 +259,9 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
                 chr.modifyCSPoints(useNx, -item.getPrice(), false);
             }
         } else if (action == 31) { // Buying Packages
-            slea.skip(1);
-            final int useNx = slea.readInt();
-            final CashItemInfo item = CashItemFactory.getInstance().getItem(slea.readInt());
+            packet.skip(1);
+            final int useNx = packet.readInt();
+            final CashItemInfo item = CashItemFactory.getInstance().getItem(packet.readInt());
             List<CashItemInfo> ccc = null;
             if (item != null) {
                 // TODO: Remove from here.
@@ -306,7 +306,7 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
             }
             c.getSession().write(MTSCSPacket.showBoughtCSPackage(ccz, c.getAccountData().getId()));
         } else if (action == 33) { // Buying Quest Items
-            final int sn = slea.readInt();
+            final int sn = packet.readInt();
             final CashItemInfo item = CashItemFactory.getInstance().getItem(sn);
             if (item == null
                     || !MapleItemInformationProvider.getInstance().isQuestItem(item.getId())
@@ -337,8 +337,8 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
                 c.getSession().write(MTSCSPacket.sendCSFail(0x19));
             }
         } else if (action == 6) { // Increase Character Inventory Slots
-            int b = slea.readInt();
-            short ce = slea.readShort();
+            int b = packet.readInt();
+            short ce = packet.readShort();
             int toCharge = 0;
             int upgradeSlotItem;
             switch (b) {
@@ -352,10 +352,10 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
                     toCharge = 1;
                     break;
             }
-            if (slea.available() >= 4) {
-                upgradeSlotItem = slea.readInt();
+            if (packet.available() >= 4) {
+                upgradeSlotItem = packet.readInt();
             } else {
-                upgradeSlotItem = slea.readByteAsInt();
+                upgradeSlotItem = packet.readByteAsInt();
                 switch (upgradeSlotItem) {
                     case 1:
                         upgradeSlotItem = 50200093; // Equip
@@ -424,9 +424,9 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
             final int sn =
                     CashItemFactory.getInstance().getSNFromItemId(ServerConstants.ONE_DAY_ITEM);
             c.getSession().write(MTSCSPacket.getOneDayPacket(60 * 60, sn));
-            c.getSession().write(MTSCSPacket.redeemResponse(slea.readInt()));
+            c.getSession().write(MTSCSPacket.redeemResponse(packet.readInt()));
         } else {
-            log.info("Unhandled operation found. Remaining: " + slea);
+            log.info("Unhandled operation found. Remaining: " + packet);
             c.getSession().write(MTSCSPacket.sendCSFail(0));
         }
         CashShopOperationHandlers.doCSPackets(c);

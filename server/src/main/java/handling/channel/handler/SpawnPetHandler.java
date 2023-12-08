@@ -6,16 +6,16 @@ import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import handling.AbstractMaplePacketHandler;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class SpawnPetHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        chr.updateTick(slea.readInt());
-        byte position = slea.readByte();
+        chr.updateTick(packet.readInt());
+        byte position = packet.readByte();
         boolean isLead = position > 0;
 
         final IItem item = c.getPlayer().getInventory(MapleInventoryType.CASH).getItem(position);
@@ -28,8 +28,5 @@ public class SpawnPetHandler extends AbstractMaplePacketHandler {
         } else {
             chr.spawnPet(position, isLead);
         }
-
-
     }
-
 }

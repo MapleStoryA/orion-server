@@ -19,7 +19,7 @@ import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class ItemMakerHandler extends AbstractMaplePacketHandler {
@@ -204,13 +204,13 @@ public class ItemMakerHandler extends AbstractMaplePacketHandler {
     }
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        final int makerType = slea.readInt();
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        final int makerType = packet.readInt();
 
         switch (makerType) {
             case 1:
                 { // Gem
-                    final int toCreate = slea.readInt();
+                    final int toCreate = packet.readInt();
 
                     if (GameConstants.isGem(toCreate)) {
                         final GemCreateEntry gem =
@@ -305,8 +305,8 @@ public class ItemMakerHandler extends AbstractMaplePacketHandler {
                                                 c.getPlayer().getId(), true),
                                         false);
                     } else {
-                        final boolean stimulator = slea.readByte() > 0;
-                        final int numEnchanter = slea.readInt();
+                        final boolean stimulator = packet.readByte() > 0;
+                        final int numEnchanter = packet.readInt();
 
                         final ItemMakerCreateEntry create =
                                 ItemMakerFactory.getInstance().getCreateInfo(toCreate);
@@ -348,7 +348,7 @@ public class ItemMakerHandler extends AbstractMaplePacketHandler {
                                         false);
                             }
                             for (int i = 0; i < numEnchanter; i++) {
-                                final int enchant = slea.readInt();
+                                final int enchant = packet.readInt();
                                 if (c.getPlayer().haveItem(enchant, 1, false, true)) {
                                     final Map<String, Byte> stats = ii.getItemMakeStats(enchant);
                                     if (stats != null) {
@@ -378,7 +378,7 @@ public class ItemMakerHandler extends AbstractMaplePacketHandler {
                 }
             case 3:
                 { // Making Crystals
-                    final int etc = slea.readInt(); // todo success rate?
+                    final int etc = packet.readInt(); // todo success rate?
                     if (c.getPlayer().haveItem(etc, 100, false, true)) {
                         MapleInventoryManipulator.addById(
                                 c,
@@ -404,9 +404,9 @@ public class ItemMakerHandler extends AbstractMaplePacketHandler {
                 }
             case 4:
                 { // Disassembling EQ.
-                    final int itemId = slea.readInt();
-                    c.getPlayer().updateTick(slea.readInt());
-                    final byte slot = (byte) slea.readInt();
+                    final int itemId = packet.readInt();
+                    c.getPlayer().updateTick(packet.readInt());
+                    final byte slot = (byte) packet.readInt();
 
                     final IItem toUse =
                             c.getPlayer().getInventory(MapleInventoryType.EQUIP).getItem(slot);

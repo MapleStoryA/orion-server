@@ -2805,10 +2805,6 @@ public final class MapleMap {
         }
         chr.leaveMap();
         checkStates(chr.getName());
-        if (mapid == 109020001) {
-            chr.canTalk(true);
-        }
-
         chr.cancelEffectFromBuffStat(MapleBuffStat.PUPPET);
         chr.cancelEffectFromBuffStat(MapleBuffStat.REAPER);
         boolean cancelSummons = false;

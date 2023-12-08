@@ -10,15 +10,15 @@ import handling.world.helper.BroadcastHelper;
 import server.MapleInventoryManipulator;
 import server.RandomRewards;
 import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.input.CInPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UseTreasureChestHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        final short slot = slea.readShort();
-        final int itemid = slea.readInt();
+    public void handlePacket(CInPacket packet, MapleClient c) {
+        final short slot = packet.readShort();
+        final int itemid = packet.readInt();
         MapleCharacter chr = c.getPlayer();
 
         final IItem toUse = chr.getInventory(MapleInventoryType.ETC).getItem((byte) slot);
@@ -56,29 +56,37 @@ public class UseTreasureChestHandler extends AbstractMaplePacketHandler {
                 break;
         }
         if (chr.getInventory(MapleInventoryType.CASH).countById(keyIDforRemoval) > 0) {
-            final IItem item = MapleInventoryManipulator.addbyId_Gachapon(c, reward, (short) amount);
+            final IItem item =
+                    MapleInventoryManipulator.addbyId_Gachapon(c, reward, (short) amount);
 
             if (item == null) {
-                chr.dropMessage(5,
-                        "Please check your item inventory and see if you have a Master Key, or if the inventory is full.");
+                chr.dropMessage(
+                        5,
+                        "Please check your item inventory and see if you have a Master Key, or if"
+                                + " the inventory is full.");
                 c.getSession().write(MaplePacketCreator.enableActions());
                 return;
             }
-            MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.ETC, (byte) slot, (short) 1, true);
-            MapleInventoryManipulator.removeById(c, MapleInventoryType.CASH, keyIDforRemoval, 1, true, false);
+            MapleInventoryManipulator.removeFromSlot(
+                    c, MapleInventoryType.ETC, (byte) slot, (short) 1, true);
+            MapleInventoryManipulator.removeById(
+                    c, MapleInventoryType.CASH, keyIDforRemoval, 1, true, false);
             c.getSession().write(MaplePacketCreator.getShowItemGain(reward, (short) amount, true));
 
             if (GameConstants.gachaponRareItem(item.getItemId()) > 0) {
                 BroadcastHelper.broadcastMessage(
-                        MaplePacketCreator.getGachaponMega("[" + box + " Chest] " + c.getPlayer().getName(),
-                                " : Lucky winner of Gachapon!", item, (byte) 2));
+                        MaplePacketCreator.getGachaponMega(
+                                "[" + box + " Chest] " + c.getPlayer().getName(),
+                                " : Lucky winner of Gachapon!",
+                                item,
+                                (byte) 2));
             }
         } else {
-            chr.dropMessage(5,
-                    "Please check your item inventory and see if you have a Master Key, or if the inventory is full.");
+            chr.dropMessage(
+                    5,
+                    "Please check your item inventory and see if you have a Master Key, or if the"
+                            + " inventory is full.");
             c.getSession().write(MaplePacketCreator.enableActions());
         }
-
     }
-
 }
