@@ -55,9 +55,6 @@ public class MapleOxQuiz extends MapleEvent {
 
     @Override
     public void onMapLoad(MapleCharacter chr) {
-        if (chr.getMapId() == mapid[0] && !chr.isGameMaster()) {
-            chr.canTalk(false);
-        }
     }
 
     @Override
@@ -112,7 +109,6 @@ public class MapleOxQuiz extends MapleEvent {
                                                 if (chr != null
                                                         && !chr.isGameMaster()
                                                         && chr.isAlive()) {
-                                                    chr.canTalk(true);
                                                     chr.getFinishedAchievements()
                                                             .finishAchievement(chr, 19);
                                                     givePrize(chr);

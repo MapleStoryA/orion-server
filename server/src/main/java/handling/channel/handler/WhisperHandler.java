@@ -83,15 +83,6 @@ public class WhisperHandler extends AbstractMaplePacketHandler {
                 }
             case 6:
                 { // Whisper
-                    if (!c.getPlayer().getCanTalk()) {
-                        c.getSession()
-                                .write(
-                                        MaplePacketCreator.serverNotice(
-                                                6,
-                                                "You have been muted and are therefore unable to"
-                                                        + " talk."));
-                        return;
-                    }
                     c.getPlayer().getCheatTracker().checkMsg();
                     final String recipient = slea.readMapleAsciiString();
                     final String text = slea.readMapleAsciiString();

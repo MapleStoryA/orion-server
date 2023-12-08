@@ -254,7 +254,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     private boolean changed_reports;
 
     private boolean invincible = false;
-    private boolean canTalk = true;
     private boolean follow_initiator = false;
     private boolean follow_on = false;
 
@@ -4798,13 +4797,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         }
     }
 
-    public boolean getCanTalk() {
-        return this.canTalk;
-    }
-
-    public void canTalk(boolean talk) {
-        this.canTalk = talk;
-    }
 
     public int getEXPMod() {
         return stats.getExpMod();

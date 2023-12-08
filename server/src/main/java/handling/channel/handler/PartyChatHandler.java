@@ -27,13 +27,7 @@ public class PartyChatHandler extends AbstractMaplePacketHandler {
             recipients[i] = slea.readInt();
         }
         final String chattext = slea.readMapleAsciiString();
-        if (chr == null || !chr.getCanTalk()) {
-            c.getSession()
-                    .write(
-                            MaplePacketCreator.serverNotice(
-                                    6, "You have been muted and are therefore unable to talk."));
-            return;
-        }
+
         if (CommandProcessor.processCommand(c, chattext, CommandType.NORMAL)) {
             return;
         }
