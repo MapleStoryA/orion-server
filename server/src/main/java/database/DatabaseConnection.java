@@ -20,10 +20,9 @@ package database;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import server.config.ServerConfig;
-
 import java.sql.Connection;
 import java.sql.SQLException;
+import server.config.ServerConfig;
 
 @lombok.extern.slf4j.Slf4j
 public class DatabaseConnection {
@@ -47,7 +46,7 @@ public class DatabaseConnection {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             throw new SQLException(
-                    "Unable to find JDBC library. Do you have MySQL Connector/J (if using default DBC driver)?");
+                    "Unable to find JDBC library. Do you have MySQL Connector/J (if using default" + " DBC driver)?");
         }
 
         String password = config.getProperty("database.password");

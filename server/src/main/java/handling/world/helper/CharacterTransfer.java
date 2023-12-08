@@ -167,16 +167,14 @@ public class CharacterTransfer {
             }
             if (pet != null) {
                 uneq = true;
-                this.getPetStore()[i] =
-                        (byte) Math.max(this.getPetStore()[i], pet.getInventoryPosition());
+                this.getPetStore()[i] = (byte) Math.max(this.getPetStore()[i], pet.getInventoryPosition());
             }
         }
         if (uneq) {
             chr.unequipAllPets();
         }
         for (final BuddyListEntry qs : chr.getBuddyList().getBuddies()) {
-            this.getBuddies()
-                    .add(new BuddyListEntry(qs.getName(), qs.getCharacterId(), qs.getGroup(), -1));
+            this.getBuddies().add(new BuddyListEntry(qs.getName(), qs.getCharacterId(), qs.getGroup(), -1));
         }
         for (Map.Entry<ReportType, Integer> ss : chr.getReports().entrySet()) {
             this.getReports().put(ss.getKey().i, ss.getValue());
@@ -199,7 +197,8 @@ public class CharacterTransfer {
 
         this.setInfoQuest(chr.getInfoQuest_Map());
 
-        for (final Map.Entry<MapleQuest, MapleQuestStatus> qs : chr.getQuest_Map().entrySet()) {
+        for (final Map.Entry<MapleQuest, MapleQuestStatus> qs :
+                chr.getQuest_Map().entrySet()) {
             this.getQuest().put(qs.getKey().getId(), qs.getValue());
         }
 

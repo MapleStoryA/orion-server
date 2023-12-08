@@ -6,14 +6,13 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
+import java.util.Comparator;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import server.MapleInventoryManipulator;
 import tools.MaplePacketCreator;
 import tools.data.input.CInPacket;
 import tools.packet.PetPacket;
-
-import java.util.Comparator;
-import java.util.Optional;
 
 @Slf4j
 public class PetFoodHandler extends AbstractMaplePacketHandler {
@@ -84,8 +83,14 @@ public class PetFoodHandler extends AbstractMaplePacketHandler {
     private void updatePetStatus(MapleClient client, MaplePet pet) {
         MapleCharacter player = client.getPlayer();
         byte index = player.getPetIndex(pet);
-        client.getSession().write(PetPacket.updatePet(pet, player.getInventory(MapleInventoryType.CASH).getItem((byte) pet.getInventoryPosition())));
-        player.getMap().broadcastMessage(player, PetPacket.commandResponse(player.getId(), (byte) 1, index, pet.getFullness() >= 100, true), true);
+        client.getSession()
+                .write(PetPacket.updatePet(
+                        pet, player.getInventory(MapleInventoryType.CASH).getItem((byte) pet.getInventoryPosition())));
+        player.getMap()
+                .broadcastMessage(
+                        player,
+                        PetPacket.commandResponse(player.getId(), (byte) 1, index, pet.getFullness() >= 100, true),
+                        true);
     }
 
     private void checkAndHandlePetLevelUp(MapleClient client, MaplePet pet) {

@@ -164,12 +164,16 @@
                         </format>
                     </formats>
                     <java>
-                        <googleJavaFormat>
-                            <version>1.11.0</version>
-                            <style>AOSP</style>
-                            <reflowLongStrings>true</reflowLongStrings>
-                            <formatJavadoc>true</formatJavadoc>
-                        </googleJavaFormat>
+                        <importOrder />
+                        <removeUnusedImports />
+                        <toggleOffOn/>
+                        <trimTrailingWhitespace/>
+                        <endWithNewline/>
+                        <indent>
+                            <tabs>true</tabs>
+                            <spacesPerTab>4</spacesPerTab>
+                        </indent>
+                        <palantirJavaFormat/>
                     </java>
                 </configuration>
             </plugin>

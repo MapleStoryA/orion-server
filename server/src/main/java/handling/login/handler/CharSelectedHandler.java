@@ -20,8 +20,8 @@ public class CharSelectedHandler extends AbstractMaplePacketHandler {
         String macAddress = packet.readMapleAsciiString();
         log.info("HardwareID: " + macAddress);
         log.info("MAC: " + hardwareID);
-        if (c.tooManyLogin() || !CharacterService.checkIfCharacterExist(
-                c.getAccountData().getId(), characterId)) {
+        if (c.tooManyLogin()
+                || !CharacterService.checkIfCharacterExist(c.getAccountData().getId(), characterId)) {
             c.getSession().close();
             return;
         }
@@ -32,9 +32,7 @@ public class CharSelectedHandler extends AbstractMaplePacketHandler {
 
         WorldServer.getInstance()
                 .getMigrationService()
-                .putMigrationEntry(
-                        new ServerMigration(
-                                characterId, c.getAccountData(), c.getSessionIPAddress()));
+                .putMigrationEntry(new ServerMigration(characterId, c.getAccountData(), c.getSessionIPAddress()));
 
         c.updateLoginState(LoginState.LOGIN_SERVER_TRANSITION, c.getSessionIPAddress());
         String[] publicIpAddressAndPort = WorldServer.getInstance()
@@ -42,9 +40,6 @@ public class CharSelectedHandler extends AbstractMaplePacketHandler {
                 .getPublicAddress()
                 .split(":");
         int port = Integer.parseInt(publicIpAddressAndPort[1]);
-        c.getSession()
-                .write(
-                        MaplePacketCreator.getServerIP(
-                                port, characterId));
+        c.getSession().write(MaplePacketCreator.getServerIP(port, characterId));
     }
 }

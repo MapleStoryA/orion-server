@@ -5,7 +5,6 @@ import client.MapleClient;
 import database.CharacterService;
 import handling.AbstractMaplePacketHandler;
 import java.util.List;
-
 import lombok.extern.slf4j.Slf4j;
 import tools.MaplePacketCreator;
 import tools.data.input.CInPacket;

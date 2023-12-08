@@ -43,12 +43,20 @@ public class MapleClient extends BaseMapleClient {
     public static final int DEFAULT_CHAR_SLOT = 6;
 
     private final Map<String, ScriptEngine> engines = new HashMap<>();
-    @Getter @Setter private NpcScripting currentNpcScript;
+
+    @Getter
+    @Setter
+    private NpcScripting currentNpcScript;
+
     private final Lock npc_mutex = new ReentrantLock();
 
     // Account and player fields
     private MapleCharacter player;
-    @Getter @Setter private AccountData accountData;
+
+    @Getter
+    @Setter
+    private AccountData accountData;
+
     private int charSlots = DEFAULT_CHAR_SLOT;
 
     // Channel and world related fields.
@@ -56,7 +64,10 @@ public class MapleClient extends BaseMapleClient {
     private int channel = 1;
     private boolean serverTransition = false;
     private boolean loggedIn = false;
-    @Getter @Setter private long lastNPCTalk;
+
+    @Getter
+    @Setter
+    private long lastNPCTalk;
 
     public MapleClient(byte[] ivSend, byte[] ivRecv, NetworkSession session) {
         super(ivSend, ivRecv, session);
@@ -93,8 +104,7 @@ public class MapleClient extends BaseMapleClient {
             loggedIn = false;
             serverTransition = false;
         } else {
-            var transitionStates =
-                    List.of(LoginState.LOGIN_SERVER_TRANSITION, LoginState.CHANGE_CHANNEL);
+            var transitionStates = List.of(LoginState.LOGIN_SERVER_TRANSITION, LoginState.CHANGE_CHANNEL);
             serverTransition = transitionStates.contains(loginState);
             loggedIn = !serverTransition;
         }
@@ -157,8 +167,7 @@ public class MapleClient extends BaseMapleClient {
         disconnect(removeFromChannel, fromCS, false);
     }
 
-    public final void disconnect(
-            final boolean removeFromChannel, final boolean fromCS, final boolean shutdown) {
+    public final void disconnect(final boolean removeFromChannel, final boolean fromCS, final boolean shutdown) {
         if (player != null && isLoggedIn()) {
             MapleMap map = player.getMap();
             final MapleParty party = player.getParty();
@@ -166,7 +175,8 @@ public class MapleClient extends BaseMapleClient {
             final boolean hidden = player.isHidden();
             final int gmLevel = player.getGMLevel();
             final int id = player.getId();
-            int messengerId = player.getMessenger() == null ? 0 : player.getMessenger().getId();
+            int messengerId =
+                    player.getMessenger() == null ? 0 : player.getMessenger().getId();
             int gid = player.getGuildId();
             final MapleBuddyList bl = player.getBuddyList();
             final MaplePartyCharacter chrp = new MaplePartyCharacter(player);
@@ -181,9 +191,7 @@ public class MapleClient extends BaseMapleClient {
             }
 
             if (!fromCS) {
-                final ChannelServer ch =
-                        WorldServer.getInstance()
-                                .getChannel(map == null ? channel : map.getChannel());
+                final ChannelServer ch = WorldServer.getInstance().getChannel(map == null ? channel : map.getChannel());
 
                 try {
                     if (ch == null || ch.isShutdown()) {
@@ -209,16 +217,13 @@ public class MapleClient extends BaseMapleClient {
                             }
                             if (party.getMembers().size() > 0) {
                                 if (lchr != null) {
-                                    PartyManager.updateParty(
-                                            party.getId(), PartyOperation.CHANGE_LEADER_DC, lchr);
+                                    PartyManager.updateParty(party.getId(), PartyOperation.CHANGE_LEADER_DC, lchr);
                                 } else {
                                     for (MaplePartyCharacter partychar : party.getMembers()) {
                                         if (partychar.getChannel() == getChannel()) {
-                                            final MapleCharacter chr =
-                                                    getChannelServer()
-                                                            .getPlayerStorage()
-                                                            .getCharacterByName(
-                                                                    partychar.getName());
+                                            final MapleCharacter chr = getChannelServer()
+                                                    .getPlayerStorage()
+                                                    .getCharacterByName(partychar.getName());
                                             if (chr != null) {
                                                 chr.dropMessage(
                                                         5,
@@ -234,11 +239,9 @@ public class MapleClient extends BaseMapleClient {
                     }
                     if (bl != null) {
                         if (!serverTransition && isLoggedIn()) {
-                            BuddyManager.loggedOff(
-                                    name, id, channel, bl.getBuddyIds(), gmLevel, hidden);
+                            BuddyManager.loggedOff(name, id, channel, bl.getBuddyIds(), gmLevel, hidden);
                         } else { // Change channel
-                            BuddyManager.loggedOn(
-                                    name, id, channel, bl.getBuddyIds(), gmLevel, hidden);
+                            BuddyManager.loggedOn(name, id, channel, bl.getBuddyIds(), gmLevel, hidden);
                         }
                     }
                     if (gid > 0) {
@@ -266,8 +269,7 @@ public class MapleClient extends BaseMapleClient {
                         PartyManager.updateParty(party.getId(), PartyOperation.LOG_ONOFF, chrp);
                     }
                     if (!serverTransition && isLoggedIn()) {
-                        BuddyManager.loggedOff(
-                                name, id, channel, bl.getBuddyIds(), gmLevel, hidden);
+                        BuddyManager.loggedOff(name, id, channel, bl.getBuddyIds(), gmLevel, hidden);
                     } else { // Change channel
                         BuddyManager.loggedOn(name, id, channel, bl.getBuddyIds(), gmLevel, hidden);
                     }
@@ -342,18 +344,15 @@ public class MapleClient extends BaseMapleClient {
         }
         try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps =
-                    con.prepareStatement(
-                            "SELECT * FROM character_slots WHERE accid = ? AND worldid = ?");
+                    con.prepareStatement("SELECT * FROM character_slots WHERE accid = ? AND worldid = ?");
             ps.setInt(1, this.accountData.getId());
             ps.setInt(2, world);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 charSlots = rs.getInt("charslots");
             } else {
-                PreparedStatement psu =
-                        con.prepareStatement(
-                                "INSERT INTO character_slots (accid, worldid, charslots) VALUES (?,"
-                                        + " ?, ?)");
+                PreparedStatement psu = con.prepareStatement(
+                        "INSERT INTO character_slots (accid, worldid, charslots) VALUES (?," + " ?, ?)");
                 psu.setInt(1, this.accountData.getId());
                 psu.setInt(2, world);
                 psu.setInt(3, charSlots);

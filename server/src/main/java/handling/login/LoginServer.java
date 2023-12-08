@@ -102,12 +102,11 @@ public class LoginServer extends GameServer {
         if (LoginServer.getInstance().isAdminOnly()) {
             if (!c.getAccountData().isGameMaster()) {
                 c.getSession()
-                        .write(
-                                MaplePacketCreator.serverNotice(
-                                        1,
-                                        "The server is currently set to Admin login only.\r\n"
-                                                + "We are currently testing some issues.\r\n"
-                                                + "Please try again later."));
+                        .write(MaplePacketCreator.serverNotice(
+                                1,
+                                "The server is currently set to Admin login only.\r\n"
+                                        + "We are currently testing some issues.\r\n"
+                                        + "Please try again later."));
                 c.getSession().write(LoginPacket.getLoginFailed(7));
                 return;
             }
@@ -128,6 +127,7 @@ public class LoginServer extends GameServer {
 
         c.updateLoginState(LoginState.LOGIN_LOGGEDIN, c.getSessionIPAddress());
         c.getSession().write(LoginPacket.getAuthSuccessRequest(c));
-        c.setIdleTask(Timer.PingTimer.getInstance().schedule(() -> c.getSession().close(), 10 * 60 * 10000));
+        c.setIdleTask(
+                Timer.PingTimer.getInstance().schedule(() -> c.getSession().close(), 10 * 60 * 10000));
     }
 }

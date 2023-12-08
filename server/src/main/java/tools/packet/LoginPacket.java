@@ -18,8 +18,7 @@ import tools.data.output.COutPacket;
 @lombok.extern.slf4j.Slf4j
 public class LoginPacket {
 
-    public static final byte[] getHello(
-            final short mapleVersion, final byte[] sendIv, final byte[] recvIv) {
+    public static final byte[] getHello(final short mapleVersion, final byte[] sendIv, final byte[] recvIv) {
         final COutPacket packet = new COutPacket(16);
 
         packet.writeShort(14); // 13 = MSEA, 14 = GlobalMS, 15 = EMS
@@ -90,8 +89,7 @@ public class LoginPacket {
         packet.write(2);
         packet.write(HexTool.getByteArrayFromHexString("00 00 00 00 00"));
         packet.write(reason);
-        packet.writeLong(
-                timestampTill); // Tempban date is handled as a 64-bit long, number of 100NS
+        packet.writeLong(timestampTill); // Tempban date is handled as a 64-bit long, number of 100NS
         // intervals since 1/1/1601. Lulz.
 
         return packet.getPacket();
@@ -106,7 +104,8 @@ public class LoginPacket {
         packet.writeInt(client.getAccountData().getId()); // user id
         packet.write(client.getAccountData().getGender());
         //
-        PlayerGMRanking rank = PlayerGMRanking.getByLevel(client.getAccountData().getGMLevel());
+        PlayerGMRanking rank =
+                PlayerGMRanking.getByLevel(client.getAccountData().getGMLevel());
         byte nSubGradeCode = 0;
         nSubGradeCode |= rank.getSubGrade();
         packet.writeBool(rank.getLevel() >= PlayerGMRanking.GM.getLevel()); // nGradeCode
@@ -275,8 +274,7 @@ public class LoginPacket {
         return packet.getPacket();
     }
 
-    public static final void addCharEntry(
-            final COutPacket packet, final MapleCharacter chr, boolean ranking) {
+    public static final void addCharEntry(final COutPacket packet, final MapleCharacter chr, boolean ranking) {
         PacketHelper.addCharStats(packet, chr);
         PacketHelper.addCharLook(packet, chr, true);
         packet.write(0);

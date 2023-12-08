@@ -9,13 +9,12 @@ import database.CharacterListResult;
 import database.LoginService;
 import handling.AbstractMaplePacketHandler;
 import handling.SendPacketOpcode;
-import lombok.extern.slf4j.Slf4j;
-import tools.data.input.CInPacket;
-import tools.data.output.COutPacket;
-
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
+import tools.data.input.CInPacket;
+import tools.data.output.COutPacket;
 
 @Slf4j
 public class CharListRequestHandler extends AbstractMaplePacketHandler {
@@ -31,7 +30,8 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
         c.setWorld(server);
         c.setChannel(channel);
 
-        CharacterListResult list = LoginService.loadCharacterList(c.getAccountData().getId(), 0);
+        CharacterListResult list =
+                LoginService.loadCharacterList(c.getAccountData().getId(), 0);
         if (list.getCharacters() != null) {
             c.getSession().write(getCharList(list.getCharacters(), c.getCharacterSlots()));
         } else {
@@ -55,8 +55,7 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
         return packet.getPacket();
     }
 
-    private static void addCharEntry(
-            final COutPacket packet, final CharacterData chr, boolean ranking) {
+    private static void addCharEntry(final COutPacket packet, final CharacterData chr, boolean ranking) {
         addCharStats(packet, chr);
         addCharLook(packet, chr, true);
         packet.write(0);
@@ -97,8 +96,7 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
         packet.writeShort(chr.getSubCategory()); // 1 here = db
     }
 
-    private static void addCharLook(
-            final COutPacket packet, final CharacterData chr, final boolean mega) {
+    private static void addCharLook(final COutPacket packet, final CharacterData chr, final boolean mega) {
         packet.write(chr.getGender());
         packet.write(chr.getSkinColor());
         packet.writeInt(chr.getFace());

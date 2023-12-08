@@ -17,7 +17,6 @@ public class JobUtils {
         return isDualbladeCashMasteryItem(item.getItemId());
     }
 
-
     public static MapleJob mapTypeToJob(int type) {
         short jobId;
         switch (type) {
@@ -39,5 +38,4 @@ public class JobUtils {
         }
         return MapleJob.getById(jobId);
     }
-
 }
