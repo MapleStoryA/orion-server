@@ -148,7 +148,7 @@
                 <artifactId>spotless-maven-plugin</artifactId>
                 <version>2.41.1</version>
                 <configuration>
-                    <ratchetFrom>origin/master</ratchetFrom>
+                    <ratchetFrom>origin/main</ratchetFrom>
                     <formats>
                         <format>
                             <includes>
