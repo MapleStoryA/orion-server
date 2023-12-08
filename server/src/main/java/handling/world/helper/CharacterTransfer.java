@@ -64,7 +64,6 @@ public class CharacterTransfer {
     private byte channel;
     private byte dojoRecord;
     private byte gender;
-    private byte gmLevel;
     private byte guildRank;
     private byte allianceRank;
     private byte fairyExp;
@@ -152,7 +151,6 @@ public class CharacterTransfer {
         this.setGuild_id(chr.getGuildId());
         this.setGuildRank(chr.getGuildRank());
         this.setAllianceRank(chr.getAllianceRank());
-        this.setGmLevel((byte) chr.getGMLevel());
         this.setFairyExp(chr.getFairyExp());
         this.setPetStore(chr.getPetStores());
         this.setSubcategory(chr.getSubCategoryField());

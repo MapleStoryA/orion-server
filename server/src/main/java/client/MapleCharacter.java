@@ -158,7 +158,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     private long lastMPTime;
     private long lastFairyTime;
     private byte dojoRecord;
-    private byte gmLevel;
     private byte initialSpawnPoint;
     private byte skinColor;
     private byte guildRank = 5;
@@ -353,7 +352,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         ret.client = client;
         ret.map = null;
         ret.exp = 0;
-        ret.gmLevel = 0;
         ret.job = JobUtils.mapTypeToJob(type);
         ret.meso = 0;
         ret.level = 1;
@@ -397,7 +395,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         ret.remainingAp = ct.getRemainingAp();
         ret.remainingSp = ct.getRemainingSp();
         ret.meso = ct.getMeso();
-        ret.gmLevel = ct.getGmLevel();
         ret.setSkinColor(ct.getSkinColor());
         ret.gender = ct.getGender();
         ret.job = MapleJob.getById(ct.getJob());
@@ -552,7 +549,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         ret.remainingAp = characterData.getAp();
         ret.remainingSp = characterData.getSp();
         ret.meso = characterData.getMeso();
-        ret.gmLevel = (byte) characterData.getGm();
         ret.setSkinColor(characterData.getSkinColor());
         ret.gender = (byte) characterData.getGender();
         ret.job = MapleJob.getById(characterData.getJob());
@@ -939,7 +935,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             ret.skills.putAll(JobConstants.getEvanSkills());
         }
 
-        if (ret.gmLevel > 0) {
+        if (ret.getGMLevel() > 0) {
             ret.skills.putAll(JobConstants.getGMSkills());
         }
     }
@@ -1194,7 +1190,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             ps = con.prepareStatement(
                     "UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?,"
                             + " `int` = ?, exp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, ap ="
-                            + " ?, gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face ="
+                            + " ?, skincolor = ?, gender = ?, job = ?, hair = ?, face ="
                             + " ?, map = ?, meso = ?, hpApUsed = ?, spawnpoint = ?, party = ?,"
                             + " buddyCapacity = ?, monsterbookcover = ?, dojo_pts = ?,"
                             + " dojoRecord = ?, pets = ?, subcategory = ?, marriageId = ?, name"
@@ -1212,41 +1208,40 @@ public class MapleCharacter extends BaseMapleCharacter {
             ps.setInt(10, stats.getMaxHp());
             ps.setInt(11, stats.getMaxMp());
             ps.setInt(12, remainingAp);
-            ps.setByte(13, gmLevel);
-            ps.setByte(14, getSkinColor());
-            ps.setByte(15, gender);
-            ps.setShort(16, (short) job.getId());
-            ps.setInt(17, hair);
-            ps.setInt(18, getFace());
+            ps.setByte(13, getSkinColor());
+            ps.setByte(14, gender);
+            ps.setShort(15, (short) job.getId());
+            ps.setInt(16, hair);
+            ps.setInt(17, getFace());
             if (!fromcs && map != null) {
                 if (map.getForcedReturnId() != 999999999) {
-                    ps.setInt(19, map.getForcedReturnId());
+                    ps.setInt(18, map.getForcedReturnId());
                 } else {
-                    ps.setInt(19, stats.getHp() < 1 ? map.getReturnMapId() : map.getId());
+                    ps.setInt(18, stats.getHp() < 1 ? map.getReturnMapId() : map.getId());
                 }
             } else {
-                ps.setInt(19, map_id);
+                ps.setInt(18, map_id);
             }
-            ps.setInt(20, meso);
-            ps.setShort(21, getHpApUsed());
+            ps.setInt(19, meso);
+            ps.setShort(20, getHpApUsed());
             if (map == null) {
-                ps.setByte(22, (byte) 0);
+                ps.setByte(21, (byte) 0);
             } else {
                 final MaplePortal closest = map.findClosestSpawnpoint(getPosition());
-                ps.setByte(22, (byte) (closest != null ? closest.getId() : 0));
+                ps.setByte(21, (byte) (closest != null ? closest.getId() : 0));
             }
-            ps.setInt(23, party != null ? party.getId() : -1);
-            ps.setShort(24, buddyList.getCapacity());
-            ps.setInt(25, bookCover);
-            ps.setInt(26, dojo);
-            ps.setInt(27, dojoRecord);
+            ps.setInt(22, party != null ? party.getId() : -1);
+            ps.setShort(23, buddyList.getCapacity());
+            ps.setInt(24, bookCover);
+            ps.setInt(25, dojo);
+            ps.setInt(26, dojoRecord);
             // TODO: remove this from character table pet thing
-            ps.setString(28, petPosition);
-            ps.setByte(29, subcategory);
-            ps.setInt(30, marriageId);
-            ps.setString(31, getName());
-            ps.setInt(32, remainingSp);
-            ps.setInt(33, id);
+            ps.setString(27, petPosition);
+            ps.setByte(28, subcategory);
+            ps.setInt(29, marriageId);
+            ps.setString(30, getName());
+            ps.setInt(31, remainingSp);
+            ps.setInt(32, id);
             if (ps.executeUpdate() < 1) {
                 ps.close();
                 throw new DatabaseException("Character not in database (" + id + ")");
@@ -3040,15 +3035,15 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public boolean isGameMaster() {
-        return gmLevel > 0;
+        return client.getAccountData().getGMLevel() > 0;
     }
 
     public boolean isAdmin() {
-        return gmLevel >= 5;
+        return client.getAccountData().getGMLevel() >= 5;
     }
 
     public int getGMLevel() {
-        return gmLevel;
+        return client.getAccountData().getGMLevel();
     }
 
     public final MapleInventory getInventory(MapleInventoryType type) {
@@ -4921,7 +4916,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public boolean isStaff() {
-        return this.gmLevel > ServerConstants.PlayerGMRank.NORMAL.getLevel();
+        return this.getGMLevel() > ServerConstants.PlayerGMRank.NORMAL.getLevel();
     }
 
     // TODO: gvup, vic, lose, draw, VR

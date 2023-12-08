@@ -13,3 +13,7 @@ ALTER TABLE orion.`characters` DROP COLUMN `rank`;
 ALTER TABLE orion.`characters` DROP COLUMN rankMove;
 ALTER TABLE orion.`characters` DROP COLUMN jobRank;
 ALTER TABLE orion.`characters` DROP COLUMN jobRankMove;
+
+
+ALTER TABLE orion.`characters` DROP INDEX ranking2;
+ALTER TABLE orion.`characters` DROP COLUMN gm;
