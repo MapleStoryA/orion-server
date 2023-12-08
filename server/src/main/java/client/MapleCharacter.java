@@ -253,7 +253,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     private boolean changed_skills;
     private boolean changed_reports;
 
-    private boolean invincible = false;
     private boolean follow_initiator = false;
     private boolean follow_on = false;
 
@@ -2523,14 +2522,6 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public void setFace(int face) {
         this.face = face;
-    }
-
-    public boolean isInvincible() {
-        return invincible;
-    }
-
-    public void setInvincible(boolean invinc) {
-        invincible = invinc;
     }
 
     public CheatTracker getCheatTracker() {

@@ -1,18 +1,7 @@
 package client.commands.v1;
 
-import tools.StringUtil;
-
 @lombok.extern.slf4j.Slf4j
 public class CommandProcessorUtil {
-
-    public static String joinAfterString(String[] splitted, String str) {
-        for (int i = 1; i < splitted.length; i++) {
-            if (splitted[i].equalsIgnoreCase(str) && i + 1 < splitted.length) {
-                return StringUtil.joinStringFrom(splitted, i + 1);
-            }
-        }
-        return null;
-    }
 
     public static int getOptionalIntArg(String[] splitted, int position, int def) {
         if (splitted.length > position) {

@@ -5,13 +5,14 @@ import client.MapleClient;
 import constants.ServerConstants.CommandType;
 import constants.ServerConstants.PlayerGMRank;
 import database.DatabaseConnection;
+import server.config.ServerEnvironment;
+
 import java.lang.reflect.Modifier;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import server.config.ServerEnvironment;
 
 @lombok.extern.slf4j.Slf4j
 @SuppressWarnings("non-varargs")
@@ -24,7 +25,7 @@ public class CommandProcessor {
 
     static {
         Class<?>[] CommandFiles = {
-            PlayerCommand.class, DonorCommand.class, GMCommand.class, AdminCommand.class
+                PlayerCommand.class, GMCommand.class, AdminCommand.class
         };
 
         for (Class<?> clasz : CommandFiles) {
@@ -119,8 +120,8 @@ public class CommandProcessor {
             if (line.charAt(0) == PlayerGMRank.DONOR.getCommandPrefix()
                     || line.charAt(0) == PlayerGMRank.GM.getCommandPrefix()
                     || line.charAt(0)
-                            == PlayerGMRank.ADMIN
-                                    .getCommandPrefix()) { // Redundant for now, but in case we
+                    == PlayerGMRank.ADMIN
+                    .getCommandPrefix()) { // Redundant for now, but in case we
                 // change symbols later. This will become
                 // extensible.
                 String[] splitted = line.split(" ");

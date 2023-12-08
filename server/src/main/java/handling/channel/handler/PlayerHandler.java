@@ -70,7 +70,7 @@ public class PlayerHandler {
             return;
         }
 
-        if (chr.isGameMaster() && chr.isInvincible()) {
+        if (chr.isGameMaster()) {
             return;
         }
         final PlayerStats stats = chr.getStat();
