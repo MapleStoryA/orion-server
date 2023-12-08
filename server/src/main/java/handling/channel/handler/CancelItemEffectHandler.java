@@ -17,7 +17,5 @@ public class CancelItemEffectHandler extends AbstractMaplePacketHandler {
             chr.setMorphId((byte) 0);
         }
         chr.cancelEffect(MapleItemInformationProvider.getInstance().getItemEffect(-id), false, -1);
-
     }
-
 }

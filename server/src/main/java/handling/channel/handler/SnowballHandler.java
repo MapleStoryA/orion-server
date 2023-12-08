@@ -19,5 +19,4 @@ public class SnowballHandler extends AbstractMaplePacketHandler {
         // empty, we do this in closerange
 
     }
-
 }

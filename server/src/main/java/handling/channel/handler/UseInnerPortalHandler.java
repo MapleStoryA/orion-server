@@ -4,10 +4,9 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.anticheat.CheatingOffense;
 import handling.AbstractMaplePacketHandler;
+import java.awt.*;
 import server.MaplePortal;
 import tools.data.input.CInPacket;
-
-import java.awt.*;
 
 @lombok.extern.slf4j.Slf4j
 public class UseInnerPortalHandler extends AbstractMaplePacketHandler {
@@ -30,7 +29,5 @@ public class UseInnerPortalHandler extends AbstractMaplePacketHandler {
         }
         chr.getMap().movePlayer(chr, new Point(toX, toY));
         chr.checkFollow();
-
     }
-
 }

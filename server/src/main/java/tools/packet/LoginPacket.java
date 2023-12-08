@@ -90,7 +90,8 @@ public class LoginPacket {
         packet.write(2);
         packet.write(HexTool.getByteArrayFromHexString("00 00 00 00 00"));
         packet.write(reason);
-        packet.writeLong(timestampTill); // Tempban date is handled as a 64-bit long, number of 100NS
+        packet.writeLong(
+                timestampTill); // Tempban date is handled as a 64-bit long, number of 100NS
         // intervals since 1/1/1601. Lulz.
 
         return packet.getPacket();

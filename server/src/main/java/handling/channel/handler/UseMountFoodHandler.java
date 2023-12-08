@@ -23,7 +23,10 @@ public class UseMountFoodHandler extends AbstractMaplePacketHandler {
         final IItem toUse = chr.getInventory(MapleInventoryType.USE).getItem(slot);
         final MapleMount mount = chr.getMount();
 
-        if ((itemid / 10000 == 226) && toUse != null && toUse.getQuantity() > 0 && toUse.getItemId() == itemid
+        if ((itemid / 10000 == 226)
+                && toUse != null
+                && toUse.getQuantity() > 0
+                && toUse.getItemId() == itemid
                 && mount != null) {
             final int fatigue = mount.getFatigue();
 
@@ -33,16 +36,16 @@ public class UseMountFoodHandler extends AbstractMaplePacketHandler {
             if (fatigue > 0) {
                 mount.increaseExp();
                 final int level = mount.getLevel();
-                if (mount.getExp() >= GameConstants.getMountExpNeededForLevel(level + 1) && level < 31) {
+                if (mount.getExp() >= GameConstants.getMountExpNeededForLevel(level + 1)
+                        && level < 31) {
                     mount.setLevel((byte) (level + 1));
                     levelup = true;
                 }
             }
             chr.getMap().broadcastMessage(MaplePacketCreator.updateMount(chr, levelup));
-            MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
+            MapleInventoryManipulator.removeFromSlot(
+                    c, MapleInventoryType.USE, slot, (short) 1, false);
         }
         c.getSession().write(MaplePacketCreator.enableActions());
-
     }
-
 }

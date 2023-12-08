@@ -18,5 +18,4 @@ public class UseScrollHandler extends AbstractMaplePacketHandler {
 
         InventoryHandlerUtils.UseUpgradeScroll(slot, dst, ws, c, c.getPlayer(), 0, type);
     }
-
 }

@@ -19,5 +19,4 @@ public class AfterLoginHandler implements MaplePacketHandler {
     public boolean validateState(MapleClient c) {
         return true;
     }
-
 }

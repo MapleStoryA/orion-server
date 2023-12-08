@@ -24,7 +24,5 @@ public class CancelChairHandler extends AbstractMaplePacketHandler {
             chr.setChair(id);
             c.getSession().write(MaplePacketCreator.cancelChair(id));
         }
-
     }
-
 }

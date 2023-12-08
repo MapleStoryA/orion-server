@@ -14,7 +14,5 @@ public class UpdateQuestHandler extends AbstractMaplePacketHandler {
         if (quest != null) {
             c.getPlayer().updateQuest(c.getPlayer().getQuest(quest), true);
         }
-
     }
-
 }

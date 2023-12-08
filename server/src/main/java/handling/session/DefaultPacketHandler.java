@@ -10,8 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import server.config.ServerEnvironment;
 import tools.HexTool;
 import tools.data.input.ByteArrayByteStream;
-import tools.data.input.GenericSeekableLittleEndianAccessor;
 import tools.data.input.CInPacket;
+import tools.data.input.GenericSeekableLittleEndianAccessor;
 
 @Slf4j
 public class DefaultPacketHandler {

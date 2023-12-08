@@ -366,7 +366,8 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                 }
             case SET_ITEMS:
                 {
-                    final MapleInventoryType ivType = MapleInventoryType.getByType(packet.readByte());
+                    final MapleInventoryType ivType =
+                            MapleInventoryType.getByType(packet.readByte());
                     final IItem item = chr.getInventory(ivType).getItem((byte) packet.readShort());
                     final short quantity = packet.readShort();
                     final byte targetSlot = packet.readByte();

@@ -11,5 +11,4 @@ public class CloseChalkBoard extends AbstractMaplePacketHandler {
     public void handlePacket(CInPacket packet, MapleClient c) {
         c.getPlayer().setChalkboard(null);
     }
-
 }

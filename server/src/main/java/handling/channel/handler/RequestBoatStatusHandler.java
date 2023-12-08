@@ -16,7 +16,7 @@ public class RequestBoatStatusHandler extends AbstractMaplePacketHandler {
         if (client.getPlayer().getMap().getId() == mapId) {
 
             EventManager manager;
-            if (mapId == 260000100 || mapId == 200000151) {// ariant
+            if (mapId == 260000100 || mapId == 200000151) { // ariant
                 manager = client.getChannelServer().getEventSM().getEventManager("Geenie");
             } else {
                 manager = client.getChannelServer().getEventSM().getEventManager("Boats");
@@ -28,10 +28,6 @@ public class RequestBoatStatusHandler extends AbstractMaplePacketHandler {
             } else {
                 client.getSession().write(MaplePacketCreator.boatPacket(2));
             }
-
         }
-
-
     }
-
 }

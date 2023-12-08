@@ -9,8 +9,7 @@ public class ViewAllCharPacket extends AbstractMaplePacketHandler {
 
     @Override
     public void handlePacket(CInPacket packet, MapleClient c) {
-        //c.enableActions();
+        // c.enableActions();
 
     }
-
 }

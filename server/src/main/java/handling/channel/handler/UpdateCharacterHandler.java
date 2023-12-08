@@ -12,8 +12,5 @@ public class UpdateCharacterHandler extends AbstractMaplePacketHandler {
     public void handlePacket(CInPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         chr.updatePetAuto();
-
-
     }
-
 }

@@ -48,7 +48,5 @@ public class ItemSortHandler extends AbstractMaplePacketHandler {
         }
         c.getSession().write(MaplePacketCreator.finishedSort(pInvType.getType()));
         c.getSession().write(MaplePacketCreator.enableActions());
-
     }
-
 }

@@ -10,7 +10,7 @@ public class QuestSummonHandler extends AbstractMaplePacketHandler {
 
     @Override
     public void handlePacket(CInPacket packet, MapleClient c) {
-        c.getSession().write(MaplePacketCreator.sendHint("It supposed to talk to me, right?", 100, 100));
+        c.getSession()
+                .write(MaplePacketCreator.sendHint("It supposed to talk to me, right?", 100, 100));
     }
-
 }

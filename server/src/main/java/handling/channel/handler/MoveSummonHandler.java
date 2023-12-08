@@ -22,14 +22,13 @@ public class MoveSummonHandler extends AbstractMaplePacketHandler {
             return;
         }
         for (MapleSummon sum : chr.getSummons().values()) {
-            if (sum.getObjectId() == oid && sum.getMovementType() != SummonMovementType.STATIONARY) {
+            if (sum.getObjectId() == oid
+                    && sum.getMovementType() != SummonMovementType.STATIONARY) {
                 updatePosition(path, sum, 0);
                 byte[] packet = MaplePacketCreator.moveSummon(chr.getId(), oid, path);
                 chr.getMap().broadcastMessage(chr, packet, sum.getPosition());
                 break;
             }
         }
-
     }
-
 }

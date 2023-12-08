@@ -5,7 +5,6 @@ import client.MapleQuestStatus;
 import handling.SendPacketOpcode;
 import tools.data.output.COutPacket;
 
-
 @lombok.extern.slf4j.Slf4j
 public class CWVsContextOnMessagePackets {
 
@@ -21,7 +20,8 @@ public class CWVsContextOnMessagePackets {
                 packet.writeZeroBytes(10);
                 break;
             case 1:
-                packet.writeMapleAsciiString(quest.getCustomData() != null ? quest.getCustomData() : "");
+                packet.writeMapleAsciiString(
+                        quest.getCustomData() != null ? quest.getCustomData() : "");
                 break;
             case 2:
                 packet.writeLong(PacketHelper.getTime(System.currentTimeMillis()));
@@ -78,8 +78,5 @@ public class CWVsContextOnMessagePackets {
         public static final byte OnIncPOPMessage = 0x5;
         public static final byte OnIncGPMessage = 0x7;
         public static final byte OnOnGiveBuffMessage = 0x8;
-
     }
-
-
 }

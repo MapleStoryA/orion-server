@@ -20,15 +20,15 @@ public class FaceExpressionHandler extends AbstractMaplePacketHandler {
             final int emoteid = 5159992 + emote;
             final MapleInventoryType type = GameConstants.getInventoryType(emoteid);
             if (chr.getInventory(type).findById(emoteid) == null) {
-                chr.getCheatTracker().registerOffense(CheatingOffense.USING_UNAVAILABLE_ITEM, Integer.toString(emoteid));
+                chr.getCheatTracker()
+                        .registerOffense(
+                                CheatingOffense.USING_UNAVAILABLE_ITEM, Integer.toString(emoteid));
                 return;
             }
         }
-        if (emote > 0 && chr != null && chr.getMap() != null) { //O_o
-            chr.getMap().broadcastMessage(chr, MaplePacketCreator.facialExpression(chr, emote), false);
-
+        if (emote > 0 && chr != null && chr.getMap() != null) { // O_o
+            chr.getMap()
+                    .broadcastMessage(chr, MaplePacketCreator.facialExpression(chr, emote), false);
         }
-
     }
-
 }

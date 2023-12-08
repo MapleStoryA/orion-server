@@ -19,7 +19,5 @@ public class QuickSlotHandler extends AbstractMaplePacketHandler {
             }
             ret.deleteCharAt(ret.length() - 1);
         }
-
     }
-
 }

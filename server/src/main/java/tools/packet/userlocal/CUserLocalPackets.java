@@ -14,7 +14,7 @@ public class CUserLocalPackets {
         return packet.getPacket();
     }
 
-    //Shows a effect given the use item id.
+    // Shows a effect given the use item id.
     public static byte[] onBuffzoneEffect(int itemId) {
         COutPacket packet = new COutPacket();
         packet.writeShort(SendPacketOpcode.BUFFED_ZONE_EFFECT.getValue());
@@ -22,5 +22,4 @@ public class CUserLocalPackets {
 
         return packet.getPacket();
     }
-
 }

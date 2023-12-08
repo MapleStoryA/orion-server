@@ -4789,7 +4789,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         }
     }
 
-
     public int getEXPMod() {
         return stats.getExpMod();
     }

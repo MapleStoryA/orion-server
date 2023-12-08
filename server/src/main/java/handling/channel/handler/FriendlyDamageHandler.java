@@ -27,7 +27,5 @@ public class FriendlyDamageHandler extends AbstractMaplePacketHandler {
             mobto.damage(chr, damage, true);
             MobHandlerUtils.checkShammos(chr, mobto, map);
         }
-
     }
-
 }

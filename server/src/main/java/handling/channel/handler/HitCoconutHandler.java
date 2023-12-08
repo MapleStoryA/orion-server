@@ -36,36 +36,52 @@ public class HitCoconutHandler extends AbstractMaplePacketHandler {
             if (Math.random() < 0.01 && map.getStopped() > 0) {
                 nut.setStopped(true);
                 map.stopCoconut();
-                c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.hitCoconut(false, id, 1));
+                c.getPlayer()
+                        .getMap()
+                        .broadcastMessage(MaplePacketCreator.hitCoconut(false, id, 1));
                 return;
             }
             nut.resetHits(); // For next event (without restarts)
             // log.info("Coconut4");
             if (Math.random() < 0.05 && map.getBombings() > 0) {
                 // log.info("Coconut5-1");
-                c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.hitCoconut(false, id, 2));
+                c.getPlayer()
+                        .getMap()
+                        .broadcastMessage(MaplePacketCreator.hitCoconut(false, id, 2));
                 map.bombCoconut();
             } else if (map.getFalling() > 0) {
                 // log.info("Coconut5-2");
-                c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.hitCoconut(false, id, 3));
+                c.getPlayer()
+                        .getMap()
+                        .broadcastMessage(MaplePacketCreator.hitCoconut(false, id, 3));
                 map.fallCoconut();
                 if (c.getPlayer().getCoconutTeam() == 0) {
                     map.addMapleScore();
-                    c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.serverNotice(5,
-                            c.getPlayer().getName() + " of Team Maple knocks down a coconut."));
+                    c.getPlayer()
+                            .getMap()
+                            .broadcastMessage(
+                                    MaplePacketCreator.serverNotice(
+                                            5,
+                                            c.getPlayer().getName()
+                                                    + " of Team Maple knocks down a coconut."));
                 } else {
                     map.addStoryScore();
-                    c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.serverNotice(5,
-                            c.getPlayer().getName() + " of Team Story knocks down a coconut."));
+                    c.getPlayer()
+                            .getMap()
+                            .broadcastMessage(
+                                    MaplePacketCreator.serverNotice(
+                                            5,
+                                            c.getPlayer().getName()
+                                                    + " of Team Story knocks down a coconut."));
                 }
-                c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.coconutScore(map.getCoconutScore()));
+                c.getPlayer()
+                        .getMap()
+                        .broadcastMessage(MaplePacketCreator.coconutScore(map.getCoconutScore()));
             }
         } else {
             // log.info("Coconut3-2");
             nut.hit();
             c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.hitCoconut(false, id, 1));
         }
-
     }
-
 }

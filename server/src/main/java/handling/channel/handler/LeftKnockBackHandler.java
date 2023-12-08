@@ -17,5 +17,4 @@ public class LeftKnockBackHandler extends AbstractMaplePacketHandler {
             c.getSession().write(MaplePacketCreator.enableActions());
         }
     }
-
 }

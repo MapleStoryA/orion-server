@@ -515,8 +515,7 @@ public class PlayerShopPacket {
         return packet.getPacket();
     }
 
-    public static void addGameInfo(
-            COutPacket packet, MapleCharacter chr, MapleMiniGame game) {
+    public static void addGameInfo(COutPacket packet, MapleCharacter chr, MapleMiniGame game) {
         packet.writeInt(game.getGameType()); // start of visitor; unknown
         packet.writeInt(game.getWins(chr));
         packet.writeInt(game.getTies(chr));

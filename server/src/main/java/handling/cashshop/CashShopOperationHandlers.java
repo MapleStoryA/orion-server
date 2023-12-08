@@ -18,9 +18,7 @@ import tools.packet.MTSCSPacket;
 public class CashShopOperationHandlers {
 
     public static void onLeaveCashShop(
-            final CInPacket slea,
-            final MapleClient c,
-            final MapleCharacter chr) {
+            final CInPacket slea, final MapleClient c, final MapleCharacter chr) {
         CashShopServer.getInstance().getPlayerStorage().deregisterPlayer(chr);
         c.updateLoginState(LoginState.LOGIN_SERVER_TRANSITION, c.getSessionIPAddress());
 

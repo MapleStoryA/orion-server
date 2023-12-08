@@ -8,5 +8,4 @@ public interface MaplePacketHandler {
     void handlePacket(final CInPacket packet, final MapleClient c);
 
     boolean validateState(MapleClient c);
-
 }

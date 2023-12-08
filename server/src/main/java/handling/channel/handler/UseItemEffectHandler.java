@@ -23,8 +23,7 @@ public class UseItemEffectHandler extends AbstractMaplePacketHandler {
         if (itemId != 5510000) {
             chr.setItemEffect(itemId);
         }
-        chr.getMap().broadcastMessage(chr, MaplePacketCreator.itemEffect(chr.getId(), itemId), false);
-
+        chr.getMap()
+                .broadcastMessage(chr, MaplePacketCreator.itemEffect(chr.getId(), itemId), false);
     }
-
 }

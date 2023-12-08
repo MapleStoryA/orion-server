@@ -17,7 +17,5 @@ public class ChangeMonsterCoverHandler extends AbstractMaplePacketHandler {
             chr.setMonsterBookCover(bookid);
             chr.getMonsterBook().updateCard(c, bookid);
         }
-
     }
-
 }

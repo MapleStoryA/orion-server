@@ -11,7 +11,5 @@ public class CSUpdateHandler extends AbstractMaplePacketHandler {
     @Override
     public void handlePacket(CInPacket packet, MapleClient c) {
         CashShopOperationHandlers.CSUpdate(c);
-
     }
-
 }

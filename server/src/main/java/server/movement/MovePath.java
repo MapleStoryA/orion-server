@@ -1,15 +1,14 @@
 package server.movement;
 
-import tools.data.input.CInPacket;
-import tools.data.output.LittleEndianWriter;
-
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
+import tools.data.input.CInPacket;
+import tools.data.output.LittleEndianWriter;
 
 /**
- * @Author Arnah
- * @Website http://Vertisy.ca/
+ * @Author Arnah @Website http://Vertisy.ca/
+ *
  * @since Jun 22, 2017
  */
 @lombok.extern.slf4j.Slf4j

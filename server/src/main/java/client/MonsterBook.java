@@ -120,8 +120,7 @@ public class MonsterBook implements Serializable {
         }
     }
 
-    public final void addCharInfoPacket(
-            final int bookcover, final COutPacket packet) {
+    public final void addCharInfoPacket(final int bookcover, final COutPacket packet) {
         packet.writeInt(BookLevel);
         packet.writeInt(NormalCard);
         packet.writeInt(SpecialCard);

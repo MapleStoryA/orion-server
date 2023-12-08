@@ -31,15 +31,16 @@ public class UseReturnScrollHandler extends AbstractMaplePacketHandler {
             return;
         }
         if (!FieldLimitType.PotionUse.check(chr.getMap().getFieldLimit())) {
-            if (MapleItemInformationProvider.getInstance().getItemEffect(toUse.getItemId()).applyReturnScroll(chr)) {
-                MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
+            if (MapleItemInformationProvider.getInstance()
+                    .getItemEffect(toUse.getItemId())
+                    .applyReturnScroll(chr)) {
+                MapleInventoryManipulator.removeFromSlot(
+                        c, MapleInventoryType.USE, slot, (short) 1, false);
             } else {
                 c.getSession().write(MaplePacketCreator.enableActions());
             }
         } else {
             c.getSession().write(MaplePacketCreator.enableActions());
         }
-
     }
-
 }

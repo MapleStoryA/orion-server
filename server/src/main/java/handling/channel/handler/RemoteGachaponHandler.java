@@ -20,13 +20,11 @@ public class RemoteGachaponHandler extends AbstractMaplePacketHandler {
         if (baseCity == 9100108) {
             baseCity = GachaponLocation.NLC.getValue();
         }
-        //TODO: Fix remote gachapon for showa town sauna
+        // TODO: Fix remote gachapon for showa town sauna
         if (baseCity == 9100106 || baseCity == 9100107) {
             baseCity = GachaponLocation.MUSHROM_SHRINE.getValue();
         }
         NPCScriptManager.getInstance().start(c, baseCity);
         c.enableActions();
     }
-
-
 }

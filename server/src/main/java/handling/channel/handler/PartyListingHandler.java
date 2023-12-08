@@ -12,7 +12,5 @@ public class PartyListingHandler extends AbstractMaplePacketHandler {
     public void handlePacket(CInPacket packet, MapleClient c) {
         c.getPlayer().dropMessage(1, "The Party Listing is currently unavailable.");
         c.getSession().write(MaplePacketCreator.enableActions());
-
     }
-
 }

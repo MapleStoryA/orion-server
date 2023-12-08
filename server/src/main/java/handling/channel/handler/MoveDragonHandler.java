@@ -3,12 +3,11 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
+import java.awt.*;
 import server.maps.MapleMap;
 import server.movement.MovePath;
 import tools.MaplePacketCreator;
 import tools.data.input.CInPacket;
-
-import java.awt.*;
 
 @lombok.extern.slf4j.Slf4j
 public class MoveDragonHandler extends AbstractMaplePacketHandler {
@@ -23,12 +22,14 @@ public class MoveDragonHandler extends AbstractMaplePacketHandler {
             updatePosition(path, chr.getDragon(), 0);
             MapleMap map = chr.getMap();
             if (!chr.isHidden()) {
-                map.broadcastMessage(chr, MaplePacketCreator.moveDragon(chr.getDragon(), path), chr.getPosition());
+                map.broadcastMessage(
+                        chr,
+                        MaplePacketCreator.moveDragon(chr.getDragon(), path),
+                        chr.getPosition());
             } else {
-                map.broadcastGMMessage(chr, MaplePacketCreator.moveDragon(chr.getDragon(), path), false);
+                map.broadcastGMMessage(
+                        chr, MaplePacketCreator.moveDragon(chr.getDragon(), path), false);
             }
         }
-
     }
-
 }

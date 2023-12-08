@@ -36,10 +36,7 @@ public class MTSCSPacket {
     };
 
     public static void addCashItemInfo(
-            final COutPacket packet,
-            IItem item,
-            int accountId,
-            String giftMessage) {
+            final COutPacket packet, IItem item, int accountId, String giftMessage) {
         boolean isGift = giftMessage != null && !giftMessage.isEmpty();
         boolean isRing = false;
         MapleRing ring = null;
@@ -345,7 +342,8 @@ public class MTSCSPacket {
         packet.write(190);
         packet.writeLong(idFirst); // uniqueid of the xmas surprise itself
         packet.writeInt(0);
-        addCashItemInfo(packet, item, accid, ""); // info of the new item, but packet shows 0 for sn?
+        addCashItemInfo(
+                packet, item, accid, ""); // info of the new item, but packet shows 0 for sn?
         packet.writeInt(item.getItemId());
         packet.write(1);
         packet.write(1);

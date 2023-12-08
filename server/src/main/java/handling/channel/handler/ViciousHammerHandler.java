@@ -12,7 +12,5 @@ public class ViciousHammerHandler extends AbstractMaplePacketHandler {
     public void handlePacket(CInPacket packet, MapleClient c) {
         packet.skip(8);
         c.getSession().write(MTSCSPacket.ViciousHammer(false, (byte) 0));
-
     }
-
 }

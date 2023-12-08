@@ -12,5 +12,4 @@ public class RelogRequestHandler extends AbstractMaplePacketHandler {
     public void handlePacket(CInPacket packet, MapleClient c) {
         c.getSession().write(LoginPacket.getRelogResponse());
     }
-
 }

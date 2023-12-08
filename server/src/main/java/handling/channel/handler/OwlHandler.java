@@ -18,7 +18,5 @@ public class OwlHandler extends AbstractMaplePacketHandler {
                 c.getSession().write(MaplePacketCreator.enableActions());
             }
         }
-
     }
-
 }

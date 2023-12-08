@@ -15,7 +15,6 @@ public class MesoDropHandler extends AbstractMaplePacketHandler {
         chr.updateTick(packet.readInt());
         int meso = packet.readInt();
 
-
         if (!chr.isAlive() || (meso < 10 || meso > 50000) || (meso > chr.getMeso())) {
             chr.getClient().getSession().write(MaplePacketCreator.enableActions());
             return;
@@ -24,5 +23,4 @@ public class MesoDropHandler extends AbstractMaplePacketHandler {
         chr.getMap().spawnMesoDrop(meso, chr.getPosition(), chr, chr, true, (byte) 0);
         chr.getCheatTracker().checkDrop(true);
     }
-
 }

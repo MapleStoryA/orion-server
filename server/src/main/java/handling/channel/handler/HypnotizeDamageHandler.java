@@ -31,7 +31,5 @@ public class HypnotizeDamageHandler extends AbstractMaplePacketHandler {
             mob_to.damage(chr, damage, true);
             MobHandlerUtils.checkShammos(chr, mob_to, chr.getMap());
         }
-
     }
-
 }

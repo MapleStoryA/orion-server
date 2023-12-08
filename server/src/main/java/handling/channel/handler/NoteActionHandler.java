@@ -21,7 +21,8 @@ public class NoteActionHandler extends AbstractMaplePacketHandler {
                 boolean fame = packet.readByte() > 0;
                 packet.readInt(); // 0?
                 IItem itemz = chr.getCashInventory().findByCashId((int) packet.readLong());
-                if (itemz == null || !itemz.getGiftFrom().equalsIgnoreCase(name)
+                if (itemz == null
+                        || !itemz.getGiftFrom().equalsIgnoreCase(name)
                         || !chr.getCashInventory().canSendNote(itemz.getSN())) {
                     return;
                 }
@@ -44,7 +45,5 @@ public class NoteActionHandler extends AbstractMaplePacketHandler {
             default:
                 log.info("Unhandled note action, " + type + "");
         }
-
     }
-
 }

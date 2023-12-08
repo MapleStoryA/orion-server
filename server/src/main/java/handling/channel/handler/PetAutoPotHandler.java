@@ -23,8 +23,13 @@ public class PetAutoPotHandler extends AbstractMaplePacketHandler {
         c.getPlayer().updateTick(packet.readInt());
         final byte slot = (byte) packet.readShort();
         final int itemId = packet.readInt();
-        if (chr == null || !chr.isAlive() || chr.getPetIndex(petid) < 0 || chr.getMap() == null
-                || chr.getMapId() == 749040100 || chr.getMap() == null || chr.hasDisease(MapleDisease.POTION)) {
+        if (chr == null
+                || !chr.isAlive()
+                || chr.getPetIndex(petid) < 0
+                || chr.getMap() == null
+                || chr.getMapId() == 749040100
+                || chr.getMap() == null
+                || chr.hasDisease(MapleDisease.POTION)) {
             return;
         }
         final IItem toUse = chr.getInventory(MapleInventoryType.USE).getItem(slot);
@@ -38,11 +43,15 @@ public class PetAutoPotHandler extends AbstractMaplePacketHandler {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
         }
-        if (!FieldLimitType.PotionUse.check(chr.getMap().getFieldLimit()) || chr.getMapId() == 610030600) { // cwk
+        if (!FieldLimitType.PotionUse.check(chr.getMap().getFieldLimit())
+                || chr.getMapId() == 610030600) { // cwk
             // quick
             // hack
-            if (MapleItemInformationProvider.getInstance().getItemEffect(toUse.getItemId()).applyTo(chr)) {
-                MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
+            if (MapleItemInformationProvider.getInstance()
+                    .getItemEffect(toUse.getItemId())
+                    .applyTo(chr)) {
+                MapleInventoryManipulator.removeFromSlot(
+                        c, MapleInventoryType.USE, slot, (short) 1, false);
                 if (chr.getMap().getConsumeItemCoolTime() > 0) {
                     chr.setNextConsume(time + (chr.getMap().getConsumeItemCoolTime() * 1000L));
                 }
@@ -50,7 +59,5 @@ public class PetAutoPotHandler extends AbstractMaplePacketHandler {
         } else {
             c.getSession().write(MaplePacketCreator.enableActions());
         }
-
     }
-
 }

@@ -54,8 +54,7 @@ public class MapleOxQuiz extends MapleEvent {
     }
 
     @Override
-    public void onMapLoad(MapleCharacter chr) {
-    }
+    public void onMapLoad(MapleCharacter chr) {}
 
     @Override
     public void reset() {

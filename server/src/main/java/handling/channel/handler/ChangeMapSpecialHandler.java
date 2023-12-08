@@ -19,7 +19,5 @@ public class ChangeMapSpecialHandler extends AbstractMaplePacketHandler {
         if (portal != null) {
             portal.enterPortal(c);
         }
-
     }
-
 }

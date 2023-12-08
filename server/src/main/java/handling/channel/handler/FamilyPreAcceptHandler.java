@@ -8,8 +8,5 @@ import tools.data.input.CInPacket;
 public class FamilyPreAcceptHandler extends AbstractMaplePacketHandler {
 
     @Override
-    public void handlePacket(CInPacket packet, MapleClient c) {
-
-    }
-
+    public void handlePacket(CInPacket packet, MapleClient c) {}
 }

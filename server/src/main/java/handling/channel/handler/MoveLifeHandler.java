@@ -3,6 +3,7 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
+import java.awt.*;
 import server.life.MapleMonster;
 import server.life.MobSkill;
 import server.life.MobSkillFactory;
@@ -12,8 +13,6 @@ import tools.Pair;
 import tools.Randomizer;
 import tools.data.input.CInPacket;
 import tools.packet.MobPacket;
-
-import java.awt.*;
 
 @lombok.extern.slf4j.Slf4j
 public class MoveLifeHandler extends AbstractMaplePacketHandler {
@@ -40,12 +39,13 @@ public class MoveLifeHandler extends AbstractMaplePacketHandler {
         int realskill = 0;
         int level = 0;
 
-        if (useSkill) {// && (skill == -1 || skill == 0)) {
+        if (useSkill) { // && (skill == -1 || skill == 0)) {
             final byte size = monster.getNoSkills();
             boolean used = false;
 
             if (size > 0) {
-                final Pair<Integer, Integer> skillToUse = monster.getSkills().get((byte) Randomizer.nextInt(size));
+                final Pair<Integer, Integer> skillToUse =
+                        monster.getSkills().get((byte) Randomizer.nextInt(size));
                 realskill = skillToUse.getLeft();
                 level = skillToUse.getRight();
                 // Skill ID and Level
@@ -58,7 +58,10 @@ public class MoveLifeHandler extends AbstractMaplePacketHandler {
                     if (ls == 0 || ((now - ls) > mobSkill.getCoolTime())) {
                         monster.setLastSkillUsed(realskill, now, mobSkill.getCoolTime());
 
-                        final int reqHp = (int) (((float) monster.getHp() / monster.getMobMaxHp()) * 100); // In
+                        final int reqHp =
+                                (int)
+                                        (((float) monster.getHp() / monster.getMobMaxHp())
+                                                * 100); // In
                         // case
                         // this
                         // monster
@@ -80,13 +83,12 @@ public class MoveLifeHandler extends AbstractMaplePacketHandler {
             }
         }
 
-
         int size = slea.readInt();
         for (int i = 0; i < size; i++) {
             slea.readInt();
             slea.readInt();
         }
-        size = slea.readInt();// ?
+        size = slea.readInt(); // ?
         for (int i = 0; i < size; i++) {
             slea.readInt();
         }
@@ -99,16 +101,31 @@ public class MoveLifeHandler extends AbstractMaplePacketHandler {
         final MapleMap map = chr.getMap();
         res.decode(slea);
         if (res != null && chr != null) {
-            byte[] packet = MobPacket.moveMonsterResponse(monster.getObjectId(), moveid, monster.getMp(), monster.isControllerHasAggro(), realskill, level);
+            byte[] packet =
+                    MobPacket.moveMonsterResponse(
+                            monster.getObjectId(),
+                            moveid,
+                            monster.getMp(),
+                            monster.isControllerHasAggro(),
+                            realskill,
+                            level);
             c.getSession().write(packet);
             updatePosition(res, monster, -1);
             final Point endPos = monster.getPosition();
             map.moveMonster(monster, endPos);
-            map.broadcastMessage(chr, MobPacket.moveMonster(useSkill, skill, skill1, skill2, skill3, skill4,
-                    monster.getObjectId(), res), endPos);
+            map.broadcastMessage(
+                    chr,
+                    MobPacket.moveMonster(
+                            useSkill,
+                            skill,
+                            skill1,
+                            skill2,
+                            skill3,
+                            skill4,
+                            monster.getObjectId(),
+                            res),
+                    endPos);
             chr.getCheatTracker().checkMoveMonster(endPos);
         }
-
     }
-
 }

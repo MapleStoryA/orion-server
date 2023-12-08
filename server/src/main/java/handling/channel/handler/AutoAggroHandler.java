@@ -13,7 +13,7 @@ public class AutoAggroHandler extends AbstractMaplePacketHandler {
     public void handlePacket(CInPacket packet, MapleClient c) {
         int monsteroid = packet.readInt();
         MapleCharacter chr = c.getPlayer();
-        if (chr == null || chr.getMap() == null || chr.isHidden()) { //no evidence :)
+        if (chr == null || chr.getMap() == null || chr.isHidden()) { // no evidence :)
             return;
         }
         final MapleMonster monster = chr.getMap().getMonsterByOid(monsteroid);
@@ -29,7 +29,5 @@ public class AutoAggroHandler extends AbstractMaplePacketHandler {
                 monster.switchController(chr, true);
             }
         }
-
     }
-
 }

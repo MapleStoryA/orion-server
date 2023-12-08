@@ -14,7 +14,10 @@ public class TouchReactorHandler extends AbstractMaplePacketHandler {
         final int oid = packet.readInt();
         final boolean touched = packet.readByte() > 0;
         final MapleReactor reactor = c.getPlayer().getMap().getReactorByOid(oid);
-        if (!touched || reactor == null || !reactor.isAlive() || reactor.getReactorId() < 6109013
+        if (!touched
+                || reactor == null
+                || !reactor.isAlive()
+                || reactor.getReactorId() < 6109013
                 || reactor.getReactorId() > 6109027) {
             return;
         }
@@ -23,5 +26,4 @@ public class TouchReactorHandler extends AbstractMaplePacketHandler {
         // comes into play
 
     }
-
 }

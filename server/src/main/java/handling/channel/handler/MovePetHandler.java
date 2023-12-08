@@ -28,7 +28,5 @@ public class MovePetHandler extends AbstractMaplePacketHandler {
             }
             chr.getMap().broadcastMessage(chr, PetPacket.movePet(chr.getId(), slot, res), false);
         }
-
     }
-
 }

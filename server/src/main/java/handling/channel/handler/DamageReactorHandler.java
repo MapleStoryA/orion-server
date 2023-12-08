@@ -20,14 +20,14 @@ public class DamageReactorHandler extends AbstractMaplePacketHandler {
             return;
         }
         if (reactor.getReactorId() == 5022000) {
-            final String[] texts = {"What? The reactor didn't broke?",
-                    "Hmm..Maybe I should try and use another way instead.",
-                    "I wonder if the Antellion Relic will combine with it or not."};
+            final String[] texts = {
+                "What? The reactor didn't broke?",
+                "Hmm..Maybe I should try and use another way instead.",
+                "I wonder if the Antellion Relic will combine with it or not."
+            };
             c.getPlayer().dropMessage(-3, texts[Randomizer.nextInt(texts.length)]);
             return;
         }
         reactor.hitReactor(charPos, stance, c);
-
     }
-
 }

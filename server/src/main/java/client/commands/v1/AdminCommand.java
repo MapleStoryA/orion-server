@@ -24,6 +24,28 @@ import handling.world.WorldServer;
 import handling.world.helper.BroadcastHelper;
 import handling.world.helper.CheaterData;
 import handling.world.helper.FindCommand;
+import java.awt.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.concurrent.ScheduledFuture;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
@@ -60,29 +82,6 @@ import tools.ArrayMap;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.StringUtil;
-
-import java.awt.*;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.concurrent.ScheduledFuture;
 
 @lombok.extern.slf4j.Slf4j
 public class AdminCommand {
@@ -183,7 +182,6 @@ public class AdminCommand {
             }
         }
     }
-
 
     public static class UnBan extends CommandExecute {
 
@@ -357,7 +355,7 @@ public class AdminCommand {
             ISkill skill = SkillFactory.getSkill(Integer.parseInt(splitted[1]));
             if (skill.getId() >= 22000000
                     && (GameConstants.isEvan((skill.getId() / 10000))
-                    || GameConstants.isResist((skill.getId() / 10000)))) {
+                            || GameConstants.isResist((skill.getId() / 10000)))) {
                 c.getPlayer().dropMessage(5, "Please change your job to an Evan instead.");
                 return 0;
             }
@@ -416,7 +414,6 @@ public class AdminCommand {
             return 1;
         }
     }
-
 
     public static class GiveSkill extends CommandExecute {
 
@@ -937,7 +934,6 @@ public class AdminCommand {
         }
     }
 
-
     public static class Song extends CommandExecute {
 
         @Override
@@ -968,7 +964,6 @@ public class AdminCommand {
             return 1;
         }
     }
-
 
     public static class GivePoint extends CommandExecute {
 
@@ -1065,7 +1060,6 @@ public class AdminCommand {
         }
     }
 
-
     public static class KillMap extends CommandExecute {
 
         @Override
@@ -1081,7 +1075,6 @@ public class AdminCommand {
             return 1;
         }
     }
-
 
     public static class SpeakWorld extends CommandExecute {
 
@@ -1113,7 +1106,7 @@ public class AdminCommand {
                         .dropMessage(
                                 6,
                                 "!disease <type> [charname] <level> where type ="
-                                        + " SEAL/DARKNESS/WEAKEN/STUN/CURSE/POISON/SLOW/SEDUCE/REVERSE/ZOMBIFY/POTION/SHADOW/BLIND/FREEZE");
+                                    + " SEAL/DARKNESS/WEAKEN/STUN/CURSE/POISON/SLOW/SEDUCE/REVERSE/ZOMBIFY/POTION/SHADOW/BLIND/FREEZE");
                 return 0;
             }
             int type = 0;
@@ -1151,7 +1144,7 @@ public class AdminCommand {
                         .dropMessage(
                                 6,
                                 "!disease <type> [charname] <level> where type ="
-                                        + " SEAL/DARKNESS/WEAKEN/STUN/CURSE/POISON/SLOW/SEDUCE/REVERSE/ZOMBIFY/POTION/SHADOW/BLIND/FREEZE");
+                                    + " SEAL/DARKNESS/WEAKEN/STUN/CURSE/POISON/SLOW/SEDUCE/REVERSE/ZOMBIFY/POTION/SHADOW/BLIND/FREEZE");
                 return 0;
             }
             dis = MapleDisease.getBySkill(type);
@@ -1191,7 +1184,6 @@ public class AdminCommand {
             return 1;
         }
     }
-
 
     public static class SendAllNote extends CommandExecute {
 
@@ -1458,7 +1450,6 @@ public class AdminCommand {
         }
     }
 
-
     public static class ShowTrace extends CommandExecute {
 
         @Override
@@ -1510,8 +1501,8 @@ public class AdminCommand {
                             6,
                             "Megaphone state : "
                                     + (c.getChannelServer().getMegaphoneMuteState()
-                                    ? "Enabled"
-                                    : "Disabled"));
+                                            ? "Enabled"
+                                            : "Disabled"));
             return 1;
         }
     }
@@ -1865,8 +1856,8 @@ public class AdminCommand {
                             6,
                             "Server has been up for "
                                     + StringUtil.getReadableMillis(
-                                    WorldServer.getInstance().getServerStartTime(),
-                                    System.currentTimeMillis()));
+                                            WorldServer.getInstance().getServerStartTime(),
+                                            System.currentTimeMillis()));
             return 1;
         }
     }
@@ -2035,7 +2026,6 @@ public class AdminCommand {
             return 1;
         }
     }
-
 
     public static class KillAllDrops extends CommandExecute {
 
@@ -2390,8 +2380,7 @@ public class AdminCommand {
         }
     }
 
-    public static class Y extends Yellow {
-    }
+    public static class Y extends Yellow {}
 
     public static class ReloadDrops extends CommandExecute {
 
@@ -2493,12 +2482,12 @@ public class AdminCommand {
                                     new Pair<Integer, String>(
                                             Integer.parseInt(mapIdData.getName()),
                                             MapleDataTool.getString(
-                                                    mapIdData.getChildByPath("streetName"),
-                                                    "NO-NAME")
+                                                            mapIdData.getChildByPath("streetName"),
+                                                            "NO-NAME")
                                                     + " - "
                                                     + MapleDataTool.getString(
-                                                    mapIdData.getChildByPath("mapName"),
-                                                    "NO-NAME")));
+                                                            mapIdData.getChildByPath("mapName"),
+                                                            "NO-NAME")));
                         }
                     }
                     for (Pair<Integer, String> mapPair : mapPairList) {
@@ -2609,14 +2598,11 @@ public class AdminCommand {
         }
     }
 
-    public static class ID extends Find {
-    }
+    public static class ID extends Find {}
 
-    public static class LookUp extends Find {
-    }
+    public static class LookUp extends Find {}
 
-    public static class Search extends Find {
-    }
+    public static class Search extends Find {}
 
     public static class ServerMessage extends CommandExecute {
 
@@ -2660,8 +2646,8 @@ public class AdminCommand {
                                                                 0,
                                                                 "The server will shutdown in "
                                                                         + AdminCommand.ShutdownTime
-                                                                        .this
-                                                                        .minutesLeft
+                                                                                .this
+                                                                                .minutesLeft
                                                                         + " minutes. Please log off"
                                                                         + " safely."));
                                                 AdminCommand.ShutdownTime.this.minutesLeft--;
@@ -2761,7 +2747,6 @@ public class AdminCommand {
         }
     }
 
-
     public static class Clock extends CommandExecute {
 
         @Override
@@ -2774,7 +2759,6 @@ public class AdminCommand {
             return 1;
         }
     }
-
 
     public static class Warp extends CommandExecute {
 
@@ -2930,7 +2914,6 @@ public class AdminCommand {
         }
     }
 
-
     public static class Map extends CommandExecute {
 
         @Override
@@ -3030,10 +3013,10 @@ public class AdminCommand {
                 npc.setCustom(true);
                 try (var con = DatabaseConnection.getConnection()) {
                     try (PreparedStatement ps =
-                                 con.prepareStatement(
-                                         "INSERT INTO wz_customlife (dataid, f, hide, fh, cy, rx0, rx1,"
-                                                 + " type, x, y, mid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
-                                                 + " ?)")) {
+                            con.prepareStatement(
+                                    "INSERT INTO wz_customlife (dataid, f, hide, fh, cy, rx0, rx1,"
+                                        + " type, x, y, mid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
+                                        + " ?)")) {
                         ps.setInt(1, npcId);
                         ps.setInt(2, 0); // 1 = right , 0 = left
                         ps.setInt(3, 0); // 1 = hide, 0 = show
@@ -3065,7 +3048,6 @@ public class AdminCommand {
         }
     }
 
-
     public static class ReloadCustomLife extends CommandExecute {
 
         @Override
@@ -3079,7 +3061,6 @@ public class AdminCommand {
             return 1;
         }
     }
-
 
     public static class clearlife extends CommandExecute {
         @Override

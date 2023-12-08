@@ -5,12 +5,11 @@ import client.inventory.Equip;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import handling.AbstractMaplePacketHandler;
+import java.util.Map;
+import java.util.Map.Entry;
 import server.MapleItemInformationProvider;
 import tools.ArrayMap;
 import tools.data.input.CInPacket;
-
-import java.util.Map;
-import java.util.Map.Entry;
 
 @lombok.extern.slf4j.Slf4j
 public class RepairAllHandler extends AbstractMaplePacketHandler {
@@ -33,12 +32,23 @@ public class RepairAllHandler extends AbstractMaplePacketHandler {
                     eq = (Equip) item;
                     if (eq.getDurability() >= 0) {
                         eqStats = ii.getEquipStats(eq.getItemId());
-                        if (/*eqStats.get("durability") > 0 &&*/ eq.getDurability() <= 0/*eqStats.get("durability")*/) {
-                            rPercentage = (100.0
-                                    - Math.ceil((eq.getDurability() * 1000.0) / (eqStats.get("durability") * 10.0)));
+                        if (
+                        /*eqStats.get("durability") > 0 &&*/ eq.getDurability()
+                                <= 0 /*eqStats.get("durability")*/) {
+                            rPercentage =
+                                    (100.0
+                                            - Math.ceil(
+                                                    (eq.getDurability() * 1000.0)
+                                                            / (eqStats.get("durability") * 10.0)));
                             eqs.put(eq, eqStats.get("durability"));
-                            price += (int) Math.ceil(rPercentage * ii.getPrice(eq.getItemId())
-                                    / (ii.getReqLevel(eq.getItemId()) < 70 ? 100.0 : 1.0));
+                            price +=
+                                    (int)
+                                            Math.ceil(
+                                                    rPercentage
+                                                            * ii.getPrice(eq.getItemId())
+                                                            / (ii.getReqLevel(eq.getItemId()) < 70
+                                                                    ? 100.0
+                                                                    : 1.0));
                         }
                     }
                 }
@@ -52,10 +62,12 @@ public class RepairAllHandler extends AbstractMaplePacketHandler {
         for (Entry<Equip, Integer> eqqz : eqs.entrySet()) {
             ez = eqqz.getKey();
             ez.setDurability(eqqz.getValue());
-            c.getPlayer().forceReAddItem(ez.copy(),
-                    ez.getPosition() < 0 ? MapleInventoryType.EQUIPPED : MapleInventoryType.EQUIP);
+            c.getPlayer()
+                    .forceReAddItem(
+                            ez.copy(),
+                            ez.getPosition() < 0
+                                    ? MapleInventoryType.EQUIPPED
+                                    : MapleInventoryType.EQUIP);
         }
-
     }
-
 }

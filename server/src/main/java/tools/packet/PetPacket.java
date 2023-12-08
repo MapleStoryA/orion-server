@@ -46,8 +46,7 @@ public class PetPacket {
         return packet.getPacket();
     }
 
-    public static void addPetInfo(
-            final COutPacket packet, MaplePet pet, boolean showpet) {
+    public static void addPetInfo(final COutPacket packet, MaplePet pet, boolean showpet) {
         packet.write(1);
         if (showpet) {
             packet.write(0);

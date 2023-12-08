@@ -9,7 +9,6 @@ public class PlayerDisconectHandler extends AbstractMaplePacketHandler {
 
     @Override
     public void handlePacket(CInPacket packet, MapleClient c) {
-        c.getPlayer().saveToDB(true, false);//Prevent  player is logged in
+        c.getPlayer().saveToDB(true, false); // Prevent  player is logged in
     }
-
 }

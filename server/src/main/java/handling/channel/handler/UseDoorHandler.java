@@ -25,7 +25,5 @@ public class UseDoorHandler extends AbstractMaplePacketHandler {
                 break;
             }
         }
-
     }
-
 }

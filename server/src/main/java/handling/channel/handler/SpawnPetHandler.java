@@ -28,8 +28,5 @@ public class SpawnPetHandler extends AbstractMaplePacketHandler {
         } else {
             chr.spawnPet(position, isLead);
         }
-
-
     }
-
 }

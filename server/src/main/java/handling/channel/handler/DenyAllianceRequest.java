@@ -11,7 +11,5 @@ public class DenyAllianceRequest extends AbstractMaplePacketHandler {
     @Override
     public void handlePacket(CInPacket packet, MapleClient c) {
         AllianceHandlerUtils.HandleAlliance(packet, c, true);
-
     }
-
 }

@@ -12,17 +12,20 @@ public class UseHiredMerchantHandler extends AbstractMaplePacketHandler {
 
     @Override
     public void handlePacket(CInPacket packet, MapleClient c) {
-//		slea.readInt(); // TimeStamp
+        //		slea.readInt(); // TimeStamp
 
         if (c.getPlayer().getMap().allowPersonalShop()) {
-            final byte state = HiredMerchantHandlerUtils.checkExistance(c.getPlayer().getAccountID(), c.getPlayer().getId());
+            final byte state =
+                    HiredMerchantHandlerUtils.checkExistance(
+                            c.getPlayer().getAccountID(), c.getPlayer().getId());
 
             switch (state) {
                 case 1:
                     c.getPlayer().dropMessage(1, "Please claim your items from Fredrick first.");
                     break;
                 case 0:
-                    boolean merch = WorldServer.getInstance().hasMerchant(c.getPlayer().getAccountID());
+                    boolean merch =
+                            WorldServer.getInstance().hasMerchant(c.getPlayer().getAccountID());
                     if (!merch) {
                         if (c.getChannelServer().isShutdown()) {
                             c.getPlayer().dropMessage(1, "The server is about to shut down.");
@@ -30,7 +33,8 @@ public class UseHiredMerchantHandler extends AbstractMaplePacketHandler {
                         }
                         c.getSession().write(PlayerShopPacket.sendTitleBox());
                     } else {
-                        c.getPlayer().dropMessage(1, "Please close the existing store and try again.");
+                        c.getPlayer()
+                                .dropMessage(1, "Please close the existing store and try again.");
                     }
                     break;
                 default:
@@ -40,7 +44,5 @@ public class UseHiredMerchantHandler extends AbstractMaplePacketHandler {
         } else {
             c.getSession().close();
         }
-
     }
-
 }

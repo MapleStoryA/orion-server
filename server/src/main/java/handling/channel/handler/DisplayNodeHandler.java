@@ -16,9 +16,9 @@ public class DisplayNodeHandler extends AbstractMaplePacketHandler {
         final MapleMonster mob_from = chr.getMap().getMonsterByOid(packet.readInt()); // From
 
         if (mob_from != null) {
-            chr.getClient().getSession().write(MaplePacketCreator.getNodeProperties(mob_from, chr.getMap()));
+            chr.getClient()
+                    .getSession()
+                    .write(MaplePacketCreator.getNodeProperties(mob_from, chr.getMap()));
         }
-
     }
-
 }

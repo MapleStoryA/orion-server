@@ -11,5 +11,4 @@ public class NoOpHandler extends AbstractMaplePacketHandler {
     public void handlePacket(CInPacket packet, MapleClient c) {
         c.enableActions();
     }
-
 }

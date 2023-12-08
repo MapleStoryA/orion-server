@@ -44,9 +44,7 @@ public class PlayerHandler {
     }
 
     public static final void TakeDamage(
-            final CInPacket slea,
-            final MapleClient c,
-            final MapleCharacter chr) {
+            final CInPacket slea, final MapleClient c, final MapleCharacter chr) {
         // log.info(slea.toString());
         chr.updateTick(slea.readInt());
         final byte type = slea.readByte(); // -4 is mist, -3 and -2 are map
@@ -346,9 +344,7 @@ public class PlayerHandler {
     }
 
     public static final void changeMap(
-            final CInPacket slea,
-            final MapleClient c,
-            final MapleCharacter chr) {
+            final CInPacket slea, final MapleClient c, final MapleCharacter chr) {
         if (chr == null) {
             return;
         }

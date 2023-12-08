@@ -24,8 +24,5 @@ public class ServerStatusRequestHandler extends AbstractMaplePacketHandler {
         } else {
             c.getSession().write(LoginPacket.getServerStatus(0));
         }
-
     }
-
-
 }

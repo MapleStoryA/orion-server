@@ -68,8 +68,7 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
         }
     }
 
-    private static void addCharStats(
-            final COutPacket packet, final CharacterData chr) {
+    private static void addCharStats(final COutPacket packet, final CharacterData chr) {
         packet.writeInt(chr.getId()); // character id
         packet.writeAsciiString(chr.getName(), 13);
         packet.write(chr.getGender()); // gender (0 = male, 1 = female)
@@ -98,9 +97,7 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
     }
 
     private static void addCharLook(
-            final COutPacket packet,
-            final CharacterData chr,
-            final boolean mega) {
+            final COutPacket packet, final CharacterData chr, final boolean mega) {
         packet.write(chr.getGender());
         packet.write(chr.getSkinColor());
         packet.writeInt(chr.getFace());

@@ -5,8 +5,8 @@ import handling.AbstractMaplePacketHandler;
 import tools.data.input.CInPacket;
 
 /**
- * @Author Arnah
- * @Website http://Vertisy.ca/
+ * @Author Arnah @Website http://Vertisy.ca/
+ *
  * @since Aug 24, 2017
  */
 @lombok.extern.slf4j.Slf4j

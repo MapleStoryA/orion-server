@@ -14,7 +14,5 @@ public class TwinDragonEggHandler extends AbstractMaplePacketHandler {
         final int uniqueId = (int) packet.readLong();
         c.getSession().write(MTSCSPacket.showTwinDragonEgg(uniqueId));
         CashShopOperationHandlers.doCSPackets(c);
-
     }
-
 }

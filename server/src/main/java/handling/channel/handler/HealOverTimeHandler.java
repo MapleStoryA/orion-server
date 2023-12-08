@@ -28,19 +28,17 @@ public class HealOverTimeHandler extends AbstractMaplePacketHandler {
             return;
         }
 
-        if (healHP != 0) {// && chr.canHP(now + 1000)) {
+        if (healHP != 0) { // && chr.canHP(now + 1000)) {
             if (healHP > stats.getHealHP()) {
                 healHP = (int) stats.getHealHP();
             }
             chr.addHP(healHP);
         }
-        if (healMP != 0) {// && chr.canMP(now + 1000)) {
+        if (healMP != 0) { // && chr.canMP(now + 1000)) {
             if (healMP > stats.getHealMP()) {
                 healMP = (int) stats.getHealMP();
             }
             chr.addMP(healMP);
         }
-
     }
-
 }

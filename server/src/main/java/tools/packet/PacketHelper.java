@@ -53,8 +53,7 @@ public class PacketHelper {
         return ((time * 10000000) + FT_UT_OFFSET);
     }
 
-    public static void addQuestInfo(
-            final COutPacket packet, final MapleCharacter chr) {
+    public static void addQuestInfo(final COutPacket packet, final MapleCharacter chr) {
         final List<MapleQuestStatus> started = chr.getStartedQuests();
         packet.writeShort(started.size());
 
@@ -74,8 +73,7 @@ public class PacketHelper {
         }
     }
 
-    public static final void addSkillInfo(
-            final COutPacket packet, final MapleCharacter chr) {
+    public static final void addSkillInfo(final COutPacket packet, final MapleCharacter chr) {
         final Map<ISkill, SkillEntry> skills = chr.getSkills();
         packet.writeShort(skills.size());
         for (final Entry<ISkill, SkillEntry> skill : skills.entrySet()) {
@@ -88,8 +86,7 @@ public class PacketHelper {
         }
     }
 
-    public static final void addCoolDownInfo(
-            final COutPacket packet, final MapleCharacter chr) {
+    public static final void addCoolDownInfo(final COutPacket packet, final MapleCharacter chr) {
         final List<MapleCoolDownValueHolder> cd = chr.getCooldowns();
         packet.writeShort(cd.size());
         for (final MapleCoolDownValueHolder cooling : cd) {
@@ -103,21 +100,18 @@ public class PacketHelper {
         }
     }
 
-    public static final void addRocksInfo(
-            final COutPacket packet, final MapleCharacter chr) {
+    public static final void addRocksInfo(final COutPacket packet, final MapleCharacter chr) {
         chr.getRegTeleportRock().encode(packet);
         chr.getVipTeleportRock().encode(packet);
     }
 
-    public static final void addMonsterBookInfo(
-            final COutPacket packet, final MapleCharacter chr) {
+    public static final void addMonsterBookInfo(final COutPacket packet, final MapleCharacter chr) {
         packet.writeInt(chr.getMonsterBookCover());
         packet.write(0);
         chr.getMonsterBook().addCardPacket(packet);
     }
 
-    public static final void addRingInfo(
-            final COutPacket packet, final MapleCharacter chr) {
+    public static final void addRingInfo(final COutPacket packet, final MapleCharacter chr) {
         packet.writeShort(0);
         // 01 00 = size
         // 01 00 00 00 = gametype?
@@ -220,8 +214,7 @@ public class PacketHelper {
         packet.write(0); // start of extended slots
     }
 
-    public static final void addCharStats(
-            final COutPacket packet, final MapleCharacter chr) {
+    public static final void addCharStats(final COutPacket packet, final MapleCharacter chr) {
         packet.writeInt(chr.getId()); // character id
         packet.writeAsciiString(chr.getName(), 13);
         packet.write(chr.getGender()); // gender (0 = male, 1 = female)
@@ -263,9 +256,7 @@ public class PacketHelper {
     }
 
     public static final void addCharLook(
-            final COutPacket packet,
-            final MapleCharacter chr,
-            final boolean mega) {
+            final COutPacket packet, final MapleCharacter chr, final boolean mega) {
         packet.write(chr.getGender());
         packet.write(chr.getSkinColor());
         packet.writeInt(chr.getFace());
@@ -344,8 +335,7 @@ public class PacketHelper {
         }
     }
 
-    public static final void addExpirationTime(
-            final COutPacket packet, final long time) {
+    public static final void addExpirationTime(final COutPacket packet, final long time) {
         packet.write(0);
         packet.writeShort(1408); // 80 05
         if (time != -1) {
@@ -453,8 +443,7 @@ public class PacketHelper {
         }
     }
 
-    public static final void addAnnounceBox(
-            final COutPacket packet, final MapleCharacter chr) {
+    public static final void addAnnounceBox(final COutPacket packet, final MapleCharacter chr) {
         if (chr.getPlayerShop() != null
                 && chr.getPlayerShop().isOwner(chr)
                 && chr.getPlayerShop().getShopType() != 1
@@ -465,8 +454,7 @@ public class PacketHelper {
         }
     }
 
-    public static final void addInteraction(
-            final COutPacket packet, IMaplePlayerShop shop) {
+    public static final void addInteraction(final COutPacket packet, IMaplePlayerShop shop) {
         packet.write(shop.getGameType());
         packet.writeInt(((AbstractPlayerStore) shop).getObjectId());
         packet.writeMapleAsciiString(shop.getDescription());
@@ -481,8 +469,7 @@ public class PacketHelper {
         }
     }
 
-    public static final void addCharacterInfo(
-            final COutPacket packet, final MapleCharacter chr) {
+    public static final void addCharacterInfo(final COutPacket packet, final MapleCharacter chr) {
         packet.writeLong(-1);
         packet.write(0);
         addCharStats(packet, chr);

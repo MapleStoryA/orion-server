@@ -12,5 +12,4 @@ public class AlianceOperationHandler extends AbstractMaplePacketHandler {
     public void handlePacket(CInPacket packet, MapleClient c) {
         AllianceHandlerUtils.HandleAlliance(packet, c, false);
     }
-
 }

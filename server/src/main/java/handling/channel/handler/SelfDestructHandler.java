@@ -22,7 +22,5 @@ public class SelfDestructHandler extends AbstractMaplePacketHandler {
         if (selfd != -1) {
             chr.getMap().killMonster(monster, chr, false, false, selfd);
         }
-
     }
-
 }

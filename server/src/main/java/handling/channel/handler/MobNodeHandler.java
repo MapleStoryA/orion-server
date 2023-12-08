@@ -23,7 +23,11 @@ public class MobNodeHandler extends AbstractMaplePacketHandler {
                 return;
             }
             if (mni.attr == 2) { // talk
-                chr.getMap().talkMonster("Please escort me carefully.", 5120035, mob_from.getObjectId()); // temporary
+                chr.getMap()
+                        .talkMonster(
+                                "Please escort me carefully.",
+                                5120035,
+                                mob_from.getObjectId()); // temporary
             }
             if (mob_from.getLastNode() >= newNode) {
                 return;
@@ -47,15 +51,15 @@ public class MobNodeHandler extends AbstractMaplePacketHandler {
                     case 9211204:
                         chr.getMap().removeMonster(mob_from);
                         break;
-
                 }
                 if (newMap > 0) {
-                    chr.getMap().broadcastMessage(MaplePacketCreator.serverNotice(5, "Proceed to the next stage."));
+                    chr.getMap()
+                            .broadcastMessage(
+                                    MaplePacketCreator.serverNotice(
+                                            5, "Proceed to the next stage."));
                     chr.getMap().removeMonster(mob_from);
                 }
             }
         }
-
     }
-
 }

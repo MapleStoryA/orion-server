@@ -22,7 +22,8 @@ public class BbsOperationHandler extends AbstractMaplePacketHandler {
                     localthreadid = packet.readInt();
                 }
                 final boolean bNotice = packet.readByte() > 0;
-                final String title = BBSHandlerUtils.correctLength(packet.readMapleAsciiString(), 25);
+                final String title =
+                        BBSHandlerUtils.correctLength(packet.readMapleAsciiString(), 25);
                 String text = BBSHandlerUtils.correctLength(packet.readMapleAsciiString(), 600);
                 final int icon = packet.readInt();
                 if (icon >= 0x64 && icon <= 0x6a) {
@@ -61,7 +62,5 @@ public class BbsOperationHandler extends AbstractMaplePacketHandler {
                 BBSHandlerUtils.deleteBBSReply(c, localthreadid, replyid);
                 break;
         }
-
     }
-
 }

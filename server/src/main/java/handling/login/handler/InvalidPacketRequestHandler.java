@@ -16,5 +16,4 @@ public class InvalidPacketRequestHandler implements MaplePacketHandler {
     public boolean validateState(MapleClient c) {
         return true;
     }
-
 }

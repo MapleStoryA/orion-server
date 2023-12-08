@@ -1297,7 +1297,8 @@ public class MaplePacketCreator {
             packet.write(0); // ??
             packet.writeInt(item.getReqItem());
             packet.writeInt(item.getReqItemQ());
-            packet.writeInt(GameConstants.isPet(item.getItemId()) ? 0 : item.getExpiration()); // Can
+            packet.writeInt(
+                    GameConstants.isPet(item.getItemId()) ? 0 : item.getExpiration()); // Can
             // be
             // used
             // x
@@ -1690,8 +1691,7 @@ public class MaplePacketCreator {
         }
     }
 
-    public static void addMRingInfo(
-            COutPacket packet, List<MapleRing> rings, MapleCharacter chr) {
+    public static void addMRingInfo(COutPacket packet, List<MapleRing> rings, MapleCharacter chr) {
         packet.write(rings.size());
         for (MapleRing ring : rings) {
             packet.writeInt(chr.getId());
@@ -1935,8 +1935,7 @@ public class MaplePacketCreator {
         packet.writeLong(secondmask);
     }
 
-    private static void writeLongMaskFromList(
-            COutPacket packet, List<MapleBuffStat> statups) {
+    private static void writeLongMaskFromList(COutPacket packet, List<MapleBuffStat> statups) {
         long firstmask = 0;
         long secondmask = 0;
         for (MapleBuffStat statup : statups) {
@@ -3539,8 +3538,7 @@ public class MaplePacketCreator {
         return packet.getPacket();
     }
 
-    private static void addAllianceInfo(
-            COutPacket packet, MapleGuildAlliance alliance) {
+    private static void addAllianceInfo(COutPacket packet, MapleGuildAlliance alliance) {
         packet.writeInt(alliance.getId());
         packet.writeMapleAsciiString(alliance.getName());
         for (int i = 1; i <= 5; i++) {

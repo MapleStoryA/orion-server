@@ -1253,7 +1253,8 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                                     ? null
                                     : c.getChannelServer()
                                             .getPlayerStorage()
-                                            .getCharacterByName(packet.readMapleAsciiString()); // for
+                                            .getCharacterByName(
+                                                    packet.readMapleAsciiString()); // for
                     // tvType
                     // 4,
                     // there

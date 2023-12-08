@@ -24,5 +24,4 @@ public class NpcAnimationHandler extends AbstractMaplePacketHandler {
         }
         c.sendPacket(packet.getPacket());
     }
-
 }

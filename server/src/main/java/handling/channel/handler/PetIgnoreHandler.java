@@ -29,7 +29,7 @@ public class PetIgnoreHandler extends AbstractMaplePacketHandler {
         // Store in quest data will do
         final byte size = packet.readByte();
         if (size <= 0) {
-            //TODO: pet ignore
+            // TODO: pet ignore
         } else {
             final StringBuilder st = new StringBuilder();
             for (int i = 0; i < size; i++) {
@@ -40,7 +40,5 @@ public class PetIgnoreHandler extends AbstractMaplePacketHandler {
             }
             st.deleteCharAt(st.length() - 1);
         }
-
     }
-
 }

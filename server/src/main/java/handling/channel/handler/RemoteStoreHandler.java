@@ -28,8 +28,5 @@ public class RemoteStoreHandler extends AbstractMaplePacketHandler {
             return;
         }
         c.enableActions();
-
     }
-
-
 }

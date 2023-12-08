@@ -22,5 +22,4 @@ public class UserPoolOnCommonPacket {
 
         return packet.getPacket();
     }
-
 }

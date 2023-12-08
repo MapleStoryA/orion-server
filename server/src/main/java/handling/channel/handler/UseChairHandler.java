@@ -22,7 +22,9 @@ public class UseChairHandler extends AbstractMaplePacketHandler {
         final IItem toUse = chr.getInventory(MapleInventoryType.SETUP).findById(itemId);
 
         if (toUse == null) {
-            chr.getCheatTracker().registerOffense(CheatingOffense.USING_UNAVAILABLE_ITEM, Integer.toString(itemId));
+            chr.getCheatTracker()
+                    .registerOffense(
+                            CheatingOffense.USING_UNAVAILABLE_ITEM, Integer.toString(itemId));
             return;
         }
         if (itemId == 3011000) {
@@ -41,9 +43,8 @@ public class UseChairHandler extends AbstractMaplePacketHandler {
             }
         }
         chr.setChair(itemId);
-        chr.getMap().broadcastMessage(chr, MaplePacketCreator.showChair(chr.getId(), itemId), false);
+        chr.getMap()
+                .broadcastMessage(chr, MaplePacketCreator.showChair(chr.getId(), itemId), false);
         c.getSession().write(MaplePacketCreator.enableActions());
-
     }
-
 }

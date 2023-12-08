@@ -11,7 +11,8 @@ public class ItemMoveHandler extends AbstractMaplePacketHandler {
 
     @Override
     public void handlePacket(CInPacket packet, MapleClient c) {
-        if (c.getPlayer().getPlayerShop() != null || c.getPlayer().getConversation() > 0
+        if (c.getPlayer().getPlayerShop() != null
+                || c.getPlayer().getConversation() > 0
                 || c.getPlayer().getTrade() != null) { // hack
             return;
         }
@@ -30,7 +31,5 @@ public class ItemMoveHandler extends AbstractMaplePacketHandler {
         } else {
             MapleInventoryManipulator.move(c, type, src, dst);
         }
-
     }
-
 }
