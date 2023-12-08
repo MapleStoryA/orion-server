@@ -1,24 +1,3 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package tools.packet;
 
 import client.MapleCharacter;
@@ -26,16 +5,15 @@ import client.MapleStat;
 import client.inventory.IItem;
 import client.inventory.MaplePet;
 import handling.SendPacketOpcode;
+import java.awt.*;
 import server.movement.MovePath;
 import tools.MaplePacketCreator;
 import tools.data.output.MaplePacketLittleEndianWriter;
 
-import java.awt.*;
-
 @lombok.extern.slf4j.Slf4j
 public class PetPacket {
 
-    public final static byte[] ITEM_MAGIC = new byte[]{(byte) 0x80, 5};
+    public static final byte[] ITEM_MAGIC = new byte[] {(byte) 0x80, 5};
 
     public static final byte[] updatePet(final MaplePet pet, final IItem item) {
         final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
@@ -65,11 +43,11 @@ public class PetPacket {
         mplew.write(slot);
         mplew.writeShort(0);
 
-
         return mplew.getPacket();
     }
 
-    public static void addPetInfo(final MaplePacketLittleEndianWriter mplew, MaplePet pet, boolean showpet) {
+    public static void addPetInfo(
+            final MaplePacketLittleEndianWriter mplew, MaplePet pet, boolean showpet) {
         mplew.write(1);
         if (showpet) {
             mplew.write(0);
@@ -84,7 +62,11 @@ public class PetPacket {
         mplew.writeInt(pet.getFh());
     }
 
-    public static final byte[] showPet(final MapleCharacter chr, final MaplePet pet, final boolean remove, final boolean hunger) {
+    public static final byte[] showPet(
+            final MapleCharacter chr,
+            final MaplePet pet,
+            final boolean remove,
+            final boolean hunger) {
         final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
         mplew.writeShort(SendPacketOpcode.SPAWN_PET.getValue());
@@ -96,7 +78,7 @@ public class PetPacket {
             mplew.write(hunger ? 1 : 0);
         } else {
             mplew.write(1);
-            mplew.write(1); //1?
+            mplew.write(1); // 1?
             mplew.writeInt(pet.getPetItemId());
             mplew.writeMapleAsciiString(pet.getName());
             mplew.writeLong(pet.getUniqueId());
@@ -127,7 +109,8 @@ public class PetPacket {
         return packet.getPacket();
     }
 
-    public static final byte[] petChat(final int cid, final int un, final String text, final byte slot) {
+    public static final byte[] petChat(
+            final int cid, final int un, final String text, final byte slot) {
         final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
         mplew.writeShort(SendPacketOpcode.PET_CHAT.getValue());
@@ -135,12 +118,17 @@ public class PetPacket {
         mplew.write(slot);
         mplew.writeShort(un);
         mplew.writeMapleAsciiString(text);
-        mplew.write(0); //hasQuoteRing
+        mplew.write(0); // hasQuoteRing
 
         return mplew.getPacket();
     }
 
-    public static final byte[] commandResponse(final int cid, final byte command, final byte slot, final boolean success, final boolean food) {
+    public static final byte[] commandResponse(
+            final int cid,
+            final byte command,
+            final byte slot,
+            final boolean success,
+            final boolean food) {
         final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
         mplew.writeShort(SendPacketOpcode.PET_COMMAND.getValue());
@@ -217,7 +205,8 @@ public class PetPacket {
         return mplew.getPacket();
     }
 
-    public static final byte[] loadExceptionList(final int cid, final int petId, final String data) {
+    public static final byte[] loadExceptionList(
+            final int cid, final int petId, final String data) {
         final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
         mplew.writeShort(SendPacketOpcode.PET_EXCEPTION_LIST.getValue());
@@ -259,6 +248,4 @@ public class PetPacket {
 
         return mplew.getPacket();
     }
-
-
 }

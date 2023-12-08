@@ -1,24 +1,3 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package tools;
 
 import java.util.Date;
@@ -34,10 +13,11 @@ import java.util.SimpleTimeZone;
 @lombok.extern.slf4j.Slf4j
 public class KoreanDateUtil {
 
-    private final static int ITEM_YEAR2000 = -1085019342;
-    private final static long REAL_YEAR2000 = 946681229830L;
-    private final static int QUEST_UNIXAGE = 27111908;
-    private final static long FT_UT_OFFSET = 116444736000000000L; // 100 nsseconds from 1/1/1601 -> 1/1/1970
+    private static final int ITEM_YEAR2000 = -1085019342;
+    private static final long REAL_YEAR2000 = 946681229830L;
+    private static final int QUEST_UNIXAGE = 27111908;
+    private static final long FT_UT_OFFSET =
+            116444736000000000L; // 100 nsseconds from 1/1/1601 -> 1/1/1970
 
     /**
      * Converts a Unix Timestamp into File Time

@@ -1,41 +1,19 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package server.maps;
 
 import client.MapleCharacter;
 import handling.channel.ChannelServer;
 import handling.world.party.MaplePartyCharacter;
+import java.awt.*;
 import server.Timer.MapTimer;
 import server.life.MapleLifeFactory;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
 
-import java.awt.*;
-
 @lombok.extern.slf4j.Slf4j
 public class Event_DojoAgent {
 
-    private final static int baseAgentMapId = 970030000; // 9500337 = mano
-    private final static Point point1 = new Point(140, 0),
+    private static final int baseAgentMapId = 970030000; // 9500337 = mano
+    private static final Point point1 = new Point(140, 0),
             point2 = new Point(-193, 0),
             point3 = new Point(355, 0);
 
@@ -95,9 +73,9 @@ public class Event_DojoAgent {
         int mapid = 925020000 + (stage * 100);
         boolean canenter = false;
         final ChannelServer ch = c.getClient().getChannelServer();
-        for (int x = 0; x < 15; x++) { //15 maps each stage
+        for (int x = 0; x < 15; x++) { // 15 maps each stage
             boolean canenterr = true;
-            for (int i = 1; i < 39; i++) { //only 32 stages, but 38 maps
+            for (int i = 1; i < 39; i++) { // only 32 stages, but 38 maps
                 MapleMap map = ch.getMapFactory().getMap(925020000 + 100 * i + x);
                 if (map.getCharactersSize() > 0) {
                     canenterr = false;
@@ -144,7 +122,6 @@ public class Event_DojoAgent {
             final int thisStage = temp - ((temp / 100) * 100);
             final int points = getDojoPoints(thisStage);
 
-
             final ChannelServer ch = c.getClient().getChannelServer();
             if (!fromResting) {
                 clearMap(currentmap, true);
@@ -155,17 +132,19 @@ public class Event_DojoAgent {
                             final int point = (points * 3);
                             chr.modifyCSPoints(1, point * 4, true);
                             chr.setDojo(chr.getDojo() + point);
-                            chr.getClient().getSession().write(MaplePacketCreator.Mulung_Pts(point, chr.getDojo()));
+                            chr.getClient()
+                                    .getSession()
+                                    .write(MaplePacketCreator.Mulung_Pts(point, chr.getDojo()));
                         }
                     }
                 } else {
                     final int point = ((points + 1) * 3);
                     c.modifyCSPoints(1, point * 4, true);
                     c.setDojo(c.getDojo() + point);
-                    c.getClient().getSession().write(MaplePacketCreator.Mulung_Pts(point, c.getDojo()));
+                    c.getClient()
+                            .getSession()
+                            .write(MaplePacketCreator.Mulung_Pts(point, c.getDojo()));
                 }
-
-
             }
             if (currentmap.getId() >= 925023800 && currentmap.getId() <= 925023814) {
                 final MapleMap map = ch.getMapFactory().getMap(925020003);
@@ -185,7 +164,7 @@ public class Event_DojoAgent {
                 return true;
             }
 
-            //final int nextmapid = 925020000 + ((thisStage + 1) * 100);
+            // final int nextmapid = 925020000 + ((thisStage + 1) * 100);
 
             final MapleMap map = ch.getMapFactory().getMap(currentmap.getId() + 100);
             if (map.getCharactersSize() == 0) {
@@ -202,7 +181,7 @@ public class Event_DojoAgent {
                 }
                 spawnMonster(map, thisStage + 1);
                 return true;
-            } else { //wtf, find a new map
+            } else { // wtf, find a new map
                 int basemap = currentmap.getId() / 100 * 100 + 100;
                 for (int x = 0; x < 15; x++) {
                     MapleMap mapz = ch.getMapFactory().getMap(basemap + x);
@@ -391,13 +370,19 @@ public class Event_DojoAgent {
         if (mobid != 0) {
             final int rand = Randomizer.nextInt(3);
 
-            MapTimer.getInstance().schedule(new Runnable() {
+            MapTimer.getInstance()
+                    .schedule(
+                            new Runnable() {
 
-                @Override
-                public void run() {
-                    map.spawnMonsterWithEffect(MapleLifeFactory.getMonster(mobid), 15, rand == 0 ? point1 : rand == 1 ? point2 : point3);
-                }
-            }, 3000);
+                                @Override
+                                public void run() {
+                                    map.spawnMonsterWithEffect(
+                                            MapleLifeFactory.getMonster(mobid),
+                                            15,
+                                            rand == 0 ? point1 : rand == 1 ? point2 : point3);
+                                }
+                            },
+                            3000);
         }
     }
 }

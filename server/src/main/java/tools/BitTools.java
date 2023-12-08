@@ -1,24 +1,3 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package tools;
 
 /**
@@ -46,11 +25,10 @@ public class BitTools {
     }
 
     /**
-     * Reads a string from <code>array</code> at
-     * <code>index</code> <code>length</code> in length.
+     * Reads a string from <code>array</code> at <code>index</code> <code>length</code> in length.
      *
-     * @param array  The array to read the string from.
-     * @param index  Where reading begins.
+     * @param array The array to read the string from.
+     * @param index Where reading begins.
      * @param length The number of bytes to read.
      * @return The string read.
      */
@@ -63,8 +41,7 @@ public class BitTools {
     }
 
     /**
-     * Reads a maplestory-convention string from <code>array</code> at
-     * <code>index</code>
+     * Reads a maplestory-convention string from <code>array</code> at <code>index</code>
      *
      * @param array The byte array to read from.
      * @param index Where reading begins.
@@ -76,10 +53,9 @@ public class BitTools {
     }
 
     /**
-     * Rotates the bits of <code>in</code> <code>count</code> places to the
-     * left.
+     * Rotates the bits of <code>in</code> <code>count</code> places to the left.
      *
-     * @param in    The byte to rotate the bits
+     * @param in The byte to rotate the bits
      * @param count Number of times to rotate.
      * @return The rotated byte.
      */
@@ -94,10 +70,9 @@ public class BitTools {
     }
 
     /**
-     * Rotates the bits of <code>in</code> <code>count</code> places to the
-     * right.
+     * Rotates the bits of <code>in</code> <code>count</code> places to the right.
      *
-     * @param in    The byte to rotate the bits
+     * @param in The byte to rotate the bits
      * @param count Number of times to rotate.
      * @return The rotated byte.
      */
@@ -117,9 +92,9 @@ public class BitTools {
     /**
      * Repeats <code>count</code> bytes of <code>in</code> <code>mul</code> times.
      *
-     * @param in    The array of bytes containing the bytes to multiply.
+     * @param in The array of bytes containing the bytes to multiply.
      * @param count The number of bytes to repeat.
-     * @param mul   The number of times to repeat.
+     * @param mul The number of times to repeat.
      * @return The repeated bytes.
      */
     public static final byte[] multiplyBytes(final byte[] in, final int count, final int mul) {

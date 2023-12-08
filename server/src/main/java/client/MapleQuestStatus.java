@@ -1,33 +1,11 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package client;
-
-import server.life.MapleLifeFactory;
-import server.quest.MapleQuest;
 
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import server.life.MapleLifeFactory;
+import server.quest.MapleQuest;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleQuestStatus implements Serializable {
@@ -41,9 +19,7 @@ public class MapleQuestStatus implements Serializable {
     private int forfeited = 0;
     private String customData;
 
-    /**
-     * Creates a new instance of MapleQuestStatus
-     */
+    /** Creates a new instance of MapleQuestStatus */
     public MapleQuestStatus(final MapleQuest quest, final byte status) {
         this.quest = quest;
         this.setStatus(status);
@@ -113,7 +89,7 @@ public class MapleQuestStatus implements Serializable {
         if (mob != null) {
             final int mo = maxMob(id);
             if (mob >= mo) {
-                return false; //nothing happened
+                return false; // nothing happened
             }
             killedMobs.put(id, Math.min(mob + 1, mo));
             return true;
@@ -122,12 +98,12 @@ public class MapleQuestStatus implements Serializable {
             if (questCount(mo.getKey(), id)) {
                 final int mobb = maxMob(mo.getKey());
                 if (mo.getValue() >= mobb) {
-                    return false; //nothing
+                    return false; // nothing
                 }
                 killedMobs.put(mo.getKey(), Math.min(mo.getValue() + 1, mobb));
                 return true;
             }
-        } //i doubt this
+        } // i doubt this
         return false;
     }
 
@@ -144,7 +120,7 @@ public class MapleQuestStatus implements Serializable {
 
     public final void setMobKills(final int id, final int count) {
         if (killedMobs == null) {
-            registerMobs(); //lol
+            registerMobs(); // lol
         }
         killedMobs.put(id, count);
     }
@@ -184,7 +160,8 @@ public class MapleQuestStatus implements Serializable {
         if (forfeited >= this.forfeited) {
             this.forfeited = forfeited;
         } else {
-            throw new IllegalArgumentException("Can't set forfeits to something lower than before.");
+            throw new IllegalArgumentException(
+                    "Can't set forfeits to something lower than before.");
         }
     }
 

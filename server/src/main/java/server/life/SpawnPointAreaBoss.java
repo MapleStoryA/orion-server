@@ -1,32 +1,10 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package server.life;
-
-import server.maps.MapleMap;
-import tools.MaplePacketCreator;
-import tools.Randomizer;
 
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import server.maps.MapleMap;
+import tools.MaplePacketCreator;
+import tools.Randomizer;
 
 @lombok.extern.slf4j.Slf4j
 public class SpawnPointAreaBoss extends Spawns {
@@ -40,7 +18,13 @@ public class SpawnPointAreaBoss extends Spawns {
     private final String msg;
     private long nextPossibleSpawn;
 
-    public SpawnPointAreaBoss(final MapleMonster monster, final Point pos1, final Point pos2, final Point pos3, final int mobTime, final String msg) {
+    public SpawnPointAreaBoss(
+            final MapleMonster monster,
+            final Point pos1,
+            final Point pos2,
+            final Point pos3,
+            final int mobTime,
+            final String msg) {
         this.monster = monster;
         this.pos1 = pos1;
         this.pos2 = pos2;
@@ -88,19 +72,19 @@ public class SpawnPointAreaBoss extends Spawns {
 
         mob.setPosition(getPosition());
         spawned.set(true);
-        mob.addListener(new MonsterListener() {
+        mob.addListener(
+                new MonsterListener() {
 
-            @Override
-            public void monsterKilled() {
-                nextPossibleSpawn = System.currentTimeMillis();
+                    @Override
+                    public void monsterKilled() {
+                        nextPossibleSpawn = System.currentTimeMillis();
 
-
-                if (mobTime > 0) {
-                    nextPossibleSpawn += mobTime;
-                }
-                spawned.set(false);
-            }
-        });
+                        if (mobTime > 0) {
+                            nextPossibleSpawn += mobTime;
+                        }
+                        spawned.set(false);
+                    }
+                });
         map.spawnMonster(mob, -2);
 
         if (msg != null) {

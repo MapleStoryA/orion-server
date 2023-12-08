@@ -1,24 +1,3 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package tools;
 
 import java.io.Serializable;
@@ -45,9 +24,7 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Serializable {
     private final ArrayList<Entry<K, V>> list;
     private transient Set<? extends java.util.Map.Entry<K, V>> entries = null;
 
-    /**
-     * Class constructor
-     */
+    /** Class constructor */
     public ArrayMap() {
         list = new ArrayList<Entry<K, V>>();
     }
@@ -55,8 +32,7 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Serializable {
     /**
      * Class constructor.
      *
-     * @param map The <code>java.util.Map</code> containing keys and values to
-     *            import.
+     * @param map The <code>java.util.Map</code> containing keys and values to import.
      */
     public ArrayMap(Map<K, V> map) {
         list = new ArrayList<Entry<K, V>>();
@@ -81,23 +57,24 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Serializable {
     @SuppressWarnings("unchecked")
     public Set<java.util.Map.Entry<K, V>> entrySet() {
         if (entries == null) {
-            entries = new AbstractSet<Entry<K, V>>() {
+            entries =
+                    new AbstractSet<Entry<K, V>>() {
 
-                @Override
-                public void clear() {
-                    throw new UnsupportedOperationException();
-                }
+                        @Override
+                        public void clear() {
+                            throw new UnsupportedOperationException();
+                        }
 
-                @Override
-                public Iterator<Entry<K, V>> iterator() {
-                    return list.iterator();
-                }
+                        @Override
+                        public Iterator<Entry<K, V>> iterator() {
+                            return list.iterator();
+                        }
 
-                @Override
-                public int size() {
-                    return list.size();
-                }
-            };
+                        @Override
+                        public int size() {
+                            return list.size();
+                        }
+                    };
         }
         return (Set<java.util.Map.Entry<K, V>>) entries;
     }
@@ -105,10 +82,9 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Serializable {
     /**
      * Puts a key/value pair into the ArrayMap.
      *
-     * @param key   The key of <code>value</code>
+     * @param key The key of <code>value</code>
      * @param value The value to insert into the ArrayMap.
-     * @return <code>null</code> if no entry was replaced, the value replaced
-     * otherwise.
+     * @return <code>null</code> if no entry was replaced, the value replaced otherwise.
      */
     @Override
     public V put(K key, V value) {
@@ -158,7 +134,7 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Serializable {
         /**
          * Class constructor
          *
-         * @param key   Name of the key
+         * @param key Name of the key
          * @param value The value.
          */
         public Entry(K key, V value) {
@@ -198,8 +174,7 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Serializable {
         /**
          * Compares two Entries for equality.
          *
-         * @return <code>True</code> if the two Entries are equal,
-         * <code>False</code> otherwise.
+         * @return <code>True</code> if the two Entries are equal, <code>False</code> otherwise.
          */
         @Override
         public boolean equals(Object o) {
@@ -208,13 +183,11 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Serializable {
             }
             @SuppressWarnings("rawtypes")
             Map.Entry e = (Map.Entry) o;
-            return (key == null ? e.getKey() == null : key.equals(e.getKey())) &&
-                    (value == null ? e.getValue() == null : value.equals(e.getValue()));
+            return (key == null ? e.getKey() == null : key.equals(e.getKey()))
+                    && (value == null ? e.getValue() == null : value.equals(e.getValue()));
         }
 
-        /**
-         * @see java.lang.Object#hashCode()
-         */
+        /** @see java.lang.Object#hashCode() */
         @Override
         public int hashCode() {
             int keyHash = (key == null ? 0 : key.hashCode());
@@ -222,9 +195,7 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Serializable {
             return keyHash ^ valueHash;
         }
 
-        /**
-         * @see java.lang.Object#toString()
-         */
+        /** @see java.lang.Object#toString() */
         @Override
         public String toString() {
             return key + "=" + value;

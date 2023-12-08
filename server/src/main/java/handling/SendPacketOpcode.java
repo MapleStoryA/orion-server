@@ -1,24 +1,3 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package handling;
 
 public enum SendPacketOpcode {
@@ -191,7 +170,7 @@ public enum SendPacketOpcode {
     LOAD_GUILD_NAME(230),
     LOAD_GUILD_ICON(231),
     CANCEL_CHAIR(233),
-    SHOW_ITEM_GAIN_INCHAT(235),//CUser::OnEffect
+    SHOW_ITEM_GAIN_INCHAT(235), // CUser::OnEffect
     CURRENT_MAP_WARP(236),
     MESOBAG_SUCCESS(238),
     MESOBAG_FAILURE(239),
@@ -299,8 +278,8 @@ public enum SendPacketOpcode {
     PET_AUTO_HP(390),
     PET_AUTO_MP(391),
     LUCKY_LOGOUT_GIFT(193),
-    //MAPLE_LIFE(404),
-    //MAPLE_LIFE_SUBMIT(405),
+    // MAPLE_LIFE(404),
+    // MAPLE_LIFE_SUBMIT(405),
     ARIANT_PQ_START(-2),
     GET_MTS_TOKENS(0x999),
     MTS_OPERATION(0x999),

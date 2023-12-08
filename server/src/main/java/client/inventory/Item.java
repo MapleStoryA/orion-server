@@ -1,24 +1,3 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package client.inventory;
 
 import constants.GameConstants;
@@ -37,7 +16,12 @@ public class Item implements IItem {
     private String owner = "";
     private String giftFrom = "";
 
-    public Item(final int id, final short position, final short quantity, final byte flag, final int uniqueid) {
+    public Item(
+            final int id,
+            final short position,
+            final short quantity,
+            final byte flag,
+            final int uniqueid) {
         super();
         this.id = id;
         this.position = position;
@@ -174,7 +158,10 @@ public class Item implements IItem {
             return false;
         }
         final IItem ite = (IItem) obj;
-        return uniqueid == ite.getSN() && id == ite.getItemId() && quantity == ite.getQuantity() && Math.abs(position) == Math.abs(ite.getPosition());
+        return uniqueid == ite.getSN()
+                && id == ite.getItemId()
+                && quantity == ite.getQuantity()
+                && Math.abs(position) == Math.abs(ite.getPosition());
     }
 
     @Override
@@ -207,4 +194,3 @@ public class Item implements IItem {
         this.inventoryitemid = ui;
     }
 }
- 

@@ -1,37 +1,34 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package client.inventory;
 
 import constants.GameConstants;
+import java.util.Map;
 import server.MapleItemInformationProvider;
 import tools.Randomizer;
-
-import java.util.Map;
 
 @lombok.extern.slf4j.Slf4j
 public class Equip extends Item implements IEquip {
 
     private byte upgradeSlots = 0, level = 0, vicioushammer = 0, enhance = 0;
-    private short str = 0, dex = 0, _int = 0, luk = 0, hp = 0, mp = 0, watk = 0, matk = 0, wdef = 0, mdef = 0, acc = 0, avoid = 0, hands = 0, speed = 0, jump = 0, potential1 = 0, potential2 = 0, potential3 = 0, hpR = 0, mpR = 0;
+    private short str = 0,
+            dex = 0,
+            _int = 0,
+            luk = 0,
+            hp = 0,
+            mp = 0,
+            watk = 0,
+            matk = 0,
+            wdef = 0,
+            mdef = 0,
+            acc = 0,
+            avoid = 0,
+            hands = 0,
+            speed = 0,
+            jump = 0,
+            potential1 = 0,
+            potential2 = 0,
+            potential3 = 0,
+            hpR = 0,
+            mpR = 0;
     private int itemEXP = 0, durability = -1;
     private short requiredStr;
     private short requiredDex, requiredLuk, requiredInt;
@@ -39,11 +36,9 @@ public class Equip extends Item implements IEquip {
     private int requiredJob;
     private MapleItemInformationProvider provider;
 
-
     public Equip(int id, short position, byte flag) {
         super(id, position, (short) 1, flag);
         loadRequiredStats();
-
     }
 
     public Equip(int id, short position, int uniqueid, byte flag) {
@@ -60,9 +55,7 @@ public class Equip extends Item implements IEquip {
         this.requiredInt = required.get("reqINT").shortValue();
         this.requiredLuk = required.get("reqLUK").shortValue();
         this.requiredLevel = required.get("reqLevel").shortValue();
-
     }
-
 
     @Override
     public IItem copy() {
@@ -105,7 +98,6 @@ public class Equip extends Item implements IEquip {
         ret.requiredInt = requiredInt;
         ret.requiredLuk = requiredLuk;
         ret.requiredLevel = requiredLevel;
-
 
         return ret;
     }
@@ -339,7 +331,7 @@ public class Equip extends Item implements IEquip {
         if (itemEXP <= 0) {
             return 0;
         }
-        //aproximate value
+        // aproximate value
         if (GameConstants.isWeapon(getItemId())) {
             return itemEXP / IEquip.WEAPON_RATIO;
         } else {
@@ -356,7 +348,7 @@ public class Equip extends Item implements IEquip {
         for (int i = getBaseLevel(); i <= GameConstants.getMaxLevel(getItemId()); i++) {
             if (expz >= GameConstants.getExpForLevel(i, getItemId())) {
                 expz -= GameConstants.getExpForLevel(i, getItemId());
-            } else { //for 0, dont continue;
+            } else { // for 0, dont continue;
                 break;
             }
         }
@@ -365,10 +357,14 @@ public class Equip extends Item implements IEquip {
 
     @Override
     public int getExpPercentage() {
-        if (getEquipLevel() < getBaseLevel() || getEquipLevel() > GameConstants.getMaxLevel(getItemId()) || GameConstants.getExpForLevel(getEquipLevel(), getItemId()) <= 0) {
+        if (getEquipLevel() < getBaseLevel()
+                || getEquipLevel() > GameConstants.getMaxLevel(getItemId())
+                || GameConstants.getExpForLevel(getEquipLevel(), getItemId()) <= 0) {
             return 0;
         }
-        return getEquipExpForLevel() * 100 / GameConstants.getExpForLevel(getEquipLevel(), getItemId());
+        return getEquipExpForLevel()
+                * 100
+                / GameConstants.getExpForLevel(getEquipLevel(), getItemId());
     }
 
     @Override
@@ -380,11 +376,15 @@ public class Equip extends Item implements IEquip {
         }
         int levelz = getBaseLevel();
         int expz = getEquipExp();
-        for (int i = levelz; (GameConstants.getStatFromWeapon(getItemId()) == null ? (i <= GameConstants.getMaxLevel(getItemId())) : (i < GameConstants.getMaxLevel(getItemId()))); i++) {
+        for (int i = levelz;
+                (GameConstants.getStatFromWeapon(getItemId()) == null
+                        ? (i <= GameConstants.getMaxLevel(getItemId()))
+                        : (i < GameConstants.getMaxLevel(getItemId())));
+                i++) {
             if (expz >= GameConstants.getExpForLevel(i, getItemId())) {
                 levelz++;
                 expz -= GameConstants.getExpForLevel(i, getItemId());
-            } else { //for 0, dont continue;
+            } else { // for 0, dont continue;
                 break;
             }
         }
@@ -399,7 +399,12 @@ public class Equip extends Item implements IEquip {
     @Override
     public void setQuantity(short quantity) {
         if (quantity < 0 || quantity > 1) {
-            throw new RuntimeException("Setting the quantity to " + quantity + " on an equip (itemid: " + getItemId() + ")");
+            throw new RuntimeException(
+                    "Setting the quantity to "
+                            + quantity
+                            + " on an equip (itemid: "
+                            + getItemId()
+                            + ")");
         }
         super.setQuantity(quantity);
     }
@@ -464,20 +469,21 @@ public class Equip extends Item implements IEquip {
         return 0;
     }
 
-    public void resetPotential() { //equip first receive
-        //0.04% chance unique, 4% chance epic, else rare
+    public void resetPotential() { // equip first receive
+        // 0.04% chance unique, 4% chance epic, else rare
         final int rank = Randomizer.nextInt(100) < 4 ? (Randomizer.nextInt(100) < 4 ? -7 : -6) : -5;
         setPotential1((short) rank);
-        setPotential2((short) (Randomizer.nextInt(10) < 3 ? rank : 0)); //1/10 chance of 3 line
-        setPotential3((short) 0); //just set it theoretically
+        setPotential2((short) (Randomizer.nextInt(10) < 3 ? rank : 0)); // 1/10 chance of 3 line
+        setPotential3((short) 0); // just set it theoretically
     }
 
     public void renewPotential() {
-        //4% chance upgrade
-        final int rank = Randomizer.nextInt(100) < 4 && getState() != 7 ? -(getState() + 1) : -(getState());
+        // 4% chance upgrade
+        final int rank =
+                Randomizer.nextInt(100) < 4 && getState() != 7 ? -(getState() + 1) : -(getState());
         setPotential1((short) rank);
-        setPotential2((short) (getPotential3() > 0 ? rank : 0)); //1/10 chance of 3 line
-        setPotential3((short) 0); //just set it theoretically
+        setPotential2((short) (getPotential3() > 0 ? rank : 0)); // 1/10 chance of 3 line
+        setPotential3((short) 0); // just set it theoretically
     }
 
     @Override

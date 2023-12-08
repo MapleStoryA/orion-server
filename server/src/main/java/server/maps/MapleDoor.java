@@ -1,38 +1,16 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package server.maps;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import server.MaplePortal;
-import tools.MaplePacketCreator;
-import tools.packet.MapleUserPackets;
-
 import java.awt.*;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import server.MaplePortal;
+import tools.MaplePacketCreator;
+import tools.packet.MapleUserPackets;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleDoor extends AbstractMapleMapObject {
@@ -86,23 +64,29 @@ public class MapleDoor extends AbstractMapleMapObject {
                 freePortals.add(port);
             }
         }
-        Collections.sort(freePortals, new Comparator<MaplePortal>() {
+        Collections.sort(
+                freePortals,
+                new Comparator<MaplePortal>() {
 
-            @Override
-            public int compare(final MaplePortal o1, final MaplePortal o2) {
-                if (o1.getId() < o2.getId()) {
-                    return -1;
-                } else if (o1.getId() == o2.getId()) {
-                    return 0;
-                } else {
-                    return 1;
-                }
-            }
-        });
+                    @Override
+                    public int compare(final MaplePortal o1, final MaplePortal o2) {
+                        if (o1.getId() < o2.getId()) {
+                            return -1;
+                        } else if (o1.getId() == o2.getId()) {
+                            return 0;
+                        } else {
+                            return 1;
+                        }
+                    }
+                });
         for (final MapleMapObject obj : town.getAllDoorsThreadsafe()) {
             final MapleDoor door = (MapleDoor) obj;
             /// hmm
-            if (door.getOwner() != null && door.getOwner().getParty() != null && getOwner() != null && getOwner().getParty() != null && getOwner().getParty().getMemberById(door.getOwnerId()) != null) {
+            if (door.getOwner() != null
+                    && door.getOwner().getParty() != null
+                    && getOwner() != null
+                    && getOwner().getParty() != null
+                    && getOwner().getParty().getMemberById(door.getOwnerId()) != null) {
                 freePortals.remove(door.getTownPortal());
             }
         }
@@ -117,12 +101,34 @@ public class MapleDoor extends AbstractMapleMapObject {
         if (getOwner() == null) {
             return;
         }
-        if (target.getId() == client.getPlayer().getMapId() || getOwnerId() == client.getPlayer().getId() || (getOwner() != null && getOwner().getParty() != null && getOwner().getParty().getMemberById(client.getPlayer().getId()) != null)) {
-            client.getSession().write(MaplePacketCreator.spawnDoor(getOwnerId(), town.getId() == client.getPlayer().getMapId() ? townPortal.getPosition() : targetPosition, true));
-            if (getOwner() != null && getOwner().getParty() != null && (getOwnerId() == client.getPlayer().getId() || getOwner().getParty().getMemberById(client.getPlayer().getId()) != null)) {
-                client.getSession().write(MapleUserPackets.partyPortal(town.getId(), target.getId(), skillId, targetPosition));
+        if (target.getId() == client.getPlayer().getMapId()
+                || getOwnerId() == client.getPlayer().getId()
+                || (getOwner() != null
+                        && getOwner().getParty() != null
+                        && getOwner().getParty().getMemberById(client.getPlayer().getId())
+                                != null)) {
+            client.getSession()
+                    .write(
+                            MaplePacketCreator.spawnDoor(
+                                    getOwnerId(),
+                                    town.getId() == client.getPlayer().getMapId()
+                                            ? townPortal.getPosition()
+                                            : targetPosition,
+                                    true));
+            if (getOwner() != null
+                    && getOwner().getParty() != null
+                    && (getOwnerId() == client.getPlayer().getId()
+                            || getOwner().getParty().getMemberById(client.getPlayer().getId())
+                                    != null)) {
+                client.getSession()
+                        .write(
+                                MapleUserPackets.partyPortal(
+                                        town.getId(), target.getId(), skillId, targetPosition));
             }
-            client.getSession().write(MaplePacketCreator.spawnPortal(town.getId(), target.getId(), skillId, targetPosition));
+            client.getSession()
+                    .write(
+                            MaplePacketCreator.spawnPortal(
+                                    town.getId(), target.getId(), skillId, targetPosition));
         }
     }
 
@@ -131,9 +137,20 @@ public class MapleDoor extends AbstractMapleMapObject {
         if (getOwner() == null) {
             return;
         }
-        if (target.getId() == client.getPlayer().getMapId() || getOwnerId() == client.getPlayer().getId() || (getOwner() != null && getOwner().getParty() != null && getOwner().getParty().getMemberById(client.getPlayer().getId()) != null)) {
-            if (getOwner().getParty() != null && (getOwnerId() == client.getPlayer().getId() || getOwner().getParty().getMemberById(client.getPlayer().getId()) != null)) {
-                client.getSession().write(MapleUserPackets.partyPortal(999999999, 999999999, 0, new Point(-1, -1)));
+        if (target.getId() == client.getPlayer().getMapId()
+                || getOwnerId() == client.getPlayer().getId()
+                || (getOwner() != null
+                        && getOwner().getParty() != null
+                        && getOwner().getParty().getMemberById(client.getPlayer().getId())
+                                != null)) {
+            if (getOwner().getParty() != null
+                    && (getOwnerId() == client.getPlayer().getId()
+                            || getOwner().getParty().getMemberById(client.getPlayer().getId())
+                                    != null)) {
+                client.getSession()
+                        .write(
+                                MapleUserPackets.partyPortal(
+                                        999999999, 999999999, 0, new Point(-1, -1)));
             }
             client.getSession().write(MaplePacketCreator.removeDoor(getOwnerId(), false));
             client.getSession().write(MaplePacketCreator.removeDoor(getOwnerId(), true));
@@ -141,7 +158,10 @@ public class MapleDoor extends AbstractMapleMapObject {
     }
 
     public final void warp(final MapleCharacter chr, final boolean toTown) {
-        if (chr.getId() == getOwnerId() || (getOwner() != null && getOwner().getParty() != null && getOwner().getParty().getMemberById(chr.getId()) != null)) {
+        if (chr.getId() == getOwnerId()
+                || (getOwner() != null
+                        && getOwner().getParty() != null
+                        && getOwner().getParty().getMemberById(chr.getId()) != null)) {
             if (!toTown) {
                 chr.changeMap(target, targetPosition);
             } else {

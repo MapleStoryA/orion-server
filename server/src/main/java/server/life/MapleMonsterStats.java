@@ -1,44 +1,39 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package server.life;
-
-import tools.Pair;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import tools.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleMonsterStats {
 
-    private final Map<Element, ElementalEffectiveness> resistance = new HashMap<Element, ElementalEffectiveness>();
+    private final Map<Element, ElementalEffectiveness> resistance =
+            new HashMap<Element, ElementalEffectiveness>();
     private final List<Pair<Integer, Integer>> skills = new ArrayList<Pair<Integer, Integer>>();
     private byte cp, selfDestruction_action, tagColor, tagBgColor, rareItemDropLevel, HPDisplayType;
     private short level, PhysicalDefense, MagicDefense, eva;
     private long hp;
-    private int exp, mp, removeAfter, buffToGive, fixedDamage, selfDestruction_hp, dropItemPeriod, point;
-    private boolean boss, undead, ffaLoot, firstAttack, isExplosiveReward, mobile, fly, onlyNormalAttack, friendly, noDoom;
+    private int exp,
+            mp,
+            removeAfter,
+            buffToGive,
+            fixedDamage,
+            selfDestruction_hp,
+            dropItemPeriod,
+            point;
+    private boolean boss,
+            undead,
+            ffaLoot,
+            firstAttack,
+            isExplosiveReward,
+            mobile,
+            fly,
+            onlyNormalAttack,
+            friendly,
+            noDoom;
     private String name;
     private List<Integer> revives = new ArrayList<Integer>();
     private BanishInfo banish;
@@ -56,7 +51,7 @@ public class MapleMonsterStats {
     }
 
     public void setHp(long hp) {
-        this.hp = hp;//(hp * 3L / 2L);
+        this.hp = hp; // (hp * 3L / 2L);
     }
 
     public int getMp() {
@@ -340,7 +335,13 @@ public class MapleMonsterStats {
     }
 
     public int dropsMeso() {
-        if (getRemoveAfter() != 0 || getOnlyNoramlAttack() || getDropItemPeriod() > 0 || getCP() > 0 || getPoint() > 0 || getFixedDamage() > 0 || getSelfD() != -1) {
+        if (getRemoveAfter() != 0
+                || getOnlyNoramlAttack()
+                || getDropItemPeriod() > 0
+                || getCP() > 0
+                || getPoint() > 0
+                || getFixedDamage() > 0
+                || getSelfD() != -1) {
             return 0;
         } else if (isExplosiveReward()) {
             return 7;

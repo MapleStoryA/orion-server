@@ -1,27 +1,4 @@
-/*
-This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
-Matthias Butz <matze@odinms.de>
-Jan Christian Meyer <vimes@odinms.de>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3
-as published by the Free Software Foundation. You may not use, modify
-or distribute this program under any other version of the
-GNU Affero General Public License.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package server.maps;
-
-import tools.Pair;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -30,11 +7,12 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import tools.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleNodes {
 
-    private final Map<Integer, MapleNodeInfo> nodes; //used for HOB pq.
+    private final Map<Integer, MapleNodeInfo> nodes; // used for HOB pq.
     private final List<Rectangle> areas;
     private final List<MaplePlatform> platforms;
     private final List<MonsterPoint> monsterPoints;
@@ -91,7 +69,7 @@ public class MapleNodes {
         }
         addNode(mni);
         // output part
-	/*StringBuilder b = new StringBuilder(mapid + " added key " + mni.key + ". edges: ");
+        /*StringBuilder b = new StringBuilder(mapid + " added key " + mni.key + ". edges: ");
         for (int i : mni.edge) {
         b.append(i + ", ");
         }
@@ -108,7 +86,8 @@ public class MapleNodes {
                     } else {
                         firstHighest = false;
                         ret = Math.max(ret, i);
-                        //two ways for stage 5 to get to end, thats highest ->lowest, and lowest -> highest(doesn't work)
+                        // two ways for stage 5 to get to end, thats highest ->lowest, and lowest ->
+                        // highest(doesn't work)
                         break;
                     }
                 } else {
@@ -205,7 +184,16 @@ public class MapleNodes {
         public int start, speed, x1, y1, x2, y2, r;
         public List<Integer> SN;
 
-        public MaplePlatform(String name, int start, int speed, int x1, int y1, int x2, int y2, int r, List<Integer> SN) {
+        public MaplePlatform(
+                String name,
+                int start,
+                int speed,
+                int x1,
+                int y1,
+                int x2,
+                int y2,
+                int r,
+                List<Integer> SN) {
             this.name = name;
             this.start = start;
             this.speed = speed;
