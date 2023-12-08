@@ -33,8 +33,7 @@ public class AutobanManager implements Runnable {
         addPoints(c, AUTOBAN_POINTS, 0, reason);
     }
 
-    public final void addPoints(
-            final MapleClient c, final int points, final long expiration, final String reason) {
+    public final void addPoints(final MapleClient c, final int points, final long expiration, final String reason) {
         lock.lock();
         try {
             List<String> reasonList;
@@ -69,24 +68,21 @@ public class AutobanManager implements Runnable {
                     sb.append(s);
                     sb.append(", ");
                 }
-                BroadcastHelper.broadcastMessage(
-                        MaplePacketCreator.serverNotice(
-                                0,
-                                "[Autoban] "
-                                        + c.getPlayer().getName()
-                                        + " banned by the system (Last reason: "
-                                        + reason
-                                        + ")"));
+                BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(
+                        0,
+                        "[Autoban] "
+                                + c.getPlayer().getName()
+                                + " banned by the system (Last reason: "
+                                + reason
+                                + ")"));
                 //		Calendar cal = Calendar.getInstance();
                 //		cal.add(Calendar.DATE, 60);
                 //		c.getPlayer().tempban(sb.toString(), cal, 1, false);
-                c.getPlayer().ban(sb.toString(), false, true, false);
+                c.getPlayer().ban(sb.toString(), false, true);
                 c.disconnect(true, false);
             } else {
                 if (expiration > 0) {
-                    expirations.add(
-                            new ExpirationEntry(
-                                    System.currentTimeMillis() + expiration, acc, points));
+                    expirations.add(new ExpirationEntry(System.currentTimeMillis() + expiration, acc, points));
                 }
             }
         } finally {

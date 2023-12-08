@@ -24,38 +24,24 @@ public class LoginService {
 
     public static CharacterData loadCharacterData(int characterId) {
         var jdbi = Jdbi.create(DatabaseConnection.getConnection());
-        var result =
-                jdbi.withHandle(
-                        (h) -> h.select("SELECT * FROM characters WHERE id = ?", characterId));
+        var result = jdbi.withHandle((h) -> h.select("SELECT * FROM characters WHERE id = ?", characterId));
         ResultIterable<CharacterData> accountData = result.mapToBean(CharacterData.class);
         return accountData.findOne().orElse(null);
     }
 
     public static CharacterData loadCharacterData(int accountId, int characterId) {
         var jdbi = Jdbi.create(DatabaseConnection.getConnection());
-        var result =
-                jdbi.withHandle(
-                        (h) ->
-                                h.select(
-                                        "SELECT * FROM characters WHERE accountid = ? AND id = ?",
-                                        accountId,
-                                        characterId));
+        var result = jdbi.withHandle(
+                (h) -> h.select("SELECT * FROM characters WHERE accountid = ? AND id = ?", accountId, characterId));
         ResultIterable<CharacterData> accountData = result.mapToBean(CharacterData.class);
         return accountData.findOne().orElse(null);
     }
 
     public static CharacterListResult loadCharacterList(int accountId, int world) {
         var jdbi = Jdbi.create(DatabaseConnection.getConnection());
-        var result =
-                jdbi.withHandle(
-                        (h) ->
-                                h.select(
-                                        "SELECT * FROM characters WHERE accountid = ? AND world ="
-                                                + " ?",
-                                        accountId,
-                                        world));
-        var characterDataList =
-                result.mapToBean(CharacterData.class).stream().collect(Collectors.toList());
+        var result = jdbi.withHandle(
+                (h) -> h.select("SELECT * FROM characters WHERE accountid = ? AND world =" + " ?", accountId, world));
+        var characterDataList = result.mapToBean(CharacterData.class).stream().collect(Collectors.toList());
 
         for (var characterData : characterDataList) {
             var inventory = new MapleInventory[MapleInventoryType.values().length];
@@ -63,8 +49,9 @@ public class LoginService {
                 inventory[type.ordinal()] = new MapleInventory(type);
             }
             try {
-                for (Pair<IItem, MapleInventoryType> mit :
-                        ItemLoader.INVENTORY.loadItems(true, characterData.getId()).values()) {
+                for (Pair<IItem, MapleInventoryType> mit : ItemLoader.INVENTORY
+                        .loadItems(true, characterData.getId())
+                        .values()) {
                     var current = inventory[mit.getRight().ordinal()];
                     current.addFromDB(mit.getLeft());
                 }
@@ -78,17 +65,14 @@ public class LoginService {
 
     public static AccountData loadAccountDataById(int accountId) {
         var jdbi = Jdbi.create(DatabaseConnection.getConnection());
-        var result =
-                jdbi.withHandle((h) -> h.select("SELECT * FROM accounts WHERE id = ?", accountId));
+        var result = jdbi.withHandle((h) -> h.select("SELECT * FROM accounts WHERE id = ?", accountId));
         ResultIterable<AccountData> accountData = result.mapToBean(AccountData.class);
         return accountData.findOne().orElse(null);
     }
 
     public static AccountData loadAccountDataByName(String accountName) {
         var jdbi = Jdbi.create(DatabaseConnection.getConnection());
-        var result =
-                jdbi.withHandle(
-                        (h) -> h.select("SELECT * FROM accounts WHERE name = ?", accountName));
+        var result = jdbi.withHandle((h) -> h.select("SELECT * FROM accounts WHERE name = ?", accountName));
         ResultIterable<AccountData> accountData = result.mapToBean(AccountData.class);
         return accountData.findOne().orElse(null);
     }
@@ -108,11 +92,13 @@ public class LoginService {
             return new LoginResult(ALREADY_LOGGED_IN, null);
         }
 
+        if (accountData.getBanned() > 0) {
+            return new LoginResult(9, null);
+        }
+
         int loginStatus = -1;
         var encryptor = new PasswordEncryptor();
-        var passwordMatches =
-                encryptor.verifyPassword(
-                        password, accountData.getPassword(), accountData.getSalt());
+        var passwordMatches = encryptor.verifyPassword(password, accountData.getPassword(), accountData.getSalt());
         if (passwordMatches) {
             loginStatus = 0;
         } else {
@@ -166,13 +152,10 @@ public class LoginService {
         }
     }
 
-    public static void setClientAccountLoginState(
-            AccountData data, LoginState loginState, String sessionIp) {
+    public static void setClientAccountLoginState(AccountData data, LoginState loginState, String sessionIp) {
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps =
-                    con.prepareStatement(
-                            "UPDATE accounts SET loggedin = ?, SessionIP = ?, lastlogin ="
-                                    + " CURRENT_TIMESTAMP() WHERE id = ?");
+            PreparedStatement ps = con.prepareStatement("UPDATE accounts SET loggedin = ?, SessionIP = ?, lastlogin ="
+                    + " CURRENT_TIMESTAMP() WHERE id = ?");
             ps.setInt(1, loginState.getCode());
             ps.setString(2, sessionIp);
             ps.setInt(3, data.getId());
@@ -185,15 +168,11 @@ public class LoginService {
 
     public static int updateLoginStatus(LoginState loginState, int accountID, String sessionIP) {
         Jdbi jdbi = Jdbi.create(DatabaseConnection.getConnection());
-        Integer result =
-                jdbi.withHandle(
-                        j ->
-                                j.execute(
-                                        "UPDATE accounts SET loggedin = ?, SessionIP = ?, lastlogin"
-                                                + " = CURRENT_TIMESTAMP() WHERE id = ?",
-                                        loginState.getCode(),
-                                        sessionIP,
-                                        accountID));
+        Integer result = jdbi.withHandle(j -> j.execute(
+                "UPDATE accounts SET loggedin = ?, SessionIP = ?, lastlogin" + " = CURRENT_TIMESTAMP() WHERE id = ?",
+                loginState.getCode(),
+                sessionIP,
+                accountID));
         return result;
     }
 }

@@ -37,8 +37,7 @@ public class ShutdownServer implements ShutdownServerMBean {
     public void run() {
         if (this.mode == 0) {
             BroadcastHelper.broadcastMessage(
-                    MaplePacketCreator.serverNotice(
-                            0, "The world is going to shutdown soon. Please log off safely."));
+                    MaplePacketCreator.serverNotice(0, "The world is going to shutdown soon. Please log off safely."));
             for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
                 cs.setShutdown();
                 cs.setServerMessage("The world is going to shutdown soon. Please log off safely.");
@@ -52,9 +51,8 @@ public class ShutdownServer implements ShutdownServerMBean {
             log.info("Shutdown 2 commencing...");
 
             try {
-                BroadcastHelper.broadcastMessage(
-                        MaplePacketCreator.serverNotice(
-                                0, "The world is going to shutdown now. Please log off safely."));
+                BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(
+                        0, "The world is going to shutdown now. Please log off safely."));
                 for (ChannelServer channelServer : WorldServer.getInstance().getAllChannels()) {
                     synchronized (this) {
                         channelServer.shutdown();

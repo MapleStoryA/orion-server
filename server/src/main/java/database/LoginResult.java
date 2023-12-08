@@ -22,11 +22,16 @@ public class LoginResult {
     public static final int INCORRECT_PASSWORD = 4;
     public static final int NOT_REGISTERED_ID = 5;
     public static final int ALREADY_LOGGED_IN = 7;
+    public static final int USER_BANNED = 9;
 
     private int result;
     private AccountData accountData;
 
     public boolean isLoginError() {
         return this.result != 0;
+    }
+
+    public boolean isPermanentBan() {
+        return this.result == USER_BANNED;
     }
 }

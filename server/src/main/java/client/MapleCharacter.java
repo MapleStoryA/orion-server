@@ -682,7 +682,11 @@ public class MapleCharacter extends BaseMapleCharacter {
                 rs = ps.executeQuery();
 
                 if (!rs.next()) {
-                    throw new RuntimeException("No Inventory slot column found in SQL. [inventoryslot]");
+                    ret.getInventory(MapleInventoryType.EQUIP).setSlotLimit((byte) 36);
+                    ret.getInventory(MapleInventoryType.USE).setSlotLimit((byte) 36);
+                    ret.getInventory(MapleInventoryType.SETUP).setSlotLimit((byte) 36);
+                    ret.getInventory(MapleInventoryType.ETC).setSlotLimit((byte) 36);
+                    ret.getInventory(MapleInventoryType.CASH).setSlotLimit((byte) 36);
                 } else {
                     ret.getInventory(MapleInventoryType.EQUIP).setSlotLimit(rs.getByte("equip"));
                     ret.getInventory(MapleInventoryType.USE).setSlotLimit(rs.getByte("use"));
@@ -953,12 +957,12 @@ public class MapleCharacter extends BaseMapleCharacter {
             // con.setAutoCommit(false);
             ps = con.prepareStatement(
                     "INSERT INTO characters (level, fame, str, dex, luk, `int`, exp, hp,"
-                            + " mp, maxhp, maxmp, ap, gm, skincolor, gender, job, hair, face,"
+                            + " mp, maxhp, maxmp, ap, skincolor, gender, job, hair, face,"
                             + " map, meso, hpApUsed, spawnpoint, party, buddyCapacity,"
                             + " monsterbookcover, dojo_pts, dojoRecord, pets, subcategory,"
                             + " marriageId, accountid, name, world) VALUES (?, ?, ?, ?, ?, ?,"
                             + " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
-                            + " ?, ?, ?, ?, ?, ?)",
+                            + " ?, ?, ?, ?, ?)",
                     DatabaseConnection.RETURN_GENERATED_KEYS);
             ps.setInt(1, 1);
             ps.setShort(2, (short) 0); // Fame
@@ -973,27 +977,26 @@ public class MapleCharacter extends BaseMapleCharacter {
             ps.setInt(10, stat.getMaxHp()); // MP
             ps.setInt(11, stat.getMaxMp());
             ps.setShort(12, (short) 0); // Remaining AP
-            ps.setByte(13, (byte) 0); // GM Level
-            ps.setByte(14, chr.getSkinColor());
-            ps.setByte(15, chr.gender);
-            ps.setShort(16, (short) chr.job.getId());
-            ps.setInt(17, chr.hair);
-            ps.setInt(18, chr.getFace());
-            ps.setInt(19, type == 1 ? 0 : (type == 0 ? 130030000 : (type == 3 ? 900090000 : 914000000)));
-            ps.setInt(20, chr.meso); // Meso
-            ps.setShort(21, (short) 0); // HP ap used
-            ps.setByte(22, (byte) 0); // Spawnpoint
-            ps.setInt(23, -1); // Party
-            ps.setByte(24, chr.buddyList.getCapacity()); // Buddylist
-            ps.setInt(25, 0); // Monster book cover
-            ps.setInt(26, 0); // Dojo
-            ps.setInt(27, 0); // Dojo record
-            ps.setString(28, "-1;-1;-1");
-            ps.setInt(29, db ? 1 : 0);
-            ps.setInt(30, 0);
-            ps.setInt(31, chr.getAccountID());
-            ps.setString(32, chr.getName());
-            ps.setByte(33, chr.world);
+            ps.setByte(13, chr.getSkinColor());
+            ps.setByte(14, chr.gender);
+            ps.setShort(15, (short) chr.job.getId());
+            ps.setInt(16, chr.hair);
+            ps.setInt(17, chr.getFace());
+            ps.setInt(18, type == 1 ? 0 : (type == 0 ? 130030000 : (type == 3 ? 900090000 : 914000000)));
+            ps.setInt(19, chr.meso); // Meso
+            ps.setShort(20, (short) 0); // HP ap used
+            ps.setByte(21, (byte) 0); // Spawnpoint
+            ps.setInt(22, -1); // Party
+            ps.setByte(23, chr.buddyList.getCapacity()); // Buddylist
+            ps.setInt(24, 0); // Monster book cover
+            ps.setInt(25, 0); // Dojo
+            ps.setInt(26, 0); // Dojo record
+            ps.setString(27, "-1;-1;-1");
+            ps.setInt(28, db ? 1 : 0);
+            ps.setInt(29, 0);
+            ps.setInt(30, chr.getAccountID());
+            ps.setString(31, chr.getName());
+            ps.setByte(32, chr.world);
             ps.executeUpdate();
 
             rs = ps.getGeneratedKeys();
@@ -1097,7 +1100,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         }
     }
 
-    public static boolean ban(String id, String reason, boolean accountId, int gmlevel, boolean hellban) {
+    public static boolean ban(String id, String reason, boolean useAccountId, int gmlevel) {
         try (var con = DatabaseConnection.getConnection(); ) {
             PreparedStatement ps;
             if (id.matches("/[0-9]{1,3}\\..*")) {
@@ -1107,7 +1110,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 ps.close();
                 return true;
             }
-            if (accountId) {
+            if (useAccountId) {
                 ps = con.prepareStatement("SELECT id FROM accounts WHERE name = ?");
             } else {
                 ps = con.prepareStatement("SELECT accountid FROM characters WHERE name = ?");
@@ -1142,19 +1145,6 @@ public class MapleCharacter extends BaseMapleCharacter {
                             if (macData.length > 0) {
                                 BanService.banMacs(macData);
                             }
-                        }
-                        if (hellban) {
-                            PreparedStatement pss =
-                                    con.prepareStatement("UPDATE accounts SET banned = 1, banreason = ? WHERE"
-                                            + " email = ?"
-                                            + (sessionIP == null ? "" : " OR SessionIP = ?"));
-                            pss.setString(1, reason);
-                            pss.setString(2, rsa.getString("email"));
-                            if (sessionIP != null) {
-                                pss.setString(3, sessionIP);
-                            }
-                            pss.execute();
-                            pss.close();
                         }
                     }
                     rsa.close();
@@ -1824,7 +1814,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     /**
      * @param effect
      * @param overwrite when overwrite is set no data is sent and all the Buffstats in the
-     *     StatEffect are deregistered
+     *                  StatEffect are deregistered
      * @param startTime
      */
     public void cancelEffect(final MapleStatEffect effect, final boolean overwrite, final long startTime) {
@@ -3539,41 +3529,23 @@ public class MapleCharacter extends BaseMapleCharacter {
         }
     }
 
-    public final boolean ban(String reason, boolean IPMac, boolean autoban, boolean hellban) {
+    public final boolean ban(String reason, boolean ipBan, boolean automaticBan) {
         if (lastMonthFameIds == null) {
             throw new RuntimeException("Trying to ban a non-loaded character (testhack)");
         }
         try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("UPDATE accounts SET banned = ?, banreason = ? WHERE id = ?");
-            ps.setInt(1, autoban ? 2 : 1);
+            ps.setInt(1, automaticBan ? 2 : 1);
             ps.setString(2, reason);
             ps.setInt(3, accountData.getId());
             ps.execute();
             ps.close();
 
-            if (IPMac) {
+            if (ipBan) {
                 ps = con.prepareStatement("INSERT INTO ipbans VALUES (DEFAULT, ?)");
                 ps.setString(1, client.getSessionIPAddress());
                 ps.execute();
                 ps.close();
-
-                if (hellban) {
-                    PreparedStatement psa = con.prepareStatement("SELECT * FROM accounts WHERE id = ?");
-                    psa.setInt(1, accountData.getId());
-                    ResultSet rsa = psa.executeQuery();
-                    if (rsa.next()) {
-                        PreparedStatement pss = con.prepareStatement(
-                                "UPDATE accounts SET banned = ?, banreason = ? WHERE email" + " = ? OR SessionIP = ?");
-                        pss.setInt(1, autoban ? 2 : 1);
-                        pss.setString(2, reason);
-                        pss.setString(3, rsa.getString("email"));
-                        pss.setString(4, client.getSessionIPAddress());
-                        pss.execute();
-                        pss.close();
-                    }
-                    rsa.close();
-                    psa.close();
-                }
             }
         } catch (SQLException ex) {
             System.err.println("Error while banning" + ex);
@@ -3583,13 +3555,17 @@ public class MapleCharacter extends BaseMapleCharacter {
         return true;
     }
 
-    /** Oid of players is always = the cid */
+    /**
+     * Oid of players is always = the cid
+     */
     @Override
     public int getObjectId() {
         return getId();
     }
 
-    /** Throws unsupported operation exception, oid of players is read only */
+    /**
+     * Throws unsupported operation exception, oid of players is read only
+     */
     @Override
     public void setObjectId(int id) {
         throw new UnsupportedOperationException();

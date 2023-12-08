@@ -55,7 +55,7 @@ public class CommandProcessor {
         for (var entry : commands.entrySet()) {
             var command = entry.getKey();
             if (command.equals(splited[0].toLowerCase().replace("!", ""))) {
-                String[] args = new String[splited.length];
+                String[] args = new String[splited.length - 1];
                 System.arraycopy(splited, 1, args, 0, args.length - 1);
                 var impl = entry.getValue();
                 impl.execute(c, args);
