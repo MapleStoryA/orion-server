@@ -17,21 +17,21 @@ services:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       timeout: 15s
       retries: 3
-  orion-server:
-    container_name: orion-ms
-    image: orion-ms
-    environment:
-      - ENV=prod
-    extra_hosts:
-      - orion-public:${PUBLIC_IP}
-    depends_on:
-      orion-db:
-        condition: service_healthy
-    volumes:
-      - ./config:/config
-    ports:
-      - 8484:8484
-      - 8585-8590:8585-8590
-      - 8799:8799
+#  orion-server:
+#    container_name: orion-ms
+#    image: orion-ms
+#    environment:
+#      - ENV=prod
+#    extra_hosts:
+#      - orion-public:${PUBLIC_IP}
+#    depends_on:
+#      orion-db:
+#        condition: service_healthy
+#    volumes:
+#      - ./config:/config
+#    ports:
+#      - 8484:8484
+#      - 8585-8590:8585-8590
+#      - 8799:8799
 volumes:
   orion:
