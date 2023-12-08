@@ -54,10 +54,8 @@ public class CharacterTransfer {
     private int MaplePoints;
     private int mount_item_id;
     private int mount_exp;
-    private int points;
     private int marriageId;
     private int battleshipHP;
-    private int reborns;
     private int remainingAp;
     private int maxHp;
     private int maxMp;
@@ -155,7 +153,6 @@ public class CharacterTransfer {
         this.setGuildRank(chr.getGuildRank());
         this.setAllianceRank(chr.getAllianceRank());
         this.setGmLevel((byte) chr.getGMLevel());
-        this.setPoints(chr.getPoints());
         this.setFairyExp(chr.getFairyExp());
         this.setPetStore(chr.getPetStores());
         this.setSubcategory(chr.getSubCategoryField());

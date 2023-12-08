@@ -514,19 +514,6 @@ public class AdminCommand {
         }
     }
 
-    public static class GainP extends CommandExecute {
-
-        @Override
-        public int execute(MapleClient c, String[] splitted) {
-            if (splitted.length < 2) {
-                c.getPlayer().dropMessage(5, "Need amount.");
-                return 0;
-            }
-            c.getPlayer().setPoints(c.getPlayer().getPoints() + Integer.parseInt(splitted[1]));
-            return 1;
-        }
-    }
-
     public static class LevelUp extends CommandExecute {
 
         @Override
@@ -961,34 +948,6 @@ public class AdminCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             MapleEvent.onStartEvent(c.getPlayer());
-            return 1;
-        }
-    }
-
-    public static class GivePoint extends CommandExecute {
-
-        @Override
-        public int execute(MapleClient c, String[] splitted) {
-            if (splitted.length < 3) {
-                c.getPlayer().dropMessage(6, "Need playername and amount.");
-                return 0;
-            }
-            MapleCharacter chrs =
-                    c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
-            if (chrs == null) {
-                c.getPlayer().dropMessage(6, "Make sure they are in the correct channel");
-            } else {
-                chrs.setPoints(chrs.getPoints() + Integer.parseInt(splitted[2]));
-                c.getPlayer()
-                        .dropMessage(
-                                6,
-                                splitted[1]
-                                        + " has "
-                                        + chrs.getPoints()
-                                        + " points, after giving "
-                                        + splitted[2]
-                                        + ".");
-            }
             return 1;
         }
     }

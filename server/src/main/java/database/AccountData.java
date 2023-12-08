@@ -21,7 +21,6 @@ public class AccountData {
     private Long tempBan;
     private int banned;
     private int gm;
-    private int points;
     private int nxCredit;
     private int mPoints;
     private byte gender;

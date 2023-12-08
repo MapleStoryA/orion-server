@@ -113,19 +113,11 @@ public class LoginServer extends GameServer {
             }
         }
 
-        if (System.currentTimeMillis() - lastUpdate > 600000) { // Update once every 10 minutes
+        if (System.currentTimeMillis() - lastUpdate > 600000) {
             lastUpdate = System.currentTimeMillis();
             final Map<Integer, Integer> load = WorldServer.getInstance().getChannelLoad();
             int usersOn = 0;
-            if (load == null
-                    || load.size()
-                            == 0) { // In an unfortunate event that client logged in before load
-                lastUpdate = 0;
-                c.getSession().write(LoginPacket.getLoginFailed(7));
-                return;
-            }
-            final double loadFactor =
-                    1200 / ((double) LoginServer.getInstance().getUserLimit() / load.size());
+            final double loadFactor = 1200 / ((double) LoginServer.getInstance().getUserLimit() / load.size());
             for (Map.Entry<Integer, Integer> entry : load.entrySet()) {
                 usersOn += entry.getValue();
                 load.put(entry.getKey(), Math.min(1200, (int) (entry.getValue() * loadFactor)));
@@ -136,8 +128,6 @@ public class LoginServer extends GameServer {
 
         c.updateLoginState(LoginState.LOGIN_LOGGEDIN, c.getSessionIPAddress());
         c.getSession().write(LoginPacket.getAuthSuccessRequest(c));
-        c.setIdleTask(
-                Timer.PingTimer.getInstance()
-                        .schedule(() -> c.getSession().close(), 10 * 60 * 10000));
+        c.setIdleTask(Timer.PingTimer.getInstance().schedule(() -> c.getSession().close(), 10 * 60 * 10000));
     }
 }
