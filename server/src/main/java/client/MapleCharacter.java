@@ -1487,9 +1487,9 @@ public class MapleCharacter extends BaseMapleCharacter {
         MapleQuest.getInstance(id).complete(this, npc);
     }
 
-    public final void setQuestAdd(final MapleQuest quest, final byte status, final String customData) {
+    public final void setQuestAdd(final MapleQuest quest, final int status, final String customData) {
         if (!quests.containsKey(quest)) {
-            final MapleQuestStatus stat = new MapleQuestStatus(quest, status);
+            final MapleQuestStatus stat = new MapleQuestStatus(quest, (byte)status);
             stat.setCustomData(customData);
             quests.put(quest, stat);
         }
