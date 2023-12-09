@@ -232,7 +232,7 @@ public final class PacketProcessor {
             registerHandler(RecvPacketOpcode.AFTER_LOGIN, new AfterLoginHandler());
             registerHandler(RecvPacketOpcode.SERVER_LIST_REQUEST, new ServerListRequestHandler());
             registerHandler(RecvPacketOpcode.SERVER_LIST_REQUEST_2, new ServerListRequestHandler());
-            registerHandler(RecvPacketOpcode.SERVER_LIST_REQUEST_3, new NoOpHandler());
+            registerHandler(RecvPacketOpcode.SERVER_LIST_REQUEST_3, new ServerListRequestHandler());
             registerHandler(RecvPacketOpcode.CHAR_LIST_REQUEST, new CharListRequestHandler());
             registerHandler(
                     RecvPacketOpcode.SERVER_STATUS_REQUEST, new ServerStatusRequestHandler());
