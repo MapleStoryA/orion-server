@@ -179,7 +179,7 @@ public enum ItemLoader {
     }
 
     public void saveItems(List<Pair<IItem, MapleInventoryType>> items, Integer... id) throws SQLException {
-        try (Connection con = DatabaseConnection.getConnection(); ) {
+        try (var con = DatabaseConnection.getConnection(); ) {
             saveItems(items, con, id);
         } catch (SQLException ex) {
             log.error("Error while saving items", ex);
