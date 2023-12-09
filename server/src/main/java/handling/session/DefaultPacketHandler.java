@@ -32,7 +32,7 @@ public class DefaultPacketHandler {
                 log.info("[" + packetHandler.getClass().getSimpleName() + "]");
             }
             if (packetHandler != null && packetHandler.validateState(client)) {
-                log.info("Handling packet: {}", packetHandler.getClass().getSimpleName());
+                //log.warn("Handling packet: {}", packetHandler.getClass().getSimpleName());
                 packetHandler.handlePacket(slea, client);
                 return;
             }
