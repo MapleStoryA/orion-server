@@ -5,9 +5,7 @@ import constants.BlockReason;
 import database.LoginResult;
 import handling.MaplePacketHandler;
 import handling.login.LoginServer;
-import java.util.Calendar;
 import lombok.extern.slf4j.Slf4j;
-import tools.KoreanDateUtil;
 import tools.data.input.InPacket;
 import tools.packet.LoginPacket;
 
@@ -38,20 +36,9 @@ public class CharLoginPasswordHandler implements MaplePacketHandler {
             return;
         }
 
-        final Calendar tempBannedUntil = result.getAccountData().getTempBanCalendar();
-
-        if (tempBannedUntil.getTimeInMillis() != 0) {
-            if (!c.tooManyLogin()) {
-                c.getSession()
-                        .write(LoginPacket.getTempBan(
-                                KoreanDateUtil.getTempBanTimestamp(tempBannedUntil.getTimeInMillis()),
-                                c.getAccountData().getGreason()));
-            }
-        } else {
-            c.resetLoginCount();
-            c.setAccountData(result.getAccountData());
-            LoginServer.getInstance().registerClient(c);
-        }
+        c.resetLoginCount();
+        c.setAccountData(result.getAccountData());
+        LoginServer.getInstance().registerClient(c);
     }
 
     @Override

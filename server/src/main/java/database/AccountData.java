@@ -1,9 +1,9 @@
 package database;
 
-import java.time.LocalDate;
-import java.util.Calendar;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -18,7 +18,6 @@ public class AccountData {
     private LocalDate createDat;
     private LocalDate birthDay;
     private byte greason;
-    private Long tempBan;
     private int banned;
     private int gm;
     private int nxCredit;
@@ -31,22 +30,6 @@ public class AccountData {
 
     public boolean isOnline() {
         return loggedIn > LoginState.LOGIN_NOTLOGGEDIN.getCode();
-    }
-
-    public Calendar getTempBanCalendar() {
-        Calendar lTempban = Calendar.getInstance();
-        if (tempBan == 0) { // basically if timestamp in db is 0000-00-00
-            lTempban.setTimeInMillis(0);
-            return lTempban;
-        }
-        Calendar today = Calendar.getInstance();
-        lTempban.setTimeInMillis(tempBan);
-        if (today.getTimeInMillis() < lTempban.getTimeInMillis()) {
-            return lTempban;
-        }
-
-        lTempban.setTimeInMillis(0);
-        return lTempban;
     }
 
     public boolean isGameMaster() {
