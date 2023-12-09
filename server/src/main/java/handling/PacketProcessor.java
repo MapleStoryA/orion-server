@@ -91,7 +91,7 @@ import handling.channel.handler.MoveLifeHandler;
 import handling.channel.handler.MovePetHandler;
 import handling.channel.handler.MovePlayerHandler;
 import handling.channel.handler.MoveSummonHandler;
-import handling.channel.handler.NoOpHandler;
+import handling.channel.handler.EnableActionOpHandler;
 import handling.channel.handler.NoteActionHandler;
 import handling.channel.handler.NpcAnimationHandler;
 import handling.channel.handler.NpcShopHandler;
@@ -176,6 +176,7 @@ import handling.login.handler.CharlistViewAllHandler;
 import handling.login.handler.CheckCharNameHandler;
 import handling.login.handler.CreateCharHandler;
 import handling.login.handler.DeleteCharHandler;
+import handling.login.handler.NoOpHandler;
 import handling.login.handler.InvalidPacketRequestHandler;
 import handling.login.handler.KeepAliveHandler;
 import handling.login.handler.RelogRequestHandler;
@@ -231,7 +232,7 @@ public final class PacketProcessor {
             registerHandler(RecvPacketOpcode.AFTER_LOGIN, new AfterLoginHandler());
             registerHandler(RecvPacketOpcode.SERVER_LIST_REQUEST, new ServerListRequestHandler());
             registerHandler(RecvPacketOpcode.SERVER_LIST_REQUEST_2, new ServerListRequestHandler());
-            registerHandler(RecvPacketOpcode.SERVER_LIST_REQUEST_3, new ServerListRequestHandler());
+            registerHandler(RecvPacketOpcode.SERVER_LIST_REQUEST_3, new NoOpHandler());
             registerHandler(RecvPacketOpcode.CHAR_LIST_REQUEST, new CharListRequestHandler());
             registerHandler(
                     RecvPacketOpcode.SERVER_STATUS_REQUEST, new ServerStatusRequestHandler());
@@ -294,8 +295,8 @@ public final class PacketProcessor {
             registerHandler(RecvPacketOpcode.RING_ACTION, new RingActionHandler());
             registerHandler(RecvPacketOpcode.PLAYER_DISCONECT, new PlayerDisconectHandler());
             registerHandler(RecvPacketOpcode.QUEST_SUMMON_PARTNER_CLICK, new QuestSummonHandler());
-            registerHandler(RecvPacketOpcode.RELOAD_MAP, new NoOpHandler());
-            registerHandler(RecvPacketOpcode.FIRST_LOGIN, new NoOpHandler());
+            registerHandler(RecvPacketOpcode.RELOAD_MAP, new EnableActionOpHandler());
+            registerHandler(RecvPacketOpcode.FIRST_LOGIN, new EnableActionOpHandler());
             registerHandler(RecvPacketOpcode.REQUEST_BOAT_STATUS, new RequestBoatStatusHandler());
             registerHandler(RecvPacketOpcode.CLOSE_CHALKBOARD, new CloseChalkBoard());
             registerHandler(RecvPacketOpcode.ITEM_MAKER, new ItemMakerHandler());
@@ -340,8 +341,8 @@ public final class PacketProcessor {
             registerHandler(RecvPacketOpcode.FRIENDLY_DAMAGE, new FriendlyDamageHandler());
             registerHandler(RecvPacketOpcode.FAMILY_PRECEPT, new FamilyPreAcceptHandler());
             registerHandler(RecvPacketOpcode.USE_FAMILY, new UseFamilyHandler());
-            registerHandler(RecvPacketOpcode.MAPLETV, new NoOpHandler());
-            registerHandler(RecvPacketOpcode.CANCEL_DEBUFF, new NoOpHandler());
+            registerHandler(RecvPacketOpcode.MAPLETV, new EnableActionOpHandler());
+            registerHandler(RecvPacketOpcode.CANCEL_DEBUFF, new EnableActionOpHandler());
             registerHandler(RecvPacketOpcode.DELETE_SENIOR, new DeleteSeniorHandler());
             registerHandler(RecvPacketOpcode.DELETE_JUNIOR, new DeleteJuniorHandler());
             registerHandler(RecvPacketOpcode.FAMILY_OPERATION, new FamilyOperationHandler());
