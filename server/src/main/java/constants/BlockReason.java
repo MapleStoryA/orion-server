@@ -9,8 +9,12 @@ public enum BlockReason {
     SCAM(6, "Your account has been blocked for scamming."),
     MISCONDUCT(7, "Your account has been blocked for misconduct."),
     SELL(8, "Your account has been blocked for illegal cash transaction"),
-    ILLEGAL_FUNDING(9, "Your account has been blocked for illegal charging/funding. Please contact customer support for further details."),
-    TEMP(10, "Your account has been blocked for temporary request. Please contact customer support for further details."),
+    ILLEGAL_FUNDING(
+            9,
+            "Your account has been blocked for illegal charging/funding. Please contact customer support for further details."),
+    TEMP(
+            10,
+            "Your account has been blocked for temporary request. Please contact customer support for further details."),
     GM(11, "Your account has been blocked for impersonating GM."),
     ILLEGAL_PROGRAM(12, "Your account has been blocked for using illegal programs or violating the game policy."),
     MEGAPHONE(13, "Your account has been blocked for one of cursing, scamming, or illegal trading via Megaphones.");

@@ -20,51 +20,51 @@ import tools.packet.LoginPacket;
 public class CreateCharHandler extends AbstractMaplePacketHandler {
 
     private static final int[] LEGAL_CHAR_CREATION_IDS = {
-            1302000,
-            1312004,
-            1322005,
-            1442079,
-            1302132, // weapons
-            1040002,
-            1040006,
-            1040010,
-            1041002,
-            1041006,
-            1041010,
-            1041011,
-            1042167,
-            1060138,
-            1061160, // bottom
-            1060002,
-            1060006,
-            1061002,
-            1061008,
-            1062115,
-            1042180, // top
-            1072001,
-            1072005,
-            1072037,
-            1072038,
-            1072383,
-            1072418, // shoes
-            30000,
-            30010,
-            30020,
-            30030,
-            31000,
-            31040,
-            31050, // hair
-            20000,
-            20001,
-            20002,
-            21000,
-            21001,
-            21002,
-            21201,
-            20401,
-            20402,
-            21700,
-            20100 // face
+        1302000,
+        1312004,
+        1322005,
+        1442079,
+        1302132, // weapons
+        1040002,
+        1040006,
+        1040010,
+        1041002,
+        1041006,
+        1041010,
+        1041011,
+        1042167,
+        1060138,
+        1061160, // bottom
+        1060002,
+        1060006,
+        1061002,
+        1061008,
+        1062115,
+        1042180, // top
+        1072001,
+        1072005,
+        1072037,
+        1072038,
+        1072383,
+        1072418, // shoes
+        30000,
+        30010,
+        30020,
+        30030,
+        31000,
+        31040,
+        31050, // hair
+        20000,
+        20001,
+        20002,
+        21000,
+        21001,
+        21002,
+        21201,
+        20401,
+        20402,
+        21700,
+        20100 // face
     };
     public static final int Adventurer = 1;
     public static final int Aran = 2;
@@ -99,7 +99,7 @@ public class CreateCharHandler extends AbstractMaplePacketHandler {
             return;
         }
 
-        int[] items = new int[]{weapon, top, bottom, shoes, hair, face};
+        int[] items = new int[] {weapon, top, bottom, shoes, hair, face};
         for (int i = 0; i < items.length; i++) {
             if (!isLegal(items[i])) {
                 return;

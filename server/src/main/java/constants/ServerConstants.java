@@ -25,8 +25,7 @@ public class ServerConstants {
 
     public static final String WORLD_MESSAGE = "Welcome to Maple Story Global ";
 
-    public static final String RECOMMENDED_MESSAGE =
-            "We are still in Tespia testing! Report bugs on our forums.";
+    public static final String RECOMMENDED_MESSAGE = "We are still in Tespia testing! Report bugs on our forums.";
 
     /*
      * Specifics which job gives an additional EXP to party

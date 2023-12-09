@@ -4,7 +4,6 @@ import client.MapleCharacter;
 import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import database.DatabaseConnection;
 import java.io.Serializable;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,20 +35,18 @@ public class MapleRing implements Serializable {
 
     public static MapleRing loadFromDb(int ringId, boolean equipped) {
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps =
-                    con.prepareStatement("SELECT * FROM rings WHERE ringId = ?"); // Get details..
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM rings WHERE ringId = ?"); // Get details..
             ps.setInt(1, ringId);
 
             ResultSet rs = ps.executeQuery();
             MapleRing ret = null;
             if (rs.next()) {
-                ret =
-                        new MapleRing(
-                                ringId,
-                                rs.getInt("partnerRingId"),
-                                rs.getInt("partnerChrId"),
-                                rs.getInt("itemid"),
-                                rs.getString("partnerName"));
+                ret = new MapleRing(
+                        ringId,
+                        rs.getInt("partnerRingId"),
+                        rs.getInt("partnerChrId"),
+                        rs.getInt("itemid"),
+                        rs.getString("partnerName"));
                 ret.setEquipped(equipped);
             }
             rs.close();
@@ -65,35 +62,33 @@ public class MapleRing implements Serializable {
 
     public static void addToDB(int itemid, MapleCharacter chr, String player, int id, int[] ringId)
             throws SQLException {
-        Connection con = DatabaseConnection.getConnection();
-        PreparedStatement ps =
-                con.prepareStatement(
-                        "INSERT INTO rings (ringId, itemid, partnerChrId, partnerName,"
-                                + " partnerRingId) VALUES (?, ?, ?, ?, ?)");
-        ps.setInt(1, ringId[0]);
-        ps.setInt(2, itemid);
-        ps.setInt(3, chr.getId());
-        ps.setString(4, chr.getName());
-        ps.setInt(5, ringId[1]);
-        ps.executeUpdate();
-        ps.close();
+        try (var con = DatabaseConnection.getConnection()) {
+            PreparedStatement ps = con.prepareStatement("INSERT INTO rings (ringId, itemid, partnerChrId, partnerName,"
+                    + " partnerRingId) VALUES (?, ?, ?, ?, ?)");
+            ps.setInt(1, ringId[0]);
+            ps.setInt(2, itemid);
+            ps.setInt(3, chr.getId());
+            ps.setString(4, chr.getName());
+            ps.setInt(5, ringId[1]);
+            ps.executeUpdate();
+            ps.close();
 
-        ps =
-                con.prepareStatement(
-                        "INSERT INTO rings (ringId, itemid, partnerChrId, partnerName,"
-                                + " partnerRingId) VALUES (?, ?, ?, ?, ?)");
-        ps.setInt(1, ringId[1]);
-        ps.setInt(2, itemid);
-        ps.setInt(3, id);
-        ps.setString(4, player);
-        ps.setInt(5, ringId[0]);
-        ps.executeUpdate();
-        ps.close();
-        con.close();
+            ps = con.prepareStatement("INSERT INTO rings (ringId, itemid, partnerChrId, partnerName,"
+                    + " partnerRingId) VALUES (?, ?, ?, ?, ?)");
+            ps.setInt(1, ringId[1]);
+            ps.setInt(2, itemid);
+            ps.setInt(3, id);
+            ps.setString(4, player);
+            ps.setInt(5, ringId[0]);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException ex) {
+            log.error("Could not not add maple ring to db", ex);
+            throw ex;
+        }
     }
 
-    public static int createRing(
-            int itemid, MapleCharacter partner1, String partner2, String msg, int id2, int sn) {
+    public static int createRing(int itemid, MapleCharacter partner1, String partner2, String msg, int id2, int sn) {
         try {
             if (partner1 == null) {
                 return -2;
@@ -107,11 +102,8 @@ public class MapleRing implements Serializable {
         }
     }
 
-    public static int[] makeRing(int itemid, MapleCharacter partner1, MapleCharacter partner2)
-            throws Exception {
-        int[] ringID = {
-            MapleInventoryIdentifier.getInstance(), MapleInventoryIdentifier.getInstance()
-        };
+    public static int[] makeRing(int itemid, MapleCharacter partner1, MapleCharacter partner2) throws Exception {
+        int[] ringID = {MapleInventoryIdentifier.getInstance(), MapleInventoryIdentifier.getInstance()};
         // [1] = partner1, [0] = partner2
         try {
             addToDB(itemid, partner1, partner2.getName(), partner2.getId(), ringID);
@@ -121,12 +113,9 @@ public class MapleRing implements Serializable {
         return ringID;
     }
 
-    public static int makeRing(
-            int itemid, MapleCharacter partner1, String partner2, int id2, String msg, int sn)
+    public static int makeRing(int itemid, MapleCharacter partner1, String partner2, int id2, String msg, int sn)
             throws Exception { // return partner1 the id
-        int[] ringID = {
-            MapleInventoryIdentifier.getInstance(), MapleInventoryIdentifier.getInstance()
-        };
+        int[] ringID = {MapleInventoryIdentifier.getInstance(), MapleInventoryIdentifier.getInstance()};
         // [1] = partner1, [0] = partner2
         try {
             addToDB(itemid, partner1, partner2, id2, ringID);
@@ -140,8 +129,7 @@ public class MapleRing implements Serializable {
 
     public static void removeRingFromDb(MapleCharacter player) {
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps =
-                    con.prepareStatement("SELECT * FROM rings WHERE partnerChrId = ?");
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM rings WHERE partnerChrId = ?");
             ps.setInt(1, player.getId());
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {

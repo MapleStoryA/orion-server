@@ -32,7 +32,6 @@ import handling.channel.ChannelServer;
 import handling.world.WorldServer;
 import handling.world.helper.FindCommand;
 import java.awt.*;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -71,18 +70,20 @@ public class PlayerNPC extends MapleNPC {
                 pets[i] = 0;
             }
         }
+        try (var con = DatabaseConnection.getConnection(); ) {
 
-        Connection con = DatabaseConnection.getConnection();
-        PreparedStatement ps =
-                con.prepareStatement("SELECT * FROM playernpcs_equip WHERE NpcId = ?");
-        ps.setInt(1, getId());
-        ResultSet rs2 = ps.executeQuery();
-        while (rs2.next()) {
-            equips.put(rs2.getByte("equippos"), rs2.getInt("equipid"));
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM playernpcs_equip WHERE NpcId = ?");
+            ps.setInt(1, getId());
+            ResultSet rs2 = ps.executeQuery();
+            while (rs2.next()) {
+                equips.put(rs2.getByte("equippos"), rs2.getInt("equipid"));
+            }
+            rs2.close();
+            ps.close();
+
+        } catch (Exception ex) {
+            log.error("Exception selecting player npcs", ex);
         }
-        rs2.close();
-        ps.close();
-        con.close();
     }
 
     public PlayerNPC(MapleCharacter cid, int npc, MapleMap map, MapleCharacter base) {
@@ -117,10 +118,9 @@ public class PlayerNPC extends MapleNPC {
 
     public static void updateByCharId(MapleCharacter chr) {
         if (FindCommand.findChannel(chr.getId()) > 0) { // if character is in cserv
-            for (PlayerNPC npc :
-                    WorldServer.getInstance()
-                            .getChannel(FindCommand.findChannel(chr.getId()))
-                            .getAllPlayerNPC()) {
+            for (PlayerNPC npc : WorldServer.getInstance()
+                    .getChannel(FindCommand.findChannel(chr.getId()))
+                    .getAllPlayerNPC()) {
                 npc.update(chr);
             }
         }
@@ -174,8 +174,7 @@ public class PlayerNPC extends MapleNPC {
 
     public void destroy(boolean remove) {
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps =
-                    con.prepareStatement("DELETE FROM playernpcs WHERE scriptid = ?");
+            PreparedStatement ps = con.prepareStatement("DELETE FROM playernpcs WHERE scriptid = ?");
             ps.setInt(1, getId());
             ps.executeUpdate();
             ps.close();
@@ -201,10 +200,9 @@ public class PlayerNPC extends MapleNPC {
             }
             destroy();
             PreparedStatement ps =
-                    con.prepareStatement(
-                            "INSERT INTO playernpcs(name, hair, face, skin, x, y, map, charid,"
-                                + " scriptid, foothold, dir, gender, pets) VALUES (?, ?, ?, ?, ?,"
-                                + " ?, ?, ?, ?, ?, ?, ?, ?)");
+                    con.prepareStatement("INSERT INTO playernpcs(name, hair, face, skin, x, y, map, charid,"
+                            + " scriptid, foothold, dir, gender, pets) VALUES (?, ?, ?, ?, ?,"
+                            + " ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, getName());
             ps.setInt(2, getHair());
             ps.setInt(3, getFace());
@@ -227,10 +225,8 @@ public class PlayerNPC extends MapleNPC {
             ps.executeUpdate();
             ps.close();
 
-            ps =
-                    con.prepareStatement(
-                            "INSERT INTO playernpcs_equip(npcid, charid, equipid, equippos) VALUES"
-                                    + " (?, ?, ?, ?)");
+            ps = con.prepareStatement(
+                    "INSERT INTO playernpcs_equip(npcid, charid, equipid, equippos) VALUES" + " (?, ?, ?, ?)");
             ps.setInt(1, getId());
             ps.setInt(2, getCharId());
             for (Entry<Byte, Integer> equip : equips.entrySet()) {

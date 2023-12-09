@@ -20,7 +20,6 @@ package handling.world.buddy;
 
 import database.DatabaseConnection;
 import java.io.Serializable;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -100,24 +99,18 @@ public class MapleBuddyList implements Serializable {
     }
 
     public void loadFromDb(int characterId) throws SQLException {
-        Connection con = DatabaseConnection.getConnection();
-        PreparedStatement ps =
-                con.prepareStatement(
-                        "SELECT b.buddyid, c.name as buddyname, b.groupname FROM buddyentries as b,"
-                                + " characters as c WHERE c.id = b.buddyid AND b.owner = ?");
-        ps.setInt(1, characterId);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            put(
-                    new BuddyListEntry(
-                            rs.getString("buddyname"),
-                            rs.getInt("buddyid"),
-                            rs.getString("groupname"),
-                            -1));
+        try (var con = DatabaseConnection.getConnection()) {
+            PreparedStatement ps =
+                    con.prepareStatement("SELECT b.buddyid, c.name as buddyname, b.groupname FROM buddyentries as b,"
+                            + " characters as c WHERE c.id = b.buddyid AND b.owner = ?");
+            ps.setInt(1, characterId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                put(new BuddyListEntry(rs.getString("buddyname"), rs.getInt("buddyid"), rs.getString("groupname"), -1));
+            }
+            rs.close();
+            ps.close();
         }
-        rs.close();
-        ps.close();
-        con.close();
     }
 
     public enum BuddyAddResult {

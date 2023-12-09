@@ -57,6 +57,30 @@ import handling.world.messenger.MessengerManager;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import handling.world.party.PartyManager;
+import java.awt.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Deque;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Random;
+import java.util.Set;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import scripting.EventInstanceManager;
@@ -110,31 +134,6 @@ import tools.packet.MonsterCarnivalPacket;
 import tools.packet.PetPacket;
 import tools.packet.PlayerShopPacket;
 import tools.packet.UIPacket;
-
-import java.awt.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Deque;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Random;
-import java.util.Set;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 public class MapleCharacter extends BaseMapleCharacter {
@@ -946,13 +945,12 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public static void saveNewCharToDB(final MapleCharacter chr, final int type, final boolean db) {
 
-        Connection con = null;
         PreparedStatement ps = null;
         PreparedStatement pse = null;
         ResultSet rs = null;
         // TODO: fix transaction isolation
-        try {
-            con = DatabaseConnection.getConnection();
+        try (var con = DatabaseConnection.getConnection(); ) {
+
             // con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
             // con.setAutoCommit(false);
             ps = con.prepareStatement(
@@ -1090,9 +1088,6 @@ public class MapleCharacter extends BaseMapleCharacter {
                 if (rs != null) {
                     rs.close();
                 }
-                //                con.setAutoCommit(true);
-                //  con.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
-                con.close();
             } catch (SQLException e) {
                 e.printStackTrace();
                 System.err.println("[charsave] Error going back to autocommit mode");
@@ -1101,7 +1096,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public static boolean ban(String id, String reason, boolean useAccountId, int gmlevel) {
-        try (var con = DatabaseConnection.getConnection();) {
+        try (var con = DatabaseConnection.getConnection(); ) {
             PreparedStatement ps;
             if (id.matches("/[0-9]{1,3}\\..*")) {
                 ps = con.prepareStatement("INSERT INTO ipbans VALUES (DEFAULT, ?)");
@@ -1570,8 +1565,8 @@ public class MapleCharacter extends BaseMapleCharacter {
         return mbsvh == null
                 ? -1
                 : (mbsvh.getEffect().isSkill()
-                ? mbsvh.getEffect().getSourceId()
-                : -mbsvh.getEffect().getSourceId());
+                        ? mbsvh.getEffect().getSourceId()
+                        : -mbsvh.getEffect().getSourceId());
     }
 
     public boolean isBuffFrom(MapleBuffStat stat, ISkill skill) {
@@ -1801,7 +1796,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         }
         for (MapleBuffStatValueHolder cancelEffectCancelTasks : effectsToCancel) {
             if (getBuffStats(cancelEffectCancelTasks.getEffect(), cancelEffectCancelTasks.getStartTime())
-                    .size()
+                            .size()
                     == 0) {
                 if (cancelEffectCancelTasks.getSchedule() != null) {
                     cancelEffectCancelTasks.getSchedule().cancel(false);
@@ -1922,19 +1917,19 @@ public class MapleCharacter extends BaseMapleCharacter {
             if (skillid == 0) {
                 if (mbsvh.getEffect().isSkill()
                         && (mbsvh.getEffect().getSourceId() == 4331003
-                        || mbsvh.getEffect().getSourceId() == 4331002
-                        || mbsvh.getEffect().getSourceId() == 4341002
-                        || mbsvh.getEffect().getSourceId() == 22131001
-                        || mbsvh.getEffect().getSourceId() == 1321007
-                        || mbsvh.getEffect().getSourceId() == 2121005
-                        || mbsvh.getEffect().getSourceId() == 2221005
-                        || mbsvh.getEffect().getSourceId() == 2311006
-                        || mbsvh.getEffect().getSourceId() == 2321003
-                        || mbsvh.getEffect().getSourceId() == 3111002
-                        || mbsvh.getEffect().getSourceId() == 3111005
-                        || mbsvh.getEffect().getSourceId() == 3211002
-                        || mbsvh.getEffect().getSourceId() == 3211005
-                        || mbsvh.getEffect().getSourceId() == 4111002)) {
+                                || mbsvh.getEffect().getSourceId() == 4331002
+                                || mbsvh.getEffect().getSourceId() == 4341002
+                                || mbsvh.getEffect().getSourceId() == 22131001
+                                || mbsvh.getEffect().getSourceId() == 1321007
+                                || mbsvh.getEffect().getSourceId() == 2121005
+                                || mbsvh.getEffect().getSourceId() == 2221005
+                                || mbsvh.getEffect().getSourceId() == 2311006
+                                || mbsvh.getEffect().getSourceId() == 2321003
+                                || mbsvh.getEffect().getSourceId() == 3111002
+                                || mbsvh.getEffect().getSourceId() == 3111005
+                                || mbsvh.getEffect().getSourceId() == 3211002
+                                || mbsvh.getEffect().getSourceId() == 3211005
+                                || mbsvh.getEffect().getSourceId() == 4111002)) {
                     cancelEffect(mbsvh.getEffect(), false, mbsvh.getStartTime());
                     break;
                 }
@@ -2611,7 +2606,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     public void changeSkillLevel(final ISkill skill, byte newLevel, byte newMasterlevel, long expiration) {
         if (skill == null
                 || (!GameConstants.isApplicableSkill(skill.getId())
-                && !GameConstants.isApplicableSkill_(skill.getId()))) {
+                        && !GameConstants.isApplicableSkill_(skill.getId()))) {
             return;
         }
         client.getSession().write(MaplePacketCreator.updateSkill(skill.getId(), newLevel, newMasterlevel, expiration));
@@ -3103,8 +3098,8 @@ public class MapleCharacter extends BaseMapleCharacter {
                         toberemove.add(new Pair<MapleInventoryType, IItem>(inv, item));
                     }
                 } else if ((item.getItemId() == 5000054
-                        && item.getPet() != null
-                        && item.getPet().getSecondsLeft() <= 0)
+                                && item.getPet() != null
+                                && item.getPet().getSecondsLeft() <= 0)
                         || (firstLoad && ii.isLogoutExpire(item.getItemId()))) {
                     toberemove.add(new Pair<MapleInventoryType, IItem>(inv, item));
                 }
@@ -3506,7 +3501,6 @@ public class MapleCharacter extends BaseMapleCharacter {
             }
         }
     }
-
 
     public final boolean ban(String reason, boolean ipBan, boolean automaticBan) {
         if (lastMonthFameIds == null) {
@@ -4259,7 +4253,7 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public void checkBerserk() {
         if (
-            /* job != 132 || */ getLastBerserkTime() < 0 || getLastBerserkTime() + 10000 > System.currentTimeMillis()) {
+        /* job != 132 || */ getLastBerserkTime() < 0 || getLastBerserkTime() + 10000 > System.currentTimeMillis()) {
             return;
         }
         final ISkill BerserkX = SkillFactory.getSkill(1320006);
@@ -4696,7 +4690,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             }
         }
         client.getSession().write(PetPacket.petStatUpdate(this));
-        petStore = new byte[]{-1, -1, -1};
+        petStore = new byte[] {-1, -1, -1};
     }
 
     public final byte[] getPetStores() {
@@ -5472,7 +5466,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             if (GameConstants.isApplicableSkill(skill.getId())) {
                 if (skill.getId() >= 22000000
                         && (GameConstants.isEvan((skill.getId() / 10000))
-                        || GameConstants.isResist((skill.getId() / 10000)))) {
+                                || GameConstants.isResist((skill.getId() / 10000)))) {
                     continue;
                 } // only beginner skills are not maxed!
                 if (skill.getId() < 10000
