@@ -134,7 +134,7 @@ function arrived() {
 function invasion() {
     var numspawn;
     var chance = Math.floor(Math.random() * 10);
-    if (chance <= 5)
+    if (chance <= 8)
         numspawn = 0;
     else
         numspawn = 2;

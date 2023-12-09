@@ -7,12 +7,9 @@ import constants.ServerConstants;
 import handling.SendPacketOpcode;
 import handling.login.LoginServer;
 import java.awt.*;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import tools.HexTool;
-import tools.Randomizer;
-import tools.Triple;
 import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
@@ -287,16 +284,38 @@ public class LoginPacket {
         }
     }
 
-    public static byte[] changeBackground(List<Triple<String, Integer, Boolean>> backgrounds) {
+    /*
+     * CLogin::OnPacket
+     * CMapLoadable::OnPacket(int a1, int a2)
+     * CMapLoadable::OnSetBackEffect(a2);
+     * */
+    public static byte[] sendCMapLoadable__OnSetBackEffect(int nEffect, int nField, int nPageID, int duration) {
         OutPacket packet = new OutPacket();
 
-        packet.writeShort(SendPacketOpcode.CHANGE_BACKGROUND.getValue());
-        packet.write(backgrounds.size()); // number of bgs
+        packet.writeShort(SendPacketOpcode.MapLoadable__OnSetBackEffect.getValue());
+        packet.write(nEffect); // nEffect
+        packet.writeInt(nField); // nField
+        packet.write(nPageID); // nPageID
+        packet.writeInt(duration); // Duration
 
-        for (Triple<String, Integer, Boolean> background : backgrounds) {
-            packet.writeMapleAsciiString(background.getLeft());
-            packet.write(background.getRight() ? Randomizer.nextInt(2) : background.getMid());
-        }
+        return packet.getPacket();
+    }
+
+    /*
+     * CLogin::OnPacket
+     * CMapLoadable::OnPacket(int a1, int a2)
+     * CMapLoadable::OnSetMapObjectVisible(a2);
+     * */
+    public static byte[] sendCMapLoadable__OnSetMapObjectVisible() {
+        OutPacket packet = new OutPacket();
+
+        packet.writeShort(SendPacketOpcode.CMapLoadable__OnSetMapObjectVisible.getValue());
+        packet.write(2);
+        packet.writeMapleAsciiString("dual/0");
+        packet.write(0);
+        packet.writeMapleAsciiString("visitors/0");
+        packet.write(1);
+
         /*
         Map.wz/Obj/login.img/WorldSelect/background/background number
         Backgrounds ids sometime have more than one background anumation

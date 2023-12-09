@@ -19,5 +19,6 @@ public class ServerListRequestHandler extends AbstractMaplePacketHandler {
                         LoginServer.getInstance().getServerLoad()));
         c.getSession().write(LoginPacket.getEndOfServerList());
         c.getSession().write(LoginPacket.getRecommendedWorldMessage(0, ServerConstants.RECOMMENDED_MESSAGE));
+        c.getSession().write(LoginPacket.sendCMapLoadable__OnSetMapObjectVisible());
     }
 }

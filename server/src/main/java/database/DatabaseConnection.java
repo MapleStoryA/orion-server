@@ -66,6 +66,7 @@ public class DatabaseConnection {
         hikariConfig.addDataSourceProperty("cachePrepStmts", "true");
         hikariConfig.addDataSourceProperty("prepStmtCacheSize", "25");
         hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        hikariConfig.addDataSourceProperty("leakDetectionThreshold", "5000");
         hikariConfig.setConnectionTestQuery("SELECT 1");
 
         pool = new HikariConnectionPool(new HikariDataSource(hikariConfig));

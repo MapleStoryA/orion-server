@@ -148,8 +148,6 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		freopen("CONOUT$", "w", stderr);
 #endif
 		clientPatches();
-		//Hook_DirectInput8Create(true);
-		Hook_GetModuleFileNameW(true);
 		Hook_SetUnhandledExceptionFilter(true);
 		Hook_CreateWindowExA(true);
 	case DLL_THREAD_ATTACH:

@@ -3,26 +3,34 @@ package handling.login.handler;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import handling.login.LoginServer;
+import lombok.extern.slf4j.Slf4j;
 import tools.data.input.InPacket;
 import tools.packet.LoginPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class ServerStatusRequestHandler extends AbstractMaplePacketHandler {
+
+    private static final int NORMAL_STATUS = 0;
+    private static final int BUSY_STATUS = 1;
+    private static final int FULL_STATUS = 2;
 
     @Override
     public void handlePacket(InPacket packet, MapleClient c) {
-        // 0 = Select world normally
-        // 1 = "Since there are many users, you may encounter some..."
-        // 2 = "The concurrent users in this world have reached the max"
-        packet.readShort();
+        packet.readShort(); // Consider explaining what this is for
         final int numPlayer = LoginServer.getInstance().getUsersOn();
         final int userLimit = LoginServer.getInstance().getUserLimit();
+
+        int status = getServerStatus(numPlayer, userLimit);
+        c.getSession().write(LoginPacket.getServerStatus(status));
+    }
+
+    private int getServerStatus(int numPlayer, int userLimit) {
         if (numPlayer >= userLimit) {
-            c.getSession().write(LoginPacket.getServerStatus(2));
+            return FULL_STATUS;
         } else if (numPlayer * 2 >= userLimit) {
-            c.getSession().write(LoginPacket.getServerStatus(1));
+            return BUSY_STATUS;
         } else {
-            c.getSession().write(LoginPacket.getServerStatus(0));
+            return NORMAL_STATUS;
         }
     }
 }
