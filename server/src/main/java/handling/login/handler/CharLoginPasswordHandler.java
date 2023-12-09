@@ -1,6 +1,7 @@
 package handling.login.handler;
 
 import client.MapleClient;
+import constants.BlockReason;
 import database.LoginResult;
 import handling.MaplePacketHandler;
 import handling.login.LoginServer;
@@ -28,7 +29,7 @@ public class CharLoginPasswordHandler implements MaplePacketHandler {
         LoginResult result = c.login(login, pwd);
 
         if (result.isPermanentBan()) {
-            c.getSession().write(LoginPacket.getPermBan((byte) 1));
+            c.getSession().write(LoginPacket.getPermBan(BlockReason.BOT.getId()));
             return;
         }
 

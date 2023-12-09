@@ -67,7 +67,7 @@ public class LoginPacket {
         return packet.getPacket();
     }
 
-    public static final byte[] getPermBan(final byte reason) {
+    public static final byte[] getPermBan(final int reason) {
         final OutPacket packet = new OutPacket(16);
 
         packet.writeShort(SendPacketOpcode.LOGIN_STATUS.getValue());
