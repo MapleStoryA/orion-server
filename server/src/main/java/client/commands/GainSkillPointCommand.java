@@ -7,12 +7,12 @@ import scripting.v1.game.helper.ApiClass;
 public class GainSkillPointCommand implements Command {
 
     @Override
-    public void execute(MapleClient c, String[] splitted) {
-        if (splitted.length < 1) {
+    public void execute(MapleClient c, String[] args) {
+        if (args.length < 1) {
             c.getPlayer().dropMessage(5, "Missing sp quantity.");
             return;
         }
-        var first_argument = splitted[0];
+        var first_argument = args[0];
         c.getPlayer().gainSp(Integer.valueOf(first_argument));
     }
 

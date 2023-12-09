@@ -12,7 +12,7 @@ import server.MapleItemInformationProvider;
 public class GainItemCommand implements Command {
     @Override
     public void execute(MapleClient c, String[] args) {
-        if (args.length < 3) {
+        if (args.length < 2) {
             sendSyntaxMessage(c);
             return;
         }

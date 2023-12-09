@@ -4,14 +4,14 @@ import client.MapleClient;
 
 public interface Command {
 
-    void execute(MapleClient c, String[] splitted);
+    void execute(MapleClient c, String[] args);
 
     String getTrigger();
 
-    static int getOptionalIntArg(String[] splitted, int position, int defaultValue) {
-        if (splitted.length > position) {
+    static int getOptionalIntArg(String[] args, int position, int defaultValue) {
+        if (args.length > position) {
             try {
-                return Integer.parseInt(splitted[position]);
+                return Integer.parseInt(args[position]);
             } catch (NumberFormatException nfe) {
                 return defaultValue;
             }
