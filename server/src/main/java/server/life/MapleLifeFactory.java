@@ -23,6 +23,8 @@ public class MapleLifeFactory {
             ServerConfig.serverConfig().getDataProvider("wz/String");
     private static final MapleDataProvider etcDataWZ =
             ServerConfig.serverConfig().getDataProvider("wz/Etc");
+    private static final MapleDataProvider npcDataWZ =
+            ServerConfig.serverConfig().getDataProvider("wz/Npc");
     private static final MapleData mobStringData = stringDataWZ.getData("Mob.img");
     private static final MapleData npcStringData = stringDataWZ.getData("Npc.img");
     private static final MapleData npclocData = etcDataWZ.getData("NpcLocation.img");
@@ -249,10 +251,22 @@ public class MapleLifeFactory {
 
     public static MapleNPC getNPC(final int nid) {
         String name = npcNames.get(nid);
+        String script = null;
         if (name == null) {
             name = MapleDataTool.getString(nid + "/name", npcStringData, "MISSINGNO");
+            MapleData npcData = npcDataWZ.getData(nid + ".img");
+            var infoNode = npcData.getChildByPath("info");
+            if (infoNode != null) {
+                MapleData scriptNode = infoNode.getChildByPath("script");
+                if (scriptNode != null) {
+                    script = MapleDataTool.getString("0/script", scriptNode);
+                }
+            }
+
             npcNames.put(nid, name);
         }
-        return new MapleNPC(nid, name);
+        var mapleNpc = new MapleNPC(nid, name);
+        mapleNpc.setScript(script);
+        return mapleNpc;
     }
 }

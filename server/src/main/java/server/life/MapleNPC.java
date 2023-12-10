@@ -8,8 +8,9 @@ import tools.MaplePacketCreator;
 @lombok.extern.slf4j.Slf4j
 public class MapleNPC extends AbstractLoadedMapleLife {
 
-    private String name = "MISSINGNO";
+    private String name;
     private boolean custom = false;
+    private String script;
 
     public MapleNPC(final int id, final String name) {
         super(id);
@@ -57,5 +58,13 @@ public class MapleNPC extends AbstractLoadedMapleLife {
 
     public final void setCustom(final boolean custom) {
         this.custom = custom;
+    }
+
+    public String getScript() {
+        return script;
+    }
+
+    public void setScript(String script) {
+        this.script = script;
     }
 }
