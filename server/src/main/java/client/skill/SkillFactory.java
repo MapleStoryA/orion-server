@@ -18,20 +18,18 @@ import tools.StringUtil;
 public class SkillFactory {
 
     private static final Map<Integer, ISkill> skills = new HashMap<Integer, ISkill>();
-    private static final Map<Integer, List<Integer>> skillsByJob =
-            new HashMap<Integer, List<Integer>>();
+    private static final Map<Integer, List<Integer>> skillsByJob = new HashMap<Integer, List<Integer>>();
     private static final Map<Integer, SummonSkillEntry> SummonSkillInformation =
             new HashMap<Integer, SummonSkillEntry>();
     private static final MapleData stringData =
-            ServerEnvironment.getConfig().getDataProvider("wz/String").getData("Skill.img");
+            ServerEnvironment.serverConfig().getDataProvider("wz/String").getData("Skill.img");
 
     public static final ISkill getSkill(final int id) {
         if (!skills.isEmpty()) {
             return skills.get(Integer.valueOf(id));
         }
         // log.info("Loading SkillFactory :::");
-        final MapleDataProvider datasource =
-                ServerEnvironment.getConfig().getDataProvider("wz/Skill");
+        final MapleDataProvider datasource = ServerEnvironment.serverConfig().getDataProvider("wz/Skill");
         final MapleDataDirectoryEntry root = datasource.getRoot();
 
         int skillid;
@@ -60,13 +58,9 @@ public class SkillFactory {
                                 summon_data = data2.getChildByPath("summon/attack1/info");
                                 if (summon_data != null) {
                                     sse = new SummonSkillEntry();
-                                    sse.attackAfter =
-                                            (short)
-                                                    MapleDataTool.getInt(
-                                                            "attackAfter", summon_data, 999999);
+                                    sse.attackAfter = (short) MapleDataTool.getInt("attackAfter", summon_data, 999999);
                                     sse.type = (byte) MapleDataTool.getInt("type", summon_data, 0);
-                                    sse.mobCount =
-                                            (byte) MapleDataTool.getInt("mobCount", summon_data, 1);
+                                    sse.mobCount = (byte) MapleDataTool.getInt("mobCount", summon_data, 1);
                                     SummonSkillInformation.put(skillid, sse);
                                 }
                             }

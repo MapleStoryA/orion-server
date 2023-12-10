@@ -8,6 +8,7 @@ import handling.world.WorldServer;
 import java.util.HashMap;
 import java.util.Map;
 import server.Timer;
+import server.config.Config;
 import server.config.ServerConfig;
 import server.config.ServerEnvironment;
 import tools.MaplePacketCreator;
@@ -30,16 +31,17 @@ public class LoginServer extends GameServer {
 
     public LoginServer(ServerConfig config) {
         super(-1, PORT, PacketProcessor.Mode.LOGINSERVER);
-        userLimit = Integer.parseInt(config.getProperty("login.userlimit"));
-        serverName = config.getProperty("login.serverName");
-        eventMessage = config.getProperty("login.eventMessage");
-        flag = Byte.parseByte(config.getProperty("login.flag"));
-        adminOnly = Boolean.parseBoolean(config.getProperty("world.admin", "false"));
+        Config.Login login = config.getConfig().getLogin();
+        userLimit = login.getUserlimit();
+        serverName = login.getServerName();
+        eventMessage = login.getEventMessage();
+        flag = login.getFlag();
+        adminOnly = config.getConfig().getWorld().isAdminOnly();
     }
 
     public static synchronized LoginServer getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new LoginServer(ServerEnvironment.getConfig());
+            INSTANCE = new LoginServer(ServerEnvironment.serverConfig());
         }
         return INSTANCE;
     }

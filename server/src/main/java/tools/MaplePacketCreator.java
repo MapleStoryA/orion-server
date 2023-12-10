@@ -79,7 +79,10 @@ public class MaplePacketCreator {
         packet.writeShort(SendPacketOpcode.SERVER_IP.getValue());
         packet.writeShort(0);
         try {
-            packet.write(InetAddress.getByName(ServerEnvironment.getConfig().getProperty("channel.net.interface"))
+            packet.write(InetAddress.getByName(ServerEnvironment.serverConfig()
+                            .getConfig()
+                            .getChannel()
+                            .getHost())
                     .getAddress());
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -97,7 +100,10 @@ public class MaplePacketCreator {
         packet.writeShort(SendPacketOpcode.CHANGE_CHANNEL.getValue());
         packet.write(1);
         try {
-            packet.write(InetAddress.getByName(ServerEnvironment.getConfig().getProperty("channel.net.interface"))
+            packet.write(InetAddress.getByName(ServerEnvironment.serverConfig()
+                            .getConfig()
+                            .getChannel()
+                            .getHost())
                     .getAddress());
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -4560,7 +4566,7 @@ public class MaplePacketCreator {
     }
 
     /**
-     * @param type - (0:Light&Long 1:Heavy&Short)
+     * @param type  - (0:Light&Long 1:Heavy&Short)
      * @param delay - seconds
      * @return
      */

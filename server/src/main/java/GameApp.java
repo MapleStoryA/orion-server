@@ -54,15 +54,15 @@ public class GameApp {
     private static long startTime = System.currentTimeMillis();
 
     public static void main(String[] args) throws InterruptedException {
-        ServerEnvironment.getConfig();
+        ServerEnvironment.serverConfig();
         GameApp server = new GameApp();
         server.start();
-        log.info("[" + ServerEnvironment.getConfig().getProperty("login.serverName") + "]");
+        log.info("[" + ServerEnvironment.serverConfig().getConfig().getLogin().getServerName() + "]");
     }
 
     private static void initDatabase() {
         try {
-            ServerConfig config = ServerEnvironment.getConfig();
+            ServerConfig config = ServerEnvironment.serverConfig();
             DatabaseConnection.initConfig(config);
         } catch (SQLException ex) {
             throw new RuntimeException("[SQL EXCEPTION] Error connecting to the database.", ex);
@@ -186,10 +186,11 @@ public class GameApp {
 
         WorldServer worldServer = WorldServer.getInstance();
 
-        for (int i = 0; i < Integer.parseInt(ServerEnvironment.getConfig().getProperty("channel.count", "0")); i++) {
+        for (int i = 0;
+                i < ServerEnvironment.serverConfig().getConfig().getChannel().getCount();
+                i++) {
             int channel = i + 1;
-            int port = Short.parseShort(ServerEnvironment.getConfig()
-                    .getProperty("channel.net.port" + channel, String.valueOf(ChannelServer.DEFAULT_PORT + channel)));
+            int port = Short.parseShort(String.valueOf(ChannelServer.DEFAULT_PORT + channel));
             ChannelServer ch = new ChannelServer(channel, port);
             worldServer.registerChannel(channel, ch);
             ch.onStart();

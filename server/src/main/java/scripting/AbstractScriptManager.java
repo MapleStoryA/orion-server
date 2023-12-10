@@ -1,13 +1,12 @@
 package scripting;
 
 import client.MapleClient;
-import server.config.ServerEnvironment;
-import tools.StringUtil;
-
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import server.config.ServerEnvironment;
+import tools.StringUtil;
 
 /**
  * @author Matze
@@ -26,7 +25,7 @@ public abstract class AbstractScriptManager {
 
     protected Invocable getInvocable(String path, String scriptId, MapleClient c) {
         try {
-            path = ServerEnvironment.getConfig().getScriptsPath() + "/" + path + "/" + scriptId + ".js";
+            path = ServerEnvironment.serverConfig().getScriptsPath() + "/" + path + "/" + scriptId.trim() + ".js";
 
             if (isDebugMode) {
                 log.info("Loading file " + path);
@@ -39,7 +38,7 @@ public abstract class AbstractScriptManager {
             StringBuilder builder = new StringBuilder();
             builder.append("load('nashorn:mozilla_compat.js');" + System.lineSeparator());
             builder.append("function scriptName(){ return \"$1\"; }".replace("$1", scriptId));
-            String scriptsPath = ServerEnvironment.getConfig().getScriptsPath();
+            String scriptsPath = ServerEnvironment.serverConfig().getScriptsPath();
             builder.append("function getScriptPath(){ return \"" + scriptsPath + "\" }");
             String content = StringUtil.readFileAsString(path);
             if (content.isEmpty()) {
@@ -52,20 +51,18 @@ public abstract class AbstractScriptManager {
             return (Invocable) engine;
         } catch (ScriptException e) {
             log.error("Error executing script " + path, e);
-            log.info("Error executing script " + path + e.getMessage() + " line: " + e.getLineNumber()
-                    + " column: " + e.getColumnNumber());
+            log.info("Error executing script " + path + e.getMessage() + " line: " + e.getLineNumber() + " column: "
+                    + e.getColumnNumber());
             return null;
         } catch (Exception ex) {
             log.error("Error executing script " + path, ex);
             log.info("Error executing script " + path);
             return null;
         }
-
     }
 
     protected void resetContext(String path, MapleClient c) {
-        path = ServerEnvironment.getConfig().getScriptsPath() + "/" + path;
+        path = ServerEnvironment.serverConfig().getScriptsPath() + "/" + path;
         c.removeScriptEngine(path);
     }
-
 }

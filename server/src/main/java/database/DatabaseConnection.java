@@ -24,7 +24,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.statement.Slf4JSqlLogger;
+import server.config.Config;
 import server.config.ServerConfig;
+import server.config.ServerEnvironment;
 
 @lombok.extern.slf4j.Slf4j
 public class DatabaseConnection {
@@ -54,17 +56,17 @@ public class DatabaseConnection {
             throw new SQLException(
                     "Unable to find JDBC library. Do you have MySQL Connector/J (if using default" + " DBC driver)?");
         }
-
-        String password = config.getProperty("database.password");
+        Config.Database database = ServerEnvironment.serverConfig().getConfig().getDatabase();
+        String password = database.getPassword();
         if (password == null) {
             throw new DatabaseException("Database password not provided.");
         }
 
         var hikariConfig = new HikariConfig();
 
-        hikariConfig.setJdbcUrl(config.getProperty("database.url"));
-        hikariConfig.setUsername(config.getProperty("database.user"));
-        hikariConfig.setPassword(config.getProperty("database.password"));
+        hikariConfig.setJdbcUrl(database.getUrl());
+        hikariConfig.setUsername(database.getUser());
+        hikariConfig.setPassword(database.getPassword());
         hikariConfig.setConnectionTimeout(30000);
         hikariConfig.setMinimumIdle(10);
         hikariConfig.setMaximumPoolSize(30);

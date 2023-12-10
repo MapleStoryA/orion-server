@@ -67,13 +67,11 @@ public class MapleQuest implements Serializable {
             final List<MapleData> startC = startReqData.getChildren();
             if (startC != null && startC.size() > 0) {
                 for (MapleData startReq : startC) {
-                    final MapleQuestRequirementType type =
-                            MapleQuestRequirementType.getByWZName(startReq.getName());
+                    final MapleQuestRequirementType type = MapleQuestRequirementType.getByWZName(startReq.getName());
                     if (type.equals(MapleQuestRequirementType.interval)) {
                         ret.repeatable = true;
                     }
-                    final MapleQuestRequirement req =
-                            new MapleQuestRequirement(ret, type, startReq);
+                    final MapleQuestRequirement req = new MapleQuestRequirement(ret, type, startReq);
                     if (req.getType().equals(MapleQuestRequirementType.mob)) {
                         for (MapleData mob : startReq.getChildren()) {
                             ret.relevantMobs.put(
@@ -91,11 +89,8 @@ public class MapleQuest implements Serializable {
             final List<MapleData> completeC = completeReqData.getChildren();
             if (completeC != null && completeC.size() > 0) {
                 for (MapleData completeReq : completeC) {
-                    MapleQuestRequirement req =
-                            new MapleQuestRequirement(
-                                    ret,
-                                    MapleQuestRequirementType.getByWZName(completeReq.getName()),
-                                    completeReq);
+                    MapleQuestRequirement req = new MapleQuestRequirement(
+                            ret, MapleQuestRequirementType.getByWZName(completeReq.getName()), completeReq);
                     if (req.getType().equals(MapleQuestRequirementType.mob)) {
                         for (MapleData mob : completeReq.getChildren()) {
                             ret.relevantMobs.put(
@@ -115,10 +110,7 @@ public class MapleQuest implements Serializable {
             final List<MapleData> startC = startActData.getChildren();
             for (MapleData startAct : startC) {
                 ret.startActs.add(
-                        new MapleQuestAction(
-                                MapleQuestActionType.getByWZName(startAct.getName()),
-                                startAct,
-                                ret));
+                        new MapleQuestAction(MapleQuestActionType.getByWZName(startAct.getName()), startAct, ret));
             }
         }
         final MapleData completeActData = basedata2.getChildByPath("1");
@@ -126,11 +118,8 @@ public class MapleQuest implements Serializable {
         if (completeActData != null) {
             final List<MapleData> completeC = completeActData.getChildren();
             for (MapleData completeAct : completeC) {
-                ret.completeActs.add(
-                        new MapleQuestAction(
-                                MapleQuestActionType.getByWZName(completeAct.getName()),
-                                completeAct,
-                                ret));
+                ret.completeActs.add(new MapleQuestAction(
+                        MapleQuestActionType.getByWZName(completeAct.getName()), completeAct, ret));
             }
         }
         final MapleData questInfo = info.getChildByPath(String.valueOf(id));
@@ -146,15 +135,11 @@ public class MapleQuest implements Serializable {
         final MapleData pquestInfo = pinfo.getChildByPath(String.valueOf(id));
         if (pquestInfo != null) {
             for (MapleData d : pquestInfo.getChildByPath("rank")) {
-                List<Pair<String, Pair<String, Integer>>> pInfo =
-                        new ArrayList<Pair<String, Pair<String, Integer>>>();
+                List<Pair<String, Pair<String, Integer>>> pInfo = new ArrayList<Pair<String, Pair<String, Integer>>>();
                 for (MapleData c : d) {
                     for (MapleData b : c) {
-                        pInfo.add(
-                                new Pair<String, Pair<String, Integer>>(
-                                        c.getName(),
-                                        new Pair<String, Integer>(
-                                                b.getName(), MapleDataTool.getInt(b, 0))));
+                        pInfo.add(new Pair<String, Pair<String, Integer>>(
+                                c.getName(), new Pair<String, Integer>(b.getName(), MapleDataTool.getInt(b, 0))));
                     }
                 }
                 ret.partyQuestInfo.put(d.getName(), pInfo);
@@ -165,7 +150,7 @@ public class MapleQuest implements Serializable {
     }
 
     public static void initQuests() {
-        questData = ServerEnvironment.getConfig().getDataProvider("wz/Quest");
+        questData = ServerEnvironment.serverConfig().getDataProvider("wz/Quest");
         actions = questData.getData("Act.img");
         requirements = questData.getData("Check.img");
         info = questData.getData("QuestInfo.img");
@@ -210,13 +195,13 @@ public class MapleQuest implements Serializable {
     public boolean canStart(MapleCharacter c, Integer npcid) {
         int status = c.getQuest(this).getStatus();
         /*int[] ignoredQuests = new int[] {
-            8248,//Maple market thing,
-            8249
+        	8248,//Maple market thing,
+        	8249
         };
         for (int quest : ignoredQuests) {
-          if (id == quest) {
-            return true;
-          }
+        if (id == quest) {
+        	return true;
+        }
         }*/
         if (status != 0 && !(status == 2 && repeatable)) {
             return false;
@@ -285,11 +270,8 @@ public class MapleQuest implements Serializable {
             // we save forfeits only for logging purposes, they shouldn't matter anymore
             // completion time is set by the constructor
 
-            c.getClient()
-                    .getSession()
-                    .write(MaplePacketCreator.showSpecialEffect(9)); // Quest completion
-            c.getMap()
-                    .broadcastMessage(c, MaplePacketCreator.showSpecialEffect(c.getId(), 9), false);
+            c.getClient().getSession().write(MaplePacketCreator.showSpecialEffect(9)); // Quest completion
+            c.getMap().broadcastMessage(c, MaplePacketCreator.showSpecialEffect(c.getId(), 9), false);
         }
     }
 
@@ -315,9 +297,7 @@ public class MapleQuest implements Serializable {
     public void forceComplete(MapleCharacter c, int npc) {
         final MapleQuestStatus newStatus = new MapleQuestStatus(this, (byte) 2, npc);
         newStatus.setForfeited(c.getQuest(this).getForfeited());
-        c.getClient()
-                .getSession()
-                .write(MaplePacketCreator.showSpecialEffect(9)); // Quest completion
+        c.getClient().getSession().write(MaplePacketCreator.showSpecialEffect(9)); // Quest completion
         c.getMap().broadcastMessage(c, MaplePacketCreator.showSpecialEffect(c.getId(), 9), false);
         c.updateQuest(newStatus);
     }
@@ -340,71 +320,32 @@ public class MapleQuest implements Serializable {
     }
 
     public enum MedalQuest {
-        Beginner(
-                29005,
-                29015,
-                15,
-                new int[] {
-                    104000000, 104010001, 100000006, 104020000, 100000000, 100010000, 100040000,
-                    100040100, 101010103, 101020000, 101000000, 102000000, 101030104, 101030406,
-                    102020300, 103000000, 102050000, 103010001, 103030200, 110000000
-                }),
-        ElNath(
-                29006,
-                29012,
-                50,
-                new int[] {
-                    200000000, 200010100, 200010300, 200080000, 200080100, 211000000, 211030000,
-                    211040300, 211041200, 211041800
-                }),
-        LudusLake(
-                29007,
-                29012,
-                40,
-                new int[] {
-                    222000000, 222010400, 222020000, 220000000, 220020300, 220040200, 221020701,
-                    221000000, 221030600, 221040400
-                }),
-        Underwater(
-                29008,
-                29012,
-                40,
-                new int[] {
-                    230000000, 230010400, 230010200, 230010201, 230020000, 230020201, 230030100,
-                    230040000, 230040200, 230040400
-                }),
-        MuLung(
-                29009,
-                29012,
-                50,
-                new int[] {
-                    251000000, 251010200, 251010402, 251010500, 250010500, 250010504, 250000000,
-                    250010300, 250010304, 250020300
-                }),
-        NihalDesert(
-                29010,
-                29012,
-                70,
-                new int[] {
-                    261030000, 261020401, 261020000, 261010100, 261000000, 260020700, 260020300,
-                    260000000, 260010600, 260010300
-                }),
-        MinarForest(
-                29011,
-                29012,
-                70,
-                new int[] {
-                    240000000, 240010200, 240010800, 240020401, 240020101, 240030000, 240040400,
-                    240040511, 240040521, 240050000
-                }),
-        Sleepywood(
-                29014,
-                29015,
-                50,
-                new int[] {
-                    105040300, 105070001, 105040305, 105090200, 105090300, 105090301, 105090312,
-                    105090500, 105090900, 105080000
-                });
+        Beginner(29005, 29015, 15, new int[] {
+            104000000, 104010001, 100000006, 104020000, 100000000, 100010000, 100040000,
+            100040100, 101010103, 101020000, 101000000, 102000000, 101030104, 101030406,
+            102020300, 103000000, 102050000, 103010001, 103030200, 110000000
+        }),
+        ElNath(29006, 29012, 50, new int[] {
+            200000000, 200010100, 200010300, 200080000, 200080100, 211000000, 211030000, 211040300, 211041200, 211041800
+        }),
+        LudusLake(29007, 29012, 40, new int[] {
+            222000000, 222010400, 222020000, 220000000, 220020300, 220040200, 221020701, 221000000, 221030600, 221040400
+        }),
+        Underwater(29008, 29012, 40, new int[] {
+            230000000, 230010400, 230010200, 230010201, 230020000, 230020201, 230030100, 230040000, 230040200, 230040400
+        }),
+        MuLung(29009, 29012, 50, new int[] {
+            251000000, 251010200, 251010402, 251010500, 250010500, 250010504, 250000000, 250010300, 250010304, 250020300
+        }),
+        NihalDesert(29010, 29012, 70, new int[] {
+            261030000, 261020401, 261020000, 261010100, 261000000, 260020700, 260020300, 260000000, 260010600, 260010300
+        }),
+        MinarForest(29011, 29012, 70, new int[] {
+            240000000, 240010200, 240010800, 240020401, 240020101, 240030000, 240040400, 240040511, 240040521, 240050000
+        }),
+        Sleepywood(29014, 29015, 50, new int[] {
+            105040300, 105070001, 105040305, 105090200, 105090300, 105090301, 105090312, 105090500, 105090900, 105080000
+        });
         public int questid, level, lquestid;
         public int[] maps;
 

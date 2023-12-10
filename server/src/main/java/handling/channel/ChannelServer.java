@@ -21,6 +21,7 @@ import scripting.v1.event.EventCenter;
 import server.MapleSquad;
 import server.TimerManager;
 import server.autosave.AutoSaveRunnable;
+import server.config.Config;
 import server.config.ServerEnvironment;
 import server.events.MapleCoconut;
 import server.events.MapleEvent;
@@ -55,35 +56,29 @@ public class ChannelServer extends GameServer {
     private int running_MerchantID = 0;
     private int flags = 0;
     private String serverMessage;
-    private boolean shutdown = false,
-            finishedShutdown = false,
-            MegaphoneMuteState = false,
-            adminOnly = false;
+    private boolean shutdown = false, finishedShutdown = false, MegaphoneMuteState = false, adminOnly = false;
     private PlayerStorage players;
     private EventScriptManager eventSM;
     private int eventmap = -1;
 
     public ChannelServer(int channel, int port) {
         super(channel, port, PacketProcessor.Mode.CHANNELSERVER);
-        this.expRate = Integer.parseInt(ServerEnvironment.getConfig().getProperty("world.exp"));
-        this.mesoRate = Integer.parseInt(ServerEnvironment.getConfig().getProperty("world.meso"));
-        this.dropRate = Integer.parseInt(ServerEnvironment.getConfig().getProperty("world.drop"));
-        this.cashRate = Integer.parseInt(ServerEnvironment.getConfig().getProperty("world.cash"));
-        this.serverMessage = ServerEnvironment.getConfig().getProperty("world.serverMessage");
-        this.flags =
-                Integer.parseInt(ServerEnvironment.getConfig().getProperty("world.flags", "0"));
-        this.adminOnly =
-                Boolean.parseBoolean(
-                        ServerEnvironment.getConfig().getProperty("world.admin", "false"));
-        this.publicAddress =
-                ServerEnvironment.getConfig().getProperty("channel.net.interface") + ":" + port;
+        Config.World wordConfig = ServerEnvironment.serverConfig().getConfig().getWorld();
+        this.expRate = wordConfig.getExp();
+        this.mesoRate = wordConfig.getMeso();
+        this.dropRate = wordConfig.getDrop();
+        this.cashRate = wordConfig.getCash();
+        this.serverMessage = wordConfig.getServerMessage();
+        this.flags = wordConfig.getFlags();
+        this.adminOnly = wordConfig.isAdminOnly();
+
+        Config.Channel channelConfig =
+                ServerEnvironment.serverConfig().getConfig().getChannel();
+        this.publicAddress = channelConfig.getHost() + ":" + port;
         this.mapFactory = new MapleMapFactory();
         this.aramiaEvent = new AramiaFireWorks();
         this.eventCenter = new EventCenter(channel);
-        this.eventSM =
-                new EventScriptManager(
-                        this,
-                        ServerEnvironment.getConfig().getProperty("channel.events").split(","));
+        this.eventSM = new EventScriptManager(this, channelConfig.getEvents());
         this.mapFactory.setChannel(channel);
         this.players = new PlayerStorage(channel);
         this.serverStartTime = System.currentTimeMillis();
@@ -105,18 +100,11 @@ public class ChannelServer extends GameServer {
         if (events.size() != 0) {
             return;
         }
-        events.put(
-                MapleEventType.Coconut,
-                new MapleCoconut(channel, MapleEventType.Coconut.getMapIds()));
-        events.put(
-                MapleEventType.Fitness,
-                new MapleFitness(channel, MapleEventType.Fitness.getMapIds()));
+        events.put(MapleEventType.Coconut, new MapleCoconut(channel, MapleEventType.Coconut.getMapIds()));
+        events.put(MapleEventType.Fitness, new MapleFitness(channel, MapleEventType.Fitness.getMapIds()));
         events.put(MapleEventType.OlaOla, new MapleOla(channel, MapleEventType.OlaOla.getMapIds()));
-        events.put(
-                MapleEventType.OxQuiz, new MapleOxQuiz(channel, MapleEventType.OxQuiz.getMapIds()));
-        events.put(
-                MapleEventType.Snowball,
-                new MapleSnowball(channel, MapleEventType.Snowball.getMapIds()));
+        events.put(MapleEventType.OxQuiz, new MapleOxQuiz(channel, MapleEventType.OxQuiz.getMapIds()));
+        events.put(MapleEventType.Snowball, new MapleSnowball(channel, MapleEventType.Snowball.getMapIds()));
     }
 
     @Override
@@ -222,11 +210,10 @@ public class ChannelServer extends GameServer {
     }
 
     public void reloadEvents() {
+        Config.Channel channelConfig =
+                ServerEnvironment.serverConfig().getConfig().getChannel();
         eventSM.cancel();
-        eventSM =
-                new EventScriptManager(
-                        this,
-                        ServerEnvironment.getConfig().getProperty("channel.events").split(","));
+        eventSM = new EventScriptManager(this, channelConfig.getEvents());
         eventSM.init();
     }
 
@@ -453,8 +440,7 @@ public class ChannelServer extends GameServer {
     }
 
     public void broadcastYellowMsg(String msg) {
-        for (@SuppressWarnings("unused")
-        MapleCharacter mc : getPlayerStorage().getAllCharacters()) {
+        for (@SuppressWarnings("unused") MapleCharacter mc : getPlayerStorage().getAllCharacters()) {
             broadcastPacket(MaplePacketCreator.yellowChat(msg));
         }
     }
