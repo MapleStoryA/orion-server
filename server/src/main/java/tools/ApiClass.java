@@ -1,4 +1,4 @@
-package scripting.v1.game.helper;
+package tools;
 
 import static java.lang.annotation.ElementType.CONSTRUCTOR;
 import static java.lang.annotation.ElementType.FIELD;

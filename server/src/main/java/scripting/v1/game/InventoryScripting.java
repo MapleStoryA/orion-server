@@ -3,8 +3,8 @@ package scripting.v1.game;
 import client.MapleClient;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
-import scripting.v1.game.helper.ApiClass;
 import scripting.v1.game.helper.InventoryHelper;
+import tools.ApiClass;
 
 @lombok.extern.slf4j.Slf4j
 public class InventoryScripting extends PlayerScripting {

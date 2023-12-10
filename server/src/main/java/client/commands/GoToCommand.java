@@ -4,8 +4,10 @@ import client.MapleClient;
 import java.util.HashMap;
 import server.MaplePortal;
 import server.maps.MapleMap;
+import tools.ApiClass;
 
-public class GoToCommand implements Command {
+@ApiClass
+class GoToCommand implements Command {
 
     private static final HashMap<String, Integer> listOfMaps = new HashMap<>();
 

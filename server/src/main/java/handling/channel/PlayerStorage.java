@@ -141,14 +141,13 @@ public class PlayerStorage {
                 chr = itr.next();
 
                 if (chr.getCheatTracker().getPoints() > 0) {
-                    cheaters.add(
-                            new CheaterData(
-                                    chr.getCheatTracker().getPoints(),
-                                    MapleCharacterHelper.makeMapleReadable(chr.getName())
-                                            + " ("
-                                            + chr.getCheatTracker().getPoints()
-                                            + ") "
-                                            + chr.getCheatTracker().getSummary()));
+                    cheaters.add(new CheaterData(
+                            chr.getCheatTracker().getPoints(),
+                            MapleCharacterHelper.makeMapleReadable(chr.getName())
+                                    + " ("
+                                    + chr.getCheatTracker().getPoints()
+                                    + ") "
+                                    + chr.getCheatTracker().getSummary()));
                 }
             }
         } finally {
@@ -168,14 +167,13 @@ public class PlayerStorage {
                 chr = itr.next();
 
                 if (chr.getReportPoints() > 0) {
-                    cheaters.add(
-                            new CheaterData(
-                                    chr.getReportPoints(),
-                                    MapleCharacterHelper.makeMapleReadable(chr.getName())
-                                            + " ("
-                                            + chr.getReportPoints()
-                                            + ") "
-                                            + chr.getReportSummary()));
+                    cheaters.add(new CheaterData(
+                            chr.getReportPoints(),
+                            MapleCharacterHelper.makeMapleReadable(chr.getName())
+                                    + " ("
+                                    + chr.getReportPoints()
+                                    + ") "
+                                    + chr.getReportSummary()));
                 }
             }
         } finally {
@@ -201,6 +199,8 @@ public class PlayerStorage {
                     chr.getClient().getSession().close();
                     FindCommand.forceDeregister(chr.getId(), chr.getName());
                     itr.remove();
+                } else {
+                    chr.getClient().getPlayer().saveToDB(false, false);
                 }
             }
         } finally {

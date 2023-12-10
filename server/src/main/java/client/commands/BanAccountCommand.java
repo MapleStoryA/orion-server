@@ -2,8 +2,10 @@ package client.commands;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import tools.ApiClass;
 
-public class BanAccountCommand implements Command {
+@ApiClass
+class BanAccountCommand implements Command {
 
     private static final int MIN_NAME_LENGTH = 2;
     private static final int MIN_REASON_LENGTH = 2;

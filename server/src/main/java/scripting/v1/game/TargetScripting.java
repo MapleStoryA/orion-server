@@ -10,9 +10,9 @@ import java.awt.*;
 import lombok.extern.slf4j.Slf4j;
 import scripting.v1.event.EventCenter;
 import scripting.v1.event.EventInstance;
-import scripting.v1.game.helper.ApiClass;
 import server.maps.MapleMap;
 import server.quest.MapleQuest;
+import tools.ApiClass;
 import tools.MaplePacketCreator;
 import tools.packet.CWVsContextOnMessagePackets;
 
@@ -227,9 +227,7 @@ public class TargetScripting extends PlayerScripting {
     public int transferParty(int map, String portal, int option) {
         for (MaplePartyCharacter mate : player.getParty().getMembers()) {
             MapleCharacter chr =
-                    WorldServer.getInstance()
-                            .getStorage(client.getChannel())
-                            .getCharacterById(mate.getId());
+                    WorldServer.getInstance().getStorage(client.getChannel()).getCharacterById(mate.getId());
             chr.changeMap(map, portal);
         }
         return 1;
@@ -250,12 +248,12 @@ public class TargetScripting extends PlayerScripting {
             final Point portalPos = new Point(player.getMap().getPortal(portal).getPosition());
             if (portalPos.distanceSq(player.getPosition()) < 90000.0) { // estimation
                 player.checkFollow();
-                sendPacket(
-                        MaplePacketCreator.instantMapWarp(
-                                (byte) player.getMap().getPortal(portal).getId()));
+                sendPacket(MaplePacketCreator.instantMapWarp(
+                        (byte) player.getMap().getPortal(portal).getId()));
                 player.getMap()
                         .movePlayer(
-                                player, new Point(player.getMap().getPortal(portal).getPosition()));
+                                player,
+                                new Point(player.getMap().getPortal(portal).getPosition()));
             } else {
                 player.changeMap(mapz, mapz.getPortal(portal));
             }

@@ -2,8 +2,8 @@ package scripting.v1.game;
 
 import client.MapleClient;
 import lombok.extern.slf4j.Slf4j;
-import scripting.v1.game.helper.ApiClass;
 import server.quest.MapleQuest;
+import tools.ApiClass;
 
 @Slf4j
 public class QuestScripting extends PlayerScripting {

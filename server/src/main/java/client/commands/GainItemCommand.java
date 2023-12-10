@@ -8,8 +8,10 @@ import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
+import tools.ApiClass;
 
-public class GainItemCommand implements Command {
+@ApiClass
+class GainItemCommand implements Command {
     @Override
     public void execute(MapleClient c, String[] args) {
         if (args.length < 2) {

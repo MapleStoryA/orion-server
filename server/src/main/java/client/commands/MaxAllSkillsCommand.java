@@ -1,7 +1,7 @@
 package client.commands;
 
 import client.MapleClient;
-import scripting.v1.game.helper.ApiClass;
+import tools.ApiClass;
 
 @ApiClass
 public class MaxAllSkillsCommand implements Command {
