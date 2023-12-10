@@ -10,7 +10,7 @@ import org.mozilla.javascript.Scriptable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scripting.v1.game.TargetScripting;
-import server.config.ServerEnvironment;
+import server.config.ServerConfig;
 import server.life.MapleMonster;
 import server.maps.MapleMap;
 
@@ -19,7 +19,7 @@ public class RhinoEventEngine implements EventEngine {
 
     private static final Logger LOG = LoggerFactory.getLogger(RhinoEventEngine.class);
 
-    private static final String SCRIPT_PATH = ServerEnvironment.serverConfig().getScriptsPath() + "/" + "instances";
+    private static final String SCRIPT_PATH = ServerConfig.serverConfig().getScriptsPath() + "/" + "instances";
     private final String name;
     private Scriptable globalScope;
 

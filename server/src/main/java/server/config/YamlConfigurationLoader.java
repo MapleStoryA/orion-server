@@ -5,15 +5,12 @@ import java.io.FileReader;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
-@lombok.extern.slf4j.Slf4j
-public class YamlConfigurationLoader implements ConfigurationLoader {
+public class YamlConfigurationLoader {
 
-    @Override
     public String getExtension() {
         return "yaml";
     }
 
-    @Override
     public Config load(String path) {
         final var yaml = new Yaml(new Constructor(Config.class));
         try {

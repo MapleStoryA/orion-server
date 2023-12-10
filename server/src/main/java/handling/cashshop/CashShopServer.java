@@ -4,7 +4,7 @@ import handling.GameServer;
 import handling.PacketProcessor;
 import handling.channel.PlayerStorage;
 import lombok.extern.slf4j.Slf4j;
-import server.config.ServerEnvironment;
+import server.config.ServerConfig;
 
 @Slf4j
 public class CashShopServer extends GameServer {
@@ -19,7 +19,7 @@ public class CashShopServer extends GameServer {
     public CashShopServer() {
         super(-1, 8799, PacketProcessor.Mode.CASHSHOP);
         players = new PlayerStorage(-10);
-        ip = ServerEnvironment.serverConfig().getConfig().getChannel().getHost() + ":" + PORT;
+        ip = ServerConfig.serverConfig().getConfig().getChannel().getHost() + ":" + PORT;
     }
 
     public final String getPublicAddress() {

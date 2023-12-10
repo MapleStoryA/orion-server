@@ -1,7 +1,5 @@
 package server.gachapon;
 
-import server.config.ServerEnvironment;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.TreeMap;
+import server.config.ServerConfig;
 
 @lombok.extern.slf4j.Slf4j
 public class SimpleGachaRandomizer implements RewardRandomizer {
@@ -28,25 +27,25 @@ public class SimpleGachaRandomizer implements RewardRandomizer {
             if (!r.containsKey(chance)) {
                 r.put(chance, new ArrayList<>());
             }
-            if (ServerEnvironment.isDebugEnabled()) {
+            if (ServerConfig.isDebugEnabled()) {
                 log.info("Item: " + d.getId() + " c: " + chance);
             }
             r.get(chance).add(d);
         }
         double random = 0.01 + (100 - 0.01) * new Random().nextDouble();
-        if (ServerEnvironment.isDebugEnabled()) {
+        if (ServerConfig.isDebugEnabled()) {
             log.info("Random chance: " + random);
         }
         int count = 0;
         for (Entry<Double, List<AbstractRandomEntity>> option : r.entrySet()) {
-            if (ServerEnvironment.isDebugEnabled()) {
+            if (ServerConfig.isDebugEnabled()) {
                 log.info("Item Chance: " + option.getKey() + "");
             }
             count++;
             if (option.getKey() >= random || count == r.size()) {
                 List<AbstractRandomEntity> gacha = option.getValue();
                 Collections.shuffle(gacha);
-                if (ServerEnvironment.isDebugEnabled()) {
+                if (ServerConfig.isDebugEnabled()) {
                     log.info("Choosen one: " + option.getKey() + "");
                 }
                 AbstractRandomEntity item = gacha.get(0);
@@ -57,5 +56,4 @@ public class SimpleGachaRandomizer implements RewardRandomizer {
 
         return null;
     }
-
 }

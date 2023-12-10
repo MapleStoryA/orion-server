@@ -48,8 +48,8 @@ import server.MapleItemInformationProvider;
 import server.MapleShopItem;
 import server.MapleStatEffect;
 import server.MapleTrade;
-import server.config.ServerEnvironment;
-import server.events.MapleSnowball.MapleSnowballs;
+import server.config.ServerConfig;
+import server.events.MapleSnowball;
 import server.life.MapleMonster;
 import server.life.MapleNPC;
 import server.life.PlayerNPC;
@@ -79,10 +79,8 @@ public class MaplePacketCreator {
         packet.writeShort(SendPacketOpcode.SERVER_IP.getValue());
         packet.writeShort(0);
         try {
-            packet.write(InetAddress.getByName(ServerEnvironment.serverConfig()
-                            .getConfig()
-                            .getChannel()
-                            .getHost())
+            packet.write(InetAddress.getByName(
+                            ServerConfig.serverConfig().getConfig().getChannel().getHost())
                     .getAddress());
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -100,10 +98,8 @@ public class MaplePacketCreator {
         packet.writeShort(SendPacketOpcode.CHANGE_CHANNEL.getValue());
         packet.write(1);
         try {
-            packet.write(InetAddress.getByName(ServerEnvironment.serverConfig()
-                            .getConfig()
-                            .getChannel()
-                            .getHost())
+            packet.write(InetAddress.getByName(
+                            ServerConfig.serverConfig().getConfig().getChannel().getHost())
                     .getAddress());
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -3967,7 +3963,8 @@ public class MaplePacketCreator {
         return packet.getPacket();
     }
 
-    public static byte[] rollSnowball(int type, MapleSnowballs ball1, MapleSnowballs ball2) {
+    public static byte[] rollSnowball(
+            int type, MapleSnowball.MapleSnowballs ball1, MapleSnowball.MapleSnowballs ball2) {
         OutPacket packet = new OutPacket();
         packet.writeShort(SendPacketOpcode.ROLL_SNOWBALL.getValue());
         packet.write(type); // 0 = normal, 1 = rolls from start to end, 2 = down

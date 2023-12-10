@@ -85,9 +85,8 @@ function playerExit(eim, player) {
         dispose = true;
     }
     eim.saveBossQuestPoints(parseInt(eim.getProperty("points")), player);
-    player.dropMessage(6, "[The Boss Quest] Your current points have been awarded, spend them as you wish. Better luck next time!")
-)
-    ;
+    player.dropMessage(6, "[The Boss Quest] Your current points have been awarded, spend them as you wish. Better luck next time!");
+
     eim.unregisterPlayer(player);
 
     if (dispose) {

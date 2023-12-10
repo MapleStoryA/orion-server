@@ -34,7 +34,6 @@ import server.Timer.EtcTimer;
 import server.TimerManager;
 import server.cashshop.CashItemFactory;
 import server.config.ServerConfig;
-import server.config.ServerEnvironment;
 import server.events.MapleOxQuizFactory;
 import server.gachapon.GachaponFactory;
 import server.life.MapleLifeFactory;
@@ -54,15 +53,15 @@ public class GameApp {
     private static long startTime = System.currentTimeMillis();
 
     public static void main(String[] args) throws InterruptedException {
-        ServerEnvironment.serverConfig();
+        ServerConfig.serverConfig();
         GameApp server = new GameApp();
         server.start();
-        log.info("[" + ServerEnvironment.serverConfig().getConfig().getLogin().getServerName() + "]");
+        log.info("[" + ServerConfig.serverConfig().getConfig().getLogin().getServerName() + "]");
     }
 
     private static void initDatabase() {
         try {
-            ServerConfig config = ServerEnvironment.serverConfig();
+            ServerConfig config = ServerConfig.serverConfig();
             DatabaseConnection.initConfig(config);
         } catch (SQLException ex) {
             throw new RuntimeException("[SQL EXCEPTION] Error connecting to the database.", ex);
@@ -186,9 +185,7 @@ public class GameApp {
 
         WorldServer worldServer = WorldServer.getInstance();
 
-        for (int i = 0;
-                i < ServerEnvironment.serverConfig().getConfig().getChannel().getCount();
-                i++) {
+        for (int i = 0; i < ServerConfig.serverConfig().getConfig().getChannel().getCount(); i++) {
             int channel = i + 1;
             int port = Short.parseShort(String.valueOf(ChannelServer.DEFAULT_PORT + channel));
             ChannelServer ch = new ChannelServer(channel, port);

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import provider.MapleData;
 import provider.MapleDataTool;
-import server.config.ServerEnvironment;
+import server.config.ServerConfig;
 
 @lombok.extern.slf4j.Slf4j
 public class LoginInformationProvider {
@@ -15,7 +15,7 @@ public class LoginInformationProvider {
     LoginInformationProvider() {
         log.info("Loading LoginInformationProvider :::");
         final MapleData nameData =
-                ServerEnvironment.serverConfig().getDataProvider("wz/Etc").getData("ForbiddenName.img");
+                ServerConfig.serverConfig().getDataProvider("wz/Etc").getData("ForbiddenName.img");
         for (final MapleData data : nameData.getChildren()) {
             forbiddenName.add(MapleDataTool.getString(data));
         }

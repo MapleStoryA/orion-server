@@ -22,7 +22,7 @@ import server.MapleSquad;
 import server.TimerManager;
 import server.autosave.AutoSaveRunnable;
 import server.config.Config;
-import server.config.ServerEnvironment;
+import server.config.ServerConfig;
 import server.events.MapleCoconut;
 import server.events.MapleEvent;
 import server.events.MapleEventType;
@@ -63,7 +63,7 @@ public class ChannelServer extends GameServer {
 
     public ChannelServer(int channel, int port) {
         super(channel, port, PacketProcessor.Mode.CHANNELSERVER);
-        Config.World wordConfig = ServerEnvironment.serverConfig().getConfig().getWorld();
+        Config.World wordConfig = ServerConfig.serverConfig().getConfig().getWorld();
         this.expRate = wordConfig.getExp();
         this.mesoRate = wordConfig.getMeso();
         this.dropRate = wordConfig.getDrop();
@@ -72,8 +72,7 @@ public class ChannelServer extends GameServer {
         this.flags = wordConfig.getFlags();
         this.adminOnly = wordConfig.isAdminOnly();
 
-        Config.Channel channelConfig =
-                ServerEnvironment.serverConfig().getConfig().getChannel();
+        Config.Channel channelConfig = ServerConfig.serverConfig().getConfig().getChannel();
         this.publicAddress = channelConfig.getHost() + ":" + port;
         this.mapFactory = new MapleMapFactory();
         this.aramiaEvent = new AramiaFireWorks();
@@ -210,8 +209,7 @@ public class ChannelServer extends GameServer {
     }
 
     public void reloadEvents() {
-        Config.Channel channelConfig =
-                ServerEnvironment.serverConfig().getConfig().getChannel();
+        Config.Channel channelConfig = ServerConfig.serverConfig().getConfig().getChannel();
         eventSM.cancel();
         eventSM = new EventScriptManager(this, channelConfig.getEvents());
         eventSM.init();

@@ -7,7 +7,7 @@ import handling.cashshop.CashShopOperationHandlers;
 import handling.channel.handler.InterServerHandler;
 import handling.channel.handler.PlayerHandler;
 import lombok.extern.slf4j.Slf4j;
-import server.config.ServerEnvironment;
+import server.config.ServerConfig;
 import tools.HexTool;
 import tools.data.input.ByteArrayByteStream;
 import tools.data.input.GenericSeekableLittleEndianAccessor;
@@ -25,10 +25,10 @@ public class DefaultPacketHandler {
             }
             var header_num = slea.readShort();
             var packetHandler = processor.getHandler(header_num);
-            if (ServerEnvironment.isDebugEnabled()) {
+            if (ServerConfig.isDebugEnabled()) {
                 log.info("Received: " + header_num);
             }
-            if (ServerEnvironment.isDebugEnabled() && packetHandler != null) {
+            if (ServerConfig.isDebugEnabled() && packetHandler != null) {
                 log.info("[" + packetHandler.getClass().getSimpleName() + "]");
             }
             if (packetHandler != null && packetHandler.validateState(client)) {

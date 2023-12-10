@@ -2,7 +2,7 @@ package client.skill;
 
 import client.MapleJob;
 import java.util.HashMap;
-import server.config.ServerEnvironment;
+import server.config.ServerConfig;
 
 @lombok.extern.slf4j.Slf4j
 public class EvanSkillPoints {
@@ -51,7 +51,7 @@ public class EvanSkillPoints {
             query.append(", ").append(this.skillPoints.get(i));
         }
         query.append(")");
-        if (ServerEnvironment.isDebugEnabled()) {
+        if (ServerConfig.isDebugEnabled()) {
             log.info("Saving evanskill points: " + query);
         }
         return query.toString();

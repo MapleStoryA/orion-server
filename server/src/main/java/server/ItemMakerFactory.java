@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import provider.MapleData;
 import provider.MapleDataTool;
-import server.config.ServerEnvironment;
+import server.config.ServerConfig;
 import tools.Pair;
 
 @lombok.extern.slf4j.Slf4j
@@ -22,7 +22,7 @@ public class ItemMakerFactory {
         // 1 / 2/ 4/ 8 = Item creation
 
         final MapleData info =
-                ServerEnvironment.serverConfig().getDataProvider("wz/Etc").getData("ItemMake.img");
+                ServerConfig.serverConfig().getDataProvider("wz/Etc").getData("ItemMake.img");
 
         byte totalupgrades, reqMakerLevel;
         int reqLevel, cost, quantity, stimulator;

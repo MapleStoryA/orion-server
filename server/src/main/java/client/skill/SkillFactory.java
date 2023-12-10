@@ -11,7 +11,7 @@ import provider.MapleDataDirectoryEntry;
 import provider.MapleDataFileEntry;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
-import server.config.ServerEnvironment;
+import server.config.ServerConfig;
 import tools.StringUtil;
 
 @lombok.extern.slf4j.Slf4j
@@ -22,14 +22,14 @@ public class SkillFactory {
     private static final Map<Integer, SummonSkillEntry> SummonSkillInformation =
             new HashMap<Integer, SummonSkillEntry>();
     private static final MapleData stringData =
-            ServerEnvironment.serverConfig().getDataProvider("wz/String").getData("Skill.img");
+            ServerConfig.serverConfig().getDataProvider("wz/String").getData("Skill.img");
 
     public static final ISkill getSkill(final int id) {
         if (!skills.isEmpty()) {
             return skills.get(Integer.valueOf(id));
         }
         // log.info("Loading SkillFactory :::");
-        final MapleDataProvider datasource = ServerEnvironment.serverConfig().getDataProvider("wz/Skill");
+        final MapleDataProvider datasource = ServerConfig.serverConfig().getDataProvider("wz/Skill");
         final MapleDataDirectoryEntry root = datasource.getRoot();
 
         int skillid;

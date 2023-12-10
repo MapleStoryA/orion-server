@@ -10,7 +10,6 @@ import java.util.Map;
 import server.Timer;
 import server.config.Config;
 import server.config.ServerConfig;
-import server.config.ServerEnvironment;
 import tools.MaplePacketCreator;
 import tools.packet.LoginPacket;
 
@@ -41,7 +40,7 @@ public class LoginServer extends GameServer {
 
     public static synchronized LoginServer getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new LoginServer(ServerEnvironment.serverConfig());
+            INSTANCE = new LoginServer(ServerConfig.serverConfig());
         }
         return INSTANCE;
     }
