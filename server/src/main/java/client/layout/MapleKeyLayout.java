@@ -3,6 +3,7 @@ package client.layout;
 import database.DatabaseConnection;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import tools.data.output.OutPacket;
@@ -49,18 +50,17 @@ public class MapleKeyLayout implements Serializable {
         try (var handle = DatabaseConnection.getConnector().open()) {
             for (var binding : new ArrayList<>(keyMapBindings.values())) {
                 if (binding.isDeleted()) {
-                    log.debug("Deleting key: {}", binding.getKey());
+                    log.info("Deleting key: {}", binding.getKey());
                     handle.createUpdate(
                                     "DELETE FROM keymap WHERE `characterid` =" + " :d.characterId AND `key` = :d.key")
                             .bindBean("d", binding)
                             .execute();
+                    keyMapBindings.remove(binding.getKey());
                 }
-                ;
-                keyMapBindings.remove(binding.getKey());
             }
             for (var binding : keyMapBindings.values()) {
                 if (binding.isChanged()) {
-                    log.debug("Saving key: {}", binding.getKey());
+                    log.info("Saving key: {}", binding.getKey());
                     handle.createUpdate("INSERT INTO keymap(`characterid`, `key`, `type`,"
                                     + " `action`, `fixed`) VALUES (:d.characterId,"
                                     + " :d.key, :d.type, :d.action, :d.fixed) ON"
@@ -87,6 +87,19 @@ public class MapleKeyLayout implements Serializable {
             KeyMapBinding binding = new KeyMapBinding(characterId, key[i], (byte) KeyType[i], action[i], 0);
             binding.setChanged(true);
             setBinding(binding);
+        }
+    }
+
+    public void loadKeybindings() {
+        try (var handle = DatabaseConnection.getConnector().open()) {
+            var result = handle.select(
+                    "SELECT `key`,`type`,`action`,`fixed` FROM keymap WHERE characterid" + " = ?", characterId);
+            List<KeyMapBinding> keyMapBindings = result.map((rs, ctx) -> new KeyMapBinding(
+                            characterId, rs.getInt("key"), rs.getByte("type"), rs.getInt("action"), rs.getInt("fixed")))
+                    .collectIntoList();
+            for (var keyBinding : keyMapBindings) {
+                this.keyMapBindings.put(keyBinding.getKey(), keyBinding);
+            }
         }
     }
 }

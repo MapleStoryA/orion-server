@@ -15,15 +15,19 @@ import tools.data.input.InPacket;
 @lombok.extern.slf4j.Slf4j
 public class ChangeKeyMapHandler extends AbstractMaplePacketHandler {
 
+    public static final int NORMAL_KEY_MAP = 0;
+    public static final int PET_AUTO_HP = 1;
+    public static final int PET_AUTO_MP = 2;
+
     @Override
     public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null || packet.available() < 8) {
             return;
         }
-        final int actiontype = packet.readInt();
-        switch (actiontype) {
-            case 0: { // Normal Key Map
+        final int actionType = packet.readInt();
+        switch (actionType) {
+            case NORMAL_KEY_MAP: {
                 final int numChanges = packet.readInt();
                 for (int i = 0; i < numChanges; i++) {
                     final int key = packet.readInt();
@@ -34,13 +38,13 @@ public class ChangeKeyMapHandler extends AbstractMaplePacketHandler {
                         continue;
                     }
 
-                    if (type == 1 && action >= 1000) { // skill
-                        final ISkill skil = SkillFactory.getSkill(action);
-                        if (skil != null
-                                && ((!skil.isFourthJob()
-                                                && !skil.isBeginnerSkill()
-                                                && skil.isInvisible()
-                                                && chr.getSkillLevel(skil) <= 0)
+                    if (type == 1 && action >= 1000) {
+                        final ISkill skill = SkillFactory.getSkill(action);
+                        if (skill != null
+                                && ((!skill.isFourthJob()
+                                                && !skill.isBeginnerSkill()
+                                                && skill.isInvisible()
+                                                && chr.getSkillLevel(skill) <= 0)
                                         || (GameConstants.isLinkedAranSkill(action))
                                         || (action % 10000 < 1000)
                                         || (action >= 91000000))) {
@@ -68,15 +72,15 @@ public class ChangeKeyMapHandler extends AbstractMaplePacketHandler {
                             binding.setDeleted(true);
                             chr.getKeyLayout().setBinding(binding);
                         }
-                        chr.getKeyLayout().saveKeys();
                     }
                 }
+                chr.getKeyLayout().saveKeys();
                 break;
             }
-            case 1: // Pet Auto HP
-            case 2: { // Pet Auto MP
+            case PET_AUTO_HP:
+            case PET_AUTO_MP: {
                 final int data = packet.readInt();
-                boolean isHp = actiontype == 1;
+                boolean isHp = actionType == 1;
 
                 if (data == 0) {
                     return;
