@@ -108,6 +108,13 @@ public class MapleClient extends BaseMapleClient {
             serverTransition = transitionStates.contains(loginState);
             loggedIn = !serverTransition;
         }
+        if (loginState == LoginState.LOGIN_NOTLOGGEDIN) {
+            WorldServer.getInstance().removeConnectedAccount(accountData.getName());
+        }
+        if (List.of(LoginState.LOGIN_CS_LOGGEDIN, LoginState.LOGIN_WAITING, LoginState.LOGIN_LOGGEDIN)
+                .contains(loginState)) {
+            WorldServer.getInstance().registerConnectedAccount(accountData);
+        }
     }
 
     public void removalTask() {
@@ -292,7 +299,6 @@ public class MapleClient extends BaseMapleClient {
         }
         if (!serverTransition && isLoggedIn()) {
             updateLoginState(LoginState.LOGIN_NOTLOGGEDIN, getSessionIPAddress());
-            WorldServer.getInstance().removeConnectedAccount(accountData.getName());
         }
     }
 

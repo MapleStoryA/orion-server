@@ -48,7 +48,6 @@ public class InterServerHandler {
             log.error("Missing server migration: {}", c.getAccountData().getName());
             return;
         }
-        WorldServer.getInstance().registerConnectedClient(c.getAccountData());
         MapleCharacter player;
         final CharacterTransfer transfer = serverMigration.getCharacterTransfer();
 

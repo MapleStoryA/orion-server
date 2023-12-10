@@ -2,7 +2,6 @@ package handling.channel;
 
 import client.MapleCharacter;
 import client.MapleCharacterHelper;
-import handling.world.WorldServer;
 import handling.world.helper.CharacterTransfer;
 import handling.world.helper.CheaterData;
 import handling.world.helper.FindCommand;
@@ -53,7 +52,6 @@ public class PlayerStorage {
             wL.unlock();
         }
         FindCommand.register(chr.getId(), chr.getName(), channel);
-        WorldServer.getInstance().registerConnectedClient(chr.getAccountData());
     }
 
     public final void registerPendingPlayer(final CharacterTransfer chr, final int playerid) {

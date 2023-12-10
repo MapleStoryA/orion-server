@@ -160,7 +160,7 @@ public class WorldServer {
         return connectedAccounts.containsKey(login);
     }
 
-    public void registerConnectedClient(AccountData accountData) {
+    public void registerConnectedAccount(AccountData accountData) {
         connectedAccounts.put(accountData.getName(), accountData);
     }
 

@@ -125,7 +125,6 @@ public class LoginServer extends GameServer {
             LoginServer.getInstance().setLoad(load, usersOn);
             lastUpdate = System.currentTimeMillis();
         }
-        WorldServer.getInstance().registerConnectedClient(c.getAccountData());
         c.updateLoginState(LoginState.LOGIN_LOGGEDIN, c.getSessionIPAddress());
         c.getSession().write(LoginPacket.getAuthSuccessRequest(c));
         c.setIdleTask(
