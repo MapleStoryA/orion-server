@@ -1382,7 +1382,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             changed_skills = false;
             changed_reports = false;
 
-            // con.commit();
+            con.commit();
         } catch (Exception e) {
             e.printStackTrace();
             try {
