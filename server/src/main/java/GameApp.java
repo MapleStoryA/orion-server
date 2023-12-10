@@ -34,6 +34,7 @@ import server.Timer.EtcTimer;
 import server.TimerManager;
 import server.cashshop.CashItemFactory;
 import server.config.ServerConfig;
+import server.events.MapleOxQuizFactory;
 import server.gachapon.GachaponFactory;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonsterInformationProvider;

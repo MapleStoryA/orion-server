@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scripting.v1.game.TargetScripting;
 import server.config.ServerConfig;
+import server.life.MapleMonster;
 import server.maps.MapleMap;
 
 @lombok.extern.slf4j.Slf4j

@@ -7,6 +7,7 @@ import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
 import server.config.ServerConfig;
+import server.life.MobSkill;
 import server.life.MobSkillFactory;
 
 @lombok.extern.slf4j.Slf4j

@@ -22,6 +22,7 @@ import provider.MapleDataProvider;
 import provider.MapleDataTool;
 import server.StructSetItem.SetItem;
 import server.config.ServerConfig;
+import tools.Pair;
 import tools.Randomizer;
 import tools.Triple;
 
@@ -403,7 +404,9 @@ public class MapleItemInformationProvider {
         return ret;
     }
 
-    /** returns the maximum of items in one slot */
+    /**
+     * returns the maximum of items in one slot
+     */
     public final short getSlotMax(final MapleClient c, final int itemId) {
         if (slotMaxCache.containsKey(itemId)) {
             return slotMaxCache.get(itemId);

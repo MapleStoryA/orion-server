@@ -101,6 +101,7 @@ import server.Timer.EtcTimer;
 import server.Timer.MapTimer;
 import server.cashshop.CashShop;
 import server.config.ServerConfig;
+import server.life.MapleMonster;
 import server.life.MobSkill;
 import server.maplevar.MapleVar;
 import server.maplevar.SimpleMapleVar;

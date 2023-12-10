@@ -1,6 +1,7 @@
 package server.config;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import lombok.extern.slf4j.Slf4j;
 import provider.MapleDataProvider;
@@ -40,9 +41,18 @@ public class ServerConfig {
     public static synchronized ServerConfig serverConfig() {
         if (INSTANCE == null) {
             Environment environment = Environment.resolve();
-            var loader = new ConfigLoader(environment, Paths.get("config").toAbsolutePath());
-            INSTANCE = loader.loadServerConfig();
+            INSTANCE = loadServerConfig(environment, Paths.get("config").toAbsolutePath());
         }
         return INSTANCE;
+    }
+
+    public static ServerConfig loadServerConfig(Environment environment, Path path) {
+        String folder = path.toString() + "/env/" + environment.toString().toLowerCase();
+        if (!new File(folder).exists()) {
+            throw new RuntimeException("The folder " + folder + " does not exist");
+        }
+        YamlConfigurationLoader loader = new YamlConfigurationLoader();
+        Config config = loader.load(folder + "/" + "config.yaml");
+        return new ServerConfig(config);
     }
 }

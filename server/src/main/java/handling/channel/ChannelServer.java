@@ -23,6 +23,7 @@ import server.TimerManager;
 import server.autosave.AutoSaveRunnable;
 import server.config.Config;
 import server.config.ServerConfig;
+import server.events.MapleCoconut;
 import server.events.MapleEvent;
 import server.events.MapleEventType;
 import server.events.MapleFitness;
