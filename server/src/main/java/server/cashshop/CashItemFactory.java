@@ -1,31 +1,30 @@
 package server.cashshop;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
 import server.cashshop.CashItemInfo.CashModInfo;
 import server.config.ServerEnvironment;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 @lombok.extern.slf4j.Slf4j
 public class CashItemFactory {
 
-    public final static MapleDataProvider data = ServerEnvironment.serverConfig().getDataProvider("wz/Etc");
-    private final static CashItemFactory instance = new CashItemFactory();
-    private final static int[] bestItems = new int[]{10002819, 50100010, 50200001, 10002147, 60000073};
+    public static final MapleDataProvider data =
+            ServerEnvironment.serverConfig().getDataProvider("wz/Etc");
+    private static final CashItemFactory instance = new CashItemFactory();
+    private static final int[] bestItems = new int[] {10002819, 50100010, 50200001, 10002147, 60000073};
     private final Map<Integer, Integer> itemSn = new HashMap<>(); // itemid, sn
     private final Map<Integer, CashItemInfo> itemStats = new HashMap<Integer, CashItemInfo>();
     private final Map<Integer, List<CashItemInfo>> itemPackage = new HashMap<Integer, List<CashItemInfo>>();
     private final Map<Integer, CashModInfo> itemMods = new HashMap<Integer, CashModInfo>();
     private boolean initialized = false;
 
-    protected CashItemFactory() {
-    }
+    protected CashItemFactory() {}
 
     public static final CashItemFactory getInstance() {
         return instance;
@@ -40,8 +39,12 @@ public class CashItemFactory {
             final int itemId = MapleDataTool.getIntConvert("ItemId", field, 0);
             final int SN = MapleDataTool.getIntConvert("SN", field, 0);
 
-            final CashItemInfo stats = new CashItemInfo(itemId, MapleDataTool.getIntConvert("Count", field, 1),
-                    MapleDataTool.getIntConvert("Price", field, 0), SN, MapleDataTool.getIntConvert("Period", field, 0),
+            final CashItemInfo stats = new CashItemInfo(
+                    itemId,
+                    MapleDataTool.getIntConvert("Count", field, 1),
+                    MapleDataTool.getIntConvert("Price", field, 0),
+                    SN,
+                    MapleDataTool.getIntConvert("Period", field, 0),
                     MapleDataTool.getIntConvert("Gender", field, 2),
                     MapleDataTool.getIntConvert("OnSale", field, 0) > 0);
 
@@ -64,7 +67,6 @@ public class CashItemFactory {
         for (int i : itemids) {
             getPackageItems(i, children);
         }
-
 
         long finish = System.currentTimeMillis();
         log.info("Finished loading basic cashshop in : " + (finish - start) / 1000);

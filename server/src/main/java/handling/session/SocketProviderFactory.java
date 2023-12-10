@@ -15,6 +15,5 @@ public class SocketProviderFactory {
             log.error("Could not instantiate the socket provider", e);
             throw new RuntimeException(e);
         }
-
     }
 }

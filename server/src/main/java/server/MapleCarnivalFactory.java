@@ -1,6 +1,8 @@
 package server;
 
 import client.MapleDisease;
+import java.util.HashMap;
+import java.util.Map;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
@@ -8,19 +10,16 @@ import server.config.ServerEnvironment;
 import server.life.MobSkill;
 import server.life.MobSkillFactory;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @lombok.extern.slf4j.Slf4j
 public class MapleCarnivalFactory {
 
-    private final static MapleCarnivalFactory instance = new MapleCarnivalFactory();
+    private static final MapleCarnivalFactory instance = new MapleCarnivalFactory();
     private final Map<Integer, MCSkill> skills = new HashMap<Integer, MCSkill>();
     private final Map<Integer, MCSkill> guardians = new HashMap<Integer, MCSkill>();
     private final MapleDataProvider dataRoot = ServerEnvironment.serverConfig().getDataProvider("wz/Skill");
 
     public MapleCarnivalFactory() {
-        //whoosh
+        // whoosh
     }
 
     public static final MapleCarnivalFactory getInstance() {
@@ -32,10 +31,22 @@ public class MapleCarnivalFactory {
             return;
         }
         for (MapleData z : dataRoot.getData("MCSkill.img")) {
-            skills.put(Integer.parseInt(z.getName()), new MCSkill(MapleDataTool.getInt("spendCP", z, 0), MapleDataTool.getInt("mobSkillID", z, 0), MapleDataTool.getInt("level", z, 0), MapleDataTool.getInt("target", z, 1) > 1));
+            skills.put(
+                    Integer.parseInt(z.getName()),
+                    new MCSkill(
+                            MapleDataTool.getInt("spendCP", z, 0),
+                            MapleDataTool.getInt("mobSkillID", z, 0),
+                            MapleDataTool.getInt("level", z, 0),
+                            MapleDataTool.getInt("target", z, 1) > 1));
         }
         for (MapleData z : dataRoot.getData("MCGuardian.img")) {
-            guardians.put(Integer.parseInt(z.getName()), new MCSkill(MapleDataTool.getInt("spendCP", z, 0), MapleDataTool.getInt("mobSkillID", z, 0), MapleDataTool.getInt("level", z, 0), true));
+            guardians.put(
+                    Integer.parseInt(z.getName()),
+                    new MCSkill(
+                            MapleDataTool.getInt("spendCP", z, 0),
+                            MapleDataTool.getInt("mobSkillID", z, 0),
+                            MapleDataTool.getInt("level", z, 0),
+                            true));
         }
     }
 
@@ -60,7 +71,7 @@ public class MapleCarnivalFactory {
         }
 
         public MobSkill getSkill() {
-            return MobSkillFactory.getMobSkill(skillid, 1); //level?
+            return MobSkillFactory.getMobSkill(skillid, 1); // level?
         }
 
         public MapleDisease getDisease() {

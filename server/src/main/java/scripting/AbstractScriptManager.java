@@ -1,13 +1,12 @@
 package scripting;
 
 import client.MapleClient;
-import server.config.ServerEnvironment;
-import tools.StringUtil;
-
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import server.config.ServerEnvironment;
+import tools.StringUtil;
 
 /**
  * @author Matze
@@ -52,20 +51,18 @@ public abstract class AbstractScriptManager {
             return (Invocable) engine;
         } catch (ScriptException e) {
             log.error("Error executing script " + path, e);
-            log.info("Error executing script " + path + e.getMessage() + " line: " + e.getLineNumber()
-                    + " column: " + e.getColumnNumber());
+            log.info("Error executing script " + path + e.getMessage() + " line: " + e.getLineNumber() + " column: "
+                    + e.getColumnNumber());
             return null;
         } catch (Exception ex) {
             log.error("Error executing script " + path, ex);
             log.info("Error executing script " + path);
             return null;
         }
-
     }
 
     protected void resetContext(String path, MapleClient c) {
         path = ServerEnvironment.serverConfig().getScriptsPath() + "/" + path;
         c.removeScriptEngine(path);
     }
-
 }

@@ -1,15 +1,12 @@
 package server.config;
 
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
-import org.yaml.snakeyaml.constructor.SafeConstructor;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 
 @lombok.extern.slf4j.Slf4j
 public class YamlConfigurationLoader implements ConfigurationLoader {
-
 
     @Override
     public String getExtension() {

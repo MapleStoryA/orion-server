@@ -1,16 +1,14 @@
 package server.config;
 
+import java.io.File;
 import lombok.extern.slf4j.Slf4j;
 import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
-
-import java.io.File;
 
 @Slf4j
 public class ServerConfig {
 
     private final Config configuration;
-
 
     public ServerConfig(Config configuration) {
         this.configuration = configuration;
@@ -27,6 +25,4 @@ public class ServerConfig {
     public Config getConfig() {
         return configuration;
     }
-
-
 }

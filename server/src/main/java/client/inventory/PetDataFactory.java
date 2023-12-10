@@ -18,10 +18,7 @@ public class PetDataFactory {
     private static final Map<Integer, Integer> petHunger = new HashMap<Integer, Integer>();
 
     public static final PetCommand getPetCommand(final int petId, final int skillId) {
-        PetCommand ret =
-                petCommands.get(
-                        new Pair<Integer, Integer>(
-                                Integer.valueOf(petId), Integer.valueOf(skillId)));
+        PetCommand ret = petCommands.get(new Pair<Integer, Integer>(Integer.valueOf(petId), Integer.valueOf(skillId)));
         if (ret != null) {
             return ret;
         }
@@ -33,8 +30,7 @@ public class PetDataFactory {
             inc = MapleDataTool.getInt("interact/" + skillId + "/inc", skillData, 0);
         }
         ret = new PetCommand(petId, skillId, prob, inc);
-        petCommands.put(
-                new Pair<Integer, Integer>(Integer.valueOf(petId), Integer.valueOf(skillId)), ret);
+        petCommands.put(new Pair<Integer, Integer>(Integer.valueOf(petId), Integer.valueOf(skillId)), ret);
 
         return ret;
     }
@@ -44,8 +40,7 @@ public class PetDataFactory {
         if (ret != null) {
             return ret;
         }
-        final MapleData hungerData =
-                dataRoot.getData("Pet/" + petId + ".img").getChildByPath("info/hungry");
+        final MapleData hungerData = dataRoot.getData("Pet/" + petId + ".img").getChildByPath("info/hungry");
         ret = Integer.valueOf(MapleDataTool.getInt(hungerData, 1));
         petHunger.put(petId, ret);
 

@@ -4,6 +4,10 @@ import client.MapleClient;
 import client.inventory.IItem;
 import handling.AbstractMaplePacketHandler;
 import handling.cashshop.CashShopOperationHandlers;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import server.MapleInventoryManipulator;
 import server.cashshop.CashCouponData;
@@ -13,11 +17,6 @@ import server.cashshop.CashShopCoupon;
 import tools.Pair;
 import tools.data.input.InPacket;
 import tools.packet.MTSCSPacket;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /*
  *
@@ -54,9 +53,7 @@ public class CouponCodeHandler extends AbstractMaplePacketHandler {
             return;
         }
         final String code = packet.readMapleAsciiString();
-        if (code == null
-                || code.length() < 16
-                || code.length() > 32) {
+        if (code == null || code.length() < 16 || code.length() > 32) {
             c.getSession().write(MTSCSPacket.sendCouponFail(c, 0x0E));
             CashShopOperationHandlers.doCSPackets(c);
             return;
@@ -74,7 +71,8 @@ public class CouponCodeHandler extends AbstractMaplePacketHandler {
             CashShopOperationHandlers.doCSPackets(c);
             return;
         }
-        final Pair<Pair<Integer, Integer>, Pair<List<IItem>, Integer>> couponItemsSize = CashShopCoupon.getSize(rewards);
+        final Pair<Pair<Integer, Integer>, Pair<List<IItem>, Integer>> couponItemsSize =
+                CashShopCoupon.getSize(rewards);
         if ((c.getPlayer().getCSPoints(2) + couponItemsSize.getLeft().getLeft()) < 0) {
             c.getPlayer().dropMessage(1, "You have too much Maple Points.");
             CashShopOperationHandlers.doCSPackets(c);

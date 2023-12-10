@@ -28,11 +28,9 @@ public class MapleLifeFactory {
     private static final MapleData npcStringData = stringDataWZ.getData("Npc.img");
     private static final MapleData npclocData = etcDataWZ.getData("NpcLocation.img");
     private static final Map<Integer, String> npcNames = new HashMap<Integer, String>();
-    private static final Map<Integer, MapleMonsterStats> monsterStats =
-            new HashMap<Integer, MapleMonsterStats>();
+    private static final Map<Integer, MapleMonsterStats> monsterStats = new HashMap<Integer, MapleMonsterStats>();
     private static final Map<Integer, Integer> NPCLoc = new HashMap<Integer, Integer>();
-    private static final Map<Integer, List<Integer>> questCount =
-            new HashMap<Integer, List<Integer>>();
+    private static final Map<Integer, List<Integer>> questCount = new HashMap<Integer, List<Integer>>();
 
     public static AbstractLoadedMapleLife getLife(int id, String type) {
         if (type.equalsIgnoreCase("n")) {
@@ -61,9 +59,8 @@ public class MapleLifeFactory {
         for (MapleDataDirectoryEntry mapz : data.getRoot().getSubdirectories()) {
             if (mapz.getName().equals("QuestCountGroup")) {
                 for (MapleDataFileEntry entry : mapz.getFiles()) {
-                    final int id =
-                            Integer.parseInt(
-                                    entry.getName().substring(0, entry.getName().length() - 4));
+                    final int id = Integer.parseInt(
+                            entry.getName().substring(0, entry.getName().length() - 4));
                     MapleData dat = data.getData("QuestCountGroup/" + entry.getName());
                     if (dat != null && dat.getChildByPath("info") != null) {
                         List<Integer> z = new ArrayList<Integer>();
@@ -95,8 +92,7 @@ public class MapleLifeFactory {
         MapleMonsterStats stats = monsterStats.get(Integer.valueOf(mid));
 
         if (stats == null) {
-            MapleData monsterData =
-                    data.getData(StringUtil.getLeftPaddedStr(mid + ".img", '0', 11));
+            MapleData monsterData = data.getData(StringUtil.getLeftPaddedStr(mid + ".img", '0', 11));
             if (monsterData == null) {
                 return null;
             }
@@ -108,39 +104,30 @@ public class MapleLifeFactory {
             stats.setExp(MapleDataTool.getIntConvert("exp", monsterInfoData, 0));
             stats.setLevel((short) MapleDataTool.getIntConvert("level", monsterInfoData));
             stats.setRemoveAfter(MapleDataTool.getIntConvert("removeAfter", monsterInfoData, 0));
-            stats.setrareItemDropLevel(
-                    (byte) MapleDataTool.getIntConvert("rareItemDropLevel", monsterInfoData, 0));
+            stats.setrareItemDropLevel((byte) MapleDataTool.getIntConvert("rareItemDropLevel", monsterInfoData, 0));
             stats.setFixedDamage(MapleDataTool.getIntConvert("fixedDamage", monsterInfoData, -1));
-            stats.setOnlyNormalAttack(
-                    MapleDataTool.getIntConvert("onlyNormalAttack", monsterInfoData, 0) > 0);
-            stats.setBoss(
-                    MapleDataTool.getIntConvert("boss", monsterInfoData, 0) > 0
-                            || mid == 8810018
-                            || mid == 9410066
-                            || (mid >= 8810118 && mid <= 8810122));
-            stats.setExplosiveReward(
-                    MapleDataTool.getIntConvert("explosiveReward", monsterInfoData, 0) > 0);
+            stats.setOnlyNormalAttack(MapleDataTool.getIntConvert("onlyNormalAttack", monsterInfoData, 0) > 0);
+            stats.setBoss(MapleDataTool.getIntConvert("boss", monsterInfoData, 0) > 0
+                    || mid == 8810018
+                    || mid == 9410066
+                    || (mid >= 8810118 && mid <= 8810122));
+            stats.setExplosiveReward(MapleDataTool.getIntConvert("explosiveReward", monsterInfoData, 0) > 0);
             stats.setFfaLoot(MapleDataTool.getIntConvert("publicReward", monsterInfoData, 0) > 0);
             stats.setUndead(MapleDataTool.getIntConvert("undead", monsterInfoData, 0) > 0);
             stats.setName(MapleDataTool.getString(mid + "/name", mobStringData, "MISSINGNO"));
             stats.setBuffToGive(MapleDataTool.getIntConvert("buff", monsterInfoData, -1));
             stats.setFriendly(MapleDataTool.getIntConvert("damagedByMob", monsterInfoData, 0) > 0);
-            stats.setExplosiveReward(
-                    MapleDataTool.getIntConvert("explosiveReward", monsterInfoData, 0) > 0);
+            stats.setExplosiveReward(MapleDataTool.getIntConvert("explosiveReward", monsterInfoData, 0) > 0);
             stats.setNoDoom(MapleDataTool.getIntConvert("noDoom", monsterInfoData, 0) > 0);
             stats.setFfaLoot(MapleDataTool.getIntConvert("publicReward", monsterInfoData, 0) > 0);
             stats.setCP((byte) MapleDataTool.getIntConvert("getCP", monsterInfoData, 0));
             stats.setPoint(MapleDataTool.getIntConvert("point", monsterInfoData, 0));
-            stats.setDropItemPeriod(
-                    MapleDataTool.getIntConvert("dropItemPeriod", monsterInfoData, 0));
-            stats.setPhysicalDefense(
-                    (short) MapleDataTool.getIntConvert("PDDamage", monsterInfoData, 0));
-            stats.setMagicDefense(
-                    (short) MapleDataTool.getIntConvert("MDDamage", monsterInfoData, 0));
+            stats.setDropItemPeriod(MapleDataTool.getIntConvert("dropItemPeriod", monsterInfoData, 0));
+            stats.setPhysicalDefense((short) MapleDataTool.getIntConvert("PDDamage", monsterInfoData, 0));
+            stats.setMagicDefense((short) MapleDataTool.getIntConvert("MDDamage", monsterInfoData, 0));
             stats.setEva((short) MapleDataTool.getIntConvert("eva", monsterInfoData, 0));
-            final boolean hideHP =
-                    MapleDataTool.getIntConvert("HPgaugeHide", monsterInfoData, 0) > 0
-                            || MapleDataTool.getIntConvert("hideHP", monsterInfoData, 0) > 0;
+            final boolean hideHP = MapleDataTool.getIntConvert("HPgaugeHide", monsterInfoData, 0) > 0
+                    || MapleDataTool.getIntConvert("hideHP", monsterInfoData, 0) > 0;
             final MapleData selfd = monsterInfoData.getChildByPath("selfDestruction");
             if (selfd != null) {
                 stats.setSelfDHP(MapleDataTool.getIntConvert("hp", selfd, 0));
@@ -164,18 +151,16 @@ public class MapleLifeFactory {
                     stats.setTagBgColor(0);
                 } else {
                     stats.setTagColor(MapleDataTool.getIntConvert("hpTagColor", monsterInfoData));
-                    stats.setTagBgColor(
-                            MapleDataTool.getIntConvert("hpTagBgcolor", monsterInfoData));
+                    stats.setTagBgColor(MapleDataTool.getIntConvert("hpTagBgcolor", monsterInfoData));
                 }
             }
 
             final MapleData banishData = monsterInfoData.getChildByPath("ban");
             if (banishData != null) {
-                stats.setBanishInfo(
-                        new BanishInfo(
-                                MapleDataTool.getString("banMsg", banishData),
-                                MapleDataTool.getInt("banMap/0/field", banishData, -1),
-                                MapleDataTool.getString("banMap/0/portal", banishData, "sp")));
+                stats.setBanishInfo(new BanishInfo(
+                        MapleDataTool.getString("banMsg", banishData),
+                        MapleDataTool.getInt("banMap/0/field", banishData, -1),
+                        MapleDataTool.getString("banMap/0/portal", banishData, "sp")));
             }
 
             final MapleData reviveInfo = monsterInfoData.getChildByPath("revive");
@@ -192,14 +177,9 @@ public class MapleLifeFactory {
                 int i = 0;
                 List<Pair<Integer, Integer>> skills = new ArrayList<Pair<Integer, Integer>>();
                 while (monsterSkillData.getChildByPath(Integer.toString(i)) != null) {
-                    skills.add(
-                            new Pair<Integer, Integer>(
-                                    Integer.valueOf(
-                                            MapleDataTool.getInt(
-                                                    i + "/skill", monsterSkillData, 0)),
-                                    Integer.valueOf(
-                                            MapleDataTool.getInt(
-                                                    i + "/level", monsterSkillData, 0))));
+                    skills.add(new Pair<Integer, Integer>(
+                            Integer.valueOf(MapleDataTool.getInt(i + "/skill", monsterSkillData, 0)),
+                            Integer.valueOf(MapleDataTool.getInt(i + "/level", monsterSkillData, 0))));
                     i++;
                 }
                 stats.setSkills(skills);
@@ -245,8 +225,7 @@ public class MapleLifeFactory {
         for (int i = 0; i < elemAttr.length(); i += 2) {
             stats.setEffectiveness(
                     Element.getFromChar(elemAttr.charAt(i)),
-                    ElementalEffectiveness.getByNumber(
-                            Integer.valueOf(String.valueOf(elemAttr.charAt(i + 1)))));
+                    ElementalEffectiveness.getByNumber(Integer.valueOf(String.valueOf(elemAttr.charAt(i + 1)))));
         }
     }
 

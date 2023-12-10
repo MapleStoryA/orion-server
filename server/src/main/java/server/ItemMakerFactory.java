@@ -1,28 +1,28 @@
 package server;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import provider.MapleData;
 import provider.MapleDataTool;
 import server.config.ServerEnvironment;
 import tools.Pair;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 @lombok.extern.slf4j.Slf4j
 public class ItemMakerFactory {
 
-    private final static ItemMakerFactory instance = new ItemMakerFactory();
+    private static final ItemMakerFactory instance = new ItemMakerFactory();
     protected Map<Integer, ItemMakerCreateEntry> createCache = new HashMap<Integer, ItemMakerCreateEntry>();
     protected Map<Integer, GemCreateEntry> gemCache = new HashMap<Integer, GemCreateEntry>();
 
     protected ItemMakerFactory() {
-        //log.info("Loading ItemMakerFactory :::");
+        // log.info("Loading ItemMakerFactory :::");
         // 0 = Item upgrade crystals
         // 1 / 2/ 4/ 8 = Item creation
 
-        final MapleData info = ServerEnvironment.serverConfig().getDataProvider("wz/Etc").getData("ItemMake.img");
+        final MapleData info =
+                ServerEnvironment.serverConfig().getDataProvider("wz/Etc").getData("ItemMake.img");
 
         byte totalupgrades, reqMakerLevel;
         int reqLevel, cost, quantity, stimulator;
@@ -38,17 +38,20 @@ public class ItemMakerFactory {
                         reqMakerLevel = (byte) MapleDataTool.getInt("reqSkillLevel", itemFolder, 0);
                         cost = MapleDataTool.getInt("meso", itemFolder, 0);
                         quantity = MapleDataTool.getInt("itemNum", itemFolder, 0);
-//			totalupgrades = MapleDataTool.getInt("tuc", itemFolder, 0); // Gem is always 0
+                        //			totalupgrades = MapleDataTool.getInt("tuc", itemFolder, 0); // Gem is always 0
 
                         ret = new GemCreateEntry(cost, reqLevel, reqMakerLevel, quantity);
 
                         for (MapleData rewardNRecipe : itemFolder.getChildren()) {
                             for (MapleData ind : rewardNRecipe.getChildren()) {
                                 if (rewardNRecipe.getName().equals("randomReward")) {
-                                    ret.addRandomReward(MapleDataTool.getInt("item", ind, 0), MapleDataTool.getInt("prob", ind, 0));
-// MapleDataTool.getInt("itemNum", ind, 0)
+                                    ret.addRandomReward(
+                                            MapleDataTool.getInt("item", ind, 0), MapleDataTool.getInt("prob", ind, 0));
+                                    // MapleDataTool.getInt("itemNum", ind, 0)
                                 } else if (rewardNRecipe.getName().equals("recipe")) {
-                                    ret.addReqRecipe(MapleDataTool.getInt("item", ind, 0), MapleDataTool.getInt("count", ind, 0));
+                                    ret.addReqRecipe(
+                                            MapleDataTool.getInt("item", ind, 0),
+                                            MapleDataTool.getInt("count", ind, 0));
                                 }
                             }
                         }
@@ -69,12 +72,15 @@ public class ItemMakerFactory {
                         totalupgrades = (byte) MapleDataTool.getInt("tuc", itemFolder, 0);
                         stimulator = MapleDataTool.getInt("catalyst", itemFolder, 0);
 
-                        imt = new ItemMakerCreateEntry(cost, reqLevel, reqMakerLevel, quantity, totalupgrades, stimulator);
+                        imt = new ItemMakerCreateEntry(
+                                cost, reqLevel, reqMakerLevel, quantity, totalupgrades, stimulator);
 
                         for (MapleData Recipe : itemFolder.getChildren()) {
                             for (MapleData ind : Recipe.getChildren()) {
                                 if (Recipe.getName().equals("recipe")) {
-                                    imt.addReqItem(MapleDataTool.getInt("item", ind, 0), MapleDataTool.getInt("count", ind, 0));
+                                    imt.addReqItem(
+                                            MapleDataTool.getInt("item", ind, 0),
+                                            MapleDataTool.getInt("count", ind, 0));
                                 }
                             }
                         }
@@ -156,10 +162,12 @@ public class ItemMakerFactory {
         private final int stimulator;
         private final byte tuc;
         private final byte reqMakerLevel;
-        private final List<Pair<Integer, Integer>> reqItems = new ArrayList<Pair<Integer, Integer>>(); // itemId / amount
+        private final List<Pair<Integer, Integer>> reqItems =
+                new ArrayList<Pair<Integer, Integer>>(); // itemId / amount
         private final List<Integer> reqEquips = new ArrayList<Integer>();
 
-        public ItemMakerCreateEntry(int cost, int reqLevel, byte reqMakerLevel, int quantity, byte tuc, int stimulator) {
+        public ItemMakerCreateEntry(
+                int cost, int reqLevel, byte reqMakerLevel, int quantity, byte tuc, int stimulator) {
             this.cost = cost;
             this.tuc = tuc;
             this.reqLevel = reqLevel;

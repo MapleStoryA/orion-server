@@ -22,8 +22,7 @@ public class StringUtil {
      * @param length The length to pad to.
      * @return The padded string.
      */
-    public static final String getLeftPaddedStr(
-            final String in, final char padchar, final int length) {
+    public static final String getLeftPaddedStr(final String in, final char padchar, final int length) {
         StringBuilder builder = new StringBuilder(length);
         for (int x = in.length(); x < length; x++) {
             builder.append(padchar);
@@ -40,8 +39,7 @@ public class StringUtil {
      * @param length The length to pad to.
      * @return The padded string.
      */
-    public static final String getRightPaddedStr(
-            final String in, final char padchar, final int length) {
+    public static final String getRightPaddedStr(final String in, final char padchar, final int length) {
         StringBuilder builder = new StringBuilder(in);
         for (int x = in.length(); x < length; x++) {
             builder.append(padchar);
@@ -68,8 +66,7 @@ public class StringUtil {
      * @param start Starting from which string.
      * @return The joined strings.
      */
-    public static final String joinStringFrom(
-            final String[] arr, final int start, final String sep) {
+    public static final String joinStringFrom(final String[] arr, final int start, final String sep) {
         StringBuilder builder = new StringBuilder();
         for (int i = start; i < arr.length; i++) {
             builder.append(arr[i]);

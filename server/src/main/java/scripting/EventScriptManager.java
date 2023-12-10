@@ -20,10 +20,7 @@ public class EventScriptManager extends AbstractScriptManager {
             if (!script.equals("")) {
                 final Invocable iv = getInvocable("event", script, null);
                 if (iv != null) {
-                    events.put(
-                            script,
-                            new EventEntry(
-                                    script, iv, new EventManager(channelServer, iv, script)));
+                    events.put(script, new EventEntry(script, iv, new EventManager(channelServer, iv, script)));
                 }
             }
         }
@@ -48,10 +45,7 @@ public class EventScriptManager extends AbstractScriptManager {
                 entry.iv.invokeFunction("init", (Object) null);
             } catch (final Exception ex) {
                 log.info("Error initiating event: " + entry.script + ":" + ex);
-                log.info(
-                        "Log_Script_Except.rtf"
-                                + " : "
-                                + ("Error initiating event: " + entry.script + ":" + ex));
+                log.info("Log_Script_Except.rtf" + " : " + ("Error initiating event: " + entry.script + ":" + ex));
             }
         }
     }

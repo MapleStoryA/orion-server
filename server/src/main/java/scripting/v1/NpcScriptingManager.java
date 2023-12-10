@@ -28,8 +28,7 @@ public class NpcScriptingManager {
 
     public static synchronized NpcScriptingManager getInstance() {
         if (INSTANCE == null) {
-            INSTANCE =
-                    new NpcScriptingManager(ServerEnvironment.serverConfig().getScriptsPath() + "/");
+            INSTANCE = new NpcScriptingManager(ServerEnvironment.serverConfig().getScriptsPath() + "/");
         }
         return INSTANCE;
     }
@@ -41,11 +40,10 @@ public class NpcScriptingManager {
         QuestScripting questScript;
         InventoryScripting inventory;
         try {
-            String file =
-                    "function main() {"
-                            + StringUtil.readFileAsString(scriptPath + "/questNew/" + quest + ".js")
-                            + "}"
-                            + "main();";
+            String file = "function main() {"
+                    + StringUtil.readFileAsString(scriptPath + "/questNew/" + quest + ".js")
+                    + "}"
+                    + "main();";
 
             Script script = ctx.compileString(file, "questNew/" + quest + ".js", 1, null);
             Scriptable globalScope = ctx.initStandardObjects();
@@ -76,11 +74,10 @@ public class NpcScriptingManager {
         FieldScripting field;
         try {
 
-            String file =
-                    "function main() {"
-                            + StringUtil.readFileAsString(scriptPath + "/npcNew/" + npc + ".js")
-                            + "}"
-                            + "main();";
+            String file = "function main() {"
+                    + StringUtil.readFileAsString(scriptPath + "/npcNew/" + npc + ".js")
+                    + "}"
+                    + "main();";
 
             Script script = ctx.compileString(file, "npcNew/" + npc + ".js", 1, null);
 

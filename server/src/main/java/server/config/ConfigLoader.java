@@ -10,13 +10,11 @@ public class ConfigLoader {
 
     private final Path path;
 
-
     public ConfigLoader(Environment environment, Path path) {
         this.environment = environment;
         this.path = path;
         this.folder = path.toString() + "/env/" + environment.toString().toLowerCase();
     }
-
 
     public ServerConfig loadServerConfig() {
         if (!new File(folder).exists()) {
@@ -26,5 +24,4 @@ public class ConfigLoader {
         Config config = loader.load(folder + "/" + "config.yaml");
         return new ServerConfig(config);
     }
-
 }

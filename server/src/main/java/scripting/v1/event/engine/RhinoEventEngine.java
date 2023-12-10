@@ -1,6 +1,9 @@
 package scripting.v1.event.engine;
 
 import handling.world.party.MapleParty;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.EvaluatorException;
 import org.mozilla.javascript.Scriptable;
@@ -10,10 +13,6 @@ import scripting.v1.game.TargetScripting;
 import server.config.ServerEnvironment;
 import server.life.MapleMonster;
 import server.maps.MapleMap;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 
 @lombok.extern.slf4j.Slf4j
 public class RhinoEventEngine implements EventEngine {
@@ -84,7 +83,6 @@ public class RhinoEventEngine implements EventEngine {
         } finally {
             Context.exit();
         }
-
     }
 
     @Override
@@ -99,7 +97,6 @@ public class RhinoEventEngine implements EventEngine {
     @Override
     public void onMobKilled(TargetScripting killer, MapleMonster mob) {
         RhinoEngineUtils.invokeMethod("onMobKilled", globalScope, killer, mob);
-
     }
 
     @Override
@@ -118,10 +115,7 @@ public class RhinoEventEngine implements EventEngine {
     }
 
     @Override
-    public void onPartyDisband(MapleParty party) {
-
-
-    }
+    public void onPartyDisband(MapleParty party) {}
 
     @Override
     public void removeFromContext(String key) {
@@ -131,12 +125,10 @@ public class RhinoEventEngine implements EventEngine {
         } finally {
             Context.exit();
         }
-
     }
 
     @Override
     public void onPlayerExitMap(TargetScripting mapleCharacter, MapleMap map) {
         RhinoEngineUtils.invokeMethod("onPlayerExitMap", globalScope, mapleCharacter, map);
     }
-
 }

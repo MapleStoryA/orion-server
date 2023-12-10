@@ -1,10 +1,9 @@
 package server.config;
 
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Setter
 @Getter
@@ -16,7 +15,6 @@ public class Config {
     private Login login;
     private World world;
     private Channel channel;
-
 
     @Setter
     @Getter
@@ -44,8 +42,6 @@ public class Config {
         private String eventMessage;
         private byte flag;
         private int userlimit;
-
-
     }
 
     @Setter
@@ -59,8 +55,6 @@ public class Config {
         private boolean adminOnly;
         private int flags;
         private String serverMessage;
-
-
     }
 
     @Setter
@@ -70,8 +64,5 @@ public class Config {
         private String host;
         private int count;
         private List<String> events;
-
     }
-
 }
-

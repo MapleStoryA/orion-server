@@ -28,8 +28,7 @@ public class PortalScriptManager {
     }
 
     private PortalScript getPortalScript(final String scriptName) {
-        String path =
-                ServerEnvironment.serverConfig().getScriptsPath() + "/portal/" + scriptName + ".js";
+        String path = ServerEnvironment.serverConfig().getScriptsPath() + "/portal/" + scriptName + ".js";
 
         if (!ServerEnvironment.isDebugEnabled()) {
             if (scripts.containsKey(scriptName)) {
@@ -53,10 +52,7 @@ public class PortalScriptManager {
             compiled.eval();
         } catch (final Exception e) {
             System.err.println("Error executing Portalscript: " + scriptName + ":" + e);
-            log.info(
-                    "Log_Script_Except.rtf"
-                            + " : "
-                            + ("Error executing Portal script. (" + scriptName + ") " + e));
+            log.info("Log_Script_Except.rtf" + " : " + ("Error executing Portal script. (" + scriptName + ") " + e));
         } finally {
             if (fr != null) {
                 try {
@@ -78,23 +74,17 @@ public class PortalScriptManager {
             try {
                 script.enter(new PortalPlayerInteraction(c, portal));
             } catch (Exception e) {
-                System.err.println(
-                        "Error entering Portalscript: "
-                                + portal.getScriptName()
-                                + ":"
-                                + e.getMessage());
+                System.err.println("Error entering Portalscript: " + portal.getScriptName() + ":" + e.getMessage());
             }
         } else {
-            log.info(
-                    "Unhandled portal script "
-                            + portal.getScriptName()
-                            + " on map "
-                            + c.getPlayer().getMapId());
-            final String msg =
-                    "Unhandled portal script "
-                            + portal.getScriptName()
-                            + " on map "
-                            + c.getPlayer().getMapId();
+            log.info("Unhandled portal script "
+                    + portal.getScriptName()
+                    + " on map "
+                    + c.getPlayer().getMapId());
+            final String msg = "Unhandled portal script "
+                    + portal.getScriptName()
+                    + " on map "
+                    + c.getPlayer().getMapId();
             log.info("Log_Script_Except.rtf" + " : " + msg);
         }
     }

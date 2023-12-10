@@ -21,10 +21,7 @@ public class MobSkillFactory {
     private static final MapleData skillRoot = dataSource.getData("MobSkill.img");
 
     public static MobSkill getMobSkill(int skillId, int level) {
-        MobSkill ret =
-                mobSkills.get(
-                        new Pair<Integer, Integer>(
-                                Integer.valueOf(skillId), Integer.valueOf(level)));
+        MobSkill ret = mobSkills.get(new Pair<Integer, Integer>(Integer.valueOf(skillId), Integer.valueOf(level)));
         if (ret != null) {
             return ret;
         }
@@ -32,8 +29,7 @@ public class MobSkillFactory {
                 || skillRoot.getChildren() == null
                 || skillRoot.getChildByPath(String.valueOf(skillId)) == null
                 || skillRoot.getChildByPath(String.valueOf(skillId)).getChildren() == null
-                || skillRoot.getChildByPath(String.valueOf(skillId)).getChildByPath("level")
-                        == null) {
+                || skillRoot.getChildByPath(String.valueOf(skillId)).getChildByPath("level") == null) {
             return null;
         }
         final MapleData skillData = skillRoot.getChildByPath(skillId + "/level/" + level);
@@ -43,10 +39,7 @@ public class MobSkillFactory {
                 if (skillData.getChildByPath(String.valueOf(i)) == null) {
                     break;
                 }
-                toSummon.add(
-                        Integer.valueOf(
-                                MapleDataTool.getInt(
-                                        skillData.getChildByPath(String.valueOf(i)), 0)));
+                toSummon.add(Integer.valueOf(MapleDataTool.getInt(skillData.getChildByPath(String.valueOf(i)), 0)));
             }
             final MapleData ltd = skillData.getChildByPath("lt");
             Point lt = null;
@@ -68,9 +61,7 @@ public class MobSkillFactory {
             ret.setLimit((short) MapleDataTool.getInt("limit", skillData, 0));
             ret.setLtRb(lt, rb);
 
-            mobSkills.put(
-                    new Pair<Integer, Integer>(Integer.valueOf(skillId), Integer.valueOf(level)),
-                    ret);
+            mobSkills.put(new Pair<Integer, Integer>(Integer.valueOf(skillId), Integer.valueOf(level)), ret);
         }
         return ret;
     }

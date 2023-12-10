@@ -6,6 +6,16 @@ import handling.PacketProcessor;
 import handling.login.LoginServer;
 import handling.world.WorldServer;
 import handling.world.helper.CheaterData;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import scripting.EventScriptManager;
 import scripting.v1.event.EventCenter;
 import server.MapleSquad;
@@ -27,17 +37,6 @@ import server.shops.HiredMerchant;
 import tools.CollectionUtil;
 import tools.MaplePacketCreator;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-
 @lombok.extern.slf4j.Slf4j
 public class ChannelServer extends GameServer {
 
@@ -57,10 +56,7 @@ public class ChannelServer extends GameServer {
     private int running_MerchantID = 0;
     private int flags = 0;
     private String serverMessage;
-    private boolean shutdown = false,
-            finishedShutdown = false,
-            MegaphoneMuteState = false,
-            adminOnly = false;
+    private boolean shutdown = false, finishedShutdown = false, MegaphoneMuteState = false, adminOnly = false;
     private PlayerStorage players;
     private EventScriptManager eventSM;
     private int eventmap = -1;
@@ -76,15 +72,13 @@ public class ChannelServer extends GameServer {
         this.flags = wordConfig.getFlags();
         this.adminOnly = wordConfig.isAdminOnly();
 
-        Config.Channel channelConfig = ServerEnvironment.serverConfig().getConfig().getChannel();
+        Config.Channel channelConfig =
+                ServerEnvironment.serverConfig().getConfig().getChannel();
         this.publicAddress = channelConfig.getHost() + ":" + port;
         this.mapFactory = new MapleMapFactory();
         this.aramiaEvent = new AramiaFireWorks();
         this.eventCenter = new EventCenter(channel);
-        this.eventSM =
-                new EventScriptManager(
-                        this,
-                        channelConfig.getEvents());
+        this.eventSM = new EventScriptManager(this, channelConfig.getEvents());
         this.mapFactory.setChannel(channel);
         this.players = new PlayerStorage(channel);
         this.serverStartTime = System.currentTimeMillis();
@@ -106,18 +100,11 @@ public class ChannelServer extends GameServer {
         if (events.size() != 0) {
             return;
         }
-        events.put(
-                MapleEventType.Coconut,
-                new MapleCoconut(channel, MapleEventType.Coconut.getMapIds()));
-        events.put(
-                MapleEventType.Fitness,
-                new MapleFitness(channel, MapleEventType.Fitness.getMapIds()));
+        events.put(MapleEventType.Coconut, new MapleCoconut(channel, MapleEventType.Coconut.getMapIds()));
+        events.put(MapleEventType.Fitness, new MapleFitness(channel, MapleEventType.Fitness.getMapIds()));
         events.put(MapleEventType.OlaOla, new MapleOla(channel, MapleEventType.OlaOla.getMapIds()));
-        events.put(
-                MapleEventType.OxQuiz, new MapleOxQuiz(channel, MapleEventType.OxQuiz.getMapIds()));
-        events.put(
-                MapleEventType.Snowball,
-                new MapleSnowball(channel, MapleEventType.Snowball.getMapIds()));
+        events.put(MapleEventType.OxQuiz, new MapleOxQuiz(channel, MapleEventType.OxQuiz.getMapIds()));
+        events.put(MapleEventType.Snowball, new MapleSnowball(channel, MapleEventType.Snowball.getMapIds()));
     }
 
     @Override
@@ -223,12 +210,10 @@ public class ChannelServer extends GameServer {
     }
 
     public void reloadEvents() {
-        Config.Channel channelConfig = ServerEnvironment.serverConfig().getConfig().getChannel();
+        Config.Channel channelConfig =
+                ServerEnvironment.serverConfig().getConfig().getChannel();
         eventSM.cancel();
-        eventSM =
-                new EventScriptManager(
-                        this,
-                        channelConfig.getEvents());
+        eventSM = new EventScriptManager(this, channelConfig.getEvents());
         eventSM.init();
     }
 
@@ -455,8 +440,7 @@ public class ChannelServer extends GameServer {
     }
 
     public void broadcastYellowMsg(String msg) {
-        for (@SuppressWarnings("unused")
-        MapleCharacter mc : getPlayerStorage().getAllCharacters()) {
+        for (@SuppressWarnings("unused") MapleCharacter mc : getPlayerStorage().getAllCharacters()) {
             broadcastPacket(MaplePacketCreator.yellowChat(msg));
         }
     }
