@@ -8,7 +8,7 @@ import tools.ApiClass;
 class SetLevelCommand implements Command {
     @Override
     public void execute(MapleClient c, String[] args) {
-        if (args[1] != null && args[1] != null && "set".equals(args[1])) {
+        if (args.length > 1 && args[1] != null && "set".equals(args[1])) {
             short level = Short.valueOf(args[0]);
             c.getPlayer().setLevel(level);
             c.getPlayer().updateSingleStat(MapleStat.LEVEL, level);
