@@ -5,7 +5,7 @@ import handling.channel.ChannelServer;
 import handling.world.WorldServer;
 import java.util.ArrayList;
 import java.util.List;
-import scripting.v1.game.helper.ApiClass;
+import tools.ApiClass;
 import tools.MaplePacketCreator;
 
 @lombok.extern.slf4j.Slf4j

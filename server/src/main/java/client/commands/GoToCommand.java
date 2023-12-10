@@ -2,10 +2,13 @@ package client.commands;
 
 import client.MapleClient;
 import java.util.HashMap;
+
+import tools.ApiClass;
 import server.MaplePortal;
 import server.maps.MapleMap;
 
-public class GoToCommand implements Command {
+@ApiClass
+class GoToCommand implements Command {
 
     private static final HashMap<String, Integer> listOfMaps = new HashMap<>();
 

@@ -4,7 +4,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import java.util.Random;
 import lombok.extern.slf4j.Slf4j;
-import scripting.v1.game.helper.ApiClass;
+import tools.ApiClass;
 
 @Slf4j
 public class BaseScripting {

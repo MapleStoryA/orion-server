@@ -129,6 +129,7 @@ public class ChannelServer extends GameServer {
         WorldServer.getInstance().removeChannel(channel);
         LoginServer.getInstance().removeChannel(channel);
         setFinishShutdown();
+
     }
 
     public boolean hasFinishedShutdown() {

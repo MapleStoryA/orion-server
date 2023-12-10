@@ -1,8 +1,10 @@
 package client.commands;
 
 import client.MapleClient;
+import tools.ApiClass;
 
-public class GainMesosCommand implements Command {
+@ApiClass
+class GainMesosCommand implements Command {
     @Override
     public void execute(MapleClient c, String[] args) {
         if (args.length < 1) {

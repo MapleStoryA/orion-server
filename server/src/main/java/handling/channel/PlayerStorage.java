@@ -5,6 +5,8 @@ import client.MapleCharacterHelper;
 import handling.world.helper.CharacterTransfer;
 import handling.world.helper.CheaterData;
 import handling.world.helper.FindCommand;
+import server.Timer.PingTimer;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -14,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import server.Timer.PingTimer;
 
 @lombok.extern.slf4j.Slf4j
 public class PlayerStorage {
@@ -201,6 +202,8 @@ public class PlayerStorage {
                     chr.getClient().getSession().close();
                     FindCommand.forceDeregister(chr.getId(), chr.getName());
                     itr.remove();
+                } else {
+                    chr.getClient().getPlayer().saveToDB(false, false);
                 }
             }
         } finally {

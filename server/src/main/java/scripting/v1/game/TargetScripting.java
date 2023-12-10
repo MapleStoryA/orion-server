@@ -10,7 +10,7 @@ import java.awt.*;
 import lombok.extern.slf4j.Slf4j;
 import scripting.v1.event.EventCenter;
 import scripting.v1.event.EventInstance;
-import scripting.v1.game.helper.ApiClass;
+import tools.ApiClass;
 import server.maps.MapleMap;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;

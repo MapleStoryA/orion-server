@@ -6,7 +6,7 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ContinuationPending;
 import org.mozilla.javascript.Scriptable;
 import scripting.ScriptMan;
-import scripting.v1.game.helper.ApiClass;
+import tools.ApiClass;
 import scripting.v1.game.helper.AskAvatarHelper;
 import server.life.MapleNPC;
 import tools.packet.npcpool.NpcPoolPackets;

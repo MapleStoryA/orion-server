@@ -85,7 +85,7 @@ import lombok.extern.slf4j.Slf4j;
 import scripting.EventInstanceManager;
 import scripting.NPCScriptManager;
 import scripting.v1.event.EventInstance;
-import scripting.v1.game.helper.ApiClass;
+import tools.ApiClass;
 import server.MapleCarnivalChallenge;
 import server.MapleCarnivalParty;
 import server.MapleInventoryManipulator;

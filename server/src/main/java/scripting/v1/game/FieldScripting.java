@@ -3,7 +3,7 @@ package scripting.v1.game;
 import client.MapleCharacter;
 import java.awt.*;
 import java.util.Collection;
-import scripting.v1.game.helper.ApiClass;
+import tools.ApiClass;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
 

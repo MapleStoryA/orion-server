@@ -1,8 +1,10 @@
 package client.commands;
 
 import client.MapleClient;
+import tools.ApiClass;
 
-public class ChangeJobCommand implements Command {
+@ApiClass
+class ChangeJobCommand implements Command {
     @Override
     public void execute(MapleClient c, String[] args) {
         c.getPlayer().changeJob(Integer.parseInt(args[0]));
