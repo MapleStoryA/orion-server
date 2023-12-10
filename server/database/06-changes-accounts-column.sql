@@ -35,3 +35,5 @@ ALTER TABLE orion.`characters` DROP COLUMN occupationId;
 ALTER TABLE orion.`characters` DROP COLUMN occupationEXP;
 
 DROP TABLE orion.ipvotelog;
+DROP TABLE orion.gmlog;
+DROP TABLE orion.macfilters;
