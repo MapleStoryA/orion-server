@@ -13,7 +13,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 import server.MaplePortal;
-import server.config.ServerEnvironment;
+import server.config.ServerConfig;
 
 @lombok.extern.slf4j.Slf4j
 public class PortalScriptManager {
@@ -28,9 +28,9 @@ public class PortalScriptManager {
     }
 
     private PortalScript getPortalScript(final String scriptName) {
-        String path = ServerEnvironment.serverConfig().getScriptsPath() + "/portal/" + scriptName + ".js";
+        String path = ServerConfig.serverConfig().getScriptsPath() + "/portal/" + scriptName + ".js";
 
-        if (!ServerEnvironment.isDebugEnabled()) {
+        if (!ServerConfig.isDebugEnabled()) {
             if (scripts.containsKey(scriptName)) {
                 return scripts.get(scriptName);
             }

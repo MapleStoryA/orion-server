@@ -11,19 +11,17 @@ import provider.MapleDataFileEntry;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
 import provider.WzXML.MapleDataType;
-import server.config.ServerEnvironment;
-import tools.Pair;
+import server.config.ServerConfig;
 import tools.StringUtil;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleLifeFactory {
 
-    private static final MapleDataProvider data =
-            ServerEnvironment.serverConfig().getDataProvider("wz/Mob");
+    private static final MapleDataProvider data = ServerConfig.serverConfig().getDataProvider("wz/Mob");
     private static final MapleDataProvider stringDataWZ =
-            ServerEnvironment.serverConfig().getDataProvider("wz/String");
+            ServerConfig.serverConfig().getDataProvider("wz/String");
     private static final MapleDataProvider etcDataWZ =
-            ServerEnvironment.serverConfig().getDataProvider("wz/Etc");
+            ServerConfig.serverConfig().getDataProvider("wz/Etc");
     private static final MapleData mobStringData = stringDataWZ.getData("Mob.img");
     private static final MapleData npcStringData = stringDataWZ.getData("Npc.img");
     private static final MapleData npclocData = etcDataWZ.getData("NpcLocation.img");

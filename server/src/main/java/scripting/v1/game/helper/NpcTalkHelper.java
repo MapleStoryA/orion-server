@@ -6,8 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mozilla.javascript.ContinuationPending;
 import scripting.v1.NpcScriptingManager;
 import scripting.v1.game.NpcScripting;
-import server.config.ServerEnvironment;
-import tools.data.input.InPacket;
+import server.config.ServerConfig;
 
 @Slf4j
 public class NpcTalkHelper {
@@ -19,12 +18,12 @@ public class NpcTalkHelper {
     }
 
     public static boolean isNewNpcScriptAvailable(int npc) {
-        var file = new File(ServerEnvironment.serverConfig().getScriptsPath() + "/npcNew/" + npc + ".js");
+        var file = new File(ServerConfig.serverConfig().getScriptsPath() + "/npcNew/" + npc + ".js");
         return file.exists();
     }
 
     public static boolean isNewQuestScriptAvailable(int npc) {
-        var file = new File(ServerEnvironment.serverConfig().getScriptsPath() + "/" + "questNew/" + npc + ".js");
+        var file = new File(ServerConfig.serverConfig().getScriptsPath() + "/" + "questNew/" + npc + ".js");
         return file.exists();
     }
 

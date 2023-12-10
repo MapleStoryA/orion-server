@@ -5,15 +5,13 @@ import java.util.Map;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
-import server.config.ServerEnvironment;
-import tools.Pair;
+import server.config.ServerConfig;
 import tools.StringUtil;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleReactorFactory {
 
-    private static final MapleDataProvider data =
-            ServerEnvironment.serverConfig().getDataProvider("wz/Reactor");
+    private static final MapleDataProvider data = ServerConfig.serverConfig().getDataProvider("wz/Reactor");
     private static final Map<Integer, MapleReactorStats> reactorStats = new HashMap<Integer, MapleReactorStats>();
 
     public static final MapleReactorStats getReactor(int rid) {

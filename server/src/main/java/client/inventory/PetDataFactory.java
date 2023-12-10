@@ -5,14 +5,13 @@ import java.util.Map;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
-import server.config.ServerEnvironment;
-import tools.Pair;
+import server.config.ServerConfig;
 
 @lombok.extern.slf4j.Slf4j
 public class PetDataFactory {
 
     private static final MapleDataProvider dataRoot =
-            ServerEnvironment.serverConfig().getDataProvider("wz/Item");
+            ServerConfig.serverConfig().getDataProvider("wz/Item");
     private static final Map<Pair<Integer, Integer>, PetCommand> petCommands =
             new HashMap<Pair<Integer, Integer>, PetCommand>();
     private static final Map<Integer, Integer> petHunger = new HashMap<Integer, Integer>();

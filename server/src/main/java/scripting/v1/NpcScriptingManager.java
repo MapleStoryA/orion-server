@@ -11,8 +11,7 @@ import scripting.v1.game.InventoryScripting;
 import scripting.v1.game.NpcScripting;
 import scripting.v1.game.QuestScripting;
 import scripting.v1.game.TargetScripting;
-import server.config.ServerEnvironment;
-import server.quest.MapleQuest;
+import server.config.ServerConfig;
 import tools.StringUtil;
 
 @Slf4j
@@ -28,7 +27,7 @@ public class NpcScriptingManager {
 
     public static synchronized NpcScriptingManager getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new NpcScriptingManager(ServerEnvironment.serverConfig().getScriptsPath() + "/");
+            INSTANCE = new NpcScriptingManager(ServerConfig.serverConfig().getScriptsPath() + "/");
         }
         return INSTANCE;
     }

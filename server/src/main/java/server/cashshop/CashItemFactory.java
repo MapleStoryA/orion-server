@@ -9,13 +9,12 @@ import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
 import server.cashshop.CashItemInfo.CashModInfo;
-import server.config.ServerEnvironment;
+import server.config.ServerConfig;
 
 @lombok.extern.slf4j.Slf4j
 public class CashItemFactory {
 
-    public static final MapleDataProvider data =
-            ServerEnvironment.serverConfig().getDataProvider("wz/Etc");
+    public static final MapleDataProvider data = ServerConfig.serverConfig().getDataProvider("wz/Etc");
     private static final CashItemFactory instance = new CashItemFactory();
     private static final int[] bestItems = new int[] {10002819, 50100010, 50200001, 10002147, 60000073};
     private final Map<Integer, Integer> itemSn = new HashMap<>(); // itemid, sn

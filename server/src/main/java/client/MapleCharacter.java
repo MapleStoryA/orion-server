@@ -100,8 +100,7 @@ import server.Timer.BuffTimer;
 import server.Timer.EtcTimer;
 import server.Timer.MapTimer;
 import server.cashshop.CashShop;
-import server.config.ServerEnvironment;
-import server.life.MapleMonster;
+import server.config.ServerConfig;
 import server.life.MobSkill;
 import server.maplevar.MapleVar;
 import server.maplevar.SimpleMapleVar;
@@ -759,7 +758,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                             new SkillEntry(
                                     rs.getByte("skilllevel"), rs.getByte("masterlevel"), rs.getLong("expiration")));
 
-                    if (ServerEnvironment.isSkillSavingEnabled()) {
+                    if (ServerConfig.isSkillSavingEnabled()) {
                         log.info("Loading skill: " + skil.getName() + " Level: " + rs.getByte("skilllevel"));
                     }
                 }
@@ -1281,7 +1280,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 ps.setInt(1, id);
 
                 for (final Entry<ISkill, SkillEntry> skill : skills.entrySet()) {
-                    if (ServerEnvironment.isSkillSavingEnabled()) {
+                    if (ServerConfig.isSkillSavingEnabled()) {
                         log.info("Saving skill: " + skill.getKey().getName() + " Level: " + skill.getValue().skillevel);
                     }
 

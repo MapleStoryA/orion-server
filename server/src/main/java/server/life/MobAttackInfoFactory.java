@@ -5,8 +5,7 @@ import java.util.Map;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
-import server.config.ServerEnvironment;
-import tools.Pair;
+import server.config.ServerConfig;
 import tools.StringUtil;
 
 @lombok.extern.slf4j.Slf4j
@@ -14,7 +13,7 @@ public class MobAttackInfoFactory {
 
     private static final MobAttackInfoFactory instance = new MobAttackInfoFactory();
     private static final MapleDataProvider dataSource =
-            ServerEnvironment.serverConfig().getDataProvider("wz/Mob");
+            ServerConfig.serverConfig().getDataProvider("wz/Mob");
     private static final Map<Pair<Integer, Integer>, MobAttackInfo> mobAttacks =
             new HashMap<Pair<Integer, Integer>, MobAttackInfo>();
 

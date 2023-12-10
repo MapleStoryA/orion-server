@@ -16,8 +16,7 @@ import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
 import server.PortalFactory;
-import server.config.ServerEnvironment;
-import server.life.AbstractLoadedMapleLife;
+import server.config.ServerConfig;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
 import server.life.MapleNPC;
@@ -28,10 +27,9 @@ import tools.StringUtil;
 @lombok.extern.slf4j.Slf4j
 public class MapleMapFactory {
 
-    private static final MapleDataProvider source =
-            ServerEnvironment.serverConfig().getDataProvider("wz/Map");
+    private static final MapleDataProvider source = ServerConfig.serverConfig().getDataProvider("wz/Map");
     private static final MapleData nameData =
-            ServerEnvironment.serverConfig().getDataProvider("wz/String").getData("Map.img");
+            ServerConfig.serverConfig().getDataProvider("wz/String").getData("Map.img");
     private static final Map<Integer, List<AbstractLoadedMapleLife>> customLife = new HashMap<>();
     private static final Map<Integer, MapleNodes> mapInfos = new HashMap<Integer, MapleNodes>();
     private final Map<Integer, MapleMap> maps = new HashMap<Integer, MapleMap>();

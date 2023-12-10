@@ -6,8 +6,7 @@ import java.util.Map;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
-import server.config.ServerEnvironment;
-import server.life.MobSkill;
+import server.config.ServerConfig;
 import server.life.MobSkillFactory;
 
 @lombok.extern.slf4j.Slf4j
@@ -16,7 +15,7 @@ public class MapleCarnivalFactory {
     private static final MapleCarnivalFactory instance = new MapleCarnivalFactory();
     private final Map<Integer, MCSkill> skills = new HashMap<Integer, MCSkill>();
     private final Map<Integer, MCSkill> guardians = new HashMap<Integer, MCSkill>();
-    private final MapleDataProvider dataRoot = ServerEnvironment.serverConfig().getDataProvider("wz/Skill");
+    private final MapleDataProvider dataRoot = ServerConfig.serverConfig().getDataProvider("wz/Skill");
 
     public MapleCarnivalFactory() {
         // whoosh

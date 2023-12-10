@@ -8,8 +8,7 @@ import java.util.Map;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
-import server.config.ServerEnvironment;
-import tools.Pair;
+import server.config.ServerConfig;
 
 @lombok.extern.slf4j.Slf4j
 public class MobSkillFactory {
@@ -17,7 +16,7 @@ public class MobSkillFactory {
     private static final Map<Pair<Integer, Integer>, MobSkill> mobSkills =
             new HashMap<Pair<Integer, Integer>, MobSkill>();
     private static final MapleDataProvider dataSource =
-            ServerEnvironment.serverConfig().getDataProvider("wz/Skill");
+            ServerConfig.serverConfig().getDataProvider("wz/Skill");
     private static final MapleData skillRoot = dataSource.getData("MobSkill.img");
 
     public static MobSkill getMobSkill(int skillId, int level) {

@@ -16,8 +16,7 @@ import server.cashshop.CashItemFactory;
 import server.cashshop.CashItemInfo;
 import server.cashshop.CashItemInfo.CashModInfo;
 import server.cashshop.CashShop;
-import server.config.ServerEnvironment;
-import tools.Pair;
+import server.config.ServerConfig;
 import tools.StringUtil;
 import tools.data.output.OutPacket;
 
@@ -84,7 +83,7 @@ public class MTSCSPacket {
 
         packet.writeInt(0); // limit sell data, for each, one int
 
-        if (ServerEnvironment.isDebugEnabled()) {
+        if (ServerConfig.isDebugEnabled()) {
             CashItemFactory.getInstance().loadCashShopData();
         }
 

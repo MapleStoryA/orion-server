@@ -21,8 +21,7 @@ import provider.MapleDataFileEntry;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
 import server.StructSetItem.SetItem;
-import server.config.ServerEnvironment;
-import tools.Pair;
+import server.config.ServerConfig;
 import tools.Randomizer;
 import tools.Triple;
 
@@ -30,13 +29,10 @@ import tools.Triple;
 public class MapleItemInformationProvider {
 
     private static final MapleItemInformationProvider instance = new MapleItemInformationProvider();
-    protected final MapleDataProvider etcData = ServerEnvironment.serverConfig().getDataProvider("wz/Etc");
-    protected final MapleDataProvider itemData =
-            ServerEnvironment.serverConfig().getDataProvider("wz/Item");
-    protected final MapleDataProvider equipData =
-            ServerEnvironment.serverConfig().getDataProvider("wz/Character");
-    protected final MapleDataProvider stringData =
-            ServerEnvironment.serverConfig().getDataProvider("wz/String");
+    protected final MapleDataProvider etcData = ServerConfig.serverConfig().getDataProvider("wz/Etc");
+    protected final MapleDataProvider itemData = ServerConfig.serverConfig().getDataProvider("wz/Item");
+    protected final MapleDataProvider equipData = ServerConfig.serverConfig().getDataProvider("wz/Character");
+    protected final MapleDataProvider stringData = ServerConfig.serverConfig().getDataProvider("wz/String");
     protected final MapleData cashStringData = stringData.getData("Cash.img");
     protected final MapleData consumeStringData = stringData.getData("Consume.img");
     protected final MapleData eqpStringData = stringData.getData("Eqp.img");
