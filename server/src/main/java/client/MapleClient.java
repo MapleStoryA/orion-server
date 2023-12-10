@@ -109,11 +109,11 @@ public class MapleClient extends BaseMapleClient {
             loggedIn = !serverTransition;
         }
         if (loginState == LoginState.LOGIN_NOTLOGGEDIN) {
-            WorldServer.getInstance().removeConnectedAccount(accountData.getName());
+            WorldServer.getInstance()
+                    .removeConnectedAccount(this.getAccountData().getName());
         }
-        if (List.of(LoginState.LOGIN_CS_LOGGEDIN, LoginState.LOGIN_WAITING, LoginState.LOGIN_LOGGEDIN)
-                .contains(loginState)) {
-            WorldServer.getInstance().registerConnectedAccount(accountData);
+        if (loginState != LoginState.LOGIN_NOTLOGGEDIN) {
+            WorldServer.getInstance().registerConnectedAccount(this.getAccountData());
         }
     }
 

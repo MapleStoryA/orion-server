@@ -34,6 +34,11 @@ public class CharLoginPasswordHandler implements MaplePacketHandler {
             return;
         }
 
+        if (result.getAccountData() == null) {
+            c.getSession().write(LoginPacket.getLoginFailed(result.getResult()));
+            return;
+        }
+
         if (result.isAlreadyConnected() && !WorldServer.getInstance().isConnectedLogin(login)) {
             LoginService.setClientAccountLoginState(
                     result.getAccountData(), LoginState.LOGIN_NOTLOGGEDIN, c.getSessionIPAddress());

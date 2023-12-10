@@ -92,11 +92,11 @@ public class LoginService {
 
             AccountData accountData = result.get();
             if (accountData.isOnline()) {
-                return new LoginResult(ALREADY_LOGGED_IN, null);
+                return new LoginResult(ALREADY_LOGGED_IN, accountData);
             }
 
             if (accountData.getBanned() > 0) {
-                return new LoginResult(9, null);
+                return new LoginResult(9, accountData);
             }
 
             int loginStatus = -1;
@@ -166,18 +166,6 @@ public class LoginService {
             ps.close();
         } catch (SQLException e) {
             log.error("error updating login state", e);
-        }
-    }
-
-    public static int updateLoginStatus(LoginState loginState, int accountID, String sessionIP) {
-        try (var handle = DatabaseConnection.getConnector().open()) {
-            var result = handle.execute(
-                    "UPDATE accounts SET loggedin = ?, SessionIP = ?, lastlogin"
-                            + " = CURRENT_TIMESTAMP() WHERE id = ?",
-                    loginState.getCode(),
-                    sessionIP,
-                    accountID);
-            return result;
         }
     }
 }
