@@ -14,7 +14,6 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MapleMount;
 import client.inventory.MaplePet;
 import client.inventory.MapleRing;
-import client.layout.KeyMapBinding;
 import client.layout.MapleKeyLayout;
 import client.skill.EvanSkillPoints;
 import client.skill.ISkill;
@@ -532,12 +531,12 @@ public class MapleCharacter extends BaseMapleCharacter {
         return ret;
     }
 
-    public static MapleCharacter loadCharFromDB(int charid, MapleClient client, boolean channelserver) {
+    public static MapleCharacter loadCharFromDB(int characterId, MapleClient client, boolean channelserver) {
 
         final MapleCharacter ret = new MapleCharacter(channelserver);
-        CharacterData characterData = LoginService.loadCharacterData(charid);
+        CharacterData characterData = LoginService.loadCharacterData(characterId);
         ret.client = client;
-        ret.id = charid;
+        ret.id = characterId;
         ret.accountData = client.getAccountData();
 
         ret.setName(characterData.getName());
@@ -635,7 +634,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 }
 
                 ps = con.prepareStatement("SELECT * FROM reports WHERE characterid = ?");
-                ps.setInt(1, charid);
+                ps.setInt(1, characterId);
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     if (ReportType.getById(rs.getByte("type")) != null) {
@@ -646,7 +645,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 ps.close();
             }
             ps = con.prepareStatement("SELECT * FROM queststatus WHERE characterid = ?");
-            ps.setInt(1, charid);
+            ps.setInt(1, characterId);
             rs = ps.executeQuery();
             pse = con.prepareStatement("SELECT * FROM queststatusmobs WHERE queststatusid = ?");
             while (rs.next()) {
@@ -674,10 +673,10 @@ public class MapleCharacter extends BaseMapleCharacter {
 
             if (channelserver) {
                 ret.playerRandomStream = new PlayerRandomStream();
-                ret.monsterBook = MonsterBook.loadCards(charid);
+                ret.monsterBook = MonsterBook.loadCards(characterId);
 
                 ps = con.prepareStatement("SELECT * FROM inventoryslot where characterid = ?");
-                ps.setInt(1, charid);
+                ps.setInt(1, characterId);
                 rs = ps.executeQuery();
 
                 if (!rs.next()) {
@@ -697,7 +696,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 rs.close();
 
                 for (Pair<IItem, MapleInventoryType> mit :
-                        ItemLoader.INVENTORY.loadItems(false, charid).values()) {
+                        ItemLoader.INVENTORY.loadItems(false, characterId).values()) {
                     ret.getInventory(mit.getRight()).addFromDB(mit.getLeft());
                     if (mit.getLeft().getPet() != null) {
                         ret.pets.add(mit.getLeft().getPet());
@@ -733,7 +732,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 ps.close();
 
                 ps = con.prepareStatement("SELECT * FROM questinfo WHERE characterid = ?");
-                ps.setInt(1, charid);
+                ps.setInt(1, characterId);
                 rs = ps.executeQuery();
 
                 while (rs.next()) {
@@ -747,7 +746,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 // All these skills are only begginer skills (mounts, etc)
                 ps = con.prepareStatement(
                         "SELECT skillid, skilllevel, masterlevel, expiration FROM skills" + " WHERE characterid = ?");
-                ps.setInt(1, charid);
+                ps.setInt(1, characterId);
                 rs = ps.executeQuery();
                 ISkill skil;
                 while (rs.next()) {
@@ -775,7 +774,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 rs = ps.executeQuery();
                 byte maxlevel_ = 0;
                 while (rs.next()) {
-                    if (rs.getInt("id") != charid) { // Not this character
+                    if (rs.getInt("id") != characterId) { // Not this character
                         byte maxlevel = (byte) (rs.getShort("level") / 10);
 
                         if (maxlevel > 20) {
@@ -795,7 +794,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 // END
 
                 ps = con.prepareStatement("SELECT * FROM skillmacros WHERE characterid = ?");
-                ps.setInt(1, charid);
+                ps.setInt(1, characterId);
                 rs = ps.executeQuery();
                 int position;
                 while (rs.next()) {
@@ -812,26 +811,11 @@ public class MapleCharacter extends BaseMapleCharacter {
                 rs.close();
                 ps.close();
 
-                ps = con.prepareStatement(
-                        "SELECT `key`,`type`,`action`,`fixed` FROM keymap WHERE characterid" + " = ?");
-                ps.setInt(1, charid);
-                rs = ps.executeQuery();
-
-                while (rs.next()) {
-                    int action = rs.getInt("action");
-                    int key = rs.getInt("key");
-                    byte fixed = rs.getByte("fixed");
-                    byte type = rs.getByte("type");
-                    if (ServerEnvironment.isDebugEnabled()) {
-                        log.info("K: " + key + " fixed: " + fixed + " type: " + type + " action: " + action);
-                    }
-                    ret.keyLayout.setBinding(new KeyMapBinding(ret.id, key, type, action, fixed));
-                }
-                rs.close();
-                ps.close();
+                ret.keyLayout = new MapleKeyLayout(ret.id);
+                ret.keyLayout.loadKeybindings();
 
                 ps = con.prepareStatement("SELECT `locationtype`,`map` FROM savedlocations WHERE characterid" + " = ?");
-                ps.setInt(1, charid);
+                ps.setInt(1, characterId);
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     var locationType = SavedLocationType.fromCode(rs.getInt("locationtype"));
@@ -842,7 +826,7 @@ public class MapleCharacter extends BaseMapleCharacter {
 
                 ps = con.prepareStatement("SELECT `characterid_to`,`when` FROM famelog WHERE characterid = ?"
                         + " AND DATEDIFF(NOW(),`when`) < 30");
-                ps.setInt(1, charid);
+                ps.setInt(1, characterId);
                 rs = ps.executeQuery();
                 ret.lastFameTime = 0;
                 ret.lastMonthFameIds = new ArrayList<Integer>(31);
@@ -854,12 +838,12 @@ public class MapleCharacter extends BaseMapleCharacter {
                 rs.close();
                 ps.close();
 
-                ret.buddyList.loadFromDb(charid);
+                ret.buddyList.loadFromDb(characterId);
                 ret.storage = MapleStorage.loadStorage(ret.accountData.getId());
-                ret.cs = new CashShop(ret.accountData.getId(), charid, ret.getJob());
+                ret.cs = new CashShop(ret.accountData.getId(), characterId, ret.getJob());
 
                 ps = con.prepareStatement("SELECT sn FROM wishlist WHERE characterid = ?");
-                ps.setInt(1, charid);
+                ps.setInt(1, characterId);
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     ret.wishlist.setItem(rs.getInt("sn"));
@@ -868,7 +852,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 ps.close();
 
                 ps = con.prepareStatement("SELECT mapid FROM trocklocations WHERE characterid = ?");
-                ps.setInt(1, charid);
+                ps.setInt(1, characterId);
                 rs = ps.executeQuery();
 
                 while (rs.next()) {
@@ -878,7 +862,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 ps.close();
 
                 ps = con.prepareStatement("SELECT mapid FROM regrocklocations WHERE characterid = ?");
-                ps.setInt(1, charid);
+                ps.setInt(1, characterId);
                 rs = ps.executeQuery();
 
                 while (rs.next()) {
@@ -888,7 +872,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 ps.close();
 
                 ps = con.prepareStatement("SELECT * FROM mountdata WHERE characterid = ?");
-                ps.setInt(1, charid);
+                ps.setInt(1, characterId);
                 rs = ps.executeQuery();
                 if (!rs.next()) {
                     throw new RuntimeException("No mount data found on SQL column");
@@ -908,7 +892,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 ret.stats.recalcLocalStats(true);
             } else { // Not channel server
                 for (Pair<IItem, MapleInventoryType> mit :
-                        ItemLoader.INVENTORY.loadItems(true, charid).values()) {
+                        ItemLoader.INVENTORY.loadItems(true, characterId).values()) {
                     ret.getInventory(mit.getRight()).addFromDB(mit.getLeft());
                 }
             }
