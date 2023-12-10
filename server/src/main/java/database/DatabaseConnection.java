@@ -22,6 +22,8 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import org.jdbi.v3.core.Jdbi;
+import org.jdbi.v3.core.statement.Slf4JSqlLogger;
 import server.config.ServerConfig;
 
 @lombok.extern.slf4j.Slf4j
@@ -39,6 +41,10 @@ public class DatabaseConnection {
             log.error("Could not get connection. Error: ", ex);
             return null;
         }
+    }
+
+    public static Jdbi getConnector() {
+        return pool.getJdbi();
     }
 
     public static void initConfig(ServerConfig config) throws SQLException {
@@ -66,7 +72,7 @@ public class DatabaseConnection {
         hikariConfig.addDataSourceProperty("cachePrepStmts", "true");
         hikariConfig.addDataSourceProperty("prepStmtCacheSize", "25");
         hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-        hikariConfig.addDataSourceProperty("leakDetectionThreshold", "5000");
+        hikariConfig.addDataSourceProperty("leakDetectionThreshold", "60000");
         hikariConfig.setConnectionTestQuery("SELECT 1");
 
         pool = new HikariConnectionPool(new HikariDataSource(hikariConfig));
@@ -74,19 +80,29 @@ public class DatabaseConnection {
 
     interface ConnectionPool {
         Connection getConnection() throws SQLException;
+
+        Jdbi getJdbi();
     }
 
     static class HikariConnectionPool implements ConnectionPool {
 
         private final HikariDataSource hikariDataSource;
+        private final Jdbi jdbi;
 
         public HikariConnectionPool(HikariDataSource hikariDataSource) {
             this.hikariDataSource = hikariDataSource;
+            this.jdbi = Jdbi.create(hikariDataSource);
+            this.jdbi.setSqlLogger(new Slf4JSqlLogger());
         }
 
         @Override
         public Connection getConnection() throws SQLException {
             return hikariDataSource.getConnection();
+        }
+
+        @Override
+        public Jdbi getJdbi() {
+            return jdbi;
         }
     }
 }

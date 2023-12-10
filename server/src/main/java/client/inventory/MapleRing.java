@@ -1,7 +1,6 @@
 package client.inventory;
 
 import client.MapleCharacter;
-
 import database.DatabaseConnection;
 import java.io.Serializable;
 import java.sql.PreparedStatement;

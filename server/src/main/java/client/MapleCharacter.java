@@ -924,7 +924,8 @@ public class MapleCharacter extends BaseMapleCharacter {
                     rs.close();
                 }
                 con.close();
-            } catch (SQLException ignore) {
+            } catch (SQLException ex) {
+                log.error("Loading character sql exception", ex);
             }
         }
         return ret;
@@ -948,11 +949,11 @@ public class MapleCharacter extends BaseMapleCharacter {
         PreparedStatement ps = null;
         PreparedStatement pse = null;
         ResultSet rs = null;
-        // TODO: fix transaction isolation
+        Connection con2 = null;
         try (var con = DatabaseConnection.getConnection(); ) {
-
-            // con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-            // con.setAutoCommit(false);
+            con2 = con;
+            con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+            con.setAutoCommit(false);
             ps = con.prepareStatement(
                     "INSERT INTO characters (level, fame, str, dex, luk, `int`, exp, hp,"
                             + " mp, maxhp, maxmp, ap, skincolor, gender, job, hair, face,"
@@ -1067,16 +1068,16 @@ public class MapleCharacter extends BaseMapleCharacter {
             keyLayout.setDefaultKeys();
             keyLayout.saveKeys();
             ps.close();
-            // con.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("[charsave] Error saving character data");
-            //            try {
-            //                con.rollback();
-            //            } catch (SQLException ex) {
-            //                e.printStackTrace();
-            //                System.err.println("[charsave] Error Rolling Back");
-            //            }
+            con.commit();
+        } catch (Exception ex) {
+            log.error("Could not save new character to database", ex);
+            if (con2 != null) {
+                try {
+                    con2.rollback();
+                } catch (SQLException e) {
+                    throw new RuntimeException("Could not rollback save character to new db transaction");
+                }
+            }
         } finally {
             try {
                 if (pse != null) {
@@ -1155,7 +1156,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         }
         return false;
     }
-
 
     public void saveToDB(boolean dc, boolean fromcs) {
         var con = DatabaseConnection.getConnection();
