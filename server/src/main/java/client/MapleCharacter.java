@@ -1404,8 +1404,8 @@ public class MapleCharacter extends BaseMapleCharacter {
                 con.setAutoCommit(true);
                 con.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
                 con.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+            } catch (SQLException ex) {
+                log.error("Could not close saveToDB", ex);
             }
         }
     }
