@@ -3272,6 +3272,9 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public void levelUp(boolean show) {
+        if(getLevel() > 200){
+            return;
+        }
         if (job.isCygnus() && getLevel() >= 120) {
             return;
         }
