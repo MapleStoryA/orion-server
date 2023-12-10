@@ -292,6 +292,7 @@ public class MapleClient extends BaseMapleClient {
         }
         if (!serverTransition && isLoggedIn()) {
             updateLoginState(LoginState.LOGIN_NOTLOGGEDIN, getSessionIPAddress());
+            WorldServer.getInstance().removeConnectedAccount(accountData.getName());
         }
     }
 
