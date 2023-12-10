@@ -98,7 +98,7 @@ public enum SendPacketOpcode {
     MTS_OPEN(141),
     CS_OPEN(142),
     CHANGE_MAP_EFFECT(143), // byte(0/1) + int + byte(0~5? place) + int
-    CHANGE_MO_VISIBLE(144),
+    CMapLoadable__OnSetMapObjectVisible(144),
     CLEAR_MAP_EFFECT(145),
     MAP_BLOCKED(146),
     SERVER_BLOCKED(147),
@@ -285,7 +285,7 @@ public enum SendPacketOpcode {
     MTS_OPERATION(0x999),
     VICIOUS_HAMMER(412),
     VEGAS_SCROLL(416),
-    CHANGE_BACKGROUND(143),
+    MapLoadable__OnSetBackEffect(143),
     REPORT_RESPONSE(56),
     ENABLE_REPORT(48),
     CLAIM_SERVER_AVAILABLE_TIME(47),

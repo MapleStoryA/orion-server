@@ -11,20 +11,21 @@ public class ServerConstants {
     public static final boolean TRIPLE_TRIO = true;
     // Shop discount for potions
     public static final boolean SHOP_DISCOUNT = false;
+
     public static final float SHOP_DISCOUNT_PERCENT = 5f; // float = round up.
     //
     public static final boolean SPEED_QUIZ = true;
+
     // Default is 500. If the map contains > this amount, it will automatically clear drops
     public static final int MAX_ITEMS = 600;
     // End of Poll
     public static final short MAPLE_VERSION = 90;
+
     public static final String MAPLE_PATCH = "3";
-    public static final boolean Use_Fixed_IV = false;
+
     public static final String WORLD_MESSAGE = "Welcome to Maple Story Global ";
-    public static final String RECOMMENDED_MESSAGE =
-            "We are still in Tespia testing! Report bugs on our forums.";
-    // Faction Stuff
-    public static final float FP_MULTIPLIER = 1.3f; // float = rounding the int
+
+    public static final String RECOMMENDED_MESSAGE = "We are still in Tespia testing! Report bugs on our forums.";
 
     /*
      * Specifics which job gives an additional EXP to party

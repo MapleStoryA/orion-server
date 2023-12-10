@@ -8,7 +8,6 @@ import constants.GameConstants;
 import database.DatabaseConnection;
 import database.DatabaseException;
 import java.io.Serializable;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -44,37 +43,31 @@ public class MapleStorage implements Serializable {
     }
 
     public static int create(int id) throws SQLException {
-        Connection con = DatabaseConnection.getConnection();
-        PreparedStatement ps =
-                con.prepareStatement(
+        try (var con = DatabaseConnection.getConnection();
+                PreparedStatement ps = con.prepareStatement(
                         "INSERT INTO storages (accountid, slots, meso) VALUES (?, ?, ?)",
-                        DatabaseConnection.RETURN_GENERATED_KEYS);
-        ps.setInt(1, id);
-        ps.setInt(2, 4);
-        ps.setInt(3, 0);
-        ps.executeUpdate();
+                        DatabaseConnection.RETURN_GENERATED_KEYS)) {
 
-        int storageid;
-        ResultSet rs = ps.getGeneratedKeys();
-        if (rs.next()) {
-            storageid = rs.getInt(1);
-            ps.close();
-            rs.close();
-            con.close();
-            return storageid;
+            ps.setInt(1, id);
+            ps.setInt(2, 4);
+            ps.setInt(3, 0);
+            ps.executeUpdate();
+
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                } else {
+                    throw new DatabaseException("Inserting char failed.");
+                }
+            }
         }
-        ps.close();
-        rs.close();
-        con.close();
-        throw new DatabaseException("Inserting char failed.");
     }
 
     public static MapleStorage loadStorage(int id) {
         MapleStorage ret = null;
         int storeId;
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps =
-                    con.prepareStatement("SELECT * FROM storages WHERE accountid = ?");
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM storages WHERE accountid = ?");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
 
@@ -107,21 +100,17 @@ public class MapleStorage implements Serializable {
         }
         try (var con = DatabaseConnection.getConnection()) {
 
-            PreparedStatement ps =
-                    con.prepareStatement(
-                            "UPDATE storages SET slots = ?, meso = ? WHERE storageid = ?");
+            PreparedStatement ps = con.prepareStatement("UPDATE storages SET slots = ?, meso = ? WHERE storageid = ?");
             ps.setInt(1, slots);
             ps.setInt(2, meso);
             ps.setInt(3, id);
             ps.executeUpdate();
             ps.close();
 
-            List<Pair<IItem, MapleInventoryType>> listing =
-                    new ArrayList<Pair<IItem, MapleInventoryType>>();
+            List<Pair<IItem, MapleInventoryType>> listing = new ArrayList<Pair<IItem, MapleInventoryType>>();
             for (final IItem item : items) {
                 listing.add(
-                        new Pair<IItem, MapleInventoryType>(
-                                item, GameConstants.getInventoryType(item.getItemId())));
+                        new Pair<IItem, MapleInventoryType>(item, GameConstants.getInventoryType(item.getItemId())));
             }
             ItemLoader.STORAGE.saveItems(listing, accountId);
         } catch (SQLException ex) {
@@ -180,22 +169,20 @@ public class MapleStorage implements Serializable {
 
     public void sendStorage(MapleClient c, int npcId) {
         // sort by inventorytype to avoid confusion
-        Collections.sort(
-                items,
-                new Comparator<IItem>() {
+        Collections.sort(items, new Comparator<IItem>() {
 
-                    public int compare(IItem o1, IItem o2) {
-                        if (GameConstants.getInventoryType(o1.getItemId()).getType()
-                                < GameConstants.getInventoryType(o2.getItemId()).getType()) {
-                            return -1;
-                        } else if (GameConstants.getInventoryType(o1.getItemId())
-                                == GameConstants.getInventoryType(o2.getItemId())) {
-                            return 0;
-                        } else {
-                            return 1;
-                        }
-                    }
-                });
+            public int compare(IItem o1, IItem o2) {
+                if (GameConstants.getInventoryType(o1.getItemId()).getType()
+                        < GameConstants.getInventoryType(o2.getItemId()).getType()) {
+                    return -1;
+                } else if (GameConstants.getInventoryType(o1.getItemId())
+                        == GameConstants.getInventoryType(o2.getItemId())) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            }
+        });
         for (MapleInventoryType type : MapleInventoryType.values()) {
             typeItems.put(type, new ArrayList<IItem>(items));
         }

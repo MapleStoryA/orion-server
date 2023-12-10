@@ -5,7 +5,6 @@ import client.MapleCharacter;
 import database.DatabaseConnection;
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import tools.MaplePacketCreator;
@@ -23,32 +22,32 @@ public class MapleMount implements Serializable {
     private transient boolean changed = false;
     private long lastFatigue = 0;
 
-    public MapleMount(
-            MapleCharacter owner, int id, int skillid, byte fatigue, byte level, int exp) {
+    public MapleMount(MapleCharacter owner, int id, int skillid, byte fatigue, byte level, int exp) {
         this.itemid = id;
         this.skillid = skillid;
         this.fatigue = fatigue;
         this.level = level;
         this.exp = exp;
-        this.owner = new WeakReference<MapleCharacter>(owner);
+        this.owner = new WeakReference<>(owner);
     }
 
-    public void saveMount(final int charid) throws SQLException {
+    public void saveMount(final int charid) {
         if (!changed) {
             return;
         }
-        Connection con = DatabaseConnection.getConnection();
-        PreparedStatement ps =
-                con.prepareStatement(
-                        "UPDATE mountdata set `Level` = ?, `Exp` = ?, `Fatigue` = ? WHERE"
-                                + " characterid = ?");
-        ps.setByte(1, level);
-        ps.setInt(2, exp);
-        ps.setByte(3, fatigue);
-        ps.setInt(4, charid);
-        ps.executeUpdate();
-        ps.close();
-        con.close();
+        try (var con = DatabaseConnection.getConnection()) {
+
+            PreparedStatement ps = con.prepareStatement(
+                    "UPDATE mountdata set `Level` = ?, `Exp` = ?, `Fatigue` = ? WHERE" + " characterid = ?");
+            ps.setByte(1, level);
+            ps.setInt(2, exp);
+            ps.setByte(3, fatigue);
+            ps.setInt(4, charid);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException ex) {
+            log.error("Could not save mount", ex);
+        }
     }
 
     public int getItemId() {

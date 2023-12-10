@@ -15,7 +15,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.result.ResultIterable;
 import tools.Pair;
 
@@ -23,89 +22,93 @@ import tools.Pair;
 public class LoginService {
 
     public static CharacterData loadCharacterData(int characterId) {
-        var jdbi = Jdbi.create(DatabaseConnection.getConnection());
-        var result = jdbi.withHandle((h) -> h.select("SELECT * FROM characters WHERE id = ?", characterId));
-        ResultIterable<CharacterData> accountData = result.mapToBean(CharacterData.class);
-        return accountData.findOne().orElse(null);
+        try (var handle = DatabaseConnection.getConnector().open()) {
+            var result = handle.select("SELECT * FROM characters WHERE id = ?", characterId);
+            ResultIterable<CharacterData> accountData = result.mapToBean(CharacterData.class);
+            return accountData.findOne().orElse(null);
+        }
     }
 
     public static CharacterData loadCharacterData(int accountId, int characterId) {
-        var jdbi = Jdbi.create(DatabaseConnection.getConnection());
-        var result = jdbi.withHandle(
-                (h) -> h.select("SELECT * FROM characters WHERE accountid = ? AND id = ?", accountId, characterId));
-        ResultIterable<CharacterData> accountData = result.mapToBean(CharacterData.class);
-        return accountData.findOne().orElse(null);
+        try (var handle = DatabaseConnection.getConnector().open()) {
+            var result =
+                    handle.select("SELECT * FROM characters WHERE accountid = ? AND id = ?", accountId, characterId);
+            ResultIterable<CharacterData> accountData = result.mapToBean(CharacterData.class);
+            return accountData.findOne().orElse(null);
+        }
     }
 
     public static CharacterListResult loadCharacterList(int accountId, int world) {
-        var jdbi = Jdbi.create(DatabaseConnection.getConnection());
-        var result = jdbi.withHandle(
-                (h) -> h.select("SELECT * FROM characters WHERE accountid = ? AND world =" + " ?", accountId, world));
-        var characterDataList = result.mapToBean(CharacterData.class).stream().collect(Collectors.toList());
-
-        for (var characterData : characterDataList) {
-            var inventory = new MapleInventory[MapleInventoryType.values().length];
-            for (MapleInventoryType type : MapleInventoryType.values()) {
-                inventory[type.ordinal()] = new MapleInventory(type);
-            }
-            try {
-                for (Pair<IItem, MapleInventoryType> mit : ItemLoader.INVENTORY
-                        .loadItems(true, characterData.getId())
-                        .values()) {
-                    var current = inventory[mit.getRight().ordinal()];
-                    current.addFromDB(mit.getLeft());
+        try (var handle = DatabaseConnection.getConnector().open()) {
+            var result =
+                    handle.select("SELECT * FROM characters WHERE accountid = ? AND world =" + " ?", accountId, world);
+            var characterDataList =
+                    result.mapToBean(CharacterData.class).stream().collect(Collectors.toList());
+            for (var characterData : characterDataList) {
+                var inventory = new MapleInventory[MapleInventoryType.values().length];
+                for (MapleInventoryType type : MapleInventoryType.values()) {
+                    inventory[type.ordinal()] = new MapleInventory(type);
                 }
-                characterData.setInventory(inventory);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+                try {
+                    for (Pair<IItem, MapleInventoryType> mit : ItemLoader.INVENTORY
+                            .loadItems(true, characterData.getId())
+                            .values()) {
+                        var current = inventory[mit.getRight().ordinal()];
+                        current.addFromDB(mit.getLeft());
+                    }
+                    characterData.setInventory(inventory);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
+            return new CharacterListResult(characterDataList);
         }
-        return new CharacterListResult(characterDataList);
     }
 
     public static AccountData loadAccountDataById(int accountId) {
-        var jdbi = Jdbi.create(DatabaseConnection.getConnection());
-        var result = jdbi.withHandle((h) -> h.select("SELECT * FROM accounts WHERE id = ?", accountId));
-        ResultIterable<AccountData> accountData = result.mapToBean(AccountData.class);
-        return accountData.findOne().orElse(null);
+        try (var handle = DatabaseConnection.getConnector().open()) {
+            var result = handle.select("SELECT * FROM accounts WHERE id = ?", accountId);
+            ResultIterable<AccountData> accountData = result.mapToBean(AccountData.class);
+            return accountData.findOne().orElse(null);
+        }
     }
 
     public static AccountData loadAccountDataByName(String accountName) {
-        var jdbi = Jdbi.create(DatabaseConnection.getConnection());
-        var result = jdbi.withHandle((h) -> h.select("SELECT * FROM accounts WHERE name = ?", accountName));
-        ResultIterable<AccountData> accountData = result.mapToBean(AccountData.class);
-        return accountData.findOne().orElse(null);
+        try (var handle = DatabaseConnection.getConnector().open()) {
+            var result = handle.select("SELECT * FROM accounts WHERE name = ?", accountName);
+            ResultIterable<AccountData> accountData = result.mapToBean(AccountData.class);
+            return accountData.findOne().orElse(null);
+        }
     }
 
     public static LoginResult checkPassword(String name, String password) {
-        var jdbi = Jdbi.create(DatabaseConnection.getConnection());
-        var query = jdbi.withHandle((h) -> h.select("SELECT * FROM accounts WHERE name = ?", name));
-        var result = query.mapToBean(AccountData.class).findFirst();
+        try (var handle = DatabaseConnection.getConnector().open()) {
+            var result = handle.select("SELECT * FROM accounts WHERE name = ?", name)
+                    .mapToBean(AccountData.class)
+                    .findOne();
+            if (result.isEmpty()) {
+                return new LoginResult(NOT_REGISTERED_ID, null);
+            }
 
-        if (result.isEmpty()) {
-            return new LoginResult(NOT_REGISTERED_ID, null);
+            AccountData accountData = result.get();
+            if (accountData.isOnline()) {
+                return new LoginResult(ALREADY_LOGGED_IN, null);
+            }
+
+            if (accountData.getBanned() > 0) {
+                return new LoginResult(9, null);
+            }
+
+            int loginStatus = -1;
+            var encryptor = new PasswordEncryptor();
+            var passwordMatches = encryptor.verifyPassword(password, accountData.getPassword(), accountData.getSalt());
+            if (passwordMatches) {
+                loginStatus = 0;
+            } else {
+                loginStatus = INCORRECT_PASSWORD;
+            }
+            return new LoginResult(loginStatus, accountData);
         }
-
-        AccountData accountData = result.get();
-
-        if (accountData.isOnline()) {
-            return new LoginResult(ALREADY_LOGGED_IN, null);
-        }
-
-        if (accountData.getBanned() > 0) {
-            return new LoginResult(9, null);
-        }
-
-        int loginStatus = -1;
-        var encryptor = new PasswordEncryptor();
-        var passwordMatches = encryptor.verifyPassword(password, accountData.getPassword(), accountData.getSalt());
-        if (passwordMatches) {
-            loginStatus = 0;
-        } else {
-            loginStatus = INCORRECT_PASSWORD;
-        }
-
-        return new LoginResult(loginStatus, accountData);
     }
 
     private static EvanSkillPoints loadEvanSkills(int characterId) {
@@ -167,12 +170,14 @@ public class LoginService {
     }
 
     public static int updateLoginStatus(LoginState loginState, int accountID, String sessionIP) {
-        Jdbi jdbi = Jdbi.create(DatabaseConnection.getConnection());
-        Integer result = jdbi.withHandle(j -> j.execute(
-                "UPDATE accounts SET loggedin = ?, SessionIP = ?, lastlogin" + " = CURRENT_TIMESTAMP() WHERE id = ?",
-                loginState.getCode(),
-                sessionIP,
-                accountID));
-        return result;
+        try (var handle = DatabaseConnection.getConnector().open()) {
+            var result = handle.execute(
+                    "UPDATE accounts SET loggedin = ?, SessionIP = ?, lastlogin"
+                            + " = CURRENT_TIMESTAMP() WHERE id = ?",
+                    loginState.getCode(),
+                    sessionIP,
+                    accountID);
+            return result;
+        }
     }
 }

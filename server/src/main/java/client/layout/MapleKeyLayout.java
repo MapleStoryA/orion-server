@@ -5,8 +5,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import org.jdbi.v3.core.Jdbi;
-import org.jdbi.v3.core.statement.Slf4JSqlLogger;
 import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
@@ -48,41 +46,32 @@ public class MapleKeyLayout implements Serializable {
     }
 
     public final void saveKeys() {
-        try (var con = DatabaseConnection.getConnection()) {
-            Jdbi jDbi = Jdbi.create(con);
-            jDbi.setSqlLogger(new Slf4JSqlLogger());
+        try (var handle = DatabaseConnection.getConnector().open()) {
             for (var binding : new ArrayList<>(keyMapBindings.values())) {
                 if (binding.isDeleted()) {
                     log.debug("Deleting key: {}", binding.getKey());
-                    jDbi.withHandle(r -> {
-                        r.createUpdate("DELETE FROM keymap WHERE `characterid` ="
-                                        + " :d.characterId AND `key` = :d.key")
-                                .bindBean("d", binding)
-                                .execute();
-                        return true;
-                    });
-                    keyMapBindings.remove(binding.getKey());
+                    handle.createUpdate(
+                                    "DELETE FROM keymap WHERE `characterid` =" + " :d.characterId AND `key` = :d.key")
+                            .bindBean("d", binding)
+                            .execute();
                 }
+                ;
+                keyMapBindings.remove(binding.getKey());
             }
             for (var binding : keyMapBindings.values()) {
                 if (binding.isChanged()) {
                     log.debug("Saving key: {}", binding.getKey());
-                    jDbi.withHandle(r -> {
-                        r.createUpdate("INSERT INTO keymap(`characterid`, `key`, `type`,"
-                                        + " `action`, `fixed`) VALUES (:d.characterId,"
-                                        + " :d.key, :d.type, :d.action, :d.fixed) ON"
-                                        + " DUPLICATE KEY UPDATE `type` = :d.type,"
-                                        + " `action` = :d.action,`fixed` = :d.fixed")
-                                .bindBean("d", binding)
-                                .execute();
-                        return true;
-                    });
+                    handle.createUpdate("INSERT INTO keymap(`characterid`, `key`, `type`,"
+                                    + " `action`, `fixed`) VALUES (:d.characterId,"
+                                    + " :d.key, :d.type, :d.action, :d.fixed) ON"
+                                    + " DUPLICATE KEY UPDATE `type` = :d.type,"
+                                    + " `action` = :d.action,`fixed` = :d.fixed")
+                            .bindBean("d", binding)
+                            .execute();
                     binding.setChanged(false);
                     binding.setDeleted(false);
                 }
             }
-        } catch (Exception ex) {
-            log.error("Error saving key map", ex);
         }
     }
 

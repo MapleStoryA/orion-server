@@ -62,7 +62,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -925,7 +924,8 @@ public class MapleCharacter extends BaseMapleCharacter {
                     rs.close();
                 }
                 con.close();
-            } catch (SQLException ignore) {
+            } catch (SQLException ex) {
+                log.error("Loading character sql exception", ex);
             }
         }
         return ret;
@@ -946,15 +946,14 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public static void saveNewCharToDB(final MapleCharacter chr, final int type, final boolean db) {
 
-        Connection con = null;
         PreparedStatement ps = null;
         PreparedStatement pse = null;
         ResultSet rs = null;
-        // TODO: fix transaction isolation
-        try {
-            con = DatabaseConnection.getConnection();
-            // con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-            // con.setAutoCommit(false);
+        Connection con2 = null;
+        try (var con = DatabaseConnection.getConnection(); ) {
+            con2 = con;
+            con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+            con.setAutoCommit(false);
             ps = con.prepareStatement(
                     "INSERT INTO characters (level, fame, str, dex, luk, `int`, exp, hp,"
                             + " mp, maxhp, maxmp, ap, skincolor, gender, job, hair, face,"
@@ -1069,16 +1068,16 @@ public class MapleCharacter extends BaseMapleCharacter {
             keyLayout.setDefaultKeys();
             keyLayout.saveKeys();
             ps.close();
-            // con.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("[charsave] Error saving character data");
-            //            try {
-            //                con.rollback();
-            //            } catch (SQLException ex) {
-            //                e.printStackTrace();
-            //                System.err.println("[charsave] Error Rolling Back");
-            //            }
+            con.commit();
+        } catch (Exception ex) {
+            log.error("Could not save new character to database", ex);
+            if (con2 != null) {
+                try {
+                    con2.rollback();
+                } catch (SQLException e) {
+                    throw new RuntimeException("Could not rollback save character to new db transaction");
+                }
+            }
         } finally {
             try {
                 if (pse != null) {
@@ -1090,9 +1089,6 @@ public class MapleCharacter extends BaseMapleCharacter {
                 if (rs != null) {
                     rs.close();
                 }
-                //                con.setAutoCommit(true);
-                //  con.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
-                con.close();
             } catch (SQLException e) {
                 e.printStackTrace();
                 System.err.println("[charsave] Error going back to autocommit mode");
@@ -1161,10 +1157,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         return false;
     }
 
-    /**
-     * TODO: This method is not ready and not executed as a transaction currently For now, it will
-     * autocommit, but once it's refactored it must ran as a transaction.
-     */
     public void saveToDB(boolean dc, boolean fromcs) {
         var con = DatabaseConnection.getConnection();
         PreparedStatement ps = null;
@@ -1175,8 +1167,8 @@ public class MapleCharacter extends BaseMapleCharacter {
             petPosition += pet.getInventoryPosition() + ";";
         }
         try {
-            //    con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-            //   con.setAutoCommit(false);
+            con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+            con.setAutoCommit(false);
             ps = con.prepareStatement(
                     "UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?,"
                             + " `int` = ?, exp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, ap ="
@@ -1487,9 +1479,9 @@ public class MapleCharacter extends BaseMapleCharacter {
         MapleQuest.getInstance(id).complete(this, npc);
     }
 
-    public final void setQuestAdd(final MapleQuest quest, final byte status, final String customData) {
+    public final void setQuestAdd(final MapleQuest quest, final int status, final String customData) {
         if (!quests.containsKey(quest)) {
-            final MapleQuestStatus stat = new MapleQuestStatus(quest, status);
+            final MapleQuestStatus stat = new MapleQuestStatus(quest, (byte) status);
             stat.setCustomData(customData);
             quests.put(quest, stat);
         }
@@ -3504,28 +3496,6 @@ public class MapleCharacter extends BaseMapleCharacter {
             } else if (level >= 10 && level <= 19 && job.getId() != 2200) {
                 changeJob(2200);
             }
-        }
-    }
-
-    public void tempban(String reason, Calendar duration, int greason, boolean IPMac) {
-        try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("INSERT INTO ipbans VALUES (DEFAULT, ?)");
-            ps.setString(1, client.getSession().getRemoteAddress().toString().split(":")[0]);
-            ps.execute();
-            ps.close();
-
-            client.getSession().close();
-
-            ps = con.prepareStatement("UPDATE accounts SET tempban = ?, banreason = ?, greason = ? WHERE id =" + " ?");
-            Timestamp TS = new Timestamp(duration.getTimeInMillis());
-            ps.setTimestamp(1, TS);
-            ps.setString(2, reason);
-            ps.setInt(3, greason);
-            ps.setInt(4, accountData.getId());
-            ps.execute();
-            ps.close();
-        } catch (SQLException ex) {
-            log.error("Error while tempbanning", ex);
         }
     }
 

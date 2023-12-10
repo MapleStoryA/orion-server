@@ -7,6 +7,7 @@
 
     <logger name="org.apache.mina" level="warn"/>
     <logger name="io.netty.util" level="ERROR"/>
+    <logger name="com.zaxxer.hikari" level="TRACE" />
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
     </root>
