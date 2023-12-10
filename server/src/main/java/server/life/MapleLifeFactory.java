@@ -254,13 +254,17 @@ public class MapleLifeFactory {
         String script = null;
         if (name == null) {
             name = MapleDataTool.getString(nid + "/name", npcStringData, "MISSINGNO");
-            MapleData npcData = npcDataWZ.getData(nid + ".img");
-            var infoNode = npcData.getChildByPath("info");
-            if (infoNode != null) {
-                MapleData scriptNode = infoNode.getChildByPath("script");
-                if (scriptNode != null) {
-                    script = MapleDataTool.getString("0/script", scriptNode);
+            try {
+                MapleData npcData = npcDataWZ.getData(nid + ".img");
+                var infoNode = npcData.getChildByPath("info");
+                if (infoNode != null) {
+                    MapleData scriptNode = infoNode.getChildByPath("script");
+                    if (scriptNode != null) {
+                        script = MapleDataTool.getString("0/script", scriptNode);
+                    }
                 }
+            } catch (Exception ex) {
+                log.info("Error loading npc script for npc {}", nid);
             }
 
             npcNames.put(nid, name);

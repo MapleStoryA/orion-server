@@ -1,5 +1,6 @@
 package handling.world;
 
+import database.AccountData;
 import handling.MigrationService;
 import handling.MigrationServiceImpl;
 import handling.cashshop.CashShopServer;
@@ -25,8 +26,11 @@ public class WorldServer {
 
     private static WorldServer INSTANCE;
     private final Map<Integer, ChannelServer> channels = new ConcurrentHashMap<>();
+    private final Map<String, AccountData> connectedAccounts = new ConcurrentHashMap<>();
     private final long serverStarTime;
-    @Getter private MigrationService migrationService;
+
+    @Getter
+    private MigrationService migrationService;
 
     public WorldServer() {
         this.serverStarTime = System.currentTimeMillis();
@@ -150,5 +154,17 @@ public class WorldServer {
         for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
             cs.toggleMegaphoneMuteState();
         }
+    }
+
+    public boolean isConnectedLogin(String login) {
+        return connectedAccounts.containsKey(login);
+    }
+
+    public void registerConnectedAccount(AccountData accountData) {
+        connectedAccounts.put(accountData.getName(), accountData);
+    }
+
+    public void removeConnectedAccount(String name) {
+        connectedAccounts.remove(name);
     }
 }

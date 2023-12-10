@@ -34,4 +34,8 @@ public class LoginResult {
     public boolean isPermanentBan() {
         return this.result == USER_BANNED;
     }
+
+    public boolean isAlreadyConnected() {
+        return this.ALREADY_LOGGED_IN == result;
+    }
 }

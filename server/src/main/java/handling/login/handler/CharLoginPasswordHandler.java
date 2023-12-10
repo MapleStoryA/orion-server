@@ -3,8 +3,11 @@ package handling.login.handler;
 import client.MapleClient;
 import constants.BlockReason;
 import database.LoginResult;
+import database.LoginService;
+import database.LoginState;
 import handling.MaplePacketHandler;
 import handling.login.LoginServer;
+import handling.world.WorldServer;
 import lombok.extern.slf4j.Slf4j;
 import tools.data.input.InPacket;
 import tools.packet.LoginPacket;
@@ -31,7 +34,17 @@ public class CharLoginPasswordHandler implements MaplePacketHandler {
             return;
         }
 
-        if (result.isLoginError()) {
+        if (result.getAccountData() == null) {
+            c.getSession().write(LoginPacket.getLoginFailed(result.getResult()));
+            return;
+        }
+
+        if (result.isAlreadyConnected() && !WorldServer.getInstance().isConnectedLogin(login)) {
+            LoginService.setClientAccountLoginState(
+                    result.getAccountData(), LoginState.LOGIN_NOTLOGGEDIN, c.getSessionIPAddress());
+        }
+
+        if (result.isLoginError() && WorldServer.getInstance().isConnectedLogin(login)) {
             c.getSession().write(LoginPacket.getLoginFailed(result.getResult()));
             return;
         }

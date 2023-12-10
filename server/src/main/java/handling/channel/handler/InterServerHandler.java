@@ -39,17 +39,15 @@ public class InterServerHandler {
     public static final void onLoggedIn(final int characterId, final MapleClient c) {
         final ChannelServer channelServer = c.getChannelServer();
 
-        ServerMigration serverMigration =
-                WorldServer.getInstance()
-                        .getMigrationService()
-                        .getServerMigration(characterId, c.getSessionIPAddress());
+        ServerMigration serverMigration = WorldServer.getInstance()
+                .getMigrationService()
+                .getServerMigration(characterId, c.getSessionIPAddress());
         if (serverMigration != null) {
             c.setAccountData(serverMigration.getAccountData());
         } else {
             log.error("Missing server migration: {}", c.getAccountData().getName());
             return;
         }
-
         MapleCharacter player;
         final CharacterTransfer transfer = serverMigration.getCharacterTransfer();
 
@@ -81,19 +79,13 @@ public class InterServerHandler {
             // Start of buddylist
             final int[] buddyIds = player.getBuddyList().getBuddyIds();
             BuddyManager.loggedOn(
-                    player.getName(),
-                    player.getId(),
-                    c.getChannel(),
-                    buddyIds,
-                    player.getGMLevel(),
-                    player.isHidden());
+                    player.getName(), player.getId(), c.getChannel(), buddyIds, player.getGMLevel(), player.isHidden());
             if (player.getParty() != null) {
                 player.receivePartyMemberHP();
                 player.updatePartyMemberHP();
 
                 final MapleParty party = player.getParty();
-                PartyManager.updateParty(
-                        party.getId(), PartyOperation.LOG_ONOFF, new MaplePartyCharacter(player));
+                PartyManager.updateParty(party.getId(), PartyOperation.LOG_ONOFF, new MaplePartyCharacter(player));
                 if (party != null && party.getExpeditionId() > 0) {
                     MapleExpedition me = PartyManager.getExped(party.getExpeditionId());
                     if (me != null) {
@@ -101,24 +93,20 @@ public class InterServerHandler {
                     }
                 }
             }
-            final CharacterIdChannelPair[] onlineBuddies =
-                    FindCommand.multiBuddyFind(player.getId(), buddyIds);
+            final CharacterIdChannelPair[] onlineBuddies = FindCommand.multiBuddyFind(player.getId(), buddyIds);
             for (CharacterIdChannelPair onlineBuddy : onlineBuddies) {
                 final BuddyListEntry ble = player.getBuddyList().get(onlineBuddy.getCharacterId());
                 ble.setChannel(onlineBuddy.getChannel());
                 player.getBuddyList().put(ble);
             }
             c.getSession()
-                    .write(
-                            MaplePacketCreator.updateBuddylist(
-                                    BuddyListModifyHandler.UPDATE,
-                                    player.getBuddyList().getBuddies()));
+                    .write(MaplePacketCreator.updateBuddylist(
+                            BuddyListModifyHandler.UPDATE, player.getBuddyList().getBuddies()));
 
             // Start of Messenger
             final MapleMessenger messenger = player.getMessenger();
             if (messenger != null) {
-                MessengerManager.silentJoinMessenger(
-                        messenger.getId(), new MapleMessengerCharacter(c.getPlayer()));
+                MessengerManager.silentJoinMessenger(messenger.getId(), new MapleMessengerCharacter(c.getPlayer()));
                 MessengerManager.updateMessenger(
                         messenger.getId(), c.getPlayer().getName(), c.getChannel());
             }
@@ -129,8 +117,7 @@ public class InterServerHandler {
                 c.getSession().write(MaplePacketCreator.showGuildInfo(player));
                 final MapleGuild gs = GuildManager.getGuild(player.getGuildId());
                 if (gs != null) {
-                    final List<byte[]> packetList =
-                            AllianceManager.getAllianceInfo(gs.getAllianceId(), true);
+                    final List<byte[]> packetList = AllianceManager.getAllianceInfo(gs.getAllianceId(), true);
                     if (packetList != null) {
                         for (byte[] pack : packetList) {
                             if (pack != null) {
@@ -173,10 +160,7 @@ public class InterServerHandler {
         player.updatePetAuto();
 
         if (ServerConstants.SHOP_DISCOUNT) {
-            c.getSession()
-                    .write(
-                            MaplePacketCreator.enableShopDiscount(
-                                    (byte) ServerConstants.SHOP_DISCOUNT_PERCENT));
+            c.getSession().write(MaplePacketCreator.enableShopDiscount((byte) ServerConstants.SHOP_DISCOUNT_PERCENT));
         }
 
         final List<Integer> ii = new ArrayList<>();
@@ -201,10 +185,7 @@ public class InterServerHandler {
             ii.add(2041021);
         }
 
-        c.getPlayer()
-                .getClient()
-                .getSession()
-                .write(MaplePacketCreator.setNPCScriptable(1201002, "Buy new skills"));
+        c.getPlayer().getClient().getSession().write(MaplePacketCreator.setNPCScriptable(1201002, "Buy new skills"));
         player.maxMastery(); // Necessary for now. TODO: Remove max mastery from login
         player.getClient().getSession().write(MaplePacketCreator.setNPCScriptable(ii));
         player.getMap().addPlayer(player);
