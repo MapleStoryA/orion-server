@@ -203,7 +203,7 @@ public class StringUtil {
     public static String readFileAsString(String path) {
         StringBuilder builder = new StringBuilder();
         try {
-            for (String str : Files.readAllLines(Paths.get(path))) {
+            for (String str : Files.readAllLines(Paths.get(path.trim()))) {
                 builder.append(str + System.lineSeparator());
             }
             return builder.toString();

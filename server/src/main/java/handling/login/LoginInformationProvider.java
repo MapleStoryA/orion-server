@@ -15,7 +15,7 @@ public class LoginInformationProvider {
     LoginInformationProvider() {
         log.info("Loading LoginInformationProvider :::");
         final MapleData nameData =
-                ServerEnvironment.getConfig()
+                ServerEnvironment.serverConfig()
                         .getDataProvider("wz/Etc")
                         .getData("ForbiddenName.img");
         for (final MapleData data : nameData.getChildren()) {

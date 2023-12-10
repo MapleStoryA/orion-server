@@ -6,21 +6,12 @@ import handling.PacketProcessor;
 import handling.login.LoginServer;
 import handling.world.WorldServer;
 import handling.world.helper.CheaterData;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import scripting.EventScriptManager;
 import scripting.v1.event.EventCenter;
 import server.MapleSquad;
 import server.TimerManager;
 import server.autosave.AutoSaveRunnable;
+import server.config.Config;
 import server.config.ServerEnvironment;
 import server.events.MapleCoconut;
 import server.events.MapleEvent;
@@ -35,6 +26,17 @@ import server.maps.MapleMapFactory;
 import server.shops.HiredMerchant;
 import tools.CollectionUtil;
 import tools.MaplePacketCreator;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @lombok.extern.slf4j.Slf4j
 public class ChannelServer extends GameServer {
@@ -65,25 +67,24 @@ public class ChannelServer extends GameServer {
 
     public ChannelServer(int channel, int port) {
         super(channel, port, PacketProcessor.Mode.CHANNELSERVER);
-        this.expRate = Integer.parseInt(ServerEnvironment.getConfig().getProperty("world.exp"));
-        this.mesoRate = Integer.parseInt(ServerEnvironment.getConfig().getProperty("world.meso"));
-        this.dropRate = Integer.parseInt(ServerEnvironment.getConfig().getProperty("world.drop"));
-        this.cashRate = Integer.parseInt(ServerEnvironment.getConfig().getProperty("world.cash"));
-        this.serverMessage = ServerEnvironment.getConfig().getProperty("world.serverMessage");
-        this.flags =
-                Integer.parseInt(ServerEnvironment.getConfig().getProperty("world.flags", "0"));
-        this.adminOnly =
-                Boolean.parseBoolean(
-                        ServerEnvironment.getConfig().getProperty("world.admin", "false"));
-        this.publicAddress =
-                ServerEnvironment.getConfig().getProperty("channel.net.interface") + ":" + port;
+        Config.World wordConfig = ServerEnvironment.serverConfig().getConfig().getWorld();
+        this.expRate = wordConfig.getExp();
+        this.mesoRate = wordConfig.getMeso();
+        this.dropRate = wordConfig.getDrop();
+        this.cashRate = wordConfig.getCash();
+        this.serverMessage = wordConfig.getServerMessage();
+        this.flags = wordConfig.getFlags();
+        this.adminOnly = wordConfig.isAdminOnly();
+
+        Config.Channel channelConfig = ServerEnvironment.serverConfig().getConfig().getChannel();
+        this.publicAddress = channelConfig.getHost() + ":" + port;
         this.mapFactory = new MapleMapFactory();
         this.aramiaEvent = new AramiaFireWorks();
         this.eventCenter = new EventCenter(channel);
         this.eventSM =
                 new EventScriptManager(
                         this,
-                        ServerEnvironment.getConfig().getProperty("channel.events").split(","));
+                        channelConfig.getEvents());
         this.mapFactory.setChannel(channel);
         this.players = new PlayerStorage(channel);
         this.serverStartTime = System.currentTimeMillis();
@@ -222,11 +223,12 @@ public class ChannelServer extends GameServer {
     }
 
     public void reloadEvents() {
+        Config.Channel channelConfig = ServerEnvironment.serverConfig().getConfig().getChannel();
         eventSM.cancel();
         eventSM =
                 new EventScriptManager(
                         this,
-                        ServerEnvironment.getConfig().getProperty("channel.events").split(","));
+                        channelConfig.getEvents());
         eventSM.init();
     }
 

@@ -22,7 +22,7 @@ public class ItemMakerFactory {
         // 0 = Item upgrade crystals
         // 1 / 2/ 4/ 8 = Item creation
 
-        final MapleData info = ServerEnvironment.getConfig().getDataProvider("wz/Etc").getData("ItemMake.img");
+        final MapleData info = ServerEnvironment.serverConfig().getDataProvider("wz/Etc").getData("ItemMake.img");
 
         byte totalupgrades, reqMakerLevel;
         int reqLevel, cost, quantity, stimulator;

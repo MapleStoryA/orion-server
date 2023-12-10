@@ -8,8 +8,8 @@ public class SocketProviderFactory {
 
     public static SocketProvider getSocketProvider() {
         try {
-            var config = ServerEnvironment.getConfig();
-            var clazz = Class.forName(config.getProperty("socket.provider"));
+            var config = ServerEnvironment.serverConfig();
+            var clazz = Class.forName(config.getConfig().getSocket().getProvider());
             return (SocketProvider) clazz.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             log.error("Could not instantiate the socket provider", e);

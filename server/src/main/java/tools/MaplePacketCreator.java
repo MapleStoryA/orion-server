@@ -32,18 +32,6 @@ import handling.world.guild.MapleBBSThread.MapleBBSReply;
 import handling.world.guild.MapleGuild;
 import handling.world.guild.MapleGuildAlliance;
 import handling.world.guild.MapleGuildCharacter;
-import java.awt.*;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import server.MapleItemInformationProvider;
 import server.MapleShopItem;
 import server.MapleStatEffect;
@@ -68,6 +56,19 @@ import server.shops.MaplePlayerShopItem;
 import tools.data.output.OutPacket;
 import tools.packet.PacketHelper;
 
+import java.awt.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 @lombok.extern.slf4j.Slf4j
 public class MaplePacketCreator {
 
@@ -79,7 +80,7 @@ public class MaplePacketCreator {
         packet.writeShort(SendPacketOpcode.SERVER_IP.getValue());
         packet.writeShort(0);
         try {
-            packet.write(InetAddress.getByName(ServerEnvironment.getConfig().getProperty("channel.net.interface"))
+            packet.write(InetAddress.getByName(ServerEnvironment.serverConfig().getConfig().getChannel().getHost())
                     .getAddress());
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -97,7 +98,7 @@ public class MaplePacketCreator {
         packet.writeShort(SendPacketOpcode.CHANGE_CHANNEL.getValue());
         packet.write(1);
         try {
-            packet.write(InetAddress.getByName(ServerEnvironment.getConfig().getProperty("channel.net.interface"))
+            packet.write(InetAddress.getByName(ServerEnvironment.serverConfig().getConfig().getChannel().getHost())
                     .getAddress());
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -1833,7 +1834,7 @@ public class MaplePacketCreator {
         for (MapleQuestStatus q : completed) {
             if (q.getQuest().getMedalItem() > 0
                     && GameConstants.getInventoryType(q.getQuest().getMedalItem())
-                            == MapleInventoryType.EQUIP) { // chair
+                    == MapleInventoryType.EQUIP) { // chair
                 // kind
                 // medal
                 // viewmedal
@@ -4560,7 +4561,7 @@ public class MaplePacketCreator {
     }
 
     /**
-     * @param type - (0:Light&Long 1:Heavy&Short)
+     * @param type  - (0:Light&Long 1:Heavy&Short)
      * @param delay - seconds
      * @return
      */

@@ -14,7 +14,7 @@ public class MobAttackInfoFactory {
 
     private static final MobAttackInfoFactory instance = new MobAttackInfoFactory();
     private static final MapleDataProvider dataSource =
-            ServerEnvironment.getConfig().getDataProvider("wz/Mob");
+            ServerEnvironment.serverConfig().getDataProvider("wz/Mob");
     private static final Map<Pair<Integer, Integer>, MobAttackInfo> mobAttacks =
             new HashMap<Pair<Integer, Integer>, MobAttackInfo>();
 

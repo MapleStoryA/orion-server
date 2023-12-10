@@ -19,7 +19,7 @@ public class CashShopServer extends GameServer {
     public CashShopServer() {
         super(-1, 8799, PacketProcessor.Mode.CASHSHOP);
         players = new PlayerStorage(-10);
-        ip = ServerEnvironment.getConfig().getProperty("world.host") + ":" + PORT;
+        ip = ServerEnvironment.serverConfig().getConfig().getChannel().getHost() + ":" + PORT;
     }
 
     public final String getPublicAddress() {

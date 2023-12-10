@@ -165,7 +165,7 @@ public class MapleQuest implements Serializable {
     }
 
     public static void initQuests() {
-        questData = ServerEnvironment.getConfig().getDataProvider("wz/Quest");
+        questData = ServerEnvironment.serverConfig().getDataProvider("wz/Quest");
         actions = questData.getData("Act.img");
         requirements = questData.getData("Check.img");
         info = questData.getData("QuestInfo.img");

@@ -15,7 +15,7 @@ import java.util.Map;
 @lombok.extern.slf4j.Slf4j
 public class CashItemFactory {
 
-    public final static MapleDataProvider data = ServerEnvironment.getConfig().getDataProvider("wz/Etc");
+    public final static MapleDataProvider data = ServerEnvironment.serverConfig().getDataProvider("wz/Etc");
     private final static CashItemFactory instance = new CashItemFactory();
     private final static int[] bestItems = new int[]{10002819, 50100010, 50200001, 10002147, 60000073};
     private final Map<Integer, Integer> itemSn = new HashMap<>(); // itemid, sn

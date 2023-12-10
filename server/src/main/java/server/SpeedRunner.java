@@ -1,15 +1,16 @@
 package server;
 
 import database.DatabaseConnection;
+import server.maps.SpeedRunType;
+import tools.Pair;
+import tools.StringUtil;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import server.maps.SpeedRunType;
-import tools.Pair;
-import tools.StringUtil;
 
 @lombok.extern.slf4j.Slf4j
 public class SpeedRunner {
@@ -54,8 +55,7 @@ public class SpeedRunner {
         try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps =
                     con.prepareStatement(
-                            "SELECT * FROM speedruns WHERE type = ? ORDER BY time LIMIT 25"); // or
-            // should we do less
+                            "SELECT * FROM speedruns WHERE type = ? ORDER BY time LIMIT 25", ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.CONCUR_UPDATABLE);
             ps.setString(1, type.name());
             StringBuilder ret =
                     new StringBuilder(

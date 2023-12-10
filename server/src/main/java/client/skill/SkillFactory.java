@@ -23,7 +23,7 @@ public class SkillFactory {
     private static final Map<Integer, SummonSkillEntry> SummonSkillInformation =
             new HashMap<Integer, SummonSkillEntry>();
     private static final MapleData stringData =
-            ServerEnvironment.getConfig().getDataProvider("wz/String").getData("Skill.img");
+            ServerEnvironment.serverConfig().getDataProvider("wz/String").getData("Skill.img");
 
     public static final ISkill getSkill(final int id) {
         if (!skills.isEmpty()) {
@@ -31,7 +31,7 @@ public class SkillFactory {
         }
         // log.info("Loading SkillFactory :::");
         final MapleDataProvider datasource =
-                ServerEnvironment.getConfig().getDataProvider("wz/Skill");
+                ServerEnvironment.serverConfig().getDataProvider("wz/Skill");
         final MapleDataDirectoryEntry root = datasource.getRoot();
 
         int skillid;

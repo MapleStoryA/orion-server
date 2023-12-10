@@ -29,7 +29,7 @@ public class PortalScriptManager {
 
     private PortalScript getPortalScript(final String scriptName) {
         String path =
-                ServerEnvironment.getConfig().getScriptsPath() + "/portal/" + scriptName + ".js";
+                ServerEnvironment.serverConfig().getScriptsPath() + "/portal/" + scriptName + ".js";
 
         if (!ServerEnvironment.isDebugEnabled()) {
             if (scripts.containsKey(scriptName)) {

@@ -29,7 +29,7 @@ public class NpcScriptingManager {
     public static synchronized NpcScriptingManager getInstance() {
         if (INSTANCE == null) {
             INSTANCE =
-                    new NpcScriptingManager(ServerEnvironment.getConfig().getScriptsPath() + "/");
+                    new NpcScriptingManager(ServerEnvironment.serverConfig().getScriptsPath() + "/");
         }
         return INSTANCE;
     }

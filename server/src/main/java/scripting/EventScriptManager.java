@@ -2,6 +2,7 @@ package scripting;
 
 import handling.channel.ChannelServer;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.script.Invocable;
@@ -14,7 +15,7 @@ public class EventScriptManager extends AbstractScriptManager {
     private final Map<String, EventEntry> events = new LinkedHashMap<String, EventEntry>();
     private final AtomicInteger runningInstanceMapId = new AtomicInteger(0);
 
-    public EventScriptManager(final ChannelServer channelServer, final String[] scripts) {
+    public EventScriptManager(final ChannelServer channelServer, final List<String> scripts) {
         for (final String script : scripts) {
             if (!script.equals("")) {
                 final Invocable iv = getInvocable("event", script, null);

@@ -29,9 +29,9 @@ import tools.StringUtil;
 public class MapleMapFactory {
 
     private static final MapleDataProvider source =
-            ServerEnvironment.getConfig().getDataProvider("wz/Map");
+            ServerEnvironment.serverConfig().getDataProvider("wz/Map");
     private static final MapleData nameData =
-            ServerEnvironment.getConfig().getDataProvider("wz/String").getData("Map.img");
+            ServerEnvironment.serverConfig().getDataProvider("wz/String").getData("Map.img");
     private static final Map<Integer, List<AbstractLoadedMapleLife>> customLife = new HashMap<>();
     private static final Map<Integer, MapleNodes> mapInfos = new HashMap<Integer, MapleNodes>();
     private final Map<Integer, MapleMap> maps = new HashMap<Integer, MapleMap>();

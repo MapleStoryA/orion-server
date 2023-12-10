@@ -1,4 +1,4 @@
-debug: 'false'
+debug: false
 database:
   url: jdbc:mysql://127.0.0.1:7900/orion?autoReconnect=true
   user: root
@@ -20,15 +20,118 @@ world:
   meso: 1
   drop: 1
   cash: 0
-  admin: false # Admin Only or not
+  adminOnly: false # Admin Only or not
   flags: 0 # 1 :  Disable PQ 0 :  Enable PQ
   serverMessage: Maple Story V90 # Server Scrolling Message
-
 channel:
-  net:
-   interface: 127.0.0.1
-  # active event scripts
-  events: KerningPQ,Boats
+  host: 127.0.0.1
   count: 2
-  #events: 2xEvent,4jberserk,4jrush,AirPlane,Amoria,Kenta,AriantPQ1,AriantPQ2,AriantPQ3,Boats,BossBalrog_EASY,BossBalrog_NORMAL,BossHunterPQ,BossQuestEASY,BossQuestHARD,BossQuestHELL,BossQuestMed,Brawler,Cabin,CathedralWedding,ChaosHorntail,ChaosZakum,cpq,DollHouse,ElementThanatos,elevator,ElnathPQ,FireDemon,Geenie,Ghost,GuildQuest,Hak,HenesysPQ,HontalePQ,HontaleSquad,HorntailBattle,KerningPQ,KyrinTrainingGroundC,KyrinTrainingGroundV,LudiMazePQ,LudiPQ,LumpEnergy,Olivia,OmegaPQ,OrbisPQ,PigTown,PiratePQ,Ravana_EASY,Ravana_HARD,Ravana_HELL,Ravana_MED,rescueGaga,Rex,ScarTarBattle,ServerMessage,Subway,TimeMachinePart,Trains,WitchTower_EASY,WitchTower_Hard,WitchTower_Med,ZakumAltar,ZakumBattle,ZakumPQ
-
+  events:
+    - 0_EXAMPLE
+    - 2095_tokyo
+    - 2xEvent
+    - 3rdjob
+    - 4jberserk
+    - 4jrush
+    - AirPlane
+    - Amoria
+    - AriantPQ1
+    - AriantPQ2
+    - AriantPQ3
+    - ArkariumBattle
+    - Aufhaven
+    - AutomatedEvent
+    - Boats
+    - BossBalrog_EASY
+    - BossBalrog_NORMAL
+    - BossHunterPQ
+    - bosspq
+    - BossQuest
+    - BossQuestEASY
+    - BossQuestHARD
+    - BossQuestHELL
+    - BossQuestMed
+    - Brawler
+    - Cabin
+    - CathedralWedding
+    - ChaosHorntail
+    - ChaosZakum
+    - Christmas
+    - CoreBlaze
+    - cpq
+    - cpq2
+    - CWKPQ
+    - CygnusBattle
+    - DLPracticeField
+    - DollHouse
+    - Dragonica
+    - Dunas
+    - Dunas2
+    - ElementThanatos
+    - elevator
+    - Ellin
+    - ElnathPQ
+    - English
+    - English0
+    - English1
+    - English2
+    - enterDisguise3
+    - FireDemon
+    - Flight
+    - Geenie
+    - Ghost
+    - GuildQuest
+    - Gunslinger
+    - Hak
+    - HenesysPQ
+    - HontalePQ
+    - HontaleSquad
+    - HorntailBattle
+    - Iceman
+    - Juliet
+    - Kenta
+    - KerningPQ
+    - KyrinTrainingGroundC
+    - KyrinTrainingGroundV
+    - LudiMazePQ
+    - LudiPQ
+    - LumpEnergy
+    - MesoMap
+    - MiniDungeon
+    - MonsterPark
+    - MulungParty
+    - MV
+    - NamelessMagicMonster
+    - Olivia
+    - OmegaPQ
+    - OrbisPQ
+    - PigTown
+    - PinkBeanBattle
+    - Pirate
+    - PiratePQ
+    - ProtectTylus
+    - Ravana_EASY
+    - Ravana_HARD
+    - Ravana_HELL
+    - Ravana_MED
+    - Relic
+    - rescueGaga
+    - Rex
+    - Romeo
+    - s4aWorld
+    - s4nest
+    - s4resurrection
+    - s4resurrection2
+    - ScarTarBattle
+    - ServerMessage
+    - Subway
+    - TimeMachinePart
+    - Trains
+    - Vergamot
+    - Visitor
+    - WitchTower_EASY
+    - WitchTower_Hard
+    - WitchTower_Med
+    - ZakumAltar
+    - ZakumBattle
+    - ZakumPQ

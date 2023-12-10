@@ -31,13 +31,13 @@ public class MapleItemInformationProvider {
 
     private static final MapleItemInformationProvider instance = new MapleItemInformationProvider();
     protected final MapleDataProvider etcData =
-            ServerEnvironment.getConfig().getDataProvider("wz/Etc");
+            ServerEnvironment.serverConfig().getDataProvider("wz/Etc");
     protected final MapleDataProvider itemData =
-            ServerEnvironment.getConfig().getDataProvider("wz/Item");
+            ServerEnvironment.serverConfig().getDataProvider("wz/Item");
     protected final MapleDataProvider equipData =
-            ServerEnvironment.getConfig().getDataProvider("wz/Character");
+            ServerEnvironment.serverConfig().getDataProvider("wz/Character");
     protected final MapleDataProvider stringData =
-            ServerEnvironment.getConfig().getDataProvider("wz/String");
+            ServerEnvironment.serverConfig().getDataProvider("wz/String");
     protected final MapleData cashStringData = stringData.getData("Cash.img");
     protected final MapleData consumeStringData = stringData.getData("Consume.img");
     protected final MapleData eqpStringData = stringData.getData("Eqp.img");

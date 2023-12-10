@@ -13,7 +13,7 @@ import tools.StringUtil;
 public class MapleReactorFactory {
 
     private static final MapleDataProvider data =
-            ServerEnvironment.getConfig().getDataProvider("wz/Reactor");
+            ServerEnvironment.serverConfig().getDataProvider("wz/Reactor");
     private static final Map<Integer, MapleReactorStats> reactorStats =
             new HashMap<Integer, MapleReactorStats>();
 

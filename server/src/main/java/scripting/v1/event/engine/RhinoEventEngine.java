@@ -20,7 +20,7 @@ public class RhinoEventEngine implements EventEngine {
 
     private static final Logger LOG = LoggerFactory.getLogger(RhinoEventEngine.class);
 
-    private static final String SCRIPT_PATH = ServerEnvironment.getConfig().getScriptsPath() + "/" + "instances";
+    private static final String SCRIPT_PATH = ServerEnvironment.serverConfig().getScriptsPath() + "/" + "instances";
     private final String name;
     private Scriptable globalScope;
 

@@ -19,11 +19,11 @@ import tools.StringUtil;
 public class MapleLifeFactory {
 
     private static final MapleDataProvider data =
-            ServerEnvironment.getConfig().getDataProvider("wz/Mob");
+            ServerEnvironment.serverConfig().getDataProvider("wz/Mob");
     private static final MapleDataProvider stringDataWZ =
-            ServerEnvironment.getConfig().getDataProvider("wz/String");
+            ServerEnvironment.serverConfig().getDataProvider("wz/String");
     private static final MapleDataProvider etcDataWZ =
-            ServerEnvironment.getConfig().getDataProvider("wz/Etc");
+            ServerEnvironment.serverConfig().getDataProvider("wz/Etc");
     private static final MapleData mobStringData = stringDataWZ.getData("Mob.img");
     private static final MapleData npcStringData = stringDataWZ.getData("Npc.img");
     private static final MapleData npclocData = etcDataWZ.getData("NpcLocation.img");
