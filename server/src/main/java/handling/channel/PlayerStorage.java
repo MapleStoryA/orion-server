@@ -5,8 +5,6 @@ import client.MapleCharacterHelper;
 import handling.world.helper.CharacterTransfer;
 import handling.world.helper.CheaterData;
 import handling.world.helper.FindCommand;
-import server.Timer.PingTimer;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -16,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import server.Timer.PingTimer;
 
 @lombok.extern.slf4j.Slf4j
 public class PlayerStorage {
@@ -142,14 +141,13 @@ public class PlayerStorage {
                 chr = itr.next();
 
                 if (chr.getCheatTracker().getPoints() > 0) {
-                    cheaters.add(
-                            new CheaterData(
-                                    chr.getCheatTracker().getPoints(),
-                                    MapleCharacterHelper.makeMapleReadable(chr.getName())
-                                            + " ("
-                                            + chr.getCheatTracker().getPoints()
-                                            + ") "
-                                            + chr.getCheatTracker().getSummary()));
+                    cheaters.add(new CheaterData(
+                            chr.getCheatTracker().getPoints(),
+                            MapleCharacterHelper.makeMapleReadable(chr.getName())
+                                    + " ("
+                                    + chr.getCheatTracker().getPoints()
+                                    + ") "
+                                    + chr.getCheatTracker().getSummary()));
                 }
             }
         } finally {
@@ -169,14 +167,13 @@ public class PlayerStorage {
                 chr = itr.next();
 
                 if (chr.getReportPoints() > 0) {
-                    cheaters.add(
-                            new CheaterData(
-                                    chr.getReportPoints(),
-                                    MapleCharacterHelper.makeMapleReadable(chr.getName())
-                                            + " ("
-                                            + chr.getReportPoints()
-                                            + ") "
-                                            + chr.getReportSummary()));
+                    cheaters.add(new CheaterData(
+                            chr.getReportPoints(),
+                            MapleCharacterHelper.makeMapleReadable(chr.getName())
+                                    + " ("
+                                    + chr.getReportPoints()
+                                    + ") "
+                                    + chr.getReportSummary()));
                 }
             }
         } finally {

@@ -49,8 +49,7 @@ public class PlayerScripting extends BaseScripting {
 
     @ApiClass()
     public void megaphone(String message, boolean whisper) {
-        client.sendPacket(
-                MaplePacketCreator.serverMessage(2, client.getChannel(), message, whisper));
+        client.sendPacket(MaplePacketCreator.serverMessage(2, client.getChannel(), message, whisper));
     }
 
     @ApiClass
@@ -65,11 +64,7 @@ public class PlayerScripting extends BaseScripting {
 
     @ApiClass
     public void yellowSupermega(String message) {
-        sendPacket(
-                MaplePacketCreator.serverMessage(
-                        9,
-                        client.getChannel(),
-                        client.getPlayer().getName() + " : " + message,
-                        false));
+        sendPacket(MaplePacketCreator.serverMessage(
+                9, client.getChannel(), client.getPlayer().getName() + " : " + message, false));
     }
 }

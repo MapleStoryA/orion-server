@@ -16,13 +16,7 @@ class SetLevelCommand implements Command {
                     c.getPlayer().setExp(0);
                 }
             }
-            return;
         }
-
-        if (c.getPlayer().getLevel() < 200) {
-            c.getPlayer().gainExp(500000000, true, false, true);
-        }
-
     }
 
     @Override

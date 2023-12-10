@@ -85,7 +85,6 @@ import lombok.extern.slf4j.Slf4j;
 import scripting.EventInstanceManager;
 import scripting.NPCScriptManager;
 import scripting.v1.event.EventInstance;
-import tools.ApiClass;
 import server.MapleCarnivalChallenge;
 import server.MapleCarnivalParty;
 import server.MapleInventoryManipulator;
@@ -117,6 +116,7 @@ import server.maps.MapleSummon;
 import server.maps.SavedLocationType;
 import server.quest.MapleQuest;
 import server.shops.IMaplePlayerShop;
+import tools.ApiClass;
 import tools.ConcurrentEnumMap;
 import tools.DateHelper;
 import tools.MaplePacketCreator;
@@ -3272,7 +3272,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public void levelUp(boolean show) {
-        if(getLevel() > 200){
+        if (getLevel() > 200) {
             return;
         }
         if (job.isCygnus() && getLevel() >= 120) {

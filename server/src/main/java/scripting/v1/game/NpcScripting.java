@@ -6,9 +6,9 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ContinuationPending;
 import org.mozilla.javascript.Scriptable;
 import scripting.ScriptMan;
-import tools.ApiClass;
 import scripting.v1.game.helper.AskAvatarHelper;
 import server.life.MapleNPC;
+import tools.ApiClass;
 import tools.packet.npcpool.NpcPoolPackets;
 
 @Slf4j
@@ -55,18 +55,14 @@ public class NpcScripting extends PlayerScripting {
     @ApiClass
     public void say(String text) {
         Context cx = Context.enter();
-        sendPacket(
-                ScriptMan.OnSay(
-                        ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text), false, true));
+        sendPacket(ScriptMan.OnSay(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text), false, true));
         throwContinuation(cx);
     }
 
     @ApiClass
     public void sayUser(String text) {
         Context cx = Context.enter();
-        sendPacket(
-                ScriptMan.OnSay(
-                        ScriptMan.NpcReplacedByUser, npc, (byte) 2, parseText(text), false, true));
+        sendPacket(ScriptMan.OnSay(ScriptMan.NpcReplacedByUser, npc, (byte) 2, parseText(text), false, true));
         throwContinuation(cx);
     }
 
@@ -74,14 +70,7 @@ public class NpcScripting extends PlayerScripting {
     public void sayOk(String text) {
         Context cx = Context.enter();
         getClient()
-                .sendPacket(
-                        ScriptMan.OnSay(
-                                ScriptMan.NpcReplayedByNpc,
-                                npc,
-                                (byte) 0,
-                                parseText(text),
-                                false,
-                                false));
+                .sendPacket(ScriptMan.OnSay(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text), false, false));
         throwContinuation(cx);
     }
 
@@ -89,30 +78,21 @@ public class NpcScripting extends PlayerScripting {
     public void sayOkUser(String text) {
         Context cx = Context.enter();
         getClient()
-                .sendPacket(
-                        ScriptMan.OnSay(
-                                ScriptMan.NpcReplayedByNpc,
-                                npc,
-                                (byte) 2,
-                                parseText(text),
-                                false,
-                                false));
+                .sendPacket(ScriptMan.OnSay(ScriptMan.NpcReplayedByNpc, npc, (byte) 2, parseText(text), false, false));
         throwContinuation(cx);
     }
 
     @ApiClass
     public void askYesNo(String text) {
         Context cx = Context.enter();
-        sendPacket(
-                ScriptMan.OnAskYesNo(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text)));
+        sendPacket(ScriptMan.OnAskYesNo(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text)));
         throwContinuation(cx);
     }
 
     @ApiClass
     public void askYesUser(String text) {
         Context cx = Context.enter();
-        sendPacket(
-                ScriptMan.OnAskYesNo(ScriptMan.NpcReplayedByNpc, npc, (byte) 2, parseText(text)));
+        sendPacket(ScriptMan.OnAskYesNo(ScriptMan.NpcReplayedByNpc, npc, (byte) 2, parseText(text)));
         throwContinuation(cx);
     }
 
@@ -123,8 +103,7 @@ public class NpcScripting extends PlayerScripting {
             askMenu(text);
             return;
         }
-        sendPacket(
-                ScriptMan.OnAskAccept(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text)));
+        sendPacket(ScriptMan.OnAskAccept(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text)));
         throwContinuation(cx);
     }
 
@@ -135,8 +114,7 @@ public class NpcScripting extends PlayerScripting {
             askMenu(text);
             return;
         }
-        sendPacket(
-                ScriptMan.OnAskAccept(ScriptMan.NpcReplayedByNpc, npc, (byte) 2, parseText(text)));
+        sendPacket(ScriptMan.OnAskAccept(ScriptMan.NpcReplayedByNpc, npc, (byte) 2, parseText(text)));
         throwContinuation(cx);
     }
 
@@ -175,56 +153,35 @@ public class NpcScripting extends PlayerScripting {
             sayUser(text);
             return;
         }
-        sendPacket(
-                ScriptMan.OnAskMenu(ScriptMan.NpcReplacedByUser, npc, (byte) 2, parseText(text)));
+        sendPacket(ScriptMan.OnAskMenu(ScriptMan.NpcReplacedByUser, npc, (byte) 2, parseText(text)));
         throwContinuation(cx);
     }
 
     @ApiClass
     public void askText(String text, String def, int col, int line) {
         Context cx = Context.enter();
-        sendPacket(
-                ScriptMan.OnAskText(
-                        ScriptMan.NpcReplayedByNpc,
-                        npc,
-                        (byte) 0,
-                        parseText(text),
-                        def,
-                        col,
-                        line));
+        sendPacket(ScriptMan.OnAskText(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text), def, col, line));
         throwContinuation(cx);
     }
 
     @ApiClass
     public void askTextUser(String text, String def, int col, int line) {
         Context cx = Context.enter();
-        sendPacket(
-                ScriptMan.OnAskText(
-                        ScriptMan.NpcReplayedByNpc,
-                        npc,
-                        (byte) 2,
-                        parseText(text),
-                        def,
-                        col,
-                        line));
+        sendPacket(ScriptMan.OnAskText(ScriptMan.NpcReplayedByNpc, npc, (byte) 2, parseText(text), def, col, line));
         throwContinuation(cx);
     }
 
     @ApiClass
     public void askNumber(String text, int def, int min, int max) {
         Context cx = Context.enter();
-        sendPacket(
-                ScriptMan.OnAskNumber(
-                        ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text), def, min, max));
+        sendPacket(ScriptMan.OnAskNumber(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text), def, min, max));
         throwContinuation(cx);
     }
 
     @ApiClass
     public void askNumberUser(String text, int def, int min, int max) {
         Context cx = Context.enter();
-        sendPacket(
-                ScriptMan.OnAskNumber(
-                        ScriptMan.NpcReplayedByNpc, npc, (byte) 2, parseText(text), def, min, max));
+        sendPacket(ScriptMan.OnAskNumber(ScriptMan.NpcReplayedByNpc, npc, (byte) 2, parseText(text), def, min, max));
         throwContinuation(cx);
     }
 

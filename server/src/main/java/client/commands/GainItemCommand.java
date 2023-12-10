@@ -6,9 +6,9 @@ import client.inventory.IItem;
 import client.inventory.ItemFlag;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
-import tools.ApiClass;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
+import tools.ApiClass;
 
 @ApiClass
 class GainItemCommand implements Command {

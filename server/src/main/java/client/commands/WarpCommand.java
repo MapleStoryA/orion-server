@@ -4,17 +4,16 @@ import client.MapleCharacter;
 import client.MapleClient;
 import handling.channel.ChannelServer;
 import handling.world.WorldServer;
-import server.maps.MapleMap;
-import tools.ApiClass;
-
 import java.util.LinkedList;
 import java.util.List;
+import server.maps.MapleMap;
+import tools.ApiClass;
 
 @ApiClass
 class WarpCommand implements Command {
     @Override
     public void execute(MapleClient c, String[] args) {
-        MapleCharacter victim = null;// =
+        MapleCharacter victim = null; // =
         List<String> possibility = new LinkedList<>();
         StringBuilder sb = new StringBuilder();
         for (ChannelServer ch : WorldServer.getInstance().getAllChannels()) {
@@ -33,12 +32,13 @@ class WarpCommand implements Command {
             c.getPlayer().dcolormsg(5, sb.toString());
         } else {
             if (victim != null) {
-                MapleMap target = WorldServer.getInstance().getChannel(c.getChannel()).getMapFactory()
+                MapleMap target = WorldServer.getInstance()
+                        .getChannel(c.getChannel())
+                        .getMapFactory()
                         .getMap(Integer.parseInt(args[1]));
                 victim.changeMap(target, target.getPortal(0));
             }
         }
-
     }
 
     @Override
