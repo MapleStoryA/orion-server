@@ -28,8 +28,8 @@ public class NpcTalkHandler extends AbstractMaplePacketHandler {
             chr.setConversation(1);
             npc.sendShop(c);
         } else {
-            if (NpcTalkHelper.isNewNpcScriptAvailable(npc.getId())) {
-                NpcTalkHelper.startConversation(npc.getId(), c);
+            if (NpcTalkHelper.isNewNpcScriptAvailable(npc.getId(), npc.getScript())) {
+                NpcTalkHelper.startConversation(npc.getId(), c, npc.getScript());
                 return;
             }
             c.setCurrentNpcScript(null);

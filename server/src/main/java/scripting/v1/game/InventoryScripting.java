@@ -36,6 +36,11 @@ public class InventoryScripting extends PlayerScripting {
         return InventoryHelper.gainItem(id, quantity, false, 0, -1, "", client);
     }
 
+    @ApiClass
+    public void incSlotCount(int type, byte value) {
+        player.getStorage().increaseSlots(value);
+    }
+
     // Like in bms, items = item, count * n
     @ApiClass
     public int exchange(int money, int... items) {

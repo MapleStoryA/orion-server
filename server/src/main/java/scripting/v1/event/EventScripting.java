@@ -1,6 +1,7 @@
 package scripting.v1.event;
 
 import client.MapleCharacter;
+import java.util.Collection;
 import lombok.extern.slf4j.Slf4j;
 import org.mozilla.javascript.Context;
 import scripting.v1.game.TargetScripting;
@@ -8,11 +9,8 @@ import scripting.v1.game.helper.BindingHelper;
 import scripting.v1.game.helper.NpcTalkHelper;
 import tools.MaplePacketCreator;
 
-import java.util.Collection;
-
 @Slf4j
 public class EventScripting {
-
 
     private final EventInstance instance;
 
@@ -52,10 +50,10 @@ public class EventScripting {
     }
 
     public void startNpc(int id) {
-        //Because of Rhino contexts, it must be in another thread.
+        // Because of Rhino contexts, it must be in another thread.
         Context.exit();
         for (MapleCharacter member : instance.getMembers()) {
-            NpcTalkHelper.startConversation(id, member.getClient());
+            NpcTalkHelper.startConversation(id, member.getClient(), null);
         }
     }
 
@@ -69,7 +67,6 @@ public class EventScripting {
         return instance.getLeader();
     }
 
-
     public void log(String message) {
         log.info(message);
     }
@@ -81,5 +78,4 @@ public class EventScripting {
     public void setCurrentMap(int map) {
         instance.setCurrentMap(map);
     }
-
 }

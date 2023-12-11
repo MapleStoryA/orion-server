@@ -18,8 +18,12 @@ public class NpcTalkHelper {
         public static final int ACTION_NEXT = 1;
     }
 
-    public static boolean isNewNpcScriptAvailable(int npc) {
-        var file = new File(ServerConfig.serverConfig().getScriptsPath() + "/npcNew/" + npc + ".js");
+    public static boolean isNewNpcScriptAvailable(int npc, String script) {
+        if (script == null) {
+            var file = new File(ServerConfig.serverConfig().getScriptsPath() + "/npcNew/" + npc + ".js");
+            return file.exists();
+        }
+        var file = new File(ServerConfig.serverConfig().getScriptsPath() + "/npcNew/" + script + ".js");
         return file.exists();
     }
 
@@ -28,10 +32,19 @@ public class NpcTalkHelper {
         return file.exists();
     }
 
+    public static void startConversation(int npc, MapleClient client, String script) {
+        var manager = NpcScriptingManager.getInstance();
+        try {
+            manager.runScript(npc, script, client);
+        } catch (ContinuationPending pending) {
+            client.getCurrentNpcScript().setContinuation(pending.getContinuation());
+        }
+    }
+
     public static void startConversation(int npc, MapleClient client) {
         var manager = NpcScriptingManager.getInstance();
         try {
-            manager.runScript(npc, client);
+            manager.runScript(npc, null, client);
         } catch (ContinuationPending pending) {
             client.getCurrentNpcScript().setContinuation(pending.getContinuation());
         }

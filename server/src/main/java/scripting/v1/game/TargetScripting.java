@@ -68,6 +68,12 @@ public class TargetScripting extends PlayerScripting {
     }
 
     @ApiClass
+    public boolean setJob(int job) {
+        player.changeJob(job);
+        return true;
+    }
+
+    @ApiClass
     public int nSTR() {
         return player.getStat().getStr();
     }
@@ -136,6 +142,20 @@ public class TargetScripting extends PlayerScripting {
     public int incMP(int value) {
         int previousMP = player.getStat().getHp();
         player.getStat().setMp(previousMP + value);
+        return nMP();
+    }
+
+    @ApiClass
+    public int incMHP(int value, int other) {
+        int previousMaxHP = player.getStat().getMaxHp();
+        player.getStat().setMaxHp(previousMaxHP + value);
+        return nHP();
+    }
+
+    @ApiClass
+    public int incMMP(int value, int other) {
+        int previousMaxMp = player.getStat().getMaxMp();
+        player.getStat().setMaxMp(previousMaxMp + value);
         return nMP();
     }
 

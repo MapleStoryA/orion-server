@@ -66,7 +66,7 @@ public class NpcScriptingManager {
         }
     }
 
-    public boolean runScript(int npc, MapleClient client) {
+    public boolean runScript(int npc, String scriptName, MapleClient client) {
         Context ctx = setUpContext();
         NpcScripting npcScript;
         TargetScripting target;
@@ -74,12 +74,21 @@ public class NpcScriptingManager {
         FieldScripting field;
         try {
 
-            String file = "function main() {"
-                    + StringUtil.readFileAsString(scriptPath + "/npcNew/" + npc + ".js")
-                    + "}"
-                    + "main();";
+            String file = "";
 
-            Script script = ctx.compileString(file, "npcNew/" + npc + ".js", 1, null);
+            if (scriptName == null) {
+                file = "function main() {"
+                        + StringUtil.readFileAsString(scriptPath + "/npcNew/" + npc + ".js")
+                        + "}"
+                        + "main();";
+            } else {
+                file = ""
+                        + StringUtil.readFileAsString(scriptPath + "/npcNew/" + scriptName + ".js")
+                        + ""
+                        + scriptName + "()";
+            }
+
+            Script script = ctx.compileString(file, "npcNew/" + scriptName + ".js", 1, null);
 
             Scriptable globalScope = ctx.initStandardObjects();
             npcScript = new NpcScripting(npc, client, globalScope);
