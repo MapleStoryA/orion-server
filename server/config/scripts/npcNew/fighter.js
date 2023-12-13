@@ -1,7 +1,10 @@
 function fighterAction() {
-    qr = target.questRecord;
-    val = target.get(7500);
+    qr = target.questRecord();
+    val = qr.get(7500);
     cJob = target.nJob();
+
+    val = qr.get(7500);
+
 
     if (val == "s" && (cJob == 110
         ||

@@ -82,9 +82,10 @@ public class NpcScriptingManager {
                         + "}"
                         + "main();";
             } else {
-                file = StringUtil.readFileAsString(scriptPath + "/npcNew/" + scriptName + ".js")
+                file = StringUtil.readFileAsString(scriptPath + "/npcNew/" + scriptName + ".js");
             }
 
+            log.info("Loading script " + scriptPath + "/npcNew/" + scriptName + ".js");
             Script script = ctx.compileString(file, "npcNew/" + scriptName + ".js", 1, null);
 
             Scriptable globalScope = ctx.initStandardObjects();

@@ -1445,7 +1445,9 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public final MapleQuestStatus getQuest(final MapleQuest quest) {
         if (!quests.containsKey(quest)) {
-            return new MapleQuestStatus(quest, (byte) 0);
+            MapleQuestStatus newQuest = new MapleQuestStatus(quest, (byte) 0);
+            quests.put(quest, newQuest);
+            return newQuest;
         }
         return quests.get(quest);
     }

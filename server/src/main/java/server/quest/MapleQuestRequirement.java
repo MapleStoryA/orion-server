@@ -159,7 +159,7 @@ public class MapleQuestRequirement implements Serializable {
         }
     }
 
-    public boolean check(MapleCharacter c, Integer npcid) {
+    public boolean check(MapleCharacter c, Integer npcId) {
         switch (type) {
             case job:
                 for (Pair<Integer, Integer> a : dataStore) {
@@ -248,7 +248,7 @@ public class MapleQuestRequirement implements Serializable {
                 }
                 return true;
             case npc:
-                return npcid == null || npcid == intStore;
+                return npcId == null || npcId == intStore;
             case fieldEnter:
                 if (intStore != -1) {
                     return intStore == c.getMapId();

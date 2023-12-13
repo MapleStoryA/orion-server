@@ -6,7 +6,6 @@ import client.MapleJob;
 import client.MapleStat;
 import handling.world.WorldServer;
 import handling.world.party.MaplePartyCharacter;
-import java.awt.*;
 import lombok.extern.slf4j.Slf4j;
 import scripting.v1.event.EventCenter;
 import scripting.v1.event.EventInstance;
@@ -15,6 +14,8 @@ import server.quest.MapleQuest;
 import tools.ApiClass;
 import tools.MaplePacketCreator;
 import tools.packet.CWVsContextOnMessagePackets;
+
+import java.awt.*;
 
 @Slf4j
 public class TargetScripting extends PlayerScripting {
@@ -442,5 +443,13 @@ public class TargetScripting extends PlayerScripting {
     @ApiClass
     public void changeMusic(String music) {
         sendPacket(MaplePacketCreator.musicChange(music));
+    }
+
+    public UQuestRecord questRecord() {
+        return new QuestScripting(this.client, null);
+    }
+
+    public InventoryScripting inventory() {
+        return new InventoryScripting(client);
     }
 }
