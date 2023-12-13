@@ -4,7 +4,7 @@ val = qr.get(7500);
 cJob = target.nJob();
 
 // moving the warrior
-if (field.id == 105070001) {
+if (field.id() == 105070001) {
     if (val == "p1" && (cJob == 110
         ||
         cJob == 120

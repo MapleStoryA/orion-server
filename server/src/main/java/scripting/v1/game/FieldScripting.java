@@ -1,14 +1,15 @@
 package scripting.v1.game;
 
 import client.MapleCharacter;
-import java.awt.*;
-import java.util.Collection;
 import server.maps.MapleMap;
 import tools.ApiClass;
 import tools.MaplePacketCreator;
 
+import java.awt.*;
+import java.util.Collection;
+
 @lombok.extern.slf4j.Slf4j
-public class FieldScripting {
+public class FieldScripting implements Field {
 
     private final MapleMap map;
 
@@ -92,5 +93,155 @@ public class FieldScripting {
     @ApiClass
     public void clearEventInstance() {
         map.clearEventInstance();
+    }
+
+    @Override
+    public int id() {
+        return map.getId();
+    }
+
+    @Override
+    public void Field(int id) {
+
+    }
+
+    @Override
+    public int getUserCount() {
+        return 0;
+    }
+
+    @Override
+    public int getMobCount(int mobId) {
+        return 0;
+    }
+
+    @Override
+    public int getMobHP(int mobId) {
+        return 0;
+    }
+
+    @Override
+    public int countUserInArea(String areaName) {
+        return 0;
+    }
+
+    @Override
+    public int countMaleInArea(String areaName) {
+        return 0;
+    }
+
+    @Override
+    public int countFemaleInArea(String areaName) {
+        return 0;
+    }
+
+    @Override
+    public void enablePortal(String portalName, int status) {
+
+    }
+
+    @Override
+    public void effectObject(String objName) {
+
+    }
+
+    @Override
+    public void effectScreen(String name) {
+
+    }
+
+    @Override
+    public void effectSound(String soundName) {
+
+    }
+
+    @Override
+    public void effectTremble(int type, int delay) {
+
+    }
+
+    @Override
+    public void notice(int type, String message, Object... args) {
+
+    }
+
+    @Override
+    public int isItemInArea(String areaName, int itemId) {
+        return 0;
+    }
+
+    @Override
+    public void summonMob(int x, int y, int itemId) {
+
+    }
+
+    @Override
+    public int transferFieldAll(int mapCode, String portalName) {
+        return 0;
+    }
+
+    @Override
+    public void setNpcVar(int npcId, String key, String var) {
+
+    }
+
+    @Override
+    public String getNpcStrVar(int npcId, String varName) {
+        return null;
+    }
+
+    @Override
+    public int getNpcIntVar(int npcId, String varName) {
+        return 0;
+    }
+
+    @Override
+    public void setProtectMobDamagedByMob(int setting) {
+
+    }
+
+    @Override
+    public void removeAllMob() {
+
+    }
+
+    @Override
+    public void setMobGen(int onOff) {
+
+    }
+
+    @Override
+    public void removeMob(int mobId) {
+
+    }
+
+    @Override
+    public int snowOn(int setting) {
+        return 0;
+    }
+
+    @Override
+    public void buffMob(int mobId, int effect, int duration) {
+
+    }
+
+    @Override
+    public int isUserExist(int userId) {
+        return 0;
+    }
+
+    @Override
+    public void startEvent() {
+
+    }
+
+    @Override
+    public void summonNpc(int templateId, int x, int y) {
+
+    }
+
+    @Override
+    public void vanishNpc(int templateId) {
+
     }
 }
