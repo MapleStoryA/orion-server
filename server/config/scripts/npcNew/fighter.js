@@ -191,8 +191,5 @@ function fighterAction() {
         else self.say("Que físico magnífico! Que poder incrível! Guerreiros são os melhores!!!! O que você acha? Deseja subir de classe como guerreiro??");
     }
 }
-
-function fighter() {
-    fighterAction();
-}
+fighterAction();
 

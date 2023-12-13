@@ -1,13 +1,14 @@
 package scripting.v1.game.helper;
 
 import client.MapleClient;
-import java.io.File;
 import lombok.extern.slf4j.Slf4j;
 import org.mozilla.javascript.ContinuationPending;
 import scripting.v1.NpcScriptingManager;
 import scripting.v1.game.NpcScripting;
 import server.config.ServerConfig;
 import tools.data.input.InPacket;
+
+import java.io.File;
 
 @Slf4j
 public class NpcTalkHelper {
@@ -36,15 +37,6 @@ public class NpcTalkHelper {
         var manager = NpcScriptingManager.getInstance();
         try {
             manager.runScript(npc, script, client);
-        } catch (ContinuationPending pending) {
-            client.getCurrentNpcScript().setContinuation(pending.getContinuation());
-        }
-    }
-
-    public static void startConversation(int npc, MapleClient client) {
-        var manager = NpcScriptingManager.getInstance();
-        try {
-            manager.runScript(npc, null, client);
         } catch (ContinuationPending pending) {
             client.getCurrentNpcScript().setContinuation(pending.getContinuation());
         }

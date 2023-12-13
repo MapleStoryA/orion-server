@@ -19,4 +19,3 @@ if (target.nJob() == 100 &&
     self.say("O qu�? Como voc� chegou aqui?... que estranho... bom, vou deixar voc� sair. Este � um lugar muito perigoso. V� embora ou correr� mais riscos.");
     target.registerTransferField(102020300, "");
 }
-function inside_swordman(){}

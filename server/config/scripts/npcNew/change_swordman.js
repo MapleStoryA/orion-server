@@ -26,4 +26,3 @@ if ( target.nJob() == 100 && target.nLevel() >= 30 ) {
 }
 else if ( target.nJob() == 100 && target.nLevel() < 30 ) self.say( "Deseja se tornar um Guerreiro muito mais forte do que j� �? Deixe-me tomar conta disso, ent�o, mas... voc� parece #Gfraco:fraca# demais. Inicie um treinamento, torne-se mais #Gpoderoso:poderosa# e depois volte aqui." );
 else if ( target.nJob() == 110 || target.nJob() == 120 || target.nJob() == 130 ) self.say( "Hummm... foi voc� quem passou no meu teste outro dia! O que voc� acha? Tornou-se mais forte? Bom! Agora consigo definitivamente notar seu porte de Guerreiro." );
-function change_swordman(){}

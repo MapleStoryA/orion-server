@@ -82,10 +82,7 @@ public class NpcScriptingManager {
                         + "}"
                         + "main();";
             } else {
-                file = ""
-                        + StringUtil.readFileAsString(scriptPath + "/npcNew/" + scriptName + ".js")
-                        + ""
-                        + scriptName + "()";
+                file = StringUtil.readFileAsString(scriptPath + "/npcNew/" + scriptName + ".js")
             }
 
             Script script = ctx.compileString(file, "npcNew/" + scriptName + ".js", 1, null);
