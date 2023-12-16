@@ -6,18 +6,7 @@ import handling.PacketProcessor;
 import handling.login.LoginServer;
 import handling.world.WorldServer;
 import handling.world.helper.CheaterData;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import scripting.EventScriptManager;
-import scripting.v1.event.EventCenter;
 import server.MapleSquad;
 import server.TimerManager;
 import server.autosave.AutoSaveRunnable;
@@ -37,6 +26,17 @@ import server.shops.HiredMerchant;
 import tools.CollectionUtil;
 import tools.MaplePacketCreator;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 @lombok.extern.slf4j.Slf4j
 public class ChannelServer extends GameServer {
 
@@ -50,7 +50,6 @@ public class ChannelServer extends GameServer {
     private final ReentrantReadWriteLock squadLock = new ReentrantReadWriteLock();
     private final Map<MapleEventType, MapleEvent> events = new EnumMap<>(MapleEventType.class);
     private final AramiaFireWorks aramiaEvent;
-    private final EventCenter eventCenter;
     public long serverStartTime;
     private int expRate, mesoRate, dropRate, cashRate;
     private int running_MerchantID = 0;
@@ -76,7 +75,6 @@ public class ChannelServer extends GameServer {
         this.publicAddress = channelConfig.getHost() + ":" + port;
         this.mapFactory = new MapleMapFactory();
         this.aramiaEvent = new AramiaFireWorks();
-        this.eventCenter = new EventCenter(channel);
         this.eventSM = new EventScriptManager(this, channelConfig.getEvents());
         this.mapFactory.setChannel(channel);
         this.players = new PlayerStorage(channel);
@@ -454,10 +452,6 @@ public class ChannelServer extends GameServer {
             }
         }
         return null;
-    }
-
-    public EventCenter getEventCenter() {
-        return this.eventCenter;
     }
 
     private void scheduleAutoSaver() {

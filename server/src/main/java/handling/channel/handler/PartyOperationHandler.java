@@ -62,7 +62,6 @@ public class PartyOperationHandler extends AbstractMaplePacketHandler {
                                 PartyManager.disbandExped(exped1.getId());
                                 if (chr.getEventInstance() != null) {
                                     chr.getEventInstance().disbandParty();
-                                    chr.getNewEventInstance().onPartyDisband(chr);
                                 }
                             } else {
                                 if (party.getLeader().getId() == chr.getId()) {
@@ -72,7 +71,6 @@ public class PartyOperationHandler extends AbstractMaplePacketHandler {
                                             new MaplePartyCharacter(chr));
                                     if (chr.getEventInstance() != null) {
                                         chr.getEventInstance().disbandParty();
-                                        chr.getNewEventInstance().onPartyDisband(chr);
                                     }
                                     PartyManager.expedPacket(
                                             exped1.getId(), MapleUserPackets.showExpedition(exped1, false, true), null);
@@ -81,7 +79,6 @@ public class PartyOperationHandler extends AbstractMaplePacketHandler {
                                             party.getId(), PartyOperation.LEAVE, new MaplePartyCharacter(chr));
                                     if (chr.getEventInstance() != null) {
                                         chr.getEventInstance().leftParty(chr);
-                                        chr.getNewEventInstance().onPlayerLeaveParty(chr);
                                     }
                                 }
                             }

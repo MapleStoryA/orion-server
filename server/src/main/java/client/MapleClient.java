@@ -65,7 +65,6 @@ public class MapleClient extends BaseMapleClient {
     private boolean serverTransition = false;
     private boolean loggedIn = false;
 
-    @Getter
     @Setter
     private long lastNPCTalk;
 
@@ -137,9 +136,6 @@ public class MapleClient extends BaseMapleClient {
             player.changeRemoval(true);
             if (player.getEventInstance() != null) {
                 player.getEventInstance().playerDisconnected(player, player.getId());
-            }
-            if (player.getNewEventInstance() != null) {
-                player.getNewEventInstance().onPlayerDisconnected(player);
             }
             if (player.getMap() != null) {
                 switch (player.getMapId()) {

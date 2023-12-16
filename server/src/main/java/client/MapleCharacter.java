@@ -60,7 +60,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import scripting.EventInstanceManager;
 import scripting.NPCScriptManager;
-import scripting.v1.event.EventInstance;
 import server.MapleCarnivalChallenge;
 import server.MapleCarnivalParty;
 import server.MapleInventoryManipulator;
@@ -289,7 +288,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     private ScheduledFuture<?> beholderBuffSchedule;
     private ScheduledFuture<?> mapTimeLimitTask;
     private ScheduledFuture<?> fishing;
-    private EventInstance newEventInstance;
     private EventInstanceManager eventInstance;
 
     private MapleCharacter(final boolean ChannelServer) {
@@ -2629,9 +2627,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         if (getEventInstance() != null) {
             getEventInstance().playerKilled(this);
         }
-        if (getNewEventInstance() != null) {
-            getNewEventInstance().onPlayerDied(this);
-        }
         dispelSkill(0);
         cancelMorphs(true); // dead = cancel
         cancelBuffStats(MapleBuffStat.DRAGONBLOOD);
@@ -2766,9 +2761,6 @@ public class MapleCharacter extends BaseMapleCharacter {
             int hp = this.getStat().getHp();
             if (hp <= 0) { // In case player die with disable actions
                 getClient().enableActions();
-                if (this.getNewEventInstance() != null) {
-                    this.getNewEventInstance().onPlayerDied(this);
-                }
             }
         }
     }
@@ -5560,14 +5552,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     @Override
     public String toString() {
         return getName() + " at " + getPosition() + " in map: " + map.getId();
-    }
-
-    public EventInstance getNewEventInstance() {
-        return this.newEventInstance;
-    }
-
-    public void setNewEventInstance(EventInstance instance) {
-        this.newEventInstance = instance;
     }
 
     public Map<MapleBuffStat, MapleBuffStatValueHolder> getEffects() {

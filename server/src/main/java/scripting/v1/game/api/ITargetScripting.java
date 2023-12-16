@@ -1,7 +1,5 @@
 package scripting.v1.game.api;
 
-import scripting.v1.event.EventCenter;
-import scripting.v1.event.EventInstance;
 import scripting.v1.game.FieldScripting;
 import scripting.v1.game.InventoryScripting;
 import scripting.v1.game.QuestRecord;
@@ -163,9 +161,6 @@ public interface ITargetScripting {
     void clearTemporaryData();
 
     @ApiClass
-    EventCenter getEventCenter();
-
-    @ApiClass
     boolean isEvan();
 
     @ApiClass
@@ -182,9 +177,6 @@ public interface ITargetScripting {
 
     @ApiClass
     boolean haveItem(int id);
-
-    @ApiClass
-    EventInstance getEvent();
 
     MapleMap getWarpMap(int map);
 

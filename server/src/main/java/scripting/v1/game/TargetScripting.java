@@ -7,8 +7,6 @@ import client.MapleStat;
 import handling.world.WorldServer;
 import handling.world.party.MaplePartyCharacter;
 import lombok.extern.slf4j.Slf4j;
-import scripting.v1.event.EventCenter;
-import scripting.v1.event.EventInstance;
 import scripting.v1.game.api.ITargetScripting;
 import server.maps.MapleMap;
 import server.quest.MapleQuest;
@@ -414,13 +412,6 @@ public class TargetScripting extends PlayerScripting implements ITargetScripting
         player.clearTemporaryData();
     }
 
-    @Override
-    @ApiClass
-    public EventCenter getEventCenter() {
-        return getChannelServer().getEventCenter();
-    }
-
-    @Override
     @ApiClass
     public boolean isEvan() {
         return player.getJob().isEvan();
@@ -458,12 +449,6 @@ public class TargetScripting extends PlayerScripting implements ITargetScripting
     @ApiClass
     public boolean haveItem(int id) {
         return player.haveItem(id);
-    }
-
-    @Override
-    @ApiClass
-    public EventInstance getEvent() {
-        return player.getNewEventInstance();
     }
 
     @Override

@@ -91,11 +91,6 @@ public class FieldScripting implements IFieldScripting {
         map.spawnSpecialMonsters();
     }
 
-    @ApiClass
-    public void clearEventInstance() {
-        map.clearEventInstance();
-    }
-
     @Override
     public int id() {
         return map.getId();
