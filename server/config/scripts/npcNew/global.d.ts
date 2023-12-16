@@ -78,36 +78,24 @@ export interface UQuestRecord {
 export interface BaseScripting {
     random(min: number, max: number): number;
 }
-export interface FieldSet {
-    name: string;
-    getVar(name: string): string; // name
-    setVar(name: string, value: string): void; // name, value
-    getUserCount(): number;
-    enter(characterId: number, fieldInfo: number): number; // CharacterID, Field Info
-    incExpAll(exp: number, ...additionalParams: any[]): number; // incExp, additional parameters
-    getReactorState(fieldIndex: number, name: string): number; // fieldindex, name. Returns -1 on error
-    setReactorState(fieldIndex: number, name: string, state: number, delay: number): void; // fieldindex, name, state, delay
-    getQuestTime(): number;
-    resetQuestTime(): void;
-    transferFieldAll(fieldId: number, additionalParams: string): void;
-    broadcastMsg(type: number, message: string, ...additionalParams: any[]): void; // Type(  0 : normal, 1 : alert, 4 : slide, 7 : NPCSay ), Message, additional parameters
-    startManually(): number; // return [0]: FieldSet still in operation. Restart failed. [1]: Restart successful.
-    resetTimeOut(timeout: number): number; // return [0] : Reset failed [1]: Reset successful. Do not use if resetQuestTime is needed. Outcome not guaranteed.
-    setTargetFieldID(targetFieldId: number): void;
-}
 
 export interface IFieldScripting {
     id(): number;
+
     getUserCount(): number;
+
     getMobCount(mobId: number): number; // MobID
     getMobHP(mobId: number): number; // MobID: Returns Mob's HP. Valid only when a single Mob with the specific ID exists. Returns -1 if Mob does not exist.
     countUserInArea(areaName: string): number; // AreaName
     countMaleInArea(areaName: string): number;
+
     countFemaleInArea(areaName: string): number;
+
     enablePortal(portalName: string, open: number): void; // PortalName, Open:1, Close:0
     effectObject(objName: string): void; // ObjName
     effectScreen(name: string): void; // Name
     effectSound(soundName: string): void;
+
     effectTremble(type: number, delay: number): void; // Type(0: Light&Long, 1: Heavy&Short), Delay(millisecond)
     notice(type: number, message: string, ...additionalParams: any[]): void; // Type(0: normal, 1: alert, 4: slide, 7: NPCSay), Message, additional parameters
     isItemInArea(areaName: string, itemId: number): number; // AreaName, ItemID
@@ -118,10 +106,13 @@ export interface IFieldScripting {
     getNpcIntVar(npcId: number, varName: string): number; // NpcID, VarName
     setProtectMobDamagedByMob(setting: number): void; // Set or Reset
     removeAllMob(): void;
+
     setMobGen(setting: number): void; // On or Off
     removeMob(mobId: number): void;
+
     snowOn(setting: number): number; // Set or Reset
     nuffMob(arg1: number, arg2: number, arg3: number): void;
+
     isUserExist(userId: number): number; // UserID [Return]: Exist: 1, Not Exist: 0
     startEvent(): void; // Start Monster Carnival
     summonNpc(templateId: number, x: number, y: number): void; // templateId, x, y: Summon NPC
@@ -266,15 +257,18 @@ export interface ITargetScripting {
 
     questRecord(): UQuestRecord; // Assuming UQuestRecord is a type you have defined elsewhere
     inventory(): any; // Assuming InventoryScripting is a type you have defined elsewhere
-    FieldSet(name: string): FieldSet;
     field(): IFieldScripting;
 }
 
 interface IInventoryScripting {
     slotCount(type: number): number;
+
     holdCount(type: number): number;
+
     itemCount(item: number): number;
+
     exchange(money: number, id: number, quantity: number): number;
+
     incSlotCount(type: number, value: number): void;
 
     // Overloaded method for 'exchange' with variable number of arguments
@@ -283,22 +277,39 @@ interface IInventoryScripting {
 
 interface INpcScripting {
     field(): IFieldScripting;
+
     say(text: string): void;
+
     sayUser(text: string): void;
+
     sayOk(text: string): void;
+
     sayOkUser(text: string): void;
+
     askYesNo(text: string): number;
+
     askYesUser(text: string): number;
+
     askAccept(text: string): number;
+
     askAcceptUser(text: string): number;
+
     askAvatar(text: string, item: number, ...styles: number[]): number;
+
     makeRandAvatar(item: number, ...styles: number[]): number;
+
     askMenu(text: string): number;
+
     askMenuUser(text: string): number;
+
     askText(text: string, def: string, col: number, line: number): number;
+
     askTextUser(text: string, def: string, col: number, line: number): number;
+
     askNumber(text: string, def: number, min: number, max: number): number;
+
     askNumberUser(text: string, def: number, min: number, max: number): number;
+
     setSpecialAction(npcId: number, action: string): void;
 }
 
@@ -306,6 +317,7 @@ interface INpcScripting {
 declare global {
     let target: ITargetScripting;
     let inventory: IInventoryScripting;
+
     interface Window extends INpcScripting, BaseScripting {
 
     }
