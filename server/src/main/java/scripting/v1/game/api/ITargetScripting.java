@@ -133,7 +133,7 @@ public interface ITargetScripting {
     FieldScripting field();
 
     @ApiClass
-    int fieldID();
+    int id();
 
     @ApiClass
     int nMoney();

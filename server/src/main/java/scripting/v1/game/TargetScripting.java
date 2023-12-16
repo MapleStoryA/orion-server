@@ -340,7 +340,7 @@ public class TargetScripting extends PlayerScripting implements ITargetScripting
 
     @Override
     @ApiClass
-    public int fieldID() {
+    public int id() {
         return player.getMap().getId();
     }
 

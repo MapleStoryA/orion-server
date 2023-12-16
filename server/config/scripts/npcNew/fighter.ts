@@ -7,7 +7,6 @@ function fighterAction() {
     val = qr.get(7500);
 
 
-
     if (val == "s" && (cJob == 110
         ||
         cJob == 120
