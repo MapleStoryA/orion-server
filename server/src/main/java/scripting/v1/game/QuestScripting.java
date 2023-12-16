@@ -7,7 +7,7 @@ import server.quest.MapleQuest;
 import tools.ApiClass;
 
 @Slf4j
-public class QuestScripting extends PlayerScripting implements UQuestRecord {
+public class QuestScripting extends PlayerScripting implements QuestRecord {
 
     private static final int COMPLETE_QUEST = 2;
     private static final int ACTIVE_QUEST = 1;

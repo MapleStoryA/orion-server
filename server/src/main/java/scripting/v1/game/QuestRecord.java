@@ -6,7 +6,7 @@ package scripting.v1.game;
  * 1. The key is 4 bytes in size.
  * 2. The maximum length of the value is 16 characters (8 in Korean).
  */
-public interface UQuestRecord {
+public interface QuestRecord {
 
     /**
      * Adds or updates a quest in the list with the given key and value.

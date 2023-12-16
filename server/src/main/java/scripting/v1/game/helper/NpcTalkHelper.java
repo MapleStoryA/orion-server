@@ -25,6 +25,9 @@ public class NpcTalkHelper {
             return file.exists();
         }
         var file = new File(ServerConfig.serverConfig().getScriptsPath() + "/npcNew/" + script + ".js");
+        if (!file.exists()) {
+            file = new File(ServerConfig.serverConfig().getScriptsPath() + "/npcNew/" + script + ".ts");
+        }
         return file.exists();
     }
 

@@ -1,9 +1,11 @@
+import './global';
 function fighterAction() {
-    qr = target.questRecord();
-    val = qr.get(7500);
-    cJob = target.nJob();
+    let qr = target.questRecord();
+    let val = qr.get(7500);
+    let cJob = target.nJob();
 
     val = qr.get(7500);
+
 
 
     if (val == "s" && (cJob == 110
@@ -18,14 +20,14 @@ function fighterAction() {
     } else if (val == "p1") {
         if (inventory.itemCount(4031059) >= 1) {
             self.say("Uau... Você derrotou meu outro eu e trouxe o #b#t4031059##k para mim. Muito bom! Isso certamente prova sua força. Em termos de força, você já pode ir para o 3º nível nde classe. Conforme prometido, darei  #b#t4031057##k a você. Entregue este colar a #bTylus#k de Ossyria e poderá fazer um segundo teste para o 3º nível de classe. Boa sorte~.");
-            ret = inventory.exchange(0, 4031059, -1, 4031057, 1);
+            let ret = inventory.exchange(0, 4031059, -1, 4031057, 1);
             if (ret == 0) self.say("Hum... que estranho. Tem certeza de que está com o #b#t4031059##k? Se estiver, certifique-se de que possui um slot vazio na guia de itens.");
             else qr.set(7500, "p2");
         } else self.say("Existe uma passagem secreta perto do túnel de formigas. Só você poderá atravessá-la. Quando estiver lá dentro, você encontrará meu outro eu. Derrote-o e traga o #b#t4031059##k para mim.");
     } else if (val == "p2") {
         if (inventory.itemCount(4031057) <= 0) {
             self.say("Ahh! Você perdeu #b#t4031057##k, hein? Eu disse que deveria tomar cuidado... Pelo amor de Deus, vou te dar outro... DE NOVO. Por favor, tenha cuidado desta vez. Sem isto, você não poderá fazer o teste para o 3º nível de classe.");
-            ret = inventory.exchange(0, 4031057, 1);
+            let ret = inventory.exchange(0, 4031057, 1);
             if (ret == 0) self.say("Hum... que estranho. Certifique-se de que possui um slot vazio na guia de itens.");
         } else self.say("Entregue este colar a #bTylus#k de Ossyria e poderá fazer um segundo teste para o 3º nível de classe. Boa sorte~!");
     } else {
@@ -34,7 +36,7 @@ function fighterAction() {
                 if (inventory.itemCount(4031008) >= 1) self.say("Ainda não encontrou a pessoa? Encontre o #b#p1072000##k que está perto de #b#m102020300##k próximo a #m102000000#. Entregue a carta para ele e talvez ele te diga o que você precisa fazer.");
                 else if (inventory.itemCount(4031012) >= 1) {
                     self.say("Ahh! Você voltou sem nenhum arranhão! Eu sabia que você iria tirar de letra... admito que você é um Guerreiro forte e formidável... certo, agora te tornarei um Guerreiro ainda mais forte do que já é... MAS, antes disso, você terá de escolher um dos três caminhos que te serão oferecidos... não vai ser fácil, por isso, se tiver alguma pergunta, manda ver!");
-                    v1 = self.askMenu("Certo, quando tomar sua decisão, clique em [Quero escolher minha classe!] na parte inferior.\r\n#b#L0#Explique-me o papel do Soldado.#k#l\r\n#b#L1#Explique-me o papel do Escudeiro.#k#l\r\n#b#L2#Explique-me o papel do Lanceiro.#k#l\r\n#b#L3#Quero escolher minha classe!#k#l");
+                    let v1 = self.askMenu("Certo, quando tomar sua decisão, clique em [Quero escolher minha classe!] na parte inferior.\r\n#b#L0#Explique-me o papel do Soldado.#k#l\r\n#b#L1#Explique-me o papel do Escudeiro.#k#l\r\n#b#L2#Explique-me o papel do Lanceiro.#k#l\r\n#b#L3#Quero escolher minha classe!#k#l");
                     if (v1 == 0) {
                         self.say("Deixe-me explicar o papel do Soldado. Ele é o tipo mais comum de Guerreiro. As armas utilizadas são a #b espada #k e o #b machado #k, pois existem habilidades avançadas que poderão ser adquiridas mais tarde. Não utilize as duas armas ao mesmo tempo. Fique apenas com aquela que te agradar mais...");
                         self.say("Além disso, também existem habilidades como #b#q1101006##k e #b#q1101007##k disponíveis para os soldados. #b#q1101006##k é o tipo de habilidade que permite que você e seu grupo aprimorem suas armas. Com ela, você poderá derrubar seus inimigos com uma carga repentina de poder, o que a torna muito útil. A desvantagem é que sua habilidade de proteção (defesa) ficará um pouco reduzida.");
@@ -48,21 +50,21 @@ function fighterAction() {
                         self.say("Além disso, também existem habilidades como #b#q1301006##k e #b#q1301007##k para você aprender. #b#q1301006##k permite que você e os membros do seu grupo aprimorem a defesa de ataque e magia por um certo tempo. É uma habilidade bastante útil para os Lanceiros com armas que exigem as duas mãos e não conseguem se defender ao mesmo tempo.");
                         self.say("#b#q1301007##k é uma habilidade que permite que você e seu grupo aprimorem temporariamente o HP e MP máximos. Você poderá realizar um aumento de até 160%, logo a habilidade ajudará você e seu grupo principalmente quando estiverem partindo para cima de oponentes realmente poderosos. O que você acha? Você não acha legal ser um Lanceiro?");
                     } else if (v1 == 3) {
-                        v2 = self.askMenu("Hummm, já se decidiu? Escolha o 2º nível na classe de sua preferência.\r\n#b#L0#Soldado#k#l\r\n#b#L1#Escudeiro#k#l\r\n#b#L2#Lanceiro#k#l");
+                        let v2 = self.askMenu("Hummm, já se decidiu? Escolha o 2º nível na classe de sua preferência.\r\n#b#L0#Soldado#k#l\r\n#b#L1#Escudeiro#k#l\r\n#b#L2#Lanceiro#k#l");
                         if (v2 == 0) {
-                            mJob = self.askYesNo("Então você quer subir para o 2º nível de classe como #bSoldado#k? Depois que tomar sua decisão, você não poderá voltar atrás e escolher outra carreira... ainda quer isso?");
+                            let mJob = self.askYesNo("Então você quer subir para o 2º nível de classe como #bSoldado#k? Depois que tomar sua decisão, você não poderá voltar atrás e escolher outra carreira... ainda quer isso?");
                             if (mJob == 0) self.say("Mesmo? Então você precisa pensar um pouco mais. Não há pressa... não é algo que se deva fazer de qualquer jeito... me informe quando tomar sua decisão, certo?");
                             else if (mJob == 1) {
-                                nPSP = (target.nLevel() - 30) * 3;
-                                if (target.nSP > nPSP) self.say("Hummm... você tem #bSP#k demais... você não pode subir para o 2º nívelde classe com tanto SP guardado. Use mais SP nas habilidades do 1º nível e volte mais tarde.");
+                                let nPSP = (target.nLevel() - 30) * 3;
+                                if (target.nSP() > nPSP) self.say("Hummm... você tem #bSP#k demais... você não pode subir para o 2º nívelde classe com tanto SP guardado. Use mais SP nas habilidades do 1º nível e volte mais tarde.");
                                 else {
-                                    ret = inventory.exchange(0, 4031012, -1);
+                                    let ret = inventory.exchange(0, 4031012, -1);
                                     if (ret == 0) self.say("Humm... Tem certeza de que possui #b#t4031012##k do #p1072000#? Não posso permitir subir um nível de classe sem isso.");
                                     //job adv. - warrior
                                     else {
                                         target.changeJob(110);
                                         target.incSP(1, 0);
-                                        incval = self.random(300, 350);
+                                        let incval = self.random(300, 350);
                                         target.incMHP(incval, 0);
                                         inventory.incSlotCount(2, 4);
                                         inventory.incSlotCount(4, 4);
@@ -75,19 +77,19 @@ function fighterAction() {
                                 }
                             }
                         } else if (v2 == 1) {
-                            mJob = self.askYesNo("Então você quer fazer o 2º nível de classe como #bEscudeiro#k? Lembre que, quando tomar sua decisão, você não poderá mais mudar de classe. Tem certeza de que quer fazer isso?");
+                            let mJob = self.askYesNo("Então você quer fazer o 2º nível de classe como #bEscudeiro#k? Lembre que, quando tomar sua decisão, você não poderá mais mudar de classe. Tem certeza de que quer fazer isso?");
                             if (mJob == 0) self.say("Mesmo? Precisa pensar melhor, né? Não se apresse, não se apresse. Não é algo que se deva fazer de qualquer jeito... venha falar comigo quando tomar sua decisão, certo?");
                             else if (mJob == 1) {
-                                nPSP = (target.nLevel() - 30) * 3;
-                                if (target.nSP > nPSP) self.say("Hummm, acho que você tem #bSP#k demais. Você não pode subir para o 2º nível de classe com tanto SP guardado. Use mais SP nas habilidades do 1º nível e volte mais tarde.");
+                                let nPSP = (target.nLevel() - 30) * 3;
+                                if (target.nSP() > nPSP) self.say("Hummm, acho que você tem #bSP#k demais. Você não pode subir para o 2º nível de classe com tanto SP guardado. Use mais SP nas habilidades do 1º nível e volte mais tarde.");
                                 else {
-                                    ret = inventory.exchange(0, 4031012, -1);
+                                    let ret = inventory.exchange(0, 4031012, -1);
                                     if (ret == 0) self.say("Hummm, tem certeza de que possui #b#t4031012##k do #p1072000#? É melhor ter certeza, pois não posso permitir subir um nível de classe sem isso.");
                                     // Job Adv = Page
                                     else {
                                         target.changeJob(120);
                                         target.incSP(1, 0);
-                                        incval = self.random(100, 150);
+                                        let incval = self.random(100, 150);
                                         target.incMMP(incval, 0);
                                         inventory.incSlotCount(2, 4);
                                         inventory.incSlotCount(4, 4);
@@ -100,19 +102,19 @@ function fighterAction() {
                                 }
                             }
                         } else if (v2 == 2) {
-                            mJob = self.askYesNo("Então você quer subir para o 2º nível de classe como #bLanceiro#k? Quando tomar sua decisão, você não poderá fazer avanços em nenhuma outra classe. Tem certeza disso?");
+                            let mJob = self.askYesNo("Então você quer subir para o 2º nível de classe como #bLanceiro#k? Quando tomar sua decisão, você não poderá fazer avanços em nenhuma outra classe. Tem certeza disso?");
                             if (mJob == 0) self.say("Mesmo? Precisa pensar melhor sobre isso? Não se apresse, não se apresse. Não é algo que se deva fazer de qualquer jeito... venha falar comigo quando tomar sua decisão, certo?");
                             else if (mJob == 1) {
-                                nPSP = (target.nLevel() - 30) * 3;
-                                if (target.nSP > nPSP) self.say("Hummm... você tem #bSP#k demais... você não pode subir para o 2º nível de classe com tanto SP guardado. Use mais SP nas habilidades do 1º nível e volte mais tarde.");
+                                let nPSP = (target.nLevel() - 30) * 3;
+                                if (target.nSP() > nPSP) self.say("Hummm... você tem #bSP#k demais... você não pode subir para o 2º nível de classe com tanto SP guardado. Use mais SP nas habilidades do 1º nível e volte mais tarde.");
                                 else {
-                                    ret = inventory.exchange(0, 4031012, -1);
+                                    let ret = inventory.exchange(0, 4031012, -1);
                                     if (ret == 0) self.say("Hummm... tem certeza de que possui #b#t4031012##k do #p1072000#? É melhor ter certeza. Você não poderá subir para o próximo nível de classe sem isso.");
                                     // Job Adv = spearman
                                     else {
                                         target.changeJob(130);
                                         target.incSP(1, 0);
-                                        incval = self.random(100, 150);
+                                        let incval = self.random(100, 150);
                                         target.incMMP(incval, 0);
                                         inventory.incSlotCount(2, 4);
                                         inventory.incSlotCount(4, 4);
@@ -127,17 +129,17 @@ function fighterAction() {
                         }
                     }
                 } else {
-                    nSec = self.askYesNo("Nossa, você realmente cresceu! Não é mais #Gpequeno:pequena# e #Gfraco:fraca#... agora consigo notar seu porte de Guerreiro! Impressionante... então, o que acha? Deseja se tornar mais forte do que já é? É só fazer um simples teste! Aceita?");
+                    let nSec = self.askYesNo("Nossa, você realmente cresceu! Não é mais #Gpequeno:pequena# e #Gfraco:fraca#... agora consigo notar seu porte de Guerreiro! Impressionante... então, o que acha? Deseja se tornar mais forte do que já é? É só fazer um simples teste! Aceita?");
                     if (nSec == 0) self.say("Mesmo? Tornar-se mais forte rapidamente te ajudará muito durante sua jornada... se mudar de idéia no futuro, poderá voltar aqui quando quiser. Lembre que eu tornarei você muito mais #Gpoderoso:poderosa# do que já é.");
                     else if (nSec == 1) {
                         self.say("Bem pensado. Você é forte, não me entenda mal, mas ainda existe a necessidade de testar sua força e ver se o seu poder é real. O teste não é muito difícil, você se sairá bem... Aqui, pegue esta carta. Não a perca.");
-                        ret = inventory.exchange(0, 4031008, 1);
+                        let ret = inventory.exchange(0, 4031008, 1);
                         if (ret == 0) self.say("Hummm... não posso te dar a carta porque você não tem espaço suficiente no seu inventário de Etc. Volte depois de ter liberado um ou dois espaços no seu inventário, pois a carta é o único jeito de você fazer o teste.");
                         else self.say("Entregue esta carta ao #b#p1072000##k que pode estar perto de #b#m102020300##k próximo a #m102000000#. Ele está me substituindo como instrutor, pois ando ocupado por aqui. Entregue-lhe a carta e ele aplicará o teste em meu lugar. Outras informações serão passadas diretamente por ele a você. Boa sorte para você.");
                     }
                 }
             } else {
-                v = self.askMenu("Ah, você tem uma pergunta? \r\n#b#L0#Quais são as características gerais de um Guerreiro?#l\r\n#L1#Quais são as armas de um Guerreiro?#l\r\n#L2#Quais são as armaduras de um Guerreiro?#l\r\n#L3#Quais são as habilidades disponíveis para um Guerreiro?#l");
+                let v = self.askMenu("Ah, você tem uma pergunta? \r\n#b#L0#Quais são as características gerais de um Guerreiro?#l\r\n#L1#Quais são as armas de um Guerreiro?#l\r\n#L2#Quais são as armaduras de um Guerreiro?#l\r\n#L3#Quais são as habilidades disponíveis para um Guerreiro?#l");
                 if (v == 0) {
                     self.say("Deixe-me explicar o papel do Guerreiro. Os Guerreiros possuem força física e poder incríveis. Eles também sabem se defender de ataques de monstros, por isso são os melhores para lutar em combates corpo a corpo com os monstros. Com um alto nível de vigor, você não vai morrer fácil.");
                     self.say("Entretanto, para atacar o monstro com precisão, você precisará de uma boa dose de DES, então não se concentre apenas em aprimorar sua FOR. Se quiser aprimorar-se rapidamente, recomendo que enfrente monstros mais fortes.");
@@ -158,16 +160,16 @@ function fighterAction() {
             if (target.nLevel() > 9 &&
                 target.nSTR() > 34
             ) {
-                nRet = self.askYesNo("Você definitivamente tem o aspecto de um Guerreiro. Pode não ter chegado lá ainda, mas já consigo ver um Guerreiro em você. O que você acha? Você deseja se tornar um Guerreiro?");
+                let nRet = self.askYesNo("Você definitivamente tem o aspecto de um Guerreiro. Pode não ter chegado lá ainda, mas já consigo ver um Guerreiro em você. O que você acha? Você deseja se tornar um Guerreiro?");
                 if (nRet == 0) self.say("Mesmo? Precisa de mais tempo para pensar melhor sobre isso? Fique à vontade... não é algo que se deva fazer de qualquer jeito. Venha falar comigo quando tomar sua decisão.");
                 else if (nRet == 1) {
                     if (inventory.slotCount(1) > inventory.holdCount(1)) {
                         self.say("A partir de agora, você será um Guerreiro! Continue se esforçando... Vou melhorar um pouco suas habilidades, na esperança de que você continue treinando para ser mais forte do que já é. Zaaaaaaz!!");
-                        ret = inventory.exchange(0, 1302077, 1);
+                        let ret = inventory.exchange(0, 1302077, 1);
                         if (ret == 0) self.say("Humm. Verifique se você tem pelo menos um slot vazio na sua janela de Equip. Eu gostaria de te dar uma arma como recompensa pelo seu primeiro nível de classe.");
                         else {
                             target.changeJob(100);
-                            incval = self.random(200, 250);
+                            let incval = self.random(200, 250);
                             target.incMHP(incval, 0);
                             target.incSP(1, 0);
                             inventory.incSlotCount(1, 4); // equip

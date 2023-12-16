@@ -1,6 +1,7 @@
 package scripting.v1.game;
 
 import client.MapleCharacter;
+import scripting.v1.game.api.IFieldScripting;
 import server.maps.MapleMap;
 import tools.ApiClass;
 import tools.MaplePacketCreator;
@@ -9,7 +10,7 @@ import java.awt.*;
 import java.util.Collection;
 
 @lombok.extern.slf4j.Slf4j
-public class FieldScripting implements Field {
+public class FieldScripting implements IFieldScripting {
 
     private final MapleMap map;
 

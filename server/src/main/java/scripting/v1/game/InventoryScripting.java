@@ -3,31 +3,36 @@ package scripting.v1.game;
 import client.MapleClient;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
+import scripting.v1.game.api.IInventoryScripting;
 import scripting.v1.game.helper.InventoryHelper;
 import tools.ApiClass;
 
 @lombok.extern.slf4j.Slf4j
-public class InventoryScripting extends PlayerScripting {
+public class InventoryScripting extends PlayerScripting implements IInventoryScripting {
 
     public InventoryScripting(MapleClient client) {
         super(client);
     }
 
+    @Override
     @ApiClass
     public int slotCount(byte type) {
         return player.getInventory(MapleInventoryType.getByType(type)).getSlotLimit();
     }
 
+    @Override
     @ApiClass
     public int holdCount(byte type) {
         return player.getInventory(MapleInventoryType.getByType(type)).getNumFreeSlot();
     }
 
+    @Override
     @ApiClass
     public int itemCount(int item) {
         return player.getItemQuantity(item, true);
     }
 
+    @Override
     @ApiClass
     public int exchange(int money, int id, short quantity) {
         if (money != 0) {
@@ -36,12 +41,14 @@ public class InventoryScripting extends PlayerScripting {
         return InventoryHelper.gainItem(id, quantity, false, 0, -1, "", client);
     }
 
+    @Override
     @ApiClass
     public void incSlotCount(int type, byte value) {
         player.getStorage().increaseSlots(value);
     }
 
     // Like in bms, items = item, count * n
+    @Override
     @ApiClass
     public int exchange(int money, int... items) {
         if (money != 0) {

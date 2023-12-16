@@ -1,6 +1,6 @@
-package scripting.v1.game;
+package scripting.v1.game.api;
 
-public interface Field {
+public interface IFieldScripting {
     int id();
 
     /**

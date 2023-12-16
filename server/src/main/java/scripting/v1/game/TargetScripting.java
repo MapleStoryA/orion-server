@@ -9,6 +9,7 @@ import handling.world.party.MaplePartyCharacter;
 import lombok.extern.slf4j.Slf4j;
 import scripting.v1.event.EventCenter;
 import scripting.v1.event.EventInstance;
+import scripting.v1.game.api.ITargetScripting;
 import server.maps.MapleMap;
 import server.quest.MapleQuest;
 import tools.ApiClass;
@@ -18,7 +19,7 @@ import tools.packet.CWVsContextOnMessagePackets;
 import java.awt.*;
 
 @Slf4j
-public class TargetScripting extends PlayerScripting {
+public class TargetScripting extends PlayerScripting implements ITargetScripting {
 
     private static final int COMPLETE_QUEST = 2;
     private static final int ACTIVE_QUEST = 1;
@@ -27,58 +28,77 @@ public class TargetScripting extends PlayerScripting {
         super(client);
     }
 
+    @Override
+    public MapleMap getWarpMap(int map) {
+        return WorldServer.getInstance()
+                .getChannel(client.getChannel())
+                .getMapFactory()
+                .getMap(map);
+    }
+
+    @Override
     @ApiClass
     public int getCharacterID() {
         return player.getId();
     }
 
+    @Override
     @ApiClass
     public String getCharacterName() {
         return player.getName();
     }
 
+    @Override
     @ApiClass
     public int getGender() {
         return player.getGender();
     }
 
+    @Override
     @ApiClass
     public int getHair() {
         return player.getHair();
     }
 
+    @Override
     @ApiClass
     public int getFace() {
         return player.getFace();
     }
 
+    @Override
     @ApiClass
     public int nLevel() {
         return player.getLevel();
     }
 
+    @Override
     @ApiClass
     public int nJob() {
         return player.getJob().getId();
     }
 
+    @Override
     @ApiClass
     public boolean changeJob(int job) {
         player.changeJob(job);
         return true;
     }
 
+    @Override
     @ApiClass
     public boolean setJob(int job) {
         player.changeJob(job);
         return true;
     }
 
+    @Override
     @ApiClass
     public int nSTR() {
         return player.getStat().getStr();
     }
 
+    @Override
     @ApiClass
     public int incSTR(int value) {
         short previousSTR = player.getStat().getStr();
@@ -86,11 +106,13 @@ public class TargetScripting extends PlayerScripting {
         return nSTR();
     }
 
+    @Override
     @ApiClass
     public int nDEX() {
         return player.getStat().getDex();
     }
 
+    @Override
     @ApiClass
     public int incDEX(int value) {
         short previousDEX = player.getStat().getDex();
@@ -98,11 +120,13 @@ public class TargetScripting extends PlayerScripting {
         return nDEX();
     }
 
+    @Override
     @ApiClass
     public int nINT() {
         return player.getStat().getInt();
     }
 
+    @Override
     @ApiClass
     public int incINT(int value) {
         short previousINT = player.getStat().getInt();
@@ -110,11 +134,13 @@ public class TargetScripting extends PlayerScripting {
         return nINT();
     }
 
+    @Override
     @ApiClass
     public int nLUK() {
         return player.getStat().getLuk();
     }
 
+    @Override
     @ApiClass
     public int incLUK(short value) {
         short previousLUK = player.getStat().getLuk();
@@ -122,11 +148,13 @@ public class TargetScripting extends PlayerScripting {
         return nLUK();
     }
 
+    @Override
     @ApiClass
     public int nHP() {
         return player.getStat().getHp();
     }
 
+    @Override
     @ApiClass
     public int incHP(int value) {
         int previousHP = player.getStat().getHp();
@@ -134,11 +162,13 @@ public class TargetScripting extends PlayerScripting {
         return nHP();
     }
 
+    @Override
     @ApiClass
     public int nMP() {
         return player.getStat().getMp();
     }
 
+    @Override
     @ApiClass
     public int incMP(int value) {
         int previousMP = player.getStat().getHp();
@@ -146,6 +176,7 @@ public class TargetScripting extends PlayerScripting {
         return nMP();
     }
 
+    @Override
     @ApiClass
     public int incMHP(int value, int other) {
         int previousMaxHP = player.getStat().getMaxHp();
@@ -153,6 +184,7 @@ public class TargetScripting extends PlayerScripting {
         return nHP();
     }
 
+    @Override
     @ApiClass
     public int incMMP(int value, int other) {
         int previousMaxMp = player.getStat().getMaxMp();
@@ -160,28 +192,33 @@ public class TargetScripting extends PlayerScripting {
         return nMP();
     }
 
+    @Override
     @ApiClass
     public int nAP() {
         return player.getRemainingAp();
     }
 
+    @Override
     @ApiClass
     public int incAP(int value) {
         player.gainAp(value);
         return nAP();
     }
 
+    @Override
     @ApiClass
     public int incAP(int value, int a) {
         player.gainAp(value);
         return nAP();
     }
 
+    @Override
     @ApiClass
     public int nSP() {
         return player.getRemainingSp();
     }
 
+    @Override
     @ApiClass
     public int incSP(int value) {
         if (player.getJob().isEvan()) {
@@ -193,36 +230,43 @@ public class TargetScripting extends PlayerScripting {
         return nSP();
     }
 
+    @Override
     @ApiClass
     public int incSP(int value, int a) {
         return incSP(value);
     }
 
+    @Override
     @ApiClass
     public boolean isMaster() {
         return player.isGameMaster();
     }
 
+    @Override
     @ApiClass
     public boolean isSuperGM() {
         return player.isGameMaster();
     }
 
+    @Override
     @ApiClass
     public void message(String text) {
         player.dropMessage(5, text);
     }
 
+    @Override
     @ApiClass
     public void incEXP(int total, boolean show) {
         player.gainExp(total, show, show, show);
     }
 
+    @Override
     @ApiClass
     public void incEXP(int total, int show) {
         this.incEXP(total, show == 0);
     }
 
+    @Override
     @ApiClass
     public boolean isPartyBoss() {
         if (player.getParty() == null) {
@@ -231,11 +275,13 @@ public class TargetScripting extends PlayerScripting {
         return player.getParty().getLeader().getId() == player.getId();
     }
 
+    @Override
     @ApiClass
     public boolean isOnParty() {
         return player.getParty() != null;
     }
 
+    @Override
     @ApiClass
     public int getPartyMembersCount() {
         if (!isOnParty()) {
@@ -244,6 +290,7 @@ public class TargetScripting extends PlayerScripting {
         return player.getParty().getMembers().size();
     }
 
+    @Override
     @ApiClass
     public int transferParty(int map, String portal, int option) {
         for (MaplePartyCharacter mate : player.getParty().getMembers()) {
@@ -254,11 +301,13 @@ public class TargetScripting extends PlayerScripting {
         return 1;
     }
 
+    @Override
     @ApiClass
     public void playPortalSE() {
         sendPacket(MaplePacketCreator.showOwnBuffEffect(0, 7));
     }
 
+    @Override
     @ApiClass
     public void registerTransferField(int map, String portal) {
         final MapleMap mapz = getWarpMap(map);
@@ -283,26 +332,31 @@ public class TargetScripting extends PlayerScripting {
         }
     }
 
+    @Override
     @ApiClass
     public FieldScripting field() {
         return client.getPlayer().getMap().getField();
     }
 
+    @Override
     @ApiClass
     public int fieldID() {
         return player.getMap().getId();
     }
 
+    @Override
     @ApiClass
     public int nMoney() {
         return player.getMeso();
     }
 
+    @Override
     @ApiClass
     public int incMoney(int meso, int show) {
         return incMoney(meso, meso == 1);
     }
 
+    @Override
     @ApiClass
     public int incMoney(int meso, boolean show) {
         if (meso < 0) {
@@ -312,6 +366,7 @@ public class TargetScripting extends PlayerScripting {
         return nMoney();
     }
 
+    @Override
     @ApiClass
     public int decMoney(int meso, boolean show) {
         if (meso < 0) {
@@ -321,11 +376,13 @@ public class TargetScripting extends PlayerScripting {
         return nMoney();
     }
 
+    @Override
     @ApiClass
     public void set(String key, String value) {
         player.set(key, value);
     }
 
+    @Override
     @ApiClass
     public String get(String key) {
         String value = player.get(key);
@@ -335,11 +392,13 @@ public class TargetScripting extends PlayerScripting {
         return value;
     }
 
+    @Override
     @ApiClass
     public void setVar(String key, Object value) {
         player.addTemporaryData(key, value);
     }
 
+    @Override
     @ApiClass
     public Object getVar(String key) {
         Object value = player.getTemporaryData(key);
@@ -349,26 +408,31 @@ public class TargetScripting extends PlayerScripting {
         return value;
     }
 
+    @Override
     @ApiClass
     public void clearTemporaryData() {
         player.clearTemporaryData();
     }
 
+    @Override
     @ApiClass
     public EventCenter getEventCenter() {
         return getChannelServer().getEventCenter();
     }
 
+    @Override
     @ApiClass
     public boolean isEvan() {
         return player.getJob().isEvan();
     }
 
+    @Override
     @ApiClass
     public boolean isDualBlade() {
         return player.getJob().isDualblade();
     }
 
+    @Override
     @ApiClass
     public boolean isNightWalker() {
         int job = nJob();
@@ -378,77 +442,84 @@ public class TargetScripting extends PlayerScripting {
                 || job == MapleJob.NIGHTWALKER4.getId();
     }
 
+    @Override
     @ApiClass
     public boolean isAnyKindOfThief() {
         return isNightWalker() || isDualBlade() || (nJob() / 100) == 4;
     }
 
+    @Override
     @ApiClass
     public boolean isAran() {
         return player.getJob().isAran();
     }
 
+    @Override
     @ApiClass
     public boolean haveItem(int id) {
         return player.haveItem(id);
     }
 
+    @Override
     @ApiClass
     public EventInstance getEvent() {
         return player.getNewEventInstance();
     }
 
-    private MapleMap getWarpMap(final int map) {
-        return WorldServer.getInstance()
-                .getChannel(client.getChannel())
-                .getMapFactory()
-                .getMap(map);
-    }
-
+    @Override
     @ApiClass
     public FieldScripting getMap(final int map) {
         return new FieldScripting(getWarpMap(map));
     }
 
+    @Override
     @ApiClass
     public final byte getQuestStatus(final int id) {
         return player.getQuestStatus(id);
     }
 
+    @Override
     @ApiClass
     public final boolean isQuestActive(final int id) {
         return getQuestStatus(id) == ACTIVE_QUEST;
     }
 
+    @Override
     @ApiClass
     public final boolean isQuestFinished(final int id) {
         return getQuestStatus(id) == COMPLETE_QUEST;
     }
 
+    @Override
     @ApiClass
     public void completeQuest(int id, int npcId) {
         MapleQuest.getInstance(id).complete(getPlayer(), npcId);
     }
 
+    @Override
     @ApiClass
     public void forfeitQuest(int id) {
         MapleQuest.getInstance(id).forfeit(getPlayer());
     }
 
+    @Override
     @ApiClass
     public void forceCompleteQuest(final int id, int npcId) {
         MapleQuest.getInstance(id).forceComplete(getPlayer(), npcId);
     }
 
+    @Override
     @ApiClass
     public void changeMusic(String music) {
         sendPacket(MaplePacketCreator.musicChange(music));
     }
 
-    public UQuestRecord questRecord() {
+    @Override
+    public QuestRecord questRecord() {
         return new QuestScripting(this.client, null);
     }
 
+    @Override
     public InventoryScripting inventory() {
         return new InventoryScripting(client);
     }

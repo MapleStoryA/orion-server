@@ -6,13 +6,14 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ContinuationPending;
 import org.mozilla.javascript.Scriptable;
 import scripting.ScriptMan;
+import scripting.v1.game.api.INpcScripting;
 import scripting.v1.game.helper.AskAvatarHelper;
 import server.life.MapleNPC;
 import tools.ApiClass;
 import tools.packet.npcpool.NpcPoolPackets;
 
 @Slf4j
-public class NpcScripting extends PlayerScripting {
+public class NpcScripting extends PlayerScripting implements INpcScripting {
 
     private final int npc;
     protected Scriptable globalScope;
@@ -23,7 +24,7 @@ public class NpcScripting extends PlayerScripting {
         this.globalScope = globalScope;
     }
 
-    protected void throwContinuation(Context cx) {
+    public void throwContinuation(Context cx) {
         try {
             throw cx.captureContinuation();
         } finally {
@@ -52,6 +53,7 @@ public class NpcScripting extends PlayerScripting {
         }
     }
 
+    @Override
     @ApiClass
     public void say(String text) {
         Context cx = Context.enter();
@@ -59,6 +61,7 @@ public class NpcScripting extends PlayerScripting {
         throwContinuation(cx);
     }
 
+    @Override
     @ApiClass
     public void sayUser(String text) {
         Context cx = Context.enter();
@@ -66,6 +69,7 @@ public class NpcScripting extends PlayerScripting {
         throwContinuation(cx);
     }
 
+    @Override
     @ApiClass
     public void sayOk(String text) {
         Context cx = Context.enter();
@@ -74,6 +78,7 @@ public class NpcScripting extends PlayerScripting {
         throwContinuation(cx);
     }
 
+    @Override
     @ApiClass
     public void sayOkUser(String text) {
         Context cx = Context.enter();
@@ -82,6 +87,7 @@ public class NpcScripting extends PlayerScripting {
         throwContinuation(cx);
     }
 
+    @Override
     @ApiClass
     public void askYesNo(String text) {
         Context cx = Context.enter();
@@ -89,6 +95,7 @@ public class NpcScripting extends PlayerScripting {
         throwContinuation(cx);
     }
 
+    @Override
     @ApiClass
     public void askYesUser(String text) {
         Context cx = Context.enter();
@@ -96,6 +103,7 @@ public class NpcScripting extends PlayerScripting {
         throwContinuation(cx);
     }
 
+    @Override
     @ApiClass
     public void askAccept(String text) {
         Context cx = Context.enter();
@@ -107,6 +115,7 @@ public class NpcScripting extends PlayerScripting {
         throwContinuation(cx);
     }
 
+    @Override
     @ApiClass
     public void askAcceptUser(String text) {
         Context cx = Context.enter();
@@ -118,6 +127,7 @@ public class NpcScripting extends PlayerScripting {
         throwContinuation(cx);
     }
 
+    @Override
     @ApiClass
     public int askAvatar(String text, int item, int... styles) {
         Context cx = Context.enter();
@@ -128,6 +138,7 @@ public class NpcScripting extends PlayerScripting {
         return 1;
     }
 
+    @Override
     @ApiClass
     public int makeRandAvatar(int item, int... styles) {
         player.addTemporaryData("askAvatar", styles);
@@ -135,6 +146,7 @@ public class NpcScripting extends PlayerScripting {
         return AskAvatarHelper.processAskAvatar(player, 1, true);
     }
 
+    @Override
     @ApiClass
     public void askMenu(String text) {
         Context cx = Context.enter();
@@ -146,6 +158,7 @@ public class NpcScripting extends PlayerScripting {
         throwContinuation(cx);
     }
 
+    @Override
     @ApiClass
     public void askMenuUser(String text) {
         Context cx = Context.enter();
@@ -157,6 +170,7 @@ public class NpcScripting extends PlayerScripting {
         throwContinuation(cx);
     }
 
+    @Override
     @ApiClass
     public void askText(String text, String def, int col, int line) {
         Context cx = Context.enter();
@@ -164,6 +178,7 @@ public class NpcScripting extends PlayerScripting {
         throwContinuation(cx);
     }
 
+    @Override
     @ApiClass
     public void askTextUser(String text, String def, int col, int line) {
         Context cx = Context.enter();
@@ -171,6 +186,7 @@ public class NpcScripting extends PlayerScripting {
         throwContinuation(cx);
     }
 
+    @Override
     @ApiClass
     public void askNumber(String text, int def, int min, int max) {
         Context cx = Context.enter();
@@ -178,6 +194,7 @@ public class NpcScripting extends PlayerScripting {
         throwContinuation(cx);
     }
 
+    @Override
     @ApiClass
     public void askNumberUser(String text, int def, int min, int max) {
         Context cx = Context.enter();
@@ -185,6 +202,7 @@ public class NpcScripting extends PlayerScripting {
         throwContinuation(cx);
     }
 
+    @Override
     @ApiClass
     public void setSpecialAction(int npcId, String action) {
         MapleNPC npcInstance = player.getMap().getNPCById(npcId);
@@ -192,7 +210,7 @@ public class NpcScripting extends PlayerScripting {
     }
 
     // Replaces stuff based on gender.
-    private String parseText(String text) {
+    public String parseText(String text) {
         String finalText = text.replace("#gender#", player.getGender() == 0 ? "boy" : "girl");
         MapleNPC npcObject = player.getMap().getNPCById(npc);
         if (npcObject != null) {
@@ -206,4 +224,5 @@ public class NpcScripting extends PlayerScripting {
 
         return finalText;
     }
+
 }
