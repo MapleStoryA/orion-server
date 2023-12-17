@@ -1,11 +1,9 @@
 package scripting.v1.base;
 
 import client.MapleCharacter;
-import handling.world.WorldServer;
-import scripting.v1.event.GameEventManager;
 import server.maps.MapleMap;
-import tools.Scripting;
 import tools.MaplePacketCreator;
+import tools.Scripting;
 
 import java.awt.*;
 import java.util.Collection;
@@ -90,12 +88,6 @@ public class FieldScripting {
     @Scripting
     public void spawnSpecialMonsters() {
         map.spawnSpecialMonsters();
-    }
-
-    @Scripting
-    public GameEventManager getGameEventManager() {
-        int channel = map.getChannel();
-        return WorldServer.getInstance().getChannel(channel).getGameEventManager();
     }
 
 
