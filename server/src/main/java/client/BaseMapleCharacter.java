@@ -1,5 +1,6 @@
 package client;
 
+import scripting.v1.event.Event;
 import server.maps.AbstractAnimatedMapleMapObject;
 import server.maps.MapleMapObject;
 
@@ -12,6 +13,7 @@ public abstract class BaseMapleCharacter extends AbstractAnimatedMapleMapObject 
 
     private Set<MapleMapObject> visibleMapObjects;
     private ReentrantReadWriteLock visibleMapObjectsLock;
+    private Event event;
 
     public BaseMapleCharacter() {
         visibleMapObjects = new LinkedHashSet<>();
@@ -63,5 +65,11 @@ public abstract class BaseMapleCharacter extends AbstractAnimatedMapleMapObject 
         }
     }
 
+    public Event getEvent() {
+        return event;
+    }
 
+    public void registerEvent(Event event) {
+        this.event = event;
+    }
 }

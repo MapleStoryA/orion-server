@@ -79,6 +79,9 @@ public class MaplePartyCharacter implements Serializable {
     }
 
     public int getJobId() {
+        if(job == null){
+            return 0;
+        }
         return job.getId();
     }
 
