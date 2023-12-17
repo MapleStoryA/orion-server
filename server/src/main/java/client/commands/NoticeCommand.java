@@ -2,10 +2,10 @@ package client.commands;
 
 import client.MapleClient;
 import handling.world.WorldServer;
-import tools.ApiClass;
+import tools.Scripting;
 import tools.MaplePacketCreator;
 
-@ApiClass
+@Scripting
 public class NoticeCommand implements Command {
 
     @Override

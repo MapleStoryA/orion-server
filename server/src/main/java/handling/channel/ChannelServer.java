@@ -7,6 +7,7 @@ import handling.login.LoginServer;
 import handling.world.WorldServer;
 import handling.world.helper.CheaterData;
 import scripting.EventScriptManager;
+import scripting.v1.event.GameEventManager;
 import server.MapleSquad;
 import server.TimerManager;
 import server.autosave.AutoSaveRunnable;
@@ -59,6 +60,7 @@ public class ChannelServer extends GameServer {
     private PlayerStorage players;
     private EventScriptManager eventSM;
     private int eventmap = -1;
+    private GameEventManager gameEventManager;
 
     public ChannelServer(int channel, int port) {
         super(channel, port, PacketProcessor.Mode.CHANNELSERVER);
@@ -79,6 +81,7 @@ public class ChannelServer extends GameServer {
         this.mapFactory.setChannel(channel);
         this.players = new PlayerStorage(channel);
         this.serverStartTime = System.currentTimeMillis();
+        this.gameEventManager = new GameEventManager(channel);
     }
 
     @Override
@@ -456,5 +459,9 @@ public class ChannelServer extends GameServer {
 
     private void scheduleAutoSaver() {
         TimerManager.getInstance().register(new AutoSaveRunnable(this), 1000 * 180);
+    }
+
+    public GameEventManager getGameEventManager() {
+        return gameEventManager;
     }
 }

@@ -20,6 +20,7 @@ public class NpcTalkHelper {
     }
 
     public static boolean isNewNpcScriptAvailable(int npc, String script) {
+        log.info("Loading script npc id: {} script: {}", npc, script);
         if (script == null) {
             var file = new File(ServerConfig.serverConfig().getScriptsPath() + "/npcNew/" + npc + ".js");
             return file.exists();

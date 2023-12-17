@@ -2,9 +2,9 @@ package client.commands;
 
 import client.MapleClient;
 import handling.world.WorldServer;
-import tools.ApiClass;
+import tools.Scripting;
 
-@ApiClass
+@Scripting
 class OnlineCommand implements Command {
     @Override
     public void execute(MapleClient c, String[] args) {

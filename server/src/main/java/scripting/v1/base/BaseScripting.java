@@ -3,7 +3,7 @@ package scripting.v1.base;
 import client.MapleCharacter;
 import client.MapleClient;
 import lombok.extern.slf4j.Slf4j;
-import tools.ApiClass;
+import tools.Scripting;
 
 import java.util.Random;
 
@@ -37,32 +37,32 @@ public class BaseScripting {
         void dispatch(MapleClient client, byte[] packet);
     }
 
-    @ApiClass
+    @Scripting
     public MapleClient getClient() {
         return client;
     }
 
-    @ApiClass
+    @Scripting
     public MapleCharacter getPlayer() {
         return this.player;
     }
 
-    @ApiClass
+    @Scripting
     public void sendPacket(byte[] packet) {
         dispatcher.dispatch(client, packet);
     }
 
-    @ApiClass
+    @Scripting
     public void broadcastPacket(byte[] packet) {
         player.getMap().broadcastMessage(packet);
     }
 
-    @ApiClass
+    @Scripting
     public void debug(String text) {
         log.info(text);
     }
 
-    @ApiClass
+    @Scripting
     public int random(int min, int max) {
         Random random = new Random();
         int randomNumber = random.nextInt(max + 1 - min) + min;

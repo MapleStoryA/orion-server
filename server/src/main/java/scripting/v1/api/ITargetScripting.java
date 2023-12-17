@@ -3,204 +3,204 @@ package scripting.v1.api;
 import scripting.v1.base.FieldScripting;
 import scripting.v1.base.InventoryScripting;
 import server.maps.MapleMap;
-import tools.ApiClass;
+import tools.Scripting;
 
 public interface ITargetScripting {
-    @ApiClass
+    @Scripting
     int getCharacterID();
 
-    @ApiClass
+    @Scripting
     String getCharacterName();
 
-    @ApiClass
+    @Scripting
     int getGender();
 
-    @ApiClass
+    @Scripting
     int getHair();
 
-    @ApiClass
+    @Scripting
     int getFace();
 
-    @ApiClass
+    @Scripting
     int nLevel();
 
-    @ApiClass
+    @Scripting
     int nJob();
 
-    @ApiClass
+    @Scripting
     boolean changeJob(int job);
 
-    @ApiClass
+    @Scripting
     boolean setJob(int job);
 
-    @ApiClass
+    @Scripting
     int nSTR();
 
-    @ApiClass
+    @Scripting
     int incSTR(int value);
 
-    @ApiClass
+    @Scripting
     int nDEX();
 
-    @ApiClass
+    @Scripting
     int incDEX(int value);
 
-    @ApiClass
+    @Scripting
     int nINT();
 
-    @ApiClass
+    @Scripting
     int incINT(int value);
 
-    @ApiClass
+    @Scripting
     int nLUK();
 
-    @ApiClass
+    @Scripting
     int incLUK(short value);
 
-    @ApiClass
+    @Scripting
     int nHP();
 
-    @ApiClass
+    @Scripting
     int incHP(int value);
 
-    @ApiClass
+    @Scripting
     int nMP();
 
-    @ApiClass
+    @Scripting
     int incMP(int value);
 
-    @ApiClass
+    @Scripting
     int incMHP(int value, int other);
 
-    @ApiClass
+    @Scripting
     int incMMP(int value, int other);
 
-    @ApiClass
+    @Scripting
     int nAP();
 
-    @ApiClass
+    @Scripting
     int incAP(int value);
 
-    @ApiClass
+    @Scripting
     int incAP(int value, int a);
 
-    @ApiClass
+    @Scripting
     int nSP();
 
-    @ApiClass
+    @Scripting
     int incSP(int value);
 
-    @ApiClass
+    @Scripting
     int incSP(int value, int a);
 
-    @ApiClass
+    @Scripting
     boolean isMaster();
 
-    @ApiClass
+    @Scripting
     boolean isSuperGM();
 
-    @ApiClass
+    @Scripting
     void message(String text);
 
-    @ApiClass
+    @Scripting
     void incEXP(int total, boolean show);
 
-    @ApiClass
+    @Scripting
     void incEXP(int total, int show);
 
-    @ApiClass
+    @Scripting
     boolean isPartyBoss();
 
-    @ApiClass
+    @Scripting
     boolean isOnParty();
 
-    @ApiClass
+    @Scripting
     int getPartyMembersCount();
 
-    @ApiClass
+    @Scripting
     int transferParty(int map, String portal, int option);
 
-    @ApiClass
+    @Scripting
     void playPortalSE();
 
-    @ApiClass
+    @Scripting
     void registerTransferField(int map, String portal);
 
-    @ApiClass
+    @Scripting
     FieldScripting field();
 
-    @ApiClass
+    @Scripting
     int id();
 
-    @ApiClass
+    @Scripting
     int nMoney();
 
-    @ApiClass
+    @Scripting
     int incMoney(int meso, int show);
 
-    @ApiClass
+    @Scripting
     int incMoney(int meso, boolean show);
 
-    @ApiClass
+    @Scripting
     int decMoney(int meso, boolean show);
 
-    @ApiClass
+    @Scripting
     void set(String key, String value);
 
-    @ApiClass
+    @Scripting
     String get(String key);
 
-    @ApiClass
+    @Scripting
     void setVar(String key, Object value);
 
-    @ApiClass
+    @Scripting
     Object getVar(String key);
 
-    @ApiClass
+    @Scripting
     void clearTemporaryData();
 
-    @ApiClass
+    @Scripting
     boolean isEvan();
 
-    @ApiClass
+    @Scripting
     boolean isDualBlade();
 
-    @ApiClass
+    @Scripting
     boolean isNightWalker();
 
-    @ApiClass
+    @Scripting
     boolean isAnyKindOfThief();
 
-    @ApiClass
+    @Scripting
     boolean isAran();
 
-    @ApiClass
+    @Scripting
     boolean haveItem(int id);
 
     MapleMap getWarpMap(int map);
 
-    @ApiClass
+    @Scripting
     FieldScripting getMap(int map);
 
-    @ApiClass
+    @Scripting
     byte getQuestStatus(int id);
 
-    @ApiClass
+    @Scripting
     boolean isQuestActive(int id);
 
-    @ApiClass
+    @Scripting
     boolean isQuestFinished(int id);
 
-    @ApiClass
+    @Scripting
     void completeQuest(int id, int npcId);
 
-    @ApiClass
+    @Scripting
     void forfeitQuest(int id);
 
-    @ApiClass
+    @Scripting
     void forceCompleteQuest(int id, int npcId);
 
-    @ApiClass
+    @Scripting
     void changeMusic(String music);
 
     QuestRecord questRecord();

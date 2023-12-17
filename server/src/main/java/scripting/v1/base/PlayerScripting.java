@@ -5,7 +5,7 @@ import handling.channel.ChannelServer;
 import handling.world.WorldServer;
 import java.util.ArrayList;
 import java.util.List;
-import tools.ApiClass;
+import tools.Scripting;
 import tools.MaplePacketCreator;
 
 @lombok.extern.slf4j.Slf4j
@@ -19,17 +19,17 @@ public class PlayerScripting extends BaseScripting {
         return WorldServer.getInstance().getChannel(client.getChannel());
     }
 
-    @ApiClass
+    @Scripting
     public void test() {
         sendPacket(MaplePacketCreator.updateQuestFinish(21015, 2005, 0));
     }
 
-    @ApiClass
+    @Scripting
     public long currentTime() {
         return System.currentTimeMillis();
     }
 
-    @ApiClass
+    @Scripting
     public String shuffle(int i, String str) {
         List<String> list = new ArrayList<>();
         for (char c : str.toCharArray()) {
@@ -42,27 +42,27 @@ public class PlayerScripting extends BaseScripting {
         return ret;
     }
 
-    @ApiClass
+    @Scripting
     public final void showBallon(final String msg, final int width, final int height) {
         sendPacket(MaplePacketCreator.sendHint(msg, width, height));
     }
 
-    @ApiClass()
+    @Scripting()
     public void megaphone(String message, boolean whisper) {
         client.sendPacket(MaplePacketCreator.serverMessage(2, client.getChannel(), message, whisper));
     }
 
-    @ApiClass
+    @Scripting
     public void popup(String message) {
         sendPacket(MaplePacketCreator.serverMessage(1, client.getChannel(), message, false));
     }
 
-    @ApiClass
+    @Scripting
     public void pinkText(String message) {
         sendPacket(MaplePacketCreator.serverMessage(5, client.getChannel(), message, false));
     }
 
-    @ApiClass
+    @Scripting
     public void yellowSupermega(String message) {
         sendPacket(MaplePacketCreator.serverMessage(
                 9, client.getChannel(), client.getPlayer().getName() + " : " + message, false));

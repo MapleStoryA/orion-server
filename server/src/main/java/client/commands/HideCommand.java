@@ -2,9 +2,9 @@ package client.commands;
 
 import client.MapleClient;
 import client.skill.SkillFactory;
-import tools.ApiClass;
+import tools.Scripting;
 
-@ApiClass
+@Scripting
 class HideCommand implements Command {
     @Override
     public void execute(MapleClient c, String[] args) {

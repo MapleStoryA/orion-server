@@ -2,9 +2,9 @@ package client.commands;
 
 import client.MapleClient;
 import client.MapleStat;
-import tools.ApiClass;
+import tools.Scripting;
 
-@ApiClass
+@Scripting
 class SetLevelCommand implements Command {
     @Override
     public void execute(MapleClient c, String[] args) {

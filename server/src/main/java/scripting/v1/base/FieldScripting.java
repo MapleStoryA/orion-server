@@ -1,62 +1,63 @@
 package scripting.v1.base;
 
 import client.MapleCharacter;
-import scripting.v1.api.IFieldScripting;
+import handling.world.WorldServer;
+import scripting.v1.event.GameEventManager;
 import server.maps.MapleMap;
-import tools.ApiClass;
+import tools.Scripting;
 import tools.MaplePacketCreator;
 
 import java.awt.*;
 import java.util.Collection;
 
 @lombok.extern.slf4j.Slf4j
-public class FieldScripting implements IFieldScripting {
+public class FieldScripting {
 
     private final MapleMap map;
 
-    @ApiClass
+    @Scripting
     public FieldScripting(MapleMap map) {
         this.map = map;
     }
 
-    @ApiClass
+    @Scripting
     public void showEffect(String effect) {
         broadcastPacket(MaplePacketCreator.showEffect(effect));
     }
 
-    @ApiClass
+    @Scripting
     public Collection<MapleCharacter> fieldMembers() {
         return map.getCharacters();
     }
 
-    @ApiClass
+    @Scripting
     public int fieldMembersCount() {
         return fieldMembers().size();
     }
 
-    @ApiClass
+    @Scripting
     public void environmentChange(String env) {
         broadcastPacket(MaplePacketCreator.environmentChange(env, 2));
     }
 
-    @ApiClass
+    @Scripting
     public void playSound(String sound) {
         broadcastPacket(MaplePacketCreator.playSound(sound));
     }
 
-    @ApiClass
+    @Scripting
     public void changeMusic(String music) {
         broadcastPacket(MaplePacketCreator.musicChange(music));
     }
 
-    @ApiClass
+    @Scripting
     public void setMapVar(String key, String value) {
         for (MapleCharacter chr : map.getCharacters()) {
             chr.addTemporaryData(key, value);
         }
     }
 
-    @ApiClass
+    @Scripting
     public void spawnMonster(int id, int x, int y) {
         map.spawnMonsterOnGroundBelow(id, x, y);
     }
@@ -65,179 +66,37 @@ public class FieldScripting implements IFieldScripting {
         map.broadcastMessage(packet);
     }
 
-    @ApiClass
+    @Scripting
     public void spawnNpcWithEffect(int npcId, int x, int y) {
         map.spawnNpcWithEffect(npcId, new Point(x, y));
     }
 
-    @ApiClass
+    @Scripting
     public void removeNpcWithEffect(int npcId) {
         map.makeNpcInvisible(npcId);
         map.removeNpc(npcId);
     }
 
-    @ApiClass
+    @Scripting
     public void killAllMonsters() {
         map.killAllMonsters(false);
     }
 
-    @ApiClass
+    @Scripting
     public int getMonsterCount() {
         return map.getAllMonster().size();
     }
 
-    @ApiClass
+    @Scripting
     public void spawnSpecialMonsters() {
         map.spawnSpecialMonsters();
     }
 
-    @Override
-    public int id() {
-        return map.getId();
+    @Scripting
+    public GameEventManager getGameEventManager() {
+        int channel = map.getChannel();
+        return WorldServer.getInstance().getChannel(channel).getGameEventManager();
     }
 
-    @Override
-    public void Field(int id) {
 
-    }
-
-    @Override
-    public int getUserCount() {
-        return 0;
-    }
-
-    @Override
-    public int getMobCount(int mobId) {
-        return 0;
-    }
-
-    @Override
-    public int getMobHP(int mobId) {
-        return 0;
-    }
-
-    @Override
-    public int countUserInArea(String areaName) {
-        return 0;
-    }
-
-    @Override
-    public int countMaleInArea(String areaName) {
-        return 0;
-    }
-
-    @Override
-    public int countFemaleInArea(String areaName) {
-        return 0;
-    }
-
-    @Override
-    public void enablePortal(String portalName, int status) {
-
-    }
-
-    @Override
-    public void effectObject(String objName) {
-
-    }
-
-    @Override
-    public void effectScreen(String name) {
-
-    }
-
-    @Override
-    public void effectSound(String soundName) {
-
-    }
-
-    @Override
-    public void effectTremble(int type, int delay) {
-
-    }
-
-    @Override
-    public void notice(int type, String message, Object... args) {
-
-    }
-
-    @Override
-    public int isItemInArea(String areaName, int itemId) {
-        return 0;
-    }
-
-    @Override
-    public void summonMob(int x, int y, int itemId) {
-
-    }
-
-    @Override
-    public int transferFieldAll(int mapCode, String portalName) {
-        return 0;
-    }
-
-    @Override
-    public void setNpcVar(int npcId, String key, String var) {
-
-    }
-
-    @Override
-    public String getNpcStrVar(int npcId, String varName) {
-        return null;
-    }
-
-    @Override
-    public int getNpcIntVar(int npcId, String varName) {
-        return 0;
-    }
-
-    @Override
-    public void setProtectMobDamagedByMob(int setting) {
-
-    }
-
-    @Override
-    public void removeAllMob() {
-
-    }
-
-    @Override
-    public void setMobGen(int onOff) {
-
-    }
-
-    @Override
-    public void removeMob(int mobId) {
-
-    }
-
-    @Override
-    public int snowOn(int setting) {
-        return 0;
-    }
-
-    @Override
-    public void buffMob(int mobId, int effect, int duration) {
-
-    }
-
-    @Override
-    public int isUserExist(int userId) {
-        return 0;
-    }
-
-    @Override
-    public void startEvent() {
-
-    }
-
-    @Override
-    public void summonNpc(int templateId, int x, int y) {
-
-    }
-
-    @Override
-    public void vanishNpc(int templateId) {
-
-    }
 }

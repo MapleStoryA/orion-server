@@ -1,57 +1,57 @@
 package scripting.v1.api;
 
-import tools.ApiClass;
+import tools.Scripting;
 
 public interface INpcScripting {
-    @ApiClass
+    @Scripting
     void say(String text);
 
-    @ApiClass
+    @Scripting
     void sayUser(String text);
 
-    @ApiClass
+    @Scripting
     void sayOk(String text);
 
-    @ApiClass
+    @Scripting
     void sayOkUser(String text);
 
-    @ApiClass
+    @Scripting
     void askYesNo(String text);
 
-    @ApiClass
+    @Scripting
     void askYesUser(String text);
 
-    @ApiClass
+    @Scripting
     void askAccept(String text);
 
-    @ApiClass
+    @Scripting
     void askAcceptUser(String text);
 
-    @ApiClass
+    @Scripting
     int askAvatar(String text, int item, int... styles);
 
-    @ApiClass
+    @Scripting
     int makeRandAvatar(int item, int... styles);
 
-    @ApiClass
+    @Scripting
     void askMenu(String text);
 
-    @ApiClass
+    @Scripting
     void askMenuUser(String text);
 
-    @ApiClass
+    @Scripting
     void askText(String text, String def, int col, int line);
 
-    @ApiClass
+    @Scripting
     void askTextUser(String text, String def, int col, int line);
 
-    @ApiClass
+    @Scripting
     void askNumber(String text, int def, int min, int max);
 
-    @ApiClass
+    @Scripting
     void askNumberUser(String text, int def, int min, int max);
 
-    @ApiClass
+    @Scripting
     void setSpecialAction(int npcId, String action);
 
 

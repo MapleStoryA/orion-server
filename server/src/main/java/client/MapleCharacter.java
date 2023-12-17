@@ -91,7 +91,7 @@ import server.maps.MapleSummon;
 import server.maps.SavedLocationType;
 import server.quest.MapleQuest;
 import server.shops.IMaplePlayerShop;
-import tools.ApiClass;
+import tools.Scripting;
 import tools.ConcurrentEnumMap;
 import tools.DateHelper;
 import tools.MaplePacketCreator;
@@ -5536,7 +5536,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         return var.get(key);
     }
 
-    @ApiClass
+    @Scripting
     public boolean isRideFinished() {
         return travelTime < System.currentTimeMillis();
     }

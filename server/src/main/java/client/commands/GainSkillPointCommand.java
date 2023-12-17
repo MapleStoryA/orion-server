@@ -1,9 +1,9 @@
 package client.commands;
 
 import client.MapleClient;
-import tools.ApiClass;
+import tools.Scripting;
 
-@ApiClass
+@Scripting
 class GainSkillPointCommand implements Command {
 
     @Override

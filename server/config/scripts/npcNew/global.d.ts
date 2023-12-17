@@ -117,6 +117,7 @@ export interface IFieldScripting {
     startEvent(): void; // Start Monster Carnival
     summonNpc(templateId: number, x: number, y: number): void; // templateId, x, y: Summon NPC
     vanishNpc(templateId: number): void; // templateId: Remove NPC
+    getGameEventManager(): any;
 }
 
 

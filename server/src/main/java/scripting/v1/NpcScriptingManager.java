@@ -77,8 +77,8 @@ public class NpcScriptingManager {
 
             String file = readScriptFile(npc, scriptName);
 
-            log.info("Loading script " + scriptPath + "/npcNew/" + scriptName + ".js");
-            Script script = ctx.compileString(file, "npcNew/" + scriptName + ".js", 1, null);
+            log.info("Loading script {}", scriptName);
+            Script script = ctx.compileString(file, file, 1, null);
 
             Scriptable globalScope = ctx.initStandardObjects();
             npcScript = new NpcScripting(npc, client, globalScope);

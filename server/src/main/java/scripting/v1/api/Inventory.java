@@ -1,24 +1,24 @@
 package scripting.v1.api;
 
-import tools.ApiClass;
+import tools.Scripting;
 
 public interface Inventory {
-    @ApiClass
+    @Scripting
     int slotCount(byte type);
 
-    @ApiClass
+    @Scripting
     int holdCount(byte type);
 
-    @ApiClass
+    @Scripting
     int itemCount(int item);
 
-    @ApiClass
+    @Scripting
     int exchange(int money, int id, short quantity);
 
-    @ApiClass
+    @Scripting
     void incSlotCount(int type, byte value);
 
     // Like in bms, items = item, count * n
-    @ApiClass
+    @Scripting
     int exchange(int money, int... items);
 }

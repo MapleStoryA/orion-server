@@ -8,7 +8,7 @@ import org.mozilla.javascript.Scriptable;
 import scripting.ScriptMan;
 import scripting.v1.api.INpcScripting;
 import server.life.MapleNPC;
-import tools.ApiClass;
+import tools.Scripting;
 import tools.packet.npcpool.NpcPoolPackets;
 
 @Slf4j
@@ -31,12 +31,12 @@ public class NpcScripting extends PlayerScripting implements INpcScripting {
         }
     }
 
-    @ApiClass
+    @Scripting
     public Object getContinuation() {
         return continuation;
     }
 
-    @ApiClass
+    @Scripting
     public void setContinuation(Object continuation) {
         this.continuation = continuation;
     }
@@ -53,7 +53,7 @@ public class NpcScripting extends PlayerScripting implements INpcScripting {
     }
 
     @Override
-    @ApiClass
+    @Scripting
     public void say(String text) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnSay(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text), false, true));
@@ -61,7 +61,7 @@ public class NpcScripting extends PlayerScripting implements INpcScripting {
     }
 
     @Override
-    @ApiClass
+    @Scripting
     public void sayUser(String text) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnSay(ScriptMan.NpcReplacedByUser, npc, (byte) 2, parseText(text), false, true));
@@ -69,7 +69,7 @@ public class NpcScripting extends PlayerScripting implements INpcScripting {
     }
 
     @Override
-    @ApiClass
+    @Scripting
     public void sayOk(String text) {
         Context cx = Context.enter();
         getClient()
@@ -78,7 +78,7 @@ public class NpcScripting extends PlayerScripting implements INpcScripting {
     }
 
     @Override
-    @ApiClass
+    @Scripting
     public void sayOkUser(String text) {
         Context cx = Context.enter();
         getClient()
@@ -87,7 +87,7 @@ public class NpcScripting extends PlayerScripting implements INpcScripting {
     }
 
     @Override
-    @ApiClass
+    @Scripting
     public void askYesNo(String text) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnAskYesNo(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text)));
@@ -95,7 +95,7 @@ public class NpcScripting extends PlayerScripting implements INpcScripting {
     }
 
     @Override
-    @ApiClass
+    @Scripting
     public void askYesUser(String text) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnAskYesNo(ScriptMan.NpcReplayedByNpc, npc, (byte) 2, parseText(text)));
@@ -103,7 +103,7 @@ public class NpcScripting extends PlayerScripting implements INpcScripting {
     }
 
     @Override
-    @ApiClass
+    @Scripting
     public void askAccept(String text) {
         Context cx = Context.enter();
         if (text.contains("#L")) { // will dc otherwise!
@@ -115,7 +115,7 @@ public class NpcScripting extends PlayerScripting implements INpcScripting {
     }
 
     @Override
-    @ApiClass
+    @Scripting
     public void askAcceptUser(String text) {
         Context cx = Context.enter();
         if (text.contains("#L")) { // will dc otherwise!
@@ -127,7 +127,7 @@ public class NpcScripting extends PlayerScripting implements INpcScripting {
     }
 
     @Override
-    @ApiClass
+    @Scripting
     public int askAvatar(String text, int item, int... styles) {
         Context cx = Context.enter();
         player.addTemporaryData("askAvatar", styles);
@@ -138,7 +138,7 @@ public class NpcScripting extends PlayerScripting implements INpcScripting {
     }
 
     @Override
-    @ApiClass
+    @Scripting
     public int makeRandAvatar(int item, int... styles) {
         player.addTemporaryData("askAvatar", styles);
         player.addTemporaryData("askAvatarItem", item);
@@ -146,7 +146,7 @@ public class NpcScripting extends PlayerScripting implements INpcScripting {
     }
 
     @Override
-    @ApiClass
+    @Scripting
     public void askMenu(String text) {
         Context cx = Context.enter();
         if (!text.contains("#L")) { // sendSimple will dc otherwise!
@@ -158,7 +158,7 @@ public class NpcScripting extends PlayerScripting implements INpcScripting {
     }
 
     @Override
-    @ApiClass
+    @Scripting
     public void askMenuUser(String text) {
         Context cx = Context.enter();
         if (!text.contains("#L")) { // sendSimple will dc otherwise!
@@ -170,7 +170,7 @@ public class NpcScripting extends PlayerScripting implements INpcScripting {
     }
 
     @Override
-    @ApiClass
+    @Scripting
     public void askText(String text, String def, int col, int line) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnAskText(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text), def, col, line));
@@ -178,7 +178,7 @@ public class NpcScripting extends PlayerScripting implements INpcScripting {
     }
 
     @Override
-    @ApiClass
+    @Scripting
     public void askTextUser(String text, String def, int col, int line) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnAskText(ScriptMan.NpcReplayedByNpc, npc, (byte) 2, parseText(text), def, col, line));
@@ -186,7 +186,7 @@ public class NpcScripting extends PlayerScripting implements INpcScripting {
     }
 
     @Override
-    @ApiClass
+    @Scripting
     public void askNumber(String text, int def, int min, int max) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnAskNumber(ScriptMan.NpcReplayedByNpc, npc, (byte) 0, parseText(text), def, min, max));
@@ -194,7 +194,7 @@ public class NpcScripting extends PlayerScripting implements INpcScripting {
     }
 
     @Override
-    @ApiClass
+    @Scripting
     public void askNumberUser(String text, int def, int min, int max) {
         Context cx = Context.enter();
         sendPacket(ScriptMan.OnAskNumber(ScriptMan.NpcReplayedByNpc, npc, (byte) 2, parseText(text), def, min, max));
@@ -202,7 +202,7 @@ public class NpcScripting extends PlayerScripting implements INpcScripting {
     }
 
     @Override
-    @ApiClass
+    @Scripting
     public void setSpecialAction(int npcId, String action) {
         MapleNPC npcInstance = player.getMap().getNPCById(npcId);
         sendPacket(NpcPoolPackets.setSpecialAction(npcInstance, action));
