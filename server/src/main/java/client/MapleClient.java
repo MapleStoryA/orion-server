@@ -32,7 +32,7 @@ import javax.script.ScriptEngine;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import scripting.v1.game.NpcScripting;
+import scripting.v1.base.NpcScripting;
 import server.maps.MapleMap;
 import server.quest.MapleQuest;
 import server.shops.IMaplePlayerShop;

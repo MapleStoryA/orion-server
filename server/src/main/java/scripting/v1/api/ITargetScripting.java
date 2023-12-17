@@ -1,8 +1,7 @@
-package scripting.v1.game.api;
+package scripting.v1.api;
 
-import scripting.v1.game.FieldScripting;
-import scripting.v1.game.InventoryScripting;
-import scripting.v1.game.QuestRecord;
+import scripting.v1.base.FieldScripting;
+import scripting.v1.base.InventoryScripting;
 import server.maps.MapleMap;
 import tools.ApiClass;
 

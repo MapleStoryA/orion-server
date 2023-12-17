@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import scripting.EventManager;
 import scripting.NPCScriptManager;
 import scripting.ReactorScriptManager;
-import scripting.v1.game.FieldScripting;
+import scripting.v1.base.FieldScripting;
 import server.MapleCarnivalFactory;
 import server.MapleCarnivalFactory.MCSkill;
 import server.MapleInventoryManipulator;

@@ -1,7 +1,7 @@
-package scripting.v1.game;
+package scripting.v1.base;
 
 import client.MapleCharacter;
-import scripting.v1.game.api.IFieldScripting;
+import scripting.v1.api.IFieldScripting;
 import server.maps.MapleMap;
 import tools.ApiClass;
 import tools.MaplePacketCreator;

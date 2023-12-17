@@ -221,7 +221,7 @@ export interface ITargetScripting {
 
     clearTemporaryData(): void;
 
-    getEventCenter(): any;
+    getEventManager(): any;
 
     isEvan(): boolean;
 

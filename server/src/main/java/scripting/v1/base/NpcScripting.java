@@ -1,4 +1,4 @@
-package scripting.v1.game;
+package scripting.v1.base;
 
 import client.MapleClient;
 import lombok.extern.slf4j.Slf4j;
@@ -6,8 +6,7 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ContinuationPending;
 import org.mozilla.javascript.Scriptable;
 import scripting.ScriptMan;
-import scripting.v1.game.api.INpcScripting;
-import scripting.v1.game.helper.AskAvatarHelper;
+import scripting.v1.api.INpcScripting;
 import server.life.MapleNPC;
 import tools.ApiClass;
 import tools.packet.npcpool.NpcPoolPackets;

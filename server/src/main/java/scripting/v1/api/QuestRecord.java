@@ -1,4 +1,4 @@
-package scripting.v1.game;
+package scripting.v1.api;
 
 /**
  * Interface for managing quest records.

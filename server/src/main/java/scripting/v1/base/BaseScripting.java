@@ -1,10 +1,11 @@
-package scripting.v1.game;
+package scripting.v1.base;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import java.util.Random;
 import lombok.extern.slf4j.Slf4j;
 import tools.ApiClass;
+
+import java.util.Random;
 
 @Slf4j
 public class BaseScripting {
@@ -67,4 +68,5 @@ public class BaseScripting {
         int randomNumber = random.nextInt(max + 1 - min) + min;
         return randomNumber;
     }
+
 }

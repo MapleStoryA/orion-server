@@ -1,4 +1,4 @@
-package scripting.v1.game.helper;
+package scripting.v1.base;
 
 import client.MapleCharacter;
 import client.MapleStat;

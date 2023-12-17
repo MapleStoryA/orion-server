@@ -1,8 +1,9 @@
-package scripting.v1.game;
+package scripting.v1.base;
 
 import client.MapleClient;
 import client.MapleQuestStatus;
 import lombok.extern.slf4j.Slf4j;
+import scripting.v1.api.QuestRecord;
 import server.quest.MapleQuest;
 import tools.ApiClass;
 

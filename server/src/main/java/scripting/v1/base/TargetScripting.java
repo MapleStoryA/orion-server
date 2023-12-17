@@ -1,4 +1,4 @@
-package scripting.v1.game;
+package scripting.v1.base;
 
 import client.MapleCharacter;
 import client.MapleClient;
@@ -7,7 +7,8 @@ import client.MapleStat;
 import handling.world.WorldServer;
 import handling.world.party.MaplePartyCharacter;
 import lombok.extern.slf4j.Slf4j;
-import scripting.v1.game.api.ITargetScripting;
+import scripting.v1.api.ITargetScripting;
+import scripting.v1.api.QuestRecord;
 import server.maps.MapleMap;
 import server.quest.MapleQuest;
 import tools.ApiClass;

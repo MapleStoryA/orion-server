@@ -1,4 +1,4 @@
-package scripting.v1.game;
+package scripting.v1.base;
 
 import client.MapleClient;
 import handling.channel.ChannelServer;

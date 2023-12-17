@@ -1,8 +1,8 @@
-package scripting.v1.game.api;
+package scripting.v1.api;
 
 import tools.ApiClass;
 
-public interface IInventoryScripting {
+public interface Inventory {
     @ApiClass
     int slotCount(byte type);
 
