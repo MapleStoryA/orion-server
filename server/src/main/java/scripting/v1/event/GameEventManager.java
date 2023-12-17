@@ -42,6 +42,10 @@ public class GameEventManager {
         return player.getEvent() != null;
     }
 
+    public void onEventEnd(Event event) {
+        events.remove(event.getName());
+    }
+
     class EventStatus {
         public static final int ALREADY_JOINED_EVENT = -1;
         public static final int CREATED = 1;

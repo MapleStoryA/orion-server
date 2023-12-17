@@ -60,7 +60,9 @@ public class Event {
                 if (playerMember != null) {
                     playerMember.changeMap(endMapId, 0);
                 }
+                playerMember.leaveEvent();
             }
+            gameEventManager.onEventEnd(this);
         }, timerInSeconds, TimeUnit.SECONDS);
     }
 
@@ -114,5 +116,9 @@ public class Event {
     private String getInstancePath() {
         String SCRIPT_PATH = ServerConfig.serverConfig().getScriptsPath() + "/" + "instances";
         return SCRIPT_PATH + File.separator + name + ".js";
+    }
+
+    public String getName() {
+        return this.name;
     }
 }

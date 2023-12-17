@@ -72,4 +72,8 @@ public abstract class BaseMapleCharacter extends AbstractAnimatedMapleMapObject 
     public void registerEvent(Event event) {
         this.event = event;
     }
+
+    public void leaveEvent() {
+        this.event = null;
+    }
 }
