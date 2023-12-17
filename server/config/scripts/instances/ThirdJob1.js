@@ -4,8 +4,8 @@
  *  - All events requires a party.
  * */
 
-startMap = 100000000;
-endMap = 100000000
+let monsterId = -1;
+
 
 function onEventInit() {
     event.log("onEventInit")
@@ -13,6 +13,10 @@ function onEventInit() {
 
 function onEventStart() {
     event.log("onEventStart")
+    let info = event.get3rdJobMobMapInfo();
+    monsterId = info[2];
+    let field = event.getField(108010301);
+    field.spawnMonster(monsterId, 200, 20)
 }
 
 function onEventEnd() {

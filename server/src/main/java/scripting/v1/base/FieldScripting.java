@@ -18,6 +18,10 @@ public class FieldScripting {
         this.map = map;
     }
 
+    public int id() {
+        return map.getId();
+    }
+
     @Scripting
     public void showEffect(String effect) {
         broadcastPacket(MaplePacketCreator.showEffect(effect));

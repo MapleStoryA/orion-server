@@ -8,6 +8,7 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.EvaluatorException;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Scriptable;
+import scripting.v1.base.FieldScripting;
 import server.config.ServerConfig;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
@@ -15,6 +16,9 @@ import tools.MaplePacketCreator;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +31,11 @@ public class Event {
     private final GameEventManager gameEventManager;
     private final ChannelServer channelServer;
     private final ScheduledExecutorService executorService;
+    private long startTime;
+    private long eventTime;
     private Scriptable globalScope;
+    private List<Integer> mapIds = new ArrayList<>();
+    private MapleCharacter eventLeader;
 
     public Event(String id, String name, GameEventManager gameEventManager, ChannelServer channelServer) {
         this.id = id;
@@ -35,6 +43,8 @@ public class Event {
         this.gameEventManager = gameEventManager;
         this.channelServer = channelServer;
         this.executorService = Executors.newSingleThreadScheduledExecutor();
+        this.startTime = 0;
+        this.eventTime = 0;
     }
 
     public void init() {
@@ -42,16 +52,23 @@ public class Event {
         invokeMethod("onEventInit", globalScope);
     }
 
-    public void startEvent(MapleCharacter player, int startMapId, int endMapId, int timerInSeconds) {
-        invokeMethod("onEventStart", globalScope);
+
+    public void startEvent(MapleCharacter player, int[] mapIds, int timerInSeconds) {
         MapleParty party = player.getParty();
+        int startMapId = mapIds[0];
+        int endMapId = mapIds[mapIds.length - 1];
         MapleMap map = channelServer.getMapFactory().getMap(startMapId);
+        eventLeader = player;
+        Arrays.stream(mapIds).forEach(this.mapIds::add);
         for (var member : party.getMembers()) {
             MapleCharacter playerMember = channelServer.getPlayerStorage().getCharacterById(member.getId());
             if (playerMember != null) {
                 playerMember.changeMap(startMapId, 0);
             }
         }
+        startTime = System.currentTimeMillis();
+        eventTime = timerInSeconds;
+        invokeMethod("onEventStart", globalScope);
         map.broadcastMessage(MaplePacketCreator.getClock(timerInSeconds));
         executorService.schedule(() -> {
             invokeMethod("onEventEnd", globalScope);
@@ -63,8 +80,17 @@ public class Event {
                 playerMember.leaveEvent();
             }
             gameEventManager.onEventEnd(this);
+            executorService.shutdownNow();
         }, timerInSeconds, TimeUnit.SECONDS);
     }
+
+
+    private long getTimeLeft() {
+        long currentTimestamp = System.currentTimeMillis();
+        long endTime = startTime + eventTime * 1000;
+        return (endTime - currentTimestamp) / 1000;
+    }
+
 
     private void evaluateScript() {
         String file = getInstancePath();
@@ -81,14 +107,13 @@ public class Event {
             log.debug("Error loading instance: {}", file);
         } catch (EvaluatorException e) {
             log.info("Error at line: " + e.lineSource() + " " + e.lineNumber());
-
         } finally {
             Context.exit();
         }
         addObjectToContext("event", new EventScripting(this));
     }
 
-    public void addObjectToContext(String key, Object obj) {
+    private void addObjectToContext(String key, Object obj) {
         Context.enter();
         try {
             globalScope.put(key, globalScope, Context.javaToJS(obj, globalScope));
@@ -97,11 +122,8 @@ public class Event {
         }
     }
 
-    public void schedule(String method, long timeInSeconds) {
-        executorService.schedule(() -> invokeMethod(method, globalScope), timeInSeconds, TimeUnit.SECONDS);
-    }
 
-    public static void invokeMethod(String name, Scriptable globalScope, Object... args) {
+    private static void invokeMethod(String name, Scriptable globalScope, Object... args) {
         try {
             Context context = Context.enter();
             Function f1 = (Function) globalScope.get(name, globalScope);
@@ -118,7 +140,28 @@ public class Event {
         return SCRIPT_PATH + File.separator + name + ".js";
     }
 
-    public String getName() {
+
+    protected String getName() {
         return this.name;
+    }
+
+
+    public void onChangeMap(MapleMap mapleMap, MapleCharacter chr) {
+        if (mapIds.contains(mapleMap.getId())) {
+            chr.getClient()
+                    .getSession()
+                    .write(MaplePacketCreator.getClock((int) (getTimeLeft())));
+        }
+    }
+
+
+    protected MapleCharacter getLeader() {
+        return eventLeader;
+    }
+
+
+    protected FieldScripting getField(int mapId) {
+        MapleMap map = channelServer.getMapFactory().getMap(mapId);
+        return new FieldScripting(map);
     }
 }

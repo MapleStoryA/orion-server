@@ -2366,6 +2366,9 @@ public final class MapleMap {
                             MaplePacketCreator.getClock(
                                     (int) (chr.getEventInstance().getTimeLeft() / 1000)));
         }
+        if (chr.getEvent() != null) {
+            chr.getEvent().onChangeMap(this, chr);
+        }
         if (hasClock()) {
             final Calendar cal = Calendar.getInstance();
             chr.getClient()
