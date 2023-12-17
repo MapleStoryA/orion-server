@@ -2,7 +2,6 @@ import './global';
 
 function event() {
     let gm = field.getGameEventManager();
-
     let result = gm.create(target.getPlayer(), "test");
     if (result === -1) {
         self.say("You are already in the event")
