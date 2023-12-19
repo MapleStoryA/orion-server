@@ -50,7 +50,7 @@ public class MapleKeyLayout implements Serializable {
         try (var handle = DatabaseConnection.getConnector().open()) {
             for (var binding : new ArrayList<>(keyMapBindings.values())) {
                 if (binding.isDeleted()) {
-                    log.info("Deleting key: {}", binding.getKey());
+                    log.debug("Deleting key: {}", binding.getKey());
                     handle.createUpdate(
                                     "DELETE FROM keymap WHERE `characterid` =" + " :d.characterId AND `key` = :d.key")
                             .bindBean("d", binding)
@@ -60,7 +60,7 @@ public class MapleKeyLayout implements Serializable {
             }
             for (var binding : keyMapBindings.values()) {
                 if (binding.isChanged()) {
-                    log.info("Saving key: {}", binding.getKey());
+                    log.debug("Saving key: {}", binding.getKey());
                     handle.createUpdate("INSERT INTO keymap(`characterid`, `key`, `type`,"
                                     + " `action`, `fixed`) VALUES (:d.characterId,"
                                     + " :d.key, :d.type, :d.action, :d.fixed) ON"

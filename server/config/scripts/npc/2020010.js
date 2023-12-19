@@ -5,8 +5,9 @@
 	Custom Quest 100100, 100102
 */
 importPackage(Packages.client);
+importPackage(Packages.constants)
 
-var status = 0;
+
 var job;
 
 

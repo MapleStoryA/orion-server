@@ -1,9 +1,9 @@
 package client.commands;
 
 import client.MapleClient;
-import tools.ApiClass;
+import tools.Scripting;
 
-@ApiClass
+@Scripting
 public class MaxAllSkillsCommand implements Command {
 
     @Override

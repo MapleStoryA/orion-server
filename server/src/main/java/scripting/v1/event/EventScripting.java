@@ -1,85 +1,42 @@
 package scripting.v1.event;
 
 import client.MapleCharacter;
+import client.MapleJob;
 import lombok.extern.slf4j.Slf4j;
-import org.mozilla.javascript.Context;
-import scripting.v1.game.TargetScripting;
-import scripting.v1.game.helper.BindingHelper;
-import scripting.v1.game.helper.NpcTalkHelper;
-import tools.MaplePacketCreator;
-
-import java.util.Collection;
+import scripting.v1.base.FieldScripting;
+import tools.Scripting;
 
 @Slf4j
 public class EventScripting {
 
+    private Event event;
 
-    private final EventInstance instance;
-
-    public EventScripting(EventInstance instance) {
-        super();
-        this.instance = instance;
+    public EventScripting(Event event) {
+        this.event = event;
     }
 
-    public void schedule(String method, int seconds) {
-        instance.scheduleTask(method, seconds);
-    }
-
-    public void sendClock(int seconds) {
-        instance.broadcastPacket(MaplePacketCreator.getClock(seconds));
-    }
-
-    public void destroyClock() {
-        instance.broadcastPacket(MaplePacketCreator.stopClock());
-    }
-
-    public String getProperty(String key) {
-        return instance.getProperty(key);
-    }
-
-    public void registerTransferField(int map, String portal) {
-        for (TargetScripting member : BindingHelper.wrapCharacter(instance.getMembers())) {
-            member.registerTransferField(map, portal);
-        }
-    }
-
-    public TargetScripting getMemberByName(String name) {
-        return BindingHelper.wrapCharacter(instance.getMemberByName(name));
-    }
-
-    public Collection<TargetScripting> getMembers() {
-        return BindingHelper.wrapCharacter(instance.getMembers());
-    }
-
-    public void startNpc(int id) {
-        //Because of Rhino contexts, it must be in another thread.
-        Context.exit();
-        for (MapleCharacter member : instance.getMembers()) {
-            NpcTalkHelper.startConversation(id, member.getClient());
-        }
-    }
-
-    public void gainPartyExp(int exp) {
-        for (TargetScripting member : BindingHelper.wrapCharacter(instance.getMembers())) {
-            member.incEXP(exp, true);
-        }
-    }
-
-    public TargetScripting getLeader() {
-        return instance.getLeader();
-    }
-
-
+    @Scripting
     public void log(String message) {
         log.info(message);
     }
 
-    public void clear() {
-        instance.clear();
+    @Scripting
+    public void startEvent(MapleCharacter player, int[] mapIds, int timerInSeconds) {
+        event.startEvent(player, mapIds, timerInSeconds);
     }
 
-    public void setCurrentMap(int map) {
-        instance.setCurrentMap(map);
+    @Scripting
+    public int[] get3rdJobMobMapInfo() {
+        return MapleJob.get3rdJobMobMapInfo(event.getLeader());
     }
 
+    @Scripting
+    public MapleCharacter getLeader() {
+        return event.getLeader();
+    }
+
+    @Scripting
+    public FieldScripting getField(int mapId) {
+        return event.getField(mapId);
+    }
 }

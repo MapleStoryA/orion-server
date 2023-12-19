@@ -7,9 +7,9 @@ import handling.world.WorldServer;
 import java.util.LinkedList;
 import java.util.List;
 import server.maps.MapleMap;
-import tools.ApiClass;
+import tools.Scripting;
 
-@ApiClass
+@Scripting
 class WarpCommand implements Command {
     @Override
     public void execute(MapleClient c, String[] args) {

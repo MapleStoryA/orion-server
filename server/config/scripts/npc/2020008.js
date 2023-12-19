@@ -5,6 +5,7 @@
  */
 
 importPackage(Packages.client);
+importPackage(Packages.constants)
 
 var status = 0;
 var job;

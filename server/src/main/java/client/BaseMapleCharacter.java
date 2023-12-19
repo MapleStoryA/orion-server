@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import scripting.v1.event.Event;
 import server.maps.AbstractAnimatedMapleMapObject;
 import server.maps.MapleMapObject;
 
@@ -11,6 +12,7 @@ public abstract class BaseMapleCharacter extends AbstractAnimatedMapleMapObject 
 
     private Set<MapleMapObject> visibleMapObjects;
     private ReentrantReadWriteLock visibleMapObjectsLock;
+    private Event event;
 
     public BaseMapleCharacter() {
         visibleMapObjects = new LinkedHashSet<>();
@@ -60,5 +62,17 @@ public abstract class BaseMapleCharacter extends AbstractAnimatedMapleMapObject 
         } finally {
             visibleMapObjectsLock.writeLock().unlock();
         }
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void registerEvent(Event event) {
+        this.event = event;
+    }
+
+    public void leaveEvent() {
+        this.event = null;
     }
 }

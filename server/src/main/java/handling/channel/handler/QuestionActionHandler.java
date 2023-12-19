@@ -5,7 +5,7 @@ import client.MapleClient;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import scripting.NPCScriptManager;
-import scripting.v1.game.helper.NpcTalkHelper;
+import scripting.v1.NpcTalkHelper;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
 import tools.data.input.InPacket;

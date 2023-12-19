@@ -1,23 +1,23 @@
 /*
 	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+	Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
+			Matthias Butz <matze@odinms.de>
+			Jan Christian Meyer <vimes@odinms.de>
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation version 3 as published by
-    the Free Software Foundation. You may not use, modify or distribute
-    this program under any other version of the GNU Affero General Public
-    License.
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU Affero General Public License as
+	published by the Free Software Foundation version 3 as published by
+	the Free Software Foundation. You may not use, modify or distribute
+	this program under any other version of the GNU Affero General Public
+	License.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU Affero General Public License for more details.
 
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	You should have received a copy of the GNU Affero General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package client;
@@ -217,11 +217,7 @@ public enum MapleJob {
     }
 
     public boolean isBeginner() {
-        return getId() == 0
-                || getId() == 1000
-                || getId() == 2000
-                || getId() == 2001
-                || getId() == 3000;
+        return getId() == 0 || getId() == 1000 || getId() == 2000 || getId() == 2001 || getId() == 3000;
     }
 
     public int getJobCategoryForEquips() {
@@ -274,5 +270,39 @@ public enum MapleJob {
 
     public boolean isGameMasterJob() {
         return this.equals(MapleJob.GM) || this.equals(MapleJob.SUPERGM);
+    }
+
+    public static int[] get3rdJobMobMapInfo(MapleCharacter player) {
+        int returnMapId = 0;
+        int monsterId = 0;
+        int mapId = 0;
+
+        if (player.getJob() == MapleJob.FP_WIZARD
+                || player.getJob() == MapleJob.IL_WIZARD
+                || player.getJob() == MapleJob.CLERIC) {
+            mapId = 108010200;
+            returnMapId = 100040106;
+            monsterId = 9001001;
+        } else if (player.getJob() == MapleJob.FIGHTER
+                || player.getJob() == MapleJob.PAGE
+                || player.getJob() == MapleJob.SPEARMAN) {
+            mapId = 108010300;
+            returnMapId = 105070001;
+            monsterId = 9001000;
+        } else if (player.getJob() == MapleJob.ASSASSIN || player.getJob() == MapleJob.BANDIT) {
+            mapId = 108010400;
+            returnMapId = 107000402;
+            monsterId = 9001003;
+        } else if (player.getJob() == MapleJob.HUNTER || player.getJob() == MapleJob.CROSSBOWMAN) {
+            mapId = 108010100;
+            returnMapId = 105040305;
+            monsterId = 9001002;
+        } else if (player.getJob() == MapleJob.BRAWLER || player.getJob() == MapleJob.GUNSLINGER) {
+            mapId = 108010500;
+            returnMapId = 105040305;
+            monsterId = 9001008;
+        }
+
+        return new int[] {mapId, returnMapId, monsterId};
     }
 }

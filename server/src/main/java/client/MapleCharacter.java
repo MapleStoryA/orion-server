@@ -56,11 +56,34 @@ import handling.world.messenger.MessengerManager;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import handling.world.party.PartyManager;
+import java.awt.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Deque;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Random;
+import java.util.Set;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import scripting.EventInstanceManager;
 import scripting.NPCScriptManager;
-import scripting.v1.event.EventInstance;
 import server.MapleCarnivalChallenge;
 import server.MapleCarnivalParty;
 import server.MapleInventoryManipulator;
@@ -92,12 +115,12 @@ import server.maps.MapleSummon;
 import server.maps.SavedLocationType;
 import server.quest.MapleQuest;
 import server.shops.IMaplePlayerShop;
-import tools.ApiClass;
 import tools.ConcurrentEnumMap;
 import tools.DateHelper;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
+import tools.Scripting;
 import tools.StringUtil;
 import tools.Triple;
 import tools.data.output.OutPacket;
@@ -109,31 +132,6 @@ import tools.packet.MonsterCarnivalPacket;
 import tools.packet.PetPacket;
 import tools.packet.PlayerShopPacket;
 import tools.packet.UIPacket;
-
-import java.awt.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Deque;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Random;
-import java.util.Set;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 public class MapleCharacter extends BaseMapleCharacter {
@@ -289,7 +287,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     private ScheduledFuture<?> beholderBuffSchedule;
     private ScheduledFuture<?> mapTimeLimitTask;
     private ScheduledFuture<?> fishing;
-    private EventInstance newEventInstance;
     private EventInstanceManager eventInstance;
 
     private MapleCharacter(final boolean ChannelServer) {
@@ -935,7 +932,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         PreparedStatement pse = null;
         ResultSet rs = null;
         Connection con2 = null;
-        try (var con = DatabaseConnection.getConnection();) {
+        try (var con = DatabaseConnection.getConnection(); ) {
             con2 = con;
             ps = con.prepareStatement(
                     "INSERT INTO characters (level, fame, str, dex, luk, `int`, exp, hp,"
@@ -1072,7 +1069,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public static boolean ban(String id, String reason, boolean useAccountId, int gmlevel) {
-        try (var con = DatabaseConnection.getConnection();) {
+        try (var con = DatabaseConnection.getConnection(); ) {
             PreparedStatement ps;
             if (id.matches("/[0-9]{1,3}\\..*")) {
                 ps = con.prepareStatement("INSERT INTO ipbans VALUES (DEFAULT, ?)");
@@ -1445,7 +1442,9 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public final MapleQuestStatus getQuest(final MapleQuest quest) {
         if (!quests.containsKey(quest)) {
-            return new MapleQuestStatus(quest, (byte) 0);
+            MapleQuestStatus newQuest = new MapleQuestStatus(quest, (byte) 0);
+            quests.put(quest, newQuest);
+            return newQuest;
         }
         return quests.get(quest);
     }
@@ -1537,8 +1536,8 @@ public class MapleCharacter extends BaseMapleCharacter {
         return mbsvh == null
                 ? -1
                 : (mbsvh.getEffect().isSkill()
-                ? mbsvh.getEffect().getSourceId()
-                : -mbsvh.getEffect().getSourceId());
+                        ? mbsvh.getEffect().getSourceId()
+                        : -mbsvh.getEffect().getSourceId());
     }
 
     public boolean isBuffFrom(MapleBuffStat stat, ISkill skill) {
@@ -1768,7 +1767,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         }
         for (MapleBuffStatValueHolder cancelEffectCancelTasks : effectsToCancel) {
             if (getBuffStats(cancelEffectCancelTasks.getEffect(), cancelEffectCancelTasks.getStartTime())
-                    .size()
+                            .size()
                     == 0) {
                 if (cancelEffectCancelTasks.getSchedule() != null) {
                     cancelEffectCancelTasks.getSchedule().cancel(false);
@@ -1889,19 +1888,19 @@ public class MapleCharacter extends BaseMapleCharacter {
             if (skillid == 0) {
                 if (mbsvh.getEffect().isSkill()
                         && (mbsvh.getEffect().getSourceId() == 4331003
-                        || mbsvh.getEffect().getSourceId() == 4331002
-                        || mbsvh.getEffect().getSourceId() == 4341002
-                        || mbsvh.getEffect().getSourceId() == 22131001
-                        || mbsvh.getEffect().getSourceId() == 1321007
-                        || mbsvh.getEffect().getSourceId() == 2121005
-                        || mbsvh.getEffect().getSourceId() == 2221005
-                        || mbsvh.getEffect().getSourceId() == 2311006
-                        || mbsvh.getEffect().getSourceId() == 2321003
-                        || mbsvh.getEffect().getSourceId() == 3111002
-                        || mbsvh.getEffect().getSourceId() == 3111005
-                        || mbsvh.getEffect().getSourceId() == 3211002
-                        || mbsvh.getEffect().getSourceId() == 3211005
-                        || mbsvh.getEffect().getSourceId() == 4111002)) {
+                                || mbsvh.getEffect().getSourceId() == 4331002
+                                || mbsvh.getEffect().getSourceId() == 4341002
+                                || mbsvh.getEffect().getSourceId() == 22131001
+                                || mbsvh.getEffect().getSourceId() == 1321007
+                                || mbsvh.getEffect().getSourceId() == 2121005
+                                || mbsvh.getEffect().getSourceId() == 2221005
+                                || mbsvh.getEffect().getSourceId() == 2311006
+                                || mbsvh.getEffect().getSourceId() == 2321003
+                                || mbsvh.getEffect().getSourceId() == 3111002
+                                || mbsvh.getEffect().getSourceId() == 3111005
+                                || mbsvh.getEffect().getSourceId() == 3211002
+                                || mbsvh.getEffect().getSourceId() == 3211005
+                                || mbsvh.getEffect().getSourceId() == 4111002)) {
                     cancelEffect(mbsvh.getEffect(), false, mbsvh.getStartTime());
                     break;
                 }
@@ -2578,7 +2577,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     public void changeSkillLevel(final ISkill skill, byte newLevel, byte newMasterlevel, long expiration) {
         if (skill == null
                 || (!GameConstants.isApplicableSkill(skill.getId())
-                && !GameConstants.isApplicableSkill_(skill.getId()))) {
+                        && !GameConstants.isApplicableSkill_(skill.getId()))) {
             return;
         }
         client.getSession().write(MaplePacketCreator.updateSkill(skill.getId(), newLevel, newMasterlevel, expiration));
@@ -2626,9 +2625,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         }
         if (getEventInstance() != null) {
             getEventInstance().playerKilled(this);
-        }
-        if (getNewEventInstance() != null) {
-            getNewEventInstance().onPlayerDied(this);
         }
         dispelSkill(0);
         cancelMorphs(true); // dead = cancel
@@ -2764,9 +2760,6 @@ public class MapleCharacter extends BaseMapleCharacter {
             int hp = this.getStat().getHp();
             if (hp <= 0) { // In case player die with disable actions
                 getClient().enableActions();
-                if (this.getNewEventInstance() != null) {
-                    this.getNewEventInstance().onPlayerDied(this);
-                }
             }
         }
     }
@@ -3070,8 +3063,8 @@ public class MapleCharacter extends BaseMapleCharacter {
                         toberemove.add(new Pair<MapleInventoryType, IItem>(inv, item));
                     }
                 } else if ((item.getItemId() == 5000054
-                        && item.getPet() != null
-                        && item.getPet().getSecondsLeft() <= 0)
+                                && item.getPet() != null
+                                && item.getPet().getSecondsLeft() <= 0)
                         || (firstLoad && ii.isLogoutExpire(item.getItemId()))) {
                     toberemove.add(new Pair<MapleInventoryType, IItem>(inv, item));
                 }
@@ -4228,7 +4221,7 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public void checkBerserk() {
         if (
-            /* job != 132 || */ getLastBerserkTime() < 0 || getLastBerserkTime() + 10000 > System.currentTimeMillis()) {
+        /* job != 132 || */ getLastBerserkTime() < 0 || getLastBerserkTime() + 10000 > System.currentTimeMillis()) {
             return;
         }
         final ISkill BerserkX = SkillFactory.getSkill(1320006);
@@ -4665,7 +4658,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             }
         }
         client.getSession().write(PetPacket.petStatUpdate(this));
-        petStore = new byte[]{-1, -1, -1};
+        petStore = new byte[] {-1, -1, -1};
     }
 
     public final byte[] getPetStores() {
@@ -5441,7 +5434,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             if (GameConstants.isApplicableSkill(skill.getId())) {
                 if (skill.getId() >= 22000000
                         && (GameConstants.isEvan((skill.getId() / 10000))
-                        || GameConstants.isResist((skill.getId() / 10000)))) {
+                                || GameConstants.isResist((skill.getId() / 10000)))) {
                     continue;
                 } // only beginner skills are not maxed!
                 if (skill.getId() < 10000
@@ -5542,7 +5535,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         return var.get(key);
     }
 
-    @ApiClass
+    @Scripting
     public boolean isRideFinished() {
         return travelTime < System.currentTimeMillis();
     }
@@ -5558,14 +5551,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     @Override
     public String toString() {
         return getName() + " at " + getPosition() + " in map: " + map.getId();
-    }
-
-    public EventInstance getNewEventInstance() {
-        return this.newEventInstance;
-    }
-
-    public void setNewEventInstance(EventInstance instance) {
-        this.newEventInstance = instance;
     }
 
     public Map<MapleBuffStat, MapleBuffStatValueHolder> getEffects() {

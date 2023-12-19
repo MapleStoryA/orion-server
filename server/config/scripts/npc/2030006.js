@@ -73,18 +73,18 @@ function action(mode, type, selection) {
             }
         } else if (status == 3) {
             if (selection == correctAnswer)
-                cm.sendOk("#h # you are correct.\nReady for the next question ?");
+                cm.sendOk("#h # you are correct. \nReady for the next question ?");
             else {
-                cm.sendOk("You got the first question wrong!\r\nI am surpodinmsd you managed to find your way here.\r\nGet another Dark Crystal and try again");
+                cm.sendOk("You got the first question wrong!\r\nI am surpodinmsd you managed to find your way here.");
                 cm.dispose();
             }
         } else if (status == 4)
             cm.sendSimple("Now your knowledge of #bItems and Drops#k.\r\n\r\n" + getQuestion(qItems[Math.floor(Math.random() * qItems.length)]));
         else if (status == 5) {
             if (selection == correctAnswer)
-                cm.sendOk("#h # you are correct.\nReady for the next question ?");
+                cm.sendOk("#h # you are correct. \nReady for the next question ?");
             else {
-                cm.sendOk("You got the second question wrong!\r\n(These are the easy ones)\r\nGet another Dark Crystal and try again");
+                cm.sendOk("You got the second question wrong!\r\n(These are the easy ones)");
                 cm.dispose();
             }
         } else if (status == 6) {
@@ -92,19 +92,19 @@ function action(mode, type, selection) {
             status = 6;
         } else if (status == 7) {
             if (selection == correctAnswer)
-                cm.sendOk("#h # you are correct.\nReady for the next question ?");
+                cm.sendOk("#h # you are correct. \nReady for the next question ?");
             else {
-                cm.sendOk("You got the third question wrong!\r\nHave you played this game long ?.\r\nGet another Dark Crystal and try again");
+                cm.sendOk("You got the third question wrong!\r\nHave you played this game long ?.");
                 cm.dispose();
             }
         } else if (status == 8)
             cm.sendSimple("Now your knowledge of #bQuests#k.\r\n\r\n" + getQuestion(qQuests[Math.floor(Math.random() * qQuests.length)]));
         else if (status == 9) {
             if (selection == correctAnswer) {
-                cm.sendOk("#h # you are correct.\nReady for the next question ?");
+                cm.sendOk("#h # you are correct. \nReady for the next question ?");
                 status = 9;
             } else {
-                cm.sendOk("You got the fourth question wrong!\r\nYou were so close too.\r\nGet another Dark Crystal and try again");
+                cm.sendOk("You got the fourth question wrong!\r\nYou were so close too.");
                 cm.dispose();
             }
         } else if (status == 10) {
@@ -118,7 +118,7 @@ function action(mode, type, selection) {
                 cm.sendOk("Congratulations #h #, you are indeed worthy to be elevated to 3rd Job status.\r\nTake this #v4031058# necklace as proof you have passed my test.");
                 cm.dispose();
             } else {
-                cm.sendOk("Aww #h #, you failed on the final question....\r\nI bet that's annoying.\r\nGet another Dark Crystal and try again");
+                cm.sendOk("Aww #h #, you failed on the final question....\r\nI bet that's annoying.");
                 cm.dispose();
             }
         }

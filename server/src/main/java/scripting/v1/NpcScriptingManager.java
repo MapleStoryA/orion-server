@@ -6,11 +6,11 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ContinuationPending;
 import org.mozilla.javascript.Script;
 import org.mozilla.javascript.Scriptable;
-import scripting.v1.game.FieldScripting;
-import scripting.v1.game.InventoryScripting;
-import scripting.v1.game.NpcScripting;
-import scripting.v1.game.QuestScripting;
-import scripting.v1.game.TargetScripting;
+import scripting.v1.base.FieldScripting;
+import scripting.v1.base.InventoryScripting;
+import scripting.v1.base.NpcScripting;
+import scripting.v1.base.QuestScripting;
+import scripting.v1.base.TargetScripting;
 import server.config.ServerConfig;
 import server.quest.MapleQuest;
 import tools.StringUtil;
@@ -44,6 +44,7 @@ public class NpcScriptingManager {
                     + StringUtil.readFileAsString(scriptPath + "/questNew/" + quest + ".js")
                     + "}"
                     + "main();";
+            file = file.replace("import './global';", "");
 
             Script script = ctx.compileString(file, "questNew/" + quest + ".js", 1, null);
             Scriptable globalScope = ctx.initStandardObjects();
@@ -66,7 +67,7 @@ public class NpcScriptingManager {
         }
     }
 
-    public boolean runScript(int npc, MapleClient client) {
+    public boolean runScript(int npc, String scriptName, MapleClient client) {
         Context ctx = setUpContext();
         NpcScripting npcScript;
         TargetScripting target;
@@ -74,12 +75,10 @@ public class NpcScriptingManager {
         FieldScripting field;
         try {
 
-            String file = "function main() {"
-                    + StringUtil.readFileAsString(scriptPath + "/npcNew/" + npc + ".js")
-                    + "}"
-                    + "main();";
+            String file = readScriptFile(npc, scriptName);
 
-            Script script = ctx.compileString(file, "npcNew/" + npc + ".js", 1, null);
+            log.info("Loading script {}", scriptName);
+            Script script = ctx.compileString(file, file, 1, null);
 
             Scriptable globalScope = ctx.initStandardObjects();
             npcScript = new NpcScripting(npc, client, globalScope);
@@ -101,6 +100,22 @@ public class NpcScriptingManager {
             Context.exit();
         }
         return false;
+    }
+
+    private String readScriptFile(int npc, String scriptName) {
+        String file = "";
+        if (scriptName == null) {
+            file = "function main() {"
+                    + StringUtil.readFileAsString(scriptPath + "/npcNew/" + npc + ".js")
+                    + "}"
+                    + "main();";
+        } else {
+            file = StringUtil.readFileAsString(scriptPath + "/npcNew/" + scriptName + ".js");
+        }
+        if (file.isEmpty()) {
+            file = StringUtil.readFileAsString(scriptPath + "/npcNew/" + scriptName + ".ts");
+        }
+        return file.replace("import './global';", "");
     }
 
     private Context setUpContext() {

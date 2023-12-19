@@ -4,9 +4,9 @@ import client.MapleClient;
 import java.util.HashMap;
 import server.MaplePortal;
 import server.maps.MapleMap;
-import tools.ApiClass;
+import tools.Scripting;
 
-@ApiClass
+@Scripting
 class GoToCommand implements Command {
 
     private static final HashMap<String, Integer> listOfMaps = new HashMap<>();

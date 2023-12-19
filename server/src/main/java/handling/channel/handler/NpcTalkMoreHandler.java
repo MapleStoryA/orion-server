@@ -4,7 +4,7 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import scripting.NPCConversationManager;
 import scripting.NPCScriptManager;
-import scripting.v1.game.helper.NpcTalkHelper;
+import scripting.v1.NpcTalkHelper;
 import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j

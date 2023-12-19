@@ -1,8 +1,6 @@
 package scripting;
 
 import client.MapleClient;
-import scripting.v1.event.EventCenter;
-import scripting.v1.event.EventInstance;
 import server.MaplePortal;
 import server.quest.MapleQuest;
 
@@ -42,11 +40,5 @@ public class PortalPlayerInteraction extends AbstractPlayerInteraction {
 
     public void completeQuest(int id, int npcId) {
         MapleQuest.getInstance(id).complete(getPlayer(), npcId);
-    }
-
-    public void registerEvent(String eventName) {
-        EventCenter center = getPlayer().getChannelServer().getEventCenter();
-        EventInstance instance = center.register(eventName, getPlayer());
-        instance.onEventStart();
     }
 }

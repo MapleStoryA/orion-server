@@ -56,21 +56,11 @@ function setClassVars(player) {
 
 
 function playerEntry(eim, player) {
-
-
     var info = setClassVars(player);
-    eim.debug(info);
     var mapId = info[0];
-    var returnMapId = info[1];
-    var monsterId = info[2];
     var map = eim.getMapFactory().getMap(mapId, false, false);
-    var fightMap = eim.getMapFactory().getMap(mapId + 1, false, false);
     map.toggleDrops();
-
     player.changeMapScripting(map);
-    var mob = MapleLifeFactory.getMonster(monsterId);
-    eim.registerMonster(mob);
-    fightMap.spawnMonsterOnGroudBelow(mob, new java.awt.Point(200, 20));
 }
 
 
@@ -109,7 +99,6 @@ function allMonstersDead(eim) {
     var monsterId = info[2];
     var map = eim.getMapFactory().getMap(mapId + 1, false, false);
     map.spawnItemDrop(winner, winner, price, winner.getPosition(), true, false);
-    //eim.schedule("warpOut", 1000);
     eim.dispose();
 }
 
