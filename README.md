@@ -8,7 +8,7 @@ A Maple Story V90 Emulator
 https://mega.nz/file/hpEywRYJ#EdEjnyfV6jiZf0Kfa5jHZq5CPJ3CzdNQunq4Y8ZeP5M
 
 ## Dependencies
-- JDK 11
+- JDK 17
 - MySQL 5.6
 - Intellij Community Edition
 - Visual Studio 2015
