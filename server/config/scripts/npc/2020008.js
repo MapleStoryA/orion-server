@@ -28,7 +28,7 @@ function start() {
         cm.sendOk("Well, well. Now go and see #bthe Dark Lord#k. He will show you the way.");
         cm.dispose();
     } else if (ThirdJobUtils.isSecondJobWarrior(cm.getPlayer()) &&
-        cm.getLevel() >= 70) {
+        cm.getLevel() >= 70 && cm.getPlayer().getRemainingSp() <= (cm.getLevel() - 70) * 3) {
         cm.sendNext("#rBy Odin's beard!#k You are a strong one.");
     } else {
         cm.sendOk("Your time has yet to come...");
