@@ -1,5 +1,3 @@
-import static handling.world.respawn.RespawnWorker.CHANNELS_PER_THREAD;
-
 import ch.qos.logback.classic.ClassicConstants;
 import client.commands.CommandProcessor;
 import client.skill.SkillFactory;
@@ -14,10 +12,6 @@ import handling.world.WorldServer;
 import handling.world.guild.MapleGuild;
 import handling.world.helper.WorldInitHelper;
 import handling.world.respawn.RespawnWorker;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Scanner;
-import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import server.AutobanManager;
@@ -41,6 +35,13 @@ import server.life.MapleMonsterInformationProvider;
 import server.life.PlayerNPC;
 import server.maps.MapleMapFactory;
 import server.quest.MapleQuest;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Scanner;
+import java.util.concurrent.Executors;
+
+import static handling.world.respawn.RespawnWorker.CHANNELS_PER_THREAD;
 
 public class GameApp {
 

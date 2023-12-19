@@ -50,7 +50,7 @@ public class DatabaseConnection {
 
     public static void initConfig(ServerConfig config) throws SQLException {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             throw new SQLException(
                     "Unable to find JDBC library. Do you have MySQL Connector/J (if using default" + " DBC driver)?");
