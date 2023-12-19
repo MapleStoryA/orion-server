@@ -27,7 +27,7 @@ channel:
   host: 127.0.0.1
   count: 2
   events:
-    - ThirdJob1
+    - 3rdjob
 #    - 2095_tokyo
 #    - 2xEvent
 #    - 3rdjob

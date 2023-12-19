@@ -36,7 +36,7 @@ public class DatabaseConnection {
     public static Connection getConnection() {
         try {
             StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
-            log.info(stackTraceElements[2].toString());
+            log.debug(stackTraceElements[2].toString());
             return pool.getConnection();
         } catch (SQLException ex) {
             log.error("Could not get connection. Error: ", ex);
