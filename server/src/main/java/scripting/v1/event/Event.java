@@ -3,16 +3,6 @@ package scripting.v1.event;
 import client.MapleCharacter;
 import handling.channel.ChannelServer;
 import handling.world.party.MapleParty;
-import lombok.extern.slf4j.Slf4j;
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.EvaluatorException;
-import org.mozilla.javascript.Function;
-import org.mozilla.javascript.Scriptable;
-import scripting.v1.base.FieldScripting;
-import server.config.ServerConfig;
-import server.maps.MapleMap;
-import tools.MaplePacketCreator;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -22,7 +12,15 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
+import lombok.extern.slf4j.Slf4j;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.EvaluatorException;
+import org.mozilla.javascript.Function;
+import org.mozilla.javascript.Scriptable;
+import scripting.v1.base.FieldScripting;
+import server.config.ServerConfig;
+import server.maps.MapleMap;
+import tools.MaplePacketCreator;
 
 @Slf4j
 public class Event {
@@ -52,7 +50,6 @@ public class Event {
         invokeMethod("onEventInit", globalScope);
     }
 
-
     public void startEvent(MapleCharacter player, int[] mapIds, int timerInSeconds) {
         MapleParty party = player.getParty();
         int startMapId = mapIds[0];
@@ -70,27 +67,29 @@ public class Event {
         eventTime = timerInSeconds;
         invokeMethod("onEventStart", globalScope);
         map.broadcastMessage(MaplePacketCreator.getClock(timerInSeconds));
-        executorService.schedule(() -> {
-            invokeMethod("onEventEnd", globalScope);
-            for (var member : party.getMembers()) {
-                MapleCharacter playerMember = channelServer.getPlayerStorage().getCharacterById(member.getId());
-                if (playerMember != null) {
-                    playerMember.changeMap(endMapId, 0);
-                }
-                playerMember.leaveEvent();
-            }
-            gameEventManager.onEventEnd(this);
-            executorService.shutdownNow();
-        }, timerInSeconds, TimeUnit.SECONDS);
+        executorService.schedule(
+                () -> {
+                    invokeMethod("onEventEnd", globalScope);
+                    for (var member : party.getMembers()) {
+                        MapleCharacter playerMember =
+                                channelServer.getPlayerStorage().getCharacterById(member.getId());
+                        if (playerMember != null) {
+                            playerMember.changeMap(endMapId, 0);
+                        }
+                        playerMember.leaveEvent();
+                    }
+                    gameEventManager.onEventEnd(this);
+                    executorService.shutdownNow();
+                },
+                timerInSeconds,
+                TimeUnit.SECONDS);
     }
-
 
     private long getTimeLeft() {
         long currentTimestamp = System.currentTimeMillis();
         long endTime = startTime + eventTime * 1000;
         return (endTime - currentTimestamp) / 1000;
     }
-
 
     private void evaluateScript() {
         String file = getInstancePath();
@@ -122,7 +121,6 @@ public class Event {
         }
     }
 
-
     private static void invokeMethod(String name, Scriptable globalScope, Object... args) {
         try {
             Context context = Context.enter();
@@ -140,25 +138,19 @@ public class Event {
         return SCRIPT_PATH + File.separator + name + ".js";
     }
 
-
     protected String getName() {
         return this.name;
     }
 
-
     public void onChangeMap(MapleMap mapleMap, MapleCharacter chr) {
         if (mapIds.contains(mapleMap.getId())) {
-            chr.getClient()
-                    .getSession()
-                    .write(MaplePacketCreator.getClock((int) (getTimeLeft())));
+            chr.getClient().getSession().write(MaplePacketCreator.getClock((int) (getTimeLeft())));
         }
     }
-
 
     protected MapleCharacter getLeader() {
         return eventLeader;
     }
-
 
     protected FieldScripting getField(int mapId) {
         MapleMap map = channelServer.getMapFactory().getMap(mapId);

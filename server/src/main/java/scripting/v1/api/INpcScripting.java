@@ -53,6 +53,4 @@ public interface INpcScripting {
 
     @Scripting
     void setSpecialAction(int npcId, String action);
-
-
 }

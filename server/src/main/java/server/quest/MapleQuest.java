@@ -275,7 +275,6 @@ public class MapleQuest implements Serializable {
         }
     }
 
-
     public void forfeit(MapleCharacter c) {
         if (c.getQuest(this).getStatus() != (byte) 1) {
             return;

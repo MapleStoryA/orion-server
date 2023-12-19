@@ -41,5 +41,4 @@ public class PortalPlayerInteraction extends AbstractPlayerInteraction {
     public void completeQuest(int id, int npcId) {
         MapleQuest.getInstance(id).complete(getPlayer(), npcId);
     }
-
 }

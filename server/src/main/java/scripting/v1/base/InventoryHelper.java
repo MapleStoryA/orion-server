@@ -11,8 +11,14 @@ import tools.MaplePacketCreator;
 @lombok.extern.slf4j.Slf4j
 public class InventoryHelper {
 
-    public static final int gainItem(final int id, final short quantity, final boolean randomStats, final long period,
-                                     final int slots, final String owner, final MapleClient client) {
+    public static final int gainItem(
+            final int id,
+            final short quantity,
+            final boolean randomStats,
+            final long period,
+            final int slots,
+            final String owner,
+            final MapleClient client) {
         if (quantity >= 0) {
             final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
             final MapleInventoryType type = GameConstants.getInventoryType(id);
@@ -20,10 +26,11 @@ public class InventoryHelper {
             if (!MapleInventoryManipulator.checkSpace(client, id, quantity, "")) {
                 return 0;
             }
-            if (type.equals(MapleInventoryType.EQUIP) && !GameConstants.isThrowingStar(id)
+            if (type.equals(MapleInventoryType.EQUIP)
+                    && !GameConstants.isThrowingStar(id)
                     && !GameConstants.isBullet(id)) {
-                final Equip item = (Equip) (randomStats ? ii.randomizeStats((Equip) ii.getEquipById(id))
-                        : ii.getEquipById(id));
+                final Equip item =
+                        (Equip) (randomStats ? ii.randomizeStats((Equip) ii.getEquipById(id)) : ii.getEquipById(id));
                 if (period > 0) {
                     item.setExpiration(System.currentTimeMillis() + (period * 24 * 60 * 60 * 1000));
                 }
@@ -44,11 +51,10 @@ public class InventoryHelper {
                 MapleInventoryManipulator.addById(client, id, quantity, owner == null ? "" : owner, null, period);
             }
         } else {
-            MapleInventoryManipulator.removeById(client, GameConstants.getInventoryType(id), id, -quantity, true, false);
+            MapleInventoryManipulator.removeById(
+                    client, GameConstants.getInventoryType(id), id, -quantity, true, false);
         }
         client.getSession().write(MaplePacketCreator.getShowItemGain(id, quantity, true));
         return 1;
     }
-
-
 }

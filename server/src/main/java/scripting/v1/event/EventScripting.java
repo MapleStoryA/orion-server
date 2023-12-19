@@ -39,6 +39,4 @@ public class EventScripting {
     public FieldScripting getField(int mapId) {
         return event.getField(mapId);
     }
-
-
 }

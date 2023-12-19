@@ -85,7 +85,5 @@ public class QuestScripting extends PlayerScripting implements QuestRecord {
     }
 
     @Override
-    public void selectedMob(int questId, int mobId, int locationType, int encounterLocation) {
-
-    }
+    public void selectedMob(int questId, int mobId, int locationType, int encounterLocation) {}
 }

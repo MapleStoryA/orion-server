@@ -3,9 +3,8 @@ package scripting.v1.base;
 import client.MapleCharacter;
 import client.MapleStat;
 import constants.GameConstants;
-import server.MapleInventoryManipulator;
-
 import java.util.Random;
+import server.MapleInventoryManipulator;
 
 @lombok.extern.slf4j.Slf4j
 public class AskAvatarHelper {
@@ -49,7 +48,8 @@ public class AskAvatarHelper {
             player.setHair(faces[option]);
             player.updateSingleStat(MapleStat.HAIR, faces[option]);
         }
-        MapleInventoryManipulator.removeById(player.getClient(), GameConstants.getInventoryType(nCouponItemID), nCouponItemID, 1, true, false);
+        MapleInventoryManipulator.removeById(
+                player.getClient(), GameConstants.getInventoryType(nCouponItemID), nCouponItemID, 1, true, false);
 
         player.equipChanged();
         return 1;

@@ -223,5 +223,4 @@ public class NpcScripting extends PlayerScripting implements INpcScripting {
 
         return finalText;
     }
-
 }

@@ -1,12 +1,11 @@
 package scripting.v1.base;
 
 import client.MapleCharacter;
+import java.awt.*;
+import java.util.Collection;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
 import tools.Scripting;
-
-import java.awt.*;
-import java.util.Collection;
 
 @lombok.extern.slf4j.Slf4j
 public class FieldScripting {
@@ -93,6 +92,4 @@ public class FieldScripting {
     public void spawnSpecialMonsters() {
         map.spawnSpecialMonsters();
     }
-
-
 }

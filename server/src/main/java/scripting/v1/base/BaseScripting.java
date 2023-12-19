@@ -2,11 +2,10 @@ package scripting.v1.base;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import java.util.Random;
 import lombok.extern.slf4j.Slf4j;
 import scripting.v1.event.GameEventManager;
 import tools.Scripting;
-
-import java.util.Random;
 
 @Slf4j
 public class BaseScripting {
@@ -70,8 +69,7 @@ public class BaseScripting {
         return randomNumber;
     }
 
-    public GameEventManager getGameEventManager(){
+    public GameEventManager getGameEventManager() {
         return player.getChannelServer().getGameEventManager();
     }
-
 }

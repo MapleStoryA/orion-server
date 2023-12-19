@@ -4,7 +4,6 @@ import client.MapleCharacter;
 import handling.channel.ChannelServer;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
-
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,7 +16,6 @@ public class GameEventManager {
     public GameEventManager(ChannelServer channelServer) {
         this.channelServer = channelServer;
     }
-
 
     public int create(MapleCharacter player, String eventName) {
         if (isInEvent(player)) {
@@ -53,18 +51,11 @@ public class GameEventManager {
         public static final int REQUIRES_PARTY_LEADER_PARTY = -3;
     }
 
-
     public void onPlayerDisconnect(MapleCharacter player) {
-        if (player.getEvent() != null) {
-            
-        }
+        if (player.getEvent() != null) {}
     }
 
-    public void onPlayerJoinParty(MapleCharacter player) {
+    public void onPlayerJoinParty(MapleCharacter player) {}
 
-    }
-
-    public void onPlayerLeaveParty(MapleCharacter player) {
-
-    }
+    public void onPlayerLeaveParty(MapleCharacter player) {}
 }
