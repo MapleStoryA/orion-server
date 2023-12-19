@@ -4,7 +4,6 @@ import client.MapleClient;
 import client.inventory.MapleInventoryType;
 import server.MapleInventoryManipulator;
 
-
 public class GMEquipCommand implements Command {
     @Override
     public void execute(MapleClient c, String[] args) {
@@ -15,8 +14,12 @@ public class GMEquipCommand implements Command {
     }
 
     private static void addItem(MapleClient c, int itemId) {
-        if (c.getPlayer().getInventory(MapleInventoryType.EQUIP).listById(itemId).isEmpty()) {
-            MapleInventoryManipulator.addById(c, itemId, (short) 1, c.getPlayer().getName());
+        if (c.getPlayer()
+                .getInventory(MapleInventoryType.EQUIP)
+                .listById(itemId)
+                .isEmpty()) {
+            MapleInventoryManipulator.addById(
+                    c, itemId, (short) 1, c.getPlayer().getName());
         }
     }
 

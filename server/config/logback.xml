@@ -5,9 +5,9 @@
         </encoder>
     </appender>
 
-    <logger name="org.apache.mina" level="warn"/>
+    <logger name="org.apache.mina" level="WARN"/>
     <logger name="io.netty.util" level="ERROR"/>
-    <logger name="com.zaxxer.hikari" level="TRACE" />
+    <logger name="com.zaxxer.hikari" level="ERROR" />
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
     </root>
