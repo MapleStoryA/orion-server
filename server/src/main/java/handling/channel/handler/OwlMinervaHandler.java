@@ -5,10 +5,10 @@ import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import handling.AbstractMaplePacketHandler;
 import java.util.List;
+import networking.data.input.InPacket;
 import server.MapleInventoryManipulator;
 import server.shops.HiredMerchant;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class OwlMinervaHandler extends AbstractMaplePacketHandler {

@@ -8,12 +8,12 @@ import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
 import handling.AbstractMaplePacketHandler;
 import java.util.Random;
+import networking.data.input.InPacket;
 import server.TimerManager;
 import server.life.MapleMonster;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MonsterBombHandler extends AbstractMaplePacketHandler {

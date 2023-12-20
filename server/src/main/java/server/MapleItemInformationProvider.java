@@ -22,9 +22,9 @@ import provider.MapleDataProvider;
 import provider.MapleDataTool;
 import server.StructSetItem.SetItem;
 import server.config.ServerConfig;
-import tools.Pair;
 import tools.Randomizer;
-import tools.Triple;
+import tools.collection.Pair;
+import tools.collection.Triple;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleItemInformationProvider {

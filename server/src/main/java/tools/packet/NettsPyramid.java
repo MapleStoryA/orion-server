@@ -1,7 +1,7 @@
 package tools.packet;
 
-import handling.SendPacketOpcode;
-import tools.data.output.OutPacket;
+import networking.data.output.OutPacket;
+import networking.packet.SendPacketOpcode;
 
 public final class NettsPyramid {
 

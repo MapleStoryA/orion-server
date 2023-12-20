@@ -3,10 +3,10 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
+import networking.data.input.InPacket;
 import server.life.MapleMonster;
 import server.maps.MapleNodes.MapleNodeInfo;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MobNodeHandler extends AbstractMaplePacketHandler {

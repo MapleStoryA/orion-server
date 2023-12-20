@@ -6,7 +6,7 @@
 package client.skill;
 
 import java.util.HashMap;
-import tools.data.output.OutPacket;
+import networking.data.output.OutPacket;
 
 /** @author Simon */
 @lombok.extern.slf4j.Slf4j

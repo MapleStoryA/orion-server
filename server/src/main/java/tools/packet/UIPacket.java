@@ -1,8 +1,8 @@
 package tools.packet;
 
-import handling.SendPacketOpcode;
+import networking.data.output.OutPacket;
+import networking.packet.SendPacketOpcode;
 import tools.MaplePacketCreator;
-import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UIPacket {

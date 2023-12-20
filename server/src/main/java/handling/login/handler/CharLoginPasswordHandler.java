@@ -5,11 +5,11 @@ import constants.BlockReason;
 import database.LoginResult;
 import database.LoginService;
 import database.LoginState;
-import handling.MaplePacketHandler;
 import handling.login.LoginServer;
 import handling.world.WorldServer;
 import lombok.extern.slf4j.Slf4j;
-import tools.data.input.InPacket;
+import networking.data.input.InPacket;
+import networking.packet.MaplePacketHandler;
 import tools.packet.LoginPacket;
 
 @Slf4j

@@ -7,14 +7,14 @@ import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import java.util.List;
+import networking.data.input.InPacket;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.StructRewardItem;
 import tools.DateHelper;
 import tools.MaplePacketCreator;
-import tools.Pair;
 import tools.Randomizer;
-import tools.data.input.InPacket;
+import tools.collection.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class RewardItemHandler extends AbstractMaplePacketHandler {

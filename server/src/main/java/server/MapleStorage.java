@@ -19,7 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import tools.MaplePacketCreator;
-import tools.Pair;
+import tools.collection.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleStorage implements Serializable {

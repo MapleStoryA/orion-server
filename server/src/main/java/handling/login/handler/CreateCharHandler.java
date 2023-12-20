@@ -11,9 +11,9 @@ import client.inventory.MapleInventoryType;
 import handling.AbstractMaplePacketHandler;
 import handling.login.LoginInformationProvider;
 import lombok.extern.slf4j.Slf4j;
+import networking.data.input.InPacket;
 import server.MapleItemInformationProvider;
 import server.quest.MapleQuest;
-import tools.data.input.InPacket;
 import tools.packet.LoginPacket;
 
 @Slf4j

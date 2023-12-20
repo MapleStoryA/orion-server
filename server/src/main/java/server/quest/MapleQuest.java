@@ -15,7 +15,7 @@ import provider.MapleDataTool;
 import scripting.NPCScriptManager;
 import server.config.ServerConfig;
 import tools.MaplePacketCreator;
-import tools.Pair;
+import tools.collection.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleQuest implements Serializable {

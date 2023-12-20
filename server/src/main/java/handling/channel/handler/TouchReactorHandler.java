@@ -2,9 +2,9 @@ package handling.channel.handler;
 
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
+import networking.data.input.InPacket;
 import scripting.ReactorScriptManager;
 import server.maps.MapleReactor;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class TouchReactorHandler extends AbstractMaplePacketHandler {

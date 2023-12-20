@@ -6,7 +6,7 @@ import server.MapleItemInformationProvider;
 import server.life.MapleMonster;
 import server.life.MapleMonsterInformationProvider;
 import server.life.MonsterDropEntry;
-import tools.Pair;
+import tools.collection.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class DropDataProvider implements MapleDropProvider {

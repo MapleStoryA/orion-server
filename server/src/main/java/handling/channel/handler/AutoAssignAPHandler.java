@@ -7,9 +7,9 @@ import client.PlayerStats;
 import handling.AbstractMaplePacketHandler;
 import java.util.ArrayList;
 import java.util.List;
+import networking.data.input.InPacket;
 import tools.MaplePacketCreator;
-import tools.Pair;
-import tools.data.input.InPacket;
+import tools.collection.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class AutoAssignAPHandler extends AbstractMaplePacketHandler {

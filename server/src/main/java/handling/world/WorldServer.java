@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.Getter;
-import tools.CollectionUtil;
+import tools.collection.CollectionUtil;
 
 // TODO: Will do something with this to manage the server instances
 @lombok.extern.slf4j.Slf4j

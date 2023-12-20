@@ -1,8 +1,6 @@
 package handling.channel;
 
 import client.MapleCharacter;
-import handling.GameServer;
-import handling.PacketProcessor;
 import handling.login.LoginServer;
 import handling.world.WorldServer;
 import handling.world.helper.CheaterData;
@@ -16,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import networking.GameServer;
+import networking.packet.PacketProcessor;
 import scripting.EventScriptManager;
 import scripting.v1.event.GameEventManager;
 import server.MapleSquad;
@@ -34,8 +34,8 @@ import server.life.PlayerNPC;
 import server.maps.AramiaFireWorks;
 import server.maps.MapleMapFactory;
 import server.shops.HiredMerchant;
-import tools.CollectionUtil;
 import tools.MaplePacketCreator;
+import tools.collection.CollectionUtil;
 
 @lombok.extern.slf4j.Slf4j
 public class ChannelServer extends GameServer {

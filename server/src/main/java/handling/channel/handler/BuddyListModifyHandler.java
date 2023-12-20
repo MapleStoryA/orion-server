@@ -11,9 +11,9 @@ import handling.world.buddy.MapleBuddyList;
 import handling.world.buddy.MapleBuddyList.BuddyAddResult;
 import handling.world.buddy.MapleBuddyList.BuddyDelResult;
 import handling.world.helper.FindCommand;
+import networking.data.input.InPacket;
 import tools.MaplePacketCreator;
-import tools.Pair;
-import tools.data.input.InPacket;
+import tools.collection.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class BuddyListModifyHandler extends AbstractMaplePacketHandler {

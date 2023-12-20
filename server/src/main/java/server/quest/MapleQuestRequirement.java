@@ -14,7 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import provider.MapleData;
 import provider.MapleDataTool;
-import tools.Pair;
+import tools.collection.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleQuestRequirement implements Serializable {

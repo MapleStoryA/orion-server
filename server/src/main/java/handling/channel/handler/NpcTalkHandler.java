@@ -3,10 +3,10 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
+import networking.data.input.InPacket;
 import scripting.NPCScriptManager;
 import scripting.v1.NpcTalkHelper;
 import server.life.MapleNPC;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class NpcTalkHandler extends AbstractMaplePacketHandler {

@@ -4,8 +4,8 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.inventory.MaplePet;
 import handling.AbstractMaplePacketHandler;
+import networking.data.input.InPacket;
 import server.movement.MovePath;
-import tools.data.input.InPacket;
 import tools.packet.PetPacket;
 
 @lombok.extern.slf4j.Slf4j

@@ -8,8 +8,8 @@ import client.inventory.PetCommand;
 import client.inventory.PetDataFactory;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
+import networking.data.input.InPacket;
 import tools.Randomizer;
-import tools.data.input.InPacket;
 import tools.packet.PetPacket;
 
 @lombok.extern.slf4j.Slf4j

@@ -5,9 +5,9 @@ import client.skill.ISkill;
 import client.skill.SkillFactory;
 import handling.AbstractMaplePacketHandler;
 import java.awt.*;
+import networking.data.input.InPacket;
 import server.maps.MapleMist;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class ThrowSkillHandler extends AbstractMaplePacketHandler {

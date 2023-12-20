@@ -3,11 +3,11 @@ package scripting.v1;
 import client.MapleClient;
 import java.io.File;
 import lombok.extern.slf4j.Slf4j;
+import networking.data.input.InPacket;
 import org.mozilla.javascript.ContinuationPending;
 import scripting.v1.base.AskAvatarHelper;
 import scripting.v1.base.NpcScripting;
 import server.config.ServerConfig;
-import tools.data.input.InPacket;
 
 @Slf4j
 public class NpcTalkHelper {

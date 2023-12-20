@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-import tools.data.output.OutPacket;
+import networking.data.output.OutPacket;
 
 @Setter
 @Getter

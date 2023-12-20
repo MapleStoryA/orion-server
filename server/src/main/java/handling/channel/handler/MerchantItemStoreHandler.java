@@ -4,9 +4,9 @@ import client.MapleClient;
 import client.inventory.IItem;
 import handling.AbstractMaplePacketHandler;
 import handling.channel.handler.utils.HiredMerchantHandlerUtils;
+import networking.data.input.InPacket;
 import server.MapleInventoryManipulator;
 import server.MerchItemPackage;
-import tools.data.input.InPacket;
 import tools.packet.PlayerShopPacket;
 
 @lombok.extern.slf4j.Slf4j

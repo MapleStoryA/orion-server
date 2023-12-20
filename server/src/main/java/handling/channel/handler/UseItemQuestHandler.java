@@ -6,11 +6,11 @@ import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import handling.AbstractMaplePacketHandler;
 import java.util.List;
+import networking.data.input.InPacket;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.quest.MapleQuest;
-import tools.Pair;
-import tools.data.input.InPacket;
+import tools.collection.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class UseItemQuestHandler extends AbstractMaplePacketHandler {

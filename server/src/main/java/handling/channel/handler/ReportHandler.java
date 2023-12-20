@@ -2,8 +2,8 @@ package handling.channel.handler;
 
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
+import networking.data.input.InPacket;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 import tools.packet.ReportPackets;
 
 @lombok.extern.slf4j.Slf4j

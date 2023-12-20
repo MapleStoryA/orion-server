@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
-import tools.Triple;
+import tools.collection.Triple;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleCharacterHelper {

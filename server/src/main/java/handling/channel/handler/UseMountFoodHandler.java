@@ -7,9 +7,9 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MapleMount;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
+import networking.data.input.InPacket;
 import server.MapleInventoryManipulator;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UseMountFoodHandler extends AbstractMaplePacketHandler {

@@ -7,8 +7,8 @@ import handling.AbstractMaplePacketHandler;
 import handling.ServerMigration;
 import handling.world.WorldServer;
 import lombok.extern.slf4j.Slf4j;
+import networking.data.input.InPacket;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @Slf4j
 public class CharSelectedHandler extends AbstractMaplePacketHandler {

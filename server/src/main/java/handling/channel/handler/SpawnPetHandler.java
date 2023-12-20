@@ -6,7 +6,7 @@ import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import handling.AbstractMaplePacketHandler;
-import tools.data.input.InPacket;
+import networking.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class SpawnPetHandler extends AbstractMaplePacketHandler {

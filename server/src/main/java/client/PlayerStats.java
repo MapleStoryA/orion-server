@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.ReentrantLock;
 import lombok.Getter;
+import networking.data.output.OutPacket;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MapleStatEffect;
@@ -26,7 +27,6 @@ import server.StructPotentialItem;
 import server.StructSetItem;
 import server.StructSetItem.SetItem;
 import tools.MaplePacketCreator;
-import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 @Getter

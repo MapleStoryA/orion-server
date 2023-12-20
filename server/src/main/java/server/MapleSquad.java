@@ -14,7 +14,7 @@ import java.util.concurrent.ScheduledFuture;
 import server.Timer.CloneTimer;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
-import tools.Pair;
+import tools.collection.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleSquad {

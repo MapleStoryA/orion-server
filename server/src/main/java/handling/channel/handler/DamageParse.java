@@ -18,6 +18,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import networking.data.input.LittleEndianAccessor;
 import server.MapleStatEffect;
 import server.Timer.MapTimer;
 import server.life.Element;
@@ -28,9 +29,8 @@ import server.maps.MapleMapItem;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
-import tools.Pair;
 import tools.Randomizer;
-import tools.data.input.LittleEndianAccessor;
+import tools.collection.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class DamageParse {

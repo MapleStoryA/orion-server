@@ -11,6 +11,7 @@ import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
+import networking.data.input.InPacket;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.life.MapleMonster;
@@ -18,7 +19,6 @@ import server.maps.MapleMapItem;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class ItemPickupHandler extends AbstractMaplePacketHandler {

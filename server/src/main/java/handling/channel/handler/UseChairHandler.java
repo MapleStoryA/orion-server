@@ -6,8 +6,8 @@ import client.anticheat.CheatingOffense;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import handling.AbstractMaplePacketHandler;
+import networking.data.input.InPacket;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UseChairHandler extends AbstractMaplePacketHandler {

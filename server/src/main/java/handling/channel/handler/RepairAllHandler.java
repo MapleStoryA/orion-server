@@ -7,9 +7,9 @@ import client.inventory.MapleInventoryType;
 import handling.AbstractMaplePacketHandler;
 import java.util.Map;
 import java.util.Map.Entry;
+import networking.data.input.InPacket;
 import server.MapleItemInformationProvider;
-import tools.ArrayMap;
-import tools.data.input.InPacket;
+import tools.collection.ArrayMap;
 
 @lombok.extern.slf4j.Slf4j
 public class RepairAllHandler extends AbstractMaplePacketHandler {

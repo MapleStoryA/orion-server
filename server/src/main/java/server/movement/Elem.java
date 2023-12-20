@@ -1,7 +1,7 @@
 package server.movement;
 
-import tools.data.input.InPacket;
-import tools.data.output.LittleEndianWriter;
+import networking.data.input.InPacket;
+import networking.data.output.LittleEndianWriter;
 
 /**
  * @Author Arnah @Website http://Vertisy.ca/

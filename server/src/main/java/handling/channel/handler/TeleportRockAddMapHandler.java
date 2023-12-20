@@ -5,8 +5,8 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import java.util.ArrayList;
 import java.util.List;
+import networking.data.input.InPacket;
 import server.maps.FieldLimitType;
-import tools.data.input.InPacket;
 import tools.packet.MTSCSPacket;
 
 @lombok.extern.slf4j.Slf4j

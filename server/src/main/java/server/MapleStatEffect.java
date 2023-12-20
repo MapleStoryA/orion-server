@@ -40,9 +40,9 @@ import server.maps.MapleMist;
 import server.maps.MapleSummon;
 import server.maps.SummonMovementType;
 import tools.MaplePacketCreator;
-import tools.Pair;
 import tools.Randomizer;
 import tools.StringUtil;
+import tools.collection.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleStatEffect implements Serializable {

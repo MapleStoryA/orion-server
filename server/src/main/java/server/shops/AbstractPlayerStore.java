@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import server.maps.AbstractMapleMapObject;
 import server.maps.MapleMap;
 import server.maps.MapleMapObjectType;
-import tools.Pair;
+import tools.collection.Pair;
 import tools.packet.PlayerShopPacket;
 
 @Slf4j

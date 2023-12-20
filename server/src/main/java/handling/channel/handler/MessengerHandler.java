@@ -7,8 +7,8 @@ import handling.world.WorldServer;
 import handling.world.helper.MapleMessenger;
 import handling.world.helper.MapleMessengerCharacter;
 import handling.world.messenger.MessengerManager;
+import networking.data.input.InPacket;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MessengerHandler extends AbstractMaplePacketHandler {

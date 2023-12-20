@@ -4,11 +4,11 @@ import client.MapleCharacter;
 import client.MapleClient;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
+import networking.data.input.InPacket;
 import scripting.NPCScriptManager;
 import scripting.v1.NpcTalkHelper;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class QuestionActionHandler extends AbstractMaplePacketHandler {

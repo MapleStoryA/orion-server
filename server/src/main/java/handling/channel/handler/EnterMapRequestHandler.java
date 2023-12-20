@@ -3,10 +3,10 @@ package handling.channel.handler;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import java.util.Map.Entry;
+import networking.data.input.InPacket;
 import server.maps.MapleDragon;
 import server.maps.MapleSummon;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class EnterMapRequestHandler extends AbstractMaplePacketHandler {

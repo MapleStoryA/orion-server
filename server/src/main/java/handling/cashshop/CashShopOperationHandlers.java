@@ -10,8 +10,8 @@ import handling.ServerMigration;
 import handling.world.WorldServer;
 import handling.world.helper.CharacterTransfer;
 import java.util.List;
+import networking.data.input.InPacket;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 import tools.packet.MTSCSPacket;
 
 @lombok.extern.slf4j.Slf4j

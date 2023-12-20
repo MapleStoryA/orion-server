@@ -9,9 +9,9 @@ import handling.AbstractMaplePacketHandler;
 import java.util.Comparator;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
+import networking.data.input.InPacket;
 import server.MapleInventoryManipulator;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 import tools.packet.PetPacket;
 
 @Slf4j

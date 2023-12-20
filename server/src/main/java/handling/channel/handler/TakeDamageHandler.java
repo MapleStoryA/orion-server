@@ -8,6 +8,7 @@ import client.skill.ISkill;
 import client.skill.SkillFactory;
 import constants.MapConstants;
 import handling.AbstractMaplePacketHandler;
+import networking.data.input.InPacket;
 import server.AutobanManager;
 import server.MapleStatEffect;
 import server.life.MapleMonster;
@@ -17,7 +18,6 @@ import server.life.MobSkill;
 import server.life.MobSkillFactory;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
-import tools.data.input.InPacket;
 import tools.packet.MobPacket;
 
 @lombok.extern.slf4j.Slf4j

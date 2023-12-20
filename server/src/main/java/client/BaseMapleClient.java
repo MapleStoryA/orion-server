@@ -1,11 +1,11 @@
 package client;
 
 import constants.ServerConstants;
-import handling.session.NetworkSession;
 import java.util.concurrent.ScheduledFuture;
 import lombok.Getter;
+import networking.NetworkSession;
+import networking.encryption.MapleAESOFB;
 import server.Timer;
-import tools.MapleAESOFB;
 import tools.MaplePacketCreator;
 import tools.packet.LoginPacket;
 

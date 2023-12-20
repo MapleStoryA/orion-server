@@ -4,7 +4,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.PlayerStats;
 import handling.AbstractMaplePacketHandler;
-import tools.data.input.InPacket;
+import networking.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class HealOverTimeHandler extends AbstractMaplePacketHandler {

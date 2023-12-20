@@ -3,13 +3,13 @@ package handling.channel.handler;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import java.util.List;
+import networking.data.input.InPacket;
 import server.maps.MapleMap;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import server.shops.HiredMerchant;
 import server.shops.IMaplePlayerShop;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 import tools.packet.PlayerShopPacket;
 
 @lombok.extern.slf4j.Slf4j

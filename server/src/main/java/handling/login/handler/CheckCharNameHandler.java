@@ -4,7 +4,7 @@ import client.MapleCharacterHelper;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import handling.login.LoginInformationProvider;
-import tools.data.input.InPacket;
+import networking.data.input.InPacket;
 import tools.packet.LoginPacket;
 
 @lombok.extern.slf4j.Slf4j

@@ -5,8 +5,8 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import handling.world.WorldServer;
 import handling.world.helper.FindCommand;
+import networking.data.input.InPacket;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class WhisperHandler extends AbstractMaplePacketHandler {

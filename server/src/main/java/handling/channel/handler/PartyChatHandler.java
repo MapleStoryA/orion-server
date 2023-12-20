@@ -9,7 +9,7 @@ import handling.world.alliance.AllianceManager;
 import handling.world.buddy.BuddyManager;
 import handling.world.guild.GuildManager;
 import handling.world.party.PartyManager;
-import tools.data.input.InPacket;
+import networking.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class PartyChatHandler extends AbstractMaplePacketHandler {

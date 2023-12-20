@@ -4,14 +4,14 @@ import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import java.awt.*;
+import networking.data.input.InPacket;
 import server.life.MapleMonster;
 import server.life.MobSkill;
 import server.life.MobSkillFactory;
 import server.maps.MapleMap;
 import server.movement.MovePath;
-import tools.Pair;
 import tools.Randomizer;
-import tools.data.input.InPacket;
+import tools.collection.Pair;
 import tools.packet.MobPacket;
 
 @lombok.extern.slf4j.Slf4j

@@ -5,14 +5,14 @@ import client.MapleClient;
 import client.MapleDisease;
 import handling.AbstractMaplePacketHandler;
 import java.util.List;
+import networking.data.input.InPacket;
 import server.MapleCarnivalFactory;
 import server.MapleCarnivalFactory.MCSkill;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
 import tools.MaplePacketCreator;
-import tools.Pair;
 import tools.Randomizer;
-import tools.data.input.InPacket;
+import tools.collection.Pair;
 import tools.packet.MonsterCarnivalPacket;
 
 @lombok.extern.slf4j.Slf4j

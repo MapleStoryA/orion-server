@@ -3,7 +3,7 @@ package server.maps;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
-import tools.Pair;
+import tools.collection.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleReactorStats {

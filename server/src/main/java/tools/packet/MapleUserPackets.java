@@ -19,7 +19,6 @@
 package tools.packet;
 
 import client.MapleCharacter;
-import handling.SendPacketOpcode;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
 import handling.world.expedition.MapleExpedition;
 import handling.world.party.MapleParty;
@@ -28,7 +27,8 @@ import handling.world.party.PartyManager;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import tools.data.output.OutPacket;
+import networking.data.output.OutPacket;
+import networking.packet.SendPacketOpcode;
 
 /** Store packets for Buddy, Party, Expedition, Guild and Alliance */
 @lombok.extern.slf4j.Slf4j

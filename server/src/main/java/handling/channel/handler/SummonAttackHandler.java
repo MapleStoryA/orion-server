@@ -13,6 +13,7 @@ import handling.AbstractMaplePacketHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import networking.data.input.InPacket;
 import server.MapleStatEffect;
 import server.life.MapleMonster;
 import server.life.SummonAttackEntry;
@@ -21,7 +22,6 @@ import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import server.maps.MapleSummon;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class SummonAttackHandler extends AbstractMaplePacketHandler {

@@ -7,7 +7,7 @@ import java.util.Map;
 import provider.MapleData;
 import provider.MapleDataTool;
 import server.config.ServerConfig;
-import tools.Pair;
+import tools.collection.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class ItemMakerFactory {

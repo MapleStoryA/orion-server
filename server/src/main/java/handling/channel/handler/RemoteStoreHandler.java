@@ -4,8 +4,8 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import handling.channel.ChannelServer;
 import handling.world.WorldServer;
+import networking.data.input.InPacket;
 import server.shops.HiredMerchant;
-import tools.data.input.InPacket;
 import tools.packet.PlayerShopPacket;
 
 @lombok.extern.slf4j.Slf4j

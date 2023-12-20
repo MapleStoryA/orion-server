@@ -5,11 +5,11 @@ import client.MapleClient;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import handling.AbstractMaplePacketHandler;
+import networking.data.input.InPacket;
 import server.MapleInventoryManipulator;
 import server.life.MapleMonster;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UseCatchItemHandler extends AbstractMaplePacketHandler {

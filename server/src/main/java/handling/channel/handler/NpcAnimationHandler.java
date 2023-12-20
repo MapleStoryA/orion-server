@@ -2,9 +2,9 @@ package handling.channel.handler;
 
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
-import handling.SendPacketOpcode;
-import tools.data.input.InPacket;
-import tools.data.output.OutPacket;
+import networking.data.input.InPacket;
+import networking.data.output.OutPacket;
+import networking.packet.SendPacketOpcode;
 
 @lombok.extern.slf4j.Slf4j
 public class NpcAnimationHandler extends AbstractMaplePacketHandler {

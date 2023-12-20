@@ -4,7 +4,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.skill.SkillMacro;
 import handling.AbstractMaplePacketHandler;
-import tools.data.input.InPacket;
+import networking.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class ChangeSkillMacroHandler extends AbstractMaplePacketHandler {

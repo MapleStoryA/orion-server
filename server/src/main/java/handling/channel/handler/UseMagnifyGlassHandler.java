@@ -8,12 +8,12 @@ import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import java.util.LinkedList;
 import java.util.List;
+import networking.data.input.InPacket;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.StructPotentialItem;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UseMagnifyGlassHandler extends AbstractMaplePacketHandler {

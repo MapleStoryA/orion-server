@@ -5,8 +5,8 @@ import client.MapleClient;
 import client.commands.CommandProcessor;
 import constants.ServerConstants.CommandType;
 import handling.AbstractMaplePacketHandler;
+import networking.data.input.InPacket;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class GeneralChatHandler extends AbstractMaplePacketHandler {
