@@ -1,4 +1,4 @@
-package tools.encryption;
+package networking.encryption;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;

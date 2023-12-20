@@ -22,12 +22,12 @@
 package networking.mina;
 
 import client.MapleClient;
+import networking.encryption.MapleAESOFB;
+import networking.encryption.MapleCustomEncryption;
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.filter.codec.ProtocolEncoder;
 import org.apache.mina.filter.codec.ProtocolEncoderOutput;
-import tools.encryption.MapleAESOFB;
-import tools.encryption.MapleCustomEncryption;
 
 @lombok.extern.slf4j.Slf4j
 public class MinaMaplePacketEncoder implements ProtocolEncoder {
