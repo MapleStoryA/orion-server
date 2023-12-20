@@ -2,10 +2,10 @@ package handling.login;
 
 import client.MapleClient;
 import database.LoginState;
-import handling.GameServer;
 import handling.world.WorldServer;
 import java.util.HashMap;
 import java.util.Map;
+import networking.GameServer;
 import networking.packet.PacketProcessor;
 import server.Timer;
 import server.config.Config;

@@ -1,7 +1,5 @@
-package handling;
+package networking;
 
-import networking.SocketProvider;
-import networking.SocketProviderFactory;
 import networking.packet.PacketProcessor;
 
 @lombok.extern.slf4j.Slf4j
