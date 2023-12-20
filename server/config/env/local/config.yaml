@@ -27,23 +27,24 @@ channel:
   host: 127.0.0.1
   count: 2
   events:
-    - 3rdjob
-    - KyrinTrainingGroundC
-    - KyrinTrainingGroundV
+    - 3rdjob # 3rd Job event
+    - elevator # Ludibrium Elevator
+    - Boats #  Boat Between Ellinia and Orbis
+    - Geenie # Boat between Orbis and Ariant
+    - Cabin # Boat Orbis to Leafre
+    - Trains # Trains between Orbis and Ludibrium
+    - Hak # Hak that travel between Orbis, Mu Lung and Herb Town
+    - AirPlane # AirPlane between KC and CBD
+    - Subway  # Subway Train between Kerning City and New Leaf City
 #    - 2095_tokyo
-#    - 2xEvent
-#    - 3rdjob
 #    - 4jberserk
 #    - 4jrush
-#    - AirPlane
 #    - Amoria
 #    - AriantPQ1
 #    - AriantPQ2
 #    - AriantPQ3
 #    - ArkariumBattle
 #    - Aufhaven
-#    - AutomatedEvent
-#    - Boats
 #    - BossBalrog_EASY
 #    - BossBalrog_NORMAL
 #    - BossHunterPQ
@@ -53,7 +54,6 @@ channel:
 #    - BossQuestHELL
 #    - BossQuestMed
 #    - Brawler
-#    - Cabin
 #    - CathedralWedding
 #    - ChaosHorntail
 #    - ChaosZakum
@@ -69,7 +69,6 @@ channel:
 #    - Dunas
 #    - Dunas2
 #    - ElementThanatos
-#    - elevator
 #    - Ellin
 #    - ElnathPQ
 #    - English
@@ -79,11 +78,9 @@ channel:
 #    - enterDisguise3
 #    - FireDemon
 #    - Flight
-#    - Geenie
 #    - Ghost
 #    - GuildQuest
 #    - Gunslinger
-#    - Hak
 #    - HenesysPQ
 #    - HontalePQ
 #    - HontaleSquad
@@ -92,8 +89,6 @@ channel:
 #    - Juliet
 #    - Kenta
 #    - KerningPQ
-#    - KyrinTrainingGroundC
-#    - KyrinTrainingGroundV
 #    - LudiMazePQ
 #    - LudiPQ
 #    - LumpEnergy
@@ -127,7 +122,6 @@ channel:
 #    - ServerMessage
 #    - Subway
 #    - TimeMachinePart
-#    - Trains
 #    - Vergamot
 #    - Visitor
 #    - WitchTower_EASY
