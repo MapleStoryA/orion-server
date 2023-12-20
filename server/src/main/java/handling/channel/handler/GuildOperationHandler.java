@@ -3,12 +3,12 @@ package handling.channel.handler;
 import client.MapleClient;
 import handling.channel.handler.utils.GuildHandlerUtils;
 import handling.channel.handler.utils.GuildHandlerUtils.Invited;
-import handling.packet.AbstractMaplePacketHandler;
 import handling.world.alliance.AllianceManager;
 import handling.world.guild.GuildManager;
 import handling.world.guild.MapleGuild;
 import handling.world.guild.MapleGuildResponse;
 import java.util.Iterator;
+import networking.packet.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
 import tools.data.input.InPacket;
 

@@ -1,9 +1,9 @@
 package client;
 
 import constants.ServerConstants;
-import handling.session.NetworkSession;
 import java.util.concurrent.ScheduledFuture;
 import lombok.Getter;
+import networking.NetworkSession;
 import server.Timer;
 import tools.MaplePacketCreator;
 import tools.encryption.MapleAESOFB;

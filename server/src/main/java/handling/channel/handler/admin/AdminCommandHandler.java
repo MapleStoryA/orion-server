@@ -20,7 +20,7 @@
 package handling.channel.handler.admin;
 
 import client.MapleClient;
-import handling.packet.AbstractMaplePacketHandler;
+import networking.packet.AbstractMaplePacketHandler;
 import tools.data.input.InPacket;
 
 public final class AdminCommandHandler extends AbstractMaplePacketHandler {

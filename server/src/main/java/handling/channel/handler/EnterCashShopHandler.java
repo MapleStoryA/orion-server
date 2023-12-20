@@ -6,11 +6,11 @@ import constants.MapConstants;
 import handling.ServerMigration;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
-import handling.packet.AbstractMaplePacketHandler;
 import handling.world.WorldServer;
 import handling.world.helper.CharacterTransfer;
 import handling.world.helper.MapleMessengerCharacter;
 import handling.world.messenger.MessengerManager;
+import networking.packet.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
 import tools.data.input.InPacket;
 

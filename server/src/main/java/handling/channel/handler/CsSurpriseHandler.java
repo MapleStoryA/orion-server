@@ -3,7 +3,7 @@ package handling.channel.handler;
 import client.MapleClient;
 import client.inventory.IItem;
 import handling.cashshop.CashShopOperationHandlers;
-import handling.packet.AbstractMaplePacketHandler;
+import networking.packet.AbstractMaplePacketHandler;
 import server.RandomRewards;
 import server.cashshop.CashItemFactory;
 import server.cashshop.CashItemInfo;

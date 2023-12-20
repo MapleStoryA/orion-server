@@ -2,8 +2,8 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import handling.packet.AbstractMaplePacketHandler;
 import java.awt.*;
+import networking.packet.AbstractMaplePacketHandler;
 import server.life.MapleMonster;
 import server.life.MobSkill;
 import server.life.MobSkillFactory;

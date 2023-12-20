@@ -8,7 +8,7 @@ import client.skill.ISkill;
 import client.skill.SkillFactory;
 import constants.GameConstants;
 import constants.skills.BladeMaster;
-import handling.packet.AbstractMaplePacketHandler;
+import networking.packet.AbstractMaplePacketHandler;
 import server.MapleStatEffect;
 import server.events.MapleSnowball.MapleSnowballs;
 import tools.MaplePacketCreator;

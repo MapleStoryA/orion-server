@@ -5,7 +5,7 @@ import client.MapleClient;
 import client.skill.ISkill;
 import client.skill.SkillFactory;
 import constants.skills.BladeMaster;
-import handling.packet.AbstractMaplePacketHandler;
+import networking.packet.AbstractMaplePacketHandler;
 import server.TimerManager;
 import tools.MaplePacketCreator;
 import tools.data.input.InPacket;

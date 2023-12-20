@@ -19,7 +19,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package handling.session.mina;
+package networking.mina;
 
 import client.MapleClient;
 import org.apache.mina.common.ByteBuffer;

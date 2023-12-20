@@ -3,7 +3,7 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.inventory.MaplePet;
-import handling.packet.AbstractMaplePacketHandler;
+import networking.packet.AbstractMaplePacketHandler;
 import server.movement.MovePath;
 import tools.data.input.InPacket;
 import tools.packet.PetPacket;

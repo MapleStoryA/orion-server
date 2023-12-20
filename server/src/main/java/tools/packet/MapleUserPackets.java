@@ -20,7 +20,6 @@ package tools.packet;
 
 import client.MapleCharacter;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
-import handling.packet.SendPacketOpcode;
 import handling.world.expedition.MapleExpedition;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
@@ -28,6 +27,7 @@ import handling.world.party.PartyManager;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import networking.packet.SendPacketOpcode;
 import tools.data.output.OutPacket;
 
 /** Store packets for Buddy, Party, Expedition, Guild and Alliance */

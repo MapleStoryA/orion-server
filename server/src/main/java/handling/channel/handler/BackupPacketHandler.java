@@ -1,7 +1,7 @@
 package handling.channel.handler;
 
 import client.MapleClient;
-import handling.packet.MaplePacketHandler;
+import networking.packet.MaplePacketHandler;
 import tools.HexTool;
 import tools.data.input.InPacket;
 

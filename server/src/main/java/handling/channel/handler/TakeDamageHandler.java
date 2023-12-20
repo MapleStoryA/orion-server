@@ -7,7 +7,7 @@ import client.PlayerStats;
 import client.skill.ISkill;
 import client.skill.SkillFactory;
 import constants.MapConstants;
-import handling.packet.AbstractMaplePacketHandler;
+import networking.packet.AbstractMaplePacketHandler;
 import server.AutobanManager;
 import server.MapleStatEffect;
 import server.life.MapleMonster;

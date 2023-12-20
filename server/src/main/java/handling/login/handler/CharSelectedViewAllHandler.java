@@ -4,8 +4,8 @@ import client.MapleClient;
 import database.CharacterService;
 import database.LoginState;
 import handling.ServerMigration;
-import handling.packet.AbstractMaplePacketHandler;
 import handling.world.WorldServer;
+import networking.packet.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
 import tools.data.input.InPacket;
 

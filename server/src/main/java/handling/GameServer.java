@@ -1,8 +1,8 @@
 package handling;
 
-import handling.packet.PacketProcessor;
-import handling.session.SocketProvider;
-import handling.session.SocketProviderFactory;
+import networking.SocketProvider;
+import networking.SocketProviderFactory;
+import networking.packet.PacketProcessor;
 
 @lombok.extern.slf4j.Slf4j
 public class GameServer {

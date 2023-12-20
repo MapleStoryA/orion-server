@@ -1,7 +1,7 @@
-package handling.session.mina;
+package networking.mina;
 
-import handling.session.NetworkSession;
 import java.net.SocketAddress;
+import networking.NetworkSession;
 import org.apache.mina.common.IoSession;
 
 public class MinaNetworkSession implements NetworkSession {

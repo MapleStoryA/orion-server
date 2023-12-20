@@ -6,9 +6,9 @@ import database.LoginResult;
 import database.LoginService;
 import database.LoginState;
 import handling.login.LoginServer;
-import handling.packet.MaplePacketHandler;
 import handling.world.WorldServer;
 import lombok.extern.slf4j.Slf4j;
+import networking.packet.MaplePacketHandler;
 import tools.data.input.InPacket;
 import tools.packet.LoginPacket;
 

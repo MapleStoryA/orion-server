@@ -1,7 +1,7 @@
 package handling.channel.handler;
 
 import client.MapleClient;
-import handling.packet.AbstractMaplePacketHandler;
+import networking.packet.AbstractMaplePacketHandler;
 import scripting.ReactorScriptManager;
 import server.maps.MapleReactor;
 import tools.data.input.InPacket;

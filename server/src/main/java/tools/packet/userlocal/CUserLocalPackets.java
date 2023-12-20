@@ -1,6 +1,6 @@
 package tools.packet.userlocal;
 
-import handling.packet.SendPacketOpcode;
+import networking.packet.SendPacketOpcode;
 import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j

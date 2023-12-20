@@ -2,11 +2,11 @@ package tools.packet;
 
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
-import handling.packet.SendPacketOpcode;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import networking.packet.SendPacketOpcode;
 import server.life.MapleMonster;
 import server.life.MobSkill;
 import server.movement.MovePath;

@@ -5,10 +5,10 @@ import client.MapleClient;
 import constants.PlayerGMRanking;
 import constants.ServerConstants;
 import handling.login.LoginServer;
-import handling.packet.SendPacketOpcode;
 import java.awt.*;
 import java.util.Map;
 import java.util.Set;
+import networking.packet.SendPacketOpcode;
 import tools.HexTool;
 import tools.data.output.OutPacket;
 

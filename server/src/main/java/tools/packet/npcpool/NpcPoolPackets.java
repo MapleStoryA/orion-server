@@ -1,6 +1,6 @@
 package tools.packet.npcpool;
 
-import handling.packet.SendPacketOpcode;
+import networking.packet.SendPacketOpcode;
 import server.life.MapleNPC;
 import tools.data.output.OutPacket;
 

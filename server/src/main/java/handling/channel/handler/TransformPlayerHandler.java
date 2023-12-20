@@ -5,7 +5,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
-import handling.packet.AbstractMaplePacketHandler;
+import networking.packet.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;

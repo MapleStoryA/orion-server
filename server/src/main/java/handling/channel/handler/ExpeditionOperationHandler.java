@@ -4,7 +4,6 @@ import client.MapleCharacter;
 import client.MapleClient;
 import handling.channel.handler.utils.PartyHandlerUtils;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
-import handling.packet.AbstractMaplePacketHandler;
 import handling.world.WorldServer;
 import handling.world.expedition.ExpeditionType;
 import handling.world.expedition.MapleExpedition;
@@ -12,6 +11,7 @@ import handling.world.helper.FindCommand;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import handling.world.party.PartyManager;
+import networking.packet.AbstractMaplePacketHandler;
 import tools.data.input.InPacket;
 import tools.packet.MapleUserPackets;
 

@@ -1,13 +1,13 @@
-package handling.session.mina;
+package networking.mina;
 
 import client.MapleClient;
 import constants.ServerConstants;
 import handling.cashshop.CashShopServer;
-import handling.packet.PacketProcessor;
-import handling.session.DefaultPacketHandler;
-import handling.session.NetworkSession;
 import handling.world.WorldServer;
 import lombok.extern.slf4j.Slf4j;
+import networking.NetworkSession;
+import networking.packet.DefaultPacketHandler;
+import networking.packet.PacketProcessor;
 import org.apache.mina.common.IdleStatus;
 import org.apache.mina.common.IoHandlerAdapter;
 import org.apache.mina.common.IoSession;

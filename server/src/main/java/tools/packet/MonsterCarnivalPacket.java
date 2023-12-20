@@ -1,7 +1,7 @@
 package tools.packet;
 
 import client.MapleCharacter;
-import handling.packet.SendPacketOpcode;
+import networking.packet.SendPacketOpcode;
 import server.MapleCarnivalParty;
 import tools.data.output.OutPacket;
 

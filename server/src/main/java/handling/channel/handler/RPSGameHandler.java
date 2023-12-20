@@ -2,7 +2,7 @@ package handling.channel.handler;
 
 import client.MapleClient;
 import client.events.RockPaperScissors;
-import handling.packet.AbstractMaplePacketHandler;
+import networking.packet.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
 import tools.data.input.InPacket;
 

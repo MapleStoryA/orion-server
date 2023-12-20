@@ -1,4 +1,4 @@
-package handling.packet;
+package networking.packet;
 
 public interface MaplePacket extends java.io.Serializable {
     byte[] getBytes();

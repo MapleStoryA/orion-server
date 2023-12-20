@@ -1,9 +1,9 @@
-package handling.session.netty;
+package networking.netty;
 
-import handling.session.NetworkSession;
 import io.netty.channel.Channel;
 import java.net.SocketAddress;
 import java.util.concurrent.locks.ReentrantLock;
+import networking.NetworkSession;
 
 public class NettyNetworkSession implements NetworkSession {
     private final Channel channel;

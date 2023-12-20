@@ -23,7 +23,7 @@
 package handling.login.handler;
 
 import client.MapleClient;
-import handling.packet.MaplePacketHandler;
+import networking.packet.MaplePacketHandler;
 import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j

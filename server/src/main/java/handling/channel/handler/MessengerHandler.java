@@ -2,11 +2,11 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import handling.packet.AbstractMaplePacketHandler;
 import handling.world.WorldServer;
 import handling.world.helper.MapleMessenger;
 import handling.world.helper.MapleMessengerCharacter;
 import handling.world.messenger.MessengerManager;
+import networking.packet.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
 import tools.data.input.InPacket;
 

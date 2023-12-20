@@ -1,7 +1,5 @@
-package handling.session.netty;
+package networking.netty;
 
-import handling.packet.PacketProcessor;
-import handling.session.SocketProvider;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -11,6 +9,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import lombok.extern.slf4j.Slf4j;
+import networking.SocketProvider;
+import networking.packet.PacketProcessor;
 
 @Slf4j
 public class NettySocketProvider implements SocketProvider {

@@ -1,6 +1,6 @@
-package handling.session;
+package networking;
 
-import handling.packet.PacketProcessor;
+import networking.packet.PacketProcessor;
 
 public interface SocketProvider {
     void initSocket(int channel, int port, PacketProcessor.Mode mode);

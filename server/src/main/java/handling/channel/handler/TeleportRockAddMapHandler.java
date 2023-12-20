@@ -2,9 +2,9 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import handling.packet.AbstractMaplePacketHandler;
 import java.util.ArrayList;
 import java.util.List;
+import networking.packet.AbstractMaplePacketHandler;
 import server.maps.FieldLimitType;
 import tools.data.input.InPacket;
 import tools.packet.MTSCSPacket;

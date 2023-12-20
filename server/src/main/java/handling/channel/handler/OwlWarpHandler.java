@@ -1,8 +1,8 @@
 package handling.channel.handler;
 
 import client.MapleClient;
-import handling.packet.AbstractMaplePacketHandler;
 import java.util.List;
+import networking.packet.AbstractMaplePacketHandler;
 import server.maps.MapleMap;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;

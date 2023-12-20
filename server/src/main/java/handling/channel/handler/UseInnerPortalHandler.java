@@ -3,8 +3,8 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.anticheat.CheatingOffense;
-import handling.packet.AbstractMaplePacketHandler;
 import java.awt.*;
+import networking.packet.AbstractMaplePacketHandler;
 import server.MaplePortal;
 import tools.data.input.InPacket;
 

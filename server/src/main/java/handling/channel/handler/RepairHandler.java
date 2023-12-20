@@ -4,8 +4,8 @@ import client.MapleClient;
 import client.inventory.Equip;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
-import handling.packet.AbstractMaplePacketHandler;
 import java.util.Map;
+import networking.packet.AbstractMaplePacketHandler;
 import server.MapleItemInformationProvider;
 import tools.data.input.InPacket;
 

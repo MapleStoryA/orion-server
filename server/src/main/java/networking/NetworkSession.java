@@ -1,4 +1,4 @@
-package handling.session;
+package networking;
 
 import java.net.SocketAddress;
 

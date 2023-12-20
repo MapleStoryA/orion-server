@@ -8,7 +8,7 @@ import client.layout.KeyMapBinding;
 import client.skill.ISkill;
 import client.skill.SkillFactory;
 import constants.GameConstants;
-import handling.packet.AbstractMaplePacketHandler;
+import networking.packet.AbstractMaplePacketHandler;
 import server.MapleItemInformationProvider;
 import tools.data.input.InPacket;
 

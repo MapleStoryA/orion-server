@@ -1,10 +1,10 @@
-package handling.session.mina;
+package networking.mina;
 
-import handling.packet.PacketProcessor;
-import handling.session.SocketProvider;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import lombok.extern.slf4j.Slf4j;
+import networking.SocketProvider;
+import networking.packet.PacketProcessor;
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.IoAcceptor;
 import org.apache.mina.common.SimpleByteBufferAllocator;

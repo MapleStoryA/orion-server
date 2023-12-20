@@ -1,6 +1,6 @@
 package tools.packet;
 
-import handling.packet.SendPacketOpcode;
+import networking.packet.SendPacketOpcode;
 import tools.data.output.OutPacket;
 
 public final class NettsPyramid {
