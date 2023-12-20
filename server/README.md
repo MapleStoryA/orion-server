@@ -1,22 +1,15 @@
-# Orion MS
+# Orion MS source
 
-## Running with a IDE
+## Pre-requisites
 
-- Start the database with `docker-compose up orion-db`
-- Run the main method in `GameApp` class.
+- Java 17
+- Docker
+- Client Setup
 
-## Runing as a container
+## Starting the database
 
-### Install docker
+Just run `docker-compose up`, the latest dump is at `config/backups` folder.
 
-- [Download Docker](https://docs.docker.com/docker-for-windows/install/)
+## Running the server in the IDE
 
-### Build the image with jib
-
-```shell
-mvn jib:dockerBuild
-```
-
-### Start with compose
-
-After building the image the server can be run with `docker-compose up`
+Right-click the class `GameApp` and click `Run GameApp.main()`
