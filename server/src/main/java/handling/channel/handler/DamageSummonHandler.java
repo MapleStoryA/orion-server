@@ -3,9 +3,9 @@ package handling.channel.handler;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
+import handling.AbstractMaplePacketHandler;
 import java.util.Iterator;
 import networking.data.input.InPacket;
-import networking.packet.AbstractMaplePacketHandler;
 import server.maps.MapleSummon;
 import tools.MaplePacketCreator;
 

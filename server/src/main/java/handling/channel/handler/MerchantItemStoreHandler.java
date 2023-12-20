@@ -2,9 +2,9 @@ package handling.channel.handler;
 
 import client.MapleClient;
 import client.inventory.IItem;
+import handling.AbstractMaplePacketHandler;
 import handling.channel.handler.utils.HiredMerchantHandlerUtils;
 import networking.data.input.InPacket;
-import networking.packet.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import server.MerchItemPackage;
 import tools.packet.PlayerShopPacket;

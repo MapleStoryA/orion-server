@@ -2,10 +2,10 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import handling.AbstractMaplePacketHandler;
 import handling.world.WorldServer;
 import handling.world.helper.FindCommand;
 import networking.data.input.InPacket;
-import networking.packet.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
 
 @lombok.extern.slf4j.Slf4j

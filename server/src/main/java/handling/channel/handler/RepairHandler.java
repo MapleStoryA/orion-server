@@ -4,9 +4,9 @@ import client.MapleClient;
 import client.inventory.Equip;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
+import handling.AbstractMaplePacketHandler;
 import java.util.Map;
 import networking.data.input.InPacket;
-import networking.packet.AbstractMaplePacketHandler;
 import server.MapleItemInformationProvider;
 
 @lombok.extern.slf4j.Slf4j

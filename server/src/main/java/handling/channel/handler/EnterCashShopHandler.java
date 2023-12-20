@@ -3,6 +3,7 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import constants.MapConstants;
+import handling.AbstractMaplePacketHandler;
 import handling.ServerMigration;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
@@ -11,7 +12,6 @@ import handling.world.helper.CharacterTransfer;
 import handling.world.helper.MapleMessengerCharacter;
 import handling.world.messenger.MessengerManager;
 import networking.data.input.InPacket;
-import networking.packet.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
 
 @lombok.extern.slf4j.Slf4j

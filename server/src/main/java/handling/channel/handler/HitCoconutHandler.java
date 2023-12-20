@@ -1,8 +1,8 @@
 package handling.channel.handler;
 
 import client.MapleClient;
+import handling.AbstractMaplePacketHandler;
 import networking.data.input.InPacket;
-import networking.packet.AbstractMaplePacketHandler;
 import server.events.MapleCoconut;
 import server.events.MapleCoconut.MapleCoconuts;
 import server.events.MapleEventType;

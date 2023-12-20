@@ -4,8 +4,8 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleStat;
 import client.anticheat.CheatingOffense;
+import handling.AbstractMaplePacketHandler;
 import networking.data.input.InPacket;
-import networking.packet.AbstractMaplePacketHandler;
 import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
 

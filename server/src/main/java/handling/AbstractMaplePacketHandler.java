@@ -2,7 +2,6 @@ package handling;
 
 import client.MapleClient;
 import java.awt.*;
-
 import networking.packet.MaplePacketHandler;
 import server.maps.AnimatedMapleMapObject;
 import server.movement.Elem;

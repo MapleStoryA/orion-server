@@ -1,8 +1,8 @@
 package handling.channel.handler;
 
 import client.MapleClient;
+import handling.AbstractMaplePacketHandler;
 import networking.data.input.InPacket;
-import networking.packet.AbstractMaplePacketHandler;
 import scripting.NPCScriptManager;
 import server.gachapon.GachaponLocation;
 

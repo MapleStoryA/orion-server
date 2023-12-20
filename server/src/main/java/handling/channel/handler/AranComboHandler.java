@@ -4,8 +4,8 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.anticheat.CheatingOffense;
 import client.skill.SkillFactory;
+import handling.AbstractMaplePacketHandler;
 import networking.data.input.InPacket;
-import networking.packet.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
 
 @lombok.extern.slf4j.Slf4j

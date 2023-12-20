@@ -1,9 +1,9 @@
 package handling.channel.handler;
 
 import client.MapleClient;
+import handling.AbstractMaplePacketHandler;
 import networking.data.input.InPacket;
 import networking.data.output.OutPacket;
-import networking.packet.AbstractMaplePacketHandler;
 import networking.packet.SendPacketOpcode;
 
 @lombok.extern.slf4j.Slf4j

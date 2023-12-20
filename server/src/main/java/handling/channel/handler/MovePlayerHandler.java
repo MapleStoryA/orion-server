@@ -2,9 +2,9 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import handling.AbstractMaplePacketHandler;
 import java.awt.*;
 import networking.data.input.InPacket;
-import networking.packet.AbstractMaplePacketHandler;
 import server.maps.MapleMap;
 import server.movement.MovePath;
 import tools.MaplePacketCreator;

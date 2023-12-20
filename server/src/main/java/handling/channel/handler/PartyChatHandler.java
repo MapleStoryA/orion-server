@@ -4,12 +4,12 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.commands.CommandProcessor;
 import constants.ServerConstants.CommandType;
+import handling.AbstractMaplePacketHandler;
 import handling.world.alliance.AllianceManager;
 import handling.world.buddy.BuddyManager;
 import handling.world.guild.GuildManager;
 import handling.world.party.PartyManager;
 import networking.data.input.InPacket;
-import networking.packet.AbstractMaplePacketHandler;
 
 @lombok.extern.slf4j.Slf4j
 public class PartyChatHandler extends AbstractMaplePacketHandler {

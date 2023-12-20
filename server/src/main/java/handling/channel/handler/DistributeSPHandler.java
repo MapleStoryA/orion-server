@@ -6,8 +6,8 @@ import client.MapleJob;
 import client.MapleStat;
 import client.skill.ISkill;
 import client.skill.SkillFactory;
+import handling.AbstractMaplePacketHandler;
 import networking.data.input.InPacket;
-import networking.packet.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
 
 @lombok.extern.slf4j.Slf4j

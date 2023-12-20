@@ -2,9 +2,9 @@ package handling.login.handler;
 
 import client.MapleCharacterHelper;
 import client.MapleClient;
+import handling.AbstractMaplePacketHandler;
 import handling.login.LoginInformationProvider;
 import networking.data.input.InPacket;
-import networking.packet.AbstractMaplePacketHandler;
 import tools.packet.LoginPacket;
 
 @lombok.extern.slf4j.Slf4j

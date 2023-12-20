@@ -3,8 +3,8 @@ package handling.channel.handler;
 import client.MapleClient;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
+import handling.AbstractMaplePacketHandler;
 import networking.data.input.InPacket;
-import networking.packet.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import tools.MaplePacketCreator;
 

@@ -4,10 +4,10 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleStat;
 import client.PlayerStats;
+import handling.AbstractMaplePacketHandler;
 import java.util.ArrayList;
 import java.util.List;
 import networking.data.input.InPacket;
-import networking.packet.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
 import tools.collection.Pair;
 

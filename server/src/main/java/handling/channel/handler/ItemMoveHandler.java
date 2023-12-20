@@ -2,8 +2,8 @@ package handling.channel.handler;
 
 import client.MapleClient;
 import client.inventory.MapleInventoryType;
+import handling.AbstractMaplePacketHandler;
 import networking.data.input.InPacket;
-import networking.packet.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 
 @lombok.extern.slf4j.Slf4j

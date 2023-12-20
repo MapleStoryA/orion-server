@@ -2,6 +2,7 @@ package handling.channel.handler;
 
 import client.MapleClient;
 import client.inventory.IItem;
+import handling.AbstractMaplePacketHandler;
 import handling.cashshop.CashShopOperationHandlers;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
-import networking.packet.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import server.cashshop.CashCouponData;
 import server.cashshop.CashItemFactory;

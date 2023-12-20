@@ -3,9 +3,9 @@ package handling.channel.handler;
 import client.MapleClient;
 import client.skill.ISkill;
 import client.skill.SkillFactory;
+import handling.AbstractMaplePacketHandler;
 import java.awt.*;
 import networking.data.input.InPacket;
-import networking.packet.AbstractMaplePacketHandler;
 import server.maps.MapleMist;
 import tools.MaplePacketCreator;
 

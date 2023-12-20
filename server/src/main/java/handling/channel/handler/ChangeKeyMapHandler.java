@@ -8,8 +8,8 @@ import client.layout.KeyMapBinding;
 import client.skill.ISkill;
 import client.skill.SkillFactory;
 import constants.GameConstants;
+import handling.AbstractMaplePacketHandler;
 import networking.data.input.InPacket;
-import networking.packet.AbstractMaplePacketHandler;
 import server.MapleItemInformationProvider;
 
 @lombok.extern.slf4j.Slf4j
