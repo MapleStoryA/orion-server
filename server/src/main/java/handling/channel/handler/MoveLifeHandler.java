@@ -9,8 +9,8 @@ import server.life.MobSkill;
 import server.life.MobSkillFactory;
 import server.maps.MapleMap;
 import server.movement.MovePath;
-import tools.Pair;
 import tools.Randomizer;
+import tools.collection.Pair;
 import tools.data.input.InPacket;
 import tools.packet.MobPacket;
 

@@ -34,8 +34,8 @@ import server.life.PlayerNPC;
 import server.maps.AramiaFireWorks;
 import server.maps.MapleMapFactory;
 import server.shops.HiredMerchant;
-import tools.CollectionUtil;
 import tools.MaplePacketCreator;
+import tools.collection.CollectionUtil;
 
 @lombok.extern.slf4j.Slf4j
 public class ChannelServer extends GameServer {

@@ -12,7 +12,7 @@ import server.shops.IMaplePlayerShop;
 import server.shops.MapleMiniGame;
 import server.shops.MaplePlayerShop;
 import server.shops.MaplePlayerShopItem;
-import tools.Pair;
+import tools.collection.Pair;
 import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j

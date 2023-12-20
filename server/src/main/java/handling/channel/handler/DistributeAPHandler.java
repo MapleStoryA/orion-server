@@ -11,8 +11,8 @@ import handling.AbstractMaplePacketHandler;
 import java.util.ArrayList;
 import java.util.List;
 import tools.MaplePacketCreator;
-import tools.Pair;
 import tools.Randomizer;
+import tools.collection.Pair;
 import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j

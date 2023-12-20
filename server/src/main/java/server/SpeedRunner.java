@@ -8,8 +8,8 @@ import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import server.maps.SpeedRunType;
-import tools.Pair;
 import tools.StringUtil;
+import tools.collection.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class SpeedRunner {

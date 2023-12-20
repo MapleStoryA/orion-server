@@ -1,6 +1,7 @@
 importPackage(Packages.client);
 importPackage(Packages.server);
 importPackage(Packages.tools);
+importPackage(Packages.tools.collection);
 
 var status = 0;
 var yes = 0;

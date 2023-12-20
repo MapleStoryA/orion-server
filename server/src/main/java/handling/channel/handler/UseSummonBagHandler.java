@@ -12,8 +12,8 @@ import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
 import server.maps.FieldLimitType;
 import tools.MaplePacketCreator;
-import tools.Pair;
 import tools.Randomizer;
+import tools.collection.Pair;
 import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j

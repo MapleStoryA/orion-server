@@ -8,7 +8,7 @@ import handling.AbstractMaplePacketHandler;
 import java.util.Map;
 import java.util.Map.Entry;
 import server.MapleItemInformationProvider;
-import tools.ArrayMap;
+import tools.collection.ArrayMap;
 import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j

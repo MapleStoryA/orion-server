@@ -29,8 +29,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import tools.Pair;
 import tools.Randomizer;
+import tools.collection.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleOxQuizFactory {

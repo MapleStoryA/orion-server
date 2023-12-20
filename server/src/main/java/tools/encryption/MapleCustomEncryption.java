@@ -1,4 +1,6 @@
-package tools;
+package tools.encryption;
+
+import tools.BitTools;
 
 /**
  * Provides MapleStory's custom encryption routines.

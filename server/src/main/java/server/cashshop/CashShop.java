@@ -43,7 +43,7 @@ import java.util.List;
 import provider.MapleData;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
-import tools.Pair;
+import tools.collection.Pair;
 import tools.packet.MTSCSPacket;
 
 @lombok.extern.slf4j.Slf4j

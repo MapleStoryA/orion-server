@@ -5,7 +5,7 @@ import java.awt.*;
 import scripting.ReactorScriptManager;
 import server.Timer.MapTimer;
 import tools.MaplePacketCreator;
-import tools.Pair;
+import tools.collection.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleReactor extends AbstractMapleMapObject {

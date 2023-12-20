@@ -26,7 +26,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import tools.Pair;
+import tools.collection.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class CashShopCoupon {

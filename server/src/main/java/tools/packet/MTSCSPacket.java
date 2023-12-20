@@ -17,8 +17,8 @@ import server.cashshop.CashItemInfo;
 import server.cashshop.CashItemInfo.CashModInfo;
 import server.cashshop.CashShop;
 import server.config.ServerConfig;
-import tools.Pair;
 import tools.StringUtil;
+import tools.collection.Pair;
 import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j

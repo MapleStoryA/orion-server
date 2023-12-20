@@ -21,8 +21,8 @@ import server.maps.MapleMapItem;
 import server.maps.MapleMapObject;
 import tools.DateHelper;
 import tools.MaplePacketCreator;
-import tools.Pair;
 import tools.Randomizer;
+import tools.collection.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class InventoryHandlerUtils {

@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import tools.Pair;
+import tools.collection.Pair;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleMonsterStats {

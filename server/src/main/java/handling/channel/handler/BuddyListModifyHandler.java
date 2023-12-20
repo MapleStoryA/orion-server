@@ -12,7 +12,7 @@ import handling.world.buddy.MapleBuddyList.BuddyAddResult;
 import handling.world.buddy.MapleBuddyList.BuddyDelResult;
 import handling.world.helper.FindCommand;
 import tools.MaplePacketCreator;
-import tools.Pair;
+import tools.collection.Pair;
 import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j

@@ -10,8 +10,8 @@ import server.MapleCarnivalFactory.MCSkill;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
 import tools.MaplePacketCreator;
-import tools.Pair;
 import tools.Randomizer;
+import tools.collection.Pair;
 import tools.data.input.InPacket;
 import tools.packet.MonsterCarnivalPacket;
 

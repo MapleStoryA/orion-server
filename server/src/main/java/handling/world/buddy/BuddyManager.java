@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import lombok.extern.slf4j.Slf4j;
 import tools.MaplePacketCreator;
-import tools.Pair;
+import tools.collection.Pair;
 
 @Slf4j
 public class BuddyManager {

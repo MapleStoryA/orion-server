@@ -14,7 +14,7 @@ import server.cashshop.CashCouponData;
 import server.cashshop.CashItemFactory;
 import server.cashshop.CashItemInfo;
 import server.cashshop.CashShopCoupon;
-import tools.Pair;
+import tools.collection.Pair;
 import tools.data.input.InPacket;
 import tools.packet.MTSCSPacket;
 

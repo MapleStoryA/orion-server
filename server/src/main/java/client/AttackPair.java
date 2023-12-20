@@ -3,7 +3,7 @@ package client;
 import java.util.List;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import tools.Pair;
+import tools.collection.Pair;
 
 @Slf4j
 @Getter

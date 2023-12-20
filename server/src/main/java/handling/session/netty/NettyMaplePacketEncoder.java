@@ -5,8 +5,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 import lombok.extern.slf4j.Slf4j;
-import tools.MapleAESOFB;
-import tools.MapleCustomEncryption;
+import tools.encryption.MapleAESOFB;
+import tools.encryption.MapleCustomEncryption;
 
 @Slf4j
 public class NettyMaplePacketEncoder extends MessageToByteEncoder<byte[]> {

@@ -26,8 +26,8 @@ import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.filter.codec.CumulativeProtocolDecoder;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
-import tools.MapleAESOFB;
-import tools.MapleCustomEncryption;
+import tools.encryption.MapleAESOFB;
+import tools.encryption.MapleCustomEncryption;
 
 @lombok.extern.slf4j.Slf4j
 public class MinaMaplePacketDecoder extends CumulativeProtocolDecoder {

@@ -16,7 +16,7 @@ import java.sql.SQLException;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.jdbi.v3.core.result.ResultIterable;
-import tools.Pair;
+import tools.collection.Pair;
 
 @Slf4j
 public class LoginService {

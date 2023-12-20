@@ -23,7 +23,7 @@ package server;
 
 import java.util.Map;
 import java.util.Map.Entry;
-import tools.ArrayMap;
+import tools.collection.ArrayMap;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleAchievements {

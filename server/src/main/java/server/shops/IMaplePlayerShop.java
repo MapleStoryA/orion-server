@@ -4,7 +4,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import java.util.List;
 import server.shops.AbstractPlayerStore.BoughtItem;
-import tools.Pair;
+import tools.collection.Pair;
 
 public interface IMaplePlayerShop {
 

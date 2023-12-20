@@ -25,8 +25,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import server.shops.AbstractPlayerStore;
 import server.shops.IMaplePlayerShop;
-import tools.KoreanDateUtil;
-import tools.Triple;
+import tools.DateHelper;
+import tools.collection.Triple;
 import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
@@ -67,7 +67,7 @@ public class PacketHelper {
 
         for (final MapleQuestStatus q : completed) {
             packet.writeShort(q.getQuest().getId());
-            time = KoreanDateUtil.getQuestTimestamp(q.getCompletionTime());
+            time = DateHelper.getQuestTimestamp(q.getCompletionTime());
             packet.writeInt(time); // maybe start time? no effect.
             packet.writeInt(time); // completion time
         }
@@ -332,7 +332,7 @@ public class PacketHelper {
         packet.write(0);
         packet.writeShort(1408); // 80 05
         if (time != -1) {
-            packet.writeInt(KoreanDateUtil.getItemTimestamp(time));
+            packet.writeInt(DateHelper.getItemTimestamp(time));
             packet.write(1);
         } else {
             packet.writeInt(400967355);

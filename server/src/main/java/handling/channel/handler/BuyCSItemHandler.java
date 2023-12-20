@@ -19,7 +19,7 @@ import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.cashshop.CashItemFactory;
 import server.cashshop.CashItemInfo;
-import tools.Triple;
+import tools.collection.Triple;
 import tools.data.input.InPacket;
 import tools.packet.MTSCSPacket;
 

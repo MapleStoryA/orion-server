@@ -1,4 +1,4 @@
-package tools;
+package tools.collection;
 
 import java.io.Serializable;
 import java.util.AbstractMap;

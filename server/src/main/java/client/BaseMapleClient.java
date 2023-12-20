@@ -5,8 +5,8 @@ import handling.session.NetworkSession;
 import java.util.concurrent.ScheduledFuture;
 import lombok.Getter;
 import server.Timer;
-import tools.MapleAESOFB;
 import tools.MaplePacketCreator;
+import tools.encryption.MapleAESOFB;
 import tools.packet.LoginPacket;
 
 public class BaseMapleClient {

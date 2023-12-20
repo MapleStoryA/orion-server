@@ -9,7 +9,7 @@ import java.util.List;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.quest.MapleQuest;
-import tools.Pair;
+import tools.collection.Pair;
 import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
