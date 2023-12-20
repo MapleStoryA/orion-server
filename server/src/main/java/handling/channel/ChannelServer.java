@@ -59,7 +59,7 @@ public class ChannelServer extends GameServer {
     private PlayerStorage players;
     private EventScriptManager eventSM;
     private int eventmap = -1;
-    private GameEventManager gameEventManager;
+    private final GameEventManager gameEventManager;
 
     public ChannelServer(int channel, int port) {
         super(channel, port, PacketProcessor.Mode.CHANNELSERVER);

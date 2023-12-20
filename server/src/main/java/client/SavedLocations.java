@@ -4,7 +4,7 @@ import lombok.Getter;
 import server.maps.SavedLocationType;
 
 public class SavedLocations {
-    private int[] savedLocations;
+    private final int[] savedLocations;
 
     @Getter
     private boolean changed;

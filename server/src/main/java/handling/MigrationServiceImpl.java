@@ -8,9 +8,9 @@ import java.util.concurrent.TimeUnit;
 
 public class MigrationServiceImpl implements MigrationService {
 
-    private Map<String, ServerMigration> cache = new ConcurrentHashMap<>();
+    private final Map<String, ServerMigration> cache = new ConcurrentHashMap<>();
 
-    private ScheduledExecutorService scheduledExecutorService;
+    private final ScheduledExecutorService scheduledExecutorService;
 
     public MigrationServiceImpl() {
         this.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();

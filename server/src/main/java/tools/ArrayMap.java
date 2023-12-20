@@ -177,11 +177,9 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Serializable {
          */
         @Override
         public boolean equals(Object o) {
-            if (!(o instanceof Map.Entry)) {
+            if (!(o instanceof @SuppressWarnings("rawtypes") Map.Entry e)) {
                 return false;
             }
-            @SuppressWarnings("rawtypes")
-            Map.Entry e = (Map.Entry) o;
             return (key == null ? e.getKey() == null : key.equals(e.getKey()))
                     && (value == null ? e.getValue() == null : value.equals(e.getValue()));
         }

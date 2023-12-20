@@ -18,7 +18,7 @@ import tools.Scripting;
 @Scripting
 public class CommandProcessor {
 
-    private Map<String, Command> commands = new LinkedHashMap<>();
+    private final Map<String, Command> commands = new LinkedHashMap<>();
 
     private static CommandProcessor INSTANCE;
 
@@ -123,9 +123,6 @@ public class CommandProcessor {
 
     public static boolean processCommand(MapleClient c, String line, ServerConstants.CommandType type) {
 
-        if (CommandProcessor.getInstance().processLine(c, line)) {
-            return true;
-        }
-        return false;
+        return CommandProcessor.getInstance().processLine(c, line);
     }
 }

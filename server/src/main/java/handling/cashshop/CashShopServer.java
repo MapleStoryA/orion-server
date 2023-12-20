@@ -10,8 +10,8 @@ import server.config.ServerConfig;
 public class CashShopServer extends GameServer {
 
     private static final int PORT = 8799;
-    private String ip;
-    private PlayerStorage players;
+    private final String ip;
+    private final PlayerStorage players;
     private boolean finishedShutdown = false;
 
     private static CashShopServer INSTANCE;

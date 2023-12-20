@@ -27,8 +27,7 @@ public class CustomRewardsProvider {
             return cache.get(location.getValue());
         }
         for (AbstractRandomEntity entity : list) {
-            if (entity instanceof GachaponReward) {
-                GachaponReward gachaEntity = ((GachaponReward) entity);
+            if (entity instanceof GachaponReward gachaEntity) {
                 int locationValue = gachaEntity.getLocation().getValue();
                 if (!cache.containsKey(locationValue)) {
                     cache.put(locationValue, new ArrayList<GachaponReward>());

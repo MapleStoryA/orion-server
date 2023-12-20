@@ -8,7 +8,7 @@ import tools.data.output.OutPacket;
 
 public class WishList {
 
-    private Set<Integer> items;
+    private final Set<Integer> items;
 
     @Getter
     private boolean changed;

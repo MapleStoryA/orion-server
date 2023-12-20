@@ -262,8 +262,7 @@ public class PacketHelper {
         MapleInventory equip = chr.getInventory(MapleInventoryType.EQUIPPED);
 
         for (final IItem item : equip.list()) {
-            if (item instanceof Equip) {
-                Equip currentEquip = (Equip) item;
+            if (item instanceof Equip currentEquip) {
                 if (!chr.getJob().isGameMasterJob()) {
                     if (currentEquip.getRequiredStr() > chr.getStat().getTotalStr()) {
                         continue;

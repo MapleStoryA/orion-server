@@ -8,7 +8,6 @@ public enum LoginState {
     CASH_SHOP_TRANSITION(4),
     LOGIN_CS_LOGGEDIN(5),
     CHANGE_CHANNEL(6);
-    ;
 
     private final int code;
 

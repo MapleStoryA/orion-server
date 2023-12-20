@@ -80,7 +80,7 @@ public class NettyMapleServerHandler extends ChannelInboundHandlerAdapter {
 
     static class SendPingOnIdle extends IdleStateHandler {
 
-        private MapleClient client;
+        private final MapleClient client;
 
         public SendPingOnIdle(
                 int readerIdleTimeSeconds, int writerIdleTimeSeconds, int allIdleTimeSeconds, MapleClient client) {

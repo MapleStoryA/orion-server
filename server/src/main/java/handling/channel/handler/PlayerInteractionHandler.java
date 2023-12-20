@@ -181,8 +181,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                         ob = chr.getMap().getMapObject(obid, MapleMapObjectType.SHOP);
                     }
 
-                    if (ob instanceof IMaplePlayerShop && chr.getPlayerShop() == null) {
-                        final IMaplePlayerShop ips = (IMaplePlayerShop) ob;
+                    if (ob instanceof final IMaplePlayerShop ips && chr.getPlayerShop() == null) {
 
                         if (ob instanceof HiredMerchant) {
                             final HiredMerchant merchant = (HiredMerchant) ips;
@@ -622,8 +621,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             }
             case GIVE_UP: {
                 final IMaplePlayerShop ips = chr.getPlayerShop();
-                if (ips != null && ips instanceof MapleMiniGame) {
-                    MapleMiniGame game = (MapleMiniGame) ips;
+                if (ips != null && ips instanceof MapleMiniGame game) {
                     if (game.isOpen()) {
                         break;
                     }
@@ -648,8 +646,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             case READY:
             case UN_READY: {
                 final IMaplePlayerShop ips = chr.getPlayerShop();
-                if (ips != null && ips instanceof MapleMiniGame) {
-                    MapleMiniGame game = (MapleMiniGame) ips;
+                if (ips != null && ips instanceof MapleMiniGame game) {
                     if (!game.isOwner(chr) && game.isOpen()) {
                         game.setReady(game.getVisitorSlot(chr));
                         game.broadcastToVisitors(
@@ -660,8 +657,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             }
             case START: {
                 final IMaplePlayerShop ips = chr.getPlayerShop();
-                if (ips != null && ips instanceof MapleMiniGame) {
-                    MapleMiniGame game = (MapleMiniGame) ips;
+                if (ips != null && ips instanceof MapleMiniGame game) {
                     if (game.isOwner(chr) && game.isOpen()) {
                         for (int i = 1; i < ips.getSize(); i++) {
                             if (!game.isReady(i)) {
@@ -683,8 +679,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             }
             case REQUEST_TIE: {
                 final IMaplePlayerShop ips = chr.getPlayerShop();
-                if (ips != null && ips instanceof MapleMiniGame) {
-                    MapleMiniGame game = (MapleMiniGame) ips;
+                if (ips != null && ips instanceof MapleMiniGame game) {
                     if (game.isOpen()) {
                         break;
                     }
@@ -699,8 +694,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             }
             case ANSWER_TIE: {
                 final IMaplePlayerShop ips = chr.getPlayerShop();
-                if (ips != null && ips instanceof MapleMiniGame) {
-                    MapleMiniGame game = (MapleMiniGame) ips;
+                if (ips != null && ips instanceof MapleMiniGame game) {
                     if (game.isOpen()) {
                         break;
                     }
@@ -722,8 +716,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             }
             case SKIP: {
                 final IMaplePlayerShop ips = chr.getPlayerShop();
-                if (ips != null && ips instanceof MapleMiniGame) {
-                    MapleMiniGame game = (MapleMiniGame) ips;
+                if (ips != null && ips instanceof MapleMiniGame game) {
                     if (game.isOpen()) {
                         break;
                     }
@@ -745,8 +738,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             }
             case MOVE_OMOK: {
                 final IMaplePlayerShop ips = chr.getPlayerShop();
-                if (ips != null && ips instanceof MapleMiniGame) {
-                    MapleMiniGame game = (MapleMiniGame) ips;
+                if (ips != null && ips instanceof MapleMiniGame game) {
                     if (game.isOpen()) {
                         break;
                     }
@@ -767,8 +759,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             }
             case SELECT_CARD: {
                 final IMaplePlayerShop ips = chr.getPlayerShop();
-                if (ips != null && ips instanceof MapleMiniGame) {
-                    MapleMiniGame game = (MapleMiniGame) ips;
+                if (ips != null && ips instanceof MapleMiniGame game) {
                     if (game.isOpen()) {
                         break;
                     }
@@ -831,8 +822,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             case EXIT_AFTER_GAME:
             case CANCEL_EXIT: {
                 final IMaplePlayerShop ips = chr.getPlayerShop();
-                if (ips != null && ips instanceof MapleMiniGame) {
-                    MapleMiniGame game = (MapleMiniGame) ips;
+                if (ips != null && ips instanceof MapleMiniGame game) {
                     if (game.isOpen()) {
                         break;
                     }

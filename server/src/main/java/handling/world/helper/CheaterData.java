@@ -30,10 +30,9 @@ public class CheaterData implements Serializable, Comparable<CheaterData> {
 
     @Override
     public boolean equals(Object oth) {
-        if (!(oth instanceof CheaterData)) {
+        if (!(oth instanceof final CheaterData obj)) {
             return false;
         }
-        final CheaterData obj = (CheaterData) oth;
         return obj.points == this.points && obj.info.equals(this.info);
     }
 }

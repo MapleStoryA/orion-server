@@ -30,7 +30,7 @@ public class WorldServer {
     private final long serverStarTime;
 
     @Getter
-    private MigrationService migrationService;
+    private final MigrationService migrationService;
 
     public WorldServer() {
         this.serverStarTime = System.currentTimeMillis();

@@ -195,7 +195,7 @@ public enum RecvPacketOpcode {
     ADMIN_LOG(149),
     ADMIN_CHAT(136);
 
-    private boolean checkState;
+    private final boolean checkState;
     private short code = -1;
 
     RecvPacketOpcode(int code) {

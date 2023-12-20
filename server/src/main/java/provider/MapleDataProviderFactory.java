@@ -7,8 +7,7 @@ import provider.WzXML.XMLWZFile;
 public class MapleDataProviderFactory {
 
     private static MapleDataProvider getWZ(Object in, boolean provideImages) {
-        if (in instanceof File) {
-            File fileIn = (File) in;
+        if (in instanceof File fileIn) {
 
             return new XMLWZFile(fileIn);
         }

@@ -36,6 +36,6 @@ public class LoginResult {
     }
 
     public boolean isAlreadyConnected() {
-        return this.ALREADY_LOGGED_IN == result;
+        return ALREADY_LOGGED_IN == result;
     }
 }

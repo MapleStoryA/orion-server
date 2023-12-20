@@ -9,7 +9,7 @@ import org.jdbi.v3.core.annotation.JdbiProperty;
 public class KeyMapBinding {
 
     @Getter
-    private int characterId;
+    private final int characterId;
 
     @Getter
     @Setter

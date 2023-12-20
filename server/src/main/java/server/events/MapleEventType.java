@@ -31,8 +31,8 @@ public enum MapleEventType {
     OlaOla("ola", new int[] {109030001, 109030002, 109030003}),
     OxQuiz("ox", new int[] {109020001}),
     Snowball("snowball", new int[] {109060000}); // just using one
-    private String command;
-    private int[] mapIds;
+    private final String command;
+    private final int[] mapIds;
 
     MapleEventType(String command, int[] mapIds) {
         this.command = command;

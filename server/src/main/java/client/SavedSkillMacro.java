@@ -4,7 +4,7 @@ import client.skill.SkillMacro;
 import tools.MaplePacketCreator;
 
 public class SavedSkillMacro {
-    private SkillMacro[] skillMacros = new SkillMacro[5];
+    private final SkillMacro[] skillMacros = new SkillMacro[5];
     private boolean changed;
     private int index = 0;
 

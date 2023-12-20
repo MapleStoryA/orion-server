@@ -10,8 +10,8 @@ import server.maps.MapleMapObject;
 
 public abstract class BaseMapleCharacter extends AbstractAnimatedMapleMapObject {
 
-    private Set<MapleMapObject> visibleMapObjects;
-    private ReentrantReadWriteLock visibleMapObjectsLock;
+    private final Set<MapleMapObject> visibleMapObjects;
+    private final ReentrantReadWriteLock visibleMapObjectsLock;
     private Event event;
 
     public BaseMapleCharacter() {
