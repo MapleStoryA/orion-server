@@ -1,4 +1,4 @@
-package networking.packet;
+package handling;
 
 import client.MapleClient;
 import handling.cashshop.CashShopOperationHandlers;
@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import networking.data.input.ByteArrayByteStream;
 import networking.data.input.GenericSeekableLittleEndianAccessor;
 import networking.data.input.InPacket;
+import networking.packet.PacketProcessor;
+import networking.packet.RecvPacketOpcode;
 import server.config.ServerConfig;
 import tools.HexTool;
 
