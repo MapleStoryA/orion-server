@@ -77,7 +77,7 @@ public class NpcScriptingManager {
 
             String file = readScriptFile(npc, scriptName);
 
-            log.info("Loading script {}", scriptName);
+            log.debug("Loading script {}", scriptName);
             Script script = ctx.compileString(file, file, 1, null);
 
             Scriptable globalScope = ctx.initStandardObjects();
