@@ -18,8 +18,8 @@ public class CharSelectedHandler extends AbstractMaplePacketHandler {
         final int characterId = packet.readInt();
         String hardwareID = packet.readMapleAsciiString();
         String macAddress = packet.readMapleAsciiString();
-        log.info("HardwareID: " + macAddress);
-        log.info("MAC: " + hardwareID);
+        log.debug("HardwareID: " + macAddress);
+        log.debug("MAC: " + hardwareID);
         if (c.tooManyLogin()
                 || !CharacterService.checkIfCharacterExist(c.getAccountData().getId(), characterId)) {
             c.getSession().close();
