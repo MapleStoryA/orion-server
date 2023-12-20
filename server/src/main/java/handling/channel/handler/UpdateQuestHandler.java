@@ -1,9 +1,9 @@
 package handling.channel.handler;
 
 import client.MapleClient;
+import networking.data.input.InPacket;
 import networking.packet.AbstractMaplePacketHandler;
 import server.quest.MapleQuest;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UpdateQuestHandler extends AbstractMaplePacketHandler {

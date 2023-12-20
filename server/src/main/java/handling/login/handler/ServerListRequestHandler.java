@@ -3,8 +3,8 @@ package handling.login.handler;
 import client.MapleClient;
 import constants.ServerConstants;
 import handling.login.LoginServer;
+import networking.data.input.InPacket;
 import networking.packet.AbstractMaplePacketHandler;
-import tools.data.input.InPacket;
 import tools.packet.LoginPacket;
 
 @lombok.extern.slf4j.Slf4j

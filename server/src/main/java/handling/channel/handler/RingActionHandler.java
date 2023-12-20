@@ -5,10 +5,10 @@ import client.MapleClient;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
+import networking.data.input.InPacket;
 import networking.packet.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class RingActionHandler extends AbstractMaplePacketHandler {

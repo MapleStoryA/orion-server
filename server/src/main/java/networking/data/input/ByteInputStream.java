@@ -1,4 +1,4 @@
-package tools.data.input;
+package networking.data.input;
 
 /**
  * Represents an abstract stream of bytes.

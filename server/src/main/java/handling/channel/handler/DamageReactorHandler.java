@@ -1,10 +1,10 @@
 package handling.channel.handler;
 
 import client.MapleClient;
+import networking.data.input.InPacket;
 import networking.packet.AbstractMaplePacketHandler;
 import server.maps.MapleReactor;
 import tools.Randomizer;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class DamageReactorHandler extends AbstractMaplePacketHandler {

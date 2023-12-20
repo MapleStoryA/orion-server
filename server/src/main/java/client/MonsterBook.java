@@ -8,9 +8,9 @@ import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import networking.data.output.OutPacket;
 import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
-import tools.data.output.OutPacket;
 import tools.packet.MonsterBookPacket;
 
 @lombok.extern.slf4j.Slf4j

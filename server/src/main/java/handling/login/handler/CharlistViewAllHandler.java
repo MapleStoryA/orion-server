@@ -5,9 +5,9 @@ import client.MapleClient;
 import database.CharacterService;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import networking.data.input.InPacket;
 import networking.packet.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @Slf4j
 public class CharlistViewAllHandler extends AbstractMaplePacketHandler {

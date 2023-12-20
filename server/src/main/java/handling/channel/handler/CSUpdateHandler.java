@@ -2,8 +2,8 @@ package handling.channel.handler;
 
 import client.MapleClient;
 import handling.cashshop.CashShopOperationHandlers;
+import networking.data.input.InPacket;
 import networking.packet.AbstractMaplePacketHandler;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class CSUpdateHandler extends AbstractMaplePacketHandler {

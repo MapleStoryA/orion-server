@@ -5,10 +5,10 @@ import client.MapleStat;
 import client.inventory.IItem;
 import client.inventory.MaplePet;
 import java.awt.*;
+import networking.data.output.OutPacket;
 import networking.packet.SendPacketOpcode;
 import server.movement.MovePath;
 import tools.MaplePacketCreator;
-import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class PetPacket {

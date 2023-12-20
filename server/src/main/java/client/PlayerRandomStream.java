@@ -1,7 +1,7 @@
 package client;
 
+import networking.data.output.OutPacket;
 import tools.Randomizer;
-import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class PlayerRandomStream {

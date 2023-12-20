@@ -21,8 +21,8 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import networking.data.output.OutPacket;
 import tools.MaplePacketCreator;
-import tools.data.output.OutPacket;
 import tools.packet.UIPacket;
 
 @lombok.extern.slf4j.Slf4j

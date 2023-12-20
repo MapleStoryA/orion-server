@@ -1,4 +1,4 @@
-package tools.data.output;
+package networking.data.output;
 
 /**
  * Provides an interface to an output stream of bytes.

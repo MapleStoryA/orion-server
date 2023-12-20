@@ -2,9 +2,9 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import networking.data.input.InPacket;
 import networking.packet.AbstractMaplePacketHandler;
 import server.MapleItemInformationProvider;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class CancelItemEffectHandler extends AbstractMaplePacketHandler {

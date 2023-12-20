@@ -11,10 +11,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import networking.data.input.InPacket;
+import networking.data.output.OutPacket;
 import networking.packet.AbstractMaplePacketHandler;
 import networking.packet.SendPacketOpcode;
-import tools.data.input.InPacket;
-import tools.data.output.OutPacket;
 
 @Slf4j
 public class CharListRequestHandler extends AbstractMaplePacketHandler {

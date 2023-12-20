@@ -1,12 +1,12 @@
 package handling.channel.handler;
 
 import client.MapleClient;
+import networking.data.input.InPacket;
 import networking.packet.AbstractMaplePacketHandler;
 import server.events.MapleCoconut;
 import server.events.MapleCoconut.MapleCoconuts;
 import server.events.MapleEventType;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class HitCoconutHandler extends AbstractMaplePacketHandler {

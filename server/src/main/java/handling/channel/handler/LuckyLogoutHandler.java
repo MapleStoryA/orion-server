@@ -2,10 +2,10 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import networking.data.input.InPacket;
 import networking.packet.AbstractMaplePacketHandler;
 import server.TimerManager;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class LuckyLogoutHandler extends AbstractMaplePacketHandler {

@@ -3,6 +3,7 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import java.awt.*;
+import networking.data.input.InPacket;
 import networking.packet.AbstractMaplePacketHandler;
 import server.life.MapleMonster;
 import server.life.MobSkill;
@@ -11,7 +12,6 @@ import server.maps.MapleMap;
 import server.movement.MovePath;
 import tools.Randomizer;
 import tools.collection.Pair;
-import tools.data.input.InPacket;
 import tools.packet.MobPacket;
 
 @lombok.extern.slf4j.Slf4j

@@ -27,8 +27,8 @@ import handling.world.party.PartyManager;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import networking.data.output.OutPacket;
 import networking.packet.SendPacketOpcode;
-import tools.data.output.OutPacket;
 
 /** Store packets for Buddy, Party, Expedition, Guild and Alliance */
 @lombok.extern.slf4j.Slf4j

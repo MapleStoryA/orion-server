@@ -1,4 +1,4 @@
-package tools.data.output;
+package networking.data.output;
 
 import java.awt.*;
 import java.nio.charset.Charset;

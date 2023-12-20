@@ -1,7 +1,7 @@
 package networking.packet;
 
 import client.MapleClient;
-import tools.data.input.InPacket;
+import networking.data.input.InPacket;
 
 public interface MaplePacketHandler {
 

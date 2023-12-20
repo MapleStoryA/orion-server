@@ -5,9 +5,9 @@ import database.CharacterService;
 import database.LoginState;
 import handling.ServerMigration;
 import handling.world.WorldServer;
+import networking.data.input.InPacket;
 import networking.packet.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class CharSelectedViewAllHandler extends AbstractMaplePacketHandler {

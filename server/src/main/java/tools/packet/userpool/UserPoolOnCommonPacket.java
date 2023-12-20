@@ -1,6 +1,6 @@
 package tools.packet.userpool;
 
-import tools.data.output.OutPacket;
+import networking.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class UserPoolOnCommonPacket {

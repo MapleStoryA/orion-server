@@ -2,7 +2,7 @@ package scripting;
 
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import tools.data.output.OutPacket;
+import networking.data.output.OutPacket;
 
 @Slf4j
 public class ScriptMan {

@@ -3,9 +3,9 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.inventory.MaplePet;
+import networking.data.input.InPacket;
 import networking.packet.AbstractMaplePacketHandler;
 import server.movement.MovePath;
-import tools.data.input.InPacket;
 import tools.packet.PetPacket;
 
 @lombok.extern.slf4j.Slf4j

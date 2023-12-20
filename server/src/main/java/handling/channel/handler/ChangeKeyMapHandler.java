@@ -8,9 +8,9 @@ import client.layout.KeyMapBinding;
 import client.skill.ISkill;
 import client.skill.SkillFactory;
 import constants.GameConstants;
+import networking.data.input.InPacket;
 import networking.packet.AbstractMaplePacketHandler;
 import server.MapleItemInformationProvider;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class ChangeKeyMapHandler extends AbstractMaplePacketHandler {

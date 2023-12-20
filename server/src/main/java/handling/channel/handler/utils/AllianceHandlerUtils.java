@@ -27,8 +27,8 @@ import client.MapleClient;
 import handling.world.alliance.AllianceManager;
 import handling.world.guild.GuildManager;
 import handling.world.guild.MapleGuild;
+import networking.data.input.InPacket;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class AllianceHandlerUtils {

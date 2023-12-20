@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import lombok.Getter;
-import tools.data.output.OutPacket;
+import networking.data.output.OutPacket;
 
 public class TeleportRock {
 

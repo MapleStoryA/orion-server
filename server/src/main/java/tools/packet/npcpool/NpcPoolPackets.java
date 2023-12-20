@@ -1,8 +1,8 @@
 package tools.packet.npcpool;
 
+import networking.data.output.OutPacket;
 import networking.packet.SendPacketOpcode;
 import server.life.MapleNPC;
-import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class NpcPoolPackets {

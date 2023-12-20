@@ -6,11 +6,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import networking.data.output.OutPacket;
 import networking.packet.SendPacketOpcode;
 import server.life.MapleMonster;
 import server.life.MobSkill;
 import server.movement.MovePath;
-import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MobPacket {

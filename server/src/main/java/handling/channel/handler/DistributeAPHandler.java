@@ -9,11 +9,11 @@ import client.skill.SkillFactory;
 import constants.GameConstants;
 import java.util.ArrayList;
 import java.util.List;
+import networking.data.input.InPacket;
 import networking.packet.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
 import tools.collection.Pair;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class DistributeAPHandler extends AbstractMaplePacketHandler {

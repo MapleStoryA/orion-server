@@ -8,9 +8,9 @@ import handling.world.guild.GuildManager;
 import handling.world.guild.MapleGuild;
 import handling.world.guild.MapleGuildResponse;
 import java.util.Iterator;
+import networking.data.input.InPacket;
 import networking.packet.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class GuildOperationHandler extends AbstractMaplePacketHandler {

@@ -2,8 +2,8 @@ package handling.channel.handler;
 
 import client.MapleClient;
 import handling.cashshop.CashShopOperationHandlers;
+import networking.data.input.InPacket;
 import networking.packet.AbstractMaplePacketHandler;
-import tools.data.input.InPacket;
 import tools.packet.MTSCSPacket;
 
 @lombok.extern.slf4j.Slf4j

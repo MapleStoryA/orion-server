@@ -4,10 +4,10 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleStat;
 import client.anticheat.CheatingOffense;
+import networking.data.input.InPacket;
 import networking.packet.AbstractMaplePacketHandler;
 import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class GiveFameHandler extends AbstractMaplePacketHandler {

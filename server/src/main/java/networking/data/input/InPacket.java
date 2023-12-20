@@ -1,4 +1,4 @@
-package tools.data.input;
+package networking.data.input;
 
 /**
  * This provides an interface to a seekable accessor to a stream of little endian bytes.

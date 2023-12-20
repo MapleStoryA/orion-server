@@ -3,11 +3,11 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import java.awt.*;
+import networking.data.input.InPacket;
 import networking.packet.AbstractMaplePacketHandler;
 import server.maps.MapleMap;
 import server.movement.MovePath;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MovePlayerHandler extends AbstractMaplePacketHandler {

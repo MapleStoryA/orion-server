@@ -8,6 +8,7 @@ import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import java.util.Arrays;
 import java.util.Iterator;
+import networking.data.input.InPacket;
 import networking.packet.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
@@ -21,7 +22,6 @@ import server.shops.MapleMiniGame;
 import server.shops.MaplePlayerShop;
 import server.shops.MaplePlayerShopItem;
 import tools.MaplePacketCreator;
-import tools.data.input.InPacket;
 import tools.packet.PlayerShopPacket;
 
 @lombok.extern.slf4j.Slf4j

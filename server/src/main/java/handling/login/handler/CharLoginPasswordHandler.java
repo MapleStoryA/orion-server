@@ -8,8 +8,8 @@ import database.LoginState;
 import handling.login.LoginServer;
 import handling.world.WorldServer;
 import lombok.extern.slf4j.Slf4j;
+import networking.data.input.InPacket;
 import networking.packet.MaplePacketHandler;
-import tools.data.input.InPacket;
 import tools.packet.LoginPacket;
 
 @Slf4j

@@ -3,10 +3,10 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import constants.GameConstants;
+import networking.data.input.InPacket;
 import networking.packet.AbstractMaplePacketHandler;
 import server.MapleItemInformationProvider;
 import server.MapleShop;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class NpcShopHandler extends AbstractMaplePacketHandler {

@@ -1,8 +1,8 @@
 package handling.channel.handler.admin;
 
 import client.MapleClient;
+import networking.data.input.InPacket;
 import networking.packet.AbstractMaplePacketHandler;
-import tools.data.input.InPacket;
 
 /**
  * @Author Arnah @Website http://Vertisy.ca/

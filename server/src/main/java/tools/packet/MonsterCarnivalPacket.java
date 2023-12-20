@@ -1,9 +1,9 @@
 package tools.packet;
 
 import client.MapleCharacter;
+import networking.data.output.OutPacket;
 import networking.packet.SendPacketOpcode;
 import server.MapleCarnivalParty;
-import tools.data.output.OutPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class MonsterCarnivalPacket {

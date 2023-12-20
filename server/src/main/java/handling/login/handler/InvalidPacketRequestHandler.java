@@ -1,8 +1,8 @@
 package handling.login.handler;
 
 import client.MapleClient;
+import networking.data.input.InPacket;
 import networking.packet.MaplePacketHandler;
-import tools.data.input.InPacket;
 
 @lombok.extern.slf4j.Slf4j
 public class InvalidPacketRequestHandler implements MaplePacketHandler {
