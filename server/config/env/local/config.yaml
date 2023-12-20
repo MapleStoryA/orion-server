@@ -28,6 +28,8 @@ channel:
   count: 2
   events:
     - 3rdjob
+    - KyrinTrainingGroundC
+    - KyrinTrainingGroundV
 #    - 2095_tokyo
 #    - 2xEvent
 #    - 3rdjob

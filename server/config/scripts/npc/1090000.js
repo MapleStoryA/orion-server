@@ -31,7 +31,7 @@ function action(mode, type, selection) {
     if (status == 0) {
         if (cm.getMapId() == 912010200) {
             status = 100;
-            cm.sendNext("Not bad at all! Let's discuess this outside!");
+            cm.sendNext("Not bad at all! Let's discuss this outside!");
         } else {
             var tosent = "Have you got something to say? #b\r\n#L0#I would like to learn more about pirates...#l";
             if (cm.getQuestStatus(6370) == 1 || cm.getQuestStatus(6330) == 1) {
