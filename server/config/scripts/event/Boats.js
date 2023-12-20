@@ -134,10 +134,10 @@ function arrived() {
 function invasion() {
     var numspawn;
     var chance = Math.floor(Math.random() * 10);
-    if (chance <= 8)
+    if (chance <= 3)
         numspawn = 0;
     else
-        numspawn = 2;
+        numspawn = 3;
     if (numspawn > 0) {
         for (var i = 0; i < numspawn; i++) {
             Boat_to_Orbis.spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(8150000), new java.awt.Point(485, -221));
