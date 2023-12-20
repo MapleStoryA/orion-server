@@ -49,10 +49,9 @@ public class MapleFoothold implements Comparable<MapleFoothold> {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof MapleFoothold)) {
+        if (!(o instanceof final MapleFoothold oth)) {
             return false;
         }
-        final MapleFoothold oth = (MapleFoothold) o;
         return oth.getY1() == p1.y
                 && oth.getY2() == p2.y
                 && oth.getX1() == p1.x

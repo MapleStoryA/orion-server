@@ -25,9 +25,9 @@ public class ServerMigration {
     @Setter
     private CharacterTransfer characterTransfer;
 
-    private Map<Integer, List<PlayerBuffValueHolder>> buffs = new ConcurrentHashMap<>();
-    private Map<Integer, List<MapleCoolDownValueHolder>> coolDowns = new ConcurrentHashMap<>();
-    private Map<Integer, List<MapleDiseaseValueHolder>> diseases = new ConcurrentHashMap<>();
+    private final Map<Integer, List<PlayerBuffValueHolder>> buffs = new ConcurrentHashMap<>();
+    private final Map<Integer, List<MapleCoolDownValueHolder>> coolDowns = new ConcurrentHashMap<>();
+    private final Map<Integer, List<MapleDiseaseValueHolder>> diseases = new ConcurrentHashMap<>();
 
     public ServerMigration(int characterId, AccountData accountData, String remoteHost) {
         this.characterId = characterId;

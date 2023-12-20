@@ -932,7 +932,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         PreparedStatement pse = null;
         ResultSet rs = null;
         Connection con2 = null;
-        try (var con = DatabaseConnection.getConnection(); ) {
+        try (var con = DatabaseConnection.getConnection()) {
             con2 = con;
             ps = con.prepareStatement(
                     "INSERT INTO characters (level, fame, str, dex, luk, `int`, exp, hp,"
@@ -1069,7 +1069,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public static boolean ban(String id, String reason, boolean useAccountId, int gmlevel) {
-        try (var con = DatabaseConnection.getConnection(); ) {
+        try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps;
             if (id.matches("/[0-9]{1,3}\\..*")) {
                 ps = con.prepareStatement("INSERT INTO ipbans VALUES (DEFAULT, ?)");

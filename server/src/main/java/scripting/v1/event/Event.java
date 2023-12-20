@@ -32,7 +32,7 @@ public class Event {
     private long startTime;
     private long eventTime;
     private Scriptable globalScope;
-    private List<Integer> mapIds = new ArrayList<>();
+    private final List<Integer> mapIds = new ArrayList<>();
     private MapleCharacter eventLeader;
 
     public Event(String id, String name, GameEventManager gameEventManager, ChannelServer channelServer) {

@@ -149,10 +149,9 @@ public class Item implements IItem {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof IItem)) {
+        if (!(obj instanceof final IItem ite)) {
             return false;
         }
-        final IItem ite = (IItem) obj;
         return uniqueid == ite.getSN()
                 && id == ite.getItemId()
                 && quantity == ite.getQuantity()

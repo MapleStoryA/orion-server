@@ -119,10 +119,9 @@ public class AutobanManager implements Runnable {
 
         @Override
         public boolean equals(Object oth) {
-            if (!(oth instanceof AutobanManager.ExpirationEntry)) {
+            if (!(oth instanceof final ExpirationEntry ee)) {
                 return false;
             }
-            final AutobanManager.ExpirationEntry ee = (AutobanManager.ExpirationEntry) oth;
             return (time == ee.time && points == ee.points && acc == ee.acc);
         }
     }

@@ -205,8 +205,7 @@ public class MapleMapFactory {
                     if (npcs || !type.equals("n")) {
                         myLife = loadLife(life, MapleDataTool.getString(life.getChildByPath("id")), type);
 
-                        if (myLife instanceof MapleMonster) {
-                            final MapleMonster mob = (MapleMonster) myLife;
+                        if (myLife instanceof final MapleMonster mob) {
 
                             map.addMonsterSpawn(
                                     mob,
@@ -396,8 +395,7 @@ public class MapleMapFactory {
             if (npcs || !type.equals("n")) {
                 myLife = loadLife(life, MapleDataTool.getString(life.getChildByPath("id")), type);
 
-                if (myLife instanceof MapleMonster) {
-                    final MapleMonster mob = (MapleMonster) myLife;
+                if (myLife instanceof final MapleMonster mob) {
 
                     map.addMonsterSpawn(
                             mob,

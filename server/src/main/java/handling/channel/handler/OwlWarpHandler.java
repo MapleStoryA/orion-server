@@ -35,10 +35,8 @@ public class OwlWarpHandler extends AbstractMaplePacketHandler {
                     case 0:
                         objects = mapp.getAllHiredMerchantsThreadsafe();
                         for (MapleMapObject ob : objects) {
-                            if (ob instanceof IMaplePlayerShop) {
-                                final IMaplePlayerShop ips = (IMaplePlayerShop) ob;
-                                if (ips instanceof HiredMerchant) {
-                                    final HiredMerchant merch = (HiredMerchant) ips;
+                            if (ob instanceof final IMaplePlayerShop ips) {
+                                if (ips instanceof final HiredMerchant merch) {
                                     if (merch.getOwnerId() == id) {
                                         merchant = merch;
                                         break;
@@ -50,10 +48,8 @@ public class OwlWarpHandler extends AbstractMaplePacketHandler {
                     case 1:
                         objects = mapp.getAllHiredMerchantsThreadsafe();
                         for (MapleMapObject ob : objects) {
-                            if (ob instanceof IMaplePlayerShop) {
-                                final IMaplePlayerShop ips = (IMaplePlayerShop) ob;
-                                if (ips instanceof HiredMerchant) {
-                                    final HiredMerchant merch = (HiredMerchant) ips;
+                            if (ob instanceof final IMaplePlayerShop ips) {
+                                if (ips instanceof final HiredMerchant merch) {
                                     if (merch.getStoreId() == id) {
                                         merchant = merch;
                                         break;
@@ -64,8 +60,7 @@ public class OwlWarpHandler extends AbstractMaplePacketHandler {
                         break;
                     default:
                         final MapleMapObject ob = mapp.getMapObject(id, MapleMapObjectType.HIRED_MERCHANT);
-                        if (ob instanceof IMaplePlayerShop) {
-                            final IMaplePlayerShop ips = (IMaplePlayerShop) ob;
+                        if (ob instanceof final IMaplePlayerShop ips) {
                             if (ips instanceof HiredMerchant) {
                                 merchant = (HiredMerchant) ips;
                             }

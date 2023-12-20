@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public class CharacterListResult {
 
-    private List<CharacterData> characters;
+    private final List<CharacterData> characters;
 
     public CharacterListResult(List<CharacterData> characters) {
         this.characters = characters;

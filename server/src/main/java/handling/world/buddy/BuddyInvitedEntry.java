@@ -38,10 +38,9 @@ public class BuddyInvitedEntry {
 
     @Override
     public final boolean equals(Object other) {
-        if (!(other instanceof BuddyInvitedEntry)) {
+        if (!(other instanceof BuddyInvitedEntry oth)) {
             return false;
         }
-        BuddyInvitedEntry oth = (BuddyInvitedEntry) other;
         return (inviter == oth.inviter && name.equals(oth.name));
     }
 

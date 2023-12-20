@@ -9,7 +9,7 @@ import tools.Scripting;
 @Slf4j
 public class EventScripting {
 
-    private Event event;
+    private final Event event;
 
     public EventScripting(Event event) {
         this.event = event;

@@ -8,7 +8,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class NettyNetworkSession implements NetworkSession {
     private final Channel channel;
 
-    private ReentrantLock connectionLock = new ReentrantLock(true);
+    private final ReentrantLock connectionLock = new ReentrantLock(true);
 
     public NettyNetworkSession(Channel channel) {
         this.channel = channel;

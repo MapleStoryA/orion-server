@@ -1178,8 +1178,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public void setLock(Object statsSel) {
-        if (statsSel instanceof Equip) {
-            Equip eq = (Equip) statsSel;
+        if (statsSel instanceof Equip eq) {
             if (eq.getExpiration() == -1) {
                 eq.setFlag((byte) (eq.getFlag() | ItemFlag.LOCK.getValue()));
             } else {
@@ -1189,8 +1188,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public boolean addFromDrop(Object statsSel) {
-        if (statsSel instanceof IItem) {
-            final IItem it = (IItem) statsSel;
+        if (statsSel instanceof final IItem it) {
             return MapleInventoryManipulator.checkSpace(getClient(), it.getItemId(), it.getQuantity(), it.getOwner())
                     && MapleInventoryManipulator.addFromDrop(getClient(), it, false);
         }

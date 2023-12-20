@@ -66,7 +66,8 @@ public class PlayerStats implements Serializable {
             incAllskill;
     // Elemental properties
     private transient int def, element_ice, element_fire, element_light, element_psn;
-    private ReentrantLock lock = new ReentrantLock(); // we're getting concurrentmodificationexceptions, but would this
+    private final ReentrantLock lock =
+            new ReentrantLock(); // we're getting concurrentmodificationexceptions, but would this
     // slow things down?
     private transient float shouldHealHP, shouldHealMP;
     private transient short passive_sharpeye_percent, localmaxhp, localmaxmp;

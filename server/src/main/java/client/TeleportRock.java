@@ -9,15 +9,15 @@ import tools.data.output.OutPacket;
 public class TeleportRock {
 
     @Getter
-    private Set<Integer> map_ids;
+    private final Set<Integer> map_ids;
 
     @Getter
     private boolean changed;
 
     @Getter
-    private String name;
+    private final String name;
 
-    private int maxMaps;
+    private final int maxMaps;
 
     public TeleportRock(boolean vip) {
         this.maxMaps = vip ? 10 : 5;

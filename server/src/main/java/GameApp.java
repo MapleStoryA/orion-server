@@ -50,7 +50,7 @@ public class GameApp {
 
     private static final Logger log = LoggerFactory.getLogger(GameApp.class);
 
-    private static long startTime = System.currentTimeMillis();
+    private static final long startTime = System.currentTimeMillis();
 
     public static void main(String[] args) throws InterruptedException {
         ServerConfig.serverConfig();

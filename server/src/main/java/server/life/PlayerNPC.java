@@ -70,7 +70,7 @@ public class PlayerNPC extends MapleNPC {
                 pets[i] = 0;
             }
         }
-        try (var con = DatabaseConnection.getConnection(); ) {
+        try (var con = DatabaseConnection.getConnection()) {
 
             PreparedStatement ps = con.prepareStatement("SELECT * FROM playernpcs_equip WHERE NpcId = ?");
             ps.setInt(1, getId());

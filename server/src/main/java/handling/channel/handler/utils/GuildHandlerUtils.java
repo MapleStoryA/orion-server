@@ -43,10 +43,9 @@ public class GuildHandlerUtils {
 
         @Override
         public boolean equals(Object other) {
-            if (!(other instanceof Invited)) {
+            if (!(other instanceof Invited oth)) {
                 return false;
             }
-            Invited oth = (Invited) other;
             return (gid == oth.gid && name.equals(oth.name));
         }
     }

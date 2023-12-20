@@ -448,8 +448,7 @@ public class MapleInventoryManipulator {
     }
 
     private static final IItem checkEnhanced(final IItem before, final MapleCharacter chr) {
-        if (before instanceof Equip) {
-            final Equip eq = (Equip) before;
+        if (before instanceof final Equip eq) {
             int chance = 80;
             if (eq.getState() == 0
                     && (eq.getUpgradeSlots() >= 1 || eq.getLevel() >= 1)

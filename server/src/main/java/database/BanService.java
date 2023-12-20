@@ -38,7 +38,7 @@ public class BanService {
         try (var con = DatabaseConnection.getConnection()) {
 
             for (String mac : macs) {
-                try (PreparedStatement ps = con.prepareStatement("INSERT INTO macbans (mac) VALUES (?)"); ) {
+                try (PreparedStatement ps = con.prepareStatement("INSERT INTO macbans (mac) VALUES (?)")) {
                     ps.setString(1, mac);
                     ps.executeUpdate();
                 } catch (SQLException e) {
