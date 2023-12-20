@@ -19,7 +19,6 @@
 package handling.world.expedition;
 
 public enum ExpeditionType {
-
     Easy_Balrog(6, 2000, 50, 70),
     Normal_Balrog(15, 2001, 50, 200),
     Zakum(30, 2002, 50, 200),

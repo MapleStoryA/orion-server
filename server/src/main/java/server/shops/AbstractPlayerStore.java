@@ -26,8 +26,7 @@ import tools.Pair;
 import tools.packet.PlayerShopPacket;
 
 @Slf4j
-public abstract class AbstractPlayerStore extends AbstractMapleMapObject
-        implements IMaplePlayerShop {
+public abstract class AbstractPlayerStore extends AbstractMapleMapObject implements IMaplePlayerShop {
 
     protected boolean open = false, available = false;
     protected String ownerName, des, pass;
@@ -38,8 +37,7 @@ public abstract class AbstractPlayerStore extends AbstractMapleMapObject
     protected List<BoughtItem> bought = new LinkedList<>();
     protected List<MaplePlayerShopItem> items = new LinkedList<>();
 
-    public AbstractPlayerStore(
-            MapleCharacter owner, int itemId, String desc, String pass, int slots) {
+    public AbstractPlayerStore(MapleCharacter owner, int itemId, String desc, String pass, int slots) {
         this.setPosition(owner.getPosition());
         this.ownerName = owner.getName();
         this.ownerId = owner.getId();
@@ -87,9 +85,7 @@ public abstract class AbstractPlayerStore extends AbstractMapleMapObject
                 chr.get().getClient().getSession().write(packet);
             }
         }
-        if (getShopType() != IMaplePlayerShop.HIRED_MERCHANT
-                && getMCOwner() != null
-                && exception != ownerId) {
+        if (getShopType() != IMaplePlayerShop.HIRED_MERCHANT && getMCOwner() != null && exception != ownerId) {
             getMCOwner().getClient().getSession().write(packet);
         }
     }
@@ -120,17 +116,14 @@ public abstract class AbstractPlayerStore extends AbstractMapleMapObject
         }
         try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps =
-                    con.prepareStatement(
-                            "DELETE FROM hiredmerch WHERE accountid = ? OR characterid = ?");
+                    con.prepareStatement("DELETE FROM hiredmerch WHERE accountid = ? OR characterid = ?");
             ps.setInt(1, owneraccount);
             ps.setInt(2, ownerId);
             ps.execute();
             ps.close();
-            ps =
-                    con.prepareStatement(
-                            "INSERT INTO hiredmerch (characterid, accountid, Mesos, time) VALUES"
-                                    + " (?, ?, ?, ?)",
-                            DatabaseConnection.RETURN_GENERATED_KEYS);
+            ps = con.prepareStatement(
+                    "INSERT INTO hiredmerch (characterid, accountid, Mesos, time) VALUES" + " (?, ?, ?, ?)",
+                    DatabaseConnection.RETURN_GENERATED_KEYS);
             ps.setInt(1, ownerId);
             ps.setInt(2, owneraccount);
             int meso = Math.min(mesos.get(), Integer.MAX_VALUE);
@@ -148,8 +141,7 @@ public abstract class AbstractPlayerStore extends AbstractMapleMapObject
             final int packageid = rs.getInt(1);
             rs.close();
             ps.close();
-            List<Pair<IItem, MapleInventoryType>> iters =
-                    new ArrayList<Pair<IItem, MapleInventoryType>>();
+            List<Pair<IItem, MapleInventoryType>> iters = new ArrayList<Pair<IItem, MapleInventoryType>>();
             IItem item;
             for (MaplePlayerShopItem pItems : items) {
                 if (pItems.getItem() == null || pItems.getBundles() <= 0) {
@@ -161,9 +153,7 @@ public abstract class AbstractPlayerStore extends AbstractMapleMapObject
                 }
                 item = pItems.getItem().copy();
                 item.setQuantity((short) (item.getQuantity() * pItems.getBundles()));
-                iters.add(
-                        new Pair<IItem, MapleInventoryType>(
-                                item, GameConstants.getInventoryType(item.getItemId())));
+                iters.add(new Pair<IItem, MapleInventoryType>(item, GameConstants.getInventoryType(item.getItemId())));
             }
             ItemLoader.HIRED_MERCHANT.saveItems(iters, packageid, owneraccount, ownerId);
             return true;
@@ -181,8 +171,7 @@ public abstract class AbstractPlayerStore extends AbstractMapleMapObject
     public void update() {
         if (isAvailable()) {
             if (getShopType() == IMaplePlayerShop.HIRED_MERCHANT) {
-                getMap().broadcastMessage(
-                                PlayerShopPacket.updateHiredMerchant((HiredMerchant) this));
+                getMap().broadcastMessage(PlayerShopPacket.updateHiredMerchant((HiredMerchant) this));
             } else if (getMCOwner() != null) {
                 getMap().broadcastMessage(PlayerShopPacket.sendPlayerShopBox(getMCOwner()));
             }
@@ -194,8 +183,7 @@ public abstract class AbstractPlayerStore extends AbstractMapleMapObject
         int i = getFreeSlot();
         if (i > 0) {
             if (getShopType() >= 3) {
-                broadcastToVisitors(
-                        PlayerShopPacket.getMiniGameNewVisitor(visitor, i, (MapleMiniGame) this));
+                broadcastToVisitors(PlayerShopPacket.getMiniGameNewVisitor(visitor, i, (MapleMiniGame) this));
             } else {
                 broadcastToVisitors(PlayerShopPacket.shopVisitorAdd(visitor, i));
             }
@@ -225,9 +213,7 @@ public abstract class AbstractPlayerStore extends AbstractMapleMapObject
     @Override
     public byte getVisitorSlot(MapleCharacter visitor) {
         for (byte i = 0; i < chrs.length; i++) {
-            if (chrs[i] != null
-                    && chrs[i].get() != null
-                    && chrs[i].get().getId() == visitor.getId()) {
+            if (chrs[i] != null && chrs[i].get() != null && chrs[i].get().getId() == visitor.getId()) {
                 return (byte) (i + 1);
             }
         }
@@ -243,13 +229,9 @@ public abstract class AbstractPlayerStore extends AbstractMapleMapObject
             MapleCharacter visitor = getVisitor(i);
             if (visitor != null) {
                 if (type != -1) {
-                    visitor.getClient()
-                            .getSession()
-                            .write(PlayerShopPacket.shopErrorMessage(error, type));
+                    visitor.getClient().getSession().write(PlayerShopPacket.shopErrorMessage(error, type));
                 }
-                visitor.getClient()
-                        .getSession()
-                        .write(PlayerShopPacket.shopErrorMessage(error, i + 1));
+                visitor.getClient().getSession().write(PlayerShopPacket.shopErrorMessage(error, i + 1));
                 // byte slot = getVisitorSlot(visitor);
                 // broadcastToVisitors(PlayerShopPacket.shopVisitorLeave(slot), slot);
                 visitor.setPlayerShop(null);
@@ -398,8 +380,7 @@ public abstract class AbstractPlayerStore extends AbstractMapleMapObject
         public int totalPrice;
         public String buyer;
 
-        public BoughtItem(
-                final int id, final int quantity, final int totalPrice, final String buyer) {
+        public BoughtItem(final int id, final int quantity, final int totalPrice, final String buyer) {
             this.id = id;
             this.quantity = quantity;
             this.totalPrice = totalPrice;

@@ -1,13 +1,12 @@
 package tools;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.Random;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Randomizer {
 
-    private final static Random rand = new Random();
+    private static final Random rand = new Random();
 
     public static final int nextInt() {
         return rand.nextInt();

@@ -5,7 +5,9 @@ import server.maps.SavedLocationType;
 
 public class SavedLocations {
     private int[] savedLocations;
-    @Getter private boolean changed;
+
+    @Getter
+    private boolean changed;
 
     public SavedLocations() {
         savedLocations = new int[SavedLocationType.values().length];

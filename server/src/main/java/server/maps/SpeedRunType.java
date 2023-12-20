@@ -1,7 +1,6 @@
 package server.maps;
 
 public enum SpeedRunType {
-
     NULL,
     Horntail,
     ChaosHT,

@@ -17,12 +17,11 @@ public class MapleCarnivalChallenge {
         for (MaplePartyCharacter pc : challenger.getParty().getMembers()) {
             MapleCharacter c = challenger.getMap().getCharacterById(pc.getId());
             if (c != null) {
-                challengeinfo +=
-                        (c.getName()
-                                + " / Level"
-                                + c.getLevel()
-                                + " / "
-                                + getJobNameById(c.getJob().getId()));
+                challengeinfo += (c.getName()
+                        + " / Level"
+                        + c.getLevel()
+                        + " / "
+                        + getJobNameById(c.getJob().getId()));
             }
         }
         challengeinfo += "#k";

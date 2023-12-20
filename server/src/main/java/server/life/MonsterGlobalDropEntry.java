@@ -8,13 +8,7 @@ public class MonsterGlobalDropEntry {
     public boolean onlySelf = false;
 
     public MonsterGlobalDropEntry(
-            int itemId,
-            int chance,
-            int continent,
-            byte dropType,
-            int Minimum,
-            int Maximum,
-            int questid) {
+            int itemId, int chance, int continent, byte dropType, int Minimum, int Maximum, int questid) {
         this.itemId = itemId;
         this.chance = chance;
         this.dropType = dropType;

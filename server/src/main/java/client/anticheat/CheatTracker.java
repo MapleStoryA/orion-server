@@ -148,8 +148,7 @@ public class CheatTracker {
         numSequentialSummonAttack++;
         // estimated
         // log.info(numMPRegens + "/" + allowedRegens);
-        if ((System.currentTimeMillis() - summonSummonTime) / (2000 + 1)
-                < numSequentialSummonAttack) {
+        if ((System.currentTimeMillis() - summonSummonTime) / (2000 + 1) < numSequentialSummonAttack) {
             registerOffense(CheatingOffense.FAST_SUMMON_ATTACK);
             return false;
         }
@@ -235,9 +234,7 @@ public class CheatTracker {
             final byte type = offense.getBanType();
             if (type == 1) {
                 AutobanManager.getInstance()
-                        .autoban(
-                                chrhardref.getClient(),
-                                StringUtil.makeEnumHumanReadable(offense.name()));
+                        .autoban(chrhardref.getClient(), StringUtil.makeEnumHumanReadable(offense.name()));
             } else if (type == 2) {
                 chrhardref.getClient().getSession().close();
             }
@@ -261,15 +258,13 @@ public class CheatTracker {
             case SAME_DAMAGE:
                 gm_message--;
                 if (gm_message == 0) {
-                    BroadcastHelper.broadcastGMMessage(
-                            MaplePacketCreator.serverNotice(
-                                    6,
-                                    "[GM Message] "
-                                            + MapleCharacterHelper.makeMapleReadable(
-                                                    chrhardref.getName())
-                                            + " suspected of hacking! "
-                                            + StringUtil.makeEnumHumanReadable(offense.name())
-                                            + (param == null ? "" : (" - " + param))));
+                    BroadcastHelper.broadcastGMMessage(MaplePacketCreator.serverNotice(
+                            6,
+                            "[GM Message] "
+                                    + MapleCharacterHelper.makeMapleReadable(chrhardref.getName())
+                                    + " suspected of hacking! "
+                                    + StringUtil.makeEnumHumanReadable(offense.name())
+                                    + (param == null ? "" : (" - " + param))));
                     gm_message = 100;
                 }
                 break;
@@ -339,21 +334,19 @@ public class CheatTracker {
         } finally {
             rL.unlock();
         }
-        Collections.sort(
-                offenseList,
-                new Comparator<CheatingOffenseEntry>() {
+        Collections.sort(offenseList, new Comparator<CheatingOffenseEntry>() {
 
-                    @Override
-                    public int compare(
-                            final CheatingOffenseEntry o1, final CheatingOffenseEntry o2) {
-                        final int thisVal = o1.getPoints();
-                        final int anotherVal = o2.getPoints();
-                        return (thisVal < anotherVal ? 1 : (thisVal == anotherVal ? 0 : -1));
-                    }
-                });
+            @Override
+            public int compare(final CheatingOffenseEntry o1, final CheatingOffenseEntry o2) {
+                final int thisVal = o1.getPoints();
+                final int anotherVal = o2.getPoints();
+                return (thisVal < anotherVal ? 1 : (thisVal == anotherVal ? 0 : -1));
+            }
+        });
         final int to = Math.min(offenseList.size(), 4);
         for (int x = 0; x < to; x++) {
-            ret.append(StringUtil.makeEnumHumanReadable(offenseList.get(x).getOffense().name()));
+            ret.append(StringUtil.makeEnumHumanReadable(
+                    offenseList.get(x).getOffense().name()));
             ret.append(": ");
             ret.append(offenseList.get(x).getCount());
             if (x != to - 1) {
@@ -377,8 +370,7 @@ public class CheatTracker {
             CheatingOffenseEntry[] offenses_copy;
             rL.lock();
             try {
-                offenses_copy =
-                        offenses.values().toArray(new CheatingOffenseEntry[offenses.size()]);
+                offenses_copy = offenses.values().toArray(new CheatingOffenseEntry[offenses.size()]);
             } finally {
                 rL.unlock();
             }

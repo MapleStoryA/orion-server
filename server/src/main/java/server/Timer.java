@@ -19,18 +19,17 @@ public abstract class Timer {
         }
         file = "Log_" + name + "_Except.rtf";
         final String tname = name + Randomizer.nextInt(); // just to randomize it. nothing too big
-        final ThreadFactory thread =
-                new ThreadFactory() {
+        final ThreadFactory thread = new ThreadFactory() {
 
-                    private final AtomicInteger threadNumber = new AtomicInteger(1);
+            private final AtomicInteger threadNumber = new AtomicInteger(1);
 
-                    @Override
-                    public Thread newThread(Runnable r) {
-                        final Thread t = new Thread(r);
-                        t.setName(tname + "-Worker-" + threadNumber.getAndIncrement());
-                        return t;
-                    }
-                };
+            @Override
+            public Thread newThread(Runnable r) {
+                final Thread t = new Thread(r);
+                t.setName(tname + "-Worker-" + threadNumber.getAndIncrement());
+                return t;
+            }
+        };
 
         final ScheduledThreadPoolExecutor stpe = new ScheduledThreadPoolExecutor(3, thread);
         stpe.setKeepAliveTime(10, TimeUnit.MINUTES);
@@ -49,16 +48,14 @@ public abstract class Timer {
         if (ses == null) {
             return null;
         }
-        return ses.scheduleAtFixedRate(
-                new LoggingSaveRunnable(r, file), delay, repeatTime, TimeUnit.MILLISECONDS);
+        return ses.scheduleAtFixedRate(new LoggingSaveRunnable(r, file), delay, repeatTime, TimeUnit.MILLISECONDS);
     }
 
     public ScheduledFuture<?> register(Runnable r, long repeatTime) {
         if (ses == null) {
             return null;
         }
-        return ses.scheduleAtFixedRate(
-                new LoggingSaveRunnable(r, file), 0, repeatTime, TimeUnit.MILLISECONDS);
+        return ses.scheduleAtFixedRate(new LoggingSaveRunnable(r, file), 0, repeatTime, TimeUnit.MILLISECONDS);
     }
 
     public ScheduledFuture<?> schedule(Runnable r, long delay) {

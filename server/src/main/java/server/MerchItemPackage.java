@@ -1,7 +1,6 @@
 package server;
 
 import client.inventory.IItem;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +42,4 @@ public class MerchItemPackage {
     public void setPackageid(int packageid) {
         this.packageid = packageid;
     }
-
-
 }

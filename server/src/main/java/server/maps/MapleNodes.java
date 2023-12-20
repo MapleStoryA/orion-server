@@ -185,15 +185,7 @@ public class MapleNodes {
         public List<Integer> SN;
 
         public MaplePlatform(
-                String name,
-                int start,
-                int speed,
-                int x1,
-                int y1,
-                int x2,
-                int y2,
-                int r,
-                List<Integer> SN) {
+                String name, int start, int speed, int x1, int y1, int x2, int y2, int r, List<Integer> SN) {
             this.name = name;
             this.start = start;
             this.speed = speed;

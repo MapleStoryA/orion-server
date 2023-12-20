@@ -39,12 +39,11 @@ public class MaplePlayerShop extends AbstractPlayerStore {
                                 c, newItem.getItemId(), newItem.getQuantity(), newItem.getOwner())
                         && MapleInventoryManipulator.addFromDrop(c, newItem, false)) {
                     pItem.setBundles((short) (pItem.getBundles() - quantity));
-                    bought.add(
-                            new BoughtItem(
-                                    newItem.getItemId(),
-                                    quantity,
-                                    gainmeso,
-                                    c.getPlayer().getName()));
+                    bought.add(new BoughtItem(
+                            newItem.getItemId(),
+                            quantity,
+                            gainmeso,
+                            c.getPlayer().getName()));
                     c.getPlayer().gainMeso(-gainmeso, false);
                     getMCOwner().gainMeso(gainmeso, false);
                     if (pItem.getBundles() <= 0) {

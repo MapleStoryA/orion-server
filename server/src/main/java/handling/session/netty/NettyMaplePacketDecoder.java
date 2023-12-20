@@ -18,8 +18,7 @@ public class NettyMaplePacketDecoder extends ByteToMessageDecoder {
     }
 
     @Override
-    protected void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> out)
-            throws Exception {
+    protected void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> out) throws Exception {
         if (length <= 0) {
             if (buf.readableBytes() < 4) {
                 return;

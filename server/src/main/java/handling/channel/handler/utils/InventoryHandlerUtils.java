@@ -99,8 +99,7 @@ public class InventoryHandlerUtils {
                 return false;
             }
         }
-        if (!GameConstants.canScroll(toScroll.getItemId())
-                && !GameConstants.isChaosScroll(toScroll.getItemId())) {
+        if (!GameConstants.canScroll(toScroll.getItemId()) && !GameConstants.isChaosScroll(toScroll.getItemId())) {
             c.getSession().write(MaplePacketCreator.getInventoryFull());
             return false;
         }
@@ -180,8 +179,7 @@ public class InventoryHandlerUtils {
                 return false;
             }
         }
-        if (GameConstants.isAccessoryScroll(scroll.getItemId())
-                && !GameConstants.isAccessory(toScroll.getItemId())) {
+        if (GameConstants.isAccessoryScroll(scroll.getItemId()) && !GameConstants.isAccessory(toScroll.getItemId())) {
             return false;
         }
         if (scroll.getQuantity() <= 0) {
@@ -195,18 +193,13 @@ public class InventoryHandlerUtils {
                     && chr.getSkillLevel(SkillFactory.getSkill(20011003)) <= 0
                     && chr.getSkillLevel(SkillFactory.getSkill(30001003)) <= 0) {
                 AutobanManager.getInstance()
-                        .addPoints(
-                                c,
-                                50,
-                                120000,
-                                "Using the Skill 'Legendary Spirit' without having it.");
+                        .addPoints(c, 50, 120000, "Using the Skill 'Legendary Spirit' without having it.");
                 return false;
             }
         }
 
         // Scroll Success/ Failure/ Curse
-        final IEquip scrolled =
-                (IEquip) ii.scrollEquipWithId(toScroll, scroll, whiteScroll, chr, vegas);
+        final IEquip scrolled = (IEquip) ii.scrollEquipWithId(toScroll, scroll, whiteScroll, chr, vegas);
         ScrollResult scrollSuccess;
         if (scrolled == null) {
             scrollSuccess = IEquip.ScrollResult.CURSE;
@@ -215,8 +208,7 @@ public class InventoryHandlerUtils {
                 || scrolled.getState() > oldState
                 || scrolled.getFlag() > oldFlag) {
             scrollSuccess = IEquip.ScrollResult.SUCCESS;
-        } else if ((GameConstants.isCleanSlate(scroll.getItemId())
-                && scrolled.getUpgradeSlots() > oldSlots)) {
+        } else if ((GameConstants.isCleanSlate(scroll.getItemId()) && scrolled.getUpgradeSlots() > oldSlots)) {
             scrollSuccess = IEquip.ScrollResult.SUCCESS;
         } else {
             scrollSuccess = IEquip.ScrollResult.FAIL;
@@ -224,8 +216,7 @@ public class InventoryHandlerUtils {
 
         // Update
         if (vegas == 0) {
-            chr.getInventory(MapleInventoryType.USE)
-                    .removeItem(scroll.getPosition(), (short) 1, false);
+            chr.getInventory(MapleInventoryType.USE).removeItem(scroll.getPosition(), (short) 1, false);
         }
         if (whiteScroll) {
             MapleInventoryManipulator.removeFromSlot(
@@ -270,8 +261,7 @@ public class InventoryHandlerUtils {
         }
         // equipped item was scrolled and changed
         if (dst < 0
-                && (scrollSuccess == IEquip.ScrollResult.SUCCESS
-                        || scrollSuccess == IEquip.ScrollResult.CURSE)
+                && (scrollSuccess == IEquip.ScrollResult.SUCCESS || scrollSuccess == IEquip.ScrollResult.CURSE)
                 && vegas == 0) {
             chr.equipChanged();
         }
@@ -281,7 +271,8 @@ public class InventoryHandlerUtils {
     public static final boolean UseSkillBook(
             final byte slot, final int itemId, final MapleClient c, final MapleCharacter chr) {
         // we don't need sbs but..not sure.
-        final IItem toUse = chr.getInventory(GameConstants.getInventoryType(itemId)).getItem(slot);
+        final IItem toUse =
+                chr.getInventory(GameConstants.getInventoryType(itemId)).getItem(slot);
 
         if (toUse == null || toUse.getQuantity() < 1 || toUse.getItemId() != itemId) {
             return false;
@@ -327,10 +318,7 @@ public class InventoryHandlerUtils {
                 break;
             }
         }
-        c.getPlayer()
-                .getMap()
-                .broadcastMessage(
-                        MaplePacketCreator.useSkillBook(chr, skill, maxlevel, canuse, success));
+        c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.useSkillBook(chr, skill, maxlevel, canuse, success));
         c.getSession().write(MaplePacketCreator.enableActions());
         c.getPlayer().sendSkills();
         return canuse;
@@ -345,9 +333,9 @@ public class InventoryHandlerUtils {
             if (consumeval > 0) {
                 if (consumeval == 2) {
                     if (c.getPlayer().getParty() != null) {
-                        for (final MaplePartyCharacter pc : c.getPlayer().getParty().getMembers()) {
-                            final MapleCharacter chr =
-                                    c.getPlayer().getMap().getCharacterById(pc.getId());
+                        for (final MaplePartyCharacter pc :
+                                c.getPlayer().getParty().getMembers()) {
+                            final MapleCharacter chr = c.getPlayer().getMap().getCharacterById(pc.getId());
                             if (chr != null) {
                                 ii.getItemEffect(id).applyTo(chr);
                             }
@@ -365,13 +353,11 @@ public class InventoryHandlerUtils {
         return false;
     }
 
-    public static final void removeItem_Pet(
-            final MapleCharacter chr, final MapleMapItem mapitem, int pet) {
+    public static final void removeItem_Pet(final MapleCharacter chr, final MapleMapItem mapitem, int pet) {
         mapitem.setPickedUp(true);
         chr.getMap()
                 .broadcastMessage(
-                        MaplePacketCreator.removeItemFromMap(
-                                mapitem.getObjectId(), 5, chr.getId(), pet),
+                        MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 5, chr.getId(), pet),
                         mapitem.getPosition());
         chr.getMap().removeMapObject(mapitem);
         if (mapitem.isRandDrop()) {
@@ -379,8 +365,7 @@ public class InventoryHandlerUtils {
         }
     }
 
-    public static final void removeItem(
-            final MapleCharacter chr, final MapleMapItem mapitem, final MapleMapObject ob) {
+    public static final void removeItem(final MapleCharacter chr, final MapleMapItem mapitem, final MapleMapObject ob) {
         mapitem.setPickedUp(true);
         chr.getMap()
                 .broadcastMessage(
@@ -519,25 +504,19 @@ public class InventoryHandlerUtils {
             z_2 = Randomizer.nextInt(ids.length);
         }
         final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-        c.getSession()
-                .write(MaplePacketCreator.getPeanutResult(ids[z], (short) 1, ids[z_2], (short) 1));
+        c.getSession().write(MaplePacketCreator.getPeanutResult(ids[z], (short) 1, ids[z_2], (short) 1));
         MapleInventoryManipulator.addById(
-                c,
-                ids[z],
-                (short) 1,
-                ii.getName(ids[z]) + " on " + DateHelper.getCurrentReadableDate());
+                c, ids[z], (short) 1, ii.getName(ids[z]) + " on " + DateHelper.getCurrentReadableDate());
         MapleInventoryManipulator.addById(
-                c,
-                ids[z_2],
-                (short) 1,
-                ii.getName(ids[z_2]) + " on " + DateHelper.getCurrentReadableDate());
+                c, ids[z_2], (short) 1, ii.getName(ids[z_2]) + " on " + DateHelper.getCurrentReadableDate());
         return true;
     }
 
     public static void UseRewardItem(byte slot, int itemId, MapleClient c, MapleCharacter player) {
         MapleCharacter chr = c.getPlayer();
-        final IItem toUse =
-                c.getPlayer().getInventory(GameConstants.getInventoryType(itemId)).getItem(slot);
+        final IItem toUse = c.getPlayer()
+                .getInventory(GameConstants.getInventoryType(itemId))
+                .getItem(slot);
         c.getSession().write(MaplePacketCreator.enableActions());
         if (toUse != null && toUse.getQuantity() >= 1 && toUse.getItemId() == itemId) {
             if (chr.getInventory(MapleInventoryType.EQUIP).getNextFreeSlot() > -1
@@ -552,16 +531,13 @@ public class InventoryHandlerUtils {
                     while (!rewarded) {
                         for (StructRewardItem reward : rewards.getRight()) {
                             if (reward.getProb() > 0
-                                    && Randomizer.nextInt(rewards.getLeft())
-                                            < reward.getProb()) { // Total
+                                    && Randomizer.nextInt(rewards.getLeft()) < reward.getProb()) { // Total
                                 // prob
-                                if (GameConstants.getInventoryType(reward.getItemId())
-                                        == MapleInventoryType.EQUIP) {
+                                if (GameConstants.getInventoryType(reward.getItemId()) == MapleInventoryType.EQUIP) {
                                     final IItem item = ii.getEquipById(reward.getItemId());
                                     if (reward.getPeriod() > 0) {
                                         item.setExpiration(
-                                                System.currentTimeMillis()
-                                                        + (reward.getPeriod() * 60 * 60 * 10));
+                                                System.currentTimeMillis() + (reward.getPeriod() * 60 * 60 * 10));
                                     }
                                     MapleInventoryManipulator.addbyItem(c, item);
                                 } else {
@@ -569,35 +545,22 @@ public class InventoryHandlerUtils {
                                             c,
                                             reward.getItemId(),
                                             reward.getQuantity(),
-                                            "Reward item: "
-                                                    + itemId
-                                                    + " on "
-                                                    + DateHelper.getCurrentReadableDate());
+                                            "Reward item: " + itemId + " on " + DateHelper.getCurrentReadableDate());
                                 }
                                 MapleInventoryManipulator.removeById(
-                                        c,
-                                        GameConstants.getInventoryType(itemId),
-                                        itemId,
-                                        1,
-                                        false,
-                                        false);
+                                        c, GameConstants.getInventoryType(itemId), itemId, 1, false, false);
 
                                 c.getSession()
-                                        .write(
-                                                MaplePacketCreator.showRewardItemAnimation(
-                                                        reward.getItemId(), reward.getEffect()));
+                                        .write(MaplePacketCreator.showRewardItemAnimation(
+                                                reward.getItemId(), reward.getEffect()));
                                 chr.getMap()
                                         .broadcastMessage(
                                                 chr,
                                                 MaplePacketCreator.showRewardItemAnimation(
-                                                        reward.getItemId(),
-                                                        reward.getEffect(),
-                                                        chr.getId()),
+                                                        reward.getItemId(), reward.getEffect(), chr.getId()),
                                                 false);
                                 c.getSession()
-                                        .write(
-                                                MaplePacketCreator.getShowItemGain(
-                                                        reward.getItemId(), (short) 1, true));
+                                        .write(MaplePacketCreator.getShowItemGain(reward.getItemId(), (short) 1, true));
                                 rewarded = true;
                             }
                         }

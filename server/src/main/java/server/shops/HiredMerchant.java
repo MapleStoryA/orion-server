@@ -31,17 +31,16 @@ public class HiredMerchant extends AbstractPlayerStore {
         start = System.currentTimeMillis();
         blacklist = new LinkedHashSet<>();
         chatHistory = new ArrayList<>();
-        this.schedule =
-                EtcTimer.getInstance()
-                        .schedule(
-                                new Runnable() {
+        this.schedule = EtcTimer.getInstance()
+                .schedule(
+                        new Runnable() {
 
-                                    @Override
-                                    public void run() {
-                                        closeShop(true, true);
-                                    }
-                                },
-                                1000 * 60 * 60 * 24);
+                            @Override
+                            public void run() {
+                                closeShop(true, true);
+                            }
+                        },
+                        1000 * 60 * 60 * 24);
     }
 
     private static int getFee(int meso) {
@@ -104,17 +103,14 @@ public class HiredMerchant extends AbstractPlayerStore {
             newItem.setFlag((byte) (flag - ItemFlag.KARMA_USE.getValue()));
         }
 
-        if (MapleInventoryManipulator.checkSpace(
-                        c, newItem.getItemId(), newItem.getQuantity(), newItem.getOwner())
+        if (MapleInventoryManipulator.checkSpace(c, newItem.getItemId(), newItem.getQuantity(), newItem.getOwner())
                 && MapleInventoryManipulator.addFromDrop(c, newItem, false)) {
-            pItem.setBundles(
-                    (short) (pItem.getBundles() - quantity)); // Number remaining in the store
-            bought.add(
-                    new BoughtItem(
-                            newItem.getItemId(),
-                            quantity,
-                            (pItem.getPrice() * quantity),
-                            c.getPlayer().getName()));
+            pItem.setBundles((short) (pItem.getBundles() - quantity)); // Number remaining in the store
+            bought.add(new BoughtItem(
+                    newItem.getItemId(),
+                    quantity,
+                    (pItem.getPrice() * quantity),
+                    c.getPlayer().getName()));
 
             final int mesos = (getMesos() + (pItem.getPrice() * quantity));
             int fee = getFee(mesos);

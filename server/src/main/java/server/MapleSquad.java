@@ -32,8 +32,7 @@ public class MapleSquad {
     private byte status = 0;
     private ScheduledFuture<?> removal;
 
-    public MapleSquad(
-            final int ch, final String type, final MapleCharacter leader, final int expiration) {
+    public MapleSquad(final int ch, final String type, final MapleCharacter leader, final int expiration) {
         this.leader = new WeakReference<MapleCharacter>(leader);
         this.members.put(
                 leader.getName(),
@@ -72,10 +71,7 @@ public class MapleSquad {
     }
 
     public MapleCharacter getChar(String name) {
-        return WorldServer.getInstance()
-                .getChannel(channel)
-                .getPlayerStorage()
-                .getCharacterByName(name);
+        return WorldServer.getInstance().getChannel(channel).getPlayerStorage().getCharacterByName(name);
     }
 
     public long getTimeLeft() {
@@ -83,24 +79,22 @@ public class MapleSquad {
     }
 
     private void scheduleRemoval(final int time) {
-        removal =
-                CloneTimer.getInstance()
-                        .schedule(
-                                new Runnable() {
+        removal = CloneTimer.getInstance()
+                .schedule(
+                        new Runnable() {
 
-                                    @Override
-                                    public void run() {
-                                        if (status != 0
-                                                && leader != null
-                                                && (getLeader() == null
-                                                        || status == 1)) { // leader itself = null
-                                            // means we're already
-                                            // cleared
-                                            clear();
-                                        }
-                                    }
-                                },
-                                time);
+                            @Override
+                            public void run() {
+                                if (status != 0
+                                        && leader != null
+                                        && (getLeader() == null || status == 1)) { // leader itself = null
+                                    // means we're already
+                                    // cleared
+                                    clear();
+                                }
+                            }
+                        },
+                        time);
     }
 
     public String getLeaderName() {
@@ -147,14 +141,13 @@ public class MapleSquad {
     }
 
     public int addMember(MapleCharacter member, boolean join) {
-        final String job = MapleCarnivalChallenge.getJobBasicNameById(member.getJob().getId());
+        final String job =
+                MapleCarnivalChallenge.getJobBasicNameById(member.getJob().getId());
         if (join) {
             if (!members.containsKey(member.getName())) {
                 if (members.size() <= 30) {
                     members.put(member.getName(), job);
-                    getLeader()
-                            .dropMessage(
-                                    5, member.getName() + " (" + job + ") has joined the fight!");
+                    getLeader().dropMessage(5, member.getName() + " (" + job + ") has joined the fight!");
                     return 1;
                 }
                 return 2;
@@ -163,13 +156,7 @@ public class MapleSquad {
         } else {
             if (members.containsKey(member.getName())) {
                 members.remove(member.getName());
-                getLeader()
-                        .dropMessage(
-                                5,
-                                member.getName()
-                                        + " ("
-                                        + job
-                                        + ") have withdrawed from the fight.");
+                getLeader().dropMessage(5, member.getName() + " (" + job + ") have withdrawed from the fight.");
                 return 1;
             }
             return -1;
@@ -186,15 +173,15 @@ public class MapleSquad {
             members.put(toadd, bannedMembers.get(toadd));
             bannedMembers.remove(toadd);
 
-            getChar(toadd)
-                    .dropMessage(5, getLeaderName() + " has decided to add you back to the squad.");
+            getChar(toadd).dropMessage(5, getLeaderName() + " has decided to add you back to the squad.");
         }
     }
 
     public void reAddMember(MapleCharacter chr) {
         removeMember(chr);
         members.put(
-                chr.getName(), MapleCarnivalChallenge.getJobBasicNameById(chr.getJob().getId()));
+                chr.getName(),
+                MapleCarnivalChallenge.getJobBasicNameById(chr.getJob().getId()));
     }
 
     public void removeMember(MapleCharacter chr) {
@@ -237,100 +224,87 @@ public class MapleSquad {
 
     public String getSquadMemberString(byte type) {
         switch (type) {
-            case 0:
-                {
-                    StringBuilder sb = new StringBuilder("Squad members : ");
-                    sb.append("#b")
-                            .append(members.size())
-                            .append(" #k ")
-                            .append("List of participants : \n\r ");
-                    int i = 0;
-                    for (Entry<String, String> chr : members.entrySet()) {
-                        i++;
-                        sb.append(i)
-                                .append(" : ")
-                                .append(chr.getKey())
-                                .append(" (")
-                                .append(chr.getValue())
-                                .append(") ");
-                        if (chr.getKey().equals(getLeader().getName())) {
-                            sb.append("(Leader of the squad)");
-                        }
-                        sb.append(" \n\r ");
+            case 0: {
+                StringBuilder sb = new StringBuilder("Squad members : ");
+                sb.append("#b").append(members.size()).append(" #k ").append("List of participants : \n\r ");
+                int i = 0;
+                for (Entry<String, String> chr : members.entrySet()) {
+                    i++;
+                    sb.append(i)
+                            .append(" : ")
+                            .append(chr.getKey())
+                            .append(" (")
+                            .append(chr.getValue())
+                            .append(") ");
+                    if (chr.getKey().equals(getLeader().getName())) {
+                        sb.append("(Leader of the squad)");
                     }
-                    while (i < 30) {
-                        i++;
-                        sb.append(i).append(" : ").append(" \n\r ");
-                    }
-                    return sb.toString();
+                    sb.append(" \n\r ");
                 }
-            case 1:
-                {
-                    StringBuilder sb = new StringBuilder("Squad members : ");
-                    sb.append("#b")
-                            .append(members.size())
-                            .append(" #n ")
-                            .append("List of participants : \n\r ");
-                    int i = 0, selection = 0;
-                    for (Entry<String, String> chr : members.entrySet()) {
-                        i++;
-                        sb.append("#b#L").append(selection).append("#");
-                        selection++;
-                        sb.append(i)
-                                .append(" : ")
-                                .append(chr.getKey())
-                                .append(" (")
-                                .append(chr.getValue())
-                                .append(") ");
-                        if (chr.getKey().equals(getLeader().getName())) {
-                            sb.append("(Leader of the squad)");
-                        }
-                        sb.append("#l").append(" \n\r ");
-                    }
-                    while (i < 30) {
-                        i++;
-                        sb.append(i).append(" : ").append(" \n\r ");
-                    }
-                    return sb.toString();
+                while (i < 30) {
+                    i++;
+                    sb.append(i).append(" : ").append(" \n\r ");
                 }
-            case 2:
-                {
-                    StringBuilder sb = new StringBuilder("Squad members : ");
-                    sb.append("#b")
-                            .append(members.size())
-                            .append(" #n ")
-                            .append("List of participants : \n\r ");
-                    int i = 0, selection = 0;
-                    for (Entry<String, String> chr : bannedMembers.entrySet()) {
-                        i++;
-                        sb.append("#b#L").append(selection).append("#");
-                        selection++;
-                        sb.append(i)
-                                .append(" : ")
-                                .append(chr.getKey())
-                                .append(" (")
-                                .append(chr.getValue())
-                                .append(") ");
-                        if (chr.getKey().equals(getLeader().getName())) {
-                            sb.append("(Leader of the squad)"); // WTF
-                        }
-                        sb.append("#l").append(" \n\r ");
+                return sb.toString();
+            }
+            case 1: {
+                StringBuilder sb = new StringBuilder("Squad members : ");
+                sb.append("#b").append(members.size()).append(" #n ").append("List of participants : \n\r ");
+                int i = 0, selection = 0;
+                for (Entry<String, String> chr : members.entrySet()) {
+                    i++;
+                    sb.append("#b#L").append(selection).append("#");
+                    selection++;
+                    sb.append(i)
+                            .append(" : ")
+                            .append(chr.getKey())
+                            .append(" (")
+                            .append(chr.getValue())
+                            .append(") ");
+                    if (chr.getKey().equals(getLeader().getName())) {
+                        sb.append("(Leader of the squad)");
                     }
-                    while (i < 30) {
-                        i++;
-                        sb.append(i).append(" : ").append(" \n\r ");
-                    }
-                    return sb.toString();
+                    sb.append("#l").append(" \n\r ");
                 }
-            case 3:
-                { // CWKPQ
-                    StringBuilder sb = new StringBuilder("Jobs : ");
-                    final Map<String, Integer> jobs = getJobs();
-                    for (Entry<String, Integer> chr : jobs.entrySet()) {
-                        sb.append("\r\n").append(chr.getKey()).append(" : ").append(chr.getValue());
-                    }
-                    return sb.toString();
+                while (i < 30) {
+                    i++;
+                    sb.append(i).append(" : ").append(" \n\r ");
                 }
+                return sb.toString();
+            }
+            case 2: {
+                StringBuilder sb = new StringBuilder("Squad members : ");
+                sb.append("#b").append(members.size()).append(" #n ").append("List of participants : \n\r ");
+                int i = 0, selection = 0;
+                for (Entry<String, String> chr : bannedMembers.entrySet()) {
+                    i++;
+                    sb.append("#b#L").append(selection).append("#");
+                    selection++;
+                    sb.append(i)
+                            .append(" : ")
+                            .append(chr.getKey())
+                            .append(" (")
+                            .append(chr.getValue())
+                            .append(") ");
+                    if (chr.getKey().equals(getLeader().getName())) {
+                        sb.append("(Leader of the squad)"); // WTF
+                    }
+                    sb.append("#l").append(" \n\r ");
+                }
+                while (i < 30) {
+                    i++;
+                    sb.append(i).append(" : ").append(" \n\r ");
+                }
+                return sb.toString();
+            }
+            case 3: { // CWKPQ
+                StringBuilder sb = new StringBuilder("Jobs : ");
+                final Map<String, Integer> jobs = getJobs();
+                for (Entry<String, Integer> chr : jobs.entrySet()) {
+                    sb.append("\r\n").append(chr.getKey()).append(" : ").append(chr.getValue());
+                }
+                return sb.toString();
+            }
         }
         return null;
     }
@@ -364,8 +338,7 @@ public class MapleSquad {
             sb.append(" \n\r ");
         }
         sb.append(
-                "Would you like to #ebe next#n in the queue, or #ebe removed#n from the queue if"
-                        + " you are in it?");
+                "Would you like to #ebe next#n in the queue, or #ebe removed#n from the queue if" + " you are in it?");
         return sb.toString();
     }
 

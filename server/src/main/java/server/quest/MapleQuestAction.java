@@ -169,12 +169,8 @@ public class MapleQuestAction implements Serializable {
                 for (MapleData iEntry : data.getChildren()) {
                     prop = iEntry.getChildByPath("prop");
                     if (prop != null && MapleDataTool.getInt(prop) != -1 && canGetItem(iEntry, c)) {
-                        for (int i = 0;
-                                i < MapleDataTool.getInt(iEntry.getChildByPath("prop"));
-                                i++) {
-                            props.put(
-                                    props.size(),
-                                    MapleDataTool.getInt(iEntry.getChildByPath("id")));
+                        for (int i = 0; i < MapleDataTool.getInt(iEntry.getChildByPath("prop")); i++) {
+                            props.put(props.size(), MapleDataTool.getInt(iEntry.getChildByPath("id")));
                         }
                     }
                 }
@@ -197,42 +193,29 @@ public class MapleQuestAction implements Serializable {
                             continue;
                         }
                     }
-                    final short count =
-                            (short) MapleDataTool.getInt(iEntry.getChildByPath("count"), 1);
+                    final short count = (short) MapleDataTool.getInt(iEntry.getChildByPath("count"), 1);
                     if (count < 0) { // remove items
                         try {
                             MapleInventoryManipulator.removeById(
-                                    c.getClient(),
-                                    GameConstants.getInventoryType(id),
-                                    id,
-                                    (count * -1),
-                                    true,
-                                    false);
+                                    c.getClient(), GameConstants.getInventoryType(id), id, (count * -1), true, false);
                         } catch (InventoryException ie) {
                             // it's better to catch this here so we'll atleast try to remove the
                             // other items
-                            System.err.println(
-                                    "[h4x] Completing a quest without meeting the requirements"
-                                            + ie);
+                            System.err.println("[h4x] Completing a quest without meeting the requirements" + ie);
                         }
-                        c.getClient()
-                                .getSession()
-                                .write(MaplePacketCreator.getShowItemGain(id, count, true));
+                        c.getClient().getSession().write(MaplePacketCreator.getShowItemGain(id, count, true));
                     } else { // add items
                         final int period =
-                                MapleDataTool.getInt(iEntry.getChildByPath("period"), 0)
-                                        / 1440; // im guessing.
-                        final String name = MapleItemInformationProvider.getInstance().getName(id);
+                                MapleDataTool.getInt(iEntry.getChildByPath("period"), 0) / 1440; // im guessing.
+                        final String name =
+                                MapleItemInformationProvider.getInstance().getName(id);
                         if (id / 10000 == 114 && name != null && name.length() > 0) { // medal
                             final String msg = "You have attained title <" + name + ">";
                             c.dropMessage(-1, msg);
                             c.dropMessage(5, msg);
                         }
-                        MapleInventoryManipulator.addById(
-                                c.getClient(), id, count, "", null, period);
-                        c.getClient()
-                                .getSession()
-                                .write(MaplePacketCreator.getShowItemGain(id, count, true));
+                        MapleInventoryManipulator.addById(c.getClient(), id, count, "", null, period);
+                        c.getClient().getSession().write(MaplePacketCreator.getShowItemGain(id, count, true));
                     }
                 }
                 break;
@@ -243,11 +226,8 @@ public class MapleQuestAction implements Serializable {
                 }
                 c.getClient()
                         .getSession()
-                        .write(
-                                MaplePacketCreator.updateQuestFinish(
-                                        quest.getId(),
-                                        status.getNpc(),
-                                        MapleDataTool.getInt(data)));
+                        .write(MaplePacketCreator.updateQuestFinish(
+                                quest.getId(), status.getNpc(), MapleDataTool.getInt(data)));
                 break;
             case money:
                 status = c.getQuest(quest);
@@ -258,13 +238,9 @@ public class MapleQuestAction implements Serializable {
                 break;
             case quest:
                 for (MapleData qEntry : data) {
-                    c.updateQuest(
-                            new MapleQuestStatus(
-                                    MapleQuest.getInstance(
-                                            MapleDataTool.getInt(qEntry.getChildByPath("id"))),
-                                    (byte)
-                                            MapleDataTool.getInt(
-                                                    qEntry.getChildByPath("state"), 0)));
+                    c.updateQuest(new MapleQuestStatus(
+                            MapleQuest.getInstance(MapleDataTool.getInt(qEntry.getChildByPath("id"))),
+                            (byte) MapleDataTool.getInt(qEntry.getChildByPath("state"), 0)));
                 }
                 break;
             case skill:
@@ -279,9 +255,8 @@ public class MapleQuestAction implements Serializable {
                         if (skillObject.isBeginnerSkill()
                                 || c.getJob().getId() == MapleDataTool.getInt(applicableJob)) {
                             c.changeSkillLevel(
-                                    skillObject,
-                                    (byte) Math.max(skillLevel, c.getSkillLevel(skillObject)),
-                                    (byte) Math.max(masterLevel, c.getMasterLevel(skillObject)));
+                                    skillObject, (byte) Math.max(skillLevel, c.getSkillLevel(skillObject)), (byte)
+                                            Math.max(masterLevel, c.getMasterLevel(skillObject)));
                             break;
                         }
                     }
@@ -308,12 +283,11 @@ public class MapleQuestAction implements Serializable {
                 }
                 MapleItemInformationProvider.getInstance().getItemEffect(tobuff).applyTo(c);
                 break;
-            case infoNumber:
-                {
-                    //		log.info("quest : "+MapleDataTool.getInt(data, 0)+"");
-                    //		MapleQuest.getInstance(MapleDataTool.getInt(data, 0)).forceComplete(c, 0);
-                    break;
-                }
+            case infoNumber: {
+                //		log.info("quest : "+MapleDataTool.getInt(data, 0)+"");
+                //		MapleQuest.getInstance(MapleDataTool.getInt(data, 0)).forceComplete(c, 0);
+                break;
+            }
             default:
                 break;
         }
@@ -321,278 +295,226 @@ public class MapleQuestAction implements Serializable {
 
     public boolean checkEnd(MapleCharacter c, Integer extSelection) {
         switch (type) {
-            case item:
-                {
-                    // first check for randomness in item selection
-                    final Map<Integer, Integer> props = new HashMap<Integer, Integer>();
+            case item: {
+                // first check for randomness in item selection
+                final Map<Integer, Integer> props = new HashMap<Integer, Integer>();
 
-                    for (MapleData iEntry : data.getChildren()) {
-                        final MapleData prop = iEntry.getChildByPath("prop");
-                        if (prop != null
-                                && MapleDataTool.getInt(prop) != -1
-                                && canGetItem(iEntry, c)) {
-                            for (int i = 0;
-                                    i < MapleDataTool.getInt(iEntry.getChildByPath("prop"));
-                                    i++) {
-                                props.put(
-                                        props.size(),
-                                        MapleDataTool.getInt(iEntry.getChildByPath("id")));
-                            }
+                for (MapleData iEntry : data.getChildren()) {
+                    final MapleData prop = iEntry.getChildByPath("prop");
+                    if (prop != null && MapleDataTool.getInt(prop) != -1 && canGetItem(iEntry, c)) {
+                        for (int i = 0; i < MapleDataTool.getInt(iEntry.getChildByPath("prop")); i++) {
+                            props.put(props.size(), MapleDataTool.getInt(iEntry.getChildByPath("id")));
                         }
                     }
-                    int selection = 0;
-                    int extNum = 0;
-                    if (props.size() > 0) {
-                        selection = props.get(Randomizer.nextInt(props.size()));
-                    }
-                    byte eq = 0, use = 0, setup = 0, etc = 0, cash = 0;
+                }
+                int selection = 0;
+                int extNum = 0;
+                if (props.size() > 0) {
+                    selection = props.get(Randomizer.nextInt(props.size()));
+                }
+                byte eq = 0, use = 0, setup = 0, etc = 0, cash = 0;
 
-                    for (MapleData iEntry : data.getChildren()) {
-                        if (!canGetItem(iEntry, c)) {
-                            continue;
-                        }
-                        final int id = MapleDataTool.getInt(iEntry.getChildByPath("id"), -1);
-                        if (iEntry.getChildByPath("prop") != null) {
-                            if (MapleDataTool.getInt(iEntry.getChildByPath("prop")) == -1) {
-                                if (extSelection != extNum++) {
-                                    continue;
-                                }
-                            } else if (id != selection) {
+                for (MapleData iEntry : data.getChildren()) {
+                    if (!canGetItem(iEntry, c)) {
+                        continue;
+                    }
+                    final int id = MapleDataTool.getInt(iEntry.getChildByPath("id"), -1);
+                    if (iEntry.getChildByPath("prop") != null) {
+                        if (MapleDataTool.getInt(iEntry.getChildByPath("prop")) == -1) {
+                            if (extSelection != extNum++) {
                                 continue;
                             }
-                        }
-                        final short count =
-                                (short) MapleDataTool.getInt(iEntry.getChildByPath("count"), 1);
-                        if (count < 0) { // remove items
-                            if (!c.haveItem(id, count, false, true)) {
-                                c.dropMessage(1, "You are short of some item to complete quest.");
-                                return false;
-                            }
-                        } else { // add items
-                            switch (GameConstants.getInventoryType(id)) {
-                                case EQUIP:
-                                    eq++;
-                                    break;
-                                case USE:
-                                    use++;
-                                    break;
-                                case SETUP:
-                                    setup++;
-                                    break;
-                                case ETC:
-                                    etc++;
-                                    break;
-                                case CASH:
-                                    cash++;
-                                    break;
-                            }
+                        } else if (id != selection) {
+                            continue;
                         }
                     }
-                    if (c.getInventory(MapleInventoryType.EQUIP).getNumFreeSlot() < eq) {
-                        c.dropMessage(1, "Please make space for your Equip inventory.");
-                        return false;
-                    } else if (c.getInventory(MapleInventoryType.USE).getNumFreeSlot() < use) {
-                        c.dropMessage(1, "Please make space for your Use inventory.");
-                        return false;
-                    } else if (c.getInventory(MapleInventoryType.SETUP).getNumFreeSlot() < setup) {
-                        c.dropMessage(1, "Please make space for your Setup inventory.");
-                        return false;
-                    } else if (c.getInventory(MapleInventoryType.ETC).getNumFreeSlot() < etc) {
-                        c.dropMessage(1, "Please make space for your Etc inventory.");
-                        return false;
-                    } else if (c.getInventory(MapleInventoryType.CASH).getNumFreeSlot() < cash) {
-                        c.dropMessage(1, "Please make space for your Cash inventory.");
-                        return false;
+                    final short count = (short) MapleDataTool.getInt(iEntry.getChildByPath("count"), 1);
+                    if (count < 0) { // remove items
+                        if (!c.haveItem(id, count, false, true)) {
+                            c.dropMessage(1, "You are short of some item to complete quest.");
+                            return false;
+                        }
+                    } else { // add items
+                        switch (GameConstants.getInventoryType(id)) {
+                            case EQUIP:
+                                eq++;
+                                break;
+                            case USE:
+                                use++;
+                                break;
+                            case SETUP:
+                                setup++;
+                                break;
+                            case ETC:
+                                etc++;
+                                break;
+                            case CASH:
+                                cash++;
+                                break;
+                        }
                     }
-                    return true;
                 }
-            case money:
-                {
-                    final int meso = MapleDataTool.getInt(data, 0);
-                    if (c.getMeso() + meso < 0) { // Giving, overflow
-                        c.dropMessage(1, "Meso exceed the max amount, 2147483647.");
-                        return false;
-                    } else if (meso < 0 && c.getMeso() < Math.abs(meso)) { // remove meso
-                        c.dropMessage(1, "Insufficient meso.");
-                        return false;
-                    }
-                    return true;
+                if (c.getInventory(MapleInventoryType.EQUIP).getNumFreeSlot() < eq) {
+                    c.dropMessage(1, "Please make space for your Equip inventory.");
+                    return false;
+                } else if (c.getInventory(MapleInventoryType.USE).getNumFreeSlot() < use) {
+                    c.dropMessage(1, "Please make space for your Use inventory.");
+                    return false;
+                } else if (c.getInventory(MapleInventoryType.SETUP).getNumFreeSlot() < setup) {
+                    c.dropMessage(1, "Please make space for your Setup inventory.");
+                    return false;
+                } else if (c.getInventory(MapleInventoryType.ETC).getNumFreeSlot() < etc) {
+                    c.dropMessage(1, "Please make space for your Etc inventory.");
+                    return false;
+                } else if (c.getInventory(MapleInventoryType.CASH).getNumFreeSlot() < cash) {
+                    c.dropMessage(1, "Please make space for your Cash inventory.");
+                    return false;
                 }
+                return true;
+            }
+            case money: {
+                final int meso = MapleDataTool.getInt(data, 0);
+                if (c.getMeso() + meso < 0) { // Giving, overflow
+                    c.dropMessage(1, "Meso exceed the max amount, 2147483647.");
+                    return false;
+                } else if (meso < 0 && c.getMeso() < Math.abs(meso)) { // remove meso
+                    c.dropMessage(1, "Insufficient meso.");
+                    return false;
+                }
+                return true;
+            }
         }
         return true;
     }
 
     public void runEnd(MapleCharacter c, Integer extSelection) {
         switch (type) {
-            case exp:
-                {
-                    int expRate = GameConstants.getExpRate_Quest(c.getLevel());
-                    if (c.getLevel() < 10) {
-                        expRate = 1;
-                    }
-                    c.gainExp(MapleDataTool.getInt(data, 0) * expRate, true, true, true);
-                    break;
+            case exp: {
+                int expRate = GameConstants.getExpRate_Quest(c.getLevel());
+                if (c.getLevel() < 10) {
+                    expRate = 1;
                 }
-            case item:
-                {
-                    // first check for randomness in item selection
-                    Map<Integer, Integer> props = new HashMap<Integer, Integer>();
+                c.gainExp(MapleDataTool.getInt(data, 0) * expRate, true, true, true);
+                break;
+            }
+            case item: {
+                // first check for randomness in item selection
+                Map<Integer, Integer> props = new HashMap<Integer, Integer>();
 
-                    for (MapleData iEntry : data.getChildren()) {
-                        final MapleData prop = iEntry.getChildByPath("prop");
-                        if (prop != null
-                                && MapleDataTool.getInt(prop) != -1
-                                && canGetItem(iEntry, c)) {
-                            for (int i = 0;
-                                    i < MapleDataTool.getInt(iEntry.getChildByPath("prop"));
-                                    i++) {
-                                props.put(
-                                        props.size(),
-                                        MapleDataTool.getInt(iEntry.getChildByPath("id")));
-                            }
+                for (MapleData iEntry : data.getChildren()) {
+                    final MapleData prop = iEntry.getChildByPath("prop");
+                    if (prop != null && MapleDataTool.getInt(prop) != -1 && canGetItem(iEntry, c)) {
+                        for (int i = 0; i < MapleDataTool.getInt(iEntry.getChildByPath("prop")); i++) {
+                            props.put(props.size(), MapleDataTool.getInt(iEntry.getChildByPath("id")));
                         }
                     }
-                    int selection = 0;
-                    int extNum = 0;
-                    if (props.size() > 0) {
-                        selection = props.get(Randomizer.nextInt(props.size()));
+                }
+                int selection = 0;
+                int extNum = 0;
+                if (props.size() > 0) {
+                    selection = props.get(Randomizer.nextInt(props.size()));
+                }
+                for (MapleData iEntry : data.getChildren()) {
+                    if (!canGetItem(iEntry, c)) {
+                        continue;
                     }
-                    for (MapleData iEntry : data.getChildren()) {
-                        if (!canGetItem(iEntry, c)) {
-                            continue;
-                        }
-                        final int id = MapleDataTool.getInt(iEntry.getChildByPath("id"), -1);
-                        if (iEntry.getChildByPath("prop") != null) {
-                            if (MapleDataTool.getInt(iEntry.getChildByPath("prop")) == -1) {
-                                if (extSelection != extNum++) {
-                                    continue;
-                                }
-                            } else if (id != selection) {
+                    final int id = MapleDataTool.getInt(iEntry.getChildByPath("id"), -1);
+                    if (iEntry.getChildByPath("prop") != null) {
+                        if (MapleDataTool.getInt(iEntry.getChildByPath("prop")) == -1) {
+                            if (extSelection != extNum++) {
                                 continue;
                             }
-                        }
-                        final short count =
-                                (short) MapleDataTool.getInt(iEntry.getChildByPath("count"), 1);
-                        if (count < 0) { // remove items
-                            MapleInventoryManipulator.removeById(
-                                    c.getClient(),
-                                    GameConstants.getInventoryType(id),
-                                    id,
-                                    (count * -1),
-                                    true,
-                                    false);
-                            c.getClient()
-                                    .getSession()
-                                    .write(MaplePacketCreator.getShowItemGain(id, count, true));
-                        } else { // add items
-                            final int period =
-                                    MapleDataTool.getInt(iEntry.getChildByPath("period"), 0) / 1440;
-                            final String name =
-                                    MapleItemInformationProvider.getInstance().getName(id);
-                            if (id / 10000 == 114 && name != null && name.length() > 0) { // medal
-                                final String msg = "You have attained title <" + name + ">";
-                                c.dropMessage(-1, msg);
-                                c.dropMessage(5, msg);
-                            }
-                            MapleInventoryManipulator.addById(
-                                    c.getClient(), id, count, "", null, period);
-                            c.getClient()
-                                    .getSession()
-                                    .write(MaplePacketCreator.getShowItemGain(id, count, true));
+                        } else if (id != selection) {
+                            continue;
                         }
                     }
-                    break;
-                }
-            case nextQuest:
-                {
-                    c.getClient()
-                            .getSession()
-                            .write(
-                                    MaplePacketCreator.updateQuestFinish(
-                                            quest.getId(),
-                                            c.getQuest(quest).getNpc(),
-                                            MapleDataTool.getInt(data)));
-                    break;
-                }
-            case money:
-                {
-                    c.gainMeso(MapleDataTool.getInt(data, 0), true, false, true);
-                    break;
-                }
-            case quest:
-                {
-                    for (MapleData qEntry : data) {
-                        c.updateQuest(
-                                new MapleQuestStatus(
-                                        MapleQuest.getInstance(
-                                                MapleDataTool.getInt(qEntry.getChildByPath("id"))),
-                                        (byte)
-                                                MapleDataTool.getInt(
-                                                        qEntry.getChildByPath("state"), 0)));
+                    final short count = (short) MapleDataTool.getInt(iEntry.getChildByPath("count"), 1);
+                    if (count < 0) { // remove items
+                        MapleInventoryManipulator.removeById(
+                                c.getClient(), GameConstants.getInventoryType(id), id, (count * -1), true, false);
+                        c.getClient().getSession().write(MaplePacketCreator.getShowItemGain(id, count, true));
+                    } else { // add items
+                        final int period = MapleDataTool.getInt(iEntry.getChildByPath("period"), 0) / 1440;
+                        final String name =
+                                MapleItemInformationProvider.getInstance().getName(id);
+                        if (id / 10000 == 114 && name != null && name.length() > 0) { // medal
+                            final String msg = "You have attained title <" + name + ">";
+                            c.dropMessage(-1, msg);
+                            c.dropMessage(5, msg);
+                        }
+                        MapleInventoryManipulator.addById(c.getClient(), id, count, "", null, period);
+                        c.getClient().getSession().write(MaplePacketCreator.getShowItemGain(id, count, true));
                     }
-                    break;
                 }
-            case skill:
-                {
-                    for (MapleData sEntry : data) {
-                        final int skillid = MapleDataTool.getInt(sEntry.getChildByPath("id"));
-                        int skillLevel =
-                                MapleDataTool.getInt(sEntry.getChildByPath("skillLevel"), 0);
-                        int masterLevel =
-                                MapleDataTool.getInt(sEntry.getChildByPath("masterLevel"), 0);
-                        final ISkill skillObject = SkillFactory.getSkill(skillid);
+                break;
+            }
+            case nextQuest: {
+                c.getClient()
+                        .getSession()
+                        .write(MaplePacketCreator.updateQuestFinish(
+                                quest.getId(), c.getQuest(quest).getNpc(), MapleDataTool.getInt(data)));
+                break;
+            }
+            case money: {
+                c.gainMeso(MapleDataTool.getInt(data, 0), true, false, true);
+                break;
+            }
+            case quest: {
+                for (MapleData qEntry : data) {
+                    c.updateQuest(new MapleQuestStatus(
+                            MapleQuest.getInstance(MapleDataTool.getInt(qEntry.getChildByPath("id"))),
+                            (byte) MapleDataTool.getInt(qEntry.getChildByPath("state"), 0)));
+                }
+                break;
+            }
+            case skill: {
+                for (MapleData sEntry : data) {
+                    final int skillid = MapleDataTool.getInt(sEntry.getChildByPath("id"));
+                    int skillLevel = MapleDataTool.getInt(sEntry.getChildByPath("skillLevel"), 0);
+                    int masterLevel = MapleDataTool.getInt(sEntry.getChildByPath("masterLevel"), 0);
+                    final ISkill skillObject = SkillFactory.getSkill(skillid);
 
-                        for (MapleData applicableJob : sEntry.getChildByPath("job")) {
-                            if (skillObject.isBeginnerSkill()
-                                    || c.getJob().getId() == MapleDataTool.getInt(applicableJob)) {
-                                c.changeSkillLevel(
-                                        skillObject,
-                                        (byte) Math.max(skillLevel, c.getSkillLevel(skillObject)),
-                                        (byte)
-                                                Math.max(
-                                                        masterLevel,
-                                                        c.getMasterLevel(skillObject)));
-                                break;
-                            }
+                    for (MapleData applicableJob : sEntry.getChildByPath("job")) {
+                        if (skillObject.isBeginnerSkill()
+                                || c.getJob().getId() == MapleDataTool.getInt(applicableJob)) {
+                            c.changeSkillLevel(
+                                    skillObject, (byte) Math.max(skillLevel, c.getSkillLevel(skillObject)), (byte)
+                                            Math.max(masterLevel, c.getMasterLevel(skillObject)));
+                            break;
                         }
                     }
+                }
+                break;
+            }
+            case pop: {
+                final int fameGain = MapleDataTool.getInt(data, 0);
+                c.addFame(fameGain);
+                c.updateSingleStat(MapleStat.FAME, c.getFame());
+                c.getClient().getSession().write(MaplePacketCreator.getShowFameGain(fameGain));
+                break;
+            }
+            case sp: {
+                for (MapleData sEntry : data) {
+                    final int sp = MapleDataTool.getInt(sEntry.getChildByPath("sp_value"));
+                    c.gainSp(sp);
+                    c.getClient().sendPacket(CWVsContextOnMessagePackets.onIncSpMessage(c.getJob(), sp));
                     break;
                 }
-            case pop:
-                {
-                    final int fameGain = MapleDataTool.getInt(data, 0);
-                    c.addFame(fameGain);
-                    c.updateSingleStat(MapleStat.FAME, c.getFame());
-                    c.getClient().getSession().write(MaplePacketCreator.getShowFameGain(fameGain));
+                break;
+            }
+            case buffItemID: {
+                final int tobuff = MapleDataTool.getInt(data, -1);
+                if (tobuff == -1) {
                     break;
                 }
-            case sp:
-                {
-                    for (MapleData sEntry : data) {
-                        final int sp = MapleDataTool.getInt(sEntry.getChildByPath("sp_value"));
-                        c.gainSp(sp);
-                        c.getClient()
-                                .sendPacket(
-                                        CWVsContextOnMessagePackets.onIncSpMessage(c.getJob(), sp));
-                        break;
-                    }
-                    break;
-                }
-            case buffItemID:
-                {
-                    final int tobuff = MapleDataTool.getInt(data, -1);
-                    if (tobuff == -1) {
-                        break;
-                    }
-                    MapleItemInformationProvider.getInstance().getItemEffect(tobuff).applyTo(c);
-                    break;
-                }
-            case infoNumber:
-                {
-                    //		log.info("quest : "+MapleDataTool.getInt(data, 0)+"");
-                    //		MapleQuest.getInstance(MapleDataTool.getInt(data, 0)).forceComplete(c, 0);
-                    break;
-                }
+                MapleItemInformationProvider.getInstance().getItemEffect(tobuff).applyTo(c);
+                break;
+            }
+            case infoNumber: {
+                //		log.info("quest : "+MapleDataTool.getInt(data, 0)+"");
+                //		MapleQuest.getInstance(MapleDataTool.getInt(data, 0)).forceComplete(c, 0);
+                break;
+            }
             default:
                 log.info("Invalid quest action");
                 break;

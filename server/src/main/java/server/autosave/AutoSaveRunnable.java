@@ -16,5 +16,4 @@ public class AutoSaveRunnable implements Runnable {
     public void run() {
         AutoSaver.getInstance().executeSave(channel);
     }
-
 }

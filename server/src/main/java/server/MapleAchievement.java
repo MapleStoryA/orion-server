@@ -68,30 +68,22 @@ public class MapleAchievement {
     public void finishAchievement(MapleCharacter chr) {
         chr.modifyAchievementCSPoints(1, reward);
         chr.getFinishedAchievements()
-                .setAchievementFinished(
-                        MapleAchievements.getInstance().getByMapleAchievement(this));
+                .setAchievementFinished(MapleAchievements.getInstance().getByMapleAchievement(this));
         if (notice && !chr.isGameMaster()) {
-            BroadcastHelper.broadcastMessage(
-                    MaplePacketCreator.serverNotice(
-                            6,
-                            "[Achievement] Congratulations to "
-                                    + chr.getName()
-                                    + " on "
-                                    + name
-                                    + " and rewarded with "
-                                    + reward
-                                    + " Nx-Credit!"));
+            BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(
+                    6,
+                    "[Achievement] Congratulations to "
+                            + chr.getName()
+                            + " on "
+                            + name
+                            + " and rewarded with "
+                            + reward
+                            + " Nx-Credit!"));
         } else {
             chr.getClient()
                     .getSession()
-                    .write(
-                            MaplePacketCreator.serverNotice(
-                                    5,
-                                    "[Achievement] You've gained "
-                                            + reward
-                                            + " Nx-Credit as you "
-                                            + name
-                                            + "."));
+                    .write(MaplePacketCreator.serverNotice(
+                            5, "[Achievement] You've gained " + reward + " Nx-Credit as you " + name + "."));
         }
     }
 }

@@ -47,8 +47,7 @@ public class MapleBBSThread implements java.io.Serializable {
         public long timestamp;
         public String content;
 
-        public MapleBBSReply(
-                final int replyid, final int ownerID, final String content, final long timestamp) {
+        public MapleBBSReply(final int replyid, final int ownerID, final String content, final long timestamp) {
             this.ownerID = ownerID;
             this.replyid = replyid;
             this.content = content;
@@ -56,8 +55,7 @@ public class MapleBBSThread implements java.io.Serializable {
         }
     }
 
-    public static class ThreadComparator
-            implements Comparator<MapleBBSThread>, java.io.Serializable {
+    public static class ThreadComparator implements Comparator<MapleBBSThread>, java.io.Serializable {
 
         /** */
         private static final long serialVersionUID = 1L;

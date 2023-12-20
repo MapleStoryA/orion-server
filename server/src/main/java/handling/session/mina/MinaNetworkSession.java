@@ -1,9 +1,8 @@
 package handling.session.mina;
 
 import handling.session.NetworkSession;
-import org.apache.mina.common.IoSession;
-
 import java.net.SocketAddress;
+import org.apache.mina.common.IoSession;
 
 public class MinaNetworkSession implements NetworkSession {
 
@@ -32,6 +31,4 @@ public class MinaNetworkSession implements NetworkSession {
     public boolean isConnected() {
         return ioSession.isConnected();
     }
-
-
 }

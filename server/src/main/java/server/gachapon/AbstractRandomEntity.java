@@ -13,6 +13,7 @@ public class AbstractRandomEntity {
      * 50   = 0.05 %
      */
     private final double chance;
+
     private final String description;
     private int idreward;
 
@@ -48,6 +49,4 @@ public class AbstractRandomEntity {
         return "AbstractRandomEntity [id=" + id + ", quantity=" + quantity + ", chance=" + chance + ", description="
                 + description + "]";
     }
-
-
 }

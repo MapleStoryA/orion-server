@@ -13,11 +13,9 @@ public class CashShopService {
         }
 
         try (var con = DatabaseConnection.getConnection()) {
-            CharacterService.deleteWhereCharacterId(
-                    con, "DELETE FROM wishlist WHERE characterid = ?", characterId);
+            CharacterService.deleteWhereCharacterId(con, "DELETE FROM wishlist WHERE characterid = ?", characterId);
             for (var item : wishList.getItems()) {
-                var ps =
-                        con.prepareStatement("INSERT INTO wishlist(characterid, sn) VALUES(?, ?) ");
+                var ps = con.prepareStatement("INSERT INTO wishlist(characterid, sn) VALUES(?, ?) ");
                 ps.setInt(1, characterId);
                 ps.setInt(2, item);
                 ps.execute();

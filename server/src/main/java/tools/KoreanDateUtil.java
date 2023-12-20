@@ -16,8 +16,7 @@ public class KoreanDateUtil {
     private static final int ITEM_YEAR2000 = -1085019342;
     private static final long REAL_YEAR2000 = 946681229830L;
     private static final int QUEST_UNIXAGE = 27111908;
-    private static final long FT_UT_OFFSET =
-            116444736000000000L; // 100 nsseconds from 1/1/1601 -> 1/1/1970
+    private static final long FT_UT_OFFSET = 116444736000000000L; // 100 nsseconds from 1/1/1601 -> 1/1/1970
 
     /**
      * Converts a Unix Timestamp into File Time

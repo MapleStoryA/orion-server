@@ -70,29 +70,21 @@ public class SpeedQuiz {
             return;
         }
 
-        final List<QuizEntry> entries =
-                SpeedQuizFactory.getInstance().getQuizDataType(questionNo, type);
+        final List<QuizEntry> entries = SpeedQuizFactory.getInstance().getQuizDataType(questionNo, type);
         final QuizEntry random = entries.get(Randomizer.nextInt(entries.size()));
 
         this.answer = random.getAnswer();
         // log.info(answer);
 
         c.getSession()
-                .write(
-                        MaplePacketCreator.getSpeedQuiz(
-                                npc,
-                                random.getType(),
-                                random.getObjectId(),
-                                points,
-                                questionNo,
-                                TIME));
+                .write(MaplePacketCreator.getSpeedQuiz(
+                        npc, random.getType(), random.getObjectId(), points, questionNo, TIME));
         cm.setLastMsg((byte) 7);
     }
 
     private void CheckAnswer(final String answerGiven) {
         if (answerGiven == null || answerGiven.equals("")) {
-        } else if (answer.equalsIgnoreCase(
-                answerGiven)) { // Loosen a bit i guess...let them any case also can.
+        } else if (answer.equalsIgnoreCase(answerGiven)) { // Loosen a bit i guess...let them any case also can.
             points++;
         }
     }
@@ -100,17 +92,11 @@ public class SpeedQuiz {
     private void giveUp(final MapleClient c) {
         final NPCConversationManager cm = NPCScriptManager.getInstance().getCM(c);
         if (points > 0) {
-            c.getPlayer()
-                    .gainMeso(
-                            100 * points,
-                            true,
-                            true,
-                            true); // todo change reward? give up = lesser rewards
+            c.getPlayer().gainMeso(100 * points, true, true, true); // todo change reward? give up = lesser rewards
         }
-        cm.sendNext(
-                "Ahhh...Its sad that you're giving up the quiz although you managed to answer "
-                        + points
-                        + " questions. Here's some mesos as a token of appreciation from me.");
+        cm.sendNext("Ahhh...Its sad that you're giving up the quiz although you managed to answer "
+                + points
+                + " questions. Here's some mesos as a token of appreciation from me.");
         cm.dispose();
         c.getPlayer().setSpeedQuiz(null);
     }
@@ -119,27 +105,22 @@ public class SpeedQuiz {
         final NPCConversationManager cm = NPCScriptManager.getInstance().getCM(c);
         if (points == 50) {
             if (cm.canHold(1302000, 1)) {
-                cm.sendNext(
-                        "Amazing~ You solved every question. But, I'm sorry to tell you...there"
-                                + " hasn't been a single trace of Master M. But since you worked so"
-                                + " hard, I'll give you this.");
+                cm.sendNext("Amazing~ You solved every question. But, I'm sorry to tell you...there"
+                        + " hasn't been a single trace of Master M. But since you worked so"
+                        + " hard, I'll give you this.");
                 c.getPlayer().gainMeso(100000000, true, true, true);
             } else {
-                cm.sendNext(
-                        "I'm really sorry that you do not have enough space to keep the reward...Oh"
-                                + " well..Check your inventory next time and try again.");
+                cm.sendNext("I'm really sorry that you do not have enough space to keep the reward...Oh"
+                        + " well..Check your inventory next time and try again.");
             }
         } else if (points == 0) {
-            cm.sendNext(
-                    "Wow...You didn't obtained a point at all. Therefore, I can't give you any"
-                            + " rewards.");
+            cm.sendNext("Wow...You didn't obtained a point at all. Therefore, I can't give you any" + " rewards.");
         } else {
-            cm.sendNext(
-                    "Well done, you've obtained "
-                            + points
-                            + " points out of "
-                            + INITIAL_QUESTION
-                            + " points. Here's some reward for you.");
+            cm.sendNext("Well done, you've obtained "
+                    + points
+                    + " points out of "
+                    + INITIAL_QUESTION
+                    + " points. Here's some reward for you.");
             c.getPlayer().gainMeso(100 * points, true, true, true);
         }
         cm.dispose();

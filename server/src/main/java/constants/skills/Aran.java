@@ -1,23 +1,23 @@
 /*
 	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+	Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
+			Matthias Butz <matze@odinms.de>
+			Jan Christian Meyer <vimes@odinms.de>
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation version 3 as published by
-    the Free Software Foundation. You may not use, modify or distribute
-    this program under any other version of the GNU Affero General Public
-    License.
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU Affero General Public License as
+	published by the Free Software Foundation version 3 as published by
+	the Free Software Foundation. You may not use, modify or distribute
+	this program under any other version of the GNU Affero General Public
+	License.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU Affero General Public License for more details.
 
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	You should have received a copy of the GNU Affero General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package constants.skills;
@@ -41,7 +41,7 @@ public class Aran {
     public static final int DECENT_HYPER_BODY = 20008003;
     public static final int BERSERK_FURY = 20001011;
     public static final int COMBO_ABILITY = 21000000;
-    public static final int TUTORIAL4 = 21000000; //psh i don't know, call it the same
+    public static final int TUTORIAL4 = 21000000; // psh i don't know, call it the same
     public static final int POLEARM_BOOSTER = 21001003;
     public static final int MAPLE_WARRIOR = 21121000;
     public static final int FREEZE_STANDING = 21121003;

@@ -14,9 +14,7 @@ public enum MapleBuffStat implements Serializable {
     DODGE_CHANGE_BUFF(0x200, 2),
     CONVERSION(0x400, 2),
     REAPER(0x800, 2),
-    MECH_CHANGE(
-            0x2000,
-            2), // determined in packet by [skillLevel or something] [skillid] 1E E0 58 52???
+    MECH_CHANGE(0x2000, 2), // determined in packet by [skillLevel or something] [skillid] 1E E0 58 52???
     DARK_AURA(0x8000, 2),
     BLUE_AURA(0x10000, 2),
     YELLOW_AURA(0x20000, 2),

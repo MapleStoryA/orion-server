@@ -21,13 +21,11 @@ public class BBSHandlerUtils {
             return;
         }
         c.getSession()
-                .write(
-                        MaplePacketCreator.BBSThreadList(
-                                GuildManager.getBBS(c.getPlayer().getGuildId()), start));
+                .write(MaplePacketCreator.BBSThreadList(
+                        GuildManager.getBBS(c.getPlayer().getGuildId()), start));
     }
 
-    public static final void newBBSReply(
-            final MapleClient c, final int localthreadid, final String text) {
+    public static final void newBBSReply(final MapleClient c, final int localthreadid, final String text) {
         if (c.getPlayer().getGuildId() <= 0) {
             return;
         }
@@ -37,11 +35,7 @@ public class BBSHandlerUtils {
     }
 
     public static final void editBBSThread(
-            final MapleClient c,
-            final String title,
-            final String text,
-            final int icon,
-            final int localthreadid) {
+            final MapleClient c, final String title, final String text, final int icon, final int localthreadid) {
         if (c.getPlayer().getGuildId() <= 0) {
             return; // expelled while viewing?
         }
@@ -57,11 +51,7 @@ public class BBSHandlerUtils {
     }
 
     public static final void newBBSThread(
-            final MapleClient c,
-            final String title,
-            final String text,
-            final int icon,
-            final boolean bNotice) {
+            final MapleClient c, final String title, final String text, final int icon, final boolean bNotice) {
         if (c.getPlayer().getGuildId() <= 0) {
             return; // expelled while viewing?
         }
@@ -87,8 +77,7 @@ public class BBSHandlerUtils {
                 c.getPlayer().getGuildRank());
     }
 
-    public static final void deleteBBSReply(
-            final MapleClient c, final int localthreadid, final int replyid) {
+    public static final void deleteBBSReply(final MapleClient c, final int localthreadid, final int replyid) {
         if (c.getPlayer().getGuildId() <= 0) {
             return;
         }

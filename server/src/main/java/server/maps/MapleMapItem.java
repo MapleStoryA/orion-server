@@ -20,12 +20,7 @@ public class MapleMapItem extends AbstractMapleMapObject {
     protected long nextExpiry = 0, nextFFA = 0;
 
     public MapleMapItem(
-            IItem item,
-            Point position,
-            MapleMapObject dropper,
-            MapleCharacter owner,
-            byte type,
-            boolean playerDrop) {
+            IItem item, Point position, MapleMapObject dropper, MapleCharacter owner, byte type, boolean playerDrop) {
         setPosition(position);
         this.item = item;
         this.dropper = dropper;
@@ -52,12 +47,7 @@ public class MapleMapItem extends AbstractMapleMapObject {
     }
 
     public MapleMapItem(
-            int meso,
-            Point position,
-            MapleMapObject dropper,
-            MapleCharacter owner,
-            byte type,
-            boolean playerDrop) {
+            int meso, Point position, MapleMapObject dropper, MapleCharacter owner, byte type, boolean playerDrop) {
         setPosition(position);
         this.item = null;
         this.dropper = dropper;
@@ -145,10 +135,7 @@ public class MapleMapItem extends AbstractMapleMapObject {
     @Override
     public void sendSpawnData(final MapleClient client) {
         if (canLoot(client)) {
-            client.getSession()
-                    .write(
-                            MaplePacketCreator.dropItemFromMapObject(
-                                    this, null, getPosition(), (byte) 2));
+            client.getSession().write(MaplePacketCreator.dropItemFromMapObject(this, null, getPosition(), (byte) 2));
         }
     }
 

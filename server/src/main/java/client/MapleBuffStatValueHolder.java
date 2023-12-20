@@ -11,8 +11,7 @@ public class MapleBuffStatValueHolder {
     private int value;
     private ScheduledFuture<?> schedule;
 
-    public MapleBuffStatValueHolder(
-            MapleStatEffect effect, long startTime, ScheduledFuture<?> schedule, int value) {
+    public MapleBuffStatValueHolder(MapleStatEffect effect, long startTime, ScheduledFuture<?> schedule, int value) {
         super();
         this.setEffect(effect);
         this.setStartTime(startTime);

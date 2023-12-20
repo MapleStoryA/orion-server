@@ -52,9 +52,7 @@ public abstract class MapleEvent {
                 if (e.isRunning) {
                     for (int i : e.mapid) {
                         if (cserv.getEvent() == i) {
-                            e.broadcast(
-                                    MaplePacketCreator.serverNotice(
-                                            0, "The event will start in 30 seconds!"));
+                            e.broadcast(MaplePacketCreator.serverNotice(0, "The event will start in 30 seconds!"));
                             e.broadcast(MaplePacketCreator.getClock(30));
                             EventTimer.getInstance()
                                     .schedule(
@@ -107,8 +105,7 @@ public abstract class MapleEvent {
         }
     }
 
-    public static final String scheduleEvent(
-            final MapleEventType event, final ChannelServer cserv) {
+    public static final String scheduleEvent(final MapleEventType event, final ChannelServer cserv) {
         if (cserv.getEvent() != -1 || cserv.getEvent(event) == null) {
             return "The event must not have been already scheduled.";
         }
@@ -119,16 +116,15 @@ public abstract class MapleEvent {
         }
         cserv.setEvent(cserv.getEvent(event).mapid[0]);
         cserv.getEvent(event).reset();
-        BroadcastHelper.broadcastMessage(
-                MaplePacketCreator.serverNotice(
-                        0,
-                        "Hello! Let's play a "
-                                + event
-                                + " event in channel "
-                                + cserv.getChannel()
-                                + "! Change to channel "
-                                + cserv.getChannel()
-                                + " and use @event command!"));
+        BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(
+                0,
+                "Hello! Let's play a "
+                        + event
+                        + " event in channel "
+                        + cserv.getChannel()
+                        + "! Change to channel "
+                        + cserv.getChannel()
+                        + " and use @event command!"));
         return "";
     }
 

@@ -21,9 +21,7 @@ public class PasswordEncryptor {
     }
 
     public boolean verifyPassword(String rawPassword, String hashedPassword, String salt) {
-        return BCrypt.verifyer()
-                .verify(salt.concat(rawPassword).toCharArray(), hashedPassword)
-                .verified;
+        return BCrypt.verifyer().verify(salt.concat(rawPassword).toCharArray(), hashedPassword).verified;
     }
 
     private String createSha256(String seed) throws NoSuchAlgorithmException {

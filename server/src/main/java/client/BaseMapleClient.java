@@ -16,7 +16,10 @@ public class BaseMapleClient {
     protected final MapleAESOFB receive;
     protected NetworkSession session;
     private long lastPong = 0;
-    @Getter private short loginAttempt = 0;
+
+    @Getter
+    private short loginAttempt = 0;
+
     private ScheduledFuture<?> idleTask = null;
 
     public BaseMapleClient(MapleAESOFB send, MapleAESOFB receive, NetworkSession session) {

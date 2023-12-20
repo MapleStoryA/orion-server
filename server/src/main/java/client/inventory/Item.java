@@ -16,12 +16,7 @@ public class Item implements IItem {
     private String owner = "";
     private String giftFrom = "";
 
-    public Item(
-            final int id,
-            final short position,
-            final short quantity,
-            final byte flag,
-            final int uniqueid) {
+    public Item(final int id, final short position, final short quantity, final byte flag, final int uniqueid) {
         super();
         this.id = id;
         this.position = position;

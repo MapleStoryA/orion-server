@@ -6,6 +6,5 @@ public final class BasicRewardChances {
     public static final int SEMI_RARE = 5000;
     public static final int RARE = 1000;
 
-    private BasicRewardChances() {
-    }
+    private BasicRewardChances() {}
 }

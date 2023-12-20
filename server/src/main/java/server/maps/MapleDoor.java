@@ -64,21 +64,19 @@ public class MapleDoor extends AbstractMapleMapObject {
                 freePortals.add(port);
             }
         }
-        Collections.sort(
-                freePortals,
-                new Comparator<MaplePortal>() {
+        Collections.sort(freePortals, new Comparator<MaplePortal>() {
 
-                    @Override
-                    public int compare(final MaplePortal o1, final MaplePortal o2) {
-                        if (o1.getId() < o2.getId()) {
-                            return -1;
-                        } else if (o1.getId() == o2.getId()) {
-                            return 0;
-                        } else {
-                            return 1;
-                        }
-                    }
-                });
+            @Override
+            public int compare(final MaplePortal o1, final MaplePortal o2) {
+                if (o1.getId() < o2.getId()) {
+                    return -1;
+                } else if (o1.getId() == o2.getId()) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            }
+        });
         for (final MapleMapObject obj : town.getAllDoorsThreadsafe()) {
             final MapleDoor door = (MapleDoor) obj;
             /// hmm
@@ -105,30 +103,27 @@ public class MapleDoor extends AbstractMapleMapObject {
                 || getOwnerId() == client.getPlayer().getId()
                 || (getOwner() != null
                         && getOwner().getParty() != null
-                        && getOwner().getParty().getMemberById(client.getPlayer().getId())
+                        && getOwner()
+                                        .getParty()
+                                        .getMemberById(client.getPlayer().getId())
                                 != null)) {
             client.getSession()
-                    .write(
-                            MaplePacketCreator.spawnDoor(
-                                    getOwnerId(),
-                                    town.getId() == client.getPlayer().getMapId()
-                                            ? townPortal.getPosition()
-                                            : targetPosition,
-                                    true));
+                    .write(MaplePacketCreator.spawnDoor(
+                            getOwnerId(),
+                            town.getId() == client.getPlayer().getMapId() ? townPortal.getPosition() : targetPosition,
+                            true));
             if (getOwner() != null
                     && getOwner().getParty() != null
                     && (getOwnerId() == client.getPlayer().getId()
-                            || getOwner().getParty().getMemberById(client.getPlayer().getId())
+                            || getOwner()
+                                            .getParty()
+                                            .getMemberById(client.getPlayer().getId())
                                     != null)) {
                 client.getSession()
-                        .write(
-                                MapleUserPackets.partyPortal(
-                                        town.getId(), target.getId(), skillId, targetPosition));
+                        .write(MapleUserPackets.partyPortal(town.getId(), target.getId(), skillId, targetPosition));
             }
             client.getSession()
-                    .write(
-                            MaplePacketCreator.spawnPortal(
-                                    town.getId(), target.getId(), skillId, targetPosition));
+                    .write(MaplePacketCreator.spawnPortal(town.getId(), target.getId(), skillId, targetPosition));
         }
     }
 
@@ -141,16 +136,17 @@ public class MapleDoor extends AbstractMapleMapObject {
                 || getOwnerId() == client.getPlayer().getId()
                 || (getOwner() != null
                         && getOwner().getParty() != null
-                        && getOwner().getParty().getMemberById(client.getPlayer().getId())
+                        && getOwner()
+                                        .getParty()
+                                        .getMemberById(client.getPlayer().getId())
                                 != null)) {
             if (getOwner().getParty() != null
                     && (getOwnerId() == client.getPlayer().getId()
-                            || getOwner().getParty().getMemberById(client.getPlayer().getId())
+                            || getOwner()
+                                            .getParty()
+                                            .getMemberById(client.getPlayer().getId())
                                     != null)) {
-                client.getSession()
-                        .write(
-                                MapleUserPackets.partyPortal(
-                                        999999999, 999999999, 0, new Point(-1, -1)));
+                client.getSession().write(MapleUserPackets.partyPortal(999999999, 999999999, 0, new Point(-1, -1)));
             }
             client.getSession().write(MaplePacketCreator.removeDoor(getOwnerId(), false));
             client.getSession().write(MaplePacketCreator.removeDoor(getOwnerId(), true));

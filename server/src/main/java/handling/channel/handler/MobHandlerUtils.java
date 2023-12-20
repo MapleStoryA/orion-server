@@ -10,12 +10,10 @@ import tools.MaplePacketCreator;
 @lombok.extern.slf4j.Slf4j
 public class MobHandlerUtils {
 
-    public static final void checkShammos(
-            final MapleCharacter chr, final MapleMonster mobto, final MapleMap map) {
+    public static final void checkShammos(final MapleCharacter chr, final MapleMonster mobto, final MapleMap map) {
         if (!mobto.isAlive() && mobto.getId() == 9300275) { // shammos
             for (MapleCharacter chrz : map.getCharactersThreadsafe()) { // check for 2022698
-                if (chrz.getParty() != null
-                        && chrz.getParty().getLeader().getId() == chrz.getId()) {
+                if (chrz.getParty() != null && chrz.getParty().getLeader().getId() == chrz.getId()) {
                     // leader
                     if (chrz.haveItem(2022698)) {
                         MapleInventoryManipulator.removeById(
@@ -26,9 +24,7 @@ public class MobHandlerUtils {
                     break;
                 }
             }
-            map.broadcastMessage(
-                    MaplePacketCreator.serverNotice(
-                            6, "Your party has failed to protect the monster."));
+            map.broadcastMessage(MaplePacketCreator.serverNotice(6, "Your party has failed to protect the monster."));
             final MapleMap mapp =
                     chr.getClient().getChannelServer().getMapFactory().getMap(921120001);
             for (MapleCharacter chrz : map.getCharactersThreadsafe()) {

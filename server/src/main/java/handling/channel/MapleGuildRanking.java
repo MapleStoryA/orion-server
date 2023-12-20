@@ -27,19 +27,17 @@ public class MapleGuildRanking {
     private void reload() {
         ranks.clear();
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps =
-                    con.prepareStatement("SELECT * FROM guilds ORDER BY `GP` DESC LIMIT 50");
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM guilds ORDER BY `GP` DESC LIMIT 50");
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                final GuildRankingInfo rank =
-                        new GuildRankingInfo(
-                                rs.getString("name"),
-                                rs.getInt("GP"),
-                                rs.getInt("logo"),
-                                rs.getInt("logoColor"),
-                                rs.getInt("logoBG"),
-                                rs.getInt("logoBGColor"));
+                final GuildRankingInfo rank = new GuildRankingInfo(
+                        rs.getString("name"),
+                        rs.getInt("GP"),
+                        rs.getInt("logo"),
+                        rs.getInt("logoColor"),
+                        rs.getInt("logoBG"),
+                        rs.getInt("logoBGColor"));
 
                 ranks.add(rank);
             }
@@ -60,8 +58,7 @@ public class MapleGuildRanking {
         private final int logobg;
         private final int logobgcolor;
 
-        public GuildRankingInfo(
-                String name, int gp, int logo, int logocolor, int logobg, int logobgcolor) {
+        public GuildRankingInfo(String name, int gp, int logo, int logocolor, int logobg, int logobgcolor) {
             this.name = name;
             this.gp = gp;
             this.logo = logo;

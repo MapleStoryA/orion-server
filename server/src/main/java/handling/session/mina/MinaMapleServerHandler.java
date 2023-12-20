@@ -54,8 +54,7 @@ public class MinaMapleServerHandler extends IoHandlerAdapter {
         final var client = new MapleClient(ivSend, ivRecv, minaSession);
         client.setChannel(channel);
 
-        MinaMaplePacketDecoder.DecoderState decoderState =
-                new MinaMaplePacketDecoder.DecoderState();
+        MinaMaplePacketDecoder.DecoderState decoderState = new MinaMaplePacketDecoder.DecoderState();
         session.setAttribute(MinaMaplePacketDecoder.DECODER_STATE_KEY, decoderState);
 
         session.write(LoginPacket.getHello(ServerConstants.MAPLE_VERSION, ivSend, ivRecv));

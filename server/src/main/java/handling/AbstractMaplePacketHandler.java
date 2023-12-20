@@ -1,14 +1,12 @@
 package handling;
 
 import client.MapleClient;
+import java.awt.*;
 import server.maps.AnimatedMapleMapObject;
 import server.movement.Elem;
 import server.movement.MovePath;
 
-import java.awt.*;
-
 public abstract class AbstractMaplePacketHandler implements MaplePacketHandler {
-
 
     @Override
     public boolean validateState(MapleClient c) {
@@ -23,5 +21,4 @@ public abstract class AbstractMaplePacketHandler implements MaplePacketHandler {
             target.setStance(elem.bMoveAction);
         }
     }
-
 }

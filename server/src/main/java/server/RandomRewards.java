@@ -1,16 +1,15 @@
 package server;
 
 import constants.GameConstants;
-import tools.Randomizer;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import tools.Randomizer;
 
 @lombok.extern.slf4j.Slf4j
 public class RandomRewards {
 
-    private final static RandomRewards instance = new RandomRewards();
+    private static final RandomRewards instance = new RandomRewards();
     private List<Integer> compiledGold = null;
     private List<Integer> compiledSilver = null;
     private List<Integer> compiledFishing = null;
@@ -19,7 +18,6 @@ public class RandomRewards {
     private List<Integer> compiledEventB = null;
     private List<Integer> compiledEventA = null;
     private List<Integer> compiledCashSurprise = null;
-
 
     protected RandomRewards() {
         // Gold Box

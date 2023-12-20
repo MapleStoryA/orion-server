@@ -4,13 +4,12 @@ import client.MapleCharacter;
 import handling.world.WorldServer;
 import handling.world.helper.BroadcastHelper;
 import handling.world.helper.FindCommand;
-import lombok.extern.slf4j.Slf4j;
-import tools.MaplePacketCreator;
-
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import lombok.extern.slf4j.Slf4j;
+import tools.MaplePacketCreator;
 
 @Slf4j
 public class GuildManager {
@@ -40,7 +39,7 @@ public class GuildManager {
             lock.writeLock().lock();
             try {
                 ret = new MapleGuild(id);
-                if (ret == null || ret.getId() <= 0 || !ret.isProper()) { //failed to load
+                if (ret == null || ret.getId() <= 0 || !ret.isProper()) { // failed to load
                     return null;
                 }
                 guilds.put(id, ret);
@@ -48,7 +47,7 @@ public class GuildManager {
                 lock.writeLock().unlock();
             }
         }
-        return ret; //Guild doesn't exist?
+        return ret; // Guild doesn't exist?
     }
 
     public static MapleGuild getGuildByName(String guildName) {
@@ -169,13 +168,13 @@ public class GuildManager {
 
     public static void deleteGuildCharacter(int guildid, int charid) {
 
-        //ensure it's loaded on world server
-        //setGuildMemberOnline(mc, false, -1);
+        // ensure it's loaded on world server
+        // setGuildMemberOnline(mc, false, -1);
         MapleGuild g = getGuild(guildid);
         if (g != null) {
             MapleGuildCharacter mc = g.getMGC(charid);
             if (mc != null) {
-                if (mc.getGuildRank() > 1) //not leader
+                if (mc.getGuildRank() > 1) // not leader
                 {
                     g.leaveGuild(mc);
                 } else {
@@ -251,7 +250,13 @@ public class GuildManager {
         return null;
     }
 
-    public static int addBBSThread(final int guildid, final String title, final String text, final int icon, final boolean bNotice, final int posterID) {
+    public static int addBBSThread(
+            final int guildid,
+            final String title,
+            final String text,
+            final int icon,
+            final boolean bNotice,
+            final int posterID) {
         final MapleGuild g = getGuild(guildid);
         if (g != null) {
             return g.addBBSThread(title, text, icon, bNotice, posterID);
@@ -259,14 +264,22 @@ public class GuildManager {
         return -1;
     }
 
-    public static void editBBSThread(final int guildid, final int localthreadid, final String title, final String text, final int icon, final int posterID, final int guildRank) {
+    public static void editBBSThread(
+            final int guildid,
+            final int localthreadid,
+            final String title,
+            final String text,
+            final int icon,
+            final int posterID,
+            final int guildRank) {
         final MapleGuild g = getGuild(guildid);
         if (g != null) {
             g.editBBSThread(localthreadid, title, text, icon, posterID, guildRank);
         }
     }
 
-    public static void deleteBBSThread(final int guildid, final int localthreadid, final int posterID, final int guildRank) {
+    public static void deleteBBSThread(
+            final int guildid, final int localthreadid, final int posterID, final int guildRank) {
         final MapleGuild g = getGuild(guildid);
         if (g != null) {
             g.deleteBBSThread(localthreadid, posterID, guildRank);
@@ -280,7 +293,8 @@ public class GuildManager {
         }
     }
 
-    public static void deleteBBSReply(final int guildid, final int localthreadid, final int replyid, final int posterID, final int guildRank) {
+    public static void deleteBBSReply(
+            final int guildid, final int localthreadid, final int replyid, final int posterID, final int guildRank) {
         final MapleGuild g = getGuild(guildid);
         if (g != null) {
             g.deleteBBSReply(localthreadid, replyid, posterID, guildRank);
@@ -288,14 +302,20 @@ public class GuildManager {
     }
 
     public static void changeEmblem(int gid, int affectedPlayers, MapleGuildSummary mgs) {
-        BroadcastHelper.sendGuildPacket(affectedPlayers, MaplePacketCreator.guildEmblemChange(gid, mgs.getLogoBG(), mgs.getLogoBGColor(), mgs.getLogo(), mgs.getLogoColor()), -1, gid);
-        setGuildAndRank(affectedPlayers, -1, -1, -1);    //respawn player
+        BroadcastHelper.sendGuildPacket(
+                affectedPlayers,
+                MaplePacketCreator.guildEmblemChange(
+                        gid, mgs.getLogoBG(), mgs.getLogoBGColor(), mgs.getLogo(), mgs.getLogoColor()),
+                -1,
+                gid);
+        setGuildAndRank(affectedPlayers, -1, -1, -1); // respawn player
     }
 
     public static void changeName(int gid, int affectedPlayers, MapleGuildSummary mgs) {
-        //Broadcast.sendGuildPacket(affectedPlayers, MaplePacketCreator.guildEmblemChange(gid, mgs.getLogoBG(), mgs.getLogoBGColor(), mgs.getLogo(), mgs.getLogoColor()), -1, gid);
+        // Broadcast.sendGuildPacket(affectedPlayers, MaplePacketCreator.guildEmblemChange(gid, mgs.getLogoBG(),
+        // mgs.getLogoBGColor(), mgs.getLogo(), mgs.getLogoColor()), -1, gid);
         // should we reload player
-        setGuildAndRank(affectedPlayers, -1, -1, -1);    //respawn player
+        setGuildAndRank(affectedPlayers, -1, -1, -1); // respawn player
     }
 
     public static void setGuildAndRank(int cid, int guildid, int rank, int alliancerank) {
@@ -309,7 +329,7 @@ public class GuildManager {
             return;
         }
         boolean bDifferentGuild;
-        if (guildid == -1 && rank == -1) { //just need a respawn
+        if (guildid == -1 && rank == -1) { // just need a respawn
             bDifferentGuild = true;
         } else {
             bDifferentGuild = guildid != mc.getGuildId();

@@ -7,9 +7,7 @@ public abstract class AbstractMapEvent implements MapEvent {
 
     protected MapleMap map;
 
-    private AbstractMapEvent() {
-
-    }
+    private AbstractMapEvent() {}
 
     public AbstractMapEvent(MapleMap map) {
         this();
@@ -17,14 +15,8 @@ public abstract class AbstractMapEvent implements MapEvent {
     }
 
     @Override
-    public void onUserEnter(MapleCharacter c) {
-
-
-    }
+    public void onUserEnter(MapleCharacter c) {}
 
     @Override
-    public void onUserExit(MapleCharacter c) {
-
-    }
-
+    public void onUserExit(MapleCharacter c) {}
 }

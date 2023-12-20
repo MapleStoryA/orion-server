@@ -83,14 +83,12 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         for (final ReactorDropEntry d : items) {
             if (d.itemId == 0) {
                 range = maxMeso - minMeso;
-                mesoDrop =
-                        Randomizer.nextInt(range)
-                                + minMeso
-                                        * WorldServer.getInstance()
-                                                .getChannel(getClient().getChannel())
-                                                .getMesoRate();
-                reactor.getMap()
-                        .spawnMesoDrop(mesoDrop, dropPos, reactor, getPlayer(), false, (byte) 0);
+                mesoDrop = Randomizer.nextInt(range)
+                        + minMeso
+                                * WorldServer.getInstance()
+                                        .getChannel(getClient().getChannel())
+                                        .getMesoRate();
+                reactor.getMap().spawnMesoDrop(mesoDrop, dropPos, reactor, getPlayer(), false, (byte) 0);
             } else {
                 IItem drop;
                 if (GameConstants.getInventoryType(d.itemId) != MapleInventoryType.EQUIP) {
@@ -112,8 +110,7 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         } else {
             drop = ii.randomizeStats((Equip) ii.getEquipById(itemId));
         }
-        reactor.getMap()
-                .spawnItemDrop(reactor, getPlayer(), drop, reactor.getPosition(), false, false);
+        reactor.getMap().spawnItemDrop(reactor, getPlayer(), drop, reactor.getPosition(), false, false);
     }
 
     @Override

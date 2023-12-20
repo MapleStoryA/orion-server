@@ -13,9 +13,7 @@ import tools.Randomizer;
 public class Event_DojoAgent {
 
     private static final int baseAgentMapId = 970030000; // 9500337 = mano
-    private static final Point point1 = new Point(140, 0),
-            point2 = new Point(-193, 0),
-            point3 = new Point(355, 0);
+    private static final Point point1 = new Point(140, 0), point2 = new Point(-193, 0), point3 = new Point(355, 0);
 
     public static boolean warpStartAgent(final MapleCharacter c, final boolean party) {
         final int stage = 1;
@@ -132,18 +130,14 @@ public class Event_DojoAgent {
                             final int point = (points * 3);
                             chr.modifyCSPoints(1, point * 4, true);
                             chr.setDojo(chr.getDojo() + point);
-                            chr.getClient()
-                                    .getSession()
-                                    .write(MaplePacketCreator.Mulung_Pts(point, chr.getDojo()));
+                            chr.getClient().getSession().write(MaplePacketCreator.Mulung_Pts(point, chr.getDojo()));
                         }
                     }
                 } else {
                     final int point = ((points + 1) * 3);
                     c.modifyCSPoints(1, point * 4, true);
                     c.setDojo(c.getDojo() + point);
-                    c.getClient()
-                            .getSession()
-                            .write(MaplePacketCreator.Mulung_Pts(point, c.getDojo()));
+                    c.getClient().getSession().write(MaplePacketCreator.Mulung_Pts(point, c.getDojo()));
                 }
             }
             if (currentmap.getId() >= 925023800 && currentmap.getId() <= 925023814) {

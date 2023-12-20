@@ -10,20 +10,12 @@ import tools.Pair;
 @lombok.extern.slf4j.Slf4j
 public class MapleMonsterStats {
 
-    private final Map<Element, ElementalEffectiveness> resistance =
-            new HashMap<Element, ElementalEffectiveness>();
+    private final Map<Element, ElementalEffectiveness> resistance = new HashMap<Element, ElementalEffectiveness>();
     private final List<Pair<Integer, Integer>> skills = new ArrayList<Pair<Integer, Integer>>();
     private byte cp, selfDestruction_action, tagColor, tagBgColor, rareItemDropLevel, HPDisplayType;
     private short level, PhysicalDefense, MagicDefense, eva;
     private long hp;
-    private int exp,
-            mp,
-            removeAfter,
-            buffToGive,
-            fixedDamage,
-            selfDestruction_hp,
-            dropItemPeriod,
-            point;
+    private int exp, mp, removeAfter, buffToGive, fixedDamage, selfDestruction_hp, dropItemPeriod, point;
     private boolean boss,
             undead,
             ffaLoot,
