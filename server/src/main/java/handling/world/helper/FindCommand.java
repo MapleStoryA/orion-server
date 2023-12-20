@@ -1,7 +1,6 @@
 package handling.world.helper;
 
 import handling.world.WorldServer;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -65,7 +64,7 @@ public class FindCommand {
             lock.readLock().unlock();
         }
         if (ret != null) {
-            if (ret != -10 && ret != -20 && WorldServer.getInstance().getChannel(ret) == null) { //wha
+            if (ret != -10 && ret != -20 && WorldServer.getInstance().getChannel(ret) == null) { // wha
                 forceDeregister(id);
                 return -1;
             }
@@ -83,7 +82,7 @@ public class FindCommand {
             lock.readLock().unlock();
         }
         if (ret != null) {
-            if (ret != -10 && ret != -20 && WorldServer.getInstance().getChannel(ret) == null) { //wha
+            if (ret != -10 && ret != -20 && WorldServer.getInstance().getChannel(ret) == null) { // wha
                 forceDeregister(st);
                 return -1;
             }

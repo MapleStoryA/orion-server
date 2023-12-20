@@ -62,8 +62,7 @@ public class MapleOxQuizFactory {
     public Entry<Pair<Integer, Integer>, MapleOxQuizEntry> grabRandomQuestion() {
         final int size = questionCache.size();
         while (true) {
-            for (Entry<Pair<Integer, Integer>, MapleOxQuizEntry> oxquiz :
-                    questionCache.entrySet()) {
+            for (Entry<Pair<Integer, Integer>, MapleOxQuizEntry> oxquiz : questionCache.entrySet()) {
                 if (Randomizer.nextInt(size) == 0) {
                     return oxquiz;
                 }
@@ -80,9 +79,7 @@ public class MapleOxQuizFactory {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 questionCache.put(
-                        new Pair<Integer, Integer>(
-                                rs.getInt("questionset"), rs.getInt("questionid")),
-                        get(rs));
+                        new Pair<Integer, Integer>(rs.getInt("questionset"), rs.getInt("questionid")), get(rs));
             }
             rs.close();
             ps.close();
@@ -115,12 +112,10 @@ public class MapleOxQuizFactory {
             if (initialized) {
                 return null;
             }
-            mooe =
-                    getFromSQL(
-                            "SELECT * FROM wz_oxdata WHERE questionset = "
-                                    + pair.getLeft()
-                                    + " AND questionid = "
-                                    + pair.getRight());
+            mooe = getFromSQL("SELECT * FROM wz_oxdata WHERE questionset = "
+                    + pair.getLeft()
+                    + " AND questionid = "
+                    + pair.getRight());
             questionCache.put(pair, mooe);
         }
         return mooe;
@@ -153,8 +148,7 @@ public class MapleOxQuizFactory {
         private final int questionset;
         private final int questionid;
 
-        public MapleOxQuizEntry(
-                String question, String answerText, int answer, int questionset, int questionid) {
+        public MapleOxQuizEntry(String question, String answerText, int answer, int questionset, int questionid) {
             this.question = question;
             this.answerText = answerText;
             this.answer = answer;

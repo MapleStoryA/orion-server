@@ -362,9 +362,7 @@ public class Equip extends Item implements IEquip {
                 || GameConstants.getExpForLevel(getEquipLevel(), getItemId()) <= 0) {
             return 0;
         }
-        return getEquipExpForLevel()
-                * 100
-                / GameConstants.getExpForLevel(getEquipLevel(), getItemId());
+        return getEquipExpForLevel() * 100 / GameConstants.getExpForLevel(getEquipLevel(), getItemId());
     }
 
     @Override
@@ -400,11 +398,7 @@ public class Equip extends Item implements IEquip {
     public void setQuantity(short quantity) {
         if (quantity < 0 || quantity > 1) {
             throw new RuntimeException(
-                    "Setting the quantity to "
-                            + quantity
-                            + " on an equip (itemid: "
-                            + getItemId()
-                            + ")");
+                    "Setting the quantity to " + quantity + " on an equip (itemid: " + getItemId() + ")");
         }
         super.setQuantity(quantity);
     }
@@ -479,8 +473,7 @@ public class Equip extends Item implements IEquip {
 
     public void renewPotential() {
         // 4% chance upgrade
-        final int rank =
-                Randomizer.nextInt(100) < 4 && getState() != 7 ? -(getState() + 1) : -(getState());
+        final int rank = Randomizer.nextInt(100) < 4 && getState() != 7 ? -(getState() + 1) : -(getState());
         setPotential1((short) rank);
         setPotential2((short) (getPotential3() > 0 ? rank : 0)); // 1/10 chance of 3 line
         setPotential3((short) 0); // just set it theoretically

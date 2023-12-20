@@ -27,13 +27,11 @@ public class ThirdJobUtils {
     }
 
     public static boolean isPirateSecondJob(MapleCharacter player) {
-        return player.getJob().equals(MapleJob.BRAWLER)
-                || player.getJob().equals(MapleJob.GUNSLINGER);
+        return player.getJob().equals(MapleJob.BRAWLER) || player.getJob().equals(MapleJob.GUNSLINGER);
     }
 
     public static boolean isBowmanSecondJob(MapleCharacter player) {
-        return player.getJob().equals(MapleJob.HUNTER)
-                || player.getJob().equals(MapleJob.CROSSBOWMAN);
+        return player.getJob().equals(MapleJob.HUNTER) || player.getJob().equals(MapleJob.CROSSBOWMAN);
     }
 
     public static boolean isClassicThiefSecondJob(MapleCharacter player) {

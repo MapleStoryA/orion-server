@@ -8,8 +8,7 @@ public class AutoSaver {
 
     private static AutoSaver instance;
 
-    private AutoSaver() {
-    }
+    private AutoSaver() {}
 
     public static AutoSaver getInstance() {
         if (instance == null) {

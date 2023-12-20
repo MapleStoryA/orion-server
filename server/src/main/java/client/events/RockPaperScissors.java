@@ -23,25 +23,17 @@ public class RockPaperScissors {
         if (ableAnswer && !win && answer >= 0 && answer <= 2) {
             final int response = Randomizer.nextInt(3);
             if (response == answer) {
-                c.getSession()
-                        .write(
-                                MaplePacketCreator.getRPSMode(
-                                        (byte) 0x0B, -1, (byte) response, (byte) round));
+                c.getSession().write(MaplePacketCreator.getRPSMode((byte) 0x0B, -1, (byte) response, (byte) round));
                 // dont do anything. they can still answer once a draw
             } else if ((answer == 0 && response == 2)
                     || (answer == 1 && response == 0)
                     || (answer == 2 && response == 1)) { // they win
                 c.getSession()
-                        .write(
-                                MaplePacketCreator.getRPSMode(
-                                        (byte) 0x0B, -1, (byte) response, (byte) (round + 1)));
+                        .write(MaplePacketCreator.getRPSMode((byte) 0x0B, -1, (byte) response, (byte) (round + 1)));
                 ableAnswer = false;
                 win = true;
             } else { // they lose
-                c.getSession()
-                        .write(
-                                MaplePacketCreator.getRPSMode(
-                                        (byte) 0x0B, -1, (byte) response, (byte) -1));
+                c.getSession().write(MaplePacketCreator.getRPSMode((byte) 0x0B, -1, (byte) response, (byte) -1));
                 ableAnswer = false;
             }
             return true;

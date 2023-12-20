@@ -20,7 +20,6 @@ package handling.world.expedition;
 
 import handling.world.party.MapleParty;
 import handling.world.party.PartyManager;
-
 import java.util.ArrayList;
 import java.util.List;
 

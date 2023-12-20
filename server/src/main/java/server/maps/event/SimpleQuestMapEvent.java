@@ -19,7 +19,5 @@ public class SimpleQuestMapEvent extends AbstractMapEvent {
     @Override
     public void onUserExit(MapleCharacter c) {
         map.killAllMonsters(true);
-
     }
-
 }

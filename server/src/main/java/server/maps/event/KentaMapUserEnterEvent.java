@@ -16,15 +16,12 @@ public class KentaMapUserEnterEvent implements MapEvent {
 
     private MapleMap map;
 
-    private KentaMapUserEnterEvent() {
-
-    }
+    private KentaMapUserEnterEvent() {}
 
     public KentaMapUserEnterEvent(MapleMap map) {
         this();
         this.map = map;
     }
-
 
     @Override
     public void onUserEnter(MapleCharacter c) {
@@ -37,23 +34,25 @@ public class KentaMapUserEnterEvent implements MapEvent {
         final MobTimer timerManager = MobTimer.getInstance();
 
         for (int i = 0; i < 10; i++) {
-            timerManager.schedule(() -> {
-                map.spawnAutoDrop(PHEROMONE_ID, monster.getPosition());
-            }, 1000 * i);
+            timerManager.schedule(
+                    () -> {
+                        map.spawnAutoDrop(PHEROMONE_ID, monster.getPosition());
+                    },
+                    1000 * i);
         }
-        MapTimer.getInstance().schedule(() -> {
-            for (MapleCharacter c1 : map.getCharacters()) {
-                c1.changeMap(230000003);
-            }
-        }, 1000 * 60 * 5);
-
+        MapTimer.getInstance()
+                .schedule(
+                        () -> {
+                            for (MapleCharacter c1 : map.getCharacters()) {
+                                c1.changeMap(230000003);
+                            }
+                        },
+                        1000 * 60 * 5);
     }
 
     @Override
     public void onUserExit(MapleCharacter c) {
         map.killMonster(HOG_ID);
         map.broadcastMessage(MaplePacketCreator.stopClock());
-
     }
-
 }

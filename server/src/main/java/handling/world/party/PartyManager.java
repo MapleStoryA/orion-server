@@ -24,8 +24,7 @@ public class PartyManager {
 
     static {
         try (var con = DatabaseConnection.getConnection();
-                PreparedStatement ps =
-                        con.prepareStatement("UPDATE `characters` SET `party` = -1")) {
+                PreparedStatement ps = con.prepareStatement("UPDATE `characters` SET `party` = -1")) {
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -55,16 +54,12 @@ public class PartyManager {
         for (MaplePartyCharacter partychar : party.getMembers()) {
             int ch = FindCommand.findChannel(partychar.getName());
             if (ch > 0) {
-                MapleCharacter chr =
-                        WorldServer.getInstance()
-                                .getChannel(ch)
-                                .getPlayerStorage()
-                                .getCharacterByName(partychar.getName());
-                if (chr != null
-                        && !chr.getName().equalsIgnoreCase(namefrom)) { // Extra check just in case
-                    chr.getClient()
-                            .getSession()
-                            .write(MaplePacketCreator.multiChat(namefrom, chattext, mode));
+                MapleCharacter chr = WorldServer.getInstance()
+                        .getChannel(ch)
+                        .getPlayerStorage()
+                        .getCharacterByName(partychar.getName());
+                if (chr != null && !chr.getName().equalsIgnoreCase(namefrom)) { // Extra check just in case
+                    chr.getClient().getSession().write(MaplePacketCreator.multiChat(namefrom, chattext, mode));
                 }
             }
         }
@@ -89,11 +84,10 @@ public class PartyManager {
         for (MaplePartyCharacter partychar : party.getMembers()) {
             int ch = FindCommand.findChannel(partychar.getName());
             if (ch > 0 && (exception == null || partychar.getId() != exception.getId())) {
-                MapleCharacter chr =
-                        WorldServer.getInstance()
-                                .getChannel(ch)
-                                .getPlayerStorage()
-                                .getCharacterByName(partychar.getName());
+                MapleCharacter chr = WorldServer.getInstance()
+                        .getChannel(ch)
+                        .getPlayerStorage()
+                        .getCharacterByName(partychar.getName());
                 if (chr != null) {
                     chr.getClient().getSession().write(packet);
                 }
@@ -120,11 +114,10 @@ public class PartyManager {
         for (MaplePartyCharacter partychar : party.getMembers()) {
             int ch = FindCommand.findChannel(partychar.getName());
             if (ch > 0) {
-                MapleCharacter chr =
-                        WorldServer.getInstance()
-                                .getChannel(ch)
-                                .getPlayerStorage()
-                                .getCharacterByName(partychar.getName());
+                MapleCharacter chr = WorldServer.getInstance()
+                        .getChannel(ch)
+                        .getPlayerStorage()
+                        .getCharacterByName(partychar.getName());
                 if (chr != null) {
                     chr.dropMessage(5, chattext);
                 }
@@ -158,9 +151,7 @@ public class PartyManager {
                 break;
             case DISBAND:
             case DISBAND_IN_EXPEDITION:
-                disbandParty(
-                        partyid,
-                        operation == PartyHandlerUtils.PartyOperation.DISBAND_IN_EXPEDITION);
+                disbandParty(partyid, operation == PartyHandlerUtils.PartyOperation.DISBAND_IN_EXPEDITION);
                 break;
             case SILENT_UPDATE:
             case LOG_ONOFF:
@@ -179,45 +170,31 @@ public class PartyManager {
                 || operation == PartyHandlerUtils.PartyOperation.EXPEL) {
             int chz = FindCommand.findChannel(target.getName());
             if (chz > 0) {
-                MapleCharacter chr =
-                        WorldServer.getInstance()
-                                .getStorage(chz)
-                                .getCharacterByName(target.getName());
+                MapleCharacter chr = WorldServer.getInstance().getStorage(chz).getCharacterByName(target.getName());
                 if (chr != null) {
                     chr.setParty(null);
                     chr.getClient()
                             .getSession()
-                            .write(
-                                    MapleUserPackets.updateParty(
-                                            chr.getClient().getChannel(),
-                                            party,
-                                            operation,
-                                            target));
+                            .write(MapleUserPackets.updateParty(
+                                    chr.getClient().getChannel(), party, operation, target));
                     if (oldExped > 0 && operation != PartyHandlerUtils.PartyOperation.MOVE_MEMBER) {
                         // Broadcast to self
                         chr.getClient()
                                 .getSession()
-                                .write(
-                                        MapleUserPackets.removeExpedition(
-                                                operation == PartyHandlerUtils.PartyOperation.LEAVE
-                                                        ? 61
-                                                        : 63));
+                                .write(MapleUserPackets.removeExpedition(
+                                        operation == PartyHandlerUtils.PartyOperation.LEAVE ? 61 : 63));
                         // Broadcast to remaining member
                         expedPacket(
                                 oldExped,
                                 MapleUserPackets.expeditionNotice(
-                                        operation == PartyHandlerUtils.PartyOperation.LEAVE
-                                                ? 60
-                                                : 62,
-                                        chr.getName()),
+                                        operation == PartyHandlerUtils.PartyOperation.LEAVE ? 60 : 62, chr.getName()),
                                 new MaplePartyCharacter(chr));
                     }
                 }
             }
         }
         if (party.getMembers().size() <= 0) {
-            disbandParty(
-                    partyid, operation == PartyHandlerUtils.PartyOperation.DISBAND_IN_EXPEDITION);
+            disbandParty(partyid, operation == PartyHandlerUtils.PartyOperation.DISBAND_IN_EXPEDITION);
         }
         for (MaplePartyCharacter partychar : party.getMembers()) {
             if (partychar == null) {
@@ -225,21 +202,17 @@ public class PartyManager {
             }
             int ch = FindCommand.findChannel(partychar.getName());
             if (ch > 0) {
-                MapleCharacter chr =
-                        WorldServer.getInstance()
-                                .getChannel(ch)
-                                .getPlayerStorage()
-                                .getCharacterByName(partychar.getName());
+                MapleCharacter chr = WorldServer.getInstance()
+                        .getChannel(ch)
+                        .getPlayerStorage()
+                        .getCharacterByName(partychar.getName());
                 if (chr != null) {
                     if (operation == PartyHandlerUtils.PartyOperation.DISBAND
-                            || operation
-                                    == PartyHandlerUtils.PartyOperation.DISBAND_IN_EXPEDITION) {
+                            || operation == PartyHandlerUtils.PartyOperation.DISBAND_IN_EXPEDITION) {
                         chr.setParty(null);
                         if (oldExped > 0 && oldInd > -1) {
                             // Broadcast to self ("You have left the expedition")
-                            chr.getClient()
-                                    .getSession()
-                                    .write(MapleUserPackets.removeExpedition(61));
+                            chr.getClient().getSession().write(MapleUserPackets.removeExpedition(61));
                             // Broadcast to others
                             expedPacket(
                                     oldExped,
@@ -251,12 +224,8 @@ public class PartyManager {
                     }
                     chr.getClient()
                             .getSession()
-                            .write(
-                                    MapleUserPackets.updateParty(
-                                            chr.getClient().getChannel(),
-                                            party,
-                                            operation,
-                                            target));
+                            .write(MapleUserPackets.updateParty(
+                                    chr.getClient().getChannel(), party, operation, target));
                 }
             }
         }
@@ -322,8 +291,7 @@ public class PartyManager {
         if (ret == null) {
             return null;
         }
-        if (ret.getExpeditionId()
-                > 0) { // Below only used when leader of a party in an expedition disband his/her
+        if (ret.getExpeditionId() > 0) { // Below only used when leader of a party in an expedition disband his/her
             // party(not exp ldr)
             MapleExpedition me = getExped(ret.getExpeditionId());
             if (me != null) {

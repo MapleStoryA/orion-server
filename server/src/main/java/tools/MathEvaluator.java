@@ -100,7 +100,6 @@ public class MathEvaluator {
         operators[3] = new Operator("/", 2, 10);
         operators[4] = new Operator("floor", 1, 20);
         operators[5] = new Operator("ceil", 1, 20);
-
     }
 
     public Double getVariable(String s) {
@@ -214,16 +213,20 @@ public class MathEvaluator {
                 if (startOperator == 0 && nOperator.getType() == 1) {
                     // the brackets must be ok
                     if (checkBrackets(s.substring(nOperator.getOperator().length())) == 0) {
-                        nLeft = new Node(this, s.substring(nOperator.getOperator().length()), nLevel + 1);
+                        nLeft = new Node(
+                                this, s.substring(nOperator.getOperator().length()), nLevel + 1);
                         nRight = null;
                     } else {
                         throw new Exception("Error during parsing... missing brackets in [" + s + "]");
                     }
                 } // two operands
                 else if (startOperator > 0 && nOperator.getType() == 2) {
-                    //nOperator = nOperator;
+                    // nOperator = nOperator;
                     nLeft = new Node(this, s.substring(0, startOperator), nLevel + 1);
-                    nRight = new Node(this, s.substring(startOperator + nOperator.getOperator().length()), nLevel + 1);
+                    nRight = new Node(
+                            this,
+                            s.substring(startOperator + nOperator.getOperator().length()),
+                            nLevel + 1);
                 }
             }
         }
@@ -338,7 +341,10 @@ public class MathEvaluator {
 
         public String removeBrackets(String s) {
             String res = s;
-            if (s.length() > 2 && res.startsWith("(") && res.endsWith(")") && checkBrackets(s.substring(1, s.length() - 1)) == 0) {
+            if (s.length() > 2
+                    && res.startsWith("(")
+                    && res.endsWith(")")
+                    && checkBrackets(s.substring(1, s.length() - 1)) == 0) {
                 res = res.substring(1, res.length() - 1);
             }
             if (!res.equals(s)) {

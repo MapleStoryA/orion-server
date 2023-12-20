@@ -1,14 +1,5 @@
 package tools;
 
-import provider.MapleData;
-import provider.MapleDataProvider;
-import provider.MapleDataProviderFactory;
-import provider.MapleDataTool;
-
-import javax.management.InstanceAlreadyExistsException;
-import javax.management.MBeanRegistrationException;
-import javax.management.MalformedObjectNameException;
-import javax.management.NotCompliantMBeanException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,6 +8,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.management.InstanceAlreadyExistsException;
+import javax.management.MBeanRegistrationException;
+import javax.management.MalformedObjectNameException;
+import javax.management.NotCompliantMBeanException;
+import provider.MapleData;
+import provider.MapleDataProvider;
+import provider.MapleDataProviderFactory;
+import provider.MapleDataTool;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleDropCreator {
@@ -31,12 +30,15 @@ public class MapleDropCreator {
     protected static Map<Integer, Boolean> bossCache = new HashMap<Integer, Boolean>();
     private static boolean addFlagData = false; // There isn't any flag on my source .. so.
 
-    public static void main(String[] args) throws IOException, NotBoundException, InstanceAlreadyExistsException, MBeanRegistrationException, NotCompliantMBeanException, MalformedObjectNameException {
-        MapleData data = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/String")).getData("MonsterBook.img");
+    public static void main(String[] args)
+            throws IOException, NotBoundException, InstanceAlreadyExistsException, MBeanRegistrationException,
+                    NotCompliantMBeanException, MalformedObjectNameException {
+        MapleData data = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/String"))
+                .getData("MonsterBook.img");
 
         log.info("Warning : Use this only at your own risk!");
         log.info("Press any key to continue...");
-        //System.console().readLine();
+        // System.console().readLine();
         log.info("As you wish.\n\n\n\n");
 
         long currtime = System.currentTimeMillis();
@@ -114,7 +116,8 @@ public class MapleDropCreator {
             if (monsterId == 9400408) { // Fix for kaede castle, toad boss
                 idtoLog = 9400409;
             }
-            if (dataz.getChildByPath("reward").getChildren().size() > 0) { // Fix for Monster without any reward causing SQL error
+            if (dataz.getChildByPath("reward").getChildren().size()
+                    > 0) { // Fix for Monster without any reward causing SQL error
                 sb.append("INSERT INTO ").append(monsterQueryData).append(" VALUES ");
                 for (MapleData drop : dataz.getChildByPath("reward")) {
                     int itemid = MapleDataTool.getInt(drop);
@@ -244,7 +247,7 @@ public class MapleDropCreator {
                 }
 
                 if (Pair.getLeft() == lastmonsterbookid) {
-                    continue; //Fix for multiple monster shet
+                    continue; // Fix for multiple monster shet
                 }
                 for (Pair<Integer, MobInfo> Pair_ : mobCache) {
                     if (Pair_.getRight().getName().equalsIgnoreCase(bookName.toString())) {
@@ -318,9 +321,9 @@ public class MapleDropCreator {
     private static int multipleDropsIncrement(int itemid, int mobid) {
         switch (itemid) {
             case 1002926: // Targa hat [Malaysia boss]
-//	    case 1002906: // Scarlion hat [Malaysia boss]
+                //	    case 1002906: // Scarlion hat [Malaysia boss]
             case 1002927: // Scarlion boss hat [Malaysia boss]
-//	    case 1002905: // Targa hat [Malaysia boss]
+                //	    case 1002905: // Targa hat [Malaysia boss]
             case 1002357: // Zakum helmet
             case 1002390: // Zakum helmet 2
             case 1002430: // Zakum helmet 3
@@ -376,7 +379,20 @@ public class MapleDropCreator {
             case 4000032: // Ligator Skin
             case 4000033: // Croco Skin
                 // Master Monster
-                if (mobid == 2220000 || mobid == 3220000 || mobid == 3220001 || mobid == 4220000 || mobid == 5220000 || mobid == 5220002 || mobid == 5220003 || mobid == 6220000 || mobid == 4000119 || mobid == 7220000 || mobid == 7220002 || mobid == 8220000 || mobid == 8220002 || mobid == 8220003) {
+                if (mobid == 2220000
+                        || mobid == 3220000
+                        || mobid == 3220001
+                        || mobid == 4220000
+                        || mobid == 5220000
+                        || mobid == 5220002
+                        || mobid == 5220003
+                        || mobid == 6220000
+                        || mobid == 4000119
+                        || mobid == 7220000
+                        || mobid == 7220002
+                        || mobid == 8220000
+                        || mobid == 8220002
+                        || mobid == 8220003) {
                     return 3;
                 }
                 return 1;
@@ -614,7 +630,7 @@ public class MapleDropCreator {
                     case 2070006: // Ilbi Throwing-Stars
                     case 2070007: // Hwabi Throwing-Stars
                         return 200;
-//		    case 2070011: // Maple Throwing star
+                        //		    case 2070011: // Maple Throwing star
                     case 2070012: // Paper Fighter Plane
                     case 2070013: // Orange
                         return 1500;
@@ -789,7 +805,8 @@ public class MapleDropCreator {
     }
 
     private static void getAllItems() {
-        MapleDataProvider data = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/String"));
+        MapleDataProvider data =
+                MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/String"));
 
         List<Pair<Integer, String>> itemPairs = new ArrayList<Pair<Integer, String>>();
         MapleData itemsData;
@@ -842,8 +859,10 @@ public class MapleDropCreator {
 
     public static void getAllMobs() {
         List<Pair<Integer, MobInfo>> itemPairs = new ArrayList<Pair<Integer, MobInfo>>();
-        MapleDataProvider data = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/String"));
-        MapleDataProvider mobData = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Mob"));
+        MapleDataProvider data =
+                MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/String"));
+        MapleDataProvider mobData =
+                MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Mob"));
         MapleData mob = data.getData("Mob.img");
 
         int id;
@@ -854,7 +873,8 @@ public class MapleDropCreator {
 
             try {
                 monsterData = mobData.getData(StringUtil.getLeftPaddedStr(id + ".img", '0', 11));
-                final int boss = id == 8810018 ? 1 : MapleDataTool.getIntConvert("boss", monsterData.getChildByPath("info"), 0);
+                final int boss =
+                        id == 8810018 ? 1 : MapleDataTool.getIntConvert("boss", monsterData.getChildByPath("info"), 0);
 
                 if (boss > 0) {
                     bossCache.put(id, true);

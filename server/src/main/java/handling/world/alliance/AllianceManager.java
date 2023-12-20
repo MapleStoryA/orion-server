@@ -3,21 +3,20 @@ package handling.world.alliance;
 import handling.world.guild.GuildManager;
 import handling.world.guild.MapleGuild;
 import handling.world.guild.MapleGuildAlliance;
-import lombok.extern.slf4j.Slf4j;
-import tools.MaplePacketCreator;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import lombok.extern.slf4j.Slf4j;
+import tools.MaplePacketCreator;
 
 @Slf4j
 public class AllianceManager {
 
     private static final Map<Integer, MapleGuildAlliance> alliances = new LinkedHashMap<>();
-    //TODO: Temporary public
+    // TODO: Temporary public
     public static final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
     static {
@@ -40,7 +39,7 @@ public class AllianceManager {
             lock.writeLock().lock();
             try {
                 ret = new MapleGuildAlliance(allianceid);
-                if (ret == null || ret.getId() <= 0) { //failed to load
+                if (ret == null || ret.getId() <= 0) { // failed to load
                     return null;
                 }
                 alliances.put(allianceid, ret);
@@ -149,7 +148,8 @@ public class AllianceManager {
         }
     }
 
-    public static boolean createAlliance(final String alliancename, final int cid, final int cid2, final int gid, final int gid2) {
+    public static boolean createAlliance(
+            final String alliancename, final int cid, final int cid2, final int gid, final int gid2) {
         final int allianceid = MapleGuildAlliance.createToDb(cid, alliancename, gid, gid2);
         if (allianceid <= 0) {
             return false;
@@ -217,18 +217,18 @@ public class AllianceManager {
                     if (gid != alliance.getGuildId(i)) {
                         alliance.removeGuild(gid, false);
                     }
-                    continue; //just skip
+                    continue; // just skip
                 }
                 if (g_ == null || gid == alliance.getGuildId(i)) {
                     guild.changeARank(5);
                     guild.setAllianceId(0);
                     guild.broadcast(MaplePacketCreator.disbandAlliance(allianceid));
                 } else if (g_ != null) {
-                    guild.broadcast(MaplePacketCreator.serverNotice(5, "[" + g_.getName() + "] Guild has left the alliance."));
+                    guild.broadcast(
+                            MaplePacketCreator.serverNotice(5, "[" + g_.getName() + "] Guild has left the alliance."));
                     guild.broadcast(MaplePacketCreator.changeGuildInAlliance(alliance, g_, false));
                     guild.broadcast(MaplePacketCreator.removeGuildFromAlliance(alliance, g_, expelled));
                 }
-
             }
         }
 

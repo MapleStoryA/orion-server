@@ -30,8 +30,7 @@ public class XMLWZFile implements MapleDataProvider {
                 fillMapleDataEntitys(file, newDir);
 
             } else if (fileName.endsWith(".xml")) { // get the real size here?
-                wzdir.addFile(
-                        new WZFileEntry(fileName.substring(0, fileName.length() - 4), 0, 0, wzdir));
+                wzdir.addFile(new WZFileEntry(fileName.substring(0, fileName.length() - 4), 0, 0, wzdir));
             }
         }
     }
@@ -41,15 +40,13 @@ public class XMLWZFile implements MapleDataProvider {
         File dataFile = new File(root, path + ".xml");
         File imageDataDir = new File(root, path);
         if (!dataFile.exists()) {
-            throw new RuntimeException(
-                    "Datafile " + path + " does not exist in " + root.getAbsolutePath());
+            throw new RuntimeException("Datafile " + path + " does not exist in " + root.getAbsolutePath());
         }
         FileInputStream fis;
         try {
             fis = new FileInputStream(dataFile);
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(
-                    "Datafile " + path + " does not exist in " + root.getAbsolutePath());
+            throw new RuntimeException("Datafile " + path + " does not exist in " + root.getAbsolutePath());
         }
         final XMLDomMapleData domMapleData;
         try {

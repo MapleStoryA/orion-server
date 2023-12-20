@@ -38,7 +38,8 @@ public class RespawnWorker implements Runnable {
     public RespawnWorker(Integer[] chs, int c) {
         StringBuilder s = new StringBuilder("[Respawn Worker] Registered for channels ");
         for (int i = 1; (i <= CHANNELS_PER_THREAD) && (chs.length >= c + i); i++) {
-            cservs.add(Integer.valueOf(WorldServer.getInstance().getChannel(c + i).getChannel()));
+            cservs.add(
+                    Integer.valueOf(WorldServer.getInstance().getChannel(c + i).getChannel()));
             s.append(c + i).append(" ");
         }
     }
@@ -53,18 +54,7 @@ public class RespawnWorker implements Runnable {
             if (cserv != null && !cserv.hasFinishedShutdown()) {
                 maps = cserv.getMapFactory().getAllLoadedMaps(maps);
                 for (MapleMap map : maps) {
-                    handleMap(
-                            map,
-                            numTimes,
-                            map.getCharactersSize(),
-                            now,
-                            effects,
-                            items,
-                            chrs,
-                            mobs,
-                            dis,
-                            cd,
-                            pets);
+                    handleMap(map, numTimes, map.getCharactersSize(), now, effects, items, chrs, mobs, dis, cd, pets);
                 }
             }
         }
@@ -179,11 +169,9 @@ public class RespawnWorker implements Runnable {
                     pet.setFullness(newFullness);
                     chr.getClient()
                             .getSession()
-                            .write(
-                                    PetPacket.updatePet(
-                                            pet,
-                                            chr.getInventory(MapleInventoryType.CASH)
-                                                    .getItem(pet.getInventoryPosition())));
+                            .write(PetPacket.updatePet(
+                                    pet,
+                                    chr.getInventory(MapleInventoryType.CASH).getItem(pet.getInventoryPosition())));
                 }
             }
         }
@@ -192,16 +180,14 @@ public class RespawnWorker implements Runnable {
                             .findById(chr.getMap().getHPDecProtect())
                     == null) {
                 if (chr.getMapId() == 749040100
-                        && chr.getInventory(MapleInventoryType.CASH).findById(5451000)
-                                == null) { // minidungeon
+                        && chr.getInventory(MapleInventoryType.CASH).findById(5451000) == null) { // minidungeon
                     chr.addHP(-chr.getMap().getHPDec());
                 } else if (chr.getMapId() != 749040100) {
-                    chr.addHP(
-                            -(chr.getMap().getHPDec()
-                                    - (chr.getBuffedValue(MapleBuffStat.HP_LOSS_GUARD) == null
-                                            ? 0
-                                            : chr.getBuffedValue(MapleBuffStat.HP_LOSS_GUARD)
-                                                    .intValue())));
+                    chr.addHP(-(chr.getMap().getHPDec()
+                            - (chr.getBuffedValue(MapleBuffStat.HP_LOSS_GUARD) == null
+                                    ? 0
+                                    : chr.getBuffedValue(MapleBuffStat.HP_LOSS_GUARD)
+                                            .intValue())));
                 }
             }
         }

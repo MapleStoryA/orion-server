@@ -47,8 +47,7 @@ public class MapleMiniGame extends AbstractPlayerStore {
     private int GameType = 0;
     private int[][] piece = new int[15][15];
 
-    public MapleMiniGame(
-            MapleCharacter owner, int itemId, String description, String pass, int GameType) {
+    public MapleMiniGame(MapleCharacter owner, int itemId, String description, String pass, int GameType) {
         super(owner, itemId, description, pass, slots - 1); // ?
         this.GameType = GameType;
         this.points = new int[slots];
@@ -178,8 +177,7 @@ public class MapleMiniGame extends AbstractPlayerStore {
             for (int y = 0; y < 15; y++) {
                 for (int x = 0; x < 15; x++) {
                     if (!found && searchCombo(x, y, type)) {
-                        this.broadcastToVisitors(
-                                PlayerShopPacket.getMiniGameResult(this, 2, getVisitorSlot(chr)));
+                        this.broadcastToVisitors(PlayerShopPacket.getMiniGameResult(this, 2, getVisitorSlot(chr)));
                         this.setOpen(true);
                         update();
                         checkExitAfterGame();

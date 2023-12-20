@@ -21,8 +21,7 @@ public class HiredMerchantHandlerUtils {
     public static final byte checkExistance(final int accid, final int charid) {
         try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps =
-                    con.prepareStatement(
-                            "SELECT * from hiredmerch where accountid = ? OR characterid = ?");
+                    con.prepareStatement("SELECT * from hiredmerch where accountid = ? OR characterid = ?");
             ps.setInt(1, accid);
             ps.setInt(2, charid);
             ResultSet rs = ps.executeQuery();
@@ -66,14 +65,11 @@ public class HiredMerchantHandlerUtils {
                 && chr.getInventory(MapleInventoryType.CASH).getNumFreeSlot() >= cash;
     }
 
-    public static final boolean deletePackage(
-            final int charid, final int accid, final int packageid) {
+    public static final boolean deletePackage(final int charid, final int accid, final int packageid) {
 
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps =
-                    con.prepareStatement(
-                            "DELETE from hiredmerch where characterid = ? OR accountid = ? OR"
-                                    + " packageid = ?");
+            PreparedStatement ps = con.prepareStatement(
+                    "DELETE from hiredmerch where characterid = ? OR accountid = ? OR" + " packageid = ?");
             ps.setInt(1, charid);
             ps.setInt(2, accid);
             ps.setInt(3, packageid);
@@ -87,12 +83,10 @@ public class HiredMerchantHandlerUtils {
         }
     }
 
-    public static final MerchItemPackage loadItemFrom_Database(
-            final int charid, final int accountid) {
+    public static final MerchItemPackage loadItemFrom_Database(final int charid, final int accountid) {
         try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps =
-                    con.prepareStatement(
-                            "SELECT * from hiredmerch where characterid = ? OR accountid = ?");
+                    con.prepareStatement("SELECT * from hiredmerch where characterid = ? OR accountid = ?");
             ps.setInt(1, charid);
             ps.setInt(2, accountid);
 

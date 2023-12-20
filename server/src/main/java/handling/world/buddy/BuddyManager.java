@@ -51,15 +51,11 @@ public class BuddyManager {
         return false;
     }
 
-    public static MapleBuddyList.BuddyAddResult requestBuddyAdd(
-            String addName, MapleCharacter inviter) {
+    public static MapleBuddyList.BuddyAddResult requestBuddyAdd(String addName, MapleCharacter inviter) {
         int ch = FindCommand.findChannel(addName);
         if (ch > 0) {
             final MapleCharacter addChar =
-                    WorldServer.getInstance()
-                            .getChannel(ch)
-                            .getPlayerStorage()
-                            .getCharacterByName(addName);
+                    WorldServer.getInstance().getChannel(ch).getPlayerStorage().getCharacterByName(addName);
             if (addChar != null) {
                 final MapleBuddyList buddylist = addChar.getBuddyList();
                 if (buddylist.isFull()) {
@@ -76,20 +72,18 @@ public class BuddyManager {
                 }
                 addChar.getClient()
                         .getSession()
-                        .write(
-                                MaplePacketCreator.requestBuddylistAdd(
-                                        inviter.getId(),
-                                        inviter.getName(),
-                                        inviter.getLevel(),
-                                        inviter.getJob().getId()));
+                        .write(MaplePacketCreator.requestBuddylistAdd(
+                                inviter.getId(),
+                                inviter.getName(),
+                                inviter.getLevel(),
+                                inviter.getJob().getId()));
                 return MapleBuddyList.BuddyAddResult.OK;
             }
         }
         return MapleBuddyList.BuddyAddResult.NOT_FOUND;
     }
 
-    public static Pair<MapleBuddyList.BuddyAddResult, String> acceptToInvite(
-            MapleCharacter chr, int inviterCid) {
+    public static Pair<MapleBuddyList.BuddyAddResult, String> acceptToInvite(MapleCharacter chr, int inviterCid) {
         Iterator<BuddyInvitedEntry> itr = invited.iterator();
         while (itr.hasNext()) {
             BuddyInvitedEntry inv = itr.next();
@@ -100,41 +94,31 @@ public class BuddyManager {
                 }
                 final int ch = FindCommand.findChannel(inviterCid);
                 if (ch > 0) { // Inviter is online
-                    final MapleCharacter addChar =
-                            WorldServer.getInstance()
-                                    .getChannel(ch)
-                                    .getPlayerStorage()
-                                    .getCharacterById(inviterCid);
+                    final MapleCharacter addChar = WorldServer.getInstance()
+                            .getChannel(ch)
+                            .getPlayerStorage()
+                            .getCharacterById(inviterCid);
                     if (addChar == null) {
                         return new Pair<>(MapleBuddyList.BuddyAddResult.NOT_FOUND, null);
                     }
                     addChar.getBuddyList()
-                            .put(
-                                    new BuddyListEntry(
-                                            chr.getName(),
-                                            chr.getId(),
-                                            "Default Group",
-                                            chr.getClient().getChannel()));
+                            .put(new BuddyListEntry(
+                                    chr.getName(),
+                                    chr.getId(),
+                                    "Default Group",
+                                    chr.getClient().getChannel()));
                     addChar.getClient()
                             .getSession()
-                            .write(
-                                    MaplePacketCreator.updateBuddylist(
-                                            BuddyListModifyHandler.ADD,
-                                            addChar.getBuddyList().getBuddies()));
+                            .write(MaplePacketCreator.updateBuddylist(
+                                    BuddyListModifyHandler.ADD,
+                                    addChar.getBuddyList().getBuddies()));
 
-                    chr.getBuddyList()
-                            .put(
-                                    new BuddyListEntry(
-                                            addChar.getName(),
-                                            addChar.getId(),
-                                            "Default Group",
-                                            ch));
+                    chr.getBuddyList().put(new BuddyListEntry(addChar.getName(), addChar.getId(), "Default Group", ch));
                     chr.getClient()
                             .getSession()
-                            .write(
-                                    MaplePacketCreator.updateBuddylist(
-                                            BuddyListModifyHandler.ADD,
-                                            chr.getBuddyList().getBuddies()));
+                            .write(MaplePacketCreator.updateBuddylist(
+                                    BuddyListModifyHandler.ADD,
+                                    chr.getBuddyList().getBuddies()));
 
                     return new Pair<>(MapleBuddyList.BuddyAddResult.OK, addChar.getName());
                 }
@@ -151,16 +135,14 @@ public class BuddyManager {
                 itr.remove();
                 final int ch = FindCommand.findChannel(inviterCid);
                 if (ch > 0) { // Inviter is online
-                    final MapleCharacter addChar =
-                            WorldServer.getInstance()
-                                    .getChannel(ch)
-                                    .getPlayerStorage()
-                                    .getCharacterById(inviterCid);
+                    final MapleCharacter addChar = WorldServer.getInstance()
+                            .getChannel(ch)
+                            .getPlayerStorage()
+                            .getCharacterById(inviterCid);
                     if (addChar == null) {
                         return "You have denied the buddy request.";
                     }
-                    addChar.dropMessage(
-                            5, chr.getName() + " have denied request to be your buddy.");
+                    addChar.dropMessage(5, chr.getName() + " have denied request to be your buddy.");
                     return "You have denied the buddy request from '" + addChar.getName() + "'";
                 }
             }
@@ -179,48 +161,39 @@ public class BuddyManager {
         }
         if (ch > 0) { // Buddy is online
             final MapleCharacter delChar =
-                    WorldServer.getInstance()
-                            .getChannel(ch)
-                            .getPlayerStorage()
-                            .getCharacterById(deleteCid);
+                    WorldServer.getInstance().getChannel(ch).getPlayerStorage().getCharacterById(deleteCid);
             if (delChar == null) {
                 final int ch_ = FindCommand.findChannel(deleteCid); // Re-attempt to find again
                 if (ch_ == -20 || ch_ == -10) {
                     return MapleBuddyList.BuddyDelResult.IN_CASH_SHOP;
                 }
                 if (ch_ <= 0) {
-                    final byte result =
-                            deleteOfflineBuddy(deleteCid, chr.getId()); // Execute SQL query.
+                    final byte result = deleteOfflineBuddy(deleteCid, chr.getId()); // Execute SQL query.
                     if (result == -1) {
                         return MapleBuddyList.BuddyDelResult.ERROR;
                     }
                     chr.getBuddyList().remove(deleteCid);
                     chr.getClient()
                             .getSession()
-                            .write(
-                                    MaplePacketCreator.updateBuddylist(
-                                            BuddyListModifyHandler.REMOVE,
-                                            chr.getBuddyList().getBuddies()));
+                            .write(MaplePacketCreator.updateBuddylist(
+                                    BuddyListModifyHandler.REMOVE,
+                                    chr.getBuddyList().getBuddies()));
                     return MapleBuddyList.BuddyDelResult.OK;
                 }
             }
             delChar.getBuddyList().remove(chr.getId());
             delChar.getClient()
                     .getSession()
-                    .write(
-                            MaplePacketCreator.updateBuddylist(
-                                    BuddyListModifyHandler.REMOVE,
-                                    delChar.getBuddyList().getBuddies()));
-            delChar.dropMessage(
-                    5, "Your buddy relationship with '" + chr.getName() + "' has ended.");
+                    .write(MaplePacketCreator.updateBuddylist(
+                            BuddyListModifyHandler.REMOVE,
+                            delChar.getBuddyList().getBuddies()));
+            delChar.dropMessage(5, "Your buddy relationship with '" + chr.getName() + "' has ended.");
 
             chr.getBuddyList().remove(deleteCid);
             chr.getClient()
                     .getSession()
-                    .write(
-                            MaplePacketCreator.updateBuddylist(
-                                    BuddyListModifyHandler.REMOVE,
-                                    chr.getBuddyList().getBuddies()));
+                    .write(MaplePacketCreator.updateBuddylist(
+                            BuddyListModifyHandler.REMOVE, chr.getBuddyList().getBuddies()));
             return MapleBuddyList.BuddyDelResult.OK;
         } else { // Buddy is offline
             final byte result = deleteOfflineBuddy(deleteCid, chr.getId()); // Execute SQL query.
@@ -230,10 +203,8 @@ public class BuddyManager {
             chr.getBuddyList().remove(deleteCid);
             chr.getClient()
                     .getSession()
-                    .write(
-                            MaplePacketCreator.updateBuddylist(
-                                    BuddyListModifyHandler.REMOVE,
-                                    chr.getBuddyList().getBuddies()));
+                    .write(MaplePacketCreator.updateBuddylist(
+                            BuddyListModifyHandler.REMOVE, chr.getBuddyList().getBuddies()));
             return MapleBuddyList.BuddyDelResult.OK;
         }
     }
@@ -241,16 +212,13 @@ public class BuddyManager {
     public static byte deleteOfflineBuddy(final int delId, final int myId) {
         try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps =
-                    con.prepareStatement(
-                            "DELETE from `buddyentries` WHERE `owner` = ? AND `buddyid` = ?");
+                    con.prepareStatement("DELETE from `buddyentries` WHERE `owner` = ? AND `buddyid` = ?");
             ps.setInt(1, delId);
             ps.setInt(2, myId);
             ps.executeUpdate();
             ps.close();
             // As a safe check
-            ps =
-                    con.prepareStatement(
-                            "DELETE from `buddyentries` WHERE `owner` = ? AND `buddyid` = ?");
+            ps = con.prepareStatement("DELETE from `buddyentries` WHERE `owner` = ? AND `buddyid` = ?");
             ps.setInt(1, myId);
             ps.setInt(2, delId);
             ps.executeUpdate();
@@ -262,40 +230,30 @@ public class BuddyManager {
         }
     }
 
-    public static void buddyChat(
-            int[] recipientCharacterIds, int cidFrom, String nameFrom, String chattext) {
+    public static void buddyChat(int[] recipientCharacterIds, int cidFrom, String nameFrom, String chattext) {
         for (int characterId : recipientCharacterIds) {
             int ch = FindCommand.findChannel(characterId);
             if (ch > 0) {
-                MapleCharacter chr =
-                        WorldServer.getInstance()
-                                .getChannel(ch)
-                                .getPlayerStorage()
-                                .getCharacterById(characterId);
+                MapleCharacter chr = WorldServer.getInstance()
+                        .getChannel(ch)
+                        .getPlayerStorage()
+                        .getCharacterById(characterId);
                 if (chr != null) {
-                    chr.getClient()
-                            .getSession()
-                            .write(MaplePacketCreator.multiChat(nameFrom, chattext, 0));
+                    chr.getClient().getSession().write(MaplePacketCreator.multiChat(nameFrom, chattext, 0));
                 }
             }
         }
     }
 
     private static void updateBuddies(
-            int characterId,
-            int channel,
-            int[] buddies,
-            boolean offline,
-            int gmLevel,
-            boolean isHidden) {
+            int characterId, int channel, int[] buddies, boolean offline, int gmLevel, boolean isHidden) {
         for (int buddy : buddies) {
             int ch = FindCommand.findChannel(buddy);
             if (ch > 0) {
-                MapleCharacter chr =
-                        WorldServer.getInstance()
-                                .getChannel(ch)
-                                .getPlayerStorage()
-                                .getCharacterById(buddy);
+                MapleCharacter chr = WorldServer.getInstance()
+                        .getChannel(ch)
+                        .getPlayerStorage()
+                        .getCharacterById(buddy);
                 if (chr != null) {
                     BuddyListEntry ble = chr.getBuddyList().get(characterId);
                     if (ble != null) {
@@ -310,9 +268,7 @@ public class BuddyManager {
                         chr.getBuddyList().put(ble);
                         chr.getClient()
                                 .getSession()
-                                .write(
-                                        MaplePacketCreator.updateBuddyChannel(
-                                                ble.getCharacterId(), mcChannel));
+                                .write(MaplePacketCreator.updateBuddyChannel(ble.getCharacterId(), mcChannel));
                     }
                 }
             }
@@ -320,22 +276,12 @@ public class BuddyManager {
     }
 
     public static void loggedOn(
-            String name,
-            int characterId,
-            int channel,
-            int[] buddies,
-            int gmLevel,
-            boolean isHidden) {
+            String name, int characterId, int channel, int[] buddies, int gmLevel, boolean isHidden) {
         updateBuddies(characterId, channel, buddies, false, gmLevel, isHidden);
     }
 
     public static void loggedOff(
-            String name,
-            int characterId,
-            int channel,
-            int[] buddies,
-            int gmLevel,
-            boolean isHidden) {
+            String name, int characterId, int channel, int[] buddies, int gmLevel, boolean isHidden) {
         updateBuddies(characterId, channel, buddies, true, gmLevel, isHidden);
     }
 }

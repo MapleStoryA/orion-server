@@ -71,8 +71,7 @@ public class SpawnPoint extends Spawns {
         // regular spawnpoints should spawn a maximum of 3 monsters; immobile spawnpoints or
         // spawnpoints with mobtime a
         // maximum of 1
-        if (((mobTime != 0 || immobile) && spawnedMonsters.get() > 0)
-                || spawnedMonsters.get() > 1) {
+        if (((mobTime != 0 || immobile) && spawnedMonsters.get() > 0) || spawnedMonsters.get() > 1) {
             return false;
         }
         return nextPossibleSpawn <= System.currentTimeMillis();
@@ -84,22 +83,20 @@ public class SpawnPoint extends Spawns {
         mob.setPosition(pos);
         mob.setCarnivalTeam(carnivalTeam);
         spawnedMonsters.incrementAndGet();
-        mob.addListener(
-                new MonsterListener() {
+        mob.addListener(new MonsterListener() {
 
-                    @Override
-                    public void monsterKilled() {
-                        nextPossibleSpawn = System.currentTimeMillis();
-                        if (mobTime > 0) {
-                            nextPossibleSpawn += mobTime;
-                        }
-                        spawnedMonsters.decrementAndGet();
-                    }
-                });
+            @Override
+            public void monsterKilled() {
+                nextPossibleSpawn = System.currentTimeMillis();
+                if (mobTime > 0) {
+                    nextPossibleSpawn += mobTime;
+                }
+                spawnedMonsters.decrementAndGet();
+            }
+        });
         map.spawnMonster(mob, -2);
         if (carnivalTeam > -1) {
-            for (MapleReactor r :
-                    map.getAllReactorsThreadsafe()) { // parsing through everytime a monster is
+            for (MapleReactor r : map.getAllReactorsThreadsafe()) { // parsing through everytime a monster is
                 // spawned? not good idea
                 if (r.getName().startsWith(String.valueOf(carnivalTeam))
                         && r.getReactorId() == (9980000 + carnivalTeam)

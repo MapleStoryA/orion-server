@@ -20,13 +20,10 @@ public class Aran3thJobThiefEvent extends AbstractMapEvent {
             map.broadcastMessage(MaplePacketCreator.getClock(20 * 60));
             map.spawnMonsterOnGroundBelow(9001013, -177, 454);
         }
-
-
     }
 
     @Override
     public void onUserExit(MapleCharacter c) {
         map.killAllMonsters(false);
     }
-
 }

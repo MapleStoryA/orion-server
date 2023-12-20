@@ -37,8 +37,7 @@ public class MapleReactorStats {
         this.br = br;
     }
 
-    public void addState(
-            byte state, int type, Pair<Integer, Integer> reactItem, byte nextState, int timeOut) {
+    public void addState(byte state, int type, Pair<Integer, Integer> reactItem, byte nextState, int timeOut) {
         StateData newState = new StateData(type, reactItem, nextState, timeOut);
         stateInfo.put(state, newState);
     }

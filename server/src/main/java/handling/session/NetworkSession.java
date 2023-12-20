@@ -11,5 +11,4 @@ public interface NetworkSession {
     SocketAddress getRemoteAddress();
 
     boolean isConnected();
-
 }

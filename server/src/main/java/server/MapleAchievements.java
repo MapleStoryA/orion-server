@@ -21,10 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package server;
 
-import tools.ArrayMap;
-
 import java.util.Map;
 import java.util.Map.Entry;
+import tools.ArrayMap;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleAchievements {

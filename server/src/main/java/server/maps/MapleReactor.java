@@ -134,10 +134,8 @@ public class MapleReactor extends AbstractMapleMapObject {
             if (!(stats.getType(state) == 2 && (charPos == 0 || charPos == 2))) { // next state
                 state = stats.getNextState(state);
 
-                if (stats.getNextState(state) == -1
-                        || stats.getType(state) == 999) { // end of reactor
-                    if ((stats.getType(state) < 100 || stats.getType(state) == 999)
-                            && delay > 0) { // reactor broken
+                if (stats.getNextState(state) == -1 || stats.getType(state) == 999) { // end of reactor
+                    if ((stats.getType(state) < 100 || stats.getType(state) == 999) && delay > 0) { // reactor broken
                         map.destroyReactor(getObjectId());
                     } else { // item-triggered on final step
                         map.broadcastMessage(MaplePacketCreator.triggerReactor(this, stance));
@@ -145,10 +143,8 @@ public class MapleReactor extends AbstractMapleMapObject {
                     ReactorScriptManager.getInstance().act(c, this);
                 } else { // reactor not broken yet
                     boolean done = false;
-                    map.broadcastMessage(
-                            MaplePacketCreator.triggerReactor(
-                                    this,
-                                    stance)); // magatia is weird cause full beaker can be activated
+                    map.broadcastMessage(MaplePacketCreator.triggerReactor(
+                            this, stance)); // magatia is weird cause full beaker can be activated
                     // by gm hat o.o
                     if (state == stats.getNextState(state)
                             || rid == 2618000

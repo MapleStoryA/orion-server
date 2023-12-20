@@ -74,7 +74,8 @@ public class Skill implements ISkill {
             }
             ret.action = action;
             isBuff = effect != null && hit == null && ball == null;
-            isBuff |= action_ != null && MapleDataTool.getString("0", action_, "").equals("alert2");
+            isBuff |=
+                    action_ != null && MapleDataTool.getString("0", action_, "").equals("alert2");
             switch (id) {
                 case 2301002: // heal is alert2 but not overtime...
                 case 2111003: // poison mist
@@ -174,8 +175,7 @@ public class Skill implements ISkill {
         if (data.getChildByPath("level") != null) {
             for (final MapleData level : data.getChildByPath("level")) {
                 ret.effects.add(
-                        MapleStatEffect.loadSkillEffectFromData(
-                                level, id, isBuff, Byte.parseByte(level.getName())));
+                        MapleStatEffect.loadSkillEffectFromData(level, id, isBuff, Byte.parseByte(level.getName())));
             }
         } else {
             final MapleData c = data.getChildByPath("common");
@@ -357,12 +357,7 @@ public class Skill implements ISkill {
             return jobId % 10 == 2;
         } else if (jobId == 434) {
             return true;
-        } else
-            return id == 22170001
-                    || id == 22171003
-                    || id == 22171004
-                    || id == 22181002
-                    || id == 22181003;
+        } else return id == 22170001 || id == 22171003 || id == 22171004 || id == 22181002 || id == 22181003;
     }
 
     @Override

@@ -160,8 +160,7 @@ public class MapleQuestStatus implements Serializable {
         if (forfeited >= this.forfeited) {
             this.forfeited = forfeited;
         } else {
-            throw new IllegalArgumentException(
-                    "Can't set forfeits to something lower than before.");
+            throw new IllegalArgumentException("Can't set forfeits to something lower than before.");
         }
     }
 

@@ -3,7 +3,6 @@ package handling.world.helper;
 import client.MapleCharacter;
 import handling.channel.ChannelServer;
 import handling.world.WorldServer;
-
 import java.util.List;
 
 public class BroadcastHelper {
@@ -51,11 +50,10 @@ public class BroadcastHelper {
         if (ch < 0) {
             return;
         }
-        final MapleCharacter c = WorldServer.getInstance().getChannel(ch).getPlayerStorage().getCharacterById(targetIds);
+        final MapleCharacter c =
+                WorldServer.getInstance().getChannel(ch).getPlayerStorage().getCharacterById(targetIds);
         if (c != null && c.getGuildId() == guildid) {
             c.getClient().getSession().write(packet);
         }
     }
-
-
 }

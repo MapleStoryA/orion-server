@@ -11,11 +11,9 @@ import tools.Pair;
 @lombok.extern.slf4j.Slf4j
 public class DropDataProvider implements MapleDropProvider {
 
-    private final MapleMonsterInformationProvider mi =
-            MapleMonsterInformationProvider.getInstance();
+    private final MapleMonsterInformationProvider mi = MapleMonsterInformationProvider.getInstance();
 
-    private final MapleItemInformationProvider itemProvider =
-            MapleItemInformationProvider.getInstance();
+    private final MapleItemInformationProvider itemProvider = MapleItemInformationProvider.getInstance();
 
     @Override
     public List<MapleDropData> search(MapleMonster monster) {

@@ -13,8 +13,7 @@ public class MapleDiseaseValueHolder implements Serializable {
     private long length;
     private MapleDisease disease;
 
-    public MapleDiseaseValueHolder(
-            final MapleDisease disease, final long startTime, final long length) {
+    public MapleDiseaseValueHolder(final MapleDisease disease, final long startTime, final long length) {
         this.disease = disease;
         this.startTime = startTime;
         this.length = length;

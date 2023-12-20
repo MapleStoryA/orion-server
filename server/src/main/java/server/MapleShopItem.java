@@ -12,7 +12,15 @@ public class MapleShopItem {
     private final int reqItemQ;
     private final int expiration; // In minutes
 
-    public MapleShopItem(byte position, int itemId, int price, int reqItem, int reqItemQ, short quantity, int expiration, short reqLevel) {
+    public MapleShopItem(
+            byte position,
+            int itemId,
+            int price,
+            int reqItem,
+            int reqItemQ,
+            short quantity,
+            int expiration,
+            short reqLevel) {
         this.position = position;
         this.itemId = itemId;
         this.price = price;

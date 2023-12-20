@@ -12,6 +12,5 @@ public final class GameUI {
     public static final int USER_INFO_WINDOW = 0xA;
     public static final int REPAIR_WINDOW = 0x21;
 
-    private GameUI() {
-    }
+    private GameUI() {}
 }

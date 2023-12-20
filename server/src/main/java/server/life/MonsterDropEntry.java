@@ -5,8 +5,7 @@ public class MonsterDropEntry {
 
     public final int itemId, chance, Minimum, Maximum, questid, holdMaximum;
 
-    public MonsterDropEntry(
-            int itemId, int chance, int Minimum, int Maximum, int questid, int holdMaximum) {
+    public MonsterDropEntry(int itemId, int chance, int Minimum, int Maximum, int questid, int holdMaximum) {
         this.itemId = itemId;
         this.chance = chance;
         this.questid = questid;

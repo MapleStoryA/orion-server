@@ -6,13 +6,9 @@ import java.util.List;
 @lombok.extern.slf4j.Slf4j
 public class SimpleGachaponMachine implements GachaponMachine {
 
-
     private final HashMap<GachaponLocation, List<? extends AbstractRandomEntity>> rewards = new HashMap<>();
 
-
-    protected SimpleGachaponMachine() {
-
-    }
+    protected SimpleGachaponMachine() {}
 
     @Override
     public GachaponReward getReward(GachaponLocation location) {
@@ -21,11 +17,8 @@ public class SimpleGachaponMachine implements GachaponMachine {
         return reward;
     }
 
-
     @Override
     public void setRewards(GachaponLocation location, List<? extends AbstractRandomEntity> rewards) {
         this.rewards.put(location, rewards);
-
     }
-
 }

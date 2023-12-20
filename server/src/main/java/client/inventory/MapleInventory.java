@@ -137,8 +137,7 @@ public class MapleInventory implements Iterable<IItem>, Serializable {
                     || type.getType() == MapleInventoryType.CASH.getType()) {
                 swap(target, source);
             } else if (source.getQuantity() + target.getQuantity() > slotMax) {
-                source.setQuantity(
-                        (short) ((source.getQuantity() + target.getQuantity()) - slotMax));
+                source.setQuantity((short) ((source.getQuantity() + target.getQuantity()) - slotMax));
                 target.setQuantity(slotMax);
             } else {
                 target.setQuantity((short) (source.getQuantity() + target.getQuantity()));

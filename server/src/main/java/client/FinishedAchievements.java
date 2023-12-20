@@ -7,7 +7,9 @@ import server.MapleAchievements;
 
 public class FinishedAchievements {
     private final List<Integer> finishedAchievements = new ArrayList<>();
-    @Getter private boolean changed;
+
+    @Getter
+    private boolean changed;
 
     public void setAchievementFinished(int id) {
         if (!finishedAchievements.contains(id)) {

@@ -57,24 +57,23 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Serializable {
     @SuppressWarnings("unchecked")
     public Set<java.util.Map.Entry<K, V>> entrySet() {
         if (entries == null) {
-            entries =
-                    new AbstractSet<Entry<K, V>>() {
+            entries = new AbstractSet<Entry<K, V>>() {
 
-                        @Override
-                        public void clear() {
-                            throw new UnsupportedOperationException();
-                        }
+                @Override
+                public void clear() {
+                    throw new UnsupportedOperationException();
+                }
 
-                        @Override
-                        public Iterator<Entry<K, V>> iterator() {
-                            return list.iterator();
-                        }
+                @Override
+                public Iterator<Entry<K, V>> iterator() {
+                    return list.iterator();
+                }
 
-                        @Override
-                        public int size() {
-                            return list.size();
-                        }
-                    };
+                @Override
+                public int size() {
+                    return list.size();
+                }
+            };
         }
         return (Set<java.util.Map.Entry<K, V>>) entries;
     }

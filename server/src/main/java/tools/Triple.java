@@ -30,12 +30,7 @@ public class Triple<E, F, G> implements Serializable {
 
     @Override
     public String toString() {
-        return "Left: "
-                + left.toString()
-                + " Mid: "
-                + mid.toString()
-                + " Right:"
-                + right.toString();
+        return "Left: " + left.toString() + " Mid: " + mid.toString() + " Right:" + right.toString();
     }
 
     @Override

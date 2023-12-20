@@ -13,15 +13,10 @@ public class TeleportRockService {
         }
         try (var con = DatabaseConnection.getConnection()) {
             CharacterService.deleteWhereCharacterId(
-                    con,
-                    "DELETE FROM " + teleportRock.getName() + " WHERE characterid = ?",
-                    characterId);
+                    con, "DELETE FROM " + teleportRock.getName() + " WHERE characterid = ?", characterId);
             for (var map_id : teleportRock.getMap_ids()) {
-                var ps =
-                        con.prepareStatement(
-                                "INSERT INTO "
-                                        + teleportRock.getName()
-                                        + " (characterid, mapid) VALUES(?, ?) ");
+                var ps = con.prepareStatement(
+                        "INSERT INTO " + teleportRock.getName() + " (characterid, mapid) VALUES(?, ?) ");
                 ps.setInt(1, characterId);
                 ps.setInt(2, map_id);
                 ps.execute();

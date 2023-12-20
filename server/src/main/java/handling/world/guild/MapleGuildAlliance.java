@@ -93,8 +93,7 @@ public class MapleGuildAlliance implements java.io.Serializable {
         return ret;
     }
 
-    public static final int createToDb(
-            final int leaderId, final String name, final int guild1, final int guild2) {
+    public static final int createToDb(final int leaderId, final String name, final int guild1, final int guild2) {
         int ret = -1;
         if (name.length() > 12) {
             return ret;
@@ -112,11 +111,9 @@ public class MapleGuildAlliance implements java.io.Serializable {
             ps.close();
             rs.close();
 
-            ps =
-                    con.prepareStatement(
-                            "insert into alliances (name, guild1, guild2, leaderid) VALUES (?, ?,"
-                                    + " ?, ?)",
-                            Statement.RETURN_GENERATED_KEYS);
+            ps = con.prepareStatement(
+                    "insert into alliances (name, guild1, guild2, leaderid) VALUES (?, ?," + " ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, name);
             ps.setInt(2, guild1);
             ps.setInt(3, guild2);
@@ -149,9 +146,7 @@ public class MapleGuildAlliance implements java.io.Serializable {
         try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps;
             for (int i = 0; i < getNoGuilds(); i++) {
-                ps =
-                        con.prepareStatement(
-                                "UPDATE characters SET alliancerank = 5 WHERE guildid = ?");
+                ps = con.prepareStatement("UPDATE characters SET alliancerank = 5 WHERE guildid = ?");
                 ps.setInt(1, guilds[i]);
                 ps.execute();
                 ps.close();
@@ -176,19 +171,14 @@ public class MapleGuildAlliance implements java.io.Serializable {
         broadcast(packet, exception, GAOp.NONE, false);
     }
 
-    public final void broadcast(
-            final byte[] packet, final int exceptionId, final GAOp op, final boolean expelled) {
+    public final void broadcast(final byte[] packet, final int exceptionId, final GAOp op, final boolean expelled) {
         if (op == GAOp.DISBAND) {
             AllianceManager.setOldAlliance(
-                    exceptionId,
-                    expelled,
-                    allianceid); // -1 = alliance gone, exceptionId = guild left/expelled
+                    exceptionId, expelled, allianceid); // -1 = alliance gone, exceptionId = guild left/expelled
         } else if (op == GAOp.NEWGUILD) {
-            AllianceManager.setNewAlliance(
-                    exceptionId, allianceid); // exceptionId = guild that just joined
+            AllianceManager.setNewAlliance(exceptionId, allianceid); // exceptionId = guild that just joined
         } else {
-            AllianceManager.sendGuild(
-                    packet, exceptionId, allianceid); // exceptionId = guild to broadcast to only
+            AllianceManager.sendGuild(packet, exceptionId, allianceid); // exceptionId = guild to broadcast to only
         }
     }
 
@@ -203,10 +193,9 @@ public class MapleGuildAlliance implements java.io.Serializable {
     public final void saveToDb() {
         try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps =
-                    con.prepareStatement(
-                            "UPDATE alliances set guild1 = ?, guild2 = ?, guild3 = ?, guild4 = ?,"
-                                + " guild5 = ?, rank1 = ?, rank2 = ?, rank3 = ?, rank4 = ?, rank5 ="
-                                + " ?, capacity = ?, leaderid = ?, notice = ? where id = ?");
+                    con.prepareStatement("UPDATE alliances set guild1 = ?, guild2 = ?, guild3 = ?, guild4 = ?,"
+                            + " guild5 = ?, rank1 = ?, rank2 = ?, rank3 = ?, rank4 = ?, rank5 ="
+                            + " ?, capacity = ?, leaderid = ?, notice = ? where id = ?");
             for (int i = 0; i < 5; i++) {
                 ps.setInt(i + 1, guilds[i] < 0 ? 0 : guilds[i]);
                 ps.setString(i + 6, ranks[i]);
@@ -333,15 +322,12 @@ public class MapleGuildAlliance implements java.io.Serializable {
                     return false;
                 } else if (newLead != null
                         && newLead.getGuildRank() == 1
-                        && newLead.getAllianceRank()
-                                == 2) { // guild1 should always be leader so no worries about g
+                        && newLead.getAllianceRank() == 2) { // guild1 should always be leader so no worries about g
                     // being -1
                     g_.changeARank(c, 1);
                     g = i;
                     leaderName = newLead.getName();
-                } else if (oldLead != null
-                        && oldLead.getGuildRank() == 1
-                        && oldLead.getAllianceRank() == 1) {
+                } else if (oldLead != null && oldLead.getGuildRank() == 1 && oldLead.getAllianceRank() == 1) {
                     g_.changeARank(leaderid, 2);
                 } else if (oldLead != null || newLead != null) {
                     return false;
@@ -355,9 +341,7 @@ public class MapleGuildAlliance implements java.io.Serializable {
         guilds[g] = guilds[0];
         guilds[0] = oldGuild;
         if (leaderName != null) {
-            broadcast(
-                    MaplePacketCreator.serverNotice(
-                            5, leaderName + " has become the leader of the alliance."));
+            broadcast(MaplePacketCreator.serverNotice(5, leaderName + " has become the leader of the alliance."));
         }
         broadcast(MaplePacketCreator.changeAllianceLeader(allianceid, leaderid, c));
         broadcast(MaplePacketCreator.updateAllianceLeader(allianceid, leaderid, c));
@@ -377,8 +361,7 @@ public class MapleGuildAlliance implements java.io.Serializable {
             if (g_ != null) {
                 MapleGuildCharacter chr = g_.getMGC(cid);
                 if (chr != null && chr.getAllianceRank() > 2) {
-                    if ((change == 0 && chr.getAllianceRank() >= 5)
-                            || (change == 1 && chr.getAllianceRank() <= 3)) {
+                    if ((change == 0 && chr.getAllianceRank() >= 5) || (change == 1 && chr.getAllianceRank() <= 3)) {
                         return false;
                     }
                     g_.changeARank(cid, chr.getAllianceRank() + (change == 0 ? 1 : -1));

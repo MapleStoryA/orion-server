@@ -97,18 +97,16 @@ public class MapleGenericPortal implements MaplePortal {
                     e.printStackTrace();
                 }
             } else if (getTargetMapId() != 999999999) {
-                final MapleMap to =
-                        WorldServer.getInstance()
-                                .getChannel(c.getChannel())
-                                .getMapFactory()
-                                .getMap(getTargetMapId());
+                final MapleMap to = WorldServer.getInstance()
+                        .getChannel(c.getChannel())
+                        .getMapFactory()
+                        .getMap(getTargetMapId());
                 c.getPlayer()
                         .changeMapPortal(
                                 to,
                                 to.getPortal(getTarget()) == null
                                         ? to.getPortal(0)
-                                        : to.getPortal(
-                                                getTarget())); // late resolving makes this harder
+                                        : to.getPortal(getTarget())); // late resolving makes this harder
                 // but prevents us from loading the
                 // whole world at once
             }

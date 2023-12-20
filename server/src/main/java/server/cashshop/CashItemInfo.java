@@ -55,15 +55,43 @@ public class CashItemInfo {
 
     public static class CashModInfo {
 
-        public int discountPrice, mark, priority, sn, itemid, flags, period, gender, count, meso, unk_1, unk_2, unk_3, extra_flags;
+        public int discountPrice,
+                mark,
+                priority,
+                sn,
+                itemid,
+                flags,
+                period,
+                gender,
+                count,
+                meso,
+                unk_1,
+                unk_2,
+                unk_3,
+                extra_flags;
         public boolean showUp, packagez;
         private CashItemInfo cii;
 
-        public CashModInfo(int sn, int discount, int mark, boolean show, int itemid, int priority, boolean packagez, int period, int gender, int count, int meso, int unk_1, int unk_2, int unk_3, int extra_flags) {
+        public CashModInfo(
+                int sn,
+                int discount,
+                int mark,
+                boolean show,
+                int itemid,
+                int priority,
+                boolean packagez,
+                int period,
+                int gender,
+                int count,
+                int meso,
+                int unk_1,
+                int unk_2,
+                int unk_3,
+                int extra_flags) {
             this.sn = sn;
             this.itemid = itemid;
             this.discountPrice = discount;
-            this.mark = mark; //0 = new, 1 = sale, 2 = hot, 3 = event
+            this.mark = mark; // 0 = new, 1 = sale, 2 = hot, 3 = event
             this.showUp = show;
             this.priority = priority;
             this.packagez = packagez;
@@ -71,7 +99,7 @@ public class CashItemInfo {
             this.gender = gender;
             this.count = count;
             this.meso = meso;
-            this.unk_1 = unk_1; //0 = doesn't have, 1 = has, but false, 2 = has and true
+            this.unk_1 = unk_1; // 0 = doesn't have, 1 = has, but false, 2 = has and true
             this.unk_2 = unk_2;
             this.unk_3 = unk_3;
             this.extra_flags = extra_flags;
@@ -95,7 +123,7 @@ public class CashItemInfo {
             if (this.period > 0) {
                 this.flags |= 0x20;
             }
-            //0x40 = ?
+            // 0x40 = ?
             if (this.meso > 0) {
                 this.flags |= 0x80;
             }
@@ -105,7 +133,7 @@ public class CashItemInfo {
             if (this.gender >= 0) {
                 this.flags |= 0x200;
             }
-            if (!this.showUp || this.showUp) {//lol
+            if (!this.showUp || this.showUp) { // lol
                 this.flags |= 0x400;
             }
             if (this.mark >= -1 || this.mark <= 3) {
@@ -114,7 +142,7 @@ public class CashItemInfo {
             if (this.unk_3 > 0) {
                 this.flags |= 0x1000;
             }
-            //0x2000, 0x4000, 0x8000 - ?
+            // 0x2000, 0x4000, 0x8000 - ?
             if (this.packagez) {
                 this.flags |= 0x10000;
             }

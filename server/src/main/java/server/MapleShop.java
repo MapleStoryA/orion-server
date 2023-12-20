@@ -54,11 +54,8 @@ public class MapleShop {
         int shopId;
 
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps =
-                    con.prepareStatement(
-                            isShopId
-                                    ? "SELECT * FROM shops WHERE shopid = ?"
-                                    : "SELECT * FROM shops WHERE npcid = ?");
+            PreparedStatement ps = con.prepareStatement(
+                    isShopId ? "SELECT * FROM shops WHERE shopid = ?" : "SELECT * FROM shops WHERE npcid = ?");
 
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -72,9 +69,7 @@ public class MapleShop {
                 ps.close();
                 return null;
             }
-            ps =
-                    con.prepareStatement(
-                            "SELECT * FROM shopitems WHERE shopid = ? ORDER BY position ASC");
+            ps = con.prepareStatement("SELECT * FROM shopitems WHERE shopid = ? ORDER BY position ASC");
             ps.setInt(1, shopId);
             rs = ps.executeQuery();
             List<Integer> recharges = new ArrayList<Integer>(rechargeableItems);
@@ -83,20 +78,18 @@ public class MapleShop {
                 if (rechargeableItems.contains(itemid)) {
                     recharges.remove(Integer.valueOf(itemid));
                 }
-                ret.addItem(
-                        new MapleShopItem(
-                                (byte) (rs.getByte("position") - 1),
-                                rs.getInt("itemid"),
-                                rs.getInt("price"),
-                                rs.getInt("reqitem"),
-                                rs.getInt("reqitemq"),
-                                rs.getShort("quantity"),
-                                rs.getInt("expiration"),
-                                rs.getShort("reqlevel")));
+                ret.addItem(new MapleShopItem(
+                        (byte) (rs.getByte("position") - 1),
+                        rs.getInt("itemid"),
+                        rs.getInt("price"),
+                        rs.getInt("reqitem"),
+                        rs.getInt("reqitemq"),
+                        rs.getShort("quantity"),
+                        rs.getInt("expiration"),
+                        rs.getShort("reqlevel")));
             }
             for (Integer recharge : recharges) {
-                ret.addItem(
-                        new MapleShopItem((byte) -1, recharge, 0, 0, 0, (short) 0, 0, (short) 0));
+                ret.addItem(new MapleShopItem((byte) -1, recharge, 0, 0, 0, (short) 0, 0, (short) 0));
             }
             rs.close();
             ps.close();
@@ -137,18 +130,14 @@ public class MapleShop {
                 quantity = item.getQuantity();
             }
 
-            final int price =
-                    (GameConstants.isRechargable(itemId) || item.getQuantity() > 1)
-                            ? item.getPrice()
-                            : (item.getPrice() * quantity);
-            final int tprice =
-                    (ServerConstants.SHOP_DISCOUNT
-                                    && ii.getItemEffect(item.getItemId()).isPotion()
-                                    && !ii.getItemEffect(item.getItemId()).isSkill())
-                            ? (price
-                                    - Math.round(
-                                            (price * ServerConstants.SHOP_DISCOUNT_PERCENT) / 100f))
-                            : price;
+            final int price = (GameConstants.isRechargable(itemId) || item.getQuantity() > 1)
+                    ? item.getPrice()
+                    : (item.getPrice() * quantity);
+            final int tprice = (ServerConstants.SHOP_DISCOUNT
+                            && ii.getItemEffect(item.getItemId()).isPotion()
+                            && !ii.getItemEffect(item.getItemId()).isSkill())
+                    ? (price - Math.round((price * ServerConstants.SHOP_DISCOUNT_PERCENT) / 100f))
+                    : price;
             if (tprice >= 0 && c.getPlayer().getMeso() >= tprice) {
                 if (MapleInventoryManipulator.checkSpace(c, itemId, quantity, "")) {
                     c.getPlayer().gainMeso(-tprice, false);
@@ -161,8 +150,7 @@ public class MapleShop {
                                 MaplePet.createPet(itemId, MapleInventoryIdentifier.getInstance()),
                                 -1);
                     } else {
-                        MapleInventoryManipulator.addByIdMinutes(
-                                c, itemId, quantity, item.getExpiration());
+                        MapleInventoryManipulator.addByIdMinutes(c, itemId, quantity, item.getExpiration());
                     }
                 } else {
                     c.getPlayer().dropMessage(1, "Your Inventory is full");
@@ -199,12 +187,7 @@ public class MapleShop {
                             c,
                             itemId,
                             quantity,
-                            "Bought from shop "
-                                    + id
-                                    + ", "
-                                    + npcId
-                                    + " on "
-                                    + DateHelper.getCurrentReadableDate());
+                            "Bought from shop " + id + ", " + npcId + " on " + DateHelper.getCurrentReadableDate());
                 }
             } else {
                 c.getPlayer().dropMessage(1, "Your Inventory is full");
@@ -222,8 +205,7 @@ public class MapleShop {
             return;
         }
 
-        if (GameConstants.isThrowingStar(item.getItemId())
-                || GameConstants.isBullet(item.getItemId())) {
+        if (GameConstants.isThrowingStar(item.getItemId()) || GameConstants.isBullet(item.getItemId())) {
             quantity = item.getQuantity();
         }
         if (quantity < 0) {
@@ -232,15 +214,7 @@ public class MapleShop {
                             c,
                             1000,
                             0,
-                            "Selling "
-                                    + quantity
-                                    + " "
-                                    + item.getItemId()
-                                    + " ("
-                                    + type.name()
-                                    + "/"
-                                    + slot
-                                    + ")");
+                            "Selling " + quantity + " " + item.getItemId() + " (" + type.name() + "/" + slot + ")");
             return;
         }
         short iQuant = item.getQuantity();
@@ -254,11 +228,8 @@ public class MapleShop {
         if (quantity <= iQuant && iQuant > 0) {
             MapleInventoryManipulator.removeFromSlot(c, type, slot, quantity, false);
             double price;
-            if (GameConstants.isThrowingStar(item.getItemId())
-                    || GameConstants.isBullet(item.getItemId())) {
-                price =
-                        ii.getWholePrice(item.getItemId())
-                                / (double) ii.getSlotMax(c, item.getItemId());
+            if (GameConstants.isThrowingStar(item.getItemId()) || GameConstants.isBullet(item.getItemId())) {
+                price = ii.getWholePrice(item.getItemId()) / (double) ii.getSlotMax(c, item.getItemId());
             } else {
                 price = ii.getPrice(item.getItemId());
             }
@@ -274,8 +245,7 @@ public class MapleShop {
         final IItem item = c.getPlayer().getInventory(MapleInventoryType.USE).getItem(slot);
 
         if (item == null
-                || (!GameConstants.isThrowingStar(item.getItemId())
-                        && !GameConstants.isBullet(item.getItemId()))) {
+                || (!GameConstants.isThrowingStar(item.getItemId()) && !GameConstants.isBullet(item.getItemId()))) {
             return;
         }
         final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
@@ -286,16 +256,10 @@ public class MapleShop {
             slotMax += c.getPlayer().getSkillLevel(SkillFactory.getSkill(skill)) * 10;
         }
         if (item.getQuantity() < slotMax) {
-            final int price =
-                    (int)
-                            Math.round(
-                                    ii.getPrice(item.getItemId()) * (slotMax - item.getQuantity()));
+            final int price = (int) Math.round(ii.getPrice(item.getItemId()) * (slotMax - item.getQuantity()));
             if (c.getPlayer().getMeso() >= price) {
                 item.setQuantity(slotMax);
-                c.getSession()
-                        .write(
-                                MaplePacketCreator.updateInventorySlot(
-                                        MapleInventoryType.USE, item, false));
+                c.getSession().write(MaplePacketCreator.updateInventorySlot(MapleInventoryType.USE, item, false));
                 c.getPlayer().gainMeso(-price, false, true, false);
                 c.getSession().write(MaplePacketCreator.confirmShopTransaction((byte) 0x8));
             }

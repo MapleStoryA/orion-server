@@ -7,14 +7,14 @@ public class GachaponReward extends AbstractRandomEntity {
     private GachaponLocation location;
     private RewardSource source;
 
-    public GachaponReward(int idreward,
-                          int id,
-                          int quantity,
-                          double chance,
-                          String description,
-                          GachaponLocation location,
-                          RewardSource source
-    ) {
+    public GachaponReward(
+            int idreward,
+            int id,
+            int quantity,
+            double chance,
+            String description,
+            GachaponLocation location,
+            RewardSource source) {
         super(idreward, id, quantity, chance, description);
         this.location = location;
         this.source = source;

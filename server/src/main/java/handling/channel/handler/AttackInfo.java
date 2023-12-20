@@ -24,8 +24,7 @@ public class AttackInfo {
         return position;
     }
 
-    public final MapleStatEffect getAttackEffect(
-            final MapleCharacter chr, int skillLevel, final ISkill skill_) {
+    public final MapleStatEffect getAttackEffect(final MapleCharacter chr, int skillLevel, final ISkill skill_) {
         if (GameConstants.isMulungSkill(skill) || GameConstants.isPyramidSkill(skill)) {
             skillLevel = 1;
         } else if (skillLevel <= 0) {
@@ -38,8 +37,7 @@ public class AttackInfo {
                     AutobanManager.getInstance()
                             .autoban(
                                     chr.getClient(),
-                                    "No delay hack, SkillID : "
-                                            + skill); // 2 of the same autobans? wtf...
+                                    "No delay hack, SkillID : " + skill); // 2 of the same autobans? wtf...
                     return null;
                 }
             }
@@ -47,8 +45,7 @@ public class AttackInfo {
         }
         if (display > 80) {
             if (!skill_.getAction()) {
-                AutobanManager.getInstance()
-                        .autoban(chr.getClient(), "No delay hack, SkillID : " + skill);
+                AutobanManager.getInstance().autoban(chr.getClient(), "No delay hack, SkillID : " + skill);
                 return null;
             }
         }

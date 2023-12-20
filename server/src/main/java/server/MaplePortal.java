@@ -1,7 +1,6 @@
 package server;
 
 import client.MapleClient;
-
 import java.awt.*;
 
 public interface MaplePortal {

@@ -74,7 +74,8 @@ public class CashShop implements Serializable {
             factory = ItemLoader.CASHSHOP_EXPLORER;
         }
 
-        for (Pair<IItem, MapleInventoryType> item : factory.loadItems(false, accountId).values()) {
+        for (Pair<IItem, MapleInventoryType> item :
+                factory.loadItems(false, accountId).values()) {
             inventory.add(item.getLeft());
         }
     }
@@ -117,8 +118,7 @@ public class CashShop implements Serializable {
     }
 
     public IItem toItemWithQuantity(CashItemInfo cItem, int quantity, String gift) {
-        return toItem(
-                cItem, MapleInventoryManipulator.getUniqueId(cItem.getId(), null), gift, quantity);
+        return toItem(cItem, MapleInventoryManipulator.getUniqueId(cItem.getId(), null), gift, quantity);
     }
 
     public IItem toItem(CashItemInfo cItem) {
@@ -143,8 +143,7 @@ public class CashShop implements Serializable {
         }
         IItem ret = null;
         if (GameConstants.getInventoryType(cItem.getId()) == MapleInventoryType.EQUIP) {
-            Equip eq =
-                    (Equip) MapleItemInformationProvider.getInstance().getEquipById(cItem.getId());
+            Equip eq = (Equip) MapleItemInformationProvider.getInstance().getEquipById(cItem.getId());
             eq.setSN(uniqueid);
             if (period > 0) {
                 eq.setExpiration(System.currentTimeMillis() + (period * 24 * 60 * 60 * 1000));
@@ -158,13 +157,8 @@ public class CashShop implements Serializable {
             }
             ret = eq.copy();
         } else {
-            Item item =
-                    new Item(
-                            cItem.getId(),
-                            (byte) 0,
-                            (short) (quantity > 0 ? quantity : cItem.getCount()),
-                            (byte) 0,
-                            uniqueid);
+            Item item = new Item(
+                    cItem.getId(), (byte) 0, (short) (quantity > 0 ? quantity : cItem.getCount()), (byte) 0, uniqueid);
             if (period > 0) {
                 item.setExpiration(System.currentTimeMillis() + (period * 24 * 60 * 60 * 1000));
             }
@@ -194,8 +188,7 @@ public class CashShop implements Serializable {
 
     public void gift(int recipient, String from, String message, int sn, int uniqueid) {
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps =
-                    con.prepareStatement("INSERT INTO `gifts` VALUES (DEFAULT, ?, ?, ?, ?, ?)");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO `gifts` VALUES (DEFAULT, ?, ?, ?, ?, ?)");
             ps.setInt(1, recipient);
             ps.setString(2, from);
             ps.setString(3, message);
@@ -211,8 +204,7 @@ public class CashShop implements Serializable {
     public List<Pair<IItem, String>> loadGifts() {
         List<Pair<IItem, String>> gifts = new ArrayList<Pair<IItem, String>>();
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps =
-                    con.prepareStatement("SELECT * FROM `gifts` WHERE `recipient` = ?");
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM `gifts` WHERE `recipient` = ?");
             ps.setInt(1, characterId);
             ResultSet rs = ps.executeQuery();
             // TODO: Remove from here.
@@ -223,8 +215,7 @@ public class CashShop implements Serializable {
                 IItem item = toItem(cItem, rs.getInt("uniqueid"), rs.getString("from"), 0);
                 gifts.add(new Pair<IItem, String>(item, rs.getString("message")));
                 uniqueids.add(item.getSN());
-                List<CashItemInfo> packages =
-                        CashItemFactory.getInstance().getPackageItems(cItem.getId(), children);
+                List<CashItemInfo> packages = CashItemFactory.getInstance().getPackageItems(cItem.getId(), children);
                 if (packages != null && packages.size() > 0) {
                     for (CashItemInfo packageItem : packages) {
                         addToInventory(toItem(packageItem, rs.getString("from")));
@@ -260,13 +251,11 @@ public class CashShop implements Serializable {
     }
 
     public void save() throws SQLException {
-        List<Pair<IItem, MapleInventoryType>> itemsWithType =
-                new ArrayList<Pair<IItem, MapleInventoryType>>();
+        List<Pair<IItem, MapleInventoryType>> itemsWithType = new ArrayList<Pair<IItem, MapleInventoryType>>();
 
         for (IItem item : inventory) {
             itemsWithType.add(
-                    new Pair<IItem, MapleInventoryType>(
-                            item, GameConstants.getInventoryType(item.getItemId())));
+                    new Pair<IItem, MapleInventoryType>(item, GameConstants.getInventoryType(item.getItemId())));
         }
 
         factory.saveItems(itemsWithType, accountId);

@@ -72,19 +72,18 @@ public class SpawnPointAreaBoss extends Spawns {
 
         mob.setPosition(getPosition());
         spawned.set(true);
-        mob.addListener(
-                new MonsterListener() {
+        mob.addListener(new MonsterListener() {
 
-                    @Override
-                    public void monsterKilled() {
-                        nextPossibleSpawn = System.currentTimeMillis();
+            @Override
+            public void monsterKilled() {
+                nextPossibleSpawn = System.currentTimeMillis();
 
-                        if (mobTime > 0) {
-                            nextPossibleSpawn += mobTime;
-                        }
-                        spawned.set(false);
-                    }
-                });
+                if (mobTime > 0) {
+                    nextPossibleSpawn += mobTime;
+                }
+                spawned.set(false);
+            }
+        });
         map.spawnMonster(mob, -2);
 
         if (msg != null) {

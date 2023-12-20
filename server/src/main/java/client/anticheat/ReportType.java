@@ -19,7 +19,6 @@
 package client.anticheat;
 
 public enum ReportType {
-
     Hacking(0, "hack"),
     Botting(1, "bot"),
     Scamming(2, "scam"),

@@ -108,46 +108,39 @@ public class XMLDomMapleData implements MapleData, Serializable {
         final NamedNodeMap attributes = node.getAttributes();
         final MapleDataType type = getType();
         switch (type) {
-            case DOUBLE:
-                {
-                    String value = attributes.getNamedItem("value").getNodeValue();
-                    value = value.replace(",", ".");
-                    return Double.valueOf(Double.parseDouble(value));
-                }
-            case FLOAT:
-                {
-                    String value = attributes.getNamedItem("value").getNodeValue();
-                    value = value.replace(",", ".");
-                    return Float.valueOf(Float.parseFloat(value));
-                }
-            case INT:
-                {
-                    return Integer.valueOf(
-                            Integer.parseInt(attributes.getNamedItem("value").getNodeValue()));
-                }
-            case SHORT:
-                {
-                    return Short.valueOf(
-                            Short.parseShort(attributes.getNamedItem("value").getNodeValue()));
-                }
+            case DOUBLE: {
+                String value = attributes.getNamedItem("value").getNodeValue();
+                value = value.replace(",", ".");
+                return Double.valueOf(Double.parseDouble(value));
+            }
+            case FLOAT: {
+                String value = attributes.getNamedItem("value").getNodeValue();
+                value = value.replace(",", ".");
+                return Float.valueOf(Float.parseFloat(value));
+            }
+            case INT: {
+                return Integer.valueOf(
+                        Integer.parseInt(attributes.getNamedItem("value").getNodeValue()));
+            }
+            case SHORT: {
+                return Short.valueOf(
+                        Short.parseShort(attributes.getNamedItem("value").getNodeValue()));
+            }
             case STRING:
-            case UOL:
-                {
-                    return attributes.getNamedItem("value").getNodeValue();
-                }
-            case VECTOR:
-                {
-                    return new Point(
-                            Integer.parseInt(attributes.getNamedItem("x").getNodeValue()),
-                            Integer.parseInt(attributes.getNamedItem("y").getNodeValue()));
-                }
-            case CANVAS:
-                {
-                    return new FileStoredPngMapleCanvas(
-                            Integer.parseInt(attributes.getNamedItem("width").getNodeValue()),
-                            Integer.parseInt(attributes.getNamedItem("height").getNodeValue()),
-                            new File(imageDataDir, getName() + ".png"));
-                }
+            case UOL: {
+                return attributes.getNamedItem("value").getNodeValue();
+            }
+            case VECTOR: {
+                return new Point(
+                        Integer.parseInt(attributes.getNamedItem("x").getNodeValue()),
+                        Integer.parseInt(attributes.getNamedItem("y").getNodeValue()));
+            }
+            case CANVAS: {
+                return new FileStoredPngMapleCanvas(
+                        Integer.parseInt(attributes.getNamedItem("width").getNodeValue()),
+                        Integer.parseInt(attributes.getNamedItem("height").getNodeValue()),
+                        new File(imageDataDir, getName() + ".png"));
+            }
             default:
                 break;
         }

@@ -50,10 +50,7 @@ public class SpeedQuizFactory {
                     ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     quiz.put(
-                            new QuizEntry(
-                                    rs.getByte("type"),
-                                    rs.getInt("objectid"),
-                                    rs.getString("answer")),
+                            new QuizEntry(rs.getByte("type"), rs.getInt("objectid"), rs.getString("answer")),
                             rs.getInt("questionNo"));
                 }
             }

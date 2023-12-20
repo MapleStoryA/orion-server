@@ -2,12 +2,11 @@ package server;
 
 import client.MapleCharacter;
 import handling.world.WorldServer;
-import server.maps.MapleMap;
-import tools.MaplePacketCreator;
-
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
+import server.maps.MapleMap;
+import tools.MaplePacketCreator;
 
 /**
  * Note for this class : MapleCharacter reference must be removed immediately after cpq or upon dc.
@@ -67,7 +66,10 @@ public class MapleCarnivalParty {
 
     public void warp(final MapleMap map, final String portalname) {
         for (int chr : members) {
-            final MapleCharacter c = WorldServer.getInstance().getChannel(channel).getPlayerStorage().getCharacterById(chr);
+            final MapleCharacter c = WorldServer.getInstance()
+                    .getChannel(channel)
+                    .getPlayerStorage()
+                    .getCharacterById(chr);
             if (c != null) {
                 c.changeMap(map, map.getPortal(portalname));
             }
@@ -76,7 +78,10 @@ public class MapleCarnivalParty {
 
     public void warp(final MapleMap map, final int portalid) {
         for (int chr : members) {
-            final MapleCharacter c = WorldServer.getInstance().getChannel(channel).getPlayerStorage().getCharacterById(chr);
+            final MapleCharacter c = WorldServer.getInstance()
+                    .getChannel(channel)
+                    .getPlayerStorage()
+                    .getCharacterById(chr);
             if (c != null) {
                 c.changeMap(map, map.getPortal(portalid));
             }
@@ -99,7 +104,6 @@ public class MapleCarnivalParty {
                 chr.setCarnivalParty(null);
             }
         }
-
     }
 
     public boolean isWinner() {
@@ -115,17 +119,19 @@ public class MapleCarnivalParty {
         final String sound = winner ? "MobCarnival/Win" : "MobCarnival/Lose";
         boolean done = false;
         for (int chr : members) {
-            final MapleCharacter c = WorldServer.getInstance().getChannel(channel).getPlayerStorage().getCharacterById(chr);
+            final MapleCharacter c = WorldServer.getInstance()
+                    .getChannel(channel)
+                    .getPlayerStorage()
+                    .getCharacterById(chr);
             if (c != null) {
                 c.getClient().getSession().write(MaplePacketCreator.showEffect(effect));
                 c.getClient().getSession().write(MaplePacketCreator.playSound(sound));
                 if (!done) {
                     done = true;
                     c.getMap().killAllMonsters(true);
-                    c.getMap().setSpawns(false); //resetFully will take care of this
+                    c.getMap().setSpawns(false); // resetFully will take care of this
                 }
             }
         }
-
     }
 }

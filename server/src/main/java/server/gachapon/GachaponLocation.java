@@ -21,7 +21,7 @@ public enum GachaponLocation {
 
     public static GachaponLocation valueOf(int location) {
         for (GachaponLocation l : GachaponLocation.values()) {
-            //TODO: Fix remote gachapon for showa town sauna
+            // TODO: Fix remote gachapon for showa town sauna
             if (l == SHOWA_MALE || l == SHOWA_FEMALE) {
                 return GachaponLocation.MUSHROM_SHRINE;
             }
@@ -29,7 +29,7 @@ public enum GachaponLocation {
                 return l;
             }
         }
-        //Default to mushrom shrine
+        // Default to mushrom shrine
         return GachaponLocation.MUSHROM_SHRINE;
     }
 
@@ -40,6 +40,4 @@ public enum GachaponLocation {
     public void setLocation(int location) {
         this.location = location;
     }
-
-
 }

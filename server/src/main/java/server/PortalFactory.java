@@ -1,11 +1,10 @@
 package server;
 
+import java.awt.*;
 import provider.MapleData;
 import provider.MapleDataTool;
 import server.maps.MapleGenericPortal;
 import server.maps.MapleMapPortal;
-
-import java.awt.*;
 
 @lombok.extern.slf4j.Slf4j
 public class PortalFactory {
@@ -27,7 +26,8 @@ public class PortalFactory {
         myPortal.setName(MapleDataTool.getString(portal.getChildByPath("pn")));
         myPortal.setTarget(MapleDataTool.getString(portal.getChildByPath("tn")));
         myPortal.setTargetMapId(MapleDataTool.getInt(portal.getChildByPath("tm")));
-        myPortal.setPosition(new Point(MapleDataTool.getInt(portal.getChildByPath("x")), MapleDataTool.getInt(portal.getChildByPath("y"))));
+        myPortal.setPosition(new Point(
+                MapleDataTool.getInt(portal.getChildByPath("x")), MapleDataTool.getInt(portal.getChildByPath("y"))));
         String script = MapleDataTool.getString("script", portal, null);
         if (script != null && script.equals("")) {
             script = null;
@@ -40,11 +40,12 @@ public class PortalFactory {
         } else {
             myPortal.setId(Integer.parseInt(portal.getName()));
         }
-        //portalState
-        //if (myPortal.getName().equals("join00") && !myPortal.getPortalState()) { //ola ola, ox quiz, maplefitness
-        //	if (myPortal.getTargetMapId() == 109030001 || myPortal.getTargetMapId() == 109030101 || myPortal.getTargetMapId() == 109050000 || myPortal.getTargetMapId() == 109040000) { //ola ola, ox quiz
+        // portalState
+        // if (myPortal.getName().equals("join00") && !myPortal.getPortalState()) { //ola ola, ox quiz, maplefitness
+        //	if (myPortal.getTargetMapId() == 109030001 || myPortal.getTargetMapId() == 109030101 ||
+        // myPortal.getTargetMapId() == 109050000 || myPortal.getTargetMapId() == 109040000) { //ola ola, ox quiz
         //		myPortal.setPortalState(false);
         //	}
-        //}
+        // }
     }
 }

@@ -51,20 +51,13 @@ public class MapleFootholdTree {
         }
         if (
         /*footholds.size() == 0 || */ depth == maxDepth
-                || (f.getX1() >= p1.x
-                        && f.getX2() <= p2.x
-                        && f.getY1() >= p1.y
-                        && f.getY2() <= p2.y)) {
+                || (f.getX1() >= p1.x && f.getX2() <= p2.x && f.getY1() >= p1.y && f.getY2() <= p2.y)) {
             footholds.add(f);
         } else {
             if (nw == null) {
                 nw = new MapleFootholdTree(p1, center, depth + 1);
-                ne =
-                        new MapleFootholdTree(
-                                new Point(center.x, p1.y), new Point(p2.x, center.y), depth + 1);
-                sw =
-                        new MapleFootholdTree(
-                                new Point(p1.x, center.y), new Point(center.x, p2.y), depth + 1);
+                ne = new MapleFootholdTree(new Point(center.x, p1.y), new Point(p2.x, center.y), depth + 1);
+                sw = new MapleFootholdTree(new Point(p1.x, center.y), new Point(center.x, p2.y), depth + 1);
                 se = new MapleFootholdTree(center, p2, depth + 1);
             }
             if (f.getX2() <= center.x && f.getY2() <= center.y) {
@@ -103,11 +96,7 @@ public class MapleFootholdTree {
         MapleFoothold ret;
         for (final MapleFoothold f : footholds) {
             // if (f.isWall()) log.info(f.getX1() + " " + f.getX2());
-            if (f.isWall()
-                    && f.getX1() >= p1.x
-                    && f.getX1() <= p2.x
-                    && f.getY1() >= p1.y
-                    && f.getY2() <= p1.y) {
+            if (f.isWall() && f.getX1() >= p1.x && f.getX1() <= p2.x && f.getY1() >= p1.y && f.getY2() <= p1.y) {
                 return f;
             }
         }
@@ -146,8 +135,7 @@ public class MapleFootholdTree {
     }
 
     // To be refined, still inaccurate :(
-    public final boolean checkRelevantFH(
-            final short fromx, final short fromy, final short tox, final short toy) {
+    public final boolean checkRelevantFH(final short fromx, final short fromy, final short tox, final short toy) {
         MapleFoothold fhdata = null;
         for (final MapleFoothold fh : footholds) { // From
             if (fh.getX1() <= fromx

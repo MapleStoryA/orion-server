@@ -53,9 +53,7 @@ public class MapleOla extends MapleEvent {
     @Override
     public void onMapLoad(MapleCharacter chr) {
         if (isTimerStarted()) {
-            chr.getClient()
-                    .getSession()
-                    .write(MaplePacketCreator.getClock((int) (getTimeLeft() / 1000)));
+            chr.getClient().getSession().write(MaplePacketCreator.getClock((int) (getTimeLeft() / 1000)));
         }
     }
 
@@ -66,29 +64,24 @@ public class MapleOla extends MapleEvent {
         broadcast(MaplePacketCreator.getClock((int) (time / 1000)));
         this.timeStarted = System.currentTimeMillis();
 
-        olaSchedule =
-                EventTimer.getInstance()
-                        .schedule(
-                                new Runnable() {
+        olaSchedule = EventTimer.getInstance()
+                .schedule(
+                        new Runnable() {
 
-                                    @Override
-                                    public void run() {
-                                        for (int i = 0; i < mapid.length; i++) {
-                                            for (MapleCharacter chr :
-                                                    getMap(i).getCharactersThreadsafe()) {
-                                                warpBack(chr);
-                                            }
-                                            unreset();
-                                        }
+                            @Override
+                            public void run() {
+                                for (int i = 0; i < mapid.length; i++) {
+                                    for (MapleCharacter chr : getMap(i).getCharactersThreadsafe()) {
+                                        warpBack(chr);
                                     }
-                                },
-                                this.time);
+                                    unreset();
+                                }
+                            }
+                        },
+                        this.time);
 
-        broadcast(
-                MaplePacketCreator.serverNotice(
-                        0,
-                        "The portal has now opened. Press the up arrow key at the portal to"
-                                + " enter."));
+        broadcast(MaplePacketCreator.serverNotice(
+                0, "The portal has now opened. Press the up arrow key at the portal to" + " enter."));
     }
 
     public boolean isTimerStarted() {
