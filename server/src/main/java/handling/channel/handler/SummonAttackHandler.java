@@ -9,7 +9,7 @@ import client.skill.ISkill;
 import client.skill.SkillFactory;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
-import handling.AbstractMaplePacketHandler;
+import handling.packet.AbstractMaplePacketHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

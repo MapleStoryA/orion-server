@@ -3,7 +3,7 @@ package handling.channel.handler;
 import client.MapleClient;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
-import handling.AbstractMaplePacketHandler;
+import handling.packet.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import tools.MaplePacketCreator;
 import tools.data.input.InPacket;

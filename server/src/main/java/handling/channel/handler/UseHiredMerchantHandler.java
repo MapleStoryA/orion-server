@@ -1,8 +1,8 @@
 package handling.channel.handler;
 
 import client.MapleClient;
-import handling.AbstractMaplePacketHandler;
 import handling.channel.handler.utils.HiredMerchantHandlerUtils;
+import handling.packet.AbstractMaplePacketHandler;
 import handling.world.WorldServer;
 import tools.data.input.InPacket;
 import tools.packet.PlayerShopPacket;

@@ -9,7 +9,7 @@ import client.inventory.MapleInventoryType;
 import client.skill.ISkill;
 import client.skill.SkillFactory;
 import constants.GameConstants;
-import handling.AbstractMaplePacketHandler;
+import handling.packet.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MapleStatEffect;

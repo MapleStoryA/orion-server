@@ -1,8 +1,8 @@
 package handling.channel.handler;
 
 import client.MapleClient;
-import handling.AbstractMaplePacketHandler;
-import handling.SendPacketOpcode;
+import handling.packet.AbstractMaplePacketHandler;
+import handling.packet.SendPacketOpcode;
 import tools.data.input.InPacket;
 import tools.data.output.OutPacket;
 

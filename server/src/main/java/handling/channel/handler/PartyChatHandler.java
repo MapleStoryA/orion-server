@@ -4,7 +4,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.commands.CommandProcessor;
 import constants.ServerConstants.CommandType;
-import handling.AbstractMaplePacketHandler;
+import handling.packet.AbstractMaplePacketHandler;
 import handling.world.alliance.AllianceManager;
 import handling.world.buddy.BuddyManager;
 import handling.world.guild.GuildManager;

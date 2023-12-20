@@ -6,7 +6,7 @@ import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import client.skill.SkillFactory;
 import constants.GameConstants;
-import handling.AbstractMaplePacketHandler;
+import handling.packet.AbstractMaplePacketHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

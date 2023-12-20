@@ -3,7 +3,7 @@ package tools.packet;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.inventory.IItem;
-import handling.SendPacketOpcode;
+import handling.packet.SendPacketOpcode;
 import java.util.Set;
 import server.MerchItemPackage;
 import server.shops.AbstractPlayerStore.BoughtItem;

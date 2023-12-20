@@ -5,7 +5,7 @@ import client.inventory.IItem;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
-import handling.AbstractMaplePacketHandler;
+import handling.packet.AbstractMaplePacketHandler;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;

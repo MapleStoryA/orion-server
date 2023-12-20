@@ -1,7 +1,7 @@
 package handling.channel.handler.admin;
 
 import client.MapleClient;
-import handling.AbstractMaplePacketHandler;
+import handling.packet.AbstractMaplePacketHandler;
 import tools.data.input.InPacket;
 
 /**

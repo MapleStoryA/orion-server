@@ -2,7 +2,7 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import handling.AbstractMaplePacketHandler;
+import handling.packet.AbstractMaplePacketHandler;
 import handling.world.WorldServer;
 import handling.world.helper.MapleMessenger;
 import handling.world.helper.MapleMessengerCharacter;

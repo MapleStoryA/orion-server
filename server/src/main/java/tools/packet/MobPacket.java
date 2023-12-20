@@ -2,7 +2,7 @@ package tools.packet;
 
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
-import handling.SendPacketOpcode;
+import handling.packet.SendPacketOpcode;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;

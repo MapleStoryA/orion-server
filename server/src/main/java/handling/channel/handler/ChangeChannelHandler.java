@@ -2,7 +2,7 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import handling.AbstractMaplePacketHandler;
+import handling.packet.AbstractMaplePacketHandler;
 import server.maps.FieldLimitType;
 import tools.MaplePacketCreator;
 import tools.data.input.InPacket;

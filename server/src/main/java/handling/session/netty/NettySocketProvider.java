@@ -1,6 +1,6 @@
 package handling.session.netty;
 
-import handling.PacketProcessor;
+import handling.packet.PacketProcessor;
 import handling.session.SocketProvider;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;

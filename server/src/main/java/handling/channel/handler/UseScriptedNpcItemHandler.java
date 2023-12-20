@@ -7,7 +7,7 @@ import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.skill.SkillFactory;
 import constants.GameConstants;
-import handling.AbstractMaplePacketHandler;
+import handling.packet.AbstractMaplePacketHandler;
 import scripting.NPCScriptManager;
 import server.MapleInventoryManipulator;
 import server.maps.MapleMap;

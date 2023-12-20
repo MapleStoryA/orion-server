@@ -19,8 +19,8 @@
 package tools.packet;
 
 import client.MapleCharacter;
-import handling.SendPacketOpcode;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
+import handling.packet.SendPacketOpcode;
 import handling.world.expedition.MapleExpedition;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;

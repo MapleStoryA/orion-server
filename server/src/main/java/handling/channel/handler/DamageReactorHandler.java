@@ -1,7 +1,7 @@
 package handling.channel.handler;
 
 import client.MapleClient;
-import handling.AbstractMaplePacketHandler;
+import handling.packet.AbstractMaplePacketHandler;
 import server.maps.MapleReactor;
 import tools.Randomizer;
 import tools.data.input.InPacket;

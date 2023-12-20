@@ -1,4 +1,4 @@
-package handling;
+package handling.packet;
 
 public enum RecvPacketOpcode {
     PONG(25, false),

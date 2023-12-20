@@ -5,7 +5,7 @@ import client.MapleClient;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import constants.GameConstants;
-import handling.AbstractMaplePacketHandler;
+import handling.packet.AbstractMaplePacketHandler;
 import java.util.Comparator;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;

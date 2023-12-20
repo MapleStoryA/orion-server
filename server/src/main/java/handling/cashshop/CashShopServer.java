@@ -1,8 +1,8 @@
 package handling.cashshop;
 
 import handling.GameServer;
-import handling.PacketProcessor;
 import handling.channel.PlayerStorage;
+import handling.packet.PacketProcessor;
 import lombok.extern.slf4j.Slf4j;
 import server.config.ServerConfig;
 

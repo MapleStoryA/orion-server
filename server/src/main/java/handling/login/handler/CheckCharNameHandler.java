@@ -2,8 +2,8 @@ package handling.login.handler;
 
 import client.MapleCharacterHelper;
 import client.MapleClient;
-import handling.AbstractMaplePacketHandler;
 import handling.login.LoginInformationProvider;
+import handling.packet.AbstractMaplePacketHandler;
 import tools.data.input.InPacket;
 import tools.packet.LoginPacket;
 

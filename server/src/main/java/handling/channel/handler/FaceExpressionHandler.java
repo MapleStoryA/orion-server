@@ -5,7 +5,7 @@ import client.MapleClient;
 import client.anticheat.CheatingOffense;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
-import handling.AbstractMaplePacketHandler;
+import handling.packet.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
 import tools.data.input.InPacket;
 

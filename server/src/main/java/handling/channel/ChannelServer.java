@@ -2,8 +2,8 @@ package handling.channel;
 
 import client.MapleCharacter;
 import handling.GameServer;
-import handling.PacketProcessor;
 import handling.login.LoginServer;
+import handling.packet.PacketProcessor;
 import handling.world.WorldServer;
 import handling.world.helper.CheaterData;
 import java.util.Collection;

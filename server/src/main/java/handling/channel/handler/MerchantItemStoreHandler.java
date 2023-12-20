@@ -2,8 +2,8 @@ package handling.channel.handler;
 
 import client.MapleClient;
 import client.inventory.IItem;
-import handling.AbstractMaplePacketHandler;
 import handling.channel.handler.utils.HiredMerchantHandlerUtils;
+import handling.packet.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import server.MerchItemPackage;
 import tools.data.input.InPacket;

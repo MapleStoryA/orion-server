@@ -3,7 +3,7 @@ package handling.channel.handler;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
-import handling.AbstractMaplePacketHandler;
+import handling.packet.AbstractMaplePacketHandler;
 import java.util.Iterator;
 import server.maps.MapleSummon;
 import tools.MaplePacketCreator;

@@ -7,7 +7,7 @@ import client.PlayerStats;
 import client.skill.ISkill;
 import client.skill.SkillFactory;
 import constants.GameConstants;
-import handling.AbstractMaplePacketHandler;
+import handling.packet.AbstractMaplePacketHandler;
 import java.util.ArrayList;
 import java.util.List;
 import tools.MaplePacketCreator;

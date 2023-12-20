@@ -2,8 +2,8 @@ package handling.session.mina;
 
 import client.MapleClient;
 import constants.ServerConstants;
-import handling.PacketProcessor;
 import handling.cashshop.CashShopServer;
+import handling.packet.PacketProcessor;
 import handling.session.DefaultPacketHandler;
 import handling.session.NetworkSession;
 import handling.world.WorldServer;

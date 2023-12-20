@@ -3,7 +3,7 @@ package handling.login;
 import client.MapleClient;
 import database.LoginState;
 import handling.GameServer;
-import handling.PacketProcessor;
+import handling.packet.PacketProcessor;
 import handling.world.WorldServer;
 import java.util.HashMap;
 import java.util.Map;

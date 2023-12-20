@@ -2,8 +2,8 @@ package handling.session.netty;
 
 import client.MapleClient;
 import constants.ServerConstants;
-import handling.PacketProcessor;
 import handling.cashshop.CashShopServer;
+import handling.packet.PacketProcessor;
 import handling.session.DefaultPacketHandler;
 import handling.world.WorldServer;
 import io.netty.channel.ChannelHandlerContext;

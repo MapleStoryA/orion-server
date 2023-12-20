@@ -2,9 +2,9 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import handling.AbstractMaplePacketHandler;
 import handling.channel.handler.utils.PartyHandlerUtils;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
+import handling.packet.AbstractMaplePacketHandler;
 import handling.world.WorldServer;
 import handling.world.expedition.ExpeditionType;
 import handling.world.expedition.MapleExpedition;

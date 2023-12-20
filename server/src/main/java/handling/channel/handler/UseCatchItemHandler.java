@@ -4,7 +4,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
-import handling.AbstractMaplePacketHandler;
+import handling.packet.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import server.life.MapleMonster;
 import server.maps.MapleMap;

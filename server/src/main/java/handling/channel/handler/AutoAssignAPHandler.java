@@ -4,7 +4,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleStat;
 import client.PlayerStats;
-import handling.AbstractMaplePacketHandler;
+import handling.packet.AbstractMaplePacketHandler;
 import java.util.ArrayList;
 import java.util.List;
 import tools.MaplePacketCreator;

@@ -3,7 +3,7 @@ package handling.channel.handler;
 import client.MapleClient;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
-import handling.AbstractMaplePacketHandler;
+import handling.packet.AbstractMaplePacketHandler;
 import java.util.List;
 import server.MapleInventoryManipulator;
 import server.shops.HiredMerchant;

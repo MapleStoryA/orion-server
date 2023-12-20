@@ -3,7 +3,7 @@ package handling.channel.handler;
 import client.MapleClient;
 import client.skill.ISkill;
 import client.skill.SkillFactory;
-import handling.AbstractMaplePacketHandler;
+import handling.packet.AbstractMaplePacketHandler;
 import java.awt.*;
 import server.maps.MapleMist;
 import tools.MaplePacketCreator;

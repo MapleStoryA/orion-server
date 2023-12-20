@@ -3,7 +3,7 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleDisease;
-import handling.AbstractMaplePacketHandler;
+import handling.packet.AbstractMaplePacketHandler;
 import java.util.List;
 import server.MapleCarnivalFactory;
 import server.MapleCarnivalFactory.MCSkill;

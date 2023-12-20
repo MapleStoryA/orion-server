@@ -1,7 +1,7 @@
 package handling.channel.handler;
 
 import client.MapleClient;
-import handling.AbstractMaplePacketHandler;
+import handling.packet.AbstractMaplePacketHandler;
 import scripting.NPCConversationManager;
 import scripting.NPCScriptManager;
 import scripting.v1.NpcTalkHelper;

@@ -1,9 +1,9 @@
 package handling.channel.handler;
 
 import client.MapleClient;
-import handling.AbstractMaplePacketHandler;
 import handling.channel.handler.utils.GuildHandlerUtils;
 import handling.channel.handler.utils.GuildHandlerUtils.Invited;
+import handling.packet.AbstractMaplePacketHandler;
 import handling.world.alliance.AllianceManager;
 import handling.world.guild.GuildManager;
 import handling.world.guild.MapleGuild;

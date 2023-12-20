@@ -1,8 +1,8 @@
 package handling.channel.handler;
 
 import client.MapleClient;
-import handling.AbstractMaplePacketHandler;
 import handling.cashshop.CashShopOperationHandlers;
+import handling.packet.AbstractMaplePacketHandler;
 import tools.data.input.InPacket;
 import tools.packet.MTSCSPacket;
 

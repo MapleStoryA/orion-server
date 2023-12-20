@@ -1,6 +1,6 @@
 package handling.session.mina;
 
-import handling.PacketProcessor;
+import handling.packet.PacketProcessor;
 import handling.session.SocketProvider;
 import java.io.IOException;
 import java.net.InetSocketAddress;

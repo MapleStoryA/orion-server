@@ -4,7 +4,7 @@ import client.MapleCharacter;
 import client.MapleStat;
 import client.inventory.IItem;
 import client.inventory.MaplePet;
-import handling.SendPacketOpcode;
+import handling.packet.SendPacketOpcode;
 import java.awt.*;
 import server.movement.MovePath;
 import tools.MaplePacketCreator;

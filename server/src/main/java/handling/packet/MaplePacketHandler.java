@@ -1,4 +1,4 @@
-package handling;
+package handling.packet;
 
 import client.MapleClient;
 import tools.data.input.InPacket;

@@ -5,7 +5,7 @@ import client.MapleClient;
 import client.inventory.IItem;
 import client.inventory.MaplePet;
 import client.inventory.MapleRing;
-import handling.SendPacketOpcode;
+import handling.packet.SendPacketOpcode;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;

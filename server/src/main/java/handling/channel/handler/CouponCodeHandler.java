@@ -2,8 +2,8 @@ package handling.channel.handler;
 
 import client.MapleClient;
 import client.inventory.IItem;
-import handling.AbstractMaplePacketHandler;
 import handling.cashshop.CashShopOperationHandlers;
+import handling.packet.AbstractMaplePacketHandler;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

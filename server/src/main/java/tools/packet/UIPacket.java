@@ -1,6 +1,6 @@
 package tools.packet;
 
-import handling.SendPacketOpcode;
+import handling.packet.SendPacketOpcode;
 import tools.MaplePacketCreator;
 import tools.data.output.OutPacket;
 
