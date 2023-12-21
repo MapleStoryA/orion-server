@@ -177,5 +177,6 @@ public class WorldServer {
         Timer.EventTimer.getInstance().start();
         Timer.BuffTimer.getInstance().start();
         Timer.PingTimer.getInstance().start();
+        Timer.CheatTimer.getInstance().start();
     }
 }
