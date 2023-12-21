@@ -2,7 +2,6 @@ import static handling.world.respawn.RespawnWorker.CHANNELS_PER_THREAD;
 
 import ch.qos.logback.classic.ClassicConstants;
 import client.anticheat.AutobanManager;
-import client.commands.CommandProcessor;
 import client.skill.SkillFactory;
 import constants.JobConstants;
 import database.DatabaseConnection;
@@ -26,6 +25,7 @@ import server.ItemMakerFactory;
 import server.MapleCarnivalFactory;
 import server.MapleItemInformationProvider;
 import server.RandomRewards;
+import server.base.commands.CommandProcessor;
 import server.base.config.ServerConfig;
 import server.base.shutdown.ShutdownServer;
 import server.base.timer.Timer;

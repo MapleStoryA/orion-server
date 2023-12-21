@@ -2,7 +2,6 @@ package server;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import client.commands.CommandProcessor;
 import client.inventory.IItem;
 import client.inventory.ItemFlag;
 import client.inventory.MapleInventoryType;
@@ -13,6 +12,7 @@ import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import server.base.commands.CommandProcessor;
 import tools.MaplePacketCreator;
 import tools.packet.PlayerShopPacket;
 
