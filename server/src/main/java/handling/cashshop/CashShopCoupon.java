@@ -1,4 +1,4 @@
-package server.cashshop;
+package handling.cashshop;
 
 import client.inventory.IItem;
 import client.inventory.Item;

@@ -24,7 +24,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import server.MapleStorage;
-import server.cashshop.CashShop;
+import handling.cashshop.CashShop;
 import server.quest.MapleQuest;
 
 @Slf4j

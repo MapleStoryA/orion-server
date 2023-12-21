@@ -1,4 +1,4 @@
-package server.cashshop;
+package handling.cashshop;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,7 +8,7 @@ import java.util.Map;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
-import server.cashshop.CashItemInfo.CashModInfo;
+import handling.cashshop.CashItemInfo.CashModInfo;
 import server.config.ServerConfig;
 
 @lombok.extern.slf4j.Slf4j

@@ -6,8 +6,8 @@ import handling.AbstractMaplePacketHandler;
 import handling.cashshop.CashShopOperationHandlers;
 import networking.data.input.InPacket;
 import server.RandomRewards;
-import server.cashshop.CashItemFactory;
-import server.cashshop.CashItemInfo;
+import handling.cashshop.CashItemFactory;
+import handling.cashshop.CashItemInfo;
 import tools.packet.MTSCSPacket;
 
 @lombok.extern.slf4j.Slf4j

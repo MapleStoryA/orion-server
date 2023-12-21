@@ -11,10 +11,10 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.MapleInventoryManipulator;
-import server.cashshop.CashCouponData;
-import server.cashshop.CashItemFactory;
-import server.cashshop.CashItemInfo;
-import server.cashshop.CashShopCoupon;
+import handling.cashshop.CashCouponData;
+import handling.cashshop.CashItemFactory;
+import handling.cashshop.CashItemInfo;
+import handling.cashshop.CashShopCoupon;
 import tools.collection.Pair;
 import tools.packet.MTSCSPacket;
 

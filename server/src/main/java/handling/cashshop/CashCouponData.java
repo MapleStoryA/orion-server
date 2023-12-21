@@ -1,4 +1,4 @@
-package server.cashshop;
+package handling.cashshop;
 
 /**
  * @author AuroX

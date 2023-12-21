@@ -32,7 +32,7 @@ import server.Timer;
 import server.Timer.CheatTimer;
 import server.Timer.EtcTimer;
 import server.TimerManager;
-import server.cashshop.CashItemFactory;
+import handling.cashshop.CashItemFactory;
 import server.config.ServerConfig;
 import server.events.MapleOxQuizFactory;
 import server.gachapon.GachaponFactory;

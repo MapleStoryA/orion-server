@@ -18,8 +18,8 @@ import networking.data.input.InPacket;
 import provider.MapleData;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
-import server.cashshop.CashItemFactory;
-import server.cashshop.CashItemInfo;
+import handling.cashshop.CashItemFactory;
+import handling.cashshop.CashItemInfo;
 import tools.collection.Triple;
 import tools.packet.MTSCSPacket;
 

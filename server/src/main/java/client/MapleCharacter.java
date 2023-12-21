@@ -98,7 +98,7 @@ import server.RandomRewards;
 import server.Timer.BuffTimer;
 import server.Timer.EtcTimer;
 import server.Timer.MapTimer;
-import server.cashshop.CashShop;
+import handling.cashshop.CashShop;
 import server.config.ServerConfig;
 import server.life.MapleMonster;
 import server.life.MobSkill;
