@@ -1,7 +1,7 @@
 package server.maps;
 
 import client.MapleCharacter;
-import handling.world.helper.BroadcastHelper;
+import handling.world.Broadcast;
 import java.awt.*;
 import lombok.extern.slf4j.Slf4j;
 import server.MapleItemInformationProvider;
@@ -27,7 +27,7 @@ public class AramiaFireWorks {
     private short sunshines = 0;
 
     private final void broadcastServer(final MapleCharacter c, final int itemid) {
-        BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(
+        Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(
                 6,
                 itemid,
                 "<Channel "

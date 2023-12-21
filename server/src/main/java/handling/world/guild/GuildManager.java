@@ -1,9 +1,9 @@
 package handling.world.guild;
 
 import client.MapleCharacter;
+import handling.world.Broadcast;
+import handling.world.FindCommand;
 import handling.world.WorldServer;
-import handling.world.helper.BroadcastHelper;
-import handling.world.helper.FindCommand;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -302,7 +302,7 @@ public class GuildManager {
     }
 
     public static void changeEmblem(int gid, int affectedPlayers, MapleGuildSummary mgs) {
-        BroadcastHelper.sendGuildPacket(
+        Broadcast.sendGuildPacket(
                 affectedPlayers,
                 MaplePacketCreator.guildEmblemChange(
                         gid, mgs.getLogoBG(), mgs.getLogoBGColor(), mgs.getLogo(), mgs.getLogoColor()),

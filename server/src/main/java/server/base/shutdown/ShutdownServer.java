@@ -3,11 +3,10 @@ package server.base.shutdown;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
 import handling.login.LoginServer;
+import handling.world.Broadcast;
 import handling.world.WorldServer;
 import handling.world.alliance.AllianceManager;
 import handling.world.guild.GuildManager;
-import handling.world.helper.BroadcastHelper;
-import handling.world.helper.WorldInitHelper;
 import java.lang.management.ManagementFactory;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
@@ -37,7 +36,7 @@ public class ShutdownServer implements ShutdownServerMBean {
 
     public void run() {
         if (this.mode == 0) {
-            BroadcastHelper.broadcastMessage(
+            Broadcast.broadcastMessage(
                     MaplePacketCreator.serverNotice(0, "The world is going to shutdown soon. Please log off safely."));
             for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {
                 cs.setShutdown();
@@ -52,7 +51,7 @@ public class ShutdownServer implements ShutdownServerMBean {
             log.info("Shutdown 2 commencing...");
 
             try {
-                BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(
+                Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(
                         0, "The world is going to shutdown now. Please log off safely."));
                 for (ChannelServer channelServer : WorldServer.getInstance().getAllChannels()) {
                     synchronized (this) {
@@ -61,7 +60,7 @@ public class ShutdownServer implements ShutdownServerMBean {
                 }
                 LoginServer.getInstance().shutdown();
                 CashShopServer.getInstance().shutdown();
-                WorldInitHelper.initTimers();
+                WorldServer.initTimers();
             } catch (Exception e) {
                 log.info("Failed to shutdown..." + e);
             }

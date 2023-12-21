@@ -3,10 +3,10 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.anticheat.CheatingOffense;
-import handling.AbstractMaplePacketHandler;
 import java.awt.*;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
+import networking.packet.AbstractMaplePacketHandler;
 import server.MaplePortal;
 
 @Slf4j

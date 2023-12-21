@@ -1,7 +1,7 @@
 package client.anticheat;
 
 import client.MapleClient;
-import handling.world.helper.BroadcastHelper;
+import handling.world.Broadcast;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -69,7 +69,7 @@ public class AutobanManager implements Runnable {
                     sb.append(s);
                     sb.append(", ");
                 }
-                BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(
+                Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(
                         0,
                         "[Autoban] "
                                 + c.getPlayer().getName()

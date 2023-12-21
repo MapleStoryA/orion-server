@@ -1,10 +1,10 @@
 package handling.channel;
 
 import client.MapleCharacter;
+import client.anticheat.CheaterData;
 import client.base.MapleCharacterHelper;
+import handling.world.FindCommand;
 import handling.world.helper.CharacterTransfer;
-import handling.world.helper.CheaterData;
-import handling.world.helper.FindCommand;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

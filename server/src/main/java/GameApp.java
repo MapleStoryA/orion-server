@@ -8,12 +8,15 @@ import database.DatabaseConnection;
 import handling.cashshop.CashItemFactory;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
-import handling.channel.MapleGuildRanking;
 import handling.login.LoginInformationProvider;
 import handling.login.LoginServer;
+import handling.world.FindCommand;
 import handling.world.WorldServer;
+import handling.world.alliance.AllianceManager;
 import handling.world.guild.MapleGuild;
-import handling.world.helper.WorldInitHelper;
+import handling.world.guild.MapleGuildRanking;
+import handling.world.messenger.MessengerManager;
+import handling.world.party.PartyManager;
 import handling.world.respawn.RespawnWorker;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -122,8 +125,13 @@ public class GameApp {
         setAccountsAsLoggedOff();
         CommandProcessor.getInstance();
 
-        WorldInitHelper.initCommunity();
-        WorldInitHelper.initTimers();
+        FindCommand.findChannel(0);
+        AllianceManager.lock.toString();
+        MessengerManager.getMessenger(0);
+        PartyManager.getParty(0);
+
+        WorldServer.initTimers();
+
         TimerManager.getInstance().start();
 
         var executorService = Executors.newFixedThreadPool(10);

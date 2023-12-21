@@ -4,6 +4,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleDisease;
 import client.MapleStat;
+import client.anticheat.CheaterData;
 import client.anticheat.CheatingOffense;
 import client.anticheat.ReportType;
 import client.base.MapleCharacterHelper;
@@ -16,10 +17,9 @@ import client.skill.SkillFactory;
 import constants.GameConstants;
 import database.DatabaseConnection;
 import handling.channel.ChannelServer;
+import handling.world.Broadcast;
+import handling.world.FindCommand;
 import handling.world.WorldServer;
-import handling.world.helper.BroadcastHelper;
-import handling.world.helper.CheaterData;
-import handling.world.helper.FindCommand;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -668,7 +668,7 @@ public class AdminCommands {
         public int execute(MapleClient c, String[] args) {
             if (args.length > 1) {
                 String sb = "[" + c.getPlayer().getName() + "] " + StringUtil.joinStringFrom(args, 1);
-                BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(6, sb));
+                Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(6, sb));
             } else {
                 c.getPlayer().dropMessage(6, "Syntax: !say <message>");
                 return 0;
@@ -2229,7 +2229,7 @@ public class AdminCommands {
             } else if (range == 1) {
                 WorldServer.getInstance().getChannel(c.getChannel()).broadcastPacket(packet);
             } else if (range == 2) {
-                BroadcastHelper.broadcastMessage(packet);
+                Broadcast.broadcastMessage(packet);
             }
             return 1;
         }
@@ -2259,7 +2259,7 @@ public class AdminCommands {
             } else if (range == 1) {
                 WorldServer.getInstance().getChannel(c.getChannel()).broadcastPacket(packet);
             } else if (range == 2) {
-                BroadcastHelper.broadcastMessage(packet);
+                Broadcast.broadcastMessage(packet);
             }
             return 1;
         }
@@ -2514,7 +2514,7 @@ public class AdminCommands {
                                         ShutdownTime.ts.cancel(false);
                                         return;
                                     }
-                                    BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(
+                                    Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(
                                             0,
                                             "The server will shutdown in " + ShutdownTime.this.minutesLeft
                                                     + " minutes. Please log off safely."));

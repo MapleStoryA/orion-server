@@ -34,7 +34,7 @@ import tools.MaplePacketCreator;
 @Slf4j
 public class AllianceHandlerUtils {
 
-    public static final void HandleAlliance(final InPacket slea, final MapleClient c, boolean denied) {
+    public static final void HandleAlliance(final InPacket packet, final MapleClient c, boolean denied) {
         if (c.getPlayer().getGuildId() <= 0) {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
@@ -44,8 +44,8 @@ public class AllianceHandlerUtils {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
         }
-        // log.info("Unhandled GuildAlliance \n" + slea.toString());
-        byte op = slea.readByte();
+        // log.info("Unhandled GuildAlliance \n" + packet.toString());
+        byte op = packet.readByte();
         if (c.getPlayer().getGuildRank() != 1 && op != 1) { // only updating doesn't need guild leader
             return;
         }
@@ -79,7 +79,7 @@ public class AllianceHandlerUtils {
                 }
                 break;
             case 3: // invite
-                final int newGuild = GuildManager.getGuildLeader(slea.readMapleAsciiString());
+                final int newGuild = GuildManager.getGuildLeader(packet.readMapleAsciiString());
                 if (newGuild > 0
                         && c.getPlayer().getAllianceRank() == 1
                         && leaderid == c.getPlayer().getId()) {
@@ -109,9 +109,9 @@ public class AllianceHandlerUtils {
             case 2: // leave; nothing
             case 6: // expel, guildid(int) -> allianceid(don't care, a/b check)
                 final int gid;
-                if (op == 6 && slea.available() >= 4) {
-                    gid = slea.readInt();
-                    if (slea.available() >= 4 && gs.getAllianceId() != slea.readInt()) {
+                if (op == 6 && packet.available() >= 4) {
+                    gid = packet.readInt();
+                    if (packet.available() >= 4 && gs.getAllianceId() != packet.readInt()) {
                         break;
                     }
                 } else {
@@ -129,7 +129,7 @@ public class AllianceHandlerUtils {
             case 7: // change leader
                 if (c.getPlayer().getAllianceRank() == 1
                         && leaderid == c.getPlayer().getId()) {
-                    if (!AllianceManager.changeAllianceLeader(gs.getAllianceId(), slea.readInt())) {
+                    if (!AllianceManager.changeAllianceLeader(gs.getAllianceId(), packet.readInt())) {
                         c.getPlayer().dropMessage(5, "An error occured when changing leader.");
                     }
                 }
@@ -139,21 +139,21 @@ public class AllianceHandlerUtils {
                         && leaderid == c.getPlayer().getId()) {
                     String[] ranks = new String[5];
                     for (int i = 0; i < 5; i++) {
-                        ranks[i] = slea.readMapleAsciiString();
+                        ranks[i] = packet.readMapleAsciiString();
                     }
                     AllianceManager.updateAllianceRanks(gs.getAllianceId(), ranks);
                 }
                 break;
             case 9:
                 if (c.getPlayer().getAllianceRank() <= 2) {
-                    if (!AllianceManager.changeAllianceRank(gs.getAllianceId(), slea.readInt(), slea.readByte())) {
+                    if (!AllianceManager.changeAllianceRank(gs.getAllianceId(), packet.readInt(), packet.readByte())) {
                         c.getPlayer().dropMessage(5, "An error occured when changing rank.");
                     }
                 }
                 break;
             case 10: // notice update
                 if (c.getPlayer().getAllianceRank() <= 2) {
-                    final String notice = slea.readMapleAsciiString();
+                    final String notice = packet.readMapleAsciiString();
                     if (notice.length() > 100) {
                         break;
                     }
@@ -161,7 +161,7 @@ public class AllianceHandlerUtils {
                 }
                 break;
             default:
-                log.info("Unhandled GuildAlliance op: " + op + ", \n" + slea);
+                log.info("Unhandled GuildAlliance op: " + op + ", \n" + packet);
                 break;
         }
         // c.getSession().write(MaplePacketCreator.enableActions());

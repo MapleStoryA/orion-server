@@ -3,7 +3,7 @@ package client.anticheat;
 import client.MapleCharacter;
 import client.base.MapleCharacterHelper;
 import constants.GameConstants;
-import handling.world.helper.BroadcastHelper;
+import handling.world.Broadcast;
 import java.awt.*;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -256,7 +256,7 @@ public class CheatTracker {
             case SAME_DAMAGE:
                 gm_message--;
                 if (gm_message == 0) {
-                    BroadcastHelper.broadcastGMMessage(MaplePacketCreator.serverNotice(
+                    Broadcast.broadcastGMMessage(MaplePacketCreator.serverNotice(
                             6,
                             "[GM Message] "
                                     + MapleCharacterHelper.makeMapleReadable(chrhardref.getName())

@@ -1,4 +1,4 @@
-package handling.world.helper;
+package handling.channel;
 
 import java.io.Externalizable;
 import java.io.IOException;

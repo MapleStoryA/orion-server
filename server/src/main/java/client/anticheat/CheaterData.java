@@ -1,4 +1,4 @@
-package handling.world.helper;
+package client.anticheat;
 
 import java.io.Serializable;
 import lombok.extern.slf4j.Slf4j;

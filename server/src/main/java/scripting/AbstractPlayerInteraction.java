@@ -11,10 +11,10 @@ import client.skill.ISkill;
 import client.skill.SkillFactory;
 import constants.GameConstants;
 import handling.channel.ChannelServer;
+import handling.world.Broadcast;
 import handling.world.WorldServer;
 import handling.world.guild.GuildManager;
 import handling.world.guild.MapleGuild;
-import handling.world.helper.BroadcastHelper;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import java.awt.*;
@@ -534,7 +534,7 @@ public abstract class AbstractPlayerInteraction {
     }
 
     public final void worldMessage(final int type, final String message) {
-        BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(type, message));
+        Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(type, message));
     }
 
     // default playerMessage and mapMessage to use type 5

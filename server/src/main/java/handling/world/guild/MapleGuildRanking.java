@@ -1,4 +1,4 @@
-package handling.channel;
+package handling.world.guild;
 
 import database.DatabaseConnection;
 import java.sql.PreparedStatement;

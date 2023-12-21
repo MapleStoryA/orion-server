@@ -17,14 +17,14 @@ import constants.GameConstants;
 import constants.ServerConstants;
 import database.DatabaseConnection;
 import handling.channel.ChannelServer;
-import handling.channel.MapleGuildRanking;
 import handling.channel.handler.utils.HiredMerchantHandlerUtils;
+import handling.world.Broadcast;
 import handling.world.WorldServer;
 import handling.world.alliance.AllianceManager;
 import handling.world.guild.GuildManager;
 import handling.world.guild.MapleGuild;
 import handling.world.guild.MapleGuildAlliance;
-import handling.world.helper.BroadcastHelper;
+import handling.world.guild.MapleGuildRanking;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import java.sql.PreparedStatement;
@@ -42,7 +42,6 @@ import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MapleSquad;
 import server.MapleStatEffect;
-import server.MerchItemPackage;
 import server.StructPotentialItem;
 import server.base.timer.Timer.CloneTimer;
 import server.carnival.MapleCarnivalChallenge;
@@ -58,6 +57,7 @@ import server.maps.MapleMap;
 import server.maps.SpeedRunType;
 import server.quest.MapleQuest;
 import server.shops.MapleShopFactory;
+import server.shops.MerchItemPackage;
 import tools.MaplePacketCreator;
 import tools.collection.Pair;
 import tools.helper.Randomizer;
@@ -508,10 +508,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         c.getSession().write(MaplePacketCreator.getShowItemGain(item.getItemId(), (short) reward.getQuantity(), true));
         if (reward.isRare()) {
             if (isRemote) {
-                BroadcastHelper.broadcastMessage(
+                Broadcast.broadcastMessage(
                         MaplePacketCreator.getGachaponMega(c.getPlayer().getName(), "Remote", item, (byte) 0));
             } else {
-                BroadcastHelper.broadcastMessage(MaplePacketCreator.getGachaponMega(
+                Broadcast.broadcastMessage(MaplePacketCreator.getGachaponMega(
                         c.getPlayer().getName(), c.getPlayer().getMap().getMapName(), item, (byte) 0));
             }
         }
@@ -535,7 +535,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             final byte rareness = GameConstants.gachaponRareItem(item.getItemId());
             if (rareness >= 0) {
                 String title = "[" + c.getPlayer().getName() + "] ";
-                BroadcastHelper.broadcastMessage(MaplePacketCreator.getGachaponMega(title, msg, item, rareness));
+                Broadcast.broadcastMessage(MaplePacketCreator.getGachaponMega(title, msg, item, rareness));
             }
             return item.getItemId();
         } catch (Exception e) {
@@ -1620,7 +1620,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public void worldNotice(int type, String Header, String msg) {
-        BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(type, "[" + Header + "] " + msg + ""));
+        Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(type, "[" + Header + "] " + msg + ""));
     }
 
     public short getJobId() {
@@ -1802,15 +1802,15 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public void dropMessage(String text) {
-        BroadcastHelper.broadcastMessage(MaplePacketCreator.getGameMessage(5, text));
+        Broadcast.broadcastMessage(MaplePacketCreator.getGameMessage(5, text));
     }
 
     public void dropColorMessage(int id, String text) {
-        BroadcastHelper.broadcastMessage(MaplePacketCreator.getGameMessage(id, text));
+        Broadcast.broadcastMessage(MaplePacketCreator.getGameMessage(id, text));
     }
 
     public void showEffect(int effect) {
-        BroadcastHelper.broadcastMessage(MaplePacketCreator.showSpecialEffect_(effect));
+        Broadcast.broadcastMessage(MaplePacketCreator.showSpecialEffect_(effect));
     }
 
     public void gainNx(int amount) {
@@ -1836,7 +1836,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     public void worldmessage(byte type, String message) {
         for (@SuppressWarnings("unused")
         MapleCharacter chr : c.getChannelServer().getPlayerStorage().getAllCharacters()) {
-            BroadcastHelper.broadcastMessage(MaplePacketCreator.getGameMessage(type, message));
+            Broadcast.broadcastMessage(MaplePacketCreator.getGameMessage(type, message));
         }
     }
 
@@ -1890,7 +1890,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public void sendBrowser(String site) {
-        BroadcastHelper.broadcastMessage(MaplePacketCreator.sendBrowser(site));
+        Broadcast.broadcastMessage(MaplePacketCreator.sendBrowser(site));
     }
 
     public void addNote(int songid, byte note) {}

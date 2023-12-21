@@ -1,4 +1,4 @@
-package server;
+package server.shops;
 
 import client.inventory.IItem;
 import java.util.ArrayList;

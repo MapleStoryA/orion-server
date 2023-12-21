@@ -1,5 +1,6 @@
 package handling.world;
 
+import client.anticheat.CheaterData;
 import database.AccountData;
 import handling.MigrationService;
 import handling.MigrationServiceImpl;
@@ -7,8 +8,6 @@ import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
 import handling.channel.PlayerStorage;
 import handling.world.helper.CharacterTransfer;
-import handling.world.helper.CheaterData;
-import handling.world.helper.FindCommand;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -19,6 +18,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import server.base.timer.Timer;
 import tools.collection.CollectionUtil;
 
 @Slf4j
@@ -166,5 +166,16 @@ public class WorldServer {
 
     public void removeConnectedAccount(String name) {
         connectedAccounts.remove(name);
+    }
+
+    public static void initTimers() {
+        Timer.WorldTimer.getInstance().start();
+        Timer.EtcTimer.getInstance().start();
+        Timer.MapTimer.getInstance().start();
+        Timer.MobTimer.getInstance().start();
+        Timer.CloneTimer.getInstance().start();
+        Timer.EventTimer.getInstance().start();
+        Timer.BuffTimer.getInstance().start();
+        Timer.PingTimer.getInstance().start();
     }
 }

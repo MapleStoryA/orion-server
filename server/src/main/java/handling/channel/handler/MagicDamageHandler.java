@@ -6,9 +6,9 @@ import client.anticheat.CheatingOffense;
 import client.skill.ISkill;
 import client.skill.SkillFactory;
 import constants.GameConstants;
-import handling.AbstractMaplePacketHandler;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
+import networking.packet.AbstractMaplePacketHandler;
 import server.MapleStatEffect;
 import tools.MaplePacketCreator;
 

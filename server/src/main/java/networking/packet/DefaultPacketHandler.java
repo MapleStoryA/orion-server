@@ -1,4 +1,4 @@
-package handling;
+package networking.packet;
 
 import client.MapleClient;
 import handling.cashshop.CashShopOperationHandlers;
@@ -8,8 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import networking.data.input.ByteArrayByteStream;
 import networking.data.input.GenericSeekableLittleEndianAccessor;
 import networking.data.input.InPacket;
-import networking.packet.PacketProcessor;
-import networking.packet.RecvPacketOpcode;
 import server.base.config.ServerConfig;
 import tools.helper.HexTool;
 
@@ -19,11 +17,11 @@ public class DefaultPacketHandler {
     public static void handlePacket(MapleClient client, PacketProcessor processor, boolean isCashShop, byte[] message) {
         try {
 
-            var slea = new GenericSeekableLittleEndianAccessor(new ByteArrayByteStream(message));
-            if (slea.available() < 2) {
+            var packet = new GenericSeekableLittleEndianAccessor(new ByteArrayByteStream(message));
+            if (packet.available() < 2) {
                 return;
             }
-            var header_num = slea.readShort();
+            var header_num = packet.readShort();
             var packetHandler = processor.getHandler(header_num);
             if (ServerConfig.isDebugPacket()) {
                 log.info("Received: " + header_num);
@@ -32,8 +30,7 @@ public class DefaultPacketHandler {
                 log.info("[" + packetHandler.getClass().getSimpleName() + "]");
             }
             if (packetHandler != null && packetHandler.validateState(client)) {
-                // log.warn("Handling packet: {}", packetHandler.getClass().getSimpleName());
-                packetHandler.handlePacket(slea, client);
+                packetHandler.handlePacket(packet, client);
                 return;
             }
             for (final RecvPacketOpcode recv : RecvPacketOpcode.values()) {
@@ -44,7 +41,7 @@ public class DefaultPacketHandler {
                             return;
                         }
                     }
-                    DefaultPacketHandler.handlePacket(recv, slea, client, isCashShop);
+                    DefaultPacketHandler.handlePacket(recv, packet, client, isCashShop);
                     return;
                 }
             }
@@ -57,10 +54,10 @@ public class DefaultPacketHandler {
     }
 
     public static void handlePacket(
-            final RecvPacketOpcode header, final InPacket slea, final MapleClient c, boolean isCashShop) {
+            final RecvPacketOpcode header, final InPacket packet, final MapleClient c, boolean isCashShop) {
         switch (header) {
             case PLAYER_LOGGED_IN:
-                final int playerId = slea.readInt();
+                final int playerId = packet.readInt();
                 if (isCashShop) {
                     CashShopOperationHandlers.onEnterCashShop(playerId, c);
                 } else {
@@ -69,14 +66,14 @@ public class DefaultPacketHandler {
                 break;
             case CHANGE_MAP:
                 if (isCashShop) {
-                    CashShopOperationHandlers.onLeaveCashShop(slea, c, c.getPlayer());
+                    CashShopOperationHandlers.onLeaveCashShop(packet, c, c.getPlayer());
                 } else {
-                    PlayerHandler.changeMap(slea, c, c.getPlayer());
+                    PlayerHandler.changeMap(packet, c, c.getPlayer());
                 }
                 break;
             default:
-                if (slea.available() >= 0) {
-                    log.info(String.valueOf(header), "[" + header + "] " + slea);
+                if (packet.available() >= 0) {
+                    log.info(String.valueOf(header), "[" + header + "] " + packet);
                 }
                 break;
         }

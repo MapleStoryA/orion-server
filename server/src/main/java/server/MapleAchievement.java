@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package server;
 
 import client.MapleCharacter;
-import handling.world.helper.BroadcastHelper;
+import handling.world.Broadcast;
 import lombok.extern.slf4j.Slf4j;
 import tools.MaplePacketCreator;
 
@@ -70,7 +70,7 @@ public class MapleAchievement {
         chr.getFinishedAchievements()
                 .setAchievementFinished(MapleAchievements.getInstance().getByMapleAchievement(this));
         if (notice && !chr.isGameMaster()) {
-            BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(
+            Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(
                     6,
                     "[Achievement] Congratulations to "
                             + chr.getName()

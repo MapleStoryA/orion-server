@@ -3,9 +3,9 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.skill.SkillMacro;
-import handling.AbstractMaplePacketHandler;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
+import networking.packet.AbstractMaplePacketHandler;
 
 @Slf4j
 public class ChangeSkillMacroHandler extends AbstractMaplePacketHandler {

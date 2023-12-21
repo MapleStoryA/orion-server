@@ -1,6 +1,6 @@
 package networking;
 
-import handling.BaseMapleClient;
+import client.base.BaseMapleClient;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

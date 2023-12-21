@@ -3,10 +3,10 @@ package handling.channel.handler;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
-import handling.AbstractMaplePacketHandler;
 import java.util.Iterator;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
+import networking.packet.AbstractMaplePacketHandler;
 import server.maps.MapleSummon;
 import tools.MaplePacketCreator;
 

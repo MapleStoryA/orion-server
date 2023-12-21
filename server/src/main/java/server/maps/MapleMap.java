@@ -15,8 +15,8 @@ import constants.GameConstants;
 import constants.ServerConstants;
 import database.DatabaseConnection;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
+import handling.world.Broadcast;
 import handling.world.WorldServer;
-import handling.world.helper.BroadcastHelper;
 import handling.world.party.MaplePartyCharacter;
 import java.awt.*;
 import java.sql.PreparedStatement;
@@ -745,7 +745,7 @@ public final class MapleMap {
         SpeedRunType type = SpeedRunType.NULL;
         final MapleSquad sqd = getSquadByMap();
         if (mobid == 8810018 && mapid == 240060200) { // Horntail
-            BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(
+            Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(
                     6,
                     "To the crew that have finally conquered Horned Tail after numerous"
                             + " attempts, I salute thee! You are the true heroes of Leafre!!"));
@@ -761,7 +761,7 @@ public final class MapleMap {
                 doShrine(true);
             }
         } else if (mobid == 8810122 && mapid == 240060201) { // Horntail
-            BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(
+            Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(
                     6,
                     "To the crew that have finally conquered Chaos Horned Tail after"
                             + " numerous attempts, I salute thee! You are the true heroes of"
@@ -840,7 +840,7 @@ public final class MapleMap {
             }
             // INSERT HERE: 2095_tokyo
         } else if (mobid == 8820001 && mapid == 270050100) {
-            BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(
+            Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(
                     6,
                     "Expedition who defeated Pink Bean with invicible passion! You are the" + " true timeless hero!"));
             for (MapleCharacter c : getCharactersThreadsafe()) {

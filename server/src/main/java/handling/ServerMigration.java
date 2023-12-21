@@ -2,9 +2,9 @@ package handling;
 
 import client.MapleCoolDownValueHolder;
 import client.MapleDiseaseValueHolder;
+import client.PlayerBuffValueHolder;
 import database.AccountData;
 import handling.world.helper.CharacterTransfer;
-import handling.world.helper.PlayerBuffValueHolder;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

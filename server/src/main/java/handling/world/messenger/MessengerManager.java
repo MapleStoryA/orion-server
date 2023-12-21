@@ -2,10 +2,8 @@ package handling.world.messenger;
 
 import client.MapleCharacter;
 import handling.channel.ChannelServer;
+import handling.world.FindCommand;
 import handling.world.WorldServer;
-import handling.world.helper.FindCommand;
-import handling.world.helper.MapleMessenger;
-import handling.world.helper.MapleMessengerCharacter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
