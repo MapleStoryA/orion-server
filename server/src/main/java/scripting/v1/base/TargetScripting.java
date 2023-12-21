@@ -13,7 +13,7 @@ import scripting.v1.api.QuestRecord;
 import server.maps.MapleMap;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
-import tools.helper.Scripting;
+import tools.helper.Api;
 import tools.packet.CWVsContextOnMessagePackets;
 
 @Slf4j
@@ -35,69 +35,69 @@ public class TargetScripting extends PlayerScripting implements ITargetScripting
     }
 
     @Override
-    @Scripting
+    @Api
     public int getCharacterID() {
         return player.getId();
     }
 
     @Override
-    @Scripting
+    @Api
     public String getCharacterName() {
         return player.getName();
     }
 
     @Override
-    @Scripting
+    @Api
     public int getGender() {
         return player.getGender();
     }
 
     @Override
-    @Scripting
+    @Api
     public int getHair() {
         return player.getHair();
     }
 
     @Override
-    @Scripting
+    @Api
     public int getFace() {
         return player.getFace();
     }
 
     @Override
-    @Scripting
+    @Api
     public int nLevel() {
         return player.getLevel();
     }
 
     @Override
-    @Scripting
+    @Api
     public int nJob() {
         return player.getJob().getId();
     }
 
     @Override
-    @Scripting
+    @Api
     public boolean changeJob(int job) {
         player.changeJob(job);
         return true;
     }
 
     @Override
-    @Scripting
+    @Api
     public boolean setJob(int job) {
         player.changeJob(job);
         return true;
     }
 
     @Override
-    @Scripting
+    @Api
     public int nSTR() {
         return player.getStat().getStr();
     }
 
     @Override
-    @Scripting
+    @Api
     public int incSTR(int value) {
         short previousSTR = player.getStat().getStr();
         player.setStat(MapleStat.STR, (short) (previousSTR + value));
@@ -105,13 +105,13 @@ public class TargetScripting extends PlayerScripting implements ITargetScripting
     }
 
     @Override
-    @Scripting
+    @Api
     public int nDEX() {
         return player.getStat().getDex();
     }
 
     @Override
-    @Scripting
+    @Api
     public int incDEX(int value) {
         short previousDEX = player.getStat().getDex();
         player.setStat(MapleStat.DEX, (short) (previousDEX + value));
@@ -119,13 +119,13 @@ public class TargetScripting extends PlayerScripting implements ITargetScripting
     }
 
     @Override
-    @Scripting
+    @Api
     public int nINT() {
         return player.getStat().getInt();
     }
 
     @Override
-    @Scripting
+    @Api
     public int incINT(int value) {
         short previousINT = player.getStat().getInt();
         player.setStat(MapleStat.INT, (short) (previousINT + value));
@@ -133,13 +133,13 @@ public class TargetScripting extends PlayerScripting implements ITargetScripting
     }
 
     @Override
-    @Scripting
+    @Api
     public int nLUK() {
         return player.getStat().getLuk();
     }
 
     @Override
-    @Scripting
+    @Api
     public int incLUK(short value) {
         short previousLUK = player.getStat().getLuk();
         player.setStat(MapleStat.LUK, (short) (previousLUK + value));
@@ -147,13 +147,13 @@ public class TargetScripting extends PlayerScripting implements ITargetScripting
     }
 
     @Override
-    @Scripting
+    @Api
     public int nHP() {
         return player.getStat().getHp();
     }
 
     @Override
-    @Scripting
+    @Api
     public int incHP(int value) {
         int previousHP = player.getStat().getHp();
         player.getStat().setHp(previousHP + value);
@@ -161,13 +161,13 @@ public class TargetScripting extends PlayerScripting implements ITargetScripting
     }
 
     @Override
-    @Scripting
+    @Api
     public int nMP() {
         return player.getStat().getMp();
     }
 
     @Override
-    @Scripting
+    @Api
     public int incMP(int value) {
         int previousMP = player.getStat().getHp();
         player.getStat().setMp(previousMP + value);
@@ -175,7 +175,7 @@ public class TargetScripting extends PlayerScripting implements ITargetScripting
     }
 
     @Override
-    @Scripting
+    @Api
     public int incMHP(int value, int other) {
         int previousMaxHP = player.getStat().getMaxHp();
         player.getStat().setMaxHp(previousMaxHP + value);
@@ -183,7 +183,7 @@ public class TargetScripting extends PlayerScripting implements ITargetScripting
     }
 
     @Override
-    @Scripting
+    @Api
     public int incMMP(int value, int other) {
         int previousMaxMp = player.getStat().getMaxMp();
         player.getStat().setMaxMp(previousMaxMp + value);
@@ -191,33 +191,33 @@ public class TargetScripting extends PlayerScripting implements ITargetScripting
     }
 
     @Override
-    @Scripting
+    @Api
     public int nAP() {
         return player.getRemainingAp();
     }
 
     @Override
-    @Scripting
+    @Api
     public int incAP(int value) {
         player.gainAp(value);
         return nAP();
     }
 
     @Override
-    @Scripting
+    @Api
     public int incAP(int value, int a) {
         player.gainAp(value);
         return nAP();
     }
 
     @Override
-    @Scripting
+    @Api
     public int nSP() {
         return player.getRemainingSp();
     }
 
     @Override
-    @Scripting
+    @Api
     public int incSP(int value) {
         if (player.getJob().isEvan()) {
             player.addEvanSP(value);
@@ -229,43 +229,43 @@ public class TargetScripting extends PlayerScripting implements ITargetScripting
     }
 
     @Override
-    @Scripting
+    @Api
     public int incSP(int value, int a) {
         return incSP(value);
     }
 
     @Override
-    @Scripting
+    @Api
     public boolean isMaster() {
         return player.isGameMaster();
     }
 
     @Override
-    @Scripting
+    @Api
     public boolean isSuperGM() {
         return player.isGameMaster();
     }
 
     @Override
-    @Scripting
+    @Api
     public void message(String text) {
         player.dropMessage(5, text);
     }
 
     @Override
-    @Scripting
+    @Api
     public void incEXP(int total, boolean show) {
         player.gainExp(total, show, show, show);
     }
 
     @Override
-    @Scripting
+    @Api
     public void incEXP(int total, int show) {
         this.incEXP(total, show == 0);
     }
 
     @Override
-    @Scripting
+    @Api
     public boolean isPartyBoss() {
         if (player.getParty() == null) {
             return false;
@@ -274,13 +274,13 @@ public class TargetScripting extends PlayerScripting implements ITargetScripting
     }
 
     @Override
-    @Scripting
+    @Api
     public boolean isOnParty() {
         return player.getParty() != null;
     }
 
     @Override
-    @Scripting
+    @Api
     public int getPartyMembersCount() {
         if (!isOnParty()) {
             return 0;
@@ -289,7 +289,7 @@ public class TargetScripting extends PlayerScripting implements ITargetScripting
     }
 
     @Override
-    @Scripting
+    @Api
     public int transferParty(int map, String portal, int option) {
         for (MaplePartyCharacter mate : player.getParty().getMembers()) {
             MapleCharacter chr =
@@ -300,13 +300,13 @@ public class TargetScripting extends PlayerScripting implements ITargetScripting
     }
 
     @Override
-    @Scripting
+    @Api
     public void playPortalSE() {
         sendPacket(MaplePacketCreator.showOwnBuffEffect(0, 7));
     }
 
     @Override
-    @Scripting
+    @Api
     public void registerTransferField(int map, String portal) {
         final MapleMap mapz = getWarpMap(map);
         if (map == 109060000 || map == 109060002 || map == 109060004) {
@@ -331,31 +331,31 @@ public class TargetScripting extends PlayerScripting implements ITargetScripting
     }
 
     @Override
-    @Scripting
+    @Api
     public FieldScripting field() {
         return client.getPlayer().getMap().getField();
     }
 
     @Override
-    @Scripting
+    @Api
     public int id() {
         return player.getMap().getId();
     }
 
     @Override
-    @Scripting
+    @Api
     public int nMoney() {
         return player.getMeso();
     }
 
     @Override
-    @Scripting
+    @Api
     public int incMoney(int meso, int show) {
         return incMoney(meso, meso == 1);
     }
 
     @Override
-    @Scripting
+    @Api
     public int incMoney(int meso, boolean show) {
         if (meso < 0) {
             return -1;
@@ -365,7 +365,7 @@ public class TargetScripting extends PlayerScripting implements ITargetScripting
     }
 
     @Override
-    @Scripting
+    @Api
     public int decMoney(int meso, boolean show) {
         if (meso < 0) {
             return -1;
@@ -375,13 +375,13 @@ public class TargetScripting extends PlayerScripting implements ITargetScripting
     }
 
     @Override
-    @Scripting
+    @Api
     public void set(String key, String value) {
         player.set(key, value);
     }
 
     @Override
-    @Scripting
+    @Api
     public String get(String key) {
         String value = player.get(key);
         if (value == null) {
@@ -391,13 +391,13 @@ public class TargetScripting extends PlayerScripting implements ITargetScripting
     }
 
     @Override
-    @Scripting
+    @Api
     public void setVar(String key, Object value) {
         player.addTemporaryData(key, value);
     }
 
     @Override
-    @Scripting
+    @Api
     public Object getVar(String key) {
         Object value = player.getTemporaryData(key);
         if (value == null) {
@@ -407,24 +407,24 @@ public class TargetScripting extends PlayerScripting implements ITargetScripting
     }
 
     @Override
-    @Scripting
+    @Api
     public void clearTemporaryData() {
         player.clearTemporaryData();
     }
 
-    @Scripting
+    @Api
     public boolean isEvan() {
         return player.getJob().isEvan();
     }
 
     @Override
-    @Scripting
+    @Api
     public boolean isDualBlade() {
         return player.getJob().isDualblade();
     }
 
     @Override
-    @Scripting
+    @Api
     public boolean isNightWalker() {
         int job = nJob();
         return job == MapleJob.NIGHTWALKER1.getId()
@@ -434,67 +434,67 @@ public class TargetScripting extends PlayerScripting implements ITargetScripting
     }
 
     @Override
-    @Scripting
+    @Api
     public boolean isAnyKindOfThief() {
         return isNightWalker() || isDualBlade() || (nJob() / 100) == 4;
     }
 
     @Override
-    @Scripting
+    @Api
     public boolean isAran() {
         return player.getJob().isAran();
     }
 
     @Override
-    @Scripting
+    @Api
     public boolean haveItem(int id) {
         return player.haveItem(id);
     }
 
     @Override
-    @Scripting
+    @Api
     public FieldScripting getMap(final int map) {
         return new FieldScripting(getWarpMap(map));
     }
 
     @Override
-    @Scripting
+    @Api
     public final byte getQuestStatus(final int id) {
         return player.getQuestStatus(id);
     }
 
     @Override
-    @Scripting
+    @Api
     public final boolean isQuestActive(final int id) {
         return getQuestStatus(id) == ACTIVE_QUEST;
     }
 
     @Override
-    @Scripting
+    @Api
     public final boolean isQuestFinished(final int id) {
         return getQuestStatus(id) == COMPLETE_QUEST;
     }
 
     @Override
-    @Scripting
+    @Api
     public void completeQuest(int id, int npcId) {
         MapleQuest.getInstance(id).complete(getPlayer(), npcId);
     }
 
     @Override
-    @Scripting
+    @Api
     public void forfeitQuest(int id) {
         MapleQuest.getInstance(id).forfeit(getPlayer());
     }
 
     @Override
-    @Scripting
+    @Api
     public void forceCompleteQuest(final int id, int npcId) {
         MapleQuest.getInstance(id).forceComplete(getPlayer(), npcId);
     }
 
     @Override
-    @Scripting
+    @Api
     public void changeMusic(String music) {
         sendPacket(MaplePacketCreator.musicChange(music));
     }

@@ -2,9 +2,9 @@ package client.commands;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import tools.helper.Scripting;
+import tools.helper.Api;
 
-@Scripting
+@Api
 class BanAccountCommand implements Command {
 
     private static final int MIN_NAME_LENGTH = 2;
@@ -16,10 +16,10 @@ class BanAccountCommand implements Command {
     }
 
     @Override
-    public void execute(MapleClient client, String[] args) {
+    public int execute(MapleClient client, String[] args) {
         if (args.length < 2) {
             sendSyntaxMessage(client);
-            return;
+            return 0;
         }
 
         String playerName = args[0];
@@ -27,15 +27,16 @@ class BanAccountCommand implements Command {
 
         if (!isValidLength(playerName, MIN_NAME_LENGTH)) {
             client.getPlayer().dropMessage(6, "Please provide the name of the player.");
-            return;
+            return 0;
         }
 
         if (!isValidLength(banReason, MIN_REASON_LENGTH)) {
             client.getPlayer().dropMessage(6, "Please provide the reason for the ban.");
-            return;
+            return 0;
         }
 
         banPlayer(client, playerName, banReason);
+        return 1;
     }
 
     private void banPlayer(MapleClient client, String playerName, String banReason) {

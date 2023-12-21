@@ -3,204 +3,204 @@ package scripting.v1.api;
 import scripting.v1.base.FieldScripting;
 import scripting.v1.base.InventoryScripting;
 import server.maps.MapleMap;
-import tools.helper.Scripting;
+import tools.helper.Api;
 
 public interface ITargetScripting {
-    @Scripting
+    @Api
     int getCharacterID();
 
-    @Scripting
+    @Api
     String getCharacterName();
 
-    @Scripting
+    @Api
     int getGender();
 
-    @Scripting
+    @Api
     int getHair();
 
-    @Scripting
+    @Api
     int getFace();
 
-    @Scripting
+    @Api
     int nLevel();
 
-    @Scripting
+    @Api
     int nJob();
 
-    @Scripting
+    @Api
     boolean changeJob(int job);
 
-    @Scripting
+    @Api
     boolean setJob(int job);
 
-    @Scripting
+    @Api
     int nSTR();
 
-    @Scripting
+    @Api
     int incSTR(int value);
 
-    @Scripting
+    @Api
     int nDEX();
 
-    @Scripting
+    @Api
     int incDEX(int value);
 
-    @Scripting
+    @Api
     int nINT();
 
-    @Scripting
+    @Api
     int incINT(int value);
 
-    @Scripting
+    @Api
     int nLUK();
 
-    @Scripting
+    @Api
     int incLUK(short value);
 
-    @Scripting
+    @Api
     int nHP();
 
-    @Scripting
+    @Api
     int incHP(int value);
 
-    @Scripting
+    @Api
     int nMP();
 
-    @Scripting
+    @Api
     int incMP(int value);
 
-    @Scripting
+    @Api
     int incMHP(int value, int other);
 
-    @Scripting
+    @Api
     int incMMP(int value, int other);
 
-    @Scripting
+    @Api
     int nAP();
 
-    @Scripting
+    @Api
     int incAP(int value);
 
-    @Scripting
+    @Api
     int incAP(int value, int a);
 
-    @Scripting
+    @Api
     int nSP();
 
-    @Scripting
+    @Api
     int incSP(int value);
 
-    @Scripting
+    @Api
     int incSP(int value, int a);
 
-    @Scripting
+    @Api
     boolean isMaster();
 
-    @Scripting
+    @Api
     boolean isSuperGM();
 
-    @Scripting
+    @Api
     void message(String text);
 
-    @Scripting
+    @Api
     void incEXP(int total, boolean show);
 
-    @Scripting
+    @Api
     void incEXP(int total, int show);
 
-    @Scripting
+    @Api
     boolean isPartyBoss();
 
-    @Scripting
+    @Api
     boolean isOnParty();
 
-    @Scripting
+    @Api
     int getPartyMembersCount();
 
-    @Scripting
+    @Api
     int transferParty(int map, String portal, int option);
 
-    @Scripting
+    @Api
     void playPortalSE();
 
-    @Scripting
+    @Api
     void registerTransferField(int map, String portal);
 
-    @Scripting
+    @Api
     FieldScripting field();
 
-    @Scripting
+    @Api
     int id();
 
-    @Scripting
+    @Api
     int nMoney();
 
-    @Scripting
+    @Api
     int incMoney(int meso, int show);
 
-    @Scripting
+    @Api
     int incMoney(int meso, boolean show);
 
-    @Scripting
+    @Api
     int decMoney(int meso, boolean show);
 
-    @Scripting
+    @Api
     void set(String key, String value);
 
-    @Scripting
+    @Api
     String get(String key);
 
-    @Scripting
+    @Api
     void setVar(String key, Object value);
 
-    @Scripting
+    @Api
     Object getVar(String key);
 
-    @Scripting
+    @Api
     void clearTemporaryData();
 
-    @Scripting
+    @Api
     boolean isEvan();
 
-    @Scripting
+    @Api
     boolean isDualBlade();
 
-    @Scripting
+    @Api
     boolean isNightWalker();
 
-    @Scripting
+    @Api
     boolean isAnyKindOfThief();
 
-    @Scripting
+    @Api
     boolean isAran();
 
-    @Scripting
+    @Api
     boolean haveItem(int id);
 
     MapleMap getWarpMap(int map);
 
-    @Scripting
+    @Api
     FieldScripting getMap(int map);
 
-    @Scripting
+    @Api
     byte getQuestStatus(int id);
 
-    @Scripting
+    @Api
     boolean isQuestActive(int id);
 
-    @Scripting
+    @Api
     boolean isQuestFinished(int id);
 
-    @Scripting
+    @Api
     void completeQuest(int id, int npcId);
 
-    @Scripting
+    @Api
     void forfeitQuest(int id);
 
-    @Scripting
+    @Api
     void forceCompleteQuest(int id, int npcId);
 
-    @Scripting
+    @Api
     void changeMusic(String music);
 
     QuestRecord questRecord();

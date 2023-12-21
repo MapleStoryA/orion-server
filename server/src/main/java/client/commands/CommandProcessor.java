@@ -4,6 +4,7 @@ import client.MapleClient;
 import constants.ServerConstants;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,10 +13,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import tools.helper.Scripting;
+import tools.helper.Api;
 
 @Slf4j
-@Scripting
+@Api
 public class CommandProcessor {
 
     private final Map<String, Command> commands = new LinkedHashMap<>();
@@ -24,8 +25,12 @@ public class CommandProcessor {
 
     private void register(Class<? extends Command> gameCommandClass) {
         try {
+            if (gameCommandClass.isInterface() || Modifier.isAbstract(gameCommandClass.getModifiers())) {
+                return;
+            }
             var instance = (Command) gameCommandClass.getDeclaredConstructors()[0].newInstance();
             commands.put(instance.getTrigger(), instance);
+            log.info("Registering command {}", instance.getTrigger());
 
         } catch (Exception e) {
             log.error("Cannot load command", e);
@@ -50,15 +55,13 @@ public class CommandProcessor {
     }
 
     public boolean processLine(MapleClient c, String line) {
-        final String[] splited = line.split(" ");
+        final String[] args = line.split(" ");
         if (!c.getAccountData().isGameMaster()) {
             return false;
         }
         for (var entry : commands.entrySet()) {
             var command = entry.getKey();
-            if (command.equals(splited[0].toLowerCase().replace("!", ""))) {
-                String[] args = new String[splited.length - 1];
-                System.arraycopy(splited, 1, args, 0, args.length);
+            if (command.equals(args[0].toLowerCase().replace("!", ""))) {
                 var impl = entry.getValue();
                 impl.execute(c, args);
                 return true;

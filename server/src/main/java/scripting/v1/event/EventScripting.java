@@ -4,7 +4,7 @@ import client.MapleCharacter;
 import client.MapleJob;
 import lombok.extern.slf4j.Slf4j;
 import scripting.v1.base.FieldScripting;
-import tools.helper.Scripting;
+import tools.helper.Api;
 
 @Slf4j
 public class EventScripting {
@@ -15,27 +15,27 @@ public class EventScripting {
         this.event = event;
     }
 
-    @Scripting
+    @Api
     public void log(String message) {
         log.info(message);
     }
 
-    @Scripting
+    @Api
     public void startEvent(MapleCharacter player, int[] mapIds, int timerInSeconds) {
         event.startEvent(player, mapIds, timerInSeconds);
     }
 
-    @Scripting
+    @Api
     public int[] get3rdJobMobMapInfo() {
         return MapleJob.get3rdJobMobMapInfo(event.getLeader());
     }
 
-    @Scripting
+    @Api
     public MapleCharacter getLeader() {
         return event.getLeader();
     }
 
-    @Scripting
+    @Api
     public FieldScripting getField(int mapId) {
         return event.getField(mapId);
     }

@@ -6,11 +6,12 @@ import server.MapleInventoryManipulator;
 
 public class GMEquipCommand implements Command {
     @Override
-    public void execute(MapleClient c, String[] args) {
+    public int execute(MapleClient c, String[] args) {
         addItem(c, 1002140); // Invincible Hat
         addItem(c, 1042003); // Plain Suit
         addItem(c, 1062007); // Plain Suit pants
         addItem(c, 1322013); // Secret Agent case
+        return 1;
     }
 
     private static void addItem(MapleClient c, int itemId) {

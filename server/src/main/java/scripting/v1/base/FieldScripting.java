@@ -6,14 +6,14 @@ import java.util.Collection;
 import lombok.extern.slf4j.Slf4j;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
-import tools.helper.Scripting;
+import tools.helper.Api;
 
 @Slf4j
 public class FieldScripting {
 
     private final MapleMap map;
 
-    @Scripting
+    @Api
     public FieldScripting(MapleMap map) {
         this.map = map;
     }
@@ -22,44 +22,44 @@ public class FieldScripting {
         return map.getId();
     }
 
-    @Scripting
+    @Api
     public void showEffect(String effect) {
         broadcastPacket(MaplePacketCreator.showEffect(effect));
     }
 
-    @Scripting
+    @Api
     public Collection<MapleCharacter> fieldMembers() {
         return map.getCharacters();
     }
 
-    @Scripting
+    @Api
     public int fieldMembersCount() {
         return fieldMembers().size();
     }
 
-    @Scripting
+    @Api
     public void environmentChange(String env) {
         broadcastPacket(MaplePacketCreator.environmentChange(env, 2));
     }
 
-    @Scripting
+    @Api
     public void playSound(String sound) {
         broadcastPacket(MaplePacketCreator.playSound(sound));
     }
 
-    @Scripting
+    @Api
     public void changeMusic(String music) {
         broadcastPacket(MaplePacketCreator.musicChange(music));
     }
 
-    @Scripting
+    @Api
     public void setMapVar(String key, String value) {
         for (MapleCharacter chr : map.getCharacters()) {
             chr.addTemporaryData(key, value);
         }
     }
 
-    @Scripting
+    @Api
     public void spawnMonster(int id, int x, int y) {
         map.spawnMonsterOnGroundBelow(id, x, y);
     }
@@ -68,28 +68,28 @@ public class FieldScripting {
         map.broadcastMessage(packet);
     }
 
-    @Scripting
+    @Api
     public void spawnNpcWithEffect(int npcId, int x, int y) {
         map.spawnNpcWithEffect(npcId, new Point(x, y));
     }
 
-    @Scripting
+    @Api
     public void removeNpcWithEffect(int npcId) {
         map.makeNpcInvisible(npcId);
         map.removeNpc(npcId);
     }
 
-    @Scripting
+    @Api
     public void killAllMonsters() {
         map.killAllMonsters(false);
     }
 
-    @Scripting
+    @Api
     public int getMonsterCount() {
         return map.getAllMonster().size();
     }
 
-    @Scripting
+    @Api
     public void spawnSpecialMonsters() {
         map.spawnSpecialMonsters();
     }

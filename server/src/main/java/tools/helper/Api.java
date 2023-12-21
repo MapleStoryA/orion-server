@@ -14,6 +14,6 @@ import java.lang.annotation.Target;
 
 @Target({TYPE, FIELD, METHOD, PARAMETER, CONSTRUCTOR, LOCAL_VARIABLE, MODULE})
 @Retention(RetentionPolicy.SOURCE)
-public @interface Scripting {
+public @interface Api {
     String description() default "";
 }

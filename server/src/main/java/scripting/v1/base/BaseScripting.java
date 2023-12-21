@@ -5,7 +5,7 @@ import client.MapleClient;
 import java.util.Random;
 import lombok.extern.slf4j.Slf4j;
 import scripting.v1.event.GameEventManager;
-import tools.helper.Scripting;
+import tools.helper.Api;
 
 @Slf4j
 public class BaseScripting {
@@ -37,32 +37,32 @@ public class BaseScripting {
         void dispatch(MapleClient client, byte[] packet);
     }
 
-    @Scripting
+    @Api
     public MapleClient getClient() {
         return client;
     }
 
-    @Scripting
+    @Api
     public MapleCharacter getPlayer() {
         return this.player;
     }
 
-    @Scripting
+    @Api
     public void sendPacket(byte[] packet) {
         dispatcher.dispatch(client, packet);
     }
 
-    @Scripting
+    @Api
     public void broadcastPacket(byte[] packet) {
         player.getMap().broadcastMessage(packet);
     }
 
-    @Scripting
+    @Api
     public void debug(String text) {
         log.info(text);
     }
 
-    @Scripting
+    @Api
     public int random(int min, int max) {
         Random random = new Random();
         int randomNumber = random.nextInt(max + 1 - min) + min;
