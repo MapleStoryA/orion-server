@@ -933,9 +933,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         PreparedStatement ps = null;
         PreparedStatement pse = null;
         ResultSet rs = null;
-        Connection con2 = null;
         try (var con = DatabaseConnection.getConnection()) {
-            con2 = con;
             ps = con.prepareStatement(
                     "INSERT INTO characters (level, fame, str, dex, luk, `int`, exp, hp,"
                             + " mp, maxhp, maxmp, ap, skincolor, gender, job, hair, face,"
