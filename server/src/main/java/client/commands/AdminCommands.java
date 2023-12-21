@@ -15,7 +15,6 @@ import client.inventory.MapleInventoryType;
 import client.skill.ISkill;
 import client.skill.SkillFactory;
 import constants.GameConstants;
-import constants.MapConstants;
 import database.DatabaseConnection;
 import handling.channel.ChannelServer;
 import handling.world.WorldServer;
@@ -30,7 +29,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.sql.PreparedStatement;
@@ -43,6 +41,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ScheduledFuture;
+import lombok.extern.slf4j.Slf4j;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
@@ -88,11 +87,13 @@ import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
 import tools.collection.ArrayMap;
 import tools.collection.Pair;
+import tools.helper.Api;
 import tools.helper.StringUtil;
 import tools.packet.MobPacket;
 import tools.packet.PlayerShopPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Api
+@Slf4j
 public class AdminCommands {
 
     class CommandProcessorUtil {
@@ -154,6 +155,7 @@ public class AdminCommands {
         }
     }
 
+    @Api(description = "Hides the character with the GM skill.")
     public static class Hide implements Command {
 
         @Override
@@ -163,87 +165,7 @@ public class AdminCommands {
         }
     }
 
-    public static boolean MapChecks(final MapleClient c, final MapleCharacter other) {
-        for (int i : GameConstants.blockedMaps) {
-            if (other.getMapId() == i) {
-                c.getPlayer().dropMessage(5, "You may not use this command here.");
-                return false;
-            }
-        }
-        if (other.getLevel() < 10) {
-            c.getPlayer().dropMessage(5, "You must be over level 10 to use this command.");
-            return false;
-        }
-        if (other.getMap().getSquadByMap() != null
-                || other.getEventInstance() != null
-                || other.getMap().getEMByMap() != null
-                || MapConstants.isStorylineMap(other.getMapId())) {
-            c.getPlayer().dropMessage(5, "You may not use this command here.");
-            return false;
-        }
-        if ((other.getMapId() >= 680000210 && other.getMapId() <= 680000502)
-                || (other.getMapId() / 1000 == 980000 && other.getMapId() != 980000000)
-                || (other.getMapId() / 100 == 1030008)
-                || (other.getMapId() / 100 == 922010)
-                || (other.getMapId() / 10 == 13003000)
-                || (other.getMapId() >= 990000000)) {
-            c.getPlayer().dropMessage(5, "You may not use this command here.");
-            return false;
-        }
-        return true;
-    }
-
-    public void removeLineFromFile(String file, String lineToRemove) {
-
-        try {
-
-            File inFile = new File(file);
-
-            if (!inFile.isFile()) {
-                log.info("Parameter is not an existing file");
-                return;
-            }
-
-            // Construct the new file that will later be renamed to the original
-            // filename.
-            File tempFile = new File(inFile.getAbsolutePath() + ".tmp");
-
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
-
-            String line = null;
-
-            // Read from the original file and write to the new
-            // unless content matches data to be removed.
-            while ((line = br.readLine()) != null) {
-
-                if (!line.trim().equals(lineToRemove)) {
-
-                    pw.println(line);
-                    pw.flush();
-                }
-            }
-            pw.close();
-            br.close();
-
-            // Delete the original file
-            if (!inFile.delete()) {
-                log.info("Could not delete file");
-                return;
-            }
-
-            // Rename the new file to the filename the original file had.
-            if (!tempFile.renameTo(inFile)) {
-                log.info("Could not rename file");
-            }
-
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
+    @Api(description = "Sets the character to 1 HP.")
     public static class LowHP implements Command {
 
         @Override
@@ -256,6 +178,7 @@ public class AdminCommands {
         }
     }
 
+    @Api(description = "Max the character HP and MP")
     public static class Heal implements Command {
 
         @Override
@@ -268,6 +191,7 @@ public class AdminCommands {
         }
     }
 
+    @Api(description = "Force disconnect a player")
     public static class DC implements Command {
 
         @Override
@@ -293,6 +217,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Kill implements Command {
 
         public int execute(MapleClient c, String[] splitted) {
@@ -319,6 +244,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Skill implements Command {
 
         @Override
@@ -345,6 +271,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Fame implements Command {
 
         @Override
@@ -370,6 +297,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class HealHere implements Command {
 
         @Override
@@ -391,6 +319,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class GiveSkill implements Command {
 
         @Override
@@ -408,6 +337,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Job implements Command {
 
         @Override
@@ -417,6 +347,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class WhereAmI implements Command {
 
         @Override
@@ -431,6 +362,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Shop implements Command {
 
         @Override
@@ -444,6 +376,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class GainMeso implements Command {
 
         @Override
@@ -460,6 +393,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class GainCash implements Command {
 
         @Override
@@ -473,6 +407,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class GainMP implements Command {
 
         @Override
@@ -486,6 +421,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class LevelUp implements Command {
 
         @Override
@@ -497,6 +433,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ClearInv implements Command {
 
         @Override
@@ -545,6 +482,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class UnlockInv implements Command {
 
         @Override
@@ -697,6 +635,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Item implements Command {
 
         @Override
@@ -729,6 +668,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Drop implements Command {
 
         @Override
@@ -762,6 +702,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Level implements Command {
 
         @Override
@@ -775,6 +716,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Online implements Command {
 
         @Override
@@ -787,6 +729,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Say implements Command {
 
         @Override
@@ -802,6 +745,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Letter implements Command {
 
         @Override
@@ -872,6 +816,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ItemCheck implements Command {
 
         @Override
@@ -897,6 +842,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Song implements Command {
 
         @Override
@@ -906,6 +852,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class StartAutoEvent implements Command {
 
         @Override
@@ -918,6 +865,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class SetEvent implements Command {
 
         @Override
@@ -927,6 +875,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class StartEvent implements Command {
 
         @Override
@@ -943,6 +892,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ScheduleEvent implements Command {
 
         @Override
@@ -964,6 +914,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class RemoveItem implements Command {
 
         @Override
@@ -987,6 +938,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class LockItem implements Command {
 
         @Override
@@ -1023,6 +975,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class KillMap implements Command {
 
         @Override
@@ -1039,6 +992,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class SpeakMega implements Command {
 
         @Override
@@ -1053,6 +1007,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Speak implements Command {
 
         @Override
@@ -1070,6 +1025,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class SpeakMap implements Command {
 
         @Override
@@ -1085,6 +1041,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class SpeakChn implements Command {
 
         @Override
@@ -1100,6 +1057,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class SpeakWorld implements Command {
 
         @Override
@@ -1120,6 +1078,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Disease implements Command {
 
         @Override
@@ -1202,6 +1161,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class SQL implements Command {
 
         @Override
@@ -1217,6 +1177,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class StripEveryone implements Command {
 
         @Override
@@ -1240,6 +1201,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class SendAllNote implements Command {
 
         @Override
@@ -1259,6 +1221,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class PermWeather implements Command {
 
         @Override
@@ -1281,6 +1244,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class WhosThere implements Command {
 
         @Override
@@ -1301,6 +1265,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Cheaters implements Command {
 
         @Override
@@ -1318,6 +1283,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Reports implements Command {
 
         @Override
@@ -1335,6 +1301,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ClearReport implements Command {
 
         @Override
@@ -1364,6 +1331,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Connected implements Command {
 
         @Override
@@ -1393,6 +1361,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ResetQuest implements Command {
 
         @Override
@@ -1402,6 +1371,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class StartQuest implements Command {
 
         @Override
@@ -1411,6 +1381,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class CompleteQuest implements Command {
 
         @Override
@@ -1421,6 +1392,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class FStartQuest implements Command {
 
         @Override
@@ -1432,6 +1404,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class FCompleteQuest implements Command {
 
         @Override
@@ -1442,6 +1415,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class FStartOther implements Command {
 
         @Override
@@ -1455,6 +1429,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class FCompleteOther implements Command {
 
         @Override
@@ -1467,6 +1442,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class NearestPortal implements Command {
 
         @Override
@@ -1480,6 +1456,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class SpawnDebug implements Command {
 
         @Override
@@ -1489,6 +1466,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Threads implements Command {
 
         @Override
@@ -1509,6 +1487,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ShowTrace implements Command {
 
         @Override
@@ -1527,6 +1506,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class FakeRelog implements Command {
 
         @Override
@@ -1540,6 +1520,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ToggleOffense implements Command {
 
         @Override
@@ -1554,6 +1535,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class TDrops implements Command {
 
         @Override
@@ -1563,6 +1545,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class TMegaphone implements Command {
 
         @Override
@@ -1577,6 +1560,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class SReactor implements Command {
 
         @Override
@@ -1590,6 +1574,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class HReactor implements Command {
 
         @Override
@@ -1602,6 +1587,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class DReactor implements Command {
 
         @Override
@@ -1623,6 +1609,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ResetReactor implements Command {
 
         @Override
@@ -1632,6 +1619,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class SetReactor implements Command {
 
         @Override
@@ -1641,6 +1629,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class cleardrops implements Command {
 
         @Override
@@ -1651,6 +1640,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ExpRate implements Command {
 
         @Override
@@ -1672,6 +1662,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class DropRate implements Command {
 
         @Override
@@ -1693,6 +1684,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class MesoRate implements Command {
 
         @Override
@@ -1714,6 +1706,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class CashRate implements Command {
 
         @Override
@@ -1735,6 +1728,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ListSquads implements Command {
 
         @Override
@@ -1754,6 +1748,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ClearSquads implements Command {
 
         @Override
@@ -1767,6 +1762,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class SetInstanceProperty implements Command {
 
         @Override
@@ -1784,6 +1780,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ListInstanceProperty implements Command {
 
         @Override
@@ -1805,6 +1802,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ListInstances implements Command {
 
         @Override
@@ -1832,6 +1830,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class LeaveInstance implements Command {
 
         @Override
@@ -1845,6 +1844,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class StartInstance implements Command {
 
         @Override
@@ -1865,6 +1865,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class eventinstance implements Command {
 
         @Override
@@ -1890,6 +1891,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Uptime implements Command {
 
         @Override
@@ -1905,6 +1907,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class DCAll implements Command {
 
         @Override
@@ -1933,6 +1936,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class GoTo implements Command {
 
         private static final HashMap<String, Integer> gotomaps = new HashMap<String, Integer>();
@@ -2027,6 +2031,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class KillAll implements Command {
 
         @Override
@@ -2052,6 +2057,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ResetMobs implements Command {
 
         @Override
@@ -2061,6 +2067,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class KillMonster implements Command {
 
         @Override
@@ -2079,6 +2086,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class KillMonsterByOID implements Command {
 
         @Override
@@ -2093,6 +2101,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class HitMonsterByOID implements Command {
 
         @Override
@@ -2109,6 +2118,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class HitAll implements Command {
 
         @Override
@@ -2135,6 +2145,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class HitMonster implements Command {
 
         @Override
@@ -2155,6 +2166,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class KillAllDrops implements Command {
 
         @Override
@@ -2184,6 +2196,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class KillAllNoSpawn implements Command {
 
         @Override
@@ -2194,6 +2207,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class MonsterDebug implements Command {
 
         @Override
@@ -2223,6 +2237,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class NPC implements Command {
 
         @Override
@@ -2250,6 +2265,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class RemoveNPCs implements Command {
 
         @Override
@@ -2259,6 +2275,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class LookNPC implements Command {
 
         @Override
@@ -2275,6 +2292,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class LookReactor implements Command {
 
         @Override
@@ -2293,6 +2311,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class LookPortals implements Command {
 
         @Override
@@ -2310,6 +2329,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class MakePNPC implements Command {
 
         @Override
@@ -2333,6 +2353,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class DestroyPNPC implements Command {
 
         @Override
@@ -2354,6 +2375,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class MyNPCPos implements Command {
 
         @Override
@@ -2368,6 +2390,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Notice implements Command {
 
         private static int getNoticeType(String typestring) {
@@ -2429,6 +2452,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Yellow implements Command {
 
         @Override
@@ -2458,8 +2482,10 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Y extends Yellow {}
 
+    @Api
     public static class ReloadDrops implements Command {
 
         @Override
@@ -2470,6 +2496,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ReloadPortal implements Command {
 
         @Override
@@ -2479,6 +2506,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ReloadShops implements Command {
 
         @Override
@@ -2488,6 +2516,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ReloadEvents implements Command {
 
         @Override
@@ -2499,6 +2528,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ReloadQuests implements Command {
 
         @Override
@@ -2508,6 +2538,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Find implements Command {
 
         @Override
@@ -2656,12 +2687,16 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ID extends Find {}
 
+    @Api
     public static class LookUp extends Find {}
 
+    @Api
     public static class Search extends Find {}
 
+    @Api
     public static class ServerMessage implements Command {
 
         @Override
@@ -2675,6 +2710,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ShutdownTime extends Shutdown {
 
         private static ScheduledFuture<?> ts = null;
@@ -2715,6 +2751,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Shutdown implements Command {
 
         public static Thread t = null;
@@ -2733,6 +2770,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ShutdownMerchant implements Command {
 
         @Override
@@ -2744,6 +2782,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Spawn implements Command {
 
         @Override
@@ -2798,6 +2837,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Test2 implements Command {
 
         @Override
@@ -2807,6 +2847,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Clock implements Command {
 
         @Override
@@ -2819,6 +2860,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Packet implements Command {
 
         @Override
@@ -2832,6 +2874,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Warp implements Command {
 
         @Override
@@ -2904,6 +2947,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class warpChHere implements Command {
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2921,6 +2965,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class WarpMapTo implements Command {
 
         @Override
@@ -2939,6 +2984,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class WarpHere implements Command {
 
         @Override
@@ -2975,6 +3021,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class LOLCastle implements Command {
 
         @Override
@@ -2995,6 +3042,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Map implements Command {
 
         @Override
@@ -3025,6 +3073,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ReloadMap implements Command {
 
         @Override
@@ -3046,6 +3095,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class Respawn implements Command {
 
         @Override
@@ -3055,6 +3105,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ResetMap implements Command {
 
         @Override
@@ -3064,6 +3115,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class PNPC implements Command {
 
         @Override
@@ -3121,6 +3173,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class PMOB implements Command {
 
         @Override
@@ -3184,6 +3237,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class ReloadCustomLife implements Command {
 
         @Override
@@ -3224,6 +3278,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class TestEventTimer extends TestTimer {
 
         public TestEventTimer() {
@@ -3231,6 +3286,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class TestCloneTimer extends TestTimer {
 
         public TestCloneTimer() {
@@ -3238,6 +3294,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class TestEtcTimer extends TestTimer {
 
         public TestEtcTimer() {
@@ -3245,6 +3302,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class TestMobTimer extends TestTimer {
 
         public TestMobTimer() {
@@ -3252,6 +3310,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class TestMapTimer extends TestTimer {
 
         public TestMapTimer() {
@@ -3259,6 +3318,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class TestWorldTimer extends TestTimer {
 
         public TestWorldTimer() {
@@ -3266,6 +3326,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class TestBuffTimer extends TestTimer {
 
         public TestBuffTimer() {
@@ -3273,6 +3334,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class printarray implements Command { // Syntax:
         // !printoutarray
         // <low range> <high
@@ -3303,6 +3365,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class lifeoverride implements Command {
 
         @Override
@@ -3312,6 +3375,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class clearlife implements Command {
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -3384,6 +3448,7 @@ public class AdminCommands {
         }
     }
 
+    @Api
     public static class finddrop implements Command {
 
         private static final String getPaddedLine(String text) {

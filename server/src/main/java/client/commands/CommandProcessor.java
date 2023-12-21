@@ -55,15 +55,13 @@ public class CommandProcessor {
     }
 
     public boolean processLine(MapleClient c, String line) {
-        final String[] splited = line.split(" ");
+        final String[] args = line.split(" ");
         if (!c.getAccountData().isGameMaster()) {
             return false;
         }
         for (var entry : commands.entrySet()) {
             var command = entry.getKey();
-            if (command.equals(splited[0].toLowerCase().replace("!", ""))) {
-                String[] args = new String[splited.length - 1];
-                System.arraycopy(splited, 1, args, 0, args.length);
+            if (command.equals(args[0].toLowerCase().replace("!", ""))) {
                 var impl = entry.getValue();
                 impl.execute(c, args);
                 return true;
