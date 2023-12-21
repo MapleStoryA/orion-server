@@ -15,6 +15,7 @@ import client.skill.EvanSkillPoints;
 import client.skill.ISkill;
 import client.skill.SkillEntry;
 import database.AccountData;
+import handling.cashshop.CashShop;
 import handling.world.buddy.BuddyListEntry;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -24,7 +25,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import server.MapleStorage;
-import handling.cashshop.CashShop;
 import server.quest.MapleQuest;
 
 @Slf4j
