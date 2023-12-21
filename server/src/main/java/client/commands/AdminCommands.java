@@ -17,7 +17,6 @@ import client.skill.ISkill;
 import client.skill.SkillFactory;
 import constants.GameConstants;
 import constants.MapConstants;
-import constants.ServerConstants.PlayerGMRank;
 import database.DatabaseConnection;
 import handling.channel.ChannelServer;
 import handling.world.WorldServer;
@@ -161,12 +160,7 @@ public class AdminCommands {
     }
 
 
-    public static PlayerGMRank getPlayerLevelRequired() {
-        return PlayerGMRank.ADMIN;
-    }
-
-
-    public static class Hide extends CommandExecute {
+    public static class Hide implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -252,7 +246,7 @@ public class AdminCommands {
         }
     }
 
-    public static class LowHP extends CommandExecute {
+    public static class LowHP implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -264,7 +258,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Heal extends CommandExecute {
+    public static class Heal implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -277,7 +271,7 @@ public class AdminCommands {
     }
 
 
-    public static class DC extends CommandExecute {
+    public static class DC implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -302,7 +296,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Kill extends CommandExecute {
+    public static class Kill implements Command {
 
         public int execute(MapleClient c, String[] splitted) {
             MapleCharacter player = c.getPlayer();
@@ -328,7 +322,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Skill extends CommandExecute {
+    public static class Skill implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -353,7 +347,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Fame extends CommandExecute {
+    public static class Fame implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -378,7 +372,7 @@ public class AdminCommands {
         }
     }
 
-    public static class HealHere extends CommandExecute {
+    public static class HealHere implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -396,7 +390,7 @@ public class AdminCommands {
     }
 
 
-    public static class GiveSkill extends CommandExecute {
+    public static class GiveSkill implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -413,7 +407,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Job extends CommandExecute {
+    public static class Job implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -422,7 +416,7 @@ public class AdminCommands {
         }
     }
 
-    public static class WhereAmI extends CommandExecute {
+    public static class WhereAmI implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -431,7 +425,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Shop extends CommandExecute {
+    public static class Shop implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -444,7 +438,7 @@ public class AdminCommands {
         }
     }
 
-    public static class GainMeso extends CommandExecute {
+    public static class GainMeso implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -460,7 +454,7 @@ public class AdminCommands {
         }
     }
 
-    public static class GainCash extends CommandExecute {
+    public static class GainCash implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -473,7 +467,7 @@ public class AdminCommands {
         }
     }
 
-    public static class GainMP extends CommandExecute {
+    public static class GainMP implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -487,7 +481,7 @@ public class AdminCommands {
     }
 
 
-    public static class LevelUp extends CommandExecute {
+    public static class LevelUp implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -498,7 +492,7 @@ public class AdminCommands {
         }
     }
 
-    public static class ClearInv extends CommandExecute {
+    public static class ClearInv implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -545,7 +539,7 @@ public class AdminCommands {
         }
     }
 
-    public static class UnlockInv extends CommandExecute {
+    public static class UnlockInv implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -697,7 +691,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Item extends CommandExecute {
+    public static class Item implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -731,7 +725,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Drop extends CommandExecute {
+    public static class Drop implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -757,7 +751,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Level extends CommandExecute {
+    public static class Level implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -770,7 +764,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Online extends CommandExecute {
+    public static class Online implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -782,7 +776,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Say extends CommandExecute {
+    public static class Say implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -800,7 +794,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Letter extends CommandExecute {
+    public static class Letter implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -856,7 +850,7 @@ public class AdminCommands {
         }
     }
 
-    public static class ItemCheck extends CommandExecute {
+    public static class ItemCheck implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -878,7 +872,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Song extends CommandExecute {
+    public static class Song implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -887,7 +881,7 @@ public class AdminCommands {
         }
     }
 
-    public static class StartAutoEvent extends CommandExecute {
+    public static class StartAutoEvent implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -899,7 +893,7 @@ public class AdminCommands {
         }
     }
 
-    public static class SetEvent extends CommandExecute {
+    public static class SetEvent implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -909,7 +903,7 @@ public class AdminCommands {
     }
 
 
-    public static class StartEvent extends CommandExecute {
+    public static class StartEvent implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -925,7 +919,7 @@ public class AdminCommands {
         }
     }
 
-    public static class ScheduleEvent extends CommandExecute {
+    public static class ScheduleEvent implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -946,7 +940,7 @@ public class AdminCommands {
         }
     }
 
-    public static class RemoveItem extends CommandExecute {
+    public static class RemoveItem implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -967,7 +961,7 @@ public class AdminCommands {
         }
     }
 
-    public static class LockItem extends CommandExecute {
+    public static class LockItem implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1000,7 +994,7 @@ public class AdminCommands {
         }
     }
 
-    public static class KillMap extends CommandExecute {
+    public static class KillMap implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1016,7 +1010,7 @@ public class AdminCommands {
         }
     }
 
-    public static class SpeakMega extends CommandExecute {
+    public static class SpeakMega implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1030,7 +1024,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Speak extends CommandExecute {
+    public static class Speak implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1046,7 +1040,7 @@ public class AdminCommands {
         }
     }
 
-    public static class SpeakMap extends CommandExecute {
+    public static class SpeakMap implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1060,7 +1054,7 @@ public class AdminCommands {
         }
     }
 
-    public static class SpeakChn extends CommandExecute {
+    public static class SpeakChn implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1074,7 +1068,7 @@ public class AdminCommands {
         }
     }
 
-    public static class SpeakWorld extends CommandExecute {
+    public static class SpeakWorld implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1090,7 +1084,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Disease extends CommandExecute {
+    public static class Disease implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1160,7 +1154,7 @@ public class AdminCommands {
         }
     }
 
-    public static class SQL extends CommandExecute {
+    public static class SQL implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1176,7 +1170,7 @@ public class AdminCommands {
         }
     }
 
-    public static class StripEveryone extends CommandExecute {
+    public static class StripEveryone implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1199,7 +1193,7 @@ public class AdminCommands {
         }
     }
 
-    public static class SendAllNote extends CommandExecute {
+    public static class SendAllNote implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1217,7 +1211,7 @@ public class AdminCommands {
         }
     }
 
-    public static class PermWeather extends CommandExecute {
+    public static class PermWeather implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1239,7 +1233,7 @@ public class AdminCommands {
         }
     }
 
-    public static class WhosThere extends CommandExecute {
+    public static class WhosThere implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1259,7 +1253,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Cheaters extends CommandExecute {
+    public static class Cheaters implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1276,7 +1270,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Reports extends CommandExecute {
+    public static class Reports implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1293,7 +1287,7 @@ public class AdminCommands {
         }
     }
 
-    public static class ClearReport extends CommandExecute {
+    public static class ClearReport implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1322,7 +1316,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Connected extends CommandExecute {
+    public static class Connected implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1350,7 +1344,7 @@ public class AdminCommands {
         }
     }
 
-    public static class ResetQuest extends CommandExecute {
+    public static class ResetQuest implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1361,7 +1355,7 @@ public class AdminCommands {
 
     }
 
-    public static class StartQuest extends CommandExecute {
+    public static class StartQuest implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1370,7 +1364,7 @@ public class AdminCommands {
         }
     }
 
-    public static class CompleteQuest extends CommandExecute {
+    public static class CompleteQuest implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1380,7 +1374,7 @@ public class AdminCommands {
         }
     }
 
-    public static class FStartQuest extends CommandExecute {
+    public static class FStartQuest implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1390,7 +1384,7 @@ public class AdminCommands {
         }
     }
 
-    public static class FCompleteQuest extends CommandExecute {
+    public static class FCompleteQuest implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1400,7 +1394,7 @@ public class AdminCommands {
         }
     }
 
-    public static class FStartOther extends CommandExecute {
+    public static class FStartOther implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1411,7 +1405,7 @@ public class AdminCommands {
         }
     }
 
-    public static class FCompleteOther extends CommandExecute {
+    public static class FCompleteOther implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1422,7 +1416,7 @@ public class AdminCommands {
         }
     }
 
-    public static class NearestPortal extends CommandExecute {
+    public static class NearestPortal implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1434,7 +1428,7 @@ public class AdminCommands {
         }
     }
 
-    public static class SpawnDebug extends CommandExecute {
+    public static class SpawnDebug implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1443,7 +1437,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Threads extends CommandExecute {
+    public static class Threads implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1463,7 +1457,7 @@ public class AdminCommands {
         }
     }
 
-    public static class ShowTrace extends CommandExecute {
+    public static class ShowTrace implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1481,7 +1475,7 @@ public class AdminCommands {
         }
     }
 
-    public static class FakeRelog extends CommandExecute {
+    public static class FakeRelog implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1494,7 +1488,7 @@ public class AdminCommands {
         }
     }
 
-    public static class ToggleOffense extends CommandExecute {
+    public static class ToggleOffense implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1508,7 +1502,7 @@ public class AdminCommands {
         }
     }
 
-    public static class TDrops extends CommandExecute {
+    public static class TDrops implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1517,7 +1511,7 @@ public class AdminCommands {
         }
     }
 
-    public static class TMegaphone extends CommandExecute {
+    public static class TMegaphone implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1528,7 +1522,7 @@ public class AdminCommands {
         }
     }
 
-    public static class SReactor extends CommandExecute {
+    public static class SReactor implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1541,7 +1535,7 @@ public class AdminCommands {
         }
     }
 
-    public static class HReactor extends CommandExecute {
+    public static class HReactor implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1550,7 +1544,7 @@ public class AdminCommands {
         }
     }
 
-    public static class DReactor extends CommandExecute {
+    public static class DReactor implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1569,7 +1563,7 @@ public class AdminCommands {
         }
     }
 
-    public static class ResetReactor extends CommandExecute {
+    public static class ResetReactor implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1578,7 +1572,7 @@ public class AdminCommands {
         }
     }
 
-    public static class SetReactor extends CommandExecute {
+    public static class SetReactor implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1587,7 +1581,7 @@ public class AdminCommands {
         }
     }
 
-    public static class cleardrops extends CommandExecute {
+    public static class cleardrops implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1597,7 +1591,7 @@ public class AdminCommands {
         }
     }
 
-    public static class ExpRate extends CommandExecute {
+    public static class ExpRate implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1618,7 +1612,7 @@ public class AdminCommands {
         }
     }
 
-    public static class DropRate extends CommandExecute {
+    public static class DropRate implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1639,7 +1633,7 @@ public class AdminCommands {
         }
     }
 
-    public static class MesoRate extends CommandExecute {
+    public static class MesoRate implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1660,7 +1654,7 @@ public class AdminCommands {
         }
     }
 
-    public static class CashRate extends CommandExecute {
+    public static class CashRate implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1681,7 +1675,7 @@ public class AdminCommands {
         }
     }
 
-    public static class ListSquads extends CommandExecute {
+    public static class ListSquads implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1696,7 +1690,7 @@ public class AdminCommands {
         }
     }
 
-    public static class ClearSquads extends CommandExecute {
+    public static class ClearSquads implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1709,7 +1703,7 @@ public class AdminCommands {
         }
     }
 
-    public static class SetInstanceProperty extends CommandExecute {
+    public static class SetInstanceProperty implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1726,7 +1720,7 @@ public class AdminCommands {
         }
     }
 
-    public static class ListInstanceProperty extends CommandExecute {
+    public static class ListInstanceProperty implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1743,7 +1737,7 @@ public class AdminCommands {
         }
     }
 
-    public static class ListInstances extends CommandExecute {
+    public static class ListInstances implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1762,7 +1756,7 @@ public class AdminCommands {
         }
     }
 
-    public static class LeaveInstance extends CommandExecute {
+    public static class LeaveInstance implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1775,7 +1769,7 @@ public class AdminCommands {
         }
     }
 
-    public static class StartInstance extends CommandExecute {
+    public static class StartInstance implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1796,7 +1790,7 @@ public class AdminCommands {
         }
     }
 
-    public static class eventinstance extends CommandExecute {
+    public static class eventinstance implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1815,7 +1809,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Uptime extends CommandExecute {
+    public static class Uptime implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1825,7 +1819,7 @@ public class AdminCommands {
         }
     }
 
-    public static class DCAll extends CommandExecute {
+    public static class DCAll implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1853,7 +1847,7 @@ public class AdminCommands {
         }
     }
 
-    public static class GoTo extends CommandExecute {
+    public static class GoTo implements Command {
 
         private static final HashMap<String, Integer> gotomaps = new HashMap<String, Integer>();
 
@@ -1945,7 +1939,7 @@ public class AdminCommands {
         }
     }
 
-    public static class KillAll extends CommandExecute {
+    public static class KillAll implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1970,7 +1964,7 @@ public class AdminCommands {
         }
     }
 
-    public static class ResetMobs extends CommandExecute {
+    public static class ResetMobs implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1979,7 +1973,7 @@ public class AdminCommands {
         }
     }
 
-    public static class KillMonster extends CommandExecute {
+    public static class KillMonster implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1997,7 +1991,7 @@ public class AdminCommands {
         }
     }
 
-    public static class KillMonsterByOID extends CommandExecute {
+    public static class KillMonsterByOID implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2011,7 +2005,7 @@ public class AdminCommands {
         }
     }
 
-    public static class HitMonsterByOID extends CommandExecute {
+    public static class HitMonsterByOID implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2027,7 +2021,7 @@ public class AdminCommands {
         }
     }
 
-    public static class HitAll extends CommandExecute {
+    public static class HitAll implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2053,7 +2047,7 @@ public class AdminCommands {
         }
     }
 
-    public static class HitMonster extends CommandExecute {
+    public static class HitMonster implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2073,7 +2067,7 @@ public class AdminCommands {
         }
     }
 
-    public static class KillAllDrops extends CommandExecute {
+    public static class KillAllDrops implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2102,7 +2096,7 @@ public class AdminCommands {
         }
     }
 
-    public static class KillAllNoSpawn extends CommandExecute {
+    public static class KillAllNoSpawn implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2112,7 +2106,7 @@ public class AdminCommands {
         }
     }
 
-    public static class MonsterDebug extends CommandExecute {
+    public static class MonsterDebug implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2141,7 +2135,7 @@ public class AdminCommands {
         }
     }
 
-    public static class NPC extends CommandExecute {
+    public static class NPC implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2164,7 +2158,7 @@ public class AdminCommands {
         }
     }
 
-    public static class RemoveNPCs extends CommandExecute {
+    public static class RemoveNPCs implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2173,7 +2167,7 @@ public class AdminCommands {
         }
     }
 
-    public static class LookNPC extends CommandExecute {
+    public static class LookNPC implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2186,7 +2180,7 @@ public class AdminCommands {
         }
     }
 
-    public static class LookReactor extends CommandExecute {
+    public static class LookReactor implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2201,7 +2195,7 @@ public class AdminCommands {
         }
     }
 
-    public static class LookPortals extends CommandExecute {
+    public static class LookPortals implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2215,7 +2209,7 @@ public class AdminCommands {
         }
     }
 
-    public static class MakePNPC extends CommandExecute {
+    public static class MakePNPC implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2239,7 +2233,7 @@ public class AdminCommands {
     }
 
 
-    public static class DestroyPNPC extends CommandExecute {
+    public static class DestroyPNPC implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2260,7 +2254,7 @@ public class AdminCommands {
         }
     }
 
-    public static class MyNPCPos extends CommandExecute {
+    public static class MyNPCPos implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2271,7 +2265,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Notice extends CommandExecute {
+    public static class Notice implements Command {
 
         private static int getNoticeType(String typestring) {
             if (typestring.equals("n")) {
@@ -2332,7 +2326,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Yellow extends CommandExecute {
+    public static class Yellow implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2364,7 +2358,7 @@ public class AdminCommands {
     public static class Y extends Yellow {
     }
 
-    public static class ReloadDrops extends CommandExecute {
+    public static class ReloadDrops implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2374,7 +2368,7 @@ public class AdminCommands {
         }
     }
 
-    public static class ReloadPortal extends CommandExecute {
+    public static class ReloadPortal implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2383,7 +2377,7 @@ public class AdminCommands {
         }
     }
 
-    public static class ReloadShops extends CommandExecute {
+    public static class ReloadShops implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2392,7 +2386,7 @@ public class AdminCommands {
         }
     }
 
-    public static class ReloadEvents extends CommandExecute {
+    public static class ReloadEvents implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2403,7 +2397,7 @@ public class AdminCommands {
         }
     }
 
-    public static class ReloadQuests extends CommandExecute {
+    public static class ReloadQuests implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2412,7 +2406,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Find extends CommandExecute {
+    public static class Find implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2565,7 +2559,7 @@ public class AdminCommands {
     public static class Search extends Find {
     }
 
-    public static class ServerMessage extends CommandExecute {
+    public static class ServerMessage implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2612,7 +2606,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Shutdown extends CommandExecute {
+    public static class Shutdown implements Command {
 
         public static Thread t = null;
 
@@ -2630,7 +2624,7 @@ public class AdminCommands {
         }
     }
 
-    public static class ShutdownMerchant extends CommandExecute {
+    public static class ShutdownMerchant implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2642,7 +2636,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Spawn extends CommandExecute {
+    public static class Spawn implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2694,7 +2688,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Test2 extends CommandExecute {
+    public static class Test2 implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2704,7 +2698,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Clock extends CommandExecute {
+    public static class Clock implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2714,7 +2708,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Packet extends CommandExecute {
+    public static class Packet implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2727,7 +2721,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Warp extends CommandExecute {
+    public static class Warp implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2792,7 +2786,7 @@ public class AdminCommands {
         }
     }
 
-    public static class warpChHere extends CommandExecute {
+    public static class warpChHere implements Command {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             try {
@@ -2808,7 +2802,7 @@ public class AdminCommands {
         }
     }
 
-    public static class WarpMapTo extends CommandExecute {
+    public static class WarpMapTo implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2826,7 +2820,7 @@ public class AdminCommands {
         }
     }
 
-    public static class WarpHere extends CommandExecute {
+    public static class WarpHere implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2854,7 +2848,7 @@ public class AdminCommands {
         }
     }
 
-    public static class LOLCastle extends CommandExecute {
+    public static class LOLCastle implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2870,7 +2864,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Map extends CommandExecute {
+    public static class Map implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2900,7 +2894,7 @@ public class AdminCommands {
         }
     }
 
-    public static class ReloadMap extends CommandExecute {
+    public static class ReloadMap implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2921,7 +2915,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Respawn extends CommandExecute {
+    public static class Respawn implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2930,7 +2924,7 @@ public class AdminCommands {
         }
     }
 
-    public static class ResetMap extends CommandExecute {
+    public static class ResetMap implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2940,7 +2934,7 @@ public class AdminCommands {
     }
 
 
-    public static class PNPC extends CommandExecute {
+    public static class PNPC implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -2991,7 +2985,7 @@ public class AdminCommands {
         }
     }
 
-    public static class PMOB extends CommandExecute {
+    public static class PMOB implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -3048,7 +3042,7 @@ public class AdminCommands {
         }
     }
 
-    public static class ReloadCustomLife extends CommandExecute {
+    public static class ReloadCustomLife implements Command {
 
         @Override
         public int execute(final MapleClient c, String[] splitted) {
@@ -3062,7 +3056,7 @@ public class AdminCommands {
         }
     }
 
-    public abstract static class TestTimer extends CommandExecute {
+    public abstract static class TestTimer implements Command {
 
         protected Timer toTest = null;
 
@@ -3133,7 +3127,7 @@ public class AdminCommands {
     }
 
 
-    public static class printarray extends CommandExecute { // Syntax:
+    public static class printarray implements Command { // Syntax:
         // !printoutarray
         // <low range> <high
         // range>
@@ -3162,7 +3156,7 @@ public class AdminCommands {
         }
     }
 
-    public static class lifeoverride extends CommandExecute {
+    public static class lifeoverride implements Command {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -3171,7 +3165,7 @@ public class AdminCommands {
         }
     }
 
-    public static class clearlife extends CommandExecute {
+    public static class clearlife implements Command {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             BufferedReader br = null;
@@ -3240,7 +3234,7 @@ public class AdminCommands {
         }
     }
 
-    public static class finddrop extends CommandExecute {
+    public static class finddrop implements Command {
 
         private static final String getPaddedLine(String text) {
             StringBuilder builder = new StringBuilder();
