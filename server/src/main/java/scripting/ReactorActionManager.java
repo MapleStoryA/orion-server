@@ -15,10 +15,10 @@ import lombok.extern.slf4j.Slf4j;
 import server.MapleCarnivalFactory;
 import server.MapleCarnivalFactory.MCSkill;
 import server.MapleItemInformationProvider;
-import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
 import server.maps.MapleReactor;
 import server.maps.ReactorDropEntry;
+import tools.helper.Api;
 import tools.helper.Randomizer;
 
 @Slf4j
@@ -31,16 +31,34 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         this.reactor = reactor;
     }
 
-    // only used for meso = false, really. No minItems because meso is used to fill the gap
+    @Override
+    public void spawnNpc(int npcId) {
+        spawnNpc(npcId, getPosition());
+    }
+
+    // summon one monster on reactor location
+    @Override
+    public void spawnMonster(int id) {
+        spawnMonster(id, 1, getPosition());
+    }
+
+    // summon monsters on reactor location
+    @Override
+    public void spawnMonster(int id, int qty) {
+        spawnMonster(id, qty, getPosition());
+    }
+
+    @Api
     public void dropItems() {
         dropItems(false, 0, 0, 0, 0);
     }
 
+    @Api
     public void dropItems(boolean meso, int mesoChance, int minMeso, int maxMeso) {
         dropItems(meso, mesoChance, minMeso, maxMeso, 0);
     }
 
-    public void dropItems(boolean meso, int mesoChance, int minMeso, int maxMeso, int minItems) {
+    private void dropItems(boolean meso, int mesoChance, int minMeso, int maxMeso, int minItems) {
         final List<ReactorDropEntry> chances =
                 ReactorScriptManager.getInstance().getDrops(reactor.getReactorId());
         final List<ReactorDropEntry> items = new LinkedList<ReactorDropEntry>();
@@ -103,6 +121,22 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         }
     }
 
+    @Api
+    public void dispelAllMonsters(final int num) { // dispels all mobs, cpq
+        final MCSkill skill = MapleCarnivalFactory.getInstance().getGuardian(num);
+        if (skill != null) {
+            for (MapleMonster mons : getMap().getAllMonstersThreadsafe()) {
+                mons.dispelSkill(skill.getSkill());
+            }
+        }
+    }
+
+    @Api
+    public void killAll() {
+        reactor.getMap().killAllMonsters(true);
+    }
+
+    @Api
     public void dropSingleItem(int itemId) {
         Item drop;
         final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
@@ -114,9 +148,8 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         reactor.getMap().spawnItemDrop(reactor, getPlayer(), drop, reactor.getPosition(), false, false);
     }
 
-    @Override
-    public void spawnNpc(int npcId) {
-        spawnNpc(npcId, getPosition());
+    public void killMonster(int monsId) {
+        reactor.getMap().killMonster(monsId);
     }
 
     // returns slightly above the reactor's position for monster spawns
@@ -128,64 +161,5 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
 
     public MapleReactor getReactor() {
         return reactor;
-    }
-
-    public void spawnZakum() {
-        reactor.getMap().spawnZakum(getPosition().x, getPosition().y);
-    }
-
-    public void spawnFakeMonster(int id) {
-        spawnFakeMonster(id, 1, getPosition());
-    }
-
-    // summon one monster, remote location
-    public void spawnFakeMonster(int id, int x, int y) {
-        spawnFakeMonster(id, 1, new Point(x, y));
-    }
-
-    // multiple monsters, reactor location
-    public void spawnFakeMonster(int id, int qty) {
-        spawnFakeMonster(id, qty, getPosition());
-    }
-
-    // multiple monsters, remote location
-    public void spawnFakeMonster(int id, int qty, int x, int y) {
-        spawnFakeMonster(id, qty, new Point(x, y));
-    }
-
-    // handler for all spawnFakeMonster
-    private void spawnFakeMonster(int id, int qty, Point pos) {
-        for (int i = 0; i < qty; i++) {
-            reactor.getMap().spawnFakeMonsterOnGroundBelow(MapleLifeFactory.getMonster(id), pos);
-        }
-    }
-
-    public void killAll() {
-        reactor.getMap().killAllMonsters(true);
-    }
-
-    public void killMonster(int monsId) {
-        reactor.getMap().killMonster(monsId);
-    }
-
-    // summon one monster on reactor location
-    @Override
-    public void spawnMonster(int id) {
-        spawnMonster(id, 1, getPosition());
-    }
-
-    // summon monsters on reactor location
-    @Override
-    public void spawnMonster(int id, int qty) {
-        spawnMonster(id, qty, getPosition());
-    }
-
-    public void dispelAllMonsters(final int num) { // dispels all mobs, cpq
-        final MCSkill skil = MapleCarnivalFactory.getInstance().getGuardian(num);
-        if (skil != null) {
-            for (MapleMonster mons : getMap().getAllMonstersThreadsafe()) {
-                mons.dispelSkill(skil.getSkill());
-            }
-        }
     }
 }
