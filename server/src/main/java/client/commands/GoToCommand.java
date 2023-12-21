@@ -4,7 +4,7 @@ import client.MapleClient;
 import java.util.HashMap;
 import server.MaplePortal;
 import server.maps.MapleMap;
-import tools.Scripting;
+import tools.helper.Scripting;
 
 @Scripting
 class GoToCommand implements Command {

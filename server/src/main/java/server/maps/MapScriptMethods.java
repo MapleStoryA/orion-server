@@ -12,7 +12,7 @@ import server.life.MapleMonster;
 import server.quest.MapleQuest;
 import server.quest.MapleQuest.MedalQuest;
 import tools.MaplePacketCreator;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 import tools.packet.UIPacket;
 
 @lombok.extern.slf4j.Slf4j

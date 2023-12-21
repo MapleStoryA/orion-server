@@ -3,7 +3,7 @@ package client.inventory;
 import constants.GameConstants;
 import java.util.Map;
 import server.MapleItemInformationProvider;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 
 @lombok.extern.slf4j.Slf4j
 public class Equip extends Item implements IEquip {

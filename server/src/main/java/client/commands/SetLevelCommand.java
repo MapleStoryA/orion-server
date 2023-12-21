@@ -2,7 +2,7 @@ package client.commands;
 
 import client.MapleClient;
 import client.MapleStat;
-import tools.Scripting;
+import tools.helper.Scripting;
 
 @Scripting
 class SetLevelCommand implements Command {

@@ -17,7 +17,7 @@ import server.life.MobAttackInfoFactory;
 import server.life.MobSkill;
 import server.life.MobSkillFactory;
 import tools.MaplePacketCreator;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 import tools.packet.MobPacket;
 
 @lombok.extern.slf4j.Slf4j

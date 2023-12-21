@@ -38,9 +38,9 @@ import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import server.maps.event.MobObserver;
 import tools.MaplePacketCreator;
-import tools.Randomizer;
 import tools.collection.ConcurrentEnumMap;
 import tools.collection.Pair;
+import tools.helper.Randomizer;
 import tools.packet.MobPacket;
 
 @lombok.extern.slf4j.Slf4j

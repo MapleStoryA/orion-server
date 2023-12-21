@@ -1,6 +1,6 @@
 package scripting.v1.api;
 
-import tools.Scripting;
+import tools.helper.Scripting;
 
 public interface Inventory {
     @Scripting

@@ -4,7 +4,7 @@ import constants.GameConstants;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 
 @lombok.extern.slf4j.Slf4j
 public class RandomRewards {

@@ -2,7 +2,7 @@ package client.commands;
 
 import client.MapleClient;
 import handling.world.WorldServer;
-import tools.Scripting;
+import tools.helper.Scripting;
 
 @Scripting
 class OnlineCommand implements Command {

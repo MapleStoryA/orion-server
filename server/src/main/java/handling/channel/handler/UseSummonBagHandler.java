@@ -13,8 +13,8 @@ import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
 import server.maps.FieldLimitType;
 import tools.MaplePacketCreator;
-import tools.Randomizer;
 import tools.collection.Pair;
+import tools.helper.Randomizer;
 
 @lombok.extern.slf4j.Slf4j
 public class UseSummonBagHandler extends AbstractMaplePacketHandler {

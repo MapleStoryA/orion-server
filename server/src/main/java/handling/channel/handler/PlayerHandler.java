@@ -22,7 +22,7 @@ import server.life.MobSkill;
 import server.life.MobSkillFactory;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 import tools.packet.MTSCSPacket;
 import tools.packet.MobPacket;
 import tools.packet.UIPacket;

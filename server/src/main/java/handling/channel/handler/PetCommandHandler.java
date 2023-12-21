@@ -9,7 +9,7 @@ import client.inventory.PetDataFactory;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import networking.data.input.InPacket;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 import tools.packet.PetPacket;
 
 @lombok.extern.slf4j.Slf4j

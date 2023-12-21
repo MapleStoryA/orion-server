@@ -7,7 +7,7 @@ import java.awt.*;
 import server.Timer.MapTimer;
 import server.life.MapleLifeFactory;
 import tools.MaplePacketCreator;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 
 @lombok.extern.slf4j.Slf4j
 public class Event_DojoAgent {

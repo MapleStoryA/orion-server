@@ -7,7 +7,7 @@ import server.MapleItemInformationProvider;
 import server.Timer.EventTimer;
 import server.config.ServerConfig;
 import tools.MaplePacketCreator;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 
 @lombok.extern.slf4j.Slf4j
 public class AramiaFireWorks {

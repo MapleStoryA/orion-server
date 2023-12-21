@@ -8,7 +8,7 @@ import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
-import tools.Scripting;
+import tools.helper.Scripting;
 
 @Scripting
 class GainItemCommand implements Command {

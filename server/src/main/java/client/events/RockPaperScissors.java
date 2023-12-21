@@ -3,7 +3,7 @@ package client.events;
 import client.MapleClient;
 import server.MapleInventoryManipulator;
 import tools.MaplePacketCreator;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 
 @lombok.extern.slf4j.Slf4j
 public class RockPaperScissors {

@@ -13,7 +13,7 @@ import scripting.v1.api.QuestRecord;
 import server.maps.MapleMap;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
-import tools.Scripting;
+import tools.helper.Scripting;
 import tools.packet.CWVsContextOnMessagePackets;
 
 @Slf4j

@@ -10,8 +10,8 @@ import server.life.MobSkill;
 import server.life.MobSkillFactory;
 import server.maps.MapleMap;
 import server.movement.MovePath;
-import tools.Randomizer;
 import tools.collection.Pair;
+import tools.helper.Randomizer;
 import tools.packet.MobPacket;
 
 @lombok.extern.slf4j.Slf4j

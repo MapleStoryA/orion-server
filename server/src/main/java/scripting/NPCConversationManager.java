@@ -61,9 +61,9 @@ import server.maps.MapleMap;
 import server.maps.SpeedRunType;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
-import tools.Randomizer;
 import tools.collection.Pair;
 import tools.collection.Triple;
+import tools.helper.Randomizer;
 import tools.packet.CWVsContextOnMessagePackets;
 import tools.packet.PlayerShopPacket;
 

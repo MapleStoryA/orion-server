@@ -12,7 +12,7 @@ import provider.MapleDataFileEntry;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
 import server.config.ServerConfig;
-import tools.StringUtil;
+import tools.helper.StringUtil;
 
 @lombok.extern.slf4j.Slf4j
 public class SkillFactory {

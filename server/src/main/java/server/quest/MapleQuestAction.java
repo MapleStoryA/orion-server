@@ -18,7 +18,7 @@ import provider.MapleDataTool;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 import tools.packet.CWVsContextOnMessagePackets;
 
 @lombok.extern.slf4j.Slf4j

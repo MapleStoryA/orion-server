@@ -11,7 +11,7 @@ import server.Timer.MapTimer;
 import server.life.MapleLifeFactory;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 
 @lombok.extern.slf4j.Slf4j
 public class Event_PyramidSubway {

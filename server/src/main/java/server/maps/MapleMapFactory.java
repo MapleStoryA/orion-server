@@ -23,7 +23,7 @@ import server.life.MapleMonster;
 import server.life.MapleNPC;
 import server.maps.MapleNodes.MapleNodeInfo;
 import server.maps.MapleNodes.MaplePlatform;
-import tools.StringUtil;
+import tools.helper.StringUtil;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleMapFactory {

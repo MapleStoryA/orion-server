@@ -9,7 +9,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import server.maps.MapleMapObjectType;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 
 @lombok.extern.slf4j.Slf4j
 public class GameConstants {

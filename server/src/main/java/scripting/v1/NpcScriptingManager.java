@@ -13,7 +13,7 @@ import scripting.v1.base.QuestScripting;
 import scripting.v1.base.TargetScripting;
 import server.config.ServerConfig;
 import server.quest.MapleQuest;
-import tools.StringUtil;
+import tools.helper.StringUtil;
 
 @Slf4j
 public class NpcScriptingManager {

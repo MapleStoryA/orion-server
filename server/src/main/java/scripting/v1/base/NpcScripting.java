@@ -8,7 +8,7 @@ import org.mozilla.javascript.Scriptable;
 import scripting.ScriptMan;
 import scripting.v1.api.INpcScripting;
 import server.life.MapleNPC;
-import tools.Scripting;
+import tools.helper.Scripting;
 import tools.packet.npcpool.NpcPoolPackets;
 
 @Slf4j

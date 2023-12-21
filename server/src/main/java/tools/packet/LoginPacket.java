@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import networking.data.output.OutPacket;
 import networking.packet.SendPacketOpcode;
-import tools.HexTool;
+import tools.helper.HexTool;
 
 @lombok.extern.slf4j.Slf4j
 public class LoginPacket {

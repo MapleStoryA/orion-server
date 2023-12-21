@@ -1,6 +1,6 @@
 package networking.encryption;
 
-import tools.BitTools;
+import tools.helper.BitTools;
 
 /**
  * Provides MapleStory's custom encryption routines.

@@ -11,8 +11,8 @@ import server.MapleCarnivalFactory.MCSkill;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
 import tools.MaplePacketCreator;
-import tools.Randomizer;
 import tools.collection.Pair;
+import tools.helper.Randomizer;
 import tools.packet.MonsterCarnivalPacket;
 
 @lombok.extern.slf4j.Slf4j

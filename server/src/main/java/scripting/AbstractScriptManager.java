@@ -6,7 +6,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import server.config.ServerConfig;
-import tools.StringUtil;
+import tools.helper.StringUtil;
 
 /**
  * @author Matze

@@ -1,7 +1,7 @@
 package networking.data.input;
 
 import java.io.IOException;
-import tools.HexTool;
+import tools.helper.HexTool;
 
 /**
  * Provides for an abstraction layer for an array of bytes.

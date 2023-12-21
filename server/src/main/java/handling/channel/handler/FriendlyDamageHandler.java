@@ -6,7 +6,7 @@ import handling.AbstractMaplePacketHandler;
 import networking.data.input.InPacket;
 import server.life.MapleMonster;
 import server.maps.MapleMap;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 
 @lombok.extern.slf4j.Slf4j
 public class FriendlyDamageHandler extends AbstractMaplePacketHandler {

@@ -26,7 +26,7 @@ import client.MapleCharacter;
 import java.util.concurrent.ScheduledFuture;
 import server.Timer.EventTimer;
 import tools.MaplePacketCreator;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 
 @lombok.extern.slf4j.Slf4j
 public class MapleOla extends MapleEvent {

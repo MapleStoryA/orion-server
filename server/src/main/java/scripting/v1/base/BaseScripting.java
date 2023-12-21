@@ -5,7 +5,7 @@ import client.MapleClient;
 import java.util.Random;
 import lombok.extern.slf4j.Slf4j;
 import scripting.v1.event.GameEventManager;
-import tools.Scripting;
+import tools.helper.Scripting;
 
 @Slf4j
 public class BaseScripting {

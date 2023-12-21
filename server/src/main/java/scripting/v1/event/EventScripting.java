@@ -4,7 +4,7 @@ import client.MapleCharacter;
 import client.MapleJob;
 import lombok.extern.slf4j.Slf4j;
 import scripting.v1.base.FieldScripting;
-import tools.Scripting;
+import tools.helper.Scripting;
 
 @Slf4j
 public class EventScripting {

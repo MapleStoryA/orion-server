@@ -1,7 +1,7 @@
 package networking.data.output;
 
 import java.io.ByteArrayOutputStream;
-import tools.HexTool;
+import tools.helper.HexTool;
 
 /**
  * Writes a maplestory-packet little-endian stream of bytes.

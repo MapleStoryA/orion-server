@@ -35,7 +35,7 @@ import server.maps.MapleReactor;
 import server.maps.SavedLocationType;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 import tools.packet.PetPacket;
 import tools.packet.UIPacket;
 

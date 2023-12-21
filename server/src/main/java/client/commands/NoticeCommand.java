@@ -3,7 +3,7 @@ package client.commands;
 import client.MapleClient;
 import handling.world.WorldServer;
 import tools.MaplePacketCreator;
-import tools.Scripting;
+import tools.helper.Scripting;
 
 @Scripting
 public class NoticeCommand implements Command {

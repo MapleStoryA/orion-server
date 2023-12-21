@@ -2,7 +2,7 @@ package client.commands;
 
 import client.MapleClient;
 import client.skill.SkillFactory;
-import tools.Scripting;
+import tools.helper.Scripting;
 
 @Scripting
 class HideCommand implements Command {

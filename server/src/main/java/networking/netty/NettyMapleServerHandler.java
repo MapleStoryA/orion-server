@@ -12,7 +12,7 @@ import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.AttributeKey;
 import lombok.extern.slf4j.Slf4j;
 import networking.packet.PacketProcessor;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 import tools.packet.LoginPacket;
 
 @Slf4j

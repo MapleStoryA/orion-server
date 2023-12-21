@@ -7,8 +7,8 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
-import tools.BitTools;
-import tools.HexTool;
+import tools.helper.BitTools;
+import tools.helper.HexTool;
 
 /**
  * Provides a class for encrypting MapleStory packets with AES OFB encryption.

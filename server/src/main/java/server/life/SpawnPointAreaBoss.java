@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 
 @lombok.extern.slf4j.Slf4j
 public class SpawnPointAreaBoss extends Spawns {

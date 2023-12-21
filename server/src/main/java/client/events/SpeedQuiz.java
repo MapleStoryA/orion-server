@@ -25,7 +25,7 @@ import scripting.NPCScriptManager;
 import server.SpeedQuizFactory;
 import server.SpeedQuizFactory.QuizEntry;
 import tools.MaplePacketCreator;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 
 /** @author AuroX */
 @lombok.extern.slf4j.Slf4j

@@ -5,7 +5,7 @@ import java.awt.*;
 import java.util.Collection;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
-import tools.Scripting;
+import tools.helper.Scripting;
 
 @lombok.extern.slf4j.Slf4j
 public class FieldScripting {

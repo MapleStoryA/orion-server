@@ -1,4 +1,4 @@
-package tools;
+package tools.helper;
 
 /**
  * Provides static methods for working with raw byte sequences.

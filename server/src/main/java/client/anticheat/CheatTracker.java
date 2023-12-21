@@ -18,7 +18,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import server.AutobanManager;
 import server.Timer.CheatTimer;
 import tools.MaplePacketCreator;
-import tools.StringUtil;
+import tools.helper.StringUtil;
 
 @lombok.extern.slf4j.Slf4j
 public class CheatTracker {

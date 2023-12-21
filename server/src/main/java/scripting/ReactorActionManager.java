@@ -18,7 +18,7 @@ import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
 import server.maps.MapleReactor;
 import server.maps.ReactorDropEntry;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 
 @lombok.extern.slf4j.Slf4j
 public class ReactorActionManager extends AbstractPlayerInteraction {
