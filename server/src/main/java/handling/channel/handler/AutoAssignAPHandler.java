@@ -36,7 +36,7 @@ public class AutoAssignAPHandler extends AbstractMaplePacketHandler {
 
         final PlayerStats playerst = chr.getStat();
 
-        List<Pair<MapleStat, Integer>> statupdate = new ArrayList<Pair<MapleStat, Integer>>(2);
+        List<Pair<MapleStat, Integer>> statupdate = new ArrayList<>(2);
         c.getSession()
                 .write(MaplePacketCreator.updatePlayerStats(
                         statupdate, true, chr.getJob().getId()));
@@ -48,28 +48,28 @@ public class AutoAssignAPHandler extends AbstractMaplePacketHandler {
                         return;
                     }
                     playerst.setStr((short) (playerst.getStr() + amount));
-                    statupdate.add(new Pair<MapleStat, Integer>(MapleStat.STR, (int) playerst.getStr()));
+                    statupdate.add(new Pair<>(MapleStat.STR, (int) playerst.getStr()));
                     break;
                 case 128: // Dex
                     if (playerst.getDex() + amount > 999) {
                         return;
                     }
                     playerst.setDex((short) (playerst.getDex() + amount));
-                    statupdate.add(new Pair<MapleStat, Integer>(MapleStat.DEX, (int) playerst.getDex()));
+                    statupdate.add(new Pair<>(MapleStat.DEX, (int) playerst.getDex()));
                     break;
                 case 256: // Int
                     if (playerst.getInt() + amount > 999) {
                         return;
                     }
                     playerst.setInt((short) (playerst.getInt() + amount));
-                    statupdate.add(new Pair<MapleStat, Integer>(MapleStat.INT, (int) playerst.getInt()));
+                    statupdate.add(new Pair<>(MapleStat.INT, (int) playerst.getInt()));
                     break;
                 case 512: // Luk
                     if (playerst.getLuk() + amount > 999) {
                         return;
                     }
                     playerst.setLuk((short) (playerst.getLuk() + amount));
-                    statupdate.add(new Pair<MapleStat, Integer>(MapleStat.LUK, (int) playerst.getLuk()));
+                    statupdate.add(new Pair<>(MapleStat.LUK, (int) playerst.getLuk()));
                     break;
                 default:
                     c.getSession()
@@ -85,28 +85,28 @@ public class AutoAssignAPHandler extends AbstractMaplePacketHandler {
                         return;
                     }
                     playerst.setStr((short) (playerst.getStr() + amount2));
-                    statupdate.add(new Pair<MapleStat, Integer>(MapleStat.STR, (int) playerst.getStr()));
+                    statupdate.add(new Pair<>(MapleStat.STR, (int) playerst.getStr()));
                     break;
                 case 128: // Dex
                     if (playerst.getDex() + amount2 > 999) {
                         return;
                     }
                     playerst.setDex((short) (playerst.getDex() + amount2));
-                    statupdate.add(new Pair<MapleStat, Integer>(MapleStat.DEX, (int) playerst.getDex()));
+                    statupdate.add(new Pair<>(MapleStat.DEX, (int) playerst.getDex()));
                     break;
                 case 256: // Int
                     if (playerst.getInt() + amount2 > 999) {
                         return;
                     }
                     playerst.setInt((short) (playerst.getInt() + amount2));
-                    statupdate.add(new Pair<MapleStat, Integer>(MapleStat.INT, (int) playerst.getInt()));
+                    statupdate.add(new Pair<>(MapleStat.INT, (int) playerst.getInt()));
                     break;
                 case 512: // Luk
                     if (playerst.getLuk() + amount2 > 999) {
                         return;
                     }
                     playerst.setLuk((short) (playerst.getLuk() + amount2));
-                    statupdate.add(new Pair<MapleStat, Integer>(MapleStat.LUK, (int) playerst.getLuk()));
+                    statupdate.add(new Pair<>(MapleStat.LUK, (int) playerst.getLuk()));
                     break;
                 default:
                     c.getSession()
@@ -117,7 +117,7 @@ public class AutoAssignAPHandler extends AbstractMaplePacketHandler {
                     return;
             }
             chr.setRemainingAp((short) (chr.getRemainingAp() - (amount + amount2)));
-            statupdate.add(new Pair<MapleStat, Integer>(MapleStat.AVAILABLEAP, chr.getRemainingAp()));
+            statupdate.add(new Pair<>(MapleStat.AVAILABLEAP, chr.getRemainingAp()));
             c.getSession()
                     .write(MaplePacketCreator.updatePlayerStats(
                             statupdate, true, chr.getJob().getId()));

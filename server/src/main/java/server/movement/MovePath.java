@@ -10,7 +10,7 @@ import networking.data.output.LittleEndianWriter;
 @Slf4j
 public class MovePath {
 
-    public List<Elem> lElem = new LinkedList<Elem>();
+    public List<Elem> lElem = new LinkedList<>();
     public Point startPosition, velocity;
 
     public void decode(InPacket lea) {

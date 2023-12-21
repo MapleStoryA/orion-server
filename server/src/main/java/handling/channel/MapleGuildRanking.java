@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MapleGuildRanking {
 
     private static final MapleGuildRanking instance = new MapleGuildRanking();
-    private final List<GuildRankingInfo> ranks = new LinkedList<GuildRankingInfo>();
+    private final List<GuildRankingInfo> ranks = new LinkedList<>();
 
     public static MapleGuildRanking getInstance() {
         return instance;

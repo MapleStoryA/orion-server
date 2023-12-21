@@ -19,7 +19,7 @@ import tools.packet.PlayerShopPacket;
 @Slf4j
 public class MapleTrade {
 
-    private final List<IItem> items = new LinkedList<IItem>();
+    private final List<IItem> items = new LinkedList<>();
     private final WeakReference<MapleCharacter> chr;
     private final byte tradingslot;
     private MapleTrade partner = null;
@@ -29,7 +29,7 @@ public class MapleTrade {
 
     public MapleTrade(final byte tradingslot, final MapleCharacter chr) {
         this.tradingslot = tradingslot;
-        this.chr = new WeakReference<MapleCharacter>(chr);
+        this.chr = new WeakReference<>(chr);
     }
 
     public static final void completeTrade(final MapleCharacter c) {

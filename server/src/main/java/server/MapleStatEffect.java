@@ -107,7 +107,7 @@ public class MapleStatEffect implements Serializable {
     private static final void addBuffStatPairToListIfNotZero(
             final List<Pair<MapleBuffStat, Integer>> list, final MapleBuffStat buffstat, final Integer val) {
         if (val.intValue() != 0) {
-            list.add(new Pair<MapleBuffStat, Integer>(buffstat, val));
+            list.add(new Pair<>(buffstat, val));
         }
     }
 
@@ -174,7 +174,7 @@ public class MapleStatEffect implements Serializable {
             ret.overTime = overTime || ret.isMorph() || ret.isPirateMorph() || ret.isFinalAttack();
         }
 
-        final ArrayList<Pair<MapleBuffStat, Integer>> statups = new ArrayList<Pair<MapleBuffStat, Integer>>();
+        final ArrayList<Pair<MapleBuffStat, Integer>> statups = new ArrayList<>();
 
         ret.mastery = (byte) StringUtil.Solve(MapleDataTool.getString("mastery", source, "0"), level);
         ret.watk = (short) StringUtil.Solve(MapleDataTool.getString("pad", source, "0"), level);
@@ -199,7 +199,7 @@ public class MapleStatEffect implements Serializable {
         ret.booster = StringUtil.Solve(MapleDataTool.getString("booster", source, "0"), level);
         ret.illusion = StringUtil.Solve(MapleDataTool.getString("illusion", source, "0"), level);
 
-        List<MapleDisease> cure = new ArrayList<MapleDisease>(5);
+        List<MapleDisease> cure = new ArrayList<>(5);
         if (MapleDataTool.getInt("poison", source, 0) > 0) {
             cure.add(MapleDisease.POISON);
         }
@@ -235,7 +235,7 @@ public class MapleStatEffect implements Serializable {
         ret.itemConNo = StringUtil.Solve(MapleDataTool.getString("itemConNo", source, "0"), level);
         ret.moveTo = MapleDataTool.getInt("moveTo", source, -1);
 
-        Map<MonsterStatus, Integer> monsterStatus = new EnumMap<MonsterStatus, Integer>(MonsterStatus.class);
+        Map<MonsterStatus, Integer> monsterStatus = new EnumMap<>(MonsterStatus.class);
         if (ret.overTime && ret.getSummonMovementType() == null) {
             addBuffStatPairToListIfNotZero(statups, MapleBuffStat.WATK, Integer.valueOf(ret.watk));
             addBuffStatPairToListIfNotZero(statups, MapleBuffStat.WDEF, Integer.valueOf(ret.wdef));
@@ -269,10 +269,10 @@ public class MapleStatEffect implements Serializable {
                 case 2001002: // magic guard
                 case 12001001:
                 case 22111001:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.MAGIC_GUARD, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.MAGIC_GUARD, ret.x));
                     break;
                 case 2301003: // invincible
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.INVINCIBLE, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.INVINCIBLE, ret.x));
                     break;
                 case 35120000:
                 case 35001002: // TEMP. mech
@@ -280,7 +280,7 @@ public class MapleStatEffect implements Serializable {
                     break;
                 case 9101004: // hide
                     ret.duration = 60 * 120 * 1000;
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.DARKSIGHT, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.DARKSIGHT, ret.x));
                     break;
                 case 13101006: // Wind Walk
                     break;
@@ -288,24 +288,24 @@ public class MapleStatEffect implements Serializable {
                 case 14001003: // cygnus ds
                 case 4330001:
                 case 30001001: // resist beginner hide
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.DARKSIGHT, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.DARKSIGHT, ret.x));
                     break;
                 case 4211003: // pickpocket
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.PICKPOCKET, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.PICKPOCKET, ret.x));
                     break;
                 case 4211005: // mesoguard
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.MESOGUARD, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.MESOGUARD, ret.x));
                     break;
                 case 4111001: // mesoup
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.MESOUP, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.MESOUP, ret.x));
                     break;
                 case 4111002: // shadowpartner
                 case 14111000: // cygnus
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.SHADOWPARTNER, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.SHADOWPARTNER, ret.x));
                     break;
                 case 11101002: // All Final attack
                 case 13101002:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.FINALATTACK, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.FINALATTACK, ret.x));
                     break;
                 case 3101004: // soul arrow
                 case 3201004:
@@ -317,7 +317,7 @@ public class MapleStatEffect implements Serializable {
                 case 20008001:
                 case 20018001:
                 case 30008001:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.SOULARROW, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.SOULARROW, ret.x));
                     break;
                 case 1211006: // wk charges
                 case 1211003:
@@ -330,18 +330,18 @@ public class MapleStatEffect implements Serializable {
                 case 11111007:
                 case 21111005:
                 case 15101006:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.WK_CHARGE, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.WK_CHARGE, ret.x));
                     break;
                 case 12101005:
                 case 22121001: // Elemental Reset
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.ELEMENT_RESET, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.ELEMENT_RESET, ret.x));
                     break;
                 case 3121008:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.CONCENTRATE, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.CONCENTRATE, ret.x));
                     break;
                 case 5110001: // Energy Charge
                 case 15100004:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.ENERGY_CHARGE, 0));
+                    statups.add(new Pair<>(MapleBuffStat.ENERGY_CHARGE, 0));
                     break;
                 case 1101005: // booster
                 case 1101004:
@@ -369,29 +369,28 @@ public class MapleStatEffect implements Serializable {
                 case 33001003:
                 case 35101006:
                 case 35001003: // TEMP.BOOSTER
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.BOOSTER, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.BOOSTER, ret.x));
                     break;
                 case 5121009:
                 case 15111005:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.SPEED_INFUSION, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.SPEED_INFUSION, ret.x));
                     break;
                 case 4321000: // tornado spin uses same buffstats
                     ret.duration = 1000;
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.DASH_SPEED, 100 + ret.x));
-                    statups.add(
-                            new Pair<MapleBuffStat, Integer>(MapleBuffStat.DASH_JUMP, ret.y)); // always 0 but its there
+                    statups.add(new Pair<>(MapleBuffStat.DASH_SPEED, 100 + ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.DASH_JUMP, ret.y)); // always 0 but its there
                     break;
                 case 5001005: // Dash
                 case 15001003:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.DASH_SPEED, ret.x));
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.DASH_JUMP, ret.y));
+                    statups.add(new Pair<>(MapleBuffStat.DASH_SPEED, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.DASH_JUMP, ret.y));
                     break;
                 case 1101007: // pguard
                 case 1201007:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.POWERGUARD, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.POWERGUARD, ret.x));
                     break;
                 case 32111004: // conversion
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.CONVERSION, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.CONVERSION, ret.x));
                     break;
                 case 1301007: // hyper body
                 case 9101008:
@@ -400,43 +399,43 @@ public class MapleStatEffect implements Serializable {
                 case 20008003:
                 case 20018003:
                 case 30008003:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.MAXHP, ret.x));
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.MAXMP, ret.y));
+                    statups.add(new Pair<>(MapleBuffStat.MAXHP, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.MAXMP, ret.y));
                     break;
                 case Evan.RECOVERY:
                 case 1001: // recovery
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.RECOVERY, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.RECOVERY, ret.x));
                     break;
                 case 1111002: // combo
                 case 11111001: // combo
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.COMBO, 1));
+                    statups.add(new Pair<>(MapleBuffStat.COMBO, 1));
                     break;
                 case 5211006: // Homing Beacon
                 case 5220011: // Bullseye
                 case 22151002: // killer wings
                     ret.duration = 60 * 120000;
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.HOMING_BEACON, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.HOMING_BEACON, ret.x));
                     break;
                 case 1011: // Berserk fury
                 case 10001011:
                 case 20001011:
                 case 20011011:
                 case 30001011:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.BERSERK_FURY, 1));
+                    statups.add(new Pair<>(MapleBuffStat.BERSERK_FURY, 1));
                     break;
                 case 1010:
                 case 10001010: // Invincible Barrier
                 case 20001010:
                 case 20011010:
                 case 30001010:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.DIVINE_BODY, 1));
+                    statups.add(new Pair<>(MapleBuffStat.DIVINE_BODY, 1));
                     break;
                 case 1311006: // dragon roar
                     ret.hpR = -ret.x / 100.0;
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.DRAGON_ROAR, ret.y));
+                    statups.add(new Pair<>(MapleBuffStat.DRAGON_ROAR, ret.y));
                     break;
                 case 4341007:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.THORNS, ret.x << 8 | ret.y));
+                    statups.add(new Pair<>(MapleBuffStat.THORNS, ret.x << 8 | ret.y));
                     break;
                 case 4341002:
                     // ret.duration = 60 * 1000;
@@ -444,13 +443,13 @@ public class MapleStatEffect implements Serializable {
                     statups.add(new Pair<>(MapleBuffStat.FINAL_CUT, Integer.valueOf(ret.y)));
                     break;
                 case 4331002:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.MIRROR_IMAGE, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.MIRROR_IMAGE, ret.x));
                     break;
                 case 4331003:
                     statups.add(new Pair<>(MapleBuffStat.OWL_SPIRIT, Integer.valueOf(ret.y)));
                     break;
                 case 1311008: // dragon blood
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.DRAGONBLOOD, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.DRAGONBLOOD, ret.x));
                     break;
                 case 1121000: // maple warrior, all classes
                 case 1221000:
@@ -470,10 +469,10 @@ public class MapleStatEffect implements Serializable {
                 case 32121007:
                 case 33121007:
                 case 35121007:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.MAPLE_WARRIOR, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.MAPLE_WARRIOR, ret.x));
                     break;
                 case 15111006: // spark
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.SPARK, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.SPARK, ret.x));
                     break;
                 case 3121002: // sharp eyes bow master
                 case 3221002: // sharp eyes marksmen
@@ -483,29 +482,29 @@ public class MapleStatEffect implements Serializable {
                 case 20008002:
                 case 20018002:
                 case 30008002:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.SHARP_EYES, ret.x << 8 | ret.y));
+                    statups.add(new Pair<>(MapleBuffStat.SHARP_EYES, ret.x << 8 | ret.y));
                     break;
                 case 22151003: // magic resistance
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.MAGIC_RESISTANCE, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.MAGIC_RESISTANCE, ret.x));
                     break;
                 case 21101003: // Body Pressure
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.BODY_PRESSURE, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.BODY_PRESSURE, ret.x));
                     break;
                 case 21000000: // Aran Combo
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.ARAN_COMBO, 100));
+                    statups.add(new Pair<>(MapleBuffStat.ARAN_COMBO, 100));
                     break;
                 case 21100005: // Combo Drain
                 case 32101004:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.COMBO_DRAIN, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.COMBO_DRAIN, ret.x));
                     break;
                 case 21111001: // Smart Knockback
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.SMART_KNOCKBACK, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.SMART_KNOCKBACK, ret.x));
                     break;
                 case 22131001: // magic shield
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.MAGIC_SHIELD, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.MAGIC_SHIELD, ret.x));
                     break;
                 case 22181003: // soul stone
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.SOUL_STONE, 1));
+                    statups.add(new Pair<>(MapleBuffStat.SOUL_STONE, 1));
                     break;
                 case 4001002: // disorder
                 case 14001002: // cygnus disorder
@@ -595,7 +594,7 @@ public class MapleStatEffect implements Serializable {
                     monsterStatus.put(MonsterStatus.MONSTER_BOMB, Integer.valueOf(ret.damage));
                     break;
                 case 32111006:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.REAPER, 1));
+                    statups.add(new Pair<>(MapleBuffStat.REAPER, 1));
                     break;
                 case 4341006:
                 case 3111002: // puppet ranger
@@ -604,18 +603,18 @@ public class MapleStatEffect implements Serializable {
                 case 5211001: // Pirate octopus summon
                 case 5220002: // wrath of the octopi
                 case 33111003:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.PUPPET, 1));
+                    statups.add(new Pair<>(MapleBuffStat.PUPPET, 1));
                     break;
                 case 3211005: // golden eagle
                 case 3111005: // golden hawk
                 case 33111005:
                 case 35111002:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.SUMMON, 1));
+                    statups.add(new Pair<>(MapleBuffStat.SUMMON, 1));
                     monsterStatus.put(MonsterStatus.STUN, Integer.valueOf(1));
                     break;
                 case 3221005: // frostprey
                 case 2121005: // elquines
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.SUMMON, 1));
+                    statups.add(new Pair<>(MapleBuffStat.SUMMON, 1));
                     monsterStatus.put(MonsterStatus.FREEZE, Integer.valueOf(1));
                     break;
                 case 2311006: // summon dragon
@@ -639,11 +638,11 @@ public class MapleStatEffect implements Serializable {
                 case 35121009:
                     // case 35121010: //TEMP
                 case 35121011:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.SUMMON, 1));
+                    statups.add(new Pair<>(MapleBuffStat.SUMMON, 1));
                     break;
                 case 2311003: // hs
                 case 9101002: // GM hs
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.HOLY_SYMBOL, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.HOLY_SYMBOL, ret.x));
                     break;
                 case 2211004: // il seal
                 case 2111004: // fp seal
@@ -655,26 +654,26 @@ public class MapleStatEffect implements Serializable {
                     monsterStatus.put(MonsterStatus.SHADOW_WEB, 1);
                     break;
                 case 4121006: // spirit claw
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.SPIRIT_CLAW, 0));
+                    statups.add(new Pair<>(MapleBuffStat.SPIRIT_CLAW, 0));
                     break;
                 case 2121004:
                 case 2221004:
                 case 2321004: // Infinity
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.INFINITY, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.INFINITY, ret.x));
                     break;
                 case 1121002:
                 case 1221002:
                 case 1321002: // Stance
                 case 21121003: // Aran - Freezing Posture
                 case 32121005:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.STANCE, (int) ret.prop));
+                    statups.add(new Pair<>(MapleBuffStat.STANCE, (int) ret.prop));
                     break;
                 case 1005: // Echo of Hero
                 case 10001005: // Cygnus Echo
                 case 20001005: // Aran
                 case 20011005: // Evan
                 case 30001005:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.ECHO_OF_HERO, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.ECHO_OF_HERO, ret.x));
                     break;
                 case 1026: // Soaring
                 case 10001026: // Soaring
@@ -682,88 +681,88 @@ public class MapleStatEffect implements Serializable {
                 case 20011026: // Soaring
                 case 30001026:
                     ret.duration = 60 * 120 * 1000; // because it seems to dispel asap.
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.SOARING, 1));
+                    statups.add(new Pair<>(MapleBuffStat.SOARING, 1));
                     break;
                 case 2121002: // mana reflection
                 case 2221002:
                 case 2321002:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.MANA_REFLECTION, 1));
+                    statups.add(new Pair<>(MapleBuffStat.MANA_REFLECTION, 1));
                     break;
                 case 2321005: // holy shield
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.HOLY_SHIELD, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.HOLY_SHIELD, ret.x));
                     break;
                 case 3121007: // Hamstring
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.HAMSTRING, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.HAMSTRING, ret.x));
                     monsterStatus.put(MonsterStatus.SPEED, ret.x);
                     break;
                 case 3221006: // Blind
                 case 33111004:
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.BLIND, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.BLIND, ret.x));
                     monsterStatus.put(MonsterStatus.ACC, ret.x);
                     break;
                 case 33121006: // feline berserk
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.MAXHP, ret.x));
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.WATK, ret.y)); // temp
+                    statups.add(new Pair<>(MapleBuffStat.MAXHP, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.WATK, ret.y)); // temp
                     // statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.DASH_SPEED,
                     // ret.z));
                     break;
                 case 32001003: // dark aura
                 case 32120000:
                     ret.duration = 60 * 120 * 1000; // because it seems to dispel asap.
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.DARK_AURA, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.DARK_AURA, ret.x));
                     break;
                 case 32101002: // blue aura
                 case 32110000:
                     ret.duration = 60 * 120 * 1000; // because it seems to dispel asap.
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.BLUE_AURA, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.BLUE_AURA, ret.x));
                     break;
                 case 32101003: // yellow aura
                 case 32120001:
                     ret.duration = 60 * 120 * 1000; // because it seems to dispel asap.
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.YELLOW_AURA, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.YELLOW_AURA, ret.x));
                     break;
                 case 33101004: // it's raining mines
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.RAINING_MINES, ret.x)); // x?
+                    statups.add(new Pair<>(MapleBuffStat.RAINING_MINES, ret.x)); // x?
                     break;
                 case 35101007: // perfect armor
                     ret.duration = 60 * 120 * 1000;
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.PERFECT_ARMOR, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.PERFECT_ARMOR, ret.x));
                     break;
                 case 35121006: // satellite safety
                     ret.duration = 60 * 120 * 1000;
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.SATELLITE_SAFE_PROC, ret.x));
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.SATELLITE_SAFE_ABSORB, ret.y));
+                    statups.add(new Pair<>(MapleBuffStat.SATELLITE_SAFE_PROC, ret.x));
+                    statups.add(new Pair<>(MapleBuffStat.SATELLITE_SAFE_ABSORB, ret.y));
                     break;
                 case 35001001: // flame
                 case 35101009:
                 case 35111007: // TEMP
                     // pre-bb = 35111007,
                     ret.duration = 8000;
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.MECH_CHANGE, (int) level)); // ya wtf
+                    statups.add(new Pair<>(MapleBuffStat.MECH_CHANGE, (int) level)); // ya wtf
                     break;
                 case 35121013:
                     // case 35111004: //siege
                 case 35101002: // TEMP
                     ret.duration = 5000;
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.MECH_CHANGE, (int) level)); // ya wtf
+                    statups.add(new Pair<>(MapleBuffStat.MECH_CHANGE, (int) level)); // ya wtf
                     break;
                 case 35121005: // missile
                     ret.duration = 60 * 120 * 1000;
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.MECH_CHANGE, (int) level)); // ya wtf
+                    statups.add(new Pair<>(MapleBuffStat.MECH_CHANGE, (int) level)); // ya wtf
                     break;
                 default:
                     break;
             }
         }
         if (ret.isMonsterRiding()) {
-            statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.MONSTER_RIDING, 1));
+            statups.add(new Pair<>(MapleBuffStat.MONSTER_RIDING, 1));
         }
         if (ret.isMorph() || ret.isPirateMorph()) {
             if (ret.randomMorph == null) {
-                statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.MORPH, ret.getMorph()));
+                statups.add(new Pair<>(MapleBuffStat.MORPH, ret.getMorph()));
             } else {
                 for (Pair<Integer, Integer> rr : ret.randomMorph) {
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.MORPH, rr.getLeft()));
+                    statups.add(new Pair<>(MapleBuffStat.MORPH, rr.getLeft()));
                 }
             }
         }
@@ -914,7 +913,7 @@ public class MapleStatEffect implements Serializable {
             }
             mpchange += ((toDecreaseHP / 100) * getY());
         }
-        final List<Pair<MapleStat, Integer>> hpmpupdate = new ArrayList<Pair<MapleStat, Integer>>(2);
+        final List<Pair<MapleStat, Integer>> hpmpupdate = new ArrayList<>(2);
         if (hpchange != 0) {
             if (hpchange < 0 && (-hpchange) > stat.getHp() && !applyto.hasDisease(MapleDisease.ZOMBIFY)) {
                 return false;
@@ -928,9 +927,9 @@ public class MapleStatEffect implements Serializable {
             // short converting needs math.min cuz of overflow
             stat.setMp(stat.getMp() + mpchange);
 
-            hpmpupdate.add(new Pair<MapleStat, Integer>(MapleStat.MP, Integer.valueOf(stat.getMp())));
+            hpmpupdate.add(new Pair<>(MapleStat.MP, Integer.valueOf(stat.getMp())));
         }
-        hpmpupdate.add(new Pair<MapleStat, Integer>(MapleStat.HP, Integer.valueOf(stat.getHp())));
+        hpmpupdate.add(new Pair<>(MapleStat.HP, Integer.valueOf(stat.getHp())));
 
         applyto.getClient()
                 .getSession()
@@ -1106,7 +1105,7 @@ public class MapleStatEffect implements Serializable {
                         membrs++;
                     }
                 }
-                List<MapleCharacter> awarded = new ArrayList<MapleCharacter>();
+                List<MapleCharacter> awarded = new ArrayList<>();
                 while (awarded.size() < Math.min(membrs, y)) {
                     for (MapleCharacter chr : applyfrom.getMap().getCharactersThreadsafe()) {
                         if (chr.isAlive()
@@ -1159,7 +1158,7 @@ public class MapleStatEffect implements Serializable {
     }
 
     private final void removeMonsterBuff(final MapleCharacter applyfrom) {
-        List<MonsterStatus> cancel = new ArrayList<MonsterStatus>();
+        List<MonsterStatus> cancel = new ArrayList<>();
         switch (sourceid) {
             case 1111007:
                 cancel.add(MonsterStatus.WEAPON_DEFENSE);
@@ -1283,7 +1282,7 @@ public class MapleStatEffect implements Serializable {
 
     public final void applyComboBuff(final MapleCharacter applyto, short combo) {
         final List<Pair<MapleBuffStat, Integer>> stat =
-                Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.ARAN_COMBO, (int) combo));
+                Collections.singletonList(new Pair<>(MapleBuffStat.ARAN_COMBO, (int) combo));
         applyto.getClient()
                 .getSession()
                 .write(MaplePacketCreator.giveBuff(sourceid, 99999, stat, this)); // Hackish timing, todo find out
@@ -1312,8 +1311,7 @@ public class MapleStatEffect implements Serializable {
             final CancelEffectAction cancelAction = new CancelEffectAction(applyto, this, starttime);
             final ScheduledFuture<?> schedule = BuffTimer.getInstance()
                     .schedule(cancelAction, ((starttime + duration) - System.currentTimeMillis()));
-            this.statups =
-                    Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.ENERGY_CHARGE, 10000));
+            this.statups = Collections.singletonList(new Pair<>(MapleBuffStat.ENERGY_CHARGE, 10000));
             applyto.registerEffect(this, starttime, schedule);
             this.statups = stat;
         }
@@ -1369,7 +1367,7 @@ public class MapleStatEffect implements Serializable {
             case 4001003:
             case 14001003: { // Dark Sight
                 final List<Pair<MapleBuffStat, Integer>> stat =
-                        Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.DARKSIGHT, 0));
+                        Collections.singletonList(new Pair<>(MapleBuffStat.DARKSIGHT, 0));
                 applyto.getMap()
                         .broadcastMessage(
                                 applyto, MaplePacketCreator.giveForeignBuff(applyto.getId(), stat, this), false);
@@ -1385,7 +1383,7 @@ public class MapleStatEffect implements Serializable {
             case 32001003: // dark aura
             case 32120000: {
                 final List<Pair<MapleBuffStat, Integer>> stat =
-                        Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.DARK_AURA, 1));
+                        Collections.singletonList(new Pair<>(MapleBuffStat.DARK_AURA, 1));
                 applyto.getMap()
                         .broadcastMessage(
                                 applyto, MaplePacketCreator.giveForeignBuff(applyto.getId(), stat, this), false);
@@ -1396,7 +1394,7 @@ public class MapleStatEffect implements Serializable {
             case 32101002: // blue aura
             case 32110000: {
                 final List<Pair<MapleBuffStat, Integer>> stat =
-                        Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.BLUE_AURA, 1));
+                        Collections.singletonList(new Pair<>(MapleBuffStat.BLUE_AURA, 1));
                 applyto.getMap()
                         .broadcastMessage(
                                 applyto, MaplePacketCreator.giveForeignBuff(applyto.getId(), stat, this), false);
@@ -1407,7 +1405,7 @@ public class MapleStatEffect implements Serializable {
             case 32101003: // yellow aura
             case 32120001: {
                 final List<Pair<MapleBuffStat, Integer>> stat =
-                        Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.YELLOW_AURA, 1));
+                        Collections.singletonList(new Pair<>(MapleBuffStat.YELLOW_AURA, 1));
                 applyto.getMap()
                         .broadcastMessage(
                                 applyto, MaplePacketCreator.giveForeignBuff(applyto.getId(), stat, this), false);
@@ -1419,8 +1417,7 @@ public class MapleStatEffect implements Serializable {
             case 1211007: { // lightning
                 if (applyto.getBuffedValue(MapleBuffStat.WK_CHARGE) != null
                         && applyto.getBuffSource(MapleBuffStat.WK_CHARGE) != sourceid) {
-                    localstatups = Collections.singletonList(
-                            new Pair<MapleBuffStat, Integer>(MapleBuffStat.LIGHTNING_CHARGE, 1));
+                    localstatups = Collections.singletonList(new Pair<>(MapleBuffStat.LIGHTNING_CHARGE, 1));
                 }
                 applyto.getClient()
                         .getSession()
@@ -1437,7 +1434,7 @@ public class MapleStatEffect implements Serializable {
                 //  case 35111004: siege
             case 35121005: { // missile
                 final List<Pair<MapleBuffStat, Integer>> stat =
-                        Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.MECH_CHANGE, 1));
+                        Collections.singletonList(new Pair<>(MapleBuffStat.MECH_CHANGE, 1));
                 applyto.getMap()
                         .broadcastMessage(
                                 applyto, MaplePacketCreator.giveForeignBuff(applyto.getId(), stat, this), false);
@@ -1446,7 +1443,7 @@ public class MapleStatEffect implements Serializable {
             case 1111002:
             case 11111001: { // Combo
                 final List<Pair<MapleBuffStat, Integer>> stat =
-                        Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.COMBO, 1));
+                        Collections.singletonList(new Pair<>(MapleBuffStat.COMBO, 1));
                 applyto.getMap()
                         .broadcastMessage(
                                 applyto, MaplePacketCreator.giveForeignBuff(applyto.getId(), stat, this), false);
@@ -1456,7 +1453,7 @@ public class MapleStatEffect implements Serializable {
             case 3201004:
             case 13101003: { // Soul Arrow
                 final List<Pair<MapleBuffStat, Integer>> stat =
-                        Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.SOULARROW, 0));
+                        Collections.singletonList(new Pair<>(MapleBuffStat.SOULARROW, 0));
                 applyto.getMap()
                         .broadcastMessage(
                                 applyto, MaplePacketCreator.giveForeignBuff(applyto.getId(), stat, this), false);
@@ -1465,14 +1462,14 @@ public class MapleStatEffect implements Serializable {
             case 4111002:
             case 14111000: { // Shadow Partne
                 final List<Pair<MapleBuffStat, Integer>> stat =
-                        Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.SHADOWPARTNER, 0));
+                        Collections.singletonList(new Pair<>(MapleBuffStat.SHADOWPARTNER, 0));
                 applyto.getMap()
                         .broadcastMessage(
                                 applyto, MaplePacketCreator.giveForeignBuff(applyto.getId(), stat, this), false);
                 break;
             }
             case 15111006: { // Spark
-                localstatups = Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.SPARK, x));
+                localstatups = Collections.singletonList(new Pair<>(MapleBuffStat.SPARK, x));
                 applyto.getClient()
                         .getSession()
                         .write(MaplePacketCreator.giveBuff(sourceid, localDuration, localstatups, this));
@@ -1480,9 +1477,7 @@ public class MapleStatEffect implements Serializable {
                 break;
             }
             case 4341002: { // Final Cut
-                localstatups = Arrays.asList(
-                        new Pair<MapleBuffStat, Integer>(MapleBuffStat.WATK, y),
-                        new Pair<MapleBuffStat, Integer>(MapleBuffStat.FINAL_CUT, y));
+                localstatups = Arrays.asList(new Pair<>(MapleBuffStat.WATK, y), new Pair<>(MapleBuffStat.FINAL_CUT, y));
                 applyto.getClient()
                         .getSession()
                         .write(MaplePacketCreator.giveBuff(sourceid, localDuration, localstatups, this));
@@ -1490,7 +1485,7 @@ public class MapleStatEffect implements Serializable {
                 break;
             }
             case 4331003: { // Owl Spirit
-                localstatups = Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.OWL_SPIRIT, y));
+                localstatups = Collections.singletonList(new Pair<>(MapleBuffStat.OWL_SPIRIT, y));
                 applyto.getClient()
                         .getSession()
                         .write(MaplePacketCreator.giveBuff(sourceid, localDuration, localstatups, this));
@@ -1499,7 +1494,7 @@ public class MapleStatEffect implements Serializable {
             }
             case 4331002: { // Mirror Image
                 final List<Pair<MapleBuffStat, Integer>> stat =
-                        Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.MIRROR_IMAGE, 0));
+                        Collections.singletonList(new Pair<>(MapleBuffStat.MIRROR_IMAGE, 0));
                 applyto.getMap()
                         .broadcastMessage(
                                 applyto, MaplePacketCreator.giveForeignBuff(applyto.getId(), stat, this), false);
@@ -1511,8 +1506,8 @@ public class MapleStatEffect implements Serializable {
             default:
                 if (isRandomMorph()) {
                     final int random = getMorph();
-                    final List<Pair<MapleBuffStat, Integer>> stat = Collections.singletonList(
-                            new Pair<MapleBuffStat, Integer>(MapleBuffStat.MORPH, Integer.valueOf(random)));
+                    final List<Pair<MapleBuffStat, Integer>> stat =
+                            Collections.singletonList(new Pair<>(MapleBuffStat.MORPH, Integer.valueOf(random)));
                     applyto.setMorphId((byte) random);
                     applyto.getMap()
                             .broadcastMessage(
@@ -1523,15 +1518,15 @@ public class MapleStatEffect implements Serializable {
                     normal = false;
                 } else if (isMorph() || isPirateMorph()) {
                     final List<Pair<MapleBuffStat, Integer>> stat = Collections.singletonList(
-                            new Pair<MapleBuffStat, Integer>(MapleBuffStat.MORPH, Integer.valueOf(getMorph(applyto))));
+                            new Pair<>(MapleBuffStat.MORPH, Integer.valueOf(getMorph(applyto))));
                     applyto.getMap()
                             .broadcastMessage(
                                     applyto, MaplePacketCreator.giveForeignBuff(applyto.getId(), stat, this), false);
                 } else if (isMonsterRiding()) {
                     final int mountid = parseMountInfo(applyto, sourceid);
                     if (mountid != 0) {
-                        final List<Pair<MapleBuffStat, Integer>> stat = Collections.singletonList(
-                                new Pair<MapleBuffStat, Integer>(MapleBuffStat.MONSTER_RIDING, 0));
+                        final List<Pair<MapleBuffStat, Integer>> stat =
+                                Collections.singletonList(new Pair<>(MapleBuffStat.MONSTER_RIDING, 0));
                         applyto.getClient().getSession().write(MaplePacketCreator.cancelBuff(null));
                         applyto.getClient().getSession().write(MaplePacketCreator.giveMount(mountid, sourceid, stat));
                         applyto.getMap()
@@ -1544,8 +1539,7 @@ public class MapleStatEffect implements Serializable {
                     }
                     normal = false;
                 } else if (isSoaring()) {
-                    localstatups =
-                            Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.SOARING, 1));
+                    localstatups = Collections.singletonList(new Pair<>(MapleBuffStat.SOARING, 1));
                     applyto.getMap()
                             .broadcastMessage(
                                     applyto,
@@ -1563,13 +1557,13 @@ public class MapleStatEffect implements Serializable {
                     // MaplePacketCreator.giveForeignBuff(applyto.getId(), stat, this), false);
                 } else if (isBerserkFury() || berserk2 > 0) {
                     final List<Pair<MapleBuffStat, Integer>> stat =
-                            Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.BERSERK_FURY, 1));
+                            Collections.singletonList(new Pair<>(MapleBuffStat.BERSERK_FURY, 1));
                     applyto.getMap()
                             .broadcastMessage(
                                     applyto, MaplePacketCreator.giveForeignBuff(applyto.getId(), stat, this), false);
                 } else if (isDivineBody()) {
                     final List<Pair<MapleBuffStat, Integer>> stat =
-                            Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.DIVINE_BODY, 1));
+                            Collections.singletonList(new Pair<>(MapleBuffStat.DIVINE_BODY, 1));
                     applyto.getMap()
                             .broadcastMessage(
                                     applyto, MaplePacketCreator.giveForeignBuff(applyto.getId(), stat, this), false);
@@ -2247,7 +2241,7 @@ public class MapleStatEffect implements Serializable {
 
         public CancelEffectAction(final MapleCharacter target, final MapleStatEffect effect, final long startTime) {
             this.effect = effect;
-            this.target = new WeakReference<MapleCharacter>(target);
+            this.target = new WeakReference<>(target);
             this.startTime = startTime;
         }
 

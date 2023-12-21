@@ -22,7 +22,7 @@ import tools.collection.Pair;
 public class MapleQuest implements Serializable {
 
     private static final long serialVersionUID = 9179541993413738569L;
-    private static final Map<Integer, MapleQuest> quests = new LinkedHashMap<Integer, MapleQuest>();
+    private static final Map<Integer, MapleQuest> quests = new LinkedHashMap<>();
     private static MapleDataProvider questData;
     private static MapleData actions;
     private static MapleData requirements;
@@ -44,12 +44,12 @@ public class MapleQuest implements Serializable {
     private int viewMedalItem = 0, selectedSkillID = 0;
 
     protected MapleQuest(final int id) {
-        relevantMobs = new LinkedHashMap<Integer, Integer>();
-        startReqs = new LinkedList<MapleQuestRequirement>();
-        completeReqs = new LinkedList<MapleQuestRequirement>();
-        startActs = new LinkedList<MapleQuestAction>();
-        completeActs = new LinkedList<MapleQuestAction>();
-        partyQuestInfo = new LinkedHashMap<String, List<Pair<String, Pair<String, Integer>>>>();
+        relevantMobs = new LinkedHashMap<>();
+        startReqs = new LinkedList<>();
+        completeReqs = new LinkedList<>();
+        startActs = new LinkedList<>();
+        completeActs = new LinkedList<>();
+        partyQuestInfo = new LinkedHashMap<>();
         this.id = id;
     }
 
@@ -136,11 +136,10 @@ public class MapleQuest implements Serializable {
         final MapleData pquestInfo = pinfo.getChildByPath(String.valueOf(id));
         if (pquestInfo != null) {
             for (MapleData d : pquestInfo.getChildByPath("rank")) {
-                List<Pair<String, Pair<String, Integer>>> pInfo = new ArrayList<Pair<String, Pair<String, Integer>>>();
+                List<Pair<String, Pair<String, Integer>>> pInfo = new ArrayList<>();
                 for (MapleData c : d) {
                     for (MapleData b : c) {
-                        pInfo.add(new Pair<String, Pair<String, Integer>>(
-                                c.getName(), new Pair<String, Integer>(b.getName(), MapleDataTool.getInt(b, 0))));
+                        pInfo.add(new Pair<>(c.getName(), new Pair<>(b.getName(), MapleDataTool.getInt(b, 0))));
                     }
                 }
                 ret.partyQuestInfo.put(d.getName(), pInfo);

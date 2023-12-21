@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MapleFootholdTree {
 
     private static final byte maxDepth = 8;
-    private final List<MapleFoothold> footholds = new LinkedList<MapleFoothold>();
+    private final List<MapleFoothold> footholds = new LinkedList<>();
     private final Point p1;
     private final Point p2;
     private final Point center;
@@ -74,7 +74,7 @@ public class MapleFootholdTree {
     }
 
     private final List<MapleFoothold> getRelevants(final Point p) {
-        return getRelevants(p, new LinkedList<MapleFoothold>());
+        return getRelevants(p, new LinkedList<>());
     }
 
     private final List<MapleFoothold> getRelevants(final Point p, final List<MapleFoothold> list) {
@@ -170,7 +170,7 @@ public class MapleFootholdTree {
     public final MapleFoothold findBelow(final Point p) {
         final List<MapleFoothold> relevants = getRelevants(p);
         // find fhs with matching x coordinates
-        final List<MapleFoothold> xMatches = new LinkedList<MapleFoothold>();
+        final List<MapleFoothold> xMatches = new LinkedList<>();
         for (final MapleFoothold fh : relevants) {
             if (fh.getX1() <= p.x && fh.getX2() >= p.x) {
                 xMatches.add(fh);

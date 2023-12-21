@@ -32,7 +32,7 @@ import tools.MaplePacketCreator;
 @Slf4j
 public class MapleCoconut extends MapleEvent {
 
-    private final List<MapleCoconuts> coconuts = new LinkedList<MapleCoconuts>();
+    private final List<MapleCoconuts> coconuts = new LinkedList<>();
     private final int[] coconutscore = new int[2];
     private int countBombing = 0;
     private int countFalling = 0;

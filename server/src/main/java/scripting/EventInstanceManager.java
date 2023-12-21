@@ -37,15 +37,15 @@ public class EventInstanceManager {
     private final ReentrantReadWriteLock mutex = new ReentrantReadWriteLock();
     private final Lock readLock = mutex.readLock();
     private final Lock writeLock = mutex.writeLock();
-    private List<MapleCharacter> chars = new LinkedList<MapleCharacter>(); // this is messy
-    private List<Integer> dced = new LinkedList<Integer>();
-    private List<MapleMonster> mobs = new LinkedList<MapleMonster>();
-    private Map<Integer, Integer> killCount = new HashMap<Integer, Integer>();
+    private List<MapleCharacter> chars = new LinkedList<>(); // this is messy
+    private List<Integer> dced = new LinkedList<>();
+    private List<MapleMonster> mobs = new LinkedList<>();
+    private Map<Integer, Integer> killCount = new HashMap<>();
     private Properties props = new Properties();
     private long timeStarted = 0;
     private long eventTime = 0;
-    private List<Integer> mapIds = new LinkedList<Integer>();
-    private List<Boolean> isInstanced = new LinkedList<Boolean>();
+    private List<Integer> mapIds = new LinkedList<>();
+    private List<Boolean> isInstanced = new LinkedList<>();
     private ScheduledFuture<?> eventTimer;
     private boolean disposed = false;
 
@@ -230,7 +230,7 @@ public class EventInstanceManager {
         writeLock.lock();
         try {
             if (chars.size() <= size) {
-                final List<MapleCharacter> chrs = new LinkedList<MapleCharacter>(chars);
+                final List<MapleCharacter> chrs = new LinkedList<>(chars);
                 for (MapleCharacter chr : chrs) {
                     unregisterPlayer_NoLock(chr);
                     if (towarp > 0) {
@@ -270,7 +270,7 @@ public class EventInstanceManager {
         }
         readLock.lock();
         try {
-            return new LinkedList<MapleCharacter>(chars);
+            return new LinkedList<>(chars);
         } finally {
             readLock.unlock();
         }
@@ -381,7 +381,7 @@ public class EventInstanceManager {
                 }
             } else if ((ret > 0 && getPlayerCount() < ret)
                     || (ret < 0 && (isLeader(chr) || getPlayerCount() < (ret * -1)))) {
-                final List<MapleCharacter> chrs = new LinkedList<MapleCharacter>(chars);
+                final List<MapleCharacter> chrs = new LinkedList<>(chars);
                 for (MapleCharacter player : chrs) {
                     if (player.getId() != idz) {
                         removePlayer(player);
@@ -821,7 +821,7 @@ public class EventInstanceManager {
             return;
         }
         leader.clearCarnivalRequests();
-        List<MapleCharacter> characters = new LinkedList<MapleCharacter>();
+        List<MapleCharacter> characters = new LinkedList<>();
         final MapleParty party = leader.getParty();
 
         if (party == null) {

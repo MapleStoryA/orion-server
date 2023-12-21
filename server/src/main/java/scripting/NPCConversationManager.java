@@ -626,7 +626,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     public void unequipEverything() {
         MapleInventory equipped = getPlayer().getInventory(MapleInventoryType.EQUIPPED);
         MapleInventory equip = getPlayer().getInventory(MapleInventoryType.EQUIP);
-        List<Short> ids = new LinkedList<Short>();
+        List<Short> ids = new LinkedList<>();
         for (IItem item : equipped.list()) {
             ids.add(item.getPosition());
         }
@@ -690,7 +690,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         if (getPlayer().getParty() == null) {
             return null;
         }
-        List<MapleCharacter> chars = new LinkedList<MapleCharacter>(); // creates
+        List<MapleCharacter> chars = new LinkedList<>(); // creates
         // an
         // empty
         // array
@@ -1123,7 +1123,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public void maxStats() {
-        List<Pair<MapleStat, Integer>> statup = new ArrayList<Pair<MapleStat, Integer>>(2);
+        List<Pair<MapleStat, Integer>> statup = new ArrayList<>(2);
         c.getPlayer().getStat().setStr((short) 32767);
         c.getPlayer().getStat().setDex((short) 32767);
         c.getPlayer().getStat().setInt((short) 32767);
@@ -1134,14 +1134,14 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         c.getPlayer().getStat().setHp((short) 30000);
         c.getPlayer().getStat().setMp((short) 30000);
 
-        statup.add(new Pair<MapleStat, Integer>(MapleStat.STR, Integer.valueOf(32767)));
-        statup.add(new Pair<MapleStat, Integer>(MapleStat.DEX, Integer.valueOf(32767)));
-        statup.add(new Pair<MapleStat, Integer>(MapleStat.LUK, Integer.valueOf(32767)));
-        statup.add(new Pair<MapleStat, Integer>(MapleStat.INT, Integer.valueOf(32767)));
-        statup.add(new Pair<MapleStat, Integer>(MapleStat.HP, Integer.valueOf(30000)));
-        statup.add(new Pair<MapleStat, Integer>(MapleStat.MAXHP, Integer.valueOf(30000)));
-        statup.add(new Pair<MapleStat, Integer>(MapleStat.MP, Integer.valueOf(30000)));
-        statup.add(new Pair<MapleStat, Integer>(MapleStat.MAXMP, Integer.valueOf(30000)));
+        statup.add(new Pair<>(MapleStat.STR, Integer.valueOf(32767)));
+        statup.add(new Pair<>(MapleStat.DEX, Integer.valueOf(32767)));
+        statup.add(new Pair<>(MapleStat.LUK, Integer.valueOf(32767)));
+        statup.add(new Pair<>(MapleStat.INT, Integer.valueOf(32767)));
+        statup.add(new Pair<>(MapleStat.HP, Integer.valueOf(30000)));
+        statup.add(new Pair<>(MapleStat.MAXHP, Integer.valueOf(30000)));
+        statup.add(new Pair<>(MapleStat.MP, Integer.valueOf(30000)));
+        statup.add(new Pair<>(MapleStat.MAXMP, Integer.valueOf(30000)));
 
         c.getSession()
                 .write(MaplePacketCreator.updatePlayerStats(
@@ -1153,7 +1153,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         if (SpeedRunner.getInstance().getSpeedRunData(type) != null) {
             return SpeedRunner.getInstance().getSpeedRunData(type);
         }
-        return new Pair<String, Map<Integer, String>>("", new HashMap<Integer, String>());
+        return new Pair<>("", new HashMap<>());
     }
 
     public boolean getSR(Pair<String, Map<Integer, String>> ma, int sel) {
@@ -1394,7 +1394,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public final List<Integer> getAllPotentialInfo() {
-        return new ArrayList<Integer>(
+        return new ArrayList<>(
                 MapleItemInformationProvider.getInstance().getAllPotentialInfo().keySet());
     }
 
@@ -1610,7 +1610,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     public String EquipList(MapleClient c) {
         StringBuilder str = new StringBuilder();
         MapleInventory equip = c.getPlayer().getInventory(MapleInventoryType.EQUIP);
-        List<String> stra = new LinkedList<String>();
+        List<String> stra = new LinkedList<>();
         for (IItem item : equip.list()) {
             stra.add("#L" + item.getPosition() + "##v" + item.getItemId() + "##l");
         }

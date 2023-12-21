@@ -12,7 +12,7 @@ import server.life.Element;
 @Slf4j
 public class Skill implements ISkill {
 
-    private final List<MapleStatEffect> effects = new ArrayList<MapleStatEffect>();
+    private final List<MapleStatEffect> effects = new ArrayList<>();
     private final int id;
     // public static final int[] skills = new int[]{4311003, 4321000, 4331002, 4331005, 4341004,
     // 4341007};

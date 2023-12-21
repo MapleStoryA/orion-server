@@ -155,7 +155,7 @@ public class CharacterTransfer {
 
     private void addDojo(MapleCharacter chr) {
         this.setDojo(chr.getDojo());
-        this.setDojoRecord((byte) chr.getDojoRecord());
+        this.setDojoRecord(chr.getDojoRecord());
     }
 
     private void addMessenger(MapleCharacter chr) {

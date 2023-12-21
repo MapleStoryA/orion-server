@@ -19,9 +19,9 @@ public class CashItemFactory {
     private static final CashItemFactory instance = new CashItemFactory();
     private static final int[] bestItems = new int[] {10002819, 50100010, 50200001, 10002147, 60000073};
     private final Map<Integer, Integer> itemSn = new HashMap<>(); // itemid, sn
-    private final Map<Integer, CashItemInfo> itemStats = new HashMap<Integer, CashItemInfo>();
-    private final Map<Integer, List<CashItemInfo>> itemPackage = new HashMap<Integer, List<CashItemInfo>>();
-    private final Map<Integer, CashModInfo> itemMods = new HashMap<Integer, CashModInfo>();
+    private final Map<Integer, CashItemInfo> itemStats = new HashMap<>();
+    private final Map<Integer, List<CashItemInfo>> itemPackage = new HashMap<>();
+    private final Map<Integer, CashModInfo> itemMods = new HashMap<>();
     private boolean initialized = false;
 
     protected CashItemFactory() {}
@@ -33,7 +33,7 @@ public class CashItemFactory {
     private void initialize() {
         long start = System.currentTimeMillis();
         log.info("Loading CashItemFactory :::");
-        final List<Integer> itemids = new ArrayList<Integer>();
+        final List<Integer> itemids = new ArrayList<>();
         for (MapleData field : data.getData("Commodity.img").getChildren()) {
 
             final int itemId = MapleDataTool.getIntConvert("ItemId", field, 0);
@@ -101,7 +101,7 @@ public class CashItemFactory {
         if (itemPackage.get(itemId) != null) {
             return itemPackage.get(itemId);
         }
-        final List<CashItemInfo> packageItems = new ArrayList<CashItemInfo>();
+        final List<CashItemInfo> packageItems = new ArrayList<>();
 
         if (nodes == null) {
             return null;

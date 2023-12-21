@@ -49,7 +49,7 @@ public class PlayerNPC extends MapleNPC {
     private final int mapid;
     private final int charId;
     private final int[] pets = new int[3];
-    private Map<Byte, Integer> equips = new HashMap<Byte, Integer>();
+    private Map<Byte, Integer> equips = new HashMap<>();
     private int face;
     private int hair;
     private byte skin, gender;
@@ -100,7 +100,7 @@ public class PlayerNPC extends MapleNPC {
     }
 
     public static void loadAll() {
-        List<PlayerNPC> toAdd = new ArrayList<PlayerNPC>();
+        List<PlayerNPC> toAdd = new ArrayList<>();
         try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM playernpcs");
             ResultSet rs = ps.executeQuery();
@@ -159,7 +159,7 @@ public class PlayerNPC extends MapleNPC {
         setGender(chr.getGender());
         setPets(chr.getPets());
 
-        equips = new HashMap<Byte, Integer>();
+        equips = new HashMap<>();
         for (IItem item : chr.getInventory(MapleInventoryType.EQUIPPED).list()) {
             if (item.getPosition() < -128) {
                 continue;

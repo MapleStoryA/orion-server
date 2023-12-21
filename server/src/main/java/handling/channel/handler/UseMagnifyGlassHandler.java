@@ -42,8 +42,8 @@ public class UseMagnifyGlassHandler extends AbstractMaplePacketHandler {
                         || (magnify.getItemId() == 2460002 && reqLevel <= 12)
                         || (magnify.getItemId() == 2460001 && reqLevel <= 7)
                         || (magnify.getItemId() == 2460000 && reqLevel <= 3))) {
-            final List<List<StructPotentialItem>> pots = new LinkedList<List<StructPotentialItem>>(
-                    ii.getAllPotentialInfo().values());
+            final List<List<StructPotentialItem>> pots =
+                    new LinkedList<>(ii.getAllPotentialInfo().values());
             int new_state = Math.abs(eqq.getPotential1());
             if (new_state > 7 || new_state < 5) { // luls
                 new_state = 5;

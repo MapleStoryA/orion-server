@@ -24,8 +24,8 @@ public class PlayerStorage {
     private final Lock rL = mutex.readLock(), wL = mutex.writeLock();
     private final ReentrantReadWriteLock mutex2 = new ReentrantReadWriteLock();
     private final Lock rL2 = mutex2.readLock(), wL2 = mutex2.writeLock();
-    private final Map<String, MapleCharacter> nameToChar = new HashMap<String, MapleCharacter>();
-    private final Map<Integer, MapleCharacter> idToChar = new HashMap<Integer, MapleCharacter>();
+    private final Map<String, MapleCharacter> nameToChar = new HashMap<>();
+    private final Map<Integer, MapleCharacter> idToChar = new HashMap<>();
     private final Map<Integer, CharacterTransfer> pendingCharacter = new HashMap<>();
     private final int channel;
 
@@ -132,7 +132,7 @@ public class PlayerStorage {
     }
 
     public final List<CheaterData> getCheaters() {
-        final List<CheaterData> cheaters = new ArrayList<CheaterData>();
+        final List<CheaterData> cheaters = new ArrayList<>();
 
         rL.lock();
         try {
@@ -158,7 +158,7 @@ public class PlayerStorage {
     }
 
     public final List<CheaterData> getReports() {
-        final List<CheaterData> cheaters = new ArrayList<CheaterData>();
+        final List<CheaterData> cheaters = new ArrayList<>();
 
         rL.lock();
         try {

@@ -41,7 +41,7 @@ public class MapleOxQuizFactory {
     private boolean initialized = false;
 
     public MapleOxQuizFactory() {
-        questionCache = new HashMap<Pair<Integer, Integer>, MapleOxQuizEntry>();
+        questionCache = new HashMap<>();
     }
 
     public static MapleOxQuizFactory getInstance() {
@@ -49,7 +49,7 @@ public class MapleOxQuizFactory {
     }
 
     public static MapleOxQuizEntry getOxEntry(int questionSet, int questionId) {
-        return getInstance().getOxQuizEntry(new Pair<Integer, Integer>(questionSet, questionId));
+        return getInstance().getOxQuizEntry(new Pair<>(questionSet, questionId));
     }
 
     public static MapleOxQuizEntry getOxEntry(Pair<Integer, Integer> pair) {
@@ -79,8 +79,7 @@ public class MapleOxQuizFactory {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM wz_oxdata");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                questionCache.put(
-                        new Pair<Integer, Integer>(rs.getInt("questionset"), rs.getInt("questionid")), get(rs));
+                questionCache.put(new Pair<>(rs.getInt("questionset"), rs.getInt("questionid")), get(rs));
             }
             rs.close();
             ps.close();

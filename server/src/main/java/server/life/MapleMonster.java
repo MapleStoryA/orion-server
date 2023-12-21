@@ -47,9 +47,8 @@ import tools.packet.MobPacket;
 @Slf4j
 public class MapleMonster extends AbstractLoadedMapleLife {
 
-    private final Collection<AttackerEntry> attackers = new LinkedList<AttackerEntry>();
-    private final Map<MonsterStatus, MonsterStatusEffect> stati =
-            new ConcurrentEnumMap<MonsterStatus, MonsterStatusEffect>(MonsterStatus.class);
+    private final Collection<AttackerEntry> attackers = new LinkedList<>();
+    private final Map<MonsterStatus, MonsterStatusEffect> stati = new ConcurrentEnumMap<>(MonsterStatus.class);
     private MapleMonsterStats stats;
     private OverrideMonsterStats ostats = null;
     private long hp;
@@ -57,12 +56,12 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     private int mp;
     private byte venom_counter, carnivalTeam;
     private MapleMap map;
-    private WeakReference<MapleMonster> sponge = new WeakReference<MapleMonster>(null);
+    private WeakReference<MapleMonster> sponge = new WeakReference<>(null);
     private int linkoid = 0,
             lastNode = -1,
             lastNodeController = -1,
             highestDamageChar = 0; // Just a reference for monster EXP distribution after dead
-    private WeakReference<MapleCharacter> controller = new WeakReference<MapleCharacter>(null);
+    private WeakReference<MapleCharacter> controller = new WeakReference<>(null);
     private boolean fake, dropsDisabled, controllerHasAggro, controllerKnowsAboutAggro;
     private EventInstanceManager eventInstance;
     private MonsterListener listener = null;
@@ -95,7 +94,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         dropsDisabled = false;
 
         if (stats.getNoSkills() > 0) {
-            usedSkills = new HashMap<Integer, Long>();
+            usedSkills = new HashMap<>();
         }
     }
 
@@ -162,7 +161,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     }
 
     public final void setSponge(final MapleMonster mob) {
-        sponge = new WeakReference<MapleMonster>(mob);
+        sponge = new WeakReference<>(mob);
     }
 
     public final byte getVenomMulti() {
@@ -454,7 +453,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             killer.getPyramidSubway().onKill(killer);
         }
         MapleMonster oldSponge = getSponge();
-        sponge = new WeakReference<MapleMonster>(null);
+        sponge = new WeakReference<>(null);
         if (oldSponge != null && oldSponge.isAlive()) {
             boolean set = true;
             for (MapleMapObject mon : map.getAllMonstersThreadsafe()) {
@@ -541,7 +540,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             case 8820011:
             case 8820012:
             case 8820013: {
-                final List<MapleMonster> mobs = new ArrayList<MapleMonster>();
+                final List<MapleMonster> mobs = new ArrayList<>();
 
                 for (final int i : toSpawn) {
                     final MapleMonster mob = MapleLifeFactory.getMonster(i);
@@ -619,7 +618,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     }
 
     public final void setController(final MapleCharacter controller) {
-        this.controller = new WeakReference<MapleCharacter>(controller);
+        this.controller = new WeakReference<>(controller);
     }
 
     public final void switchController(final MapleCharacter newController, final boolean immediateAggro) {
@@ -958,7 +957,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     }
 
     public final void dispelSkill(final MobSkill skillId) {
-        List<MonsterStatus> toCancel = new ArrayList<MonsterStatus>();
+        List<MonsterStatus> toCancel = new ArrayList<>();
         for (Entry<MonsterStatus, MonsterStatusEffect> effects : stati.entrySet()) {
             if (effects.getValue().getMobSkill() != null
                     && effects.getValue().getMobSkill().getSkillId()
@@ -1131,7 +1130,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                 && stolen == -1
                 && steal.getEffect(level).makeChanceResult()) {
             final MapleMonsterInformationProvider mi = MapleMonsterInformationProvider.getInstance();
-            final List<MonsterDropEntry> dropEntry = new ArrayList<MonsterDropEntry>(mi.retrieveDrop(getId()));
+            final List<MonsterDropEntry> dropEntry = new ArrayList<>(mi.retrieveDrop(getId()));
             Collections.shuffle(dropEntry);
             IItem idrop;
             for (MonsterDropEntry d : dropEntry) {
@@ -1436,7 +1435,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
 
     private class PartyAttackerEntry implements AttackerEntry {
 
-        private final Map<Integer, OnePartyAttacker> attackers = new HashMap<Integer, OnePartyAttacker>(6);
+        private final Map<Integer, OnePartyAttacker> attackers = new HashMap<>(6);
         private final int partyid;
         private final int channel;
         private long totDamage;
@@ -1447,7 +1446,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
 
         public List<AttackingMapleCharacter> getAttackers() {
-            final List<AttackingMapleCharacter> ret = new ArrayList<AttackingMapleCharacter>(attackers.size());
+            final List<AttackingMapleCharacter> ret = new ArrayList<>(attackers.size());
             for (final Entry<Integer, OnePartyAttacker> entry : attackers.entrySet()) {
                 final MapleCharacter chr = map.getCharacterById(entry.getKey());
                 if (chr != null) {
@@ -1458,8 +1457,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
 
         private final Map<MapleCharacter, OnePartyAttacker> resolveAttackers() {
-            final Map<MapleCharacter, OnePartyAttacker> ret =
-                    new HashMap<MapleCharacter, OnePartyAttacker>(attackers.size());
+            final Map<MapleCharacter, OnePartyAttacker> ret = new HashMap<>(attackers.size());
             for (final Entry<Integer, OnePartyAttacker> aentry : attackers.entrySet()) {
                 final MapleCharacter chr = map.getCharacterById(aentry.getKey());
                 if (chr != null) {
@@ -1516,7 +1514,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             MapleParty party;
             double averagePartyLevel, expWeight, levelMod, innerBaseExp, expFraction;
             List<MapleCharacter> expApplicable;
-            final Map<MapleCharacter, ExpMap> expMap = new HashMap<MapleCharacter, ExpMap>(6);
+            final Map<MapleCharacter, ExpMap> expMap = new HashMap<>(6);
             byte Class_Bonus_EXP;
             byte Premium_Bonus_EXP;
             byte added_partyinc = 0;
@@ -1528,7 +1526,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
 
                 Class_Bonus_EXP = 0;
                 Premium_Bonus_EXP = 0;
-                expApplicable = new ArrayList<MapleCharacter>();
+                expApplicable = new ArrayList<>();
                 for (final MaplePartyCharacter partychar : party.getMembers()) {
                     if (attacker.getKey().getLevel() - partychar.getLevel() <= 5
                             || stats.getLevel() - partychar.getLevel() <= 5) {

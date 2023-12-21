@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -30,9 +29,9 @@ import tools.packet.UIPacket;
 public class MapleGuild implements java.io.Serializable {
 
     public static final long serialVersionUID = 6322150443228168192L;
-    private final List<MapleGuildCharacter> members = new CopyOnWriteArrayList<MapleGuildCharacter>();
+    private final List<MapleGuildCharacter> members = new CopyOnWriteArrayList<>();
     private final String[] rankTitles = new String[5]; // 1 = master, 2 = jr, 5 = lowest member
-    private final Map<Integer, MapleBBSThread> bbs = new HashMap<Integer, MapleBBSThread>();
+    private final Map<Integer, MapleBBSThread> bbs = new HashMap<>();
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     private final Lock rL = lock.readLock(), wL = lock.writeLock();
     private String name, notice;
@@ -475,7 +474,7 @@ public class MapleGuild implements java.io.Serializable {
         if (!bDirty) {
             return;
         }
-        final List<Integer> mem = new LinkedList<Integer>();
+        final List<Integer> mem = new LinkedList<>();
         final Iterator<MapleGuildCharacter> toRemove = members.iterator();
         while (toRemove.hasNext()) {
             MapleGuildCharacter mgc = toRemove.next();
@@ -841,8 +840,8 @@ public class MapleGuild implements java.io.Serializable {
     }
 
     public final List<MapleBBSThread> getBBS() {
-        final List<MapleBBSThread> ret = new ArrayList<MapleBBSThread>(bbs.values());
-        Collections.sort(ret, new MapleBBSThread.ThreadComparator());
+        final List<MapleBBSThread> ret = new ArrayList<>(bbs.values());
+        ret.sort(new MapleBBSThread.ThreadComparator());
         return ret;
     }
 

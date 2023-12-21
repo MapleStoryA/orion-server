@@ -91,7 +91,7 @@ public class XMLDomMapleData implements MapleData, Serializable {
 
     @Override
     public List<MapleData> getChildren() {
-        final List<MapleData> ret = new ArrayList<MapleData>();
+        final List<MapleData> ret = new ArrayList<>();
         final NodeList childNodes = node.getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++) {
             final Node childNode = childNodes.item(i);

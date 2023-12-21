@@ -333,7 +333,7 @@ public class ChannelServer extends GameServer {
     }
 
     public List<HiredMerchant> searchMerchant(final int itemSearch) {
-        final List<HiredMerchant> list = new LinkedList<HiredMerchant>();
+        final List<HiredMerchant> list = new LinkedList<>();
         merchLock.readLock().lock();
         try {
             final Iterator<HiredMerchant> itr = merchants.values().iterator();

@@ -14,8 +14,8 @@ import tools.collection.Pair;
 public class ItemMakerFactory {
 
     private static final ItemMakerFactory instance = new ItemMakerFactory();
-    protected Map<Integer, ItemMakerCreateEntry> createCache = new HashMap<Integer, ItemMakerCreateEntry>();
-    protected Map<Integer, GemCreateEntry> gemCache = new HashMap<Integer, GemCreateEntry>();
+    protected Map<Integer, ItemMakerCreateEntry> createCache = new HashMap<>();
+    protected Map<Integer, GemCreateEntry> gemCache = new HashMap<>();
 
     protected ItemMakerFactory() {
         // log.info("Loading ItemMakerFactory :::");
@@ -112,8 +112,8 @@ public class ItemMakerFactory {
         private final int reqMakerLevel;
         private final int cost;
         private final int quantity;
-        private final List<Pair<Integer, Integer>> randomReward = new ArrayList<Pair<Integer, Integer>>();
-        private final List<Pair<Integer, Integer>> reqRecipe = new ArrayList<Pair<Integer, Integer>>();
+        private final List<Pair<Integer, Integer>> randomReward = new ArrayList<>();
+        private final List<Pair<Integer, Integer>> reqRecipe = new ArrayList<>();
 
         public GemCreateEntry(int cost, int reqLevel, int reqMakerLevel, int quantity) {
             this.cost = cost;
@@ -147,11 +147,11 @@ public class ItemMakerFactory {
         }
 
         protected void addRandomReward(int itemId, int prob) {
-            randomReward.add(new Pair<Integer, Integer>(itemId, prob));
+            randomReward.add(new Pair<>(itemId, prob));
         }
 
         protected void addReqRecipe(int itemId, int count) {
-            reqRecipe.add(new Pair<Integer, Integer>(itemId, count));
+            reqRecipe.add(new Pair<>(itemId, count));
         }
     }
 
@@ -163,9 +163,8 @@ public class ItemMakerFactory {
         private final int stimulator;
         private final byte tuc;
         private final byte reqMakerLevel;
-        private final List<Pair<Integer, Integer>> reqItems =
-                new ArrayList<Pair<Integer, Integer>>(); // itemId / amount
-        private final List<Integer> reqEquips = new ArrayList<Integer>();
+        private final List<Pair<Integer, Integer>> reqItems = new ArrayList<>(); // itemId / amount
+        private final List<Integer> reqEquips = new ArrayList<>();
 
         public ItemMakerCreateEntry(
                 int cost, int reqLevel, byte reqMakerLevel, int quantity, byte tuc, int stimulator) {
@@ -210,7 +209,7 @@ public class ItemMakerFactory {
         }
 
         protected void addReqItem(int itemId, int amount) {
-            reqItems.add(new Pair<Integer, Integer>(itemId, amount));
+            reqItems.add(new Pair<>(itemId, amount));
         }
     }
 }

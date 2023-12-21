@@ -850,7 +850,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 ps.setInt(1, characterId);
                 rs = ps.executeQuery();
                 ret.lastFameTime = 0;
-                ret.lastMonthFameIds = new ArrayList<Integer>(31);
+                ret.lastMonthFameIds = new ArrayList<>(31);
                 while (rs.next()) {
                     ret.lastFameTime =
                             Math.max(ret.lastFameTime, rs.getTimestamp("when").getTime());
@@ -1058,10 +1058,10 @@ public class MapleCharacter extends BaseMapleCharacter {
             ps.execute();
             ps.close();
 
-            List<Pair<IItem, MapleInventoryType>> listing = new ArrayList<Pair<IItem, MapleInventoryType>>();
+            List<Pair<IItem, MapleInventoryType>> listing = new ArrayList<>();
             for (final MapleInventory iv : chr.inventory) {
                 for (final IItem item : iv.list()) {
-                    listing.add(new Pair<IItem, MapleInventoryType>(item, iv.getType()));
+                    listing.add(new Pair<>(item, iv.getType()));
                 }
             }
             ItemLoader.INVENTORY.saveItems(listing, con, chr.id);
@@ -1404,10 +1404,10 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public void saveInventory(final Connection con) throws SQLException {
-        List<Pair<IItem, MapleInventoryType>> listing = new ArrayList<Pair<IItem, MapleInventoryType>>();
+        List<Pair<IItem, MapleInventoryType>> listing = new ArrayList<>();
         for (final MapleInventory iv : inventory) {
             for (final IItem item : iv.list()) {
-                listing.add(new Pair<IItem, MapleInventoryType>(item, iv.getType()));
+                listing.add(new Pair<>(item, iv.getType()));
             }
         }
         if (con != null) {
@@ -1519,7 +1519,7 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public boolean isActiveBuffedValue(int skillid) {
         LinkedList<MapleBuffStatValueHolder> allBuffs =
-                new LinkedList<MapleBuffStatValueHolder>(getEffects().values());
+                new LinkedList<>(getEffects().values());
         for (MapleBuffStatValueHolder mbsvh : allBuffs) {
             if (mbsvh.getEffect().isSkill() && mbsvh.getEffect().getSourceId() == skillid) {
                 return true;
@@ -1695,9 +1695,8 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public List<MapleBuffStat> getBuffStats(final MapleStatEffect effect, final long startTime) {
-        final List<MapleBuffStat> bstats = new ArrayList<MapleBuffStat>();
-        final Map<MapleBuffStat, MapleBuffStatValueHolder> allBuffs =
-                new EnumMap<MapleBuffStat, MapleBuffStatValueHolder>(getEffects());
+        final List<MapleBuffStat> bstats = new ArrayList<>();
+        final Map<MapleBuffStat, MapleBuffStatValueHolder> allBuffs = new EnumMap<>(getEffects());
         for (Entry<MapleBuffStat, MapleBuffStatValueHolder> stateffect : allBuffs.entrySet()) {
             final MapleBuffStatValueHolder mbsvh = stateffect.getValue();
             if (mbsvh.getEffect().sameSource(effect) && (startTime == -1 || startTime == mbsvh.getStartTime())) {
@@ -1709,7 +1708,7 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     private boolean deregisterBuffStats(List<MapleBuffStat> stats) {
         boolean clonez = false;
-        List<MapleBuffStatValueHolder> effectsToCancel = new ArrayList<MapleBuffStatValueHolder>(stats.size());
+        List<MapleBuffStatValueHolder> effectsToCancel = new ArrayList<>(stats.size());
         for (MapleBuffStat stat : stats) {
             final MapleBuffStatValueHolder mbsvh = getEffects().remove(stat);
             if (mbsvh != null) {
@@ -1789,7 +1788,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         if (!overwrite) {
             buffstats = getBuffStats(effect, startTime);
         } else {
-            buffstats = new ArrayList<MapleBuffStat>(statups.size());
+            buffstats = new ArrayList<>(statups.size());
             for (Pair<MapleBuffStat, Integer> statup : statups) {
                 buffstats.add(statup.getLeft());
             }
@@ -1862,7 +1861,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     public void dispel() {
         if (!isHidden()) {
             final LinkedList<MapleBuffStatValueHolder> allBuffs =
-                    new LinkedList<MapleBuffStatValueHolder>(getEffects().values());
+                    new LinkedList<>(getEffects().values());
             for (MapleBuffStatValueHolder mbsvh : allBuffs) {
                 if (mbsvh.getEffect().isSkill()
                         && mbsvh.getSchedule() != null
@@ -1875,7 +1874,7 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public void dispelSkill(int skillid) {
         final LinkedList<MapleBuffStatValueHolder> allBuffs =
-                new LinkedList<MapleBuffStatValueHolder>(getEffects().values());
+                new LinkedList<>(getEffects().values());
 
         for (MapleBuffStatValueHolder mbsvh : allBuffs) {
             if (skillid == 0) {
@@ -1908,7 +1907,7 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public void dispelBuff(int skillid) {
         final LinkedList<MapleBuffStatValueHolder> allBuffs =
-                new LinkedList<MapleBuffStatValueHolder>(getEffects().values());
+                new LinkedList<>(getEffects().values());
 
         for (MapleBuffStatValueHolder mbsvh : allBuffs) {
             if (mbsvh.getEffect().getSourceId() == skillid) {
@@ -1924,7 +1923,7 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public void cancelAllBuffs() {
         final LinkedList<MapleBuffStatValueHolder> allBuffs =
-                new LinkedList<MapleBuffStatValueHolder>(getEffects().values());
+                new LinkedList<>(getEffects().values());
 
         for (MapleBuffStatValueHolder mbsvh : allBuffs) {
             cancelEffect(mbsvh.getEffect(), false, mbsvh.getStartTime());
@@ -1937,7 +1936,7 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public void cancelMorphs(boolean force) {
         final LinkedList<MapleBuffStatValueHolder> allBuffs =
-                new LinkedList<MapleBuffStatValueHolder>(getEffects().values());
+                new LinkedList<>(getEffects().values());
 
         boolean questBuff = false;
         for (MapleBuffStatValueHolder mbsvh : allBuffs) {
@@ -1974,7 +1973,7 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public int getMorphState() {
         LinkedList<MapleBuffStatValueHolder> allBuffs =
-                new LinkedList<MapleBuffStatValueHolder>(getEffects().values());
+                new LinkedList<>(getEffects().values());
         for (MapleBuffStatValueHolder mbsvh : allBuffs) {
             if (mbsvh.getEffect().isMorph()) {
                 return mbsvh.getEffect().getSourceId();
@@ -1993,9 +1992,9 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public List<PlayerBuffValueHolder> getAllBuffs() {
-        List<PlayerBuffValueHolder> ret = new ArrayList<PlayerBuffValueHolder>();
+        List<PlayerBuffValueHolder> ret = new ArrayList<>();
         LinkedList<MapleBuffStatValueHolder> allBuffs =
-                new LinkedList<MapleBuffStatValueHolder>(getEffects().values());
+                new LinkedList<>(getEffects().values());
         for (MapleBuffStatValueHolder mbsvh : allBuffs) {
             ret.add(new PlayerBuffValueHolder(mbsvh.getStartTime(), mbsvh.getEffect()));
         }
@@ -2088,7 +2087,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 }
             }
             List<Pair<MapleBuffStat, Integer>> stat =
-                    Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.COMBO, neworbcount));
+                    Collections.singletonList(new Pair<>(MapleBuffStat.COMBO, neworbcount));
             setBuffedValue(MapleBuffStat.COMBO, neworbcount);
             int duration = ceffect.getDuration();
             duration += (int) ((getBuffedStarttime(MapleBuffStat.COMBO) - System.currentTimeMillis()));
@@ -2117,8 +2116,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         if (ceffect == null) {
             return;
         }
-        List<Pair<MapleBuffStat, Integer>> stat =
-                Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.COMBO, 1));
+        List<Pair<MapleBuffStat, Integer>> stat = Collections.singletonList(new Pair<>(MapleBuffStat.COMBO, 1));
         setBuffedValue(MapleBuffStat.COMBO, 1);
         int duration = ceffect.getDuration();
         duration += (int) ((getBuffedStarttime(MapleBuffStat.COMBO) - System.currentTimeMillis()));
@@ -2133,7 +2131,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public void enforceMaxHpMp() {
-        List<Pair<MapleStat, Integer>> statups = new ArrayList<Pair<MapleStat, Integer>>(2);
+        List<Pair<MapleStat, Integer>> statups = new ArrayList<>(2);
         if (stats.getMp() > stats.getCurrentMaxMp()) {
             stats.setMp(stats.getMp());
             statups.add(new Pair<>(MapleStat.MP, Integer.valueOf(stats.getMp())));
@@ -2396,7 +2394,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             stats.setMaxMp((short) maxmp);
             stats.setHp((short) maxhp);
             stats.setMp((short) maxmp);
-            List<Pair<MapleStat, Integer>> statup = new ArrayList<Pair<MapleStat, Integer>>(4);
+            List<Pair<MapleStat, Integer>> statup = new ArrayList<>(4);
             statup.add(new Pair<>(MapleStat.MAXHP, Integer.valueOf(maxhp)));
             statup.add(new Pair<>(MapleStat.MAXMP, Integer.valueOf(maxmp)));
             statup.add(new Pair<>(MapleStat.HP, Integer.valueOf(maxhp)));
@@ -2647,7 +2645,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public void addMPHP(int hpDiff, int mpDiff) {
-        List<Pair<MapleStat, Integer>> statups = new ArrayList<Pair<MapleStat, Integer>>();
+        List<Pair<MapleStat, Integer>> statups = new ArrayList<>();
 
         if (stats.setHp(stats.getHp() + hpDiff)) {
             statups.add(new Pair<>(MapleStat.HP, Integer.valueOf(stats.getHp())));
@@ -2935,17 +2933,16 @@ public class MapleCharacter extends BaseMapleCharacter {
             return;
         }
 
-        final List<Integer> ret = new ArrayList<Integer>();
-        final List<Integer> retExpire = new ArrayList<Integer>();
+        final List<Integer> ret = new ArrayList<>();
+        final List<Integer> retExpire = new ArrayList<>();
         final long currenttime = System.currentTimeMillis();
-        final List<Pair<MapleInventoryType, IItem>> toberemove =
-                new ArrayList<Pair<MapleInventoryType, IItem>>(); // This
+        final List<Pair<MapleInventoryType, IItem>> toberemove = new ArrayList<>(); // This
         // is
         // here
         // to
         // prevent
         // deadlock.
-        final List<IItem> tobeunlock = new ArrayList<IItem>(); // This is here
+        final List<IItem> tobeunlock = new ArrayList<>(); // This is here
         // to prevent
         // deadlock.
 
@@ -2957,13 +2954,13 @@ public class MapleCharacter extends BaseMapleCharacter {
                     if (ItemFlag.LOCK.check(item.getFlag())) {
                         tobeunlock.add(item);
                     } else if (currenttime > expiration) {
-                        toberemove.add(new Pair<MapleInventoryType, IItem>(inv, item));
+                        toberemove.add(new Pair<>(inv, item));
                     }
                 } else if ((item.getItemId() == 5000054
                                 && item.getPet() != null
                                 && item.getPet().getSecondsLeft() <= 0)
                         || (firstLoad && ii.isLogoutExpire(item.getItemId()))) {
-                    toberemove.add(new Pair<MapleInventoryType, IItem>(inv, item));
+                    toberemove.add(new Pair<>(inv, item));
                 }
             }
         }
@@ -2998,8 +2995,8 @@ public class MapleCharacter extends BaseMapleCharacter {
         }
         this.setPendingUnlock(retExpire);
 
-        final List<Integer> skilz = new ArrayList<Integer>();
-        final List<ISkill> toberem = new ArrayList<ISkill>();
+        final List<Integer> skilz = new ArrayList<>();
+        final List<ISkill> toberem = new ArrayList<>();
         for (Entry<ISkill, SkillEntry> skil : skills.entrySet()) {
             if (skil.getValue().expiration != -1 && currenttime > skil.getValue().expiration) {
                 toberem.add(skil.getKey());
@@ -3091,7 +3088,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public final List<MapleQuestStatus> getStartedQuests() {
-        List<MapleQuestStatus> ret = new LinkedList<MapleQuestStatus>();
+        List<MapleQuestStatus> ret = new LinkedList<>();
         for (MapleQuestStatus q : quests.values()) {
             if (q.getStatus() == 1) {
                 ret.add(q);
@@ -3101,7 +3098,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public final List<MapleQuestStatus> getCompletedQuests() {
-        List<MapleQuestStatus> ret = new LinkedList<MapleQuestStatus>();
+        List<MapleQuestStatus> ret = new LinkedList<>();
         for (MapleQuestStatus q : quests.values()) {
             if (q.getStatus() == 2) {
                 ret.add(q);
@@ -3235,7 +3232,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         stats.setHp((short) maxhp);
         stats.setMp((short) maxmp);
 
-        final List<Pair<MapleStat, Integer>> statup = new ArrayList<Pair<MapleStat, Integer>>(7);
+        final List<Pair<MapleStat, Integer>> statup = new ArrayList<>(7);
         statup.add(new Pair<>(MapleStat.MAXHP, maxhp));
         statup.add(new Pair<>(MapleStat.MAXMP, maxmp));
         statup.add(new Pair<>(MapleStat.HP, maxhp));
@@ -3846,7 +3843,7 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public void giveDebuff(final MapleDisease disease, int x, long duration, int skillid, int level) {
         final List<Pair<MapleDisease, Integer>> debuff =
-                Collections.singletonList(new Pair<MapleDisease, Integer>(disease, Integer.valueOf(x)));
+                Collections.singletonList(new Pair<>(disease, Integer.valueOf(x)));
 
         if (!hasDisease(disease) && diseases.size() < 2) {
             if (!(disease == MapleDisease.SEDUCE || disease == MapleDisease.STUN)) {
@@ -4139,7 +4136,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public void clearCarnivalRequests() {
-        pendingCarnivalRequests = new LinkedList<MapleCarnivalChallenge>();
+        pendingCarnivalRequests = new LinkedList<>();
     }
 
     public void startMonsterCarnival(final int enemyavailable, final int enemytotal) {
@@ -4249,9 +4246,9 @@ public class MapleCharacter extends BaseMapleCharacter {
                 }
             }
         }
-        Collections.sort(frings, new MapleRing.RingComparator());
-        Collections.sort(crings, new MapleRing.RingComparator());
-        Collections.sort(mrings, new MapleRing.RingComparator());
+        frings.sort(new MapleRing.RingComparator());
+        crings.sort(new MapleRing.RingComparator());
+        mrings.sort(new MapleRing.RingComparator());
         return new Triple<>(crings, frings, mrings);
     }
 
@@ -4327,7 +4324,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                     addPet(pet);
                     if (broadcast) {
                         getMap().broadcastMessage(this, PetPacket.showPet(this, pet, false, false), true);
-                        final List<Pair<MapleStat, Integer>> stats = new ArrayList<Pair<MapleStat, Integer>>(1);
+                        final List<Pair<MapleStat, Integer>> stats = new ArrayList<>(1);
                         stats.add(new Pair<>(MapleStat.PET, Integer.valueOf(pet.getUniqueId())));
                         client.sendPacket(PetPacket.petStatUpdate(this));
                     }
@@ -4397,7 +4394,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public void resetStats(final int str, final int dex, final int int_, final int luk) {
-        List<Pair<MapleStat, Integer>> stat = new ArrayList<Pair<MapleStat, Integer>>(2);
+        List<Pair<MapleStat, Integer>> stat = new ArrayList<>(2);
         int total = stats.getStr() + stats.getDex() + stats.getLuk() + stats.getInt() + getRemainingAp();
 
         total -= str;
@@ -4953,7 +4950,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         for (Map.Entry<ReportType, Integer> entry : reports.entrySet()) {
             offenseList.add(new Pair<>(entry.getKey(), entry.getValue()));
         }
-        Collections.sort(offenseList, (o1, o2) -> {
+        offenseList.sort((o1, o2) -> {
             int thisVal = o1.getRight();
             int anotherVal = o2.getRight();
             return thisVal == anotherVal ? 0 : thisVal < anotherVal ? 1 : -1;

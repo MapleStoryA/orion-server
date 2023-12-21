@@ -13,7 +13,7 @@ import tools.packet.PlayerShopPacket;
 @Slf4j
 public class MaplePlayerShop extends AbstractPlayerStore {
 
-    private final List<String> bannedList = new ArrayList<String>();
+    private final List<String> bannedList = new ArrayList<>();
     private int bought_number = 0;
 
     public MaplePlayerShop(MapleCharacter owner, int itemId, String desc) {

@@ -925,7 +925,7 @@ public class DamageParse {
         if (player.getMapId() / 1000000 == 914) { // aran
             return 199999;
         }
-        List<Element> elements = new ArrayList<Element>();
+        List<Element> elements = new ArrayList<>();
         boolean defined = false;
         if (theSkill != null) {
             elements.add(theSkill.getElement());
@@ -1114,7 +1114,7 @@ public class DamageParse {
                 if (p.attack() != null) {
                     int hit = 0;
                     final int mid_att = p.attack().size() / 2;
-                    final List<Pair<Integer, Boolean>> eachd_copy = new ArrayList<Pair<Integer, Boolean>>(p.attack());
+                    final List<Pair<Integer, Boolean>> eachd_copy = new ArrayList<>(p.attack());
                     for (Pair<Integer, Boolean> eachd : p.attack()) {
                         hit++;
                         if (!eachd.right) {
@@ -1185,18 +1185,18 @@ public class DamageParse {
 
         int oid, damage;
         List<Pair<Integer, Boolean>> allDamageNumbers;
-        ret.allDamage = new ArrayList<AttackPair>();
+        ret.allDamage = new ArrayList<>();
 
         for (int i = 0; i < ret.targets; i++) {
             oid = lea.readInt();
             lea.skip(14); // [1] Always 6?, [3] unk, [4] Pos1, [4] Pos2, [2] seems to change randomly
             // for some attack
 
-            allDamageNumbers = new ArrayList<Pair<Integer, Boolean>>();
+            allDamageNumbers = new ArrayList<>();
 
             for (int j = 0; j < ret.hits; j++) {
                 damage = lea.readInt();
-                allDamageNumbers.add(new Pair<Integer, Boolean>(Integer.valueOf(damage), false));
+                allDamageNumbers.add(new Pair<>(Integer.valueOf(damage), false));
             }
             lea.skip(4); // CRC of monster [Wz Editing]
             ret.allDamage.add(new AttackPair(Integer.valueOf(oid), allDamageNumbers));
@@ -1242,7 +1242,7 @@ public class DamageParse {
         ret.lastAttackTickCount = lea.readInt(); // Ticks
         lea.skip(4); // 0
 
-        ret.allDamage = new ArrayList<AttackPair>();
+        ret.allDamage = new ArrayList<>();
 
         if (ret.skill == 4211006) { // Meso Explosion
             return parseMesoExplosion(lea, ret);
@@ -1260,13 +1260,13 @@ public class DamageParse {
             lea.skip(14); // [1] Always 6?, [3] unk, [4] Pos1, [4] Pos2, [2] seems to change randomly
             // for some attack
 
-            allDamageNumbers = new ArrayList<Pair<Integer, Boolean>>();
+            allDamageNumbers = new ArrayList<>();
 
             for (int j = 0; j < ret.hits; j++) {
 
                 damage = lea.readInt();
                 // log.info("Damage: " + damage);
-                allDamageNumbers.add(new Pair<Integer, Boolean>(Integer.valueOf(damage), false));
+                allDamageNumbers.add(new Pair<>(Integer.valueOf(damage), false));
                 if (ret.skill == 21101003) { // Only first damage is valid for body preasure
                     break;
                 }
@@ -1323,17 +1323,17 @@ public class DamageParse {
 
         int damage, oid;
         List<Pair<Integer, Boolean>> allDamageNumbers;
-        ret.allDamage = new ArrayList<AttackPair>();
+        ret.allDamage = new ArrayList<>();
 
         for (int i = 0; i < ret.targets; i++) {
             oid = lea.readInt();
             lea.skip(14); // [1] Always 6?, [3] unk, [4] Pos1, [4] Pos2, [2] seems to change randomly
             // for some attack
 
-            allDamageNumbers = new ArrayList<Pair<Integer, Boolean>>();
+            allDamageNumbers = new ArrayList<>();
             for (int j = 0; j < ret.hits; j++) {
                 damage = lea.readInt();
-                allDamageNumbers.add(new Pair<Integer, Boolean>(Integer.valueOf(damage), false));
+                allDamageNumbers.add(new Pair<>(Integer.valueOf(damage), false));
             }
             lea.skip(4); // CRC of monster [Wz Editing]
 
@@ -1366,10 +1366,9 @@ public class DamageParse {
             oid = lea.readInt();
             lea.skip(12);
             bullets = lea.readByte();
-            allDamageNumbers = new ArrayList<Pair<Integer, Boolean>>();
+            allDamageNumbers = new ArrayList<>();
             for (int j = 0; j < bullets; j++) {
-                allDamageNumbers.add(
-                        new Pair<Integer, Boolean>(Integer.valueOf(lea.readInt()), false)); // m.e. never crits
+                allDamageNumbers.add(new Pair<>(Integer.valueOf(lea.readInt()), false)); // m.e. never crits
             }
             ret.allDamage.add(new AttackPair(Integer.valueOf(oid), allDamageNumbers));
             lea.skip(4); // C3 8F 41 94, 51 04 5B 01

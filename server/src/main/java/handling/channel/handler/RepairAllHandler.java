@@ -25,7 +25,7 @@ public class RepairAllHandler extends AbstractMaplePacketHandler {
         int price = 0;
         Map<String, Integer> eqStats;
         final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-        final Map<Equip, Integer> eqs = new ArrayMap<Equip, Integer>();
+        final Map<Equip, Integer> eqs = new ArrayMap<>();
         final MapleInventoryType[] types = {MapleInventoryType.EQUIP, MapleInventoryType.EQUIPPED};
         for (MapleInventoryType type : types) {
             for (IItem item : c.getPlayer().getInventory(type)) {

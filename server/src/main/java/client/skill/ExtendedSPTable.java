@@ -28,7 +28,7 @@ public class ExtendedSPTable {
 
     public ExtendedSPTable(int jobID) // brand new one
             {
-        SPTable = new HashMap<Integer, Integer>();
+        SPTable = new HashMap<>();
         for (int i = 1; i < 11; i++) {
             SPTable.put(i, 0);
         }

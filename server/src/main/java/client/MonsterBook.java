@@ -40,7 +40,7 @@ public class MonsterBook implements Serializable {
             var ps = con.prepareStatement("SELECT * FROM monsterbook WHERE charid = ? ORDER BY cardid ASC");
             ps.setInt(1, charid);
             final ResultSet rs = ps.executeQuery();
-            Map<Integer, Integer> cards = new LinkedHashMap<Integer, Integer>();
+            Map<Integer, Integer> cards = new LinkedHashMap<>();
             while (rs.next()) {
                 cards.put(rs.getInt("cardid"), rs.getInt("level"));
             }

@@ -86,7 +86,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
             }
             if (mapitem.getMeso() > 0) {
                 if (chr.getParty() != null && mapitem.getOwner() != chr.getId()) {
-                    final List<MapleCharacter> toGive = new LinkedList<MapleCharacter>();
+                    final List<MapleCharacter> toGive = new LinkedList<>();
                     for (MaplePartyCharacter z : chr.getParty().getMembers()) {
                         MapleCharacter m = chr.getMap().getCharacterById(z.getId());
                         if (m != null) {
@@ -235,7 +235,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                 break;
             }
             case 5050000: { // AP Reset
-                List<Pair<MapleStat, Integer>> statupdate = new ArrayList<Pair<MapleStat, Integer>>(2);
+                List<Pair<MapleStat, Integer>> statupdate = new ArrayList<>(2);
                 final int apto = packet.readInt();
                 final int apfrom = packet.readInt();
 
@@ -330,25 +330,25 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                         case 64: { // str
                             final int toSet = playerst.getStr() + 1;
                             playerst.setStr((short) toSet);
-                            statupdate.add(new Pair<MapleStat, Integer>(MapleStat.STR, toSet));
+                            statupdate.add(new Pair<>(MapleStat.STR, toSet));
                             break;
                         }
                         case 128: { // dex
                             final int toSet = playerst.getDex() + 1;
                             playerst.setDex((short) toSet);
-                            statupdate.add(new Pair<MapleStat, Integer>(MapleStat.DEX, toSet));
+                            statupdate.add(new Pair<>(MapleStat.DEX, toSet));
                             break;
                         }
                         case 256: { // int
                             final int toSet = playerst.getInt() + 1;
                             playerst.setInt((short) toSet);
-                            statupdate.add(new Pair<MapleStat, Integer>(MapleStat.INT, toSet));
+                            statupdate.add(new Pair<>(MapleStat.INT, toSet));
                             break;
                         }
                         case 512: { // luk
                             final int toSet = playerst.getLuk() + 1;
                             playerst.setLuk((short) toSet);
-                            statupdate.add(new Pair<MapleStat, Integer>(MapleStat.LUK, toSet));
+                            statupdate.add(new Pair<>(MapleStat.LUK, toSet));
                             break;
                         }
                         case 2048: // hp
@@ -410,7 +410,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                             maxhp = (short) Math.min(30000, Math.abs(maxhp));
                             c.getPlayer().setHpApUsed((short) (c.getPlayer().getHpApUsed() + 1));
                             playerst.setMaxHp(maxhp);
-                            statupdate.add(new Pair<MapleStat, Integer>(MapleStat.MAXHP, maxhp));
+                            statupdate.add(new Pair<>(MapleStat.MAXHP, maxhp));
                             break;
 
                         case 8192: // mp
@@ -461,32 +461,32 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                             maxmp = (short) Math.min(30000, Math.abs(maxmp));
                             c.getPlayer().setHpApUsed((short) (c.getPlayer().getHpApUsed() + 1));
                             playerst.setMaxMp(maxmp);
-                            statupdate.add(new Pair<MapleStat, Integer>(MapleStat.MAXMP, maxmp));
+                            statupdate.add(new Pair<>(MapleStat.MAXMP, maxmp));
                             break;
                     }
                     switch (apfrom) { // AP from
                         case 64: { // str
                             final int toSet = playerst.getStr() - 1;
                             playerst.setStr((short) toSet);
-                            statupdate.add(new Pair<MapleStat, Integer>(MapleStat.STR, toSet));
+                            statupdate.add(new Pair<>(MapleStat.STR, toSet));
                             break;
                         }
                         case 128: { // dex
                             final int toSet = playerst.getDex() - 1;
                             playerst.setDex((short) toSet);
-                            statupdate.add(new Pair<MapleStat, Integer>(MapleStat.DEX, toSet));
+                            statupdate.add(new Pair<>(MapleStat.DEX, toSet));
                             break;
                         }
                         case 256: { // int
                             final int toSet = playerst.getInt() - 1;
                             playerst.setInt((short) toSet);
-                            statupdate.add(new Pair<MapleStat, Integer>(MapleStat.INT, toSet));
+                            statupdate.add(new Pair<>(MapleStat.INT, toSet));
                             break;
                         }
                         case 512: { // luk
                             final int toSet = playerst.getLuk() - 1;
                             playerst.setLuk((short) toSet);
-                            statupdate.add(new Pair<MapleStat, Integer>(MapleStat.LUK, toSet));
+                            statupdate.add(new Pair<>(MapleStat.LUK, toSet));
                             break;
                         }
                         case 2048: // HP
@@ -548,7 +548,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                             c.getPlayer().setHpApUsed((short) (c.getPlayer().getHpApUsed() - 1));
                             playerst.setHp(maxhp);
                             playerst.setMaxHp(maxhp);
-                            statupdate.add(new Pair<MapleStat, Integer>(MapleStat.MAXHP, maxhp));
+                            statupdate.add(new Pair<>(MapleStat.MAXHP, maxhp));
                             break;
                         case 8192: // MP
                             int maxmp = playerst.getMaxMp();
@@ -594,7 +594,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                             c.getPlayer().setHpApUsed((short) (c.getPlayer().getHpApUsed() - 1));
                             playerst.setMp(maxmp);
                             playerst.setMaxMp(maxmp);
-                            statupdate.add(new Pair<MapleStat, Integer>(MapleStat.MAXMP, maxmp));
+                            statupdate.add(new Pair<>(MapleStat.MAXMP, maxmp));
                             break;
                     }
                     c.getSession()
@@ -958,7 +958,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                     if (numLines > 3) {
                         return;
                     }
-                    final List<String> messages = new LinkedList<String>();
+                    final List<String> messages = new LinkedList<>();
                     String message;
                     for (int i = 0; i < numLines; i++) {
                         message = packet.readMapleAsciiString();
@@ -1289,7 +1289,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                     break;
                 }
                 if (!c.getChannelServer().getMegaphoneMuteState()) {
-                    final List<String> lines = new LinkedList<String>();
+                    final List<String> lines = new LinkedList<>();
                     for (int i = 0; i < 4; i++) {
                         lines.add(packet.readMapleAsciiString());
                     }

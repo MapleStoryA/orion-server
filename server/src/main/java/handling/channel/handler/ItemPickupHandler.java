@@ -83,7 +83,7 @@ public class ItemPickupHandler extends AbstractMaplePacketHandler {
                 }
                 if (mapitem.getMeso() > 0) {
                     if (chr.getParty() != null && mapitem.getOwner() != chr.getId()) {
-                        final List<MapleCharacter> toGive = new LinkedList<MapleCharacter>();
+                        final List<MapleCharacter> toGive = new LinkedList<>();
                         for (MaplePartyCharacter z : chr.getParty().getMembers()) {
                             MapleCharacter m = chr.getMap().getCharacterById(z.getId());
                             if (m != null) {

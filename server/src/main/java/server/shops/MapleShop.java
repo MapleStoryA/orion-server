@@ -27,7 +27,7 @@ import tools.helper.DateHelper;
 @Slf4j
 public class MapleShop {
 
-    private static final Set<Integer> rechargeableItems = new LinkedHashSet<Integer>();
+    private static final Set<Integer> rechargeableItems = new LinkedHashSet<>();
 
     static {
         for (int i = 2070000; i <= 2070018; i++) {
@@ -50,7 +50,7 @@ public class MapleShop {
     private MapleShop(int id, int npcId) {
         this.id = id;
         this.npcId = npcId;
-        items = new LinkedList<MapleShopItem>();
+        items = new LinkedList<>();
     }
 
     public static MapleShop createFromDB(int id, boolean isShopId) {
@@ -76,7 +76,7 @@ public class MapleShop {
             ps = con.prepareStatement("SELECT * FROM shopitems WHERE shopid = ? ORDER BY position ASC");
             ps.setInt(1, shopId);
             rs = ps.executeQuery();
-            List<Integer> recharges = new ArrayList<Integer>(rechargeableItems);
+            List<Integer> recharges = new ArrayList<>(rechargeableItems);
             while (rs.next()) {
                 int itemid = rs.getInt("itemid");
                 if (rechargeableItems.contains(itemid)) {

@@ -15,8 +15,8 @@ import server.life.MobSkillFactory;
 public class MapleCarnivalFactory {
 
     private static final MapleCarnivalFactory instance = new MapleCarnivalFactory();
-    private final Map<Integer, MCSkill> skills = new HashMap<Integer, MCSkill>();
-    private final Map<Integer, MCSkill> guardians = new HashMap<Integer, MCSkill>();
+    private final Map<Integer, MCSkill> skills = new HashMap<>();
+    private final Map<Integer, MCSkill> guardians = new HashMap<>();
     private final MapleDataProvider dataRoot = ServerConfig.serverConfig().getDataProvider("wz/Skill");
 
     public MapleCarnivalFactory() {

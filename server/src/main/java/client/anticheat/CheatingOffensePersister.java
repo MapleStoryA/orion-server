@@ -11,7 +11,7 @@ import server.base.timer.Timer.CheatTimer;
 public class CheatingOffensePersister {
 
     private static final CheatingOffensePersister instance = new CheatingOffensePersister();
-    private final Set<CheatingOffenseEntry> toPersist = new LinkedHashSet<CheatingOffenseEntry>();
+    private final Set<CheatingOffenseEntry> toPersist = new LinkedHashSet<>();
     private final Lock mutex = new ReentrantLock();
 
     private CheatingOffensePersister() {
