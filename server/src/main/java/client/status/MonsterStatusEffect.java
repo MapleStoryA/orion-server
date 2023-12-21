@@ -1,9 +1,10 @@
 package client.status;
 
 import java.util.concurrent.ScheduledFuture;
+import lombok.extern.slf4j.Slf4j;
 import server.life.MobSkill;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MonsterStatusEffect {
 
     private final int skill;

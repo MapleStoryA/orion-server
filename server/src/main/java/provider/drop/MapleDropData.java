@@ -1,8 +1,9 @@
-package client.drop;
+package provider.drop;
 
+import lombok.extern.slf4j.Slf4j;
 import server.life.MapleMonster;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleDropData {
 
     private final String item;

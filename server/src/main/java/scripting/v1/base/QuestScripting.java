@@ -5,7 +5,7 @@ import client.MapleQuestStatus;
 import lombok.extern.slf4j.Slf4j;
 import scripting.v1.api.QuestRecord;
 import server.quest.MapleQuest;
-import tools.Scripting;
+import tools.helper.Scripting;
 
 @Slf4j
 public class QuestScripting extends PlayerScripting implements QuestRecord {

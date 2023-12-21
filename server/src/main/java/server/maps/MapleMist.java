@@ -5,12 +5,13 @@ import client.MapleClient;
 import client.skill.ISkill;
 import client.skill.SkillFactory;
 import java.awt.*;
+import lombok.extern.slf4j.Slf4j;
 import server.MapleStatEffect;
 import server.life.MapleMonster;
 import server.life.MobSkill;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleMist extends AbstractMapleMapObject {
 
     private final Rectangle mistPosition;

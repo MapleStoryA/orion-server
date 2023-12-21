@@ -4,10 +4,6 @@ import java.io.IOException;
 
 /**
  * Provides an abstract interface to a stream of bytes. This stream can be seeked.
- *
- * @author Frz
- * @version 1.0
- * @since 299
  */
 public interface SeekableInputStreamBytestream extends ByteInputStream {
 

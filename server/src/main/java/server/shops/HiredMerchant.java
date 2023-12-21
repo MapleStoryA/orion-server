@@ -11,13 +11,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
+import lombok.extern.slf4j.Slf4j;
 import server.MapleInventoryManipulator;
 import server.Timer.EtcTimer;
 import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
 import tools.packet.PlayerShopPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class HiredMerchant extends AbstractPlayerStore {
 
     private final Set<String> blacklist;

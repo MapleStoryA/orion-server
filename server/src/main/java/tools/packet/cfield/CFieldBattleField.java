@@ -1,8 +1,9 @@
 package tools.packet.cfield;
 
+import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class CFieldBattleField {
 
     public byte[] OnScoreUpdate(int wolves, int sheeps) {

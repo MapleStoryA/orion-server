@@ -11,7 +11,7 @@ import networking.data.input.InPacket;
 import networking.packet.PacketProcessor;
 import networking.packet.RecvPacketOpcode;
 import server.config.ServerConfig;
-import tools.HexTool;
+import tools.helper.HexTool;
 
 @Slf4j
 public class DefaultPacketHandler {

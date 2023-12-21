@@ -8,11 +8,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import server.MaplePortal;
 import tools.MaplePacketCreator;
 import tools.packet.MapleUserPackets;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleDoor extends AbstractMapleMapObject {
 
     private final WeakReference<MapleCharacter> owner;

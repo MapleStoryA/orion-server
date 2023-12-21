@@ -20,7 +20,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package server.cashshop;
+package handling.cashshop;
 
 import client.MapleClient;
 import client.MapleJob;
@@ -40,13 +40,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import provider.MapleData;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import tools.collection.Pair;
 import tools.packet.MTSCSPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class CashShop implements Serializable {
 
     private static final long serialVersionUID = 231541893513373579L;

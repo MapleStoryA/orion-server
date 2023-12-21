@@ -8,6 +8,7 @@ import client.skill.ISkill;
 import client.skill.SkillFactory;
 import constants.MapConstants;
 import handling.AbstractMaplePacketHandler;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.AutobanManager;
 import server.MapleStatEffect;
@@ -17,10 +18,10 @@ import server.life.MobAttackInfoFactory;
 import server.life.MobSkill;
 import server.life.MobSkillFactory;
 import tools.MaplePacketCreator;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 import tools.packet.MobPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class TakeDamageHandler extends AbstractMaplePacketHandler {
 
     @Override

@@ -1,8 +1,9 @@
 package tools.packet.userpool;
 
+import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class UserPoolOnCommonPacket {
 
     public static byte[] onADBoard(int charId, String text) {

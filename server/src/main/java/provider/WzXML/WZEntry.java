@@ -1,9 +1,10 @@
 package provider.WzXML;
 
+import lombok.extern.slf4j.Slf4j;
 import provider.MapleDataEntity;
 import provider.MapleDataEntry;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class WZEntry implements MapleDataEntry {
 
     private final String name;

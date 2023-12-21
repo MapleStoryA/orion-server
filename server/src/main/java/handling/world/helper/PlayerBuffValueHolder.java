@@ -1,9 +1,10 @@
 package handling.world.helper;
 
 import java.io.Serializable;
+import lombok.extern.slf4j.Slf4j;
 import server.MapleStatEffect;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class PlayerBuffValueHolder implements Serializable {
 
     private static final long serialVersionUID = 9179541993413738569L;

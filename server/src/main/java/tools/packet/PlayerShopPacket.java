@@ -4,6 +4,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.inventory.IItem;
 import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 import networking.packet.SendPacketOpcode;
 import server.MerchItemPackage;
@@ -15,7 +16,7 @@ import server.shops.MaplePlayerShop;
 import server.shops.MaplePlayerShopItem;
 import tools.collection.Pair;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class PlayerShopPacket {
 
     private static final int BLACK_LIST_SHOP_WINDOW_MAGIC_INT = 47;

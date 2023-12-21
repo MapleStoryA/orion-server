@@ -1,4 +1,4 @@
-package client.drop;
+package provider.drop;
 
 import java.util.List;
 import server.life.MapleMonster;

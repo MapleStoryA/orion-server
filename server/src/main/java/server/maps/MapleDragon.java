@@ -30,9 +30,10 @@ package server.maps;
 import client.MapleCharacter;
 import client.MapleClient;
 import java.awt.*;
+import lombok.extern.slf4j.Slf4j;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleDragon extends AbstractAnimatedMapleMapObject {
 
     private final Point position = new Point();

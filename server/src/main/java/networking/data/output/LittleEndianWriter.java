@@ -5,9 +5,6 @@ import java.awt.*;
 /**
  * Provides an interface to a writer class that writes a little-endian sequence of bytes.
  *
- * @author Frz
- * @version 1.0
- * @since Revision 323
  */
 public interface LittleEndianWriter {
 

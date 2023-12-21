@@ -7,17 +7,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- * Provides a strongly-typed map of keys to values.
- *
- * @param <K> The type of the keys.
- * @param <V> The type of the values.
- * @author Frz
- * @version 1.0
- * @since Revision 589
- */
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class ArrayMap<K, V> extends AbstractMap<K, V> implements Serializable {
 
     public static final long serialVersionUID = 9179541993413738569L;
@@ -120,9 +112,6 @@ public class ArrayMap<K, V> extends AbstractMap<K, V> implements Serializable {
      *
      * @param <K> The type of the key.
      * @param <V> The type of the value.
-     * @author Frz
-     * @version 1.0
-     * @since Revision 589
      */
     public static class Entry<K, V> implements Map.Entry<K, V>, Serializable {
 

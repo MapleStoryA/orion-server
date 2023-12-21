@@ -6,10 +6,10 @@
 package client.skill;
 
 import java.util.HashMap;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 
-/** @author Simon */
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class ExtendedSPTable {
 
     private final ExtendedSPType SPType; // since resistance etc use this too, future compat

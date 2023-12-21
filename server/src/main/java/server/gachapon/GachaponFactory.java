@@ -1,9 +1,10 @@
 package server.gachapon;
 
+import lombok.extern.slf4j.Slf4j;
 import server.gachapon.providers.CustomRewardsProvider;
 import server.gachapon.providers.custom.GenericGachapon;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class GachaponFactory {
     private static SimpleGachaponMachine instance;
 

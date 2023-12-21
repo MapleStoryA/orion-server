@@ -6,13 +6,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 import networking.packet.SendPacketOpcode;
 import server.life.MapleMonster;
 import server.life.MobSkill;
 import server.movement.MovePath;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MobPacket {
 
     public static byte[] damageMonster(final int oid, final long damage) {

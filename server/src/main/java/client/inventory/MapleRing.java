@@ -8,9 +8,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Comparator;
+import lombok.extern.slf4j.Slf4j;
 import server.MapleInventoryManipulator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleRing implements Serializable {
 
     private static final long serialVersionUID = 9179541993413738579L;

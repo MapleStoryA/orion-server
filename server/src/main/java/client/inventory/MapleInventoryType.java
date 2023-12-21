@@ -1,6 +1,5 @@
 package client.inventory;
 
-/** @author Matze */
 public enum MapleInventoryType {
     UNDEFINED(0),
     EQUIP(1),

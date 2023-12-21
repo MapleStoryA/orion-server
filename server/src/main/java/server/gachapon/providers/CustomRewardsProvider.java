@@ -3,11 +3,12 @@ package server.gachapon.providers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import server.gachapon.AbstractRandomEntity;
 import server.gachapon.GachaponLocation;
 import server.gachapon.GachaponReward;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class CustomRewardsProvider {
 
     private static final HashMap<Integer, List<GachaponReward>> cache = new HashMap<>();

@@ -5,6 +5,7 @@ import database.DatabaseConnection;
 import database.LoginResult;
 import database.LoginService;
 import database.LoginState;
+import handling.BaseMapleClient;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;

@@ -1,7 +1,7 @@
 package client.commands;
 
 import client.MapleClient;
-import tools.Scripting;
+import tools.helper.Scripting;
 
 @Scripting
 class ChangeJobCommand implements Command {

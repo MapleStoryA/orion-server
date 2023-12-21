@@ -5,12 +5,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import provider.MapleDataDirectoryEntry;
 import provider.MapleDataEntity;
 import provider.MapleDataEntry;
 import provider.MapleDataFileEntry;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class WZDirectoryEntry extends WZEntry implements MapleDataDirectoryEntry {
 
     private final List<MapleDataDirectoryEntry> subdirs = new ArrayList<MapleDataDirectoryEntry>();

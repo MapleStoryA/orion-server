@@ -28,12 +28,13 @@ import handling.world.party.MaplePartyCharacter;
 import handling.world.party.PartyManager;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
 import tools.packet.MapleUserPackets;
 import tools.packet.ReportPackets;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class InterServerHandler {
 
     public static final void onLoggedIn(final int characterId, final MapleClient c) {

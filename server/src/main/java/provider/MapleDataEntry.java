@@ -1,6 +1,5 @@
 package provider;
 
-/** @author Matze */
 public interface MapleDataEntry extends MapleDataEntity {
 
     String getName();

@@ -1,17 +1,11 @@
-package tools;
+package tools.helper;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- * Provides a suite of utilities for manipulating strings.
- *
- * @author Frz
- * @version 1.0
- * @since Revision 336
- */
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class StringUtil {
 
     /**

@@ -1,7 +1,7 @@
 package client;
 
 import java.io.Serializable;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 
 public enum MapleDisease implements Serializable {
     POTION(0x80000000000L, true),

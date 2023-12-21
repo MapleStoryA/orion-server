@@ -1,12 +1,13 @@
 package server;
 
 import java.awt.*;
+import lombok.extern.slf4j.Slf4j;
 import provider.MapleData;
 import provider.MapleDataTool;
 import server.maps.MapleGenericPortal;
 import server.maps.MapleMapPortal;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class PortalFactory {
 
     private int nextDoorPortal = 0x80;

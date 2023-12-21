@@ -4,11 +4,12 @@ import client.MapleCharacter;
 import client.MapleClient;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.MapleItemInformationProvider;
 import server.MapleShop;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class NpcShopHandler extends AbstractMaplePacketHandler {
 
     @Override

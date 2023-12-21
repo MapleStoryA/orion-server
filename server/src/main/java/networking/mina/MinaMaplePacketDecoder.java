@@ -22,6 +22,7 @@
 package networking.mina;
 
 import client.MapleClient;
+import lombok.extern.slf4j.Slf4j;
 import networking.encryption.MapleAESOFB;
 import networking.encryption.MapleCustomEncryption;
 import org.apache.mina.common.ByteBuffer;
@@ -29,7 +30,7 @@ import org.apache.mina.common.IoSession;
 import org.apache.mina.filter.codec.CumulativeProtocolDecoder;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MinaMaplePacketDecoder extends CumulativeProtocolDecoder {
 
     public static final String DECODER_STATE_KEY = MinaMaplePacketDecoder.class.getName() + ".STATE";

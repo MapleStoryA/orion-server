@@ -2,11 +2,11 @@ package handling.channel.handler.admin;
 
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import tools.MaplePacketCreator;
 
-/** @author kevintjuh93 */
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class AdminChatHandler extends AbstractMaplePacketHandler {
 
     @Override

@@ -7,7 +7,7 @@ import handling.world.WorldServer;
 import java.util.LinkedList;
 import java.util.List;
 import server.maps.MapleMap;
-import tools.Scripting;
+import tools.helper.Scripting;
 
 @Scripting
 class WarpCommand implements Command {

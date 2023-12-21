@@ -1,17 +1,9 @@
 package tools.collection;
 
 import java.io.Serializable;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- * Represents a pair of values.
- *
- * @param <E> The type of the left value.
- * @param <F> The type of the right value.
- * @author Frz
- * @version 1.0
- * @since Revision 333
- */
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class Pair<E, F> implements Serializable {
 
     private static final long serialVersionUID = 9179541993413738569L;

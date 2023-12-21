@@ -1,13 +1,14 @@
 package server.maps.event;
 
 import client.MapleCharacter;
+import lombok.extern.slf4j.Slf4j;
 import server.Timer.MapTimer;
 import server.Timer.MobTimer;
 import server.life.MapleMonster;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class KentaMapUserEnterEvent implements MapEvent {
 
     public static final int HOG_ID = 9300101;

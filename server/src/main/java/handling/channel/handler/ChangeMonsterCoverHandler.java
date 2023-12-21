@@ -4,9 +4,10 @@ import client.MapleCharacter;
 import client.MapleClient;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class ChangeMonsterCoverHandler extends AbstractMaplePacketHandler {
 
     @Override

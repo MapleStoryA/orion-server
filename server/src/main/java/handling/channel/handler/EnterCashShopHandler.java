@@ -11,10 +11,11 @@ import handling.world.WorldServer;
 import handling.world.helper.CharacterTransfer;
 import handling.world.helper.MapleMessengerCharacter;
 import handling.world.messenger.MessengerManager;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class EnterCashShopHandler extends AbstractMaplePacketHandler {
 
     @Override

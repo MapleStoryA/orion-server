@@ -3,11 +3,12 @@ package scripting.v1.base;
 import client.MapleCharacter;
 import java.awt.*;
 import java.util.Collection;
+import lombok.extern.slf4j.Slf4j;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
-import tools.Scripting;
+import tools.helper.Scripting;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class FieldScripting {
 
     private final MapleMap map;

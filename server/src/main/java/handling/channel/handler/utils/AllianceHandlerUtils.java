@@ -27,10 +27,11 @@ import client.MapleClient;
 import handling.world.alliance.AllianceManager;
 import handling.world.guild.GuildManager;
 import handling.world.guild.MapleGuild;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class AllianceHandlerUtils {
 
     public static final void HandleAlliance(final InPacket slea, final MapleClient c, boolean denied) {

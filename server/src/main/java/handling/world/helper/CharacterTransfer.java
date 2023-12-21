@@ -10,11 +10,12 @@ import client.anticheat.ReportType;
 import client.inventory.MapleInventory;
 import client.inventory.MapleMount;
 import client.inventory.MaplePet;
-import client.layout.MapleKeyLayout;
+import client.keymap.MapleKeyLayout;
 import client.skill.EvanSkillPoints;
 import client.skill.ISkill;
 import client.skill.SkillEntry;
 import database.AccountData;
+import handling.cashshop.CashShop;
 import handling.world.buddy.BuddyListEntry;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -24,7 +25,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import server.MapleStorage;
-import server.cashshop.CashShop;
 import server.quest.MapleQuest;
 
 @Slf4j

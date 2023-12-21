@@ -3,6 +3,7 @@ package server;
 import client.MapleDisease;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
@@ -10,7 +11,7 @@ import server.config.ServerConfig;
 import server.life.MobSkill;
 import server.life.MobSkillFactory;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleCarnivalFactory {
 
     private static final MapleCarnivalFactory instance = new MapleCarnivalFactory();

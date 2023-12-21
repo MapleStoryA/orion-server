@@ -7,10 +7,11 @@ import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import lombok.extern.slf4j.Slf4j;
 import tools.MaplePacketCreator;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleMount implements Serializable {
 
     private static final long serialVersionUID = 9179541993413738569L;

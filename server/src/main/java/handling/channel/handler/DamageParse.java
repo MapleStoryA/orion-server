@@ -18,6 +18,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.LittleEndianAccessor;
 import server.MapleStatEffect;
 import server.Timer.MapTimer;
@@ -29,10 +30,10 @@ import server.maps.MapleMapItem;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
-import tools.Randomizer;
 import tools.collection.Pair;
+import tools.helper.Randomizer;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class DamageParse {
 
     private static final int[] charges = {1211005, 1211006};

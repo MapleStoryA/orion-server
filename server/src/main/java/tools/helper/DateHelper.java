@@ -1,18 +1,12 @@
-package tools;
+package tools.helper;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.SimpleTimeZone;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- * Provides a suite of tools for manipulating Korean Timestamps.
- *
- * @author Frz
- * @version 1.0
- * @since Revision 746
- */
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class DateHelper {
 
     private static final int ITEM_YEAR2000 = -1085019342;

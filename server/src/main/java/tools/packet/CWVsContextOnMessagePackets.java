@@ -2,10 +2,11 @@ package tools.packet;
 
 import client.MapleJob;
 import client.MapleQuestStatus;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 import networking.packet.SendPacketOpcode;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class CWVsContextOnMessagePackets {
 
     public static byte[] onQuestRecordMessage(final MapleQuestStatus quest) {

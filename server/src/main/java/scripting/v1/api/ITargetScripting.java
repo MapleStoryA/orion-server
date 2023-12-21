@@ -3,7 +3,7 @@ package scripting.v1.api;
 import scripting.v1.base.FieldScripting;
 import scripting.v1.base.InventoryScripting;
 import server.maps.MapleMap;
-import tools.Scripting;
+import tools.helper.Scripting;
 
 public interface ITargetScripting {
     @Scripting

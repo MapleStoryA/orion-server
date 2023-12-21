@@ -1,6 +1,8 @@
 package server.life;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class MonsterGlobalDropEntry {
 
     public byte dropType;

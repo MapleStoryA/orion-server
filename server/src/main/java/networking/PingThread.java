@@ -1,7 +1,7 @@
-package client;
+package networking;
 
+import handling.BaseMapleClient;
 import lombok.extern.slf4j.Slf4j;
-import networking.NetworkSession;
 
 @Slf4j
 public class PingThread implements Runnable {

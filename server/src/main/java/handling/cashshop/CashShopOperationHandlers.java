@@ -10,11 +10,12 @@ import handling.ServerMigration;
 import handling.world.WorldServer;
 import handling.world.helper.CharacterTransfer;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import tools.MaplePacketCreator;
 import tools.packet.MTSCSPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class CashShopOperationHandlers {
 
     public static void onLeaveCashShop(final InPacket slea, final MapleClient c, final MapleCharacter chr) {

@@ -4,9 +4,10 @@ import client.MapleClient;
 import handling.world.guild.GuildManager;
 import handling.world.guild.MapleBBSThread;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class BBSHandlerUtils {
 
     public static final String correctLength(final String in, final int maxSize) {

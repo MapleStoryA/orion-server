@@ -24,11 +24,12 @@ package server.events;
 
 import client.MapleCharacter;
 import java.util.concurrent.ScheduledFuture;
+import lombok.extern.slf4j.Slf4j;
 import server.Timer.EventTimer;
 import tools.MaplePacketCreator;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleOla extends MapleEvent {
 
     private static final long serialVersionUID = 845748150824L;

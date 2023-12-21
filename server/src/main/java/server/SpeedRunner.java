@@ -7,11 +7,12 @@ import java.sql.SQLException;
 import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import server.maps.SpeedRunType;
-import tools.StringUtil;
 import tools.collection.Pair;
+import tools.helper.StringUtil;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class SpeedRunner {
 
     private static final SpeedRunner instance = new SpeedRunner();

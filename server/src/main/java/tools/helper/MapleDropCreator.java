@@ -1,4 +1,4 @@
-package tools;
+package tools.helper;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,13 +12,14 @@ import javax.management.InstanceAlreadyExistsException;
 import javax.management.MBeanRegistrationException;
 import javax.management.MalformedObjectNameException;
 import javax.management.NotCompliantMBeanException;
+import lombok.extern.slf4j.Slf4j;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
 import tools.collection.Pair;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleDropCreator {
     private static final int COMMON_ETC_RATE = 600000; // 60% Rate
     private static final int SUPER_BOSS_ITEM_RATE = 300000; // 30% Rate

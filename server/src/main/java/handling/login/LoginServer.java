@@ -5,6 +5,7 @@ import database.LoginState;
 import handling.world.WorldServer;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import networking.GameServer;
 import networking.packet.PacketProcessor;
 import server.Timer;
@@ -13,7 +14,7 @@ import server.config.ServerConfig;
 import tools.MaplePacketCreator;
 import tools.packet.LoginPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class LoginServer extends GameServer {
 
     public static final int PORT = 8484;

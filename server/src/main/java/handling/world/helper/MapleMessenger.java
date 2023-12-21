@@ -3,8 +3,9 @@ package handling.world.helper;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
+import lombok.extern.slf4j.Slf4j;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleMessenger implements Serializable {
 
     private static final long serialVersionUID = 9179541993413738569L;

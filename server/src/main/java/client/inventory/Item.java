@@ -1,8 +1,9 @@
 package client.inventory;
 
 import constants.GameConstants;
+import lombok.extern.slf4j.Slf4j;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class Item implements IItem {
 
     private final int id;

@@ -29,10 +29,11 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import tools.Randomizer;
+import lombok.extern.slf4j.Slf4j;
 import tools.collection.Pair;
+import tools.helper.Randomizer;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleOxQuizFactory {
 
     private static final MapleOxQuizFactory instance = new MapleOxQuizFactory();

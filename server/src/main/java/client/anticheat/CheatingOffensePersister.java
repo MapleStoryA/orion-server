@@ -4,9 +4,10 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import lombok.extern.slf4j.Slf4j;
 import server.Timer.CheatTimer;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class CheatingOffensePersister {
 
     private static final CheatingOffensePersister instance = new CheatingOffensePersister();

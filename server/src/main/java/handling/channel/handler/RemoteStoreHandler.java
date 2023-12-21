@@ -4,11 +4,12 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import handling.channel.ChannelServer;
 import handling.world.WorldServer;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.shops.HiredMerchant;
 import tools.packet.PlayerShopPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class RemoteStoreHandler extends AbstractMaplePacketHandler {
 
     public void handlePacket(InPacket packet, MapleClient c) {

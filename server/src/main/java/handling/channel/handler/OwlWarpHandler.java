@@ -3,6 +3,7 @@ package handling.channel.handler;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.maps.MapleMap;
 import server.maps.MapleMapObject;
@@ -12,7 +13,7 @@ import server.shops.IMaplePlayerShop;
 import tools.MaplePacketCreator;
 import tools.packet.PlayerShopPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class OwlWarpHandler extends AbstractMaplePacketHandler {
 
     public static final int OWL_ID = 2; // don't change. 0 = owner ID, 1 = store

@@ -4,10 +4,6 @@ import java.awt.*;
 
 /**
  * Provides an abstract interface for a little-endian stream of bytes.
- *
- * @author Frz
- * @version 1.0
- * @since Revision 323
  */
 public interface LittleEndianAccessor {
 

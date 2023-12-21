@@ -6,9 +6,10 @@ import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import handling.AbstractMaplePacketHandler;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class SpawnPetHandler extends AbstractMaplePacketHandler {
 
     @Override

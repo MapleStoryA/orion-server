@@ -1,6 +1,8 @@
 package server.gachapon;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class GachaponReward extends AbstractRandomEntity {
 
     public static final String DEFAULT_DESC = "";

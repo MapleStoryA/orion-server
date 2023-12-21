@@ -13,7 +13,7 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MapleMount;
 import client.inventory.MaplePet;
 import client.inventory.MapleRing;
-import client.layout.MapleKeyLayout;
+import client.keymap.MapleKeyLayout;
 import client.skill.EvanSkillPoints;
 import client.skill.ExtendedSPTable;
 import client.skill.ISkill;
@@ -43,6 +43,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 import networking.packet.SendPacketOpcode;
 import server.MapleItemInformationProvider;
@@ -68,9 +69,12 @@ import server.shops.HiredMerchant;
 import server.shops.MaplePlayerShopItem;
 import tools.collection.Pair;
 import tools.collection.Triple;
+import tools.helper.HexTool;
+import tools.helper.Randomizer;
+import tools.helper.StringUtil;
 import tools.packet.PacketHelper;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MaplePacketCreator {
 
     public static final List<Pair<MapleStat, Integer>> EMPTY_STATUPDATE = Collections.emptyList();

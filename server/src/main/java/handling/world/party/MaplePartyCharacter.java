@@ -5,9 +5,10 @@ import client.MapleJob;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import server.maps.MapleDoor;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MaplePartyCharacter implements Serializable {
 
     private static final long serialVersionUID = 6215463252132450750L;

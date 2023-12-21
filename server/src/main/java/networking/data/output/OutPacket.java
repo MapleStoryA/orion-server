@@ -1,16 +1,10 @@
 package networking.data.output;
 
 import java.io.ByteArrayOutputStream;
-import tools.HexTool;
+import lombok.extern.slf4j.Slf4j;
+import tools.helper.HexTool;
 
-/**
- * Writes a maplestory-packet little-endian stream of bytes.
- *
- * @author Frz
- * @version 1.0
- * @since Revision 352
- */
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class OutPacket extends GenericLittleEndianWriter {
 
     private final ByteArrayOutputStream baos;

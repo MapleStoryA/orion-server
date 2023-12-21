@@ -1,9 +1,10 @@
 package handling.channel.handler.utils;
 
 import client.MapleCharacter;
+import lombok.extern.slf4j.Slf4j;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class GuildHandlerUtils {
 
     public static final java.util.List<Invited> invited = new java.util.LinkedList<Invited>();

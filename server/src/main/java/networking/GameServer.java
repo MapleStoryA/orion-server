@@ -1,8 +1,9 @@
 package networking;
 
+import lombok.extern.slf4j.Slf4j;
 import networking.packet.PacketProcessor;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class GameServer {
 
     private final SocketProvider socketProvider;

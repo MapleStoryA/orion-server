@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import lombok.extern.slf4j.Slf4j;
 import networking.GameServer;
 import networking.packet.PacketProcessor;
 import scripting.EventScriptManager;
@@ -37,7 +38,7 @@ import server.shops.HiredMerchant;
 import tools.MaplePacketCreator;
 import tools.collection.CollectionUtil;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class ChannelServer extends GameServer {
 
     public static final short DEFAULT_PORT = 8585;

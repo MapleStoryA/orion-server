@@ -11,11 +11,12 @@ import handling.world.buddy.MapleBuddyList;
 import handling.world.buddy.MapleBuddyList.BuddyAddResult;
 import handling.world.buddy.MapleBuddyList.BuddyDelResult;
 import handling.world.helper.FindCommand;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import tools.MaplePacketCreator;
 import tools.collection.Pair;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class BuddyListModifyHandler extends AbstractMaplePacketHandler {
 
     public static final byte // Buddy send Ops

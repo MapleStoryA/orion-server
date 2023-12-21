@@ -4,9 +4,10 @@ import constants.GameConstants;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import tools.Randomizer;
+import lombok.extern.slf4j.Slf4j;
+import tools.helper.Randomizer;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class RandomRewards {
 
     private static final RandomRewards instance = new RandomRewards();

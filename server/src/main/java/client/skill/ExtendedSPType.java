@@ -5,10 +5,6 @@
 
 package client.skill;
 
-/**
- * @author Simon I'm putting this here because Resistance uses an extended SP section too. We need
- *     to think about forward compatibility!
- */
 public enum ExtendedSPType {
     EVAN,
     RESISTANCE;

@@ -1,10 +1,5 @@
 package server.movement;
 
-/**
- * @Author Arnah
- * @Website http://Vertisy.ca/
- * @since Jun 17, 2016
- */
 public enum MovementState {
     DEFAULT("DEFAULT", 0),
     WALKING_RIGHT("WALKING_LEFT", 2),

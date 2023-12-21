@@ -4,11 +4,12 @@ import client.MapleClient;
 import client.anticheat.CheatingOffense;
 import handling.world.WorldServer;
 import java.awt.*;
+import lombok.extern.slf4j.Slf4j;
 import scripting.PortalScriptManager;
 import server.MaplePortal;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleGenericPortal implements MaplePortal {
 
     private final int type;

@@ -1,8 +1,9 @@
-package tools;
+package tools.helper;
 
 import java.util.HashMap;
+import lombok.extern.slf4j.Slf4j;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MathEvaluator {
 
     protected static Operator[] operators = null;
@@ -35,22 +36,22 @@ public class MathEvaluator {
         Double res = null;
         switch (op) {
             case "+":
-                res = new Double(f1.doubleValue() + f2.doubleValue());
+                res = Double.valueOf(f1.doubleValue() + f2.doubleValue());
                 break;
             case "-":
-                res = new Double(f1.doubleValue() - f2.doubleValue());
+                res = Double.valueOf(f1.doubleValue() - f2.doubleValue());
                 break;
             case "*":
-                res = new Double(f1.doubleValue() * f2.doubleValue());
+                res = Double.valueOf(f1.doubleValue() * f2.doubleValue());
                 break;
             case "/":
-                res = new Double(f1.doubleValue() / f2.doubleValue());
+                res = Double.valueOf(f1.doubleValue() / f2.doubleValue());
                 break;
             case "floor":
-                res = new Double(Math.floor(f1.doubleValue()));
+                res = Double.valueOf(Math.floor(f1.doubleValue()));
                 break;
             case "ceil":
-                res = new Double(Math.ceil(f1.doubleValue()));
+                res = Double.valueOf(Math.ceil(f1.doubleValue()));
                 break;
         }
 
@@ -68,7 +69,7 @@ public class MathEvaluator {
     }
 
     public void addVariable(String v, double val) {
-        addVariable(v, new Double(val));
+        addVariable(v, Double.valueOf(val));
     }
 
     public void addVariable(String v, Double val) {
@@ -113,7 +114,7 @@ public class MathEvaluator {
 
         Double res = null;
         try {
-            res = new Double(Double.parseDouble(s));
+            res = Double.valueOf(Double.parseDouble(s));
         } catch (Exception e) {
             return getVariable(s);
         }

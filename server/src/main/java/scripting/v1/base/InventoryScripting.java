@@ -3,10 +3,11 @@ package scripting.v1.base;
 import client.MapleClient;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
+import lombok.extern.slf4j.Slf4j;
 import scripting.v1.api.Inventory;
-import tools.Scripting;
+import tools.helper.Scripting;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class InventoryScripting extends PlayerScripting implements Inventory {
 
     public InventoryScripting(MapleClient client) {

@@ -4,11 +4,12 @@ import client.MapleClient;
 import client.inventory.Equip;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
+import lombok.extern.slf4j.Slf4j;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class InventoryHelper {
 
     public static final int gainItem(

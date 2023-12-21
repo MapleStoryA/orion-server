@@ -3,10 +3,11 @@ package handling.channel.handler;
 import client.MapleClient;
 import client.events.RockPaperScissors;
 import handling.AbstractMaplePacketHandler;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class RPSGameHandler extends AbstractMaplePacketHandler {
 
     @Override

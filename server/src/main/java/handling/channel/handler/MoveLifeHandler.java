@@ -4,17 +4,18 @@ import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import java.awt.*;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.life.MapleMonster;
 import server.life.MobSkill;
 import server.life.MobSkillFactory;
 import server.maps.MapleMap;
 import server.movement.MovePath;
-import tools.Randomizer;
 import tools.collection.Pair;
+import tools.helper.Randomizer;
 import tools.packet.MobPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MoveLifeHandler extends AbstractMaplePacketHandler {
 
     @Override

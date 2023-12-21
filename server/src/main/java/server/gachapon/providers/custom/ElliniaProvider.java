@@ -2,13 +2,14 @@ package server.gachapon.providers.custom;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import server.gachapon.AbstractRandomEntity;
 import server.gachapon.BasicRewardChances;
 import server.gachapon.GachaponLocation;
 import server.gachapon.GachaponReward;
 import server.gachapon.RewardsProvider;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class ElliniaProvider implements RewardsProvider {
 
     private final GachaponLocation location = GachaponLocation.ELLINIA;

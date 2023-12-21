@@ -6,10 +6,11 @@ import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import handling.AbstractMaplePacketHandler;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.MapleItemInformationProvider;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class RepairHandler extends AbstractMaplePacketHandler {
 
     @Override

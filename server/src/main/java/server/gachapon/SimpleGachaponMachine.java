@@ -2,8 +2,9 @@ package server.gachapon;
 
 import java.util.HashMap;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class SimpleGachaponMachine implements GachaponMachine {
 
     private final HashMap<GachaponLocation, List<? extends AbstractRandomEntity>> rewards = new HashMap<>();

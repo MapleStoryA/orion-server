@@ -11,7 +11,7 @@ import networking.packet.PacketProcessor;
 import org.apache.mina.common.IdleStatus;
 import org.apache.mina.common.IoHandlerAdapter;
 import org.apache.mina.common.IoSession;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 import tools.packet.LoginPacket;
 
 @Slf4j

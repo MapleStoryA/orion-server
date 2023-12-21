@@ -1,6 +1,8 @@
 package database;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class DatabaseException extends RuntimeException {
 
     private static final long serialVersionUID = -420103154764822555L;

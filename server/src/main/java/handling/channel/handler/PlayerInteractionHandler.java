@@ -9,6 +9,7 @@ import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import java.util.Arrays;
 import java.util.Iterator;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
@@ -24,7 +25,7 @@ import server.shops.MaplePlayerShopItem;
 import tools.MaplePacketCreator;
 import tools.packet.PlayerShopPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
 
     public static final byte CREATE = 0x00,

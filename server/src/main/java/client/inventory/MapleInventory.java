@@ -9,8 +9,9 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleInventory implements Iterable<IItem>, Serializable {
 
     private final Map<Short, IItem> inventory;

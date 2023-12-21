@@ -5,15 +5,11 @@ import handling.world.WorldServer;
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
 
-/**
- * Note for this class : MapleCharacter reference must be removed immediately after cpq or upon dc.
- *
- * @author Rob
- */
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleCarnivalParty {
 
     private final List<Integer> members = new LinkedList<Integer>();

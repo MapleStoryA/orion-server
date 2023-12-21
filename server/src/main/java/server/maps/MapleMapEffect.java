@@ -1,10 +1,11 @@
 package server.maps;
 
 import client.MapleClient;
+import lombok.extern.slf4j.Slf4j;
 import tools.MaplePacketCreator;
 import tools.packet.MTSCSPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleMapEffect {
 
     private String msg = "";

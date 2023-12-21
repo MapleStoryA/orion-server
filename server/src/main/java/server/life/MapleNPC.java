@@ -1,11 +1,12 @@
 package server.life;
 
 import client.MapleClient;
+import lombok.extern.slf4j.Slf4j;
 import server.MapleShopFactory;
 import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleNPC extends AbstractLoadedMapleLife {
 
     private String name;

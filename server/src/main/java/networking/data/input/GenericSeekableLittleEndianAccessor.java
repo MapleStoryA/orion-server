@@ -1,16 +1,9 @@
 package networking.data.input;
 
 import java.io.IOException;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- * Provides an abstract accessor to a generic Little Endian byte stream. This accessor is seekable.
- *
- * @author Frz
- * @version 1.0
- * @see net.sf.odinms.tools.data.input.GenericLittleEndianAccessor
- * @since Revision 323
- */
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class GenericSeekableLittleEndianAccessor extends GenericLittleEndianAccessor implements InPacket {
 
     private final SeekableInputStreamBytestream bs;

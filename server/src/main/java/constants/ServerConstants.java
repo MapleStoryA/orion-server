@@ -1,6 +1,8 @@
 package constants;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ServerConstants {
 
     public static final int ONE_DAY_ITEM = 5062000; // cube

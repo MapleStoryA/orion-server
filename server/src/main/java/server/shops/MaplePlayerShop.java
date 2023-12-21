@@ -6,10 +6,11 @@ import client.inventory.IItem;
 import client.inventory.ItemFlag;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import server.MapleInventoryManipulator;
 import tools.packet.PlayerShopPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MaplePlayerShop extends AbstractPlayerStore {
 
     private final List<String> bannedList = new ArrayList<String>();

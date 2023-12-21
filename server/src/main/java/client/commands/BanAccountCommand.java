@@ -2,7 +2,7 @@ package client.commands;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import tools.Scripting;
+import tools.helper.Scripting;
 
 @Scripting
 class BanAccountCommand implements Command {

@@ -4,12 +4,13 @@ import client.MapleClient;
 import client.inventory.IItem;
 import handling.AbstractMaplePacketHandler;
 import handling.channel.handler.utils.HiredMerchantHandlerUtils;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.MapleInventoryManipulator;
 import server.MerchItemPackage;
 import tools.packet.PlayerShopPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MerchantItemStoreHandler extends AbstractMaplePacketHandler {
 
     private static final int MERCH_FULL_MESOS = 31;

@@ -22,8 +22,9 @@
 package client.skill;
 
 import java.io.Serializable;
+import lombok.extern.slf4j.Slf4j;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class SkillMacro implements Serializable {
 
     private static final long serialVersionUID = -63413738569L;

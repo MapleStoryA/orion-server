@@ -14,9 +14,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import lombok.extern.slf4j.Slf4j;
 import server.Timer.PingTimer;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class PlayerStorage {
 
     private final ReentrantReadWriteLock mutex = new ReentrantReadWriteLock();

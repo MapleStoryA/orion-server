@@ -5,11 +5,12 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.maps.FieldLimitType;
 import tools.packet.MTSCSPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class TeleportRockAddMapHandler extends AbstractMaplePacketHandler {
     private static final List<Integer> blockedMaps;
     public static final int DELETE = 0;

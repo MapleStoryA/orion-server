@@ -10,9 +10,10 @@ import java.awt.image.SampleModel;
 import java.awt.image.WritableRaster;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
+import lombok.extern.slf4j.Slf4j;
 import provider.MapleCanvas;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class PNGMapleCanvas implements MapleCanvas {
 
     private static final int[] ZAHLEN = new int[] {2, 1, 0, 3};

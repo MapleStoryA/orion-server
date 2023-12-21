@@ -18,10 +18,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import tools.collection.CollectionUtil;
 
-// TODO: Will do something with this to manage the server instances
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class WorldServer {
 
     private static WorldServer INSTANCE;

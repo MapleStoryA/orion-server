@@ -6,10 +6,11 @@ import client.anticheat.CheatingOffense;
 import constants.GameConstants;
 import constants.skills.BladeMaster;
 import java.awt.*;
+import lombok.extern.slf4j.Slf4j;
 import server.MapleStatEffect;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleSummon extends AbstractAnimatedMapleMapObject {
 
     private final int ownerid, skillLevel, ownerLevel, skill;

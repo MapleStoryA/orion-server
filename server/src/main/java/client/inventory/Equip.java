@@ -2,10 +2,11 @@ package client.inventory;
 
 import constants.GameConstants;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import server.MapleItemInformationProvider;
-import tools.Randomizer;
+import tools.helper.Randomizer;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class Equip extends Item implements IEquip {
 
     private byte upgradeSlots = 0, level = 0, vicioushammer = 0, enhance = 0;
