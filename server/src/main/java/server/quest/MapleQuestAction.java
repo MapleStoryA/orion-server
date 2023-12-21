@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import provider.MapleData;
 import provider.MapleDataTool;
 import server.MapleInventoryManipulator;
@@ -21,7 +22,7 @@ import tools.MaplePacketCreator;
 import tools.helper.Randomizer;
 import tools.packet.CWVsContextOnMessagePackets;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleQuestAction implements Serializable {
 
     private static final long serialVersionUID = 9179541993413738569L;

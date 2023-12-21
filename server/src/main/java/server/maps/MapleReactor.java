@@ -2,12 +2,13 @@ package server.maps;
 
 import client.MapleClient;
 import java.awt.*;
+import lombok.extern.slf4j.Slf4j;
 import scripting.ReactorScriptManager;
 import server.Timer.MapTimer;
 import tools.MaplePacketCreator;
 import tools.collection.Pair;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleReactor extends AbstractMapleMapObject {
 
     private final int rid;

@@ -4,10 +4,11 @@ import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import lombok.extern.slf4j.Slf4j;
 import server.life.MapleLifeFactory;
 import server.quest.MapleQuest;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleQuestStatus implements Serializable {
 
     private static final long serialVersionUID = 91795419934134L;

@@ -12,10 +12,11 @@ import constants.ServerConstants.CommandType;
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import tools.MaplePacketCreator;
 import tools.packet.PlayerShopPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleTrade {
 
     private final List<IItem> items = new LinkedList<IItem>();

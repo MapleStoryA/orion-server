@@ -22,7 +22,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package constants.skills;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class BladeMaster {
     public static final int VENOM = 4340001;
     public static final int MAPLE_WARRIOR = 4341000;

@@ -1,6 +1,8 @@
 package constants.skills;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class FPWizard {
     public static final int MP_EATER = 2100000;
     public static final int MEDITATION = 2101001;

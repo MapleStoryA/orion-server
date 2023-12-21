@@ -30,9 +30,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import lombok.extern.slf4j.Slf4j;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleGuildAlliance implements java.io.Serializable {
 
     public static final long serialVersionUID = 24081985245L;

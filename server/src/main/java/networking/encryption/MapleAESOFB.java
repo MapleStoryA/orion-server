@@ -7,13 +7,11 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
+import lombok.extern.slf4j.Slf4j;
 import tools.helper.BitTools;
 import tools.helper.HexTool;
 
-/**
- * Provides a class for encrypting MapleStory packets with AES OFB encryption.
- */
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleAESOFB {
 
     private static final SecretKeySpec skey = new SecretKeySpec(

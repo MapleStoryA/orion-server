@@ -1,8 +1,9 @@
 package handling.world.helper;
 
 import java.io.Serializable;
+import lombok.extern.slf4j.Slf4j;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class CheaterData implements Serializable, Comparable<CheaterData> {
 
     private static final long serialVersionUID = -8733673311051249885L;

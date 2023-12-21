@@ -6,9 +6,10 @@ import client.inventory.IItem;
 import java.awt.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import lombok.extern.slf4j.Slf4j;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleMapItem extends AbstractMapleMapObject {
 
     private final ReentrantLock lock = new ReentrantLock();

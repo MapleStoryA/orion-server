@@ -21,11 +21,12 @@
 
 package networking.mina;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
 import org.apache.mina.filter.codec.ProtocolDecoder;
 import org.apache.mina.filter.codec.ProtocolEncoder;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MinaMapleCodecFactory implements ProtocolCodecFactory {
 
     private final ProtocolEncoder encoder = new MinaMaplePacketEncoder();

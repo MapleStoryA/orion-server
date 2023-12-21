@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.ReentrantLock;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
@@ -28,7 +29,7 @@ import server.StructSetItem;
 import server.StructSetItem.SetItem;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 @Getter
 public class PlayerStats implements Serializable {
 

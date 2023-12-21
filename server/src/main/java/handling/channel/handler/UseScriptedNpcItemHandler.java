@@ -8,6 +8,7 @@ import client.inventory.MapleInventoryType;
 import client.skill.SkillFactory;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import scripting.NPCScriptManager;
 import server.MapleInventoryManipulator;
@@ -16,7 +17,7 @@ import server.maps.SavedLocationType;
 import tools.MaplePacketCreator;
 import tools.helper.DateHelper;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class UseScriptedNpcItemHandler extends AbstractMaplePacketHandler {
 
     @Override

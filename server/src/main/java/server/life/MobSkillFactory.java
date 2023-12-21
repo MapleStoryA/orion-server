@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
 import server.config.ServerConfig;
 import tools.collection.Pair;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MobSkillFactory {
 
     private static final Map<Pair<Integer, Integer>, MobSkill> mobSkills =

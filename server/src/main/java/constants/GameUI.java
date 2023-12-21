@@ -1,6 +1,8 @@
 package constants;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public final class GameUI {
     public static final int EQUIPAMENT_WINDOW = 0x1;
     public static final int CHARACTER_STAT_WINDOW = 0x2;

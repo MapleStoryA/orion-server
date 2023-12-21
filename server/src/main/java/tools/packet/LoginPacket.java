@@ -8,11 +8,12 @@ import handling.login.LoginServer;
 import java.awt.*;
 import java.util.Map;
 import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 import networking.packet.SendPacketOpcode;
 import tools.helper.HexTool;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class LoginPacket {
 
     public static final byte[] getHello(final short mapleVersion, final byte[] sendIv, final byte[] recvIv) {

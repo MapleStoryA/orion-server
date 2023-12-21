@@ -21,11 +21,12 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 import tools.MaplePacketCreator;
 import tools.packet.UIPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleGuild implements java.io.Serializable {
 
     public static final long serialVersionUID = 6322150443228168192L;

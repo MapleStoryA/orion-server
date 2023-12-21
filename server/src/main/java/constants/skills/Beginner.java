@@ -1,6 +1,8 @@
 package constants.skills;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Beginner {
     public static final int BLESSING_OF_THE_FAIRY = 12;
     public static final int FOLLOW_THE_LEADER = 8;

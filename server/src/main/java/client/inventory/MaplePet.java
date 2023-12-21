@@ -8,11 +8,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import lombok.extern.slf4j.Slf4j;
 import server.MapleItemInformationProvider;
 import server.movement.Elem;
 import server.movement.MovePath;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MaplePet implements Serializable {
 
     private static final long serialVersionUID = 9179541993413738569L;

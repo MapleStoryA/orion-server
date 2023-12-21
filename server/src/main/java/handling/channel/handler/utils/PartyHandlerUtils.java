@@ -1,6 +1,8 @@
 package handling.channel.handler.utils;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class PartyHandlerUtils {
 
     public static final byte // Party actions

@@ -1,6 +1,8 @@
 package constants.skills;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Priest {
     public static final int ELEMENTAL_RESISTANCE = 2310000;
     public static final int DISPEL = 2311001;

@@ -11,11 +11,12 @@ import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import server.maps.MapleMist;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MobSkill {
 
     private final int skillId;

@@ -1,9 +1,10 @@
 package client;
 
+import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 import tools.helper.Randomizer;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class PlayerRandomStream {
 
     private transient long seed1, seed2, seed3;

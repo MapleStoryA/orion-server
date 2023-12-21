@@ -5,10 +5,11 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import handling.world.WorldServer;
 import handling.world.helper.FindCommand;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class WhisperHandler extends AbstractMaplePacketHandler {
 
     @Override

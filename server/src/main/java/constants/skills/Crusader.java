@@ -1,6 +1,8 @@
 package constants.skills;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Crusader {
     public static final int COMBO = 1111002;
     public static final int SWORD_PANIC = 1111003;

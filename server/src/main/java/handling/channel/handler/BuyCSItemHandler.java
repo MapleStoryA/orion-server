@@ -16,6 +16,7 @@ import handling.cashshop.CashShopOperationHandlers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import provider.MapleData;
 import server.MapleInventoryManipulator;
@@ -23,7 +24,7 @@ import server.MapleItemInformationProvider;
 import tools.collection.Triple;
 import tools.packet.MTSCSPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class BuyCSItemHandler extends AbstractMaplePacketHandler {
 
     @Override

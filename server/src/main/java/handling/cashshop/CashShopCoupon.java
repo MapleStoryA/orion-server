@@ -8,9 +8,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import tools.collection.Pair;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class CashShopCoupon {
 
     public static boolean getCouponCodeValid(String code) {

@@ -11,6 +11,7 @@ import java.awt.*;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import server.MapleCarnivalFactory;
 import server.MapleCarnivalFactory.MCSkill;
 import server.MapleItemInformationProvider;
@@ -20,7 +21,7 @@ import server.maps.MapleReactor;
 import server.maps.ReactorDropEntry;
 import tools.helper.Randomizer;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class ReactorActionManager extends AbstractPlayerInteraction {
 
     private final MapleReactor reactor;

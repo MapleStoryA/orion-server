@@ -6,13 +6,14 @@ import client.MapleDisease;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import handling.AbstractMaplePacketHandler;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.maps.FieldLimitType;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class UseItemHandler extends AbstractMaplePacketHandler {
 
     @Override

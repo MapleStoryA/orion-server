@@ -5,10 +5,11 @@ import handling.channel.ChannelServer;
 import handling.world.WorldServer;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import tools.MaplePacketCreator;
 import tools.helper.Scripting;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class PlayerScripting extends BaseScripting {
 
     public PlayerScripting(MapleClient client) {

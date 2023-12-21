@@ -1,6 +1,8 @@
 package constants.skills;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Outlaw {
     public static final int OCTOPUS = 5211001;
     public static final int GAVIOTA = 5211002;

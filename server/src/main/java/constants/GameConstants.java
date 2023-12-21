@@ -8,10 +8,11 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import server.maps.MapleMapObjectType;
 import tools.helper.Randomizer;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class GameConstants {
 
     public static final List<MapleMapObjectType> rangedMapobjectTypes = Collections.unmodifiableList(Arrays.asList(

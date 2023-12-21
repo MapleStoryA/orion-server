@@ -4,9 +4,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import lombok.extern.slf4j.Slf4j;
 import provider.MapleCanvas;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class FileStoredPngMapleCanvas implements MapleCanvas {
 
     private final File file;

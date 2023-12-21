@@ -3,10 +3,11 @@ package server.movement;
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import networking.data.output.LittleEndianWriter;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MovePath {
 
     public List<Elem> lElem = new LinkedList<Elem>();

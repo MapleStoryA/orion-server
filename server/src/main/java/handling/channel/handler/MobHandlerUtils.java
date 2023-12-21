@@ -2,12 +2,13 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.inventory.MapleInventoryType;
+import lombok.extern.slf4j.Slf4j;
 import server.MapleInventoryManipulator;
 import server.life.MapleMonster;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MobHandlerUtils {
 
     public static final void checkShammos(final MapleCharacter chr, final MapleMonster mobto, final MapleMap map) {

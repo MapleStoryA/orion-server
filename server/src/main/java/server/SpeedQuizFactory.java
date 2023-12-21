@@ -8,8 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import lombok.extern.slf4j.Slf4j;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class SpeedQuizFactory {
 
     private static final SpeedQuizFactory instance = new SpeedQuizFactory();

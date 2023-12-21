@@ -4,8 +4,9 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import lombok.extern.slf4j.Slf4j;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class CharacterIdChannelPair implements Externalizable, Comparable<CharacterIdChannelPair> {
 
     private int charid = 0;

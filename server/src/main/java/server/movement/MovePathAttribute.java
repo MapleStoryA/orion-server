@@ -1,6 +1,8 @@
 package server.movement;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class MovePathAttribute {
 
     public static final int

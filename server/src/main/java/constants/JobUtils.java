@@ -2,8 +2,9 @@ package constants;
 
 import client.MapleJob;
 import client.inventory.IItem;
+import lombok.extern.slf4j.Slf4j;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class JobUtils {
 
     public static final int MASTERY_BOOK_DB_START = 5620000;

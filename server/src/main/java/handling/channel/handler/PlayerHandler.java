@@ -9,6 +9,7 @@ import client.skill.ISkill;
 import client.skill.SkillFactory;
 import constants.MapConstants;
 import handling.world.WorldServer;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.AutobanManager;
 import server.MapleInventoryManipulator;
@@ -27,7 +28,7 @@ import tools.packet.MTSCSPacket;
 import tools.packet.MobPacket;
 import tools.packet.UIPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class PlayerHandler {
 
     public static final void CharInfoRequest(final int objectid, final MapleClient c, final MapleCharacter chr) {

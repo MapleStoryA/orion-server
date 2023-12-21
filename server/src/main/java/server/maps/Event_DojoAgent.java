@@ -4,12 +4,13 @@ import client.MapleCharacter;
 import handling.channel.ChannelServer;
 import handling.world.party.MaplePartyCharacter;
 import java.awt.*;
+import lombok.extern.slf4j.Slf4j;
 import server.Timer.MapTimer;
 import server.life.MapleLifeFactory;
 import tools.MaplePacketCreator;
 import tools.helper.Randomizer;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class Event_DojoAgent {
 
     private static final int baseAgentMapId = 970030000; // 9500337 = mano

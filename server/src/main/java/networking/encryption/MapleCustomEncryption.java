@@ -1,11 +1,9 @@
 package networking.encryption;
 
+import lombok.extern.slf4j.Slf4j;
 import tools.helper.BitTools;
 
-/**
- * Provides MapleStory's custom encryption routines.
- */
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleCustomEncryption {
 
     /**

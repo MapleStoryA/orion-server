@@ -4,6 +4,7 @@ import client.MapleClient;
 import client.MapleQuestStatus;
 import client.skill.SkillFactory;
 import java.awt.*;
+import lombok.extern.slf4j.Slf4j;
 import scripting.EventManager;
 import scripting.NPCScriptManager;
 import server.MapleItemInformationProvider;
@@ -15,7 +16,7 @@ import tools.MaplePacketCreator;
 import tools.helper.Randomizer;
 import tools.packet.UIPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapScriptMethods {
 
     private static final Point witchTowerPos = new Point(-60, 184);

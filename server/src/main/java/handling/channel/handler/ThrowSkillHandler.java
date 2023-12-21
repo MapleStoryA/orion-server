@@ -5,11 +5,12 @@ import client.skill.ISkill;
 import client.skill.SkillFactory;
 import handling.AbstractMaplePacketHandler;
 import java.awt.*;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.maps.MapleMist;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class ThrowSkillHandler extends AbstractMaplePacketHandler {
 
     private static Rectangle calculateBoundingBox(Point posFrom) {

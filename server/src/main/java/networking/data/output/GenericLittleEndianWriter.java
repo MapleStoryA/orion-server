@@ -3,11 +3,9 @@ package networking.data.output;
 import java.awt.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- * Provides a generic writer of a little-endian sequence of bytes.
- */
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class GenericLittleEndianWriter implements LittleEndianWriter {
 
     // See http://java.sun.com/j2se/1.4.2/docs/api/java/nio/charset/Charset.html

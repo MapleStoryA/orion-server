@@ -4,10 +4,11 @@ import client.MapleClient;
 import constants.ServerConstants;
 import handling.AbstractMaplePacketHandler;
 import handling.login.LoginServer;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import tools.packet.LoginPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class ServerListRequestHandler extends AbstractMaplePacketHandler {
 
     @Override

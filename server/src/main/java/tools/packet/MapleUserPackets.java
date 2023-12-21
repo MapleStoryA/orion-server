@@ -9,11 +9,11 @@ import handling.world.party.PartyManager;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 import networking.packet.SendPacketOpcode;
 
-/** Store packets for Buddy, Party, Expedition, Guild and Alliance */
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleUserPackets {
 
     public static byte[] partyCreated(final int partyid) {

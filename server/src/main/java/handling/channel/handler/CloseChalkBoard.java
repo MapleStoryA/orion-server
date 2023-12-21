@@ -2,9 +2,10 @@ package handling.channel.handler;
 
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class CloseChalkBoard extends AbstractMaplePacketHandler {
 
     @Override

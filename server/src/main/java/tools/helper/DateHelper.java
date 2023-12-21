@@ -4,8 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.SimpleTimeZone;
+import lombok.extern.slf4j.Slf4j;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class DateHelper {
 
     private static final int ITEM_YEAR2000 = -1085019342;

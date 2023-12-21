@@ -1,6 +1,8 @@
 package constants.skills;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ILArchMage {
     public static final int MAPLE_WARRIOR = 2221000;
     public static final int BIG_BANG = 2221001;

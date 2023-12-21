@@ -2,13 +2,14 @@ package client.inventory;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
 import server.config.ServerConfig;
 import tools.collection.Pair;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class PetDataFactory {
 
     private static final MapleDataProvider dataRoot =

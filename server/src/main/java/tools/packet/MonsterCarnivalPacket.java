@@ -1,11 +1,12 @@
 package tools.packet;
 
 import client.MapleCharacter;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 import networking.packet.SendPacketOpcode;
 import server.MapleCarnivalParty;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MonsterCarnivalPacket {
 
     public static byte[] startMonsterCarnival(

@@ -1,6 +1,8 @@
 package server.maps;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ReactorDropEntry {
 
     public int itemId, chance, questid;

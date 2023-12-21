@@ -3,13 +3,14 @@ package server.maps;
 import client.MapleCharacter;
 import handling.world.helper.BroadcastHelper;
 import java.awt.*;
+import lombok.extern.slf4j.Slf4j;
 import server.MapleItemInformationProvider;
 import server.Timer.EventTimer;
 import server.config.ServerConfig;
 import tools.MaplePacketCreator;
 import tools.helper.Randomizer;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class AramiaFireWorks {
 
     public static final int MAX_SUN = 2500;

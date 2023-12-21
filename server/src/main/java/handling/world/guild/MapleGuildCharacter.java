@@ -1,8 +1,9 @@
 package handling.world.guild;
 
 import client.MapleCharacter;
+import lombok.extern.slf4j.Slf4j;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleGuildCharacter implements java.io.Serializable { // alias for a character
 
     public static final long serialVersionUID = 2058609046116597760L;

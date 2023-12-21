@@ -18,10 +18,11 @@ import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import tools.MaplePacketCreator;
 import tools.collection.Pair;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleStorage implements Serializable {
 
     private static final long serialVersionUID = 9179541993413738569L;

@@ -1,6 +1,8 @@
 package constants.skills;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ThunderBreaker {
     public static final int DASH = 15001003;
     public static final int IMPROVE_MAX_HP = 15100000;

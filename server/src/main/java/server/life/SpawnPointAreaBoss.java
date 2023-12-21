@@ -2,11 +2,12 @@ package server.life;
 
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import lombok.extern.slf4j.Slf4j;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
 import tools.helper.Randomizer;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class SpawnPointAreaBoss extends Spawns {
 
     private final MapleMonster monster;

@@ -1,6 +1,8 @@
 package handling.world.guild;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class MapleGuildSummary implements java.io.Serializable {
 
     public static final long serialVersionUID = 3565477792085301248L;

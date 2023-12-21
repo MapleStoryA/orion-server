@@ -1,9 +1,10 @@
 package provider;
 
 import java.io.File;
+import lombok.extern.slf4j.Slf4j;
 import provider.WzXML.XMLWZFile;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleDataProviderFactory {
 
     private static MapleDataProvider getWZ(Object in, boolean provideImages) {

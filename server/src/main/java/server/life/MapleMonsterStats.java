@@ -5,9 +5,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import tools.collection.Pair;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleMonsterStats {
 
     private final Map<Element, ElementalEffectiveness> resistance = new HashMap<Element, ElementalEffectiveness>();

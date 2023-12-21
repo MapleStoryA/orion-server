@@ -23,9 +23,10 @@ package server;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import lombok.extern.slf4j.Slf4j;
 import tools.collection.ArrayMap;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleAchievements {
 
     private static final MapleAchievements instance = new MapleAchievements();

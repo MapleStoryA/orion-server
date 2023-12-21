@@ -1,10 +1,11 @@
 package tools.packet.npcpool;
 
+import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 import networking.packet.SendPacketOpcode;
 import server.life.MapleNPC;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class NpcPoolPackets {
 
     public static final byte[] setSpecialAction(MapleNPC npc, String action) {

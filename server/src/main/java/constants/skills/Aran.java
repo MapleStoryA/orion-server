@@ -1,6 +1,8 @@
 package constants.skills;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Aran {
     public static final int BLESSING_OF_THE_FAIRY = 20000012;
     public static final int RECOVERY = 20001001;

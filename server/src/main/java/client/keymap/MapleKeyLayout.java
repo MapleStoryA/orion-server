@@ -6,9 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleKeyLayout implements Serializable {
 
     public static final int[] key = {

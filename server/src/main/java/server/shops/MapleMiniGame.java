@@ -28,10 +28,11 @@ import client.MapleQuestStatus;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import server.quest.MapleQuest;
 import tools.packet.PlayerShopPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleMiniGame extends AbstractPlayerStore {
 
     private static final int slots = 2; // change?!

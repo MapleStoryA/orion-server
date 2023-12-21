@@ -8,12 +8,13 @@ import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
 import tools.packet.MonsterBookPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MonsterBook implements Serializable {
 
     private static final long serialVersionUID = 7179541993413738569L;

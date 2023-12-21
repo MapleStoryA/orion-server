@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import javax.script.Invocable;
+import lombok.extern.slf4j.Slf4j;
 import server.MapleCarnivalChallenge;
 import server.MapleCarnivalParty;
 import server.MapleInventoryManipulator;
@@ -67,7 +68,7 @@ import tools.helper.Randomizer;
 import tools.packet.CWVsContextOnMessagePackets;
 import tools.packet.PlayerShopPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class NPCConversationManager extends AbstractPlayerInteraction {
 
     private final MapleClient c;

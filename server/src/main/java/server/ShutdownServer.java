@@ -11,9 +11,10 @@ import handling.world.helper.WorldInitHelper;
 import java.lang.management.ManagementFactory;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
+import lombok.extern.slf4j.Slf4j;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class ShutdownServer implements ShutdownServerMBean {
 
     public static ShutdownServer instance;

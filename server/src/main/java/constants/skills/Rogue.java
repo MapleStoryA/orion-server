@@ -1,6 +1,8 @@
 package constants.skills;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Rogue {
     public static final int NIMBLE_BODY = 4001000;
     public static final int DARK_SIGHT = 4001003;

@@ -3,10 +3,11 @@ package handling.channel.handler;
 import client.MapleClient;
 import client.inventory.MapleInventoryType;
 import handling.AbstractMaplePacketHandler;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.MapleInventoryManipulator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class ItemMoveHandler extends AbstractMaplePacketHandler {
 
     @Override

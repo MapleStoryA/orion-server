@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.concurrent.ScheduledFuture;
+import lombok.extern.slf4j.Slf4j;
 import scripting.EventInstanceManager;
 import server.MapleItemInformationProvider;
 import server.Timer.MobTimer;
@@ -43,7 +44,7 @@ import tools.collection.Pair;
 import tools.helper.Randomizer;
 import tools.packet.MobPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleMonster extends AbstractLoadedMapleLife {
 
     private final Collection<AttackerEntry> attackers = new LinkedList<AttackerEntry>();

@@ -1,6 +1,8 @@
 package constants.skills;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ChiefBandit {
     public static final int CHAKRA = 4211001;
     public static final int ASSAULTER = 4211002;

@@ -1,6 +1,8 @@
 package constants.skills;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Hunter {
     public static final int BOW_MASTERY = 3100000;
     public static final int BOW_BOOSTER = 3101002;

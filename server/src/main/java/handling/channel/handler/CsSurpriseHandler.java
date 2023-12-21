@@ -6,11 +6,12 @@ import handling.AbstractMaplePacketHandler;
 import handling.cashshop.CashItemFactory;
 import handling.cashshop.CashItemInfo;
 import handling.cashshop.CashShopOperationHandlers;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.RandomRewards;
 import tools.packet.MTSCSPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class CsSurpriseHandler extends AbstractMaplePacketHandler {
 
     @Override

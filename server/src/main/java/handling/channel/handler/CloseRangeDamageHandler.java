@@ -9,12 +9,13 @@ import client.skill.SkillFactory;
 import constants.GameConstants;
 import constants.skills.BladeMaster;
 import handling.AbstractMaplePacketHandler;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.MapleStatEffect;
 import server.events.MapleSnowball.MapleSnowballs;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class CloseRangeDamageHandler extends AbstractMaplePacketHandler {
 
     private final boolean energy;

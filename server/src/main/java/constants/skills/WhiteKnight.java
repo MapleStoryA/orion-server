@@ -1,6 +1,8 @@
 package constants.skills;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class WhiteKnight {
     public static final int IMPROVING_MP_RECOVERY = 1210000;
     public static final int CHARGE_BLOW = 1211002;

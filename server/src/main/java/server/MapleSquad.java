@@ -11,12 +11,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ScheduledFuture;
+import lombok.extern.slf4j.Slf4j;
 import server.Timer.CloneTimer;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
 import tools.collection.Pair;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleSquad {
 
     private final MapleSquadType squadType;

@@ -1,10 +1,11 @@
 package tools.packet;
 
+import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 import networking.packet.SendPacketOpcode;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class UIPacket {
 
     public static final byte[] EarnTitleMsg(final String msg) {

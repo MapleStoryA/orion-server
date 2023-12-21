@@ -2,9 +2,10 @@ package client.skill;
 
 import client.MapleJob;
 import java.util.HashMap;
+import lombok.extern.slf4j.Slf4j;
 import server.config.ServerConfig;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class EvanSkillPoints {
     public static final String INSERT_POINTS_QUERY =
             "INSERT INTO evan_skillpoints (characterid, evan1, evan2, evan3, evan4, evan5, evan6,"

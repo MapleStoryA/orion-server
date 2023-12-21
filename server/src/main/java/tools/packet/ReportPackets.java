@@ -1,9 +1,10 @@
 package tools.packet;
 
+import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 import networking.packet.SendPacketOpcode;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class ReportPackets {
 
     public static byte[] enableReport() {

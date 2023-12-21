@@ -1,6 +1,8 @@
 package constants.skills;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class NightWalker {
     public static final int ALCHEMIST = 14110003;
     public static final int DISORDER = 14001002;

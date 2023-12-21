@@ -6,13 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import server.gachapon.AbstractRandomEntity;
 import server.gachapon.GachaponLocation;
 import server.gachapon.GachaponReward;
 import server.gachapon.RewardSource;
 import server.gachapon.RewardsProvider;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class DbRewardProvider implements RewardsProvider {
 
     public final String BASIC_QUERY =

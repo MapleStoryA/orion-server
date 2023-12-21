@@ -2,11 +2,12 @@ package handling.channel.handler;
 
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import tools.MaplePacketCreator;
 import tools.packet.ReportPackets;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class ReportHandler extends AbstractMaplePacketHandler {
 
     @Override

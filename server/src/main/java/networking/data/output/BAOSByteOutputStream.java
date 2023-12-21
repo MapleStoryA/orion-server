@@ -1,11 +1,9 @@
 package networking.data.output;
 
 import java.io.ByteArrayOutputStream;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- * Uses a byte array to output a stream of bytes.
- */
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class BAOSByteOutputStream implements ByteOutputStream {
 
     private final ByteArrayOutputStream baos;

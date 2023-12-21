@@ -1,8 +1,9 @@
 package server.maps;
 
 import java.awt.*;
+import lombok.extern.slf4j.Slf4j;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleFoothold implements Comparable<MapleFoothold> {
 
     private final Point p1;

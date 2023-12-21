@@ -1,9 +1,10 @@
 package networking.data.input;
 
 import java.io.IOException;
+import lombok.extern.slf4j.Slf4j;
 import tools.helper.HexTool;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class ByteArrayByteStream implements SeekableInputStreamBytestream {
 
     private final byte[] arr;

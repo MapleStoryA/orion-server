@@ -2,6 +2,7 @@ package client.events;
 
 import client.MapleClient;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import scripting.NPCConversationManager;
 import scripting.NPCScriptManager;
 import server.SpeedQuizFactory;
@@ -9,7 +10,7 @@ import server.SpeedQuizFactory.QuizEntry;
 import tools.MaplePacketCreator;
 import tools.helper.Randomizer;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class SpeedQuiz {
 
     private final int INITIAL_QUESTION = 50; // Default 50 questions.

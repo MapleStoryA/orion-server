@@ -8,10 +8,11 @@ import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import handling.world.party.PartyManager;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import tools.packet.MapleUserPackets;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class DenyPartyRequestHandler extends AbstractMaplePacketHandler {
 
     @Override

@@ -22,7 +22,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package constants.skills;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class AdditionalSkills {
     public static final int INSTANT_DEATH = 90000000;
     public static final int KNOCK_DOWN = 90001001;

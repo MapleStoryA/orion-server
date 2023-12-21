@@ -2,11 +2,12 @@ package handling.channel.handler;
 
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import scripting.NPCScriptManager;
 import server.gachapon.GachaponLocation;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class RemoteGachaponHandler extends AbstractMaplePacketHandler {
 
     @Override

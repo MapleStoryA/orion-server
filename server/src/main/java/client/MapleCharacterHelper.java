@@ -6,9 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
+import lombok.extern.slf4j.Slf4j;
 import tools.collection.Triple;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleCharacterHelper {
 
     private static final Pattern namePattern = Pattern.compile("[a-zA-Z0-9_-]{3,12}");

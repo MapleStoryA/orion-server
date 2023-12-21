@@ -4,12 +4,13 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import lombok.extern.slf4j.Slf4j;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.statement.Slf4JSqlLogger;
 import server.config.Config;
 import server.config.ServerConfig;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class DatabaseConnection {
 
     public static final int RETURN_GENERATED_KEYS = 1;

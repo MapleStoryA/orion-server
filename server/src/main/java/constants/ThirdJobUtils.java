@@ -2,8 +2,9 @@ package constants;
 
 import client.MapleCharacter;
 import client.MapleJob;
+import lombok.extern.slf4j.Slf4j;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class ThirdJobUtils {
 
     public static int getMapIdForJob(MapleCharacter player) {

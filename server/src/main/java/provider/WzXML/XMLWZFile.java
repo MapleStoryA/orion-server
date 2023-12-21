@@ -4,11 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import lombok.extern.slf4j.Slf4j;
 import provider.MapleData;
 import provider.MapleDataDirectoryEntry;
 import provider.MapleDataProvider;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class XMLWZFile implements MapleDataProvider {
 
     private final File root;

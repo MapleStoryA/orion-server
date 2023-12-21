@@ -1,8 +1,9 @@
 package server.shops;
 
 import client.inventory.IItem;
+import lombok.extern.slf4j.Slf4j;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MaplePlayerShopItem {
 
     private IItem item;

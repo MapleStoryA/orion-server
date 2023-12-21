@@ -4,8 +4,9 @@ import handling.world.party.MapleParty;
 import handling.world.party.PartyManager;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleExpedition {
 
     private final List<Integer> parties;

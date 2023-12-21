@@ -13,13 +13,14 @@ import handling.AbstractMaplePacketHandler;
 import java.awt.*;
 import java.util.Collections;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.MapleStatEffect;
 import server.life.MapleMonster;
 import server.maps.FieldLimitType;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class SpecialMoveHandler extends AbstractMaplePacketHandler {
 
     @Override

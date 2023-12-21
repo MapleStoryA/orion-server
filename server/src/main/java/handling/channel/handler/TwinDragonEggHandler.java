@@ -3,10 +3,11 @@ package handling.channel.handler;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import handling.cashshop.CashShopOperationHandlers;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import tools.packet.MTSCSPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class TwinDragonEggHandler extends AbstractMaplePacketHandler {
 
     @Override

@@ -5,6 +5,7 @@ import client.MapleClient;
 import client.MapleDisease;
 import handling.AbstractMaplePacketHandler;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.MapleCarnivalFactory;
 import server.MapleCarnivalFactory.MCSkill;
@@ -15,7 +16,7 @@ import tools.collection.Pair;
 import tools.helper.Randomizer;
 import tools.packet.MonsterCarnivalPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MonsterCarnivalHandler extends AbstractMaplePacketHandler {
 
     @Override

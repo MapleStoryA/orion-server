@@ -7,12 +7,13 @@ import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import handling.world.helper.BroadcastHelper;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.MapleInventoryManipulator;
 import server.RandomRewards;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class UseTreasureChestHandler extends AbstractMaplePacketHandler {
 
     @Override

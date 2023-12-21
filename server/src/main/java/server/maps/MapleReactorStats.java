@@ -3,9 +3,10 @@ package server.maps;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import tools.collection.Pair;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleReactorStats {
 
     private final Map<Byte, StateData> stateInfo = new HashMap<Byte, StateData>();

@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 import networking.packet.SendPacketOpcode;
 import provider.MapleData;
@@ -21,7 +22,7 @@ import server.config.ServerConfig;
 import tools.collection.Pair;
 import tools.helper.StringUtil;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MTSCSPacket {
 
     private static final int[] modified = {

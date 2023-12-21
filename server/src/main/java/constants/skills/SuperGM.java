@@ -1,6 +1,8 @@
 package constants.skills;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class SuperGM {
     public static final int HEAL_PLUS_DISPEL = 9101000;
     public static final int HASTE = 9101001;

@@ -6,12 +6,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
 import server.config.ServerConfig;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class CashItemFactory {
 
     public static final MapleDataProvider data = ServerConfig.serverConfig().getDataProvider("wz/Etc");

@@ -1,8 +1,9 @@
 package tools.helper;
 
 import java.util.HashMap;
+import lombok.extern.slf4j.Slf4j;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MathEvaluator {
 
     protected static Operator[] operators = null;

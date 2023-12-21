@@ -1,9 +1,10 @@
 package client;
 
 import java.util.concurrent.ScheduledFuture;
+import lombok.extern.slf4j.Slf4j;
 import server.MapleStatEffect;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleBuffStatValueHolder {
 
     private MapleStatEffect effect;

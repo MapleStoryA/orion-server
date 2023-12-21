@@ -12,10 +12,11 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
+import lombok.extern.slf4j.Slf4j;
 import server.MaplePortal;
 import server.config.ServerConfig;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class PortalScriptManager {
 
     private static final PortalScriptManager instance = new PortalScriptManager();

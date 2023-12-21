@@ -1,6 +1,8 @@
 package constants.skills;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Ranger {
     public static final int MORTAL_BLOW = 3110001;
     public static final int PUPPET = 3111002;

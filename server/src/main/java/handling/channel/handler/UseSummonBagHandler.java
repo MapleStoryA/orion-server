@@ -6,6 +6,7 @@ import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import handling.AbstractMaplePacketHandler;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
@@ -16,7 +17,7 @@ import tools.MaplePacketCreator;
 import tools.collection.Pair;
 import tools.helper.Randomizer;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class UseSummonBagHandler extends AbstractMaplePacketHandler {
 
     @Override

@@ -25,10 +25,11 @@ package server.events;
 import client.MapleCharacter;
 import java.util.LinkedList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import server.Timer.EventTimer;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleCoconut extends MapleEvent {
 
     private final List<MapleCoconuts> coconuts = new LinkedList<MapleCoconuts>();

@@ -3,12 +3,13 @@ package handling.channel.handler;
 import client.MapleCharacter;
 import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.life.MapleMonster;
 import server.maps.MapleMap;
 import tools.helper.Randomizer;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class FriendlyDamageHandler extends AbstractMaplePacketHandler {
 
     @Override

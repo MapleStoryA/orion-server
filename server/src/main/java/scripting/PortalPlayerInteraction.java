@@ -1,10 +1,11 @@
 package scripting;
 
 import client.MapleClient;
+import lombok.extern.slf4j.Slf4j;
 import server.MaplePortal;
 import server.quest.MapleQuest;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class PortalPlayerInteraction extends AbstractPlayerInteraction {
 
     private final MaplePortal portal;

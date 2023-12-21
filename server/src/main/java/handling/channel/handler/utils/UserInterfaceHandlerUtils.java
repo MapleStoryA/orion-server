@@ -1,10 +1,11 @@
 package handling.channel.handler.utils;
 
 import client.MapleClient;
+import lombok.extern.slf4j.Slf4j;
 import scripting.EventManager;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class UserInterfaceHandlerUtils {
 
     public static final void ShipObjectRequest(final int mapid, final MapleClient c) {

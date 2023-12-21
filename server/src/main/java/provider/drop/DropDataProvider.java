@@ -2,13 +2,14 @@ package provider.drop;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import server.MapleItemInformationProvider;
 import server.life.MapleMonster;
 import server.life.MapleMonsterInformationProvider;
 import server.life.MonsterDropEntry;
 import tools.collection.Pair;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class DropDataProvider implements MapleDropProvider {
 
     private final MapleMonsterInformationProvider mi = MapleMonsterInformationProvider.getInstance();

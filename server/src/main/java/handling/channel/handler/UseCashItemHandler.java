@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
@@ -45,7 +46,7 @@ import tools.helper.Randomizer;
 import tools.packet.MTSCSPacket;
 import tools.packet.PetPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class UseCashItemHandler extends AbstractMaplePacketHandler {
 
     public static final int VIP_TELEPORT_ROCK = 5041000;

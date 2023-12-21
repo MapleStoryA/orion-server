@@ -25,12 +25,13 @@ package server.events;
 import client.MapleCharacter;
 import client.MapleDisease;
 import java.util.concurrent.ScheduledFuture;
+import lombok.extern.slf4j.Slf4j;
 import server.Timer.EventTimer;
 import server.life.MobSkillFactory;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleSnowball extends MapleEvent {
 
     private final MapleSnowballs[] balls = new MapleSnowballs[2];

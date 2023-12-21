@@ -15,6 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import lombok.extern.slf4j.Slf4j;
 import provider.MapleData;
 import provider.MapleDataDirectoryEntry;
 import provider.MapleDataFileEntry;
@@ -26,7 +27,7 @@ import tools.collection.Pair;
 import tools.collection.Triple;
 import tools.helper.Randomizer;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleItemInformationProvider {
 
     private static final MapleItemInformationProvider instance = new MapleItemInformationProvider();

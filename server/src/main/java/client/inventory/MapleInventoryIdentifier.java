@@ -7,8 +7,9 @@ import java.sql.ResultSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import lombok.extern.slf4j.Slf4j;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleInventoryIdentifier implements Serializable {
 
     private static final long serialVersionUID = 21830921831301L;

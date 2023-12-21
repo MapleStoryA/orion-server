@@ -2,8 +2,9 @@ package tools.collection;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class CollectionUtil {
 
     /** Static class dummy constructor */

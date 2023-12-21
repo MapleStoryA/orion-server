@@ -8,8 +8,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
+import lombok.extern.slf4j.Slf4j;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class TimerManager implements TimerManagerMBean {
     private static final TimerManager instance = new TimerManager();
     private ScheduledThreadPoolExecutor ses;

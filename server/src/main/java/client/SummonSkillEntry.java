@@ -1,6 +1,8 @@
 package client;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class SummonSkillEntry {
 
     public byte type;

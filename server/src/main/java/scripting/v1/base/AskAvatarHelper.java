@@ -4,9 +4,10 @@ import client.MapleCharacter;
 import client.MapleStat;
 import constants.GameConstants;
 import java.util.Random;
+import lombok.extern.slf4j.Slf4j;
 import server.MapleInventoryManipulator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class AskAvatarHelper {
 
     public static boolean IsValidHairID(int nID, int nGender) {

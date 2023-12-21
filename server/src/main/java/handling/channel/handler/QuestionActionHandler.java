@@ -4,13 +4,14 @@ import client.MapleCharacter;
 import client.MapleClient;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import scripting.NPCScriptManager;
 import scripting.v1.NpcTalkHelper;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class QuestionActionHandler extends AbstractMaplePacketHandler {
 
     public static final int RESTORE_LOST_ITEM = 0;

@@ -1,8 +1,9 @@
 package networking.data.input;
 
 import java.io.IOException;
+import lombok.extern.slf4j.Slf4j;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class GenericSeekableLittleEndianAccessor extends GenericLittleEndianAccessor implements InPacket {
 
     private final SeekableInputStreamBytestream bs;

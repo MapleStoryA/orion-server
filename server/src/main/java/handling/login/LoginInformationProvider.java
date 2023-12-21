@@ -2,11 +2,12 @@ package handling.login;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import provider.MapleData;
 import provider.MapleDataTool;
 import server.config.ServerConfig;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class LoginInformationProvider {
 
     private static final LoginInformationProvider instance = new LoginInformationProvider();

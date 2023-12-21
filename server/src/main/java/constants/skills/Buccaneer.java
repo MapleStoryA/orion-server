@@ -1,6 +1,8 @@
 package constants.skills;
 
-@lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Buccaneer {
     public static final int MAPLE_WARRIOR = 5121000;
     public static final int DRAGON_STRIKE = 5121001;

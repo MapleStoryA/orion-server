@@ -3,10 +3,11 @@ package handling.login.handler;
 import client.MapleClient;
 import database.CharacterService;
 import handling.AbstractMaplePacketHandler;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import tools.packet.LoginPacket;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class DeleteCharHandler extends AbstractMaplePacketHandler {
 
     @Override

@@ -7,10 +7,11 @@ import client.skill.SkillFactory;
 import constants.GameConstants;
 import java.awt.*;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import server.AutobanManager;
 import server.MapleStatEffect;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class AttackInfo {
 
     public int skill, charge, lastAttackTickCount;

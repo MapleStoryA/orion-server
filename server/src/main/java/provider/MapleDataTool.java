@@ -2,9 +2,10 @@ package provider;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import lombok.extern.slf4j.Slf4j;
 import provider.WzXML.MapleDataType;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class MapleDataTool {
 
     public static String getString(MapleData data) {

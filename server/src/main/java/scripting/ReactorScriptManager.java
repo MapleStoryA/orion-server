@@ -11,10 +11,11 @@ import java.util.List;
 import java.util.Map;
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
+import lombok.extern.slf4j.Slf4j;
 import server.maps.MapleReactor;
 import server.maps.ReactorDropEntry;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class ReactorScriptManager extends AbstractScriptManager {
 
     private static final ReactorScriptManager instance = new ReactorScriptManager();

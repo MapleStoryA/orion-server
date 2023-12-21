@@ -9,10 +9,11 @@ import client.skill.ISkill;
 import client.skill.SkillFactory;
 import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.MapleItemInformationProvider;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class ChangeKeyMapHandler extends AbstractMaplePacketHandler {
 
     public static final int NORMAL_KEY_MAP = 0;

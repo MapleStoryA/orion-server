@@ -1,9 +1,10 @@
 package server.movement;
 
+import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import networking.data.output.LittleEndianWriter;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class Elem {
 
     public byte bMoveAction, bStat;
