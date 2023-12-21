@@ -1,4 +1,4 @@
-package client.layout;
+package client.keymap;
 
 public enum ExcludedKeyMap {
     PartySearch(25),

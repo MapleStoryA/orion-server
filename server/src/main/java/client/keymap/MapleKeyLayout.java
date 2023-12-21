@@ -1,4 +1,4 @@
-package client.layout;
+package client.keymap;
 
 import database.DatabaseConnection;
 import java.io.Serializable;

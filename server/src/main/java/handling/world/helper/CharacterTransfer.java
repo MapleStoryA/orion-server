@@ -10,7 +10,7 @@ import client.anticheat.ReportType;
 import client.inventory.MapleInventory;
 import client.inventory.MapleMount;
 import client.inventory.MaplePet;
-import client.layout.MapleKeyLayout;
+import client.keymap.MapleKeyLayout;
 import client.skill.EvanSkillPoints;
 import client.skill.ISkill;
 import client.skill.SkillEntry;

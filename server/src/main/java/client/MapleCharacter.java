@@ -14,7 +14,7 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MapleMount;
 import client.inventory.MaplePet;
 import client.inventory.MapleRing;
-import client.layout.MapleKeyLayout;
+import client.keymap.MapleKeyLayout;
 import client.skill.EvanSkillPoints;
 import client.skill.ISkill;
 import client.skill.SkillEntry;
