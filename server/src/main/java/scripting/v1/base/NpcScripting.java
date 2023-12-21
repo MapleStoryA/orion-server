@@ -5,10 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ContinuationPending;
 import org.mozilla.javascript.Scriptable;
-import scripting.ScriptMan;
 import scripting.v1.api.INpcScripting;
 import server.life.MapleNPC;
 import tools.helper.Api;
+import tools.packet.ScriptMan;
 import tools.packet.npcpool.NpcPoolPackets;
 
 @Slf4j

@@ -67,6 +67,7 @@ import tools.collection.Triple;
 import tools.helper.Randomizer;
 import tools.packet.CWVsContextOnMessagePackets;
 import tools.packet.PlayerShopPacket;
+import tools.packet.ScriptMan;
 
 @Slf4j
 public class NPCConversationManager extends AbstractPlayerInteraction {

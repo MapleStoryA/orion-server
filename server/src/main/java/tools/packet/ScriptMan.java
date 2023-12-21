@@ -1,4 +1,4 @@
-package scripting;
+package tools.packet;
 
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
