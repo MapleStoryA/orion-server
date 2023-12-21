@@ -1,8 +1,5 @@
 package constants.skills;
 
-/**
- * @author BubblesDev
- */
 @lombok.extern.slf4j.Slf4j
 public class Magician {
     public static final int IMPROVED_MP_RECOVERY = 2000000;

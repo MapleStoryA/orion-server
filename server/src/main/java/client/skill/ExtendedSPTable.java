@@ -8,7 +8,6 @@ package client.skill;
 import java.util.HashMap;
 import networking.data.output.OutPacket;
 
-/** @author Simon */
 @lombok.extern.slf4j.Slf4j
 public class ExtendedSPTable {
 

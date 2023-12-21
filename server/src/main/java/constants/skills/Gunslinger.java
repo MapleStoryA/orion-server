@@ -1,8 +1,5 @@
 package constants.skills;
 
-/**
- * @author BubblesDev
- */
 @lombok.extern.slf4j.Slf4j
 public class Gunslinger {
     public static final int GUN_MASTERY = 5200000;

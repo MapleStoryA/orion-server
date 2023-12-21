@@ -1,8 +1,5 @@
 package constants.skills;
 
-/**
- * @author BubblesDev
- */
 @lombok.extern.slf4j.Slf4j
 public class Page {
     public static final int SWORD_MASTERY = 1200000;

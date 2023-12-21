@@ -1,8 +1,5 @@
 package constants.skills;
 
-/**
- * @author BubblesDev
- */
 @lombok.extern.slf4j.Slf4j
 public class WhiteKnight {
     public static final int IMPROVING_MP_RECOVERY = 1210000;

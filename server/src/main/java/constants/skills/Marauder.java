@@ -1,8 +1,5 @@
 package constants.skills;
 
-/**
- * @author BubblesDev
- */
 @lombok.extern.slf4j.Slf4j
 public class Marauder {
     public static final int STUN_MASTERY = 5110000;

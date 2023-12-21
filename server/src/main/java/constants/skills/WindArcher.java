@@ -1,8 +1,5 @@
 package constants.skills;
 
-/**
- * @author BubblesDev
- */
 @lombok.extern.slf4j.Slf4j
 public class WindArcher {
     public static final int CRITICAL_SHOT = 13000000;

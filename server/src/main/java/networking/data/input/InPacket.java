@@ -3,9 +3,6 @@ package networking.data.input;
 /**
  * This provides an interface to a seekable accessor to a stream of little endian bytes.
  *
- * @author Frz
- * @version 1.0
- * @since Revision 299
  */
 public interface InPacket extends LittleEndianAccessor {
 

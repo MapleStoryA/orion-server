@@ -1,11 +1,5 @@
 package server.movement;
 
-/**
- * @Author Arnah
- * @Website http://Vertisy.ca/
- * @since Feb 13, 2017
- * Shit is from eric
- */
 public enum MoveActionType {
     Walk(1),
     Move(1),

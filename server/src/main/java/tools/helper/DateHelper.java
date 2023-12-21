@@ -5,13 +5,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.SimpleTimeZone;
 
-/**
- * Provides a suite of tools for manipulating Korean Timestamps.
- *
- * @author Frz
- * @version 1.0
- * @since Revision 746
- */
 @lombok.extern.slf4j.Slf4j
 public class DateHelper {
 

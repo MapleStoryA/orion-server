@@ -1,8 +1,5 @@
 package constants.skills;
 
-/**
- * @author BubblesDev
- */
 @lombok.extern.slf4j.Slf4j
 public class ILArchMage {
     public static final int MAPLE_WARRIOR = 2221000;

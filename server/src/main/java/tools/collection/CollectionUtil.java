@@ -3,13 +3,6 @@ package tools.collection;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Provides utilities for manipulating collections of objects.
- *
- * @author Frz
- * @version 1.0
- * @since Revision 701
- */
 @lombok.extern.slf4j.Slf4j
 public class CollectionUtil {
 

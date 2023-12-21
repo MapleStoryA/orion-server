@@ -5,10 +5,6 @@ import tools.helper.HexTool;
 
 /**
  * Writes a maplestory-packet little-endian stream of bytes.
- *
- * @author Frz
- * @version 1.0
- * @since Revision 352
  */
 @lombok.extern.slf4j.Slf4j
 public class OutPacket extends GenericLittleEndianWriter {

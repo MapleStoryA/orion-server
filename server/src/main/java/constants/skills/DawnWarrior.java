@@ -1,8 +1,5 @@
 package constants.skills;
 
-/**
- * @author BubblesDev
- */
 @lombok.extern.slf4j.Slf4j
 public class DawnWarrior {
     public static final int MAX_HP_INCREASE = 11000000;

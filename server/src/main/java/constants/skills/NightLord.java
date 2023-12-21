@@ -1,8 +1,5 @@
 package constants.skills;
 
-/**
- * @author BubblesDev
- */
 @lombok.extern.slf4j.Slf4j
 public class NightLord {
     public static final int MAPLE_WARRIOR = 4121000;

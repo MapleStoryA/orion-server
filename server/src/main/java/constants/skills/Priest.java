@@ -1,8 +1,5 @@
 package constants.skills;
 
-/**
- * @author BubblesDev
- */
 @lombok.extern.slf4j.Slf4j
 public class Priest {
     public static final int ELEMENTAL_RESISTANCE = 2310000;

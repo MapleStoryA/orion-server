@@ -6,10 +6,6 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * Provides a generic writer of a little-endian sequence of bytes.
- *
- * @author Frz
- * @version 1.0
- * @since Revision 323
  */
 @lombok.extern.slf4j.Slf4j
 public class GenericLittleEndianWriter implements LittleEndianWriter {

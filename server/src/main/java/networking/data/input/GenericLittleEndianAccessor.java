@@ -4,10 +4,6 @@ import java.awt.*;
 
 /**
  * Provides a generic interface to a Little Endian stream of bytes.
- *
- * @author Frz
- * @version 1.0
- * @since Revision 323
  */
 @lombok.extern.slf4j.Slf4j
 public class GenericLittleEndianAccessor implements LittleEndianAccessor {

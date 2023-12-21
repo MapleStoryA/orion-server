@@ -1,8 +1,5 @@
 package constants.skills;
 
-/**
- * @author BubblesDev
- */
 @lombok.extern.slf4j.Slf4j
 public class BlazeWizard {
     public static final int ELEMENTAL_RESET = 12101005;

@@ -1,8 +1,5 @@
 package constants.skills;
 
-/**
- * @author BubblesDev
- */
 @lombok.extern.slf4j.Slf4j
 public class Noblesse {
     public static final int BLESSING_OF_THE_FAIRY = 10000012;

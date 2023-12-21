@@ -12,10 +12,6 @@ import tools.helper.HexTool;
 
 /**
  * Provides a class for encrypting MapleStory packets with AES OFB encryption.
- *
- * @author Frz
- * @version 1.0
- * @since Revision 320
  */
 @lombok.extern.slf4j.Slf4j
 public class MapleAESOFB {

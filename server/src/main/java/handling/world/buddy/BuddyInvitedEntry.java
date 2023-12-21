@@ -2,9 +2,6 @@ package handling.world.buddy;
 
 import java.util.Objects;
 
-/**
- * @author AuroX
- */
 @lombok.extern.slf4j.Slf4j
 public class BuddyInvitedEntry {
 

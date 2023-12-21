@@ -3,13 +3,6 @@ package networking.data.input;
 import java.io.IOException;
 import tools.helper.HexTool;
 
-/**
- * Provides for an abstraction layer for an array of bytes.
- *
- * @author Frz
- * @version 1.0
- * @since Revision 326
- */
 @lombok.extern.slf4j.Slf4j
 public class ByteArrayByteStream implements SeekableInputStreamBytestream {
 

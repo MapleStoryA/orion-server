@@ -1,8 +1,5 @@
 package constants.skills;
 
-/**
- * @author BubblesDev
- */
 @lombok.extern.slf4j.Slf4j
 public class Brawler {
     public static final int IMPROVE_MAX_HP = 5100000;

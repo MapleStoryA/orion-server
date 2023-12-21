@@ -1,8 +1,5 @@
 package constants.skills;
 
-/**
- * @author BubblesDev
- */
 @lombok.extern.slf4j.Slf4j
 public class SuperGM {
     public static final int HEAL_PLUS_DISPEL = 9101000;

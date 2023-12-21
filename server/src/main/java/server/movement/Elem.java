@@ -3,11 +3,6 @@ package server.movement;
 import networking.data.input.InPacket;
 import networking.data.output.LittleEndianWriter;
 
-/**
- * @Author Arnah @Website http://Vertisy.ca/
- *
- * @since Jun 22, 2017
- */
 @lombok.extern.slf4j.Slf4j
 public class Elem {
 

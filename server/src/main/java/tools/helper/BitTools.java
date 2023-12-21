@@ -1,12 +1,5 @@
 package tools.helper;
 
-/**
- * Provides static methods for working with raw byte sequences.
- *
- * @author Frz
- * @version 1.0
- * @since Revision 206
- */
 @lombok.extern.slf4j.Slf4j
 public class BitTools {
 

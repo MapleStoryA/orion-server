@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/** @author AuroX */
 @lombok.extern.slf4j.Slf4j
 public class JobConstants {
 

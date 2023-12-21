@@ -9,7 +9,6 @@ import server.SpeedQuizFactory.QuizEntry;
 import tools.MaplePacketCreator;
 import tools.helper.Randomizer;
 
-/** @author AuroX */
 @lombok.extern.slf4j.Slf4j
 public class SpeedQuiz {
 

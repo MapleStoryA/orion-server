@@ -3,13 +3,6 @@ package tools.helper;
 import java.io.ByteArrayOutputStream;
 import org.apache.mina.common.ByteBuffer;
 
-/**
- * Provides a class for manipulating hexadecimal numbers.
- *
- * @author Frz
- * @version 1.0
- * @since Revision 206
- */
 @lombok.extern.slf4j.Slf4j
 public class HexTool {
 
