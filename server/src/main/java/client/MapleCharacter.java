@@ -380,7 +380,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         if (!isChannel) {
             ret.client.setChannel(ct.getChannel());
         }
-        ret.id = ct.getSetCharacterId();
+        ret.id = ct.getCharacterId();
         ret.setName(ct.getName());
         ret.level = ct.getLevel();
         ret.fame = ct.getFame();

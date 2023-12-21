@@ -37,8 +37,8 @@ public class CharacterTransfer {
     private final Map<Integer, Object> quest = new LinkedHashMap<>();
 
     private final Map<Integer, Object> customQuests = new LinkedHashMap<>();
-    private final Map<Integer, SkillEntry> Skills = new LinkedHashMap<>();
-    private int setCharacterId;
+    private final Map<Integer, SkillEntry> skills = new LinkedHashMap<>();
+    private int characterId;
     private AccountData accountData;
     private int exp;
     private int meso;
@@ -117,12 +117,132 @@ public class CharacterTransfer {
     private EvanSkillPoints evanSP;
 
     public CharacterTransfer(final MapleCharacter chr) {
-        this.setSetCharacterId(chr.getId());
+        addWorld(chr);
+        addCash(chr);
+        addBasicStats(chr);
+        addMapInfo(chr);
+        addGuild(chr);
+        addSummon(chr);
+        addPets(chr);
+        addBuddyList(chr);
+        addReports(chr);
+        addQuest(chr);
+        addMessenger(chr);
+        addSkills(chr);
+        addLastUpdatedInfo(chr);
+        addMount(chr);
+        addDojo(chr);
+        addMonsterBook(chr);
+        this.setFinishedAchievements(chr.getFinishedAchievements());
+        this.setChalkboard(chr.getChalkboard());
+        this.setStorage(chr.getStorage());
+        this.setInventories(chr.getInventories());
+        this.setKeyMap(chr.getKeyLayout());
+        this.setCashInventory(chr.getCashInventory());
+        this.setSavedLocations(chr.getSavedLocations());
+        this.setWishlist(chr.getWishlist());
+        this.setVipTeleportRocks(chr.getVipTeleportRock().toArray());
+        this.setRegularTeleportRocks(chr.getRegTeleportRock().toArray());
+        for (final Integer value : chr.getFamedCharacters()) {
+            this.getFamedCharacters().add(value);
+        }
+    }
+
+    private void addMonsterBook(MapleCharacter chr) {
+        this.setMBookCover(chr.getMonsterBookCover());
+        this.setMapleBookCards(chr.getMonsterBook().getCards());
+    }
+
+    private void addDojo(MapleCharacter chr) {
+        this.setDojo(chr.getDojo());
+        this.setDojoRecord((byte) chr.getDojoRecord());
+    }
+
+    private void addMessenger(MapleCharacter chr) {
+        if (chr.getMessenger() != null) {
+            this.setMessenger_id(chr.getMessenger().getId());
+        } else {
+            this.setMessenger_id(0);
+        }
+    }
+
+    private void addQuest(MapleCharacter chr) {
+        this.setInfoQuest(chr.getInfoQuest_Map());
+
+        for (final Map.Entry<MapleQuest, MapleQuestStatus> qs :
+                chr.getQuest_Map().entrySet()) {
+            this.getQuest().put(qs.getKey().getId(), qs.getValue());
+        }
+    }
+
+    private void addWorld(MapleCharacter chr) {
+        this.setChannel((byte) chr.getClient().getChannel());
+        this.setWorld(chr.getWorld());
+    }
+
+    private void addLastUpdatedInfo(MapleCharacter chr) {
+        this.setLoginTime(chr.getLoginTime());
+        this.setLastFameTime(chr.getLastFameTime());
+        this.setLastRecoveryTime(chr.getLastRecoveryTime());
+        this.setLastDragonBloodTime(chr.getLastDragonBloodTime());
+        this.setLastBerserkTime(chr.getLastBerserkTime());
+        this.setLastHPTime(chr.getLastHPTime());
+        this.setLastMPTime(chr.getLastMPTime());
+        this.setLastFairyTime(chr.getLastFairyTime());
+    }
+
+    private void addReports(MapleCharacter chr) {
+        for (Map.Entry<ReportType, Integer> ss : chr.getReports().entrySet()) {
+            this.getReports().put(ss.getKey().i, ss.getValue());
+        }
+    }
+
+    private void addBuddyList(MapleCharacter chr) {
+        for (final BuddyListEntry qs : chr.getBuddyList().getBuddies()) {
+            this.getBuddies().add(new BuddyListEntry(qs.getName(), qs.getCharacterId(), qs.getGroup(), -1));
+        }
+        this.setBuddySize(chr.getBuddyCapacity());
+    }
+
+    private void addPets(MapleCharacter chr) {
+        this.setPetStore(chr.getPetStores());
+
+        boolean uneq = false;
+        for (int i = 0; i < this.getPetStore().length; i++) {
+            final MaplePet pet = chr.getPet(i);
+            if (this.getPetStore()[i] == 0) {
+                this.getPetStore()[i] = (byte) -1;
+            }
+            if (pet != null) {
+                uneq = true;
+                this.getPetStore()[i] = (byte) Math.max(this.getPetStore()[i], pet.getInventoryPosition());
+            }
+        }
+        if (uneq) {
+            chr.unequipAllPets();
+        }
+    }
+
+    private void addSummon(MapleCharacter chr) {
+        this.setMorphId(chr.getMorphId());
+        this.setBattleshipHP(chr.currentBattleshipHP());
+    }
+
+    private void addGuild(MapleCharacter chr) {
+        this.setGuild_id(chr.getGuildId());
+        this.setGuildRank(chr.getGuildRank());
+        this.setAllianceRank(chr.getAllianceRank());
+    }
+
+    private void addMapInfo(MapleCharacter chr) {
+        this.setMap_id(chr.getMapId());
+        this.setInitialSpawnPoint(chr.getInitialSpawnpoint());
+    }
+
+    private void addBasicStats(MapleCharacter chr) {
+        this.setCharacterId(chr.getId());
         this.setAccountData(chr.getClient().getAccountData());
         this.accountName = chr.getClient().getAccountData().getName();
-        this.setChannel((byte) chr.getClient().getChannel());
-        this.setNxCredit(chr.getCSPoints(1));
-        this.setMaplePoints(chr.getCSPoints(2));
         this.setName(chr.getName());
         this.setFame(chr.getFame());
         this.setGender(chr.getGender());
@@ -144,91 +264,28 @@ public class CharacterTransfer {
         this.setJob((short) chr.getJob().getId());
         this.setHair(chr.getHair());
         this.setFace(chr.getFace());
-        this.setMap_id(chr.getMapId());
-        this.setInitialSpawnPoint(chr.getInitialSpawnpoint());
-        this.setMarriageId(chr.getMarriageId());
-        this.setWorld(chr.getWorld());
-        this.setGuild_id(chr.getGuildId());
-        this.setGuildRank(chr.getGuildRank());
-        this.setAllianceRank(chr.getAllianceRank());
-        this.setFairyExp(chr.getFairyExp());
-        this.setPetStore(chr.getPetStores());
-        this.setSubcategory(chr.getSubCategoryField());
-        this.setMorphId(chr.getMorphId());
-        this.setBattleshipHP(chr.currentBattleshipHP());
         this.setEvanSP(chr.getEvanSP());
-        boolean uneq = false;
-        for (int i = 0; i < this.getPetStore().length; i++) {
-            final MaplePet pet = chr.getPet(i);
-            if (this.getPetStore()[i] == 0) {
-                this.getPetStore()[i] = (byte) -1;
-            }
-            if (pet != null) {
-                uneq = true;
-                this.getPetStore()[i] = (byte) Math.max(this.getPetStore()[i], pet.getInventoryPosition());
-            }
-        }
-        if (uneq) {
-            chr.unequipAllPets();
-        }
-        for (final BuddyListEntry qs : chr.getBuddyList().getBuddies()) {
-            this.getBuddies().add(new BuddyListEntry(qs.getName(), qs.getCharacterId(), qs.getGroup(), -1));
-        }
-        for (Map.Entry<ReportType, Integer> ss : chr.getReports().entrySet()) {
-            this.getReports().put(ss.getKey().i, ss.getValue());
-        }
-        this.setBuddySize(chr.getBuddyCapacity());
-
+        this.setSubcategory(chr.getSubCategoryField());
+        this.setMarriageId(chr.getMarriageId());
+        this.setFairyExp(chr.getFairyExp());
         this.setParty_id(chr.getPartyId());
+    }
 
-        if (chr.getMessenger() != null) {
-            this.setMessenger_id(chr.getMessenger().getId());
-        } else {
-            this.setMessenger_id(0);
-        }
+    private void addCash(MapleCharacter chr) {
+        this.setNxCredit(chr.getCSPoints(1));
+        this.setMaplePoints(chr.getCSPoints(2));
+    }
 
-        this.setFinishedAchievements(chr.getFinishedAchievements());
-
-        this.setMBookCover(chr.getMonsterBookCover());
-        this.setDojo(chr.getDojo());
-        this.setDojoRecord((byte) chr.getDojoRecord());
-
-        this.setInfoQuest(chr.getInfoQuest_Map());
-
-        for (final Map.Entry<MapleQuest, MapleQuestStatus> qs :
-                chr.getQuest_Map().entrySet()) {
-            this.getQuest().put(qs.getKey().getId(), qs.getValue());
-        }
-
-        this.setMapleBookCards(chr.getMonsterBook().getCards());
-        this.setInventories(chr.getInventories());
-
+    private void addSkills(MapleCharacter chr) {
         for (final Map.Entry<ISkill, SkillEntry> qs : chr.getSkills().entrySet()) {
             this.getSkills().put(qs.getKey().getId(), qs.getValue());
         }
 
         this.setBlessOfFairy(chr.getBlessOfFairyOrigin());
-        this.setChalkboard(chr.getChalkboard());
         this.setSkillMacros(chr.getSkillMacros());
-        this.setKeyMap(chr.getKeyLayout());
-        this.setSavedLocations(chr.getSavedLocations());
-        this.setWishlist(chr.getWishlist());
-        this.setVipTeleportRocks(chr.getVipTeleportRock().toArray());
-        this.setRegularTeleportRocks(chr.getRegTeleportRock().toArray());
-        for (final Integer zz : chr.getFamedCharacters()) {
-            this.getFamedCharacters().add(zz);
-        }
-        this.setLastFameTime(chr.getLastFameTime());
-        this.setLoginTime(chr.getLoginTime());
-        this.setLastRecoveryTime(chr.getLastRecoveryTime());
-        this.setLastDragonBloodTime(chr.getLastDragonBloodTime());
-        this.setLastBerserkTime(chr.getLastBerserkTime());
-        this.setLastHPTime(chr.getLastHPTime());
-        this.setLastMPTime(chr.getLastMPTime());
-        this.setLastFairyTime(chr.getLastFairyTime());
-        this.setStorage(chr.getStorage());
-        this.setCashInventory(chr.getCashInventory());
+    }
 
+    private void addMount(MapleCharacter chr) {
         final MapleMount mount = chr.getMount();
         this.setMount_item_id(mount.getItemId());
         this.setMount_Fatigue(mount.getFatigue());
