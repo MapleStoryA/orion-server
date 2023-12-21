@@ -5,10 +5,10 @@ import client.MapleClient;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
-import handling.AbstractMaplePacketHandler;
-import handling.world.helper.BroadcastHelper;
+import handling.world.Broadcast;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
+import networking.packet.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import server.RandomRewards;
 import tools.MaplePacketCreator;
@@ -72,7 +72,7 @@ public class UseTreasureChestHandler extends AbstractMaplePacketHandler {
             c.getSession().write(MaplePacketCreator.getShowItemGain(reward, (short) amount, true));
 
             if (GameConstants.gachaponRareItem(item.getItemId()) > 0) {
-                BroadcastHelper.broadcastMessage(MaplePacketCreator.getGachaponMega(
+                Broadcast.broadcastMessage(MaplePacketCreator.getGachaponMega(
                         "[" + box + " Chest] " + c.getPlayer().getName(), " : Lucky winner of Gachapon!", item, (byte)
                                 2));
             }

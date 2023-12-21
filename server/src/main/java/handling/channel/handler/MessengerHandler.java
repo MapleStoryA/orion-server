@@ -2,13 +2,13 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import handling.AbstractMaplePacketHandler;
 import handling.world.WorldServer;
-import handling.world.helper.MapleMessenger;
-import handling.world.helper.MapleMessengerCharacter;
+import handling.world.messenger.MapleMessenger;
+import handling.world.messenger.MapleMessengerCharacter;
 import handling.world.messenger.MessengerManager;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
+import networking.packet.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
 
 @Slf4j

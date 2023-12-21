@@ -1,11 +1,10 @@
-package handling.world.helper;
+package handling.world;
 
 import client.MapleCharacter;
 import handling.channel.ChannelServer;
-import handling.world.WorldServer;
 import java.util.List;
 
-public class BroadcastHelper {
+public class Broadcast {
 
     public static void broadcastSmega(byte[] message) {
         for (ChannelServer cs : WorldServer.getInstance().getAllChannels()) {

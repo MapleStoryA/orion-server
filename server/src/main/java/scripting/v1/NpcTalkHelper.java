@@ -54,10 +54,10 @@ public class NpcTalkHelper {
         }
     }
 
-    public static void proceedConversation(InPacket slea, MapleClient client) {
-        int talk = slea.readByte();
+    public static void proceedConversation(InPacket packet, MapleClient client) {
+        int talk = packet.readByte();
         Talk type = Talk.from(talk);
-        int action = slea.readByte();
+        int action = packet.readByte();
         NpcScripting script = client.getCurrentNpcScript();
         if (script == null) {
             client.enableActions();
@@ -89,7 +89,7 @@ public class NpcTalkHelper {
                 switch (action) {
                     case ChatAction.ACTION_BACK_OR_NO:
                     case ChatAction.ACTION_NEXT:
-                        int result = AskAvatarHelper.processAskAvatar(client.getPlayer(), slea.readByte(), false);
+                        int result = AskAvatarHelper.processAskAvatar(client.getPlayer(), packet.readByte(), false);
                         script.resume(result);
                 }
                 break;
@@ -97,7 +97,7 @@ public class NpcTalkHelper {
             case ASK_QUESTION:
                 switch (action) {
                     case ChatAction.ACTION_NEXT:
-                        script.resume(Integer.valueOf(slea.readInt()));
+                        script.resume(Integer.valueOf(packet.readInt()));
                     case ChatAction.ACTION_BACK_OR_NO:
                         break;
                 }
@@ -105,7 +105,7 @@ public class NpcTalkHelper {
             case ASK_NUMBER: {
                 switch (action) {
                     case ChatAction.ACTION_NEXT:
-                        script.resume(slea.readInt());
+                        script.resume(packet.readInt());
                     case ChatAction.ACTION_BACK_OR_NO:
                         break;
                 }
@@ -114,7 +114,7 @@ public class NpcTalkHelper {
             case ASK_TEXT: {
                 switch (action) {
                     case ChatAction.ACTION_NEXT:
-                        script.resume(slea.readMapleAsciiString());
+                        script.resume(packet.readMapleAsciiString());
                     case ChatAction.ACTION_BACK_OR_NO:
                         break;
                 }

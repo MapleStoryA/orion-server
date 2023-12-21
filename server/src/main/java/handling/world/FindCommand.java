@@ -1,6 +1,6 @@
-package handling.world.helper;
+package handling.world;
 
-import handling.world.WorldServer;
+import handling.channel.CharacterIdChannelPair;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;

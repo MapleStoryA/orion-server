@@ -1,4 +1,4 @@
-package handling.world.helper;
+package handling.world.messenger;
 
 import client.MapleCharacter;
 import java.io.Serializable;

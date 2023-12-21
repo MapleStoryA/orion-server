@@ -2,11 +2,11 @@ package networking.mina;
 
 import client.MapleClient;
 import constants.ServerConstants;
-import handling.DefaultPacketHandler;
 import handling.cashshop.CashShopServer;
 import handling.world.WorldServer;
 import lombok.extern.slf4j.Slf4j;
 import networking.NetworkSession;
+import networking.packet.DefaultPacketHandler;
 import networking.packet.PacketProcessor;
 import org.apache.mina.common.IdleStatus;
 import org.apache.mina.common.IoHandlerAdapter;

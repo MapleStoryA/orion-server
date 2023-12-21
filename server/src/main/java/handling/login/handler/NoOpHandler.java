@@ -1,8 +1,8 @@
 package handling.login.handler;
 
 import client.MapleClient;
-import handling.AbstractMaplePacketHandler;
 import networking.data.input.InPacket;
+import networking.packet.AbstractMaplePacketHandler;
 
 public class NoOpHandler extends AbstractMaplePacketHandler {
     @Override

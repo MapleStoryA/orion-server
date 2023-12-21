@@ -7,13 +7,13 @@ import client.inventory.MapleInventoryType;
 import database.CharacterData;
 import database.CharacterListResult;
 import database.LoginService;
-import handling.AbstractMaplePacketHandler;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import networking.data.output.OutPacket;
+import networking.packet.AbstractMaplePacketHandler;
 import networking.packet.SendPacketOpcode;
 
 @Slf4j

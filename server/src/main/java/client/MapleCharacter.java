@@ -46,17 +46,16 @@ import handling.ServerMigration;
 import handling.cashshop.CashShop;
 import handling.channel.ChannelServer;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
+import handling.world.Broadcast;
 import handling.world.WorldServer;
 import handling.world.buddy.BuddyListEntry;
 import handling.world.buddy.MapleBuddyList;
 import handling.world.guild.GuildManager;
 import handling.world.guild.MapleGuild;
 import handling.world.guild.MapleGuildCharacter;
-import handling.world.helper.BroadcastHelper;
 import handling.world.helper.CharacterTransfer;
-import handling.world.helper.MapleMessenger;
-import handling.world.helper.MapleMessengerCharacter;
-import handling.world.helper.PlayerBuffValueHolder;
+import handling.world.messenger.MapleMessenger;
+import handling.world.messenger.MapleMessengerCharacter;
 import handling.world.messenger.MessengerManager;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
@@ -2430,7 +2429,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             return;
         }
         String str = "[Lv. %s] Congratulations to %s on becoming a %s!";
-        BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(
+        Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(
                 6, String.format(str, stats.getLevel(), getName(), this.job.getName())));
     }
 
@@ -3308,7 +3307,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             }
             sb.append(getName());
             sb.append(" has achieved Level " + level + ". Let us Celebrate Maplers!");
-            BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(6, sb.toString()));
+            Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(6, sb.toString()));
         }
     }
 

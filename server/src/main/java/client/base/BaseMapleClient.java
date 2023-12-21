@@ -1,4 +1,4 @@
-package handling;
+package client.base;
 
 import constants.ServerConstants;
 import java.util.concurrent.ScheduledFuture;

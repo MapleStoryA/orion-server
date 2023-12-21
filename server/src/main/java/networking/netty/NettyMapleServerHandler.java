@@ -2,7 +2,6 @@ package networking.netty;
 
 import client.MapleClient;
 import constants.ServerConstants;
-import handling.DefaultPacketHandler;
 import handling.cashshop.CashShopServer;
 import handling.world.WorldServer;
 import io.netty.channel.ChannelHandlerContext;
@@ -11,6 +10,7 @@ import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.AttributeKey;
 import lombok.extern.slf4j.Slf4j;
+import networking.packet.DefaultPacketHandler;
 import networking.packet.PacketProcessor;
 import tools.helper.Randomizer;
 import tools.packet.LoginPacket;

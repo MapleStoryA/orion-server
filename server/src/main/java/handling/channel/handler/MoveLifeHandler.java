@@ -2,7 +2,6 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import handling.AbstractMaplePacketHandler;
 import java.awt.*;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
@@ -16,27 +15,27 @@ import tools.helper.Randomizer;
 import tools.packet.MobPacket;
 
 @Slf4j
-public class MoveLifeHandler extends AbstractMaplePacketHandler {
+public class MoveLifeHandler extends BaseMoveHandler {
 
     @Override
-    public void handlePacket(InPacket slea, MapleClient c) {
+    public void handlePacket(InPacket packet, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if (chr == null || chr.getMap() == null) {
             return; // ?
         }
-        final int oid = slea.readInt();
+        final int oid = packet.readInt();
         final MapleMonster monster = chr.getMap().getMonsterByOid(oid);
 
         if (monster == null) { // movin something which is not a monster
             return;
         }
-        final short moveid = slea.readShort();
-        final boolean useSkill = slea.readByte() > 0;
-        final byte skill = slea.readByte();
-        final int skill1 = slea.readByte() & 0xFF; // unsigned?
-        final int skill2 = slea.readByte();
-        final int skill3 = slea.readByte();
-        final int skill4 = slea.readByte();
+        final short moveid = packet.readShort();
+        final boolean useSkill = packet.readByte() > 0;
+        final byte skill = packet.readByte();
+        final int skill1 = packet.readByte() & 0xFF; // unsigned?
+        final int skill2 = packet.readByte();
+        final int skill3 = packet.readByte();
+        final int skill4 = packet.readByte();
         int realskill = 0;
         int level = 0;
 
@@ -80,27 +79,27 @@ public class MoveLifeHandler extends AbstractMaplePacketHandler {
             }
         }
 
-        int size = slea.readInt();
+        int size = packet.readInt();
         for (int i = 0; i < size; i++) {
-            slea.readInt();
-            slea.readInt();
+            packet.readInt();
+            packet.readInt();
         }
-        size = slea.readInt(); // ?
+        size = packet.readInt(); // ?
         for (int i = 0; i < size; i++) {
-            slea.readInt();
+            packet.readInt();
         }
-        slea.readByte();
-        slea.readInt();
-        slea.readInt();
-        slea.readInt();
-        slea.readInt();
+        packet.readByte();
+        packet.readInt();
+        packet.readInt();
+        packet.readInt();
+        packet.readInt();
         final MovePath res = new MovePath();
         final MapleMap map = chr.getMap();
-        res.decode(slea);
+        res.decode(packet);
         if (res != null && chr != null) {
-            byte[] packet = MobPacket.moveMonsterResponse(
+            byte[] movePacket = MobPacket.moveMonsterResponse(
                     monster.getObjectId(), moveid, monster.getMp(), monster.isControllerHasAggro(), realskill, level);
-            c.getSession().write(packet);
+            c.getSession().write(movePacket);
             updatePosition(res, monster, -1);
             final Point endPos = monster.getPosition();
             map.moveMonster(monster, endPos);

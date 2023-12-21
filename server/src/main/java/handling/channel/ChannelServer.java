@@ -1,9 +1,9 @@
 package handling.channel;
 
 import client.MapleCharacter;
+import client.anticheat.CheaterData;
 import handling.login.LoginServer;
 import handling.world.WorldServer;
-import handling.world.helper.CheaterData;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumMap;

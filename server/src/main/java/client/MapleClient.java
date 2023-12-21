@@ -1,21 +1,21 @@
 package client;
 
+import client.base.BaseMapleClient;
 import database.AccountData;
 import database.DatabaseConnection;
 import database.LoginResult;
 import database.LoginService;
 import database.LoginState;
-import handling.BaseMapleClient;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
+import handling.world.FindCommand;
 import handling.world.WorldServer;
 import handling.world.buddy.BuddyManager;
 import handling.world.buddy.MapleBuddyList;
 import handling.world.guild.GuildManager;
 import handling.world.guild.MapleGuildCharacter;
-import handling.world.helper.FindCommand;
-import handling.world.helper.MapleMessengerCharacter;
+import handling.world.messenger.MapleMessengerCharacter;
 import handling.world.messenger.MessengerManager;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;

@@ -2,12 +2,12 @@ package handling.channel.handler;
 
 import client.MapleClient;
 import client.inventory.IItem;
-import handling.AbstractMaplePacketHandler;
 import handling.channel.handler.utils.HiredMerchantHandlerUtils;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
+import networking.packet.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
-import server.MerchItemPackage;
+import server.shops.MerchItemPackage;
 import tools.packet.PlayerShopPacket;
 
 @Slf4j

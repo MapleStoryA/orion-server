@@ -4,9 +4,9 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.base.MapleCharacterHelper;
 import database.DatabaseConnection;
+import handling.world.Broadcast;
 import handling.world.alliance.AllianceManager;
 import handling.world.guild.MapleBBSThread.MapleBBSReply;
-import handling.world.helper.BroadcastHelper;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -461,7 +461,7 @@ public class MapleGuild implements java.io.Serializable {
                     } else if (bcop == BCOp.NAMECHANGE) {
                         GuildManager.changeName(id, mgc.getId(), new MapleGuildSummary(this));
                     } else {
-                        BroadcastHelper.sendGuildPacket(mgc.getId(), packet, exceptionId, id);
+                        Broadcast.sendGuildPacket(mgc.getId(), packet, exceptionId, id);
                     }
                 }
             }

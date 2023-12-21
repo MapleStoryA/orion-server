@@ -1,10 +1,10 @@
 package handling.channel.handler;
 
 import client.MapleClient;
-import handling.AbstractMaplePacketHandler;
 import java.util.Map.Entry;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
+import networking.packet.AbstractMaplePacketHandler;
 import server.maps.MapleDragon;
 import server.maps.MapleSummon;
 import tools.MaplePacketCreator;

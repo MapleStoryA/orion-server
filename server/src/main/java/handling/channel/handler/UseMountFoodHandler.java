@@ -6,9 +6,9 @@ import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import client.inventory.MapleMount;
 import constants.GameConstants;
-import handling.AbstractMaplePacketHandler;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
+import networking.packet.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import tools.MaplePacketCreator;
 

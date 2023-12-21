@@ -24,8 +24,8 @@ package server.events;
 
 import client.MapleCharacter;
 import handling.channel.ChannelServer;
+import handling.world.Broadcast;
 import handling.world.WorldServer;
-import handling.world.helper.BroadcastHelper;
 import server.MapleInventoryManipulator;
 import server.RandomRewards;
 import server.base.timer.Timer.EventTimer;
@@ -108,7 +108,7 @@ public abstract class MapleEvent {
         }
         cserv.setEvent(cserv.getEvent(event).mapid[0]);
         cserv.getEvent(event).reset();
-        BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(
+        Broadcast.broadcastMessage(MaplePacketCreator.serverNotice(
                 0,
                 "Hello! Let's play a "
                         + event

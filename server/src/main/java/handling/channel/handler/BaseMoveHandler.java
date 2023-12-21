@@ -1,18 +1,12 @@
-package handling;
+package handling.channel.handler;
 
-import client.MapleClient;
 import java.awt.*;
-import networking.packet.MaplePacketHandler;
+import networking.packet.AbstractMaplePacketHandler;
 import server.maps.AnimatedMapleMapObject;
 import server.movement.Elem;
 import server.movement.MovePath;
 
-public abstract class AbstractMaplePacketHandler implements MaplePacketHandler {
-
-    @Override
-    public boolean validateState(MapleClient c) {
-        return c.isLoggedIn();
-    }
+public abstract class BaseMoveHandler extends AbstractMaplePacketHandler {
 
     protected void updatePosition(MovePath path, AnimatedMapleMapObject target, int yoffset) {
         for (Elem elem : path.lElem) {

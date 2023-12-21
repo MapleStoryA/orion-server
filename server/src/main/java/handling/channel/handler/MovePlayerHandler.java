@@ -2,7 +2,6 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import handling.AbstractMaplePacketHandler;
 import java.awt.*;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
@@ -11,7 +10,7 @@ import server.movement.MovePath;
 import tools.MaplePacketCreator;
 
 @Slf4j
-public class MovePlayerHandler extends AbstractMaplePacketHandler {
+public class MovePlayerHandler extends BaseMoveHandler {
 
     @Override
     public void handlePacket(InPacket packet, MapleClient c) {

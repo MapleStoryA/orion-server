@@ -1,4 +1,4 @@
-package handling.world.helper;
+package handling.world.messenger;
 
 import java.io.Serializable;
 import java.util.Arrays;

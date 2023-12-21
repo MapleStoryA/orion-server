@@ -2,7 +2,7 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import handling.AbstractMaplePacketHandler;
+import handling.world.FindCommand;
 import handling.world.WorldServer;
 import handling.world.buddy.BuddyInvitedEntry;
 import handling.world.buddy.BuddyListEntry;
@@ -10,9 +10,9 @@ import handling.world.buddy.BuddyManager;
 import handling.world.buddy.MapleBuddyList;
 import handling.world.buddy.MapleBuddyList.BuddyAddResult;
 import handling.world.buddy.MapleBuddyList.BuddyDelResult;
-import handling.world.helper.FindCommand;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
+import networking.packet.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
 import tools.collection.Pair;
 
