@@ -1,4 +1,4 @@
-package server;
+package server.shutdown;
 
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;

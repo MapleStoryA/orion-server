@@ -5,8 +5,8 @@ import handling.world.helper.BroadcastHelper;
 import java.awt.*;
 import lombok.extern.slf4j.Slf4j;
 import server.MapleItemInformationProvider;
-import server.Timer.EventTimer;
 import server.config.ServerConfig;
+import server.timer.Timer.EventTimer;
 import tools.MaplePacketCreator;
 import tools.helper.Randomizer;
 

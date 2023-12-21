@@ -8,7 +8,7 @@ import constants.skills.BladeMaster;
 import handling.AbstractMaplePacketHandler;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
-import server.TimerManager;
+import server.timer.TimerManager;
 import tools.MaplePacketCreator;
 
 @Slf4j

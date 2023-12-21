@@ -1,4 +1,4 @@
-package server;
+package server.timer;
 
 import java.lang.management.ManagementFactory;
 import java.util.concurrent.ScheduledFuture;

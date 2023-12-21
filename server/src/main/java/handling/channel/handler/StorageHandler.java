@@ -2,6 +2,7 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import client.anticheat.AutobanManager;
 import client.inventory.IItem;
 import client.inventory.ItemFlag;
 import client.inventory.MapleInventoryType;
@@ -9,7 +10,6 @@ import constants.GameConstants;
 import handling.AbstractMaplePacketHandler;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
-import server.AutobanManager;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MapleStorage;

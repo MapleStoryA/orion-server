@@ -8,9 +8,9 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import networking.GameServer;
 import networking.packet.PacketProcessor;
-import server.Timer;
 import server.config.Config;
 import server.config.ServerConfig;
+import server.timer.Timer;
 import tools.MaplePacketCreator;
 import tools.packet.LoginPacket;
 

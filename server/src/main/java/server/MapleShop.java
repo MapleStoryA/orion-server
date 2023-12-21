@@ -1,6 +1,7 @@
 package server;
 
 import client.MapleClient;
+import client.anticheat.AutobanManager;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryIdentifier;
 import client.inventory.MapleInventoryType;

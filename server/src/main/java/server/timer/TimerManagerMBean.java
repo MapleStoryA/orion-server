@@ -1,4 +1,4 @@
-package server;
+package server.timer;
 
 public interface TimerManagerMBean {
 

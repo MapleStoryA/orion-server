@@ -27,9 +27,9 @@ import client.MapleStat;
 import java.util.Map.Entry;
 import java.util.concurrent.ScheduledFuture;
 import lombok.extern.slf4j.Slf4j;
-import server.Timer.EventTimer;
 import server.events.MapleOxQuizFactory.MapleOxQuizEntry;
 import server.maps.MapleMap;
+import server.timer.Timer.EventTimer;
 import tools.MaplePacketCreator;
 import tools.collection.Pair;
 

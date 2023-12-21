@@ -2,6 +2,7 @@ package handling.channel.handler.utils;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import client.anticheat.AutobanManager;
 import client.inventory.IEquip;
 import client.inventory.IEquip.ScrollResult;
 import client.inventory.IItem;
@@ -14,7 +15,6 @@ import handling.world.party.MaplePartyCharacter;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import server.AutobanManager;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.StructRewardItem;

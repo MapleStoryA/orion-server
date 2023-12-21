@@ -4,7 +4,7 @@ import client.MapleClient;
 import java.awt.*;
 import lombok.extern.slf4j.Slf4j;
 import scripting.ReactorScriptManager;
-import server.Timer.MapTimer;
+import server.timer.Timer.MapTimer;
 import tools.MaplePacketCreator;
 import tools.collection.Pair;
 

@@ -20,7 +20,6 @@ import networking.packet.PacketProcessor;
 import scripting.EventScriptManager;
 import scripting.v1.event.GameEventManager;
 import server.MapleSquad;
-import server.TimerManager;
 import server.autosave.AutoSaveRunnable;
 import server.config.Config;
 import server.config.ServerConfig;
@@ -35,6 +34,7 @@ import server.life.PlayerNPC;
 import server.maps.AramiaFireWorks;
 import server.maps.MapleMapFactory;
 import server.shops.HiredMerchant;
+import server.timer.TimerManager;
 import tools.MaplePacketCreator;
 import tools.collection.CollectionUtil;
 

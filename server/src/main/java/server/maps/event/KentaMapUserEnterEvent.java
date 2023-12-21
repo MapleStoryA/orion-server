@@ -2,10 +2,10 @@ package server.maps.event;
 
 import client.MapleCharacter;
 import lombok.extern.slf4j.Slf4j;
-import server.Timer.MapTimer;
-import server.Timer.MobTimer;
 import server.life.MapleMonster;
 import server.maps.MapleMap;
+import server.timer.Timer.MapTimer;
+import server.timer.Timer.MobTimer;
 import tools.MaplePacketCreator;
 
 @Slf4j

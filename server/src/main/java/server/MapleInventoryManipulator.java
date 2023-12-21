@@ -4,6 +4,7 @@ import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.PlayerStats;
+import client.anticheat.AutobanManager;
 import client.inventory.Equip;
 import client.inventory.IItem;
 import client.inventory.InventoryException;

@@ -1,4 +1,4 @@
-package server;
+package server.events;
 
 import database.DatabaseConnection;
 import java.sql.PreparedStatement;

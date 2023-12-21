@@ -16,8 +16,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import lombok.extern.slf4j.Slf4j;
-import server.AutobanManager;
-import server.Timer.CheatTimer;
+import server.timer.Timer.CheatTimer;
 import tools.MaplePacketCreator;
 import tools.helper.StringUtil;
 

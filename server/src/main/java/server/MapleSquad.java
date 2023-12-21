@@ -12,8 +12,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ScheduledFuture;
 import lombok.extern.slf4j.Slf4j;
-import server.Timer.CloneTimer;
 import server.maps.MapleMap;
+import server.timer.Timer.CloneTimer;
 import tools.MaplePacketCreator;
 import tools.collection.Pair;
 
