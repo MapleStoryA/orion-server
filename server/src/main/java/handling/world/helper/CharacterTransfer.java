@@ -38,7 +38,7 @@ public class CharacterTransfer {
 
     private final Map<Integer, Object> customQuests = new LinkedHashMap<>();
     private final Map<Integer, SkillEntry> Skills = new LinkedHashMap<>();
-    private int character_id;
+    private int setCharacterId;
     private AccountData accountData;
     private int exp;
     private int meso;
@@ -117,7 +117,7 @@ public class CharacterTransfer {
     private EvanSkillPoints evanSP;
 
     public CharacterTransfer(final MapleCharacter chr) {
-        this.setCharacter_id(chr.getId());
+        this.setSetCharacterId(chr.getId());
         this.setAccountData(chr.getClient().getAccountData());
         this.accountName = chr.getClient().getAccountData().getName();
         this.setChannel((byte) chr.getClient().getChannel());
