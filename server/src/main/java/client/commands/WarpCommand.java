@@ -9,7 +9,7 @@ import tools.helper.Api;
 @Api
 class WarpCommand implements Command {
     @Override
-    public void execute(MapleClient c, String[] args) {
+    public int execute(MapleClient c, String[] args) {
         MapleCharacter victim = null;
         for (ChannelServer ch : WorldServer.getInstance().getAllChannels()) {
             for (MapleCharacter chr : ch.getPlayerStorage().getAllCharacters()) {
@@ -23,6 +23,7 @@ class WarpCommand implements Command {
         } else {
             c.getPlayer().dcolormsg(5, "The player was not found online");
         }
+        return 0;
     }
 
     @Override

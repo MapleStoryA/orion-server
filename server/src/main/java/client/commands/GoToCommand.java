@@ -1,10 +1,11 @@
 package client.commands;
 
 import client.MapleClient;
-import java.util.HashMap;
 import server.MaplePortal;
 import server.maps.MapleMap;
 import tools.helper.Api;
+
+import java.util.HashMap;
 
 @Api
 class GoToCommand implements Command {
@@ -73,7 +74,7 @@ class GoToCommand implements Command {
     }
 
     @Override
-    public void execute(MapleClient c, String[] args) {
+    public int execute(MapleClient c, String[] args) {
         if (args.length < 1) {
             c.getPlayer().dropMessage(6, "Syntax: !goto <mapname>");
         } else {
@@ -99,6 +100,7 @@ class GoToCommand implements Command {
                 }
             }
         }
+        return 1;
     }
 
     @Override

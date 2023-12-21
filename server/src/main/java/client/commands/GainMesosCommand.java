@@ -6,12 +6,13 @@ import tools.helper.Api;
 @Api
 class GainMesosCommand implements Command {
     @Override
-    public void execute(MapleClient c, String[] args) {
+    public int execute(MapleClient c, String[] args) {
         if (args.length < 1) {
             sendSyntaxMessage(c);
         }
 
         c.getPlayer().gainMeso(Integer.valueOf(args[0]), true);
+        return 1;
     }
 
     @Override

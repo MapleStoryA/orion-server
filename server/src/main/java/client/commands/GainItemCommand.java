@@ -13,10 +13,10 @@ import tools.helper.Api;
 @Api
 class GainItemCommand implements Command {
     @Override
-    public void execute(MapleClient c, String[] args) {
+    public int execute(MapleClient c, String[] args) {
         if (args.length < 2) {
             sendSyntaxMessage(c);
-            return;
+            return 0;
         }
 
         final int itemId = Integer.parseInt(args[0]);
@@ -43,6 +43,8 @@ class GainItemCommand implements Command {
 
             MapleInventoryManipulator.addbyItem(c, item);
         }
+
+        return 1;
     }
 
     @Override

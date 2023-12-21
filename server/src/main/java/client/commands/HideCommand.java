@@ -7,8 +7,9 @@ import tools.helper.Api;
 @Api
 class HideCommand implements Command {
     @Override
-    public void execute(MapleClient c, String[] args) {
+    public int execute(MapleClient c, String[] args) {
         SkillFactory.getSkill(9101004).getEffect(1).applyTo(c.getPlayer());
+        return 1;
     }
 
     @Override

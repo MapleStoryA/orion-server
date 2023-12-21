@@ -6,8 +6,9 @@ import tools.helper.Api;
 @Api
 class ChangeJobCommand implements Command {
     @Override
-    public void execute(MapleClient c, String[] args) {
+    public int execute(MapleClient c, String[] args) {
         c.getPlayer().changeJob(Integer.parseInt(args[0]));
+        return 1;
     }
 
     @Override

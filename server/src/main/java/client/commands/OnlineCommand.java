@@ -7,11 +7,12 @@ import tools.helper.Api;
 @Api
 class OnlineCommand implements Command {
     @Override
-    public void execute(MapleClient c, String[] args) {
+    public int execute(MapleClient c, String[] args) {
         c.getPlayer().dropMessage(6, "Total amount of players connected to server:");
         c.getPlayer().dropMessage(6, "" + WorldServer.getInstance().getConnected() + "");
         c.getPlayer().dropMessage(6, "Characters connected to channel " + c.getChannel() + ":");
         c.getPlayer().dropMessage(6, c.getChannelServer().getPlayerStorage().getOnlinePlayers(true));
+        return 1;
     }
 
     @Override

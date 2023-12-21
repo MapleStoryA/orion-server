@@ -4,7 +4,7 @@ import client.MapleClient;
 
 public interface Command {
 
-    void execute(MapleClient c, String[] args);
+    int execute(MapleClient c, String[] args);
 
     String getTrigger();
 

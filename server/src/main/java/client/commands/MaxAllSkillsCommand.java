@@ -7,10 +7,11 @@ import tools.helper.Api;
 public class MaxAllSkillsCommand implements Command {
 
     @Override
-    public void execute(MapleClient c, String[] args) {
+    public int execute(MapleClient c, String[] args) {
         c.getPlayer().maxMastery();
         c.getPlayer().maxAllSkills();
         c.getPlayer().dropMessage(5, "It's done.");
+        return 1;
     }
 
     @Override
