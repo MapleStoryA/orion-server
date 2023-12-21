@@ -5087,4 +5087,8 @@ public class MapleCharacter extends BaseMapleCharacter {
     public void setTravelTime(int duration) {
         travelTime = System.currentTimeMillis() + (duration * 1000L);
     }
+
+    public boolean getSuperMegaEnabled() {
+        return superMegaEnabled;
+    }
 }
