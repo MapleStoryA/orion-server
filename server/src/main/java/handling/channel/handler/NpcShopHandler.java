@@ -7,7 +7,7 @@ import handling.AbstractMaplePacketHandler;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
 import server.MapleItemInformationProvider;
-import server.MapleShop;
+import server.shops.MapleShop;
 
 @Slf4j
 public class NpcShopHandler extends AbstractMaplePacketHandler {

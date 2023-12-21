@@ -1,4 +1,4 @@
-package server;
+package server.shops;
 
 import client.MapleClient;
 import client.anticheat.AutobanManager;
@@ -19,6 +19,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
+import server.MapleInventoryManipulator;
+import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
 import tools.helper.DateHelper;
 

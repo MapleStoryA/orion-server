@@ -1,4 +1,4 @@
-package server;
+package server.shops;
 
 import lombok.extern.slf4j.Slf4j;
 
