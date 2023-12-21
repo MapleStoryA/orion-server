@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.ReentrantLock;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 import server.MapleInventoryManipulator;
@@ -38,8 +39,17 @@ public class PlayerStats implements Serializable {
     private final Map<Integer, Integer> setHandling = new HashMap<Integer, Integer>();
     private final List<Equip> durabilityHandling = new ArrayList<Equip>();
     private final List<Equip> equipLevelHandling = new ArrayList<Equip>();
+
+    @Getter
+    @Setter
+    private short level;
+
+    @Getter
+    @Setter
+    private int exp;
+
     private short str, dex, luk, int_;
-    private int hp, maxhp, mp, maxmp;
+    private int hp, maxHp, mp, maxMp;
     private transient boolean equippedWelcomeBackRing,
             equippedFairy,
             hasMeso,
@@ -74,8 +84,8 @@ public class PlayerStats implements Serializable {
     private transient short passive_sharpeye_percent, localmaxhp, localmaxmp;
     private transient byte passive_mastery, passive_sharpeye_rate;
     private transient int localstr, localdex, localluk, localint_;
-    private transient int magic, watk, hands, accuracy;
-    private transient float speedMod, jumpMod, localmaxbasedamage;
+    private transient int magic, weaponAttack, hands, accuracy;
+    private transient float speedMod, jumpMod, localMaxBaseDamage;
 
     public PlayerStats(final MapleCharacter chr) {
         // TODO, move str/dex/int etc here -_-
@@ -170,11 +180,11 @@ public class PlayerStats implements Serializable {
     }
 
     public final int getMaxHp() {
-        return maxhp;
+        return maxHp;
     }
 
     public final void setMaxHp(final int hp) {
-        this.maxhp = hp;
+        this.maxHp = hp;
         recalcLocalStats();
     }
 
@@ -183,11 +193,11 @@ public class PlayerStats implements Serializable {
     }
 
     public final int getMaxMp() {
-        return maxmp;
+        return maxMp;
     }
 
     public final void setMaxMp(final int mp) {
-        this.maxmp = mp;
+        this.maxMp = mp;
         recalcLocalStats();
     }
 
@@ -220,7 +230,7 @@ public class PlayerStats implements Serializable {
     }
 
     public final int getTotalWatk() {
-        return watk;
+        return weaponAttack;
     }
 
     public final short getCurrentMaxHp() {
@@ -236,7 +246,7 @@ public class PlayerStats implements Serializable {
     }
 
     public final float getCurrentMaxBaseDamage() {
-        return localmaxbasedamage;
+        return localMaxBaseDamage;
     }
 
     public void recalcLocalStats() {
@@ -278,7 +288,7 @@ public class PlayerStats implements Serializable {
                 percent_matk = 0;
         int added_sharpeye_rate = 0, added_sharpeye_dmg = 0;
         magic = localint_;
-        watk = 0;
+        weaponAttack = 0;
         StructPotentialItem pot;
         dam_r = 0.0;
         bossdam_r = 0.0;
@@ -345,7 +355,7 @@ public class PlayerStats implements Serializable {
             localstr += equip.getStr();
             localluk += equip.getLuk();
             magic += equip.getMatk() + equip.getInt();
-            watk += equip.getWatk();
+            weaponAttack += equip.getWatk();
             speed += equip.getSpeed();
             jump += equip.getJump();
             switch (equip.getItemId()) {
@@ -407,7 +417,7 @@ public class PlayerStats implements Serializable {
                             localluk += pot.getIncLUK();
                             localmaxhp += pot.getIncMHP();
                             localmaxmp += pot.getIncMMP();
-                            watk += pot.getIncPAD();
+                            weaponAttack += pot.getIncPAD();
                             magic += pot.getIncINT() + pot.getIncMAD();
                             speed += pot.getIncSpeed();
                             jump += pot.getIncJump();
@@ -483,7 +493,7 @@ public class PlayerStats implements Serializable {
                         localdex += se.incDEX;
                         localint_ += se.incINT;
                         localluk += se.incLUK;
-                        watk += se.incPAD;
+                        weaponAttack += se.incPAD;
                         magic += se.incINT + se.incMAD;
                         speed += se.incSpeed;
                         accuracy += se.incACC;
@@ -574,7 +584,7 @@ public class PlayerStats implements Serializable {
         this.magic += localint_ - before_;
         this.localluk += (percent_luk * localluk) / 100f;
         this.accuracy += (percent_acc * accuracy) / 100f;
-        this.watk += (percent_atk * watk) / 100f;
+        this.weaponAttack += (percent_atk * weaponAttack) / 100f;
         this.magic += (percent_matk * magic) / 100f; // or should this go before
         localmaxhp_ += (percent_hp * localmaxhp_) / 100f;
         localmaxmp_ += (percent_mp * localmaxmp_) / 100f;
@@ -594,12 +604,12 @@ public class PlayerStats implements Serializable {
         buff = chra.getBuffedValue(MapleBuffStat.ECHO_OF_HERO);
         if (buff != null) {
             final double d = buff.doubleValue() / 100.0;
-            watk += (int) (watk * d);
+            weaponAttack += (int) (weaponAttack * d);
             magic += (int) (magic * d);
         }
         buff = chra.getBuffedValue(MapleBuffStat.ARAN_COMBO);
         if (buff != null) {
-            watk += buff.intValue() / 10;
+            weaponAttack += buff.intValue() / 10;
         }
         buff = chra.getBuffedValue(MapleBuffStat.MAXHP);
         if (buff != null) {
@@ -630,7 +640,7 @@ public class PlayerStats implements Serializable {
                 final ISkill expert = SkillFactory.getSkill(3220004);
                 final int boostLevel = chra.getSkillLevel(expert);
                 if (boostLevel > 0) {
-                    watk += expert.getEffect(boostLevel).getX();
+                    weaponAttack += expert.getEffect(boostLevel).getX();
                 }
                 break;
             }
@@ -638,7 +648,7 @@ public class PlayerStats implements Serializable {
                 final ISkill expert = SkillFactory.getSkill(3120005);
                 final int boostLevel = chra.getSkillLevel(expert);
                 if (boostLevel > 0) {
-                    watk += expert.getEffect(boostLevel).getX();
+                    weaponAttack += expert.getEffect(boostLevel).getX();
                 }
                 break;
             }
@@ -688,7 +698,7 @@ public class PlayerStats implements Serializable {
                 final ISkill expert = SkillFactory.getSkill(21120001);
                 final int boostLevel = chra.getSkillLevel(expert);
                 if (boostLevel > 0) {
-                    watk += expert.getEffect(boostLevel).getX();
+                    weaponAttack += expert.getEffect(boostLevel).getX();
                 }
                 break;
             }
@@ -697,7 +707,7 @@ public class PlayerStats implements Serializable {
                 SkillFactory.getSkill(GameConstants.getBOF_ForJob(chra.getJob().getId()));
         final int boflevel = chra.getSkillLevel(blessoffairy);
         if (boflevel > 0) {
-            watk += blessoffairy.getEffect(boflevel).getX();
+            weaponAttack += blessoffairy.getEffect(boflevel).getX();
             magic += blessoffairy.getEffect(boflevel).getY();
             accuracy += blessoffairy.getEffect(boflevel).getX();
         }
@@ -727,11 +737,11 @@ public class PlayerStats implements Serializable {
         }
         buff = chra.getBuffedValue(MapleBuffStat.WATK);
         if (buff != null) {
-            watk += buff.intValue();
+            weaponAttack += buff.intValue();
         }
         buff = chra.getBuffedValue(MapleBuffStat.ENHANCED_WATK);
         if (buff != null) {
-            watk += buff.intValue();
+            weaponAttack += buff.intValue();
         }
         buff = chra.getBuffedValue(MapleBuffStat.MATK);
         if (buff != null) {
@@ -854,7 +864,7 @@ public class PlayerStats implements Serializable {
             chra.enforceMaxHpMp();
         }
 
-        localmaxbasedamage = calculateMaxBaseDamage(watk);
+        localMaxBaseDamage = calculateMaxBaseDamage(weaponAttack);
         if (oldmaxhp != 0 && oldmaxhp != localmaxhp) {
             chra.updatePartyMemberHP();
         }
@@ -1284,12 +1294,20 @@ public class PlayerStats implements Serializable {
         packet.writeShort(int_); // int
         packet.writeShort(luk); // luk
         packet.writeShort(hp); // hp
-        packet.writeShort(maxhp); // maxhp
+        packet.writeShort(maxHp); // maxhp
         packet.writeShort(mp); // mp
-        packet.writeShort(maxmp); // maxmp
+        packet.writeShort(maxMp); // maxmp
     }
 
     public void setBersek(boolean value) {
         this.bersek = value;
+    }
+
+    public void addLevel(int change) {
+        this.level += change;
+    }
+
+    public void addExp(int change) {
+        this.exp += change;
     }
 }

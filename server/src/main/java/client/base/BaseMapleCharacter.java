@@ -1,14 +1,31 @@
 package client.base;
 
+import client.MapleClient;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import lombok.Getter;
+import lombok.Setter;
 import scripting.v1.event.Event;
 import server.maps.AbstractAnimatedMapleMapObject;
+import server.maps.MapleMap;
 import server.maps.MapleMapObject;
 
 public abstract class BaseMapleCharacter extends AbstractAnimatedMapleMapObject {
+
+    @Setter
+    @Getter
+    protected MapleClient client;
+
+    @Getter
+    protected int id;
+
+    @Getter
+    @Setter
+    private String name;
+
+    protected MapleMap map;
 
     private final Set<MapleMapObject> visibleMapObjects;
     private final ReentrantReadWriteLock visibleMapObjectsLock;
@@ -74,5 +91,10 @@ public abstract class BaseMapleCharacter extends AbstractAnimatedMapleMapObject 
 
     public void leaveEvent() {
         this.event = null;
+    }
+
+    @Override
+    public String toString() {
+        return getName() + " at " + getPosition() + " in map: " + map.getId();
     }
 }

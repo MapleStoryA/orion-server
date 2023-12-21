@@ -4,6 +4,7 @@ import client.MapleClient;
 import lombok.extern.slf4j.Slf4j;
 import server.MaplePortal;
 import server.quest.MapleQuest;
+import tools.helper.Api;
 
 @Slf4j
 public class PortalPlayerInteraction extends AbstractPlayerInteraction {
@@ -39,6 +40,7 @@ public class PortalPlayerInteraction extends AbstractPlayerInteraction {
         spawnMonster(id, qty, portal.getPosition());
     }
 
+    @Api
     public void completeQuest(int id, int npcId) {
         MapleQuest.getInstance(id).complete(getPlayer(), npcId);
     }

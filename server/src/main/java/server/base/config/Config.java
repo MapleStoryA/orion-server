@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Config {
     private boolean debug;
+    private boolean debugPacket;
     private Database database;
     private Socket socket;
     private Login login;

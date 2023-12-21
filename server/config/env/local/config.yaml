@@ -1,4 +1,5 @@
-debug: false
+debug: true
+debugPacket: false
 database:
   url: jdbc:mysql://127.0.0.1:7900/orion?autoReconnect=true
   user: root

@@ -4,7 +4,6 @@ import client.MapleCharacter;
 import client.MapleClient;
 import java.util.Random;
 import lombok.extern.slf4j.Slf4j;
-import scripting.v1.event.GameEventManager;
 import tools.helper.Api;
 
 @Slf4j
@@ -67,9 +66,5 @@ public class BaseScripting {
         Random random = new Random();
         int randomNumber = random.nextInt(max + 1 - min) + min;
         return randomNumber;
-    }
-
-    public GameEventManager getGameEventManager() {
-        return player.getChannelServer().getGameEventManager();
     }
 }

@@ -1,6 +1,5 @@
 package tools.helper;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.rmi.NotBoundException;
@@ -15,8 +14,8 @@ import javax.management.NotCompliantMBeanException;
 import lombok.extern.slf4j.Slf4j;
 import provider.MapleData;
 import provider.MapleDataProvider;
-import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
+import server.base.config.ServerConfig;
 import tools.collection.Pair;
 
 @Slf4j
@@ -35,8 +34,8 @@ public class MapleDropCreator {
     public static void main(String[] args)
             throws IOException, NotBoundException, InstanceAlreadyExistsException, MBeanRegistrationException,
                     NotCompliantMBeanException, MalformedObjectNameException {
-        MapleData data = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/String"))
-                .getData("MonsterBook.img");
+        MapleData data =
+                ServerConfig.serverConfig().getDataProvider("wz/String").getData("MonsterBook.img");
 
         log.info("Warning : Use this only at your own risk!");
         log.info("Press any key to continue...");
@@ -44,7 +43,7 @@ public class MapleDropCreator {
         log.info("As you wish.\n\n\n\n");
 
         long currtime = System.currentTimeMillis();
-        addFlagData = Boolean.parseBoolean(args[0]);
+        addFlagData = false;
 
         log.info("Loading : Item name string.");
         getAllItems();
@@ -59,7 +58,7 @@ public class MapleDropCreator {
         for (Map.Entry e : getDropsNotInMonsterBook().entrySet()) {
             first = true;
 
-            sb.append("INSERT INTO ").append(monsterQueryData).append(" VALUES ");
+            sb.append("INSERT IGNORE INTO ").append(monsterQueryData).append(" VALUES ");
             for (Integer monsterdrop : (List<Integer>) e.getValue()) {
                 final int itemid = monsterdrop;
                 final int monsterId = (Integer) e.getKey();
@@ -93,6 +92,7 @@ public class MapleDropCreator {
                     sb.append("0, "); // Quest
                     final int num = IncrementRate(itemid, i);
                     sb.append(num == -1 ? rate : num);
+                    addMaximum(sb);
                     sb.append(")");
                     first = false;
                 }
@@ -120,7 +120,7 @@ public class MapleDropCreator {
             }
             if (dataz.getChildByPath("reward").getChildren().size()
                     > 0) { // Fix for Monster without any reward causing SQL error
-                sb.append("INSERT INTO ").append(monsterQueryData).append(" VALUES ");
+                sb.append("INSERT IGNORE INTO ").append(monsterQueryData).append(" VALUES ");
                 for (MapleData drop : dataz.getChildByPath("reward")) {
                     int itemid = MapleDataTool.getInt(drop);
                     int rate = getChance(itemid, idtoLog, bossCache.containsKey(idtoLog));
@@ -185,6 +185,7 @@ public class MapleDropCreator {
                         sb.append("0, "); // Quest
                         final int num = IncrementRate(itemid, i);
                         sb.append(num == -1 ? rate : num);
+                        addMaximum(sb);
                         sb.append(")");
                         first = false;
                     }
@@ -218,7 +219,9 @@ public class MapleDropCreator {
                         if (Pair_.getRight().getBoss() > 0) {
                             rate *= 25;
                         }
-                        SQL.append("INSERT INTO ").append(monsterQueryData).append(" VALUES ");
+                        SQL.append("INSERT IGNORE INTO ")
+                                .append(monsterQueryData)
+                                .append(" VALUES ");
                         SQL.append("(DEFAULT, ");
                         SQL.append(Pair_.getLeft()).append(", "); // Dropperid
                         if (addFlagData) {
@@ -228,6 +231,7 @@ public class MapleDropCreator {
                         SQL.append("1, 1,"); // Item min and max
                         SQL.append("0, "); // Quest
                         SQL.append(rate);
+                        addMaximum(SQL);
                         SQL.append(");\n");
                         SQL.append("-- Name : ").append(Pair.getRight()).append("\n");
                         break;
@@ -240,38 +244,43 @@ public class MapleDropCreator {
         SQL.append("\n");
         int i = 1;
         int lastmonsterbookid = 0;
-        for (Pair<Integer, String> Pair : itemNameCache) {
-            if (Pair.getLeft() >= 2380000 && Pair.getLeft() <= lastmonstercardid) {
-                bookName.append(Pair.getRight());
+        /*for (Pair<Integer, String> Pair : itemNameCache) {
+        	if (Pair.getLeft() >= 2380000 && Pair.getLeft() <= lastmonstercardid) {
+        		bookName.append(Pair.getRight());
 
-                if (bookName.toString().contains(" Card")) {
-                    bookName.delete(bookName.length() - 5, bookName.length()); // Get rid of the " Card" string
-                }
+        		if (bookName.toString().contains(" Card")) {
+        			bookName.delete(bookName.length() - 5, bookName.length()); // Get rid of the " Card" string
+        		}
 
-                if (Pair.getLeft() == lastmonsterbookid) {
-                    continue; // Fix for multiple monster shet
-                }
-                for (Pair<Integer, MobInfo> Pair_ : mobCache) {
-                    if (Pair_.getRight().getName().equalsIgnoreCase(bookName.toString())) {
-                        SQL.append("INSERT INTO ").append("monstercarddata").append(" VALUES (");
-                        SQL.append(i).append(", ");
-                        SQL.append(Pair.getLeft());
-                        SQL.append(", ");
-                        SQL.append(Pair_.getLeft()).append(");\n");
-                        lastmonsterbookid = Pair.getLeft();
-                        i++;
-                        break;
-                    }
-                }
-                bookName.delete(0, 2147483647); // ;P wild guess LOL
-            }
-        }
+        		if (Pair.getLeft() == lastmonsterbookid) {
+        			continue; // Fix for multiple monster shet
+        		}
+        		for (Pair<Integer, MobInfo> Pair_ : mobCache) {
+        			if (Pair_.getRight().getName().equalsIgnoreCase(bookName.toString())) {
+        				SQL.append("INSERT IGNORE INTO ").append("monstercarddata").append(" VALUES (");
+        				SQL.append(i).append(", ");
+        				SQL.append(Pair.getLeft());
+        				SQL.append(", ");
+        				SQL.append(Pair_.getLeft()).append(");\n");
+        				lastmonsterbookid = Pair.getLeft();
+        				i++;
+        				break;
+        			}
+        		}
+        		bookName.delete(0, 2147483647); // ;P wild guess LOL
+        	}
+        }*/
         out.write(SQL.toString().getBytes());
         out.close();
         long time = System.currentTimeMillis() - currtime;
         time /= 1000;
 
         log.info("Time taken : " + time);
+    }
+
+    private static void addMaximum(StringBuilder sb) {
+        sb.append("0, "); // MAX
+        sb.append("999999"); // MAX
     }
 
     private static void retriveNLogItemName(final StringBuilder sb, final int id) {
@@ -807,8 +816,7 @@ public class MapleDropCreator {
     }
 
     private static void getAllItems() {
-        MapleDataProvider data =
-                MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/String"));
+        MapleDataProvider data = ServerConfig.serverConfig().getDataProvider("wz/String");
 
         List<Pair<Integer, String>> itemPairs = new ArrayList<Pair<Integer, String>>();
         MapleData itemsData;
@@ -861,10 +869,8 @@ public class MapleDropCreator {
 
     public static void getAllMobs() {
         List<Pair<Integer, MobInfo>> itemPairs = new ArrayList<Pair<Integer, MobInfo>>();
-        MapleDataProvider data =
-                MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/String"));
-        MapleDataProvider mobData =
-                MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Mob"));
+        MapleDataProvider data = ServerConfig.serverConfig().getDataProvider("wz/String");
+        MapleDataProvider mobData = ServerConfig.serverConfig().getDataProvider("wz/Mob");
         MapleData mob = data.getData("Mob.img");
 
         int id;

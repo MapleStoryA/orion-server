@@ -187,7 +187,6 @@ public class InterServerHandler {
         }
 
         c.getPlayer().getClient().getSession().write(MaplePacketCreator.setNPCScriptable(1201002, "Buy new skills"));
-        player.maxMastery(); // Necessary for now. TODO: Remove max mastery from login
         player.getClient().getSession().write(MaplePacketCreator.setNPCScriptable(ii));
         player.getMap().addPlayer(player);
         player.getClient().sendPacket(ReportPackets.enableReport());

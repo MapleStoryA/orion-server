@@ -84,6 +84,7 @@ import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 import scripting.EventInstanceManager;
@@ -141,9 +142,10 @@ public class MapleCharacter extends BaseMapleCharacter {
     @Getter
     private AccountData accountData;
 
-    private int id;
+    @Getter
+    @Setter
     private byte world;
-    private String name;
+
     private String chalkText;
     private String blessOfFairy_Origin;
     private long lastCombo;
@@ -166,7 +168,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     private byte mobKilledNo;
     private byte portalCount = 0;
     private byte morphId = 0;
-    private short level;
     private short mu_lung_energy;
     private short combo;
 
@@ -181,7 +182,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     private short hpApUsed;
     private short fame;
     private int meso;
-    private int exp;
     private int map_id;
 
     private byte gender;
@@ -255,7 +255,10 @@ public class MapleCharacter extends BaseMapleCharacter {
     private MapleParty party;
     private MapleGuildCharacter mgc;
     private MapleInventory[] inventory;
+
+    @Getter
     private MapleKeyLayout keyLayout;
+
     private EvanSkillPoints evanSP;
 
     private boolean changed_quest_info;
@@ -269,11 +272,9 @@ public class MapleCharacter extends BaseMapleCharacter {
     private long pqStartTime = 0;
 
     private AtomicInteger conversation_status;
-    private MapleClient client;
     private CheatTracker anti_cheat;
     private PlayerRandomStream playerRandomStream;
     private CashShop cs;
-    private MapleMap map;
     private MapleShop shop;
     private MapleDragon dragon;
     private RockPaperScissors rps;
@@ -349,10 +350,10 @@ public class MapleCharacter extends BaseMapleCharacter {
         MapleCharacter ret = new MapleCharacter(false);
         ret.client = client;
         ret.map = null;
-        ret.exp = 0;
+        ret.stats.setExp(0);
         ret.job = JobUtils.mapTypeToJob(type);
         ret.meso = 0;
-        ret.level = 1;
+        ret.stats.setLevel((short) 1);
         ret.remainingAp = 0;
         ret.fame = 0;
         ret.accountData = client.getAccountData();
@@ -367,7 +368,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         ret.stats.setMp(50);
         ret.nx_credit = client.getAccountData().getNxCredit();
         ret.maple_points = client.getAccountData().getMPoints();
-
         return ret;
     }
 
@@ -380,15 +380,15 @@ public class MapleCharacter extends BaseMapleCharacter {
         if (!isChannel) {
             ret.client.setChannel(ct.getChannel());
         }
-        ret.id = ct.getCharacter_id();
+        ret.id = ct.getCharacterId();
         ret.setName(ct.getName());
-        ret.level = ct.getLevel();
+        ret.stats.setLevel(ct.getLevel());
         ret.fame = ct.getFame();
 
         ret.playerRandomStream = new PlayerRandomStream();
 
         ret.chalkText = ct.getChalkboard();
-        ret.exp = ct.getExp();
+        ret.stats.setExp(ct.getExp());
         ret.setHpApUsed(ct.getHpApUsed());
         ret.remainingAp = ct.getRemainingAp();
         ret.remainingSp = ct.getRemainingSp();
@@ -540,9 +540,9 @@ public class MapleCharacter extends BaseMapleCharacter {
         ret.accountData = client.getAccountData();
 
         ret.setName(characterData.getName());
-        ret.level = characterData.getLevel();
+        ret.stats.setLevel(characterData.getLevel());
         ret.fame = characterData.getFame();
-        ret.exp = characterData.getExp();
+        ret.stats.setExp(characterData.getExp());
         ret.setHpApUsed((short) characterData.getHpApUsed());
         ret.remainingAp = characterData.getAp();
         ret.remainingSp = characterData.getSp();
@@ -933,9 +933,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         PreparedStatement ps = null;
         PreparedStatement pse = null;
         ResultSet rs = null;
-        Connection con2 = null;
         try (var con = DatabaseConnection.getConnection()) {
-            con2 = con;
             ps = con.prepareStatement(
                     "INSERT INTO characters (level, fame, str, dex, luk, `int`, exp, hp,"
                             + " mp, maxhp, maxmp, ap, skincolor, gender, job, hair, face,"
@@ -1152,13 +1150,13 @@ public class MapleCharacter extends BaseMapleCharacter {
                             + " dojoRecord = ?, pets = ?, subcategory = ?, marriageId = ?, name"
                             + " = ?, sp = ? WHERE id = ?",
                     DatabaseConnection.RETURN_GENERATED_KEYS);
-            ps.setInt(1, level);
+            ps.setInt(1, stats.getLevel());
             ps.setShort(2, fame);
             ps.setShort(3, stats.getStr());
             ps.setShort(4, stats.getDex());
             ps.setShort(5, stats.getLuk());
             ps.setShort(6, stats.getInt());
-            ps.setInt(7, exp < 0 ? 0 : exp);
+            ps.setInt(7, stats.getExp() < 0 ? 0 : stats.getExp());
             ps.setInt(8, stats.getHp() < 1 ? 50 : stats.getHp());
             ps.setInt(9, stats.getMp());
             ps.setInt(10, stats.getMaxHp());
@@ -1630,7 +1628,8 @@ public class MapleCharacter extends BaseMapleCharacter {
                                         break;
                                     case 1: // EXP
                                         final int experi = Randomizer.nextInt(
-                                                Math.abs(GameConstants.getExpNeededForLevel(level) / 200) + 1);
+                                                Math.abs(GameConstants.getExpNeededForLevel(stats.getLevel()) / 200)
+                                                        + 1);
                                         gainExp(expMulti ? (experi * 3 / 2) : experi, true, false, true);
                                         break;
                                     default:
@@ -2195,28 +2194,16 @@ public class MapleCharacter extends BaseMapleCharacter {
         return initialSpawnPoint;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public final String getBlessOfFairyOrigin() {
         return this.blessOfFairy_Origin;
     }
 
     public final short getLevel() {
-        return level;
+        return stats.getLevel();
     }
 
     public void setLevel(final short level) {
-        this.level = (short) (level - 1);
+        this.stats.setLevel((short) (level - 1));
     }
 
     public final short getFame() {
@@ -2256,24 +2243,16 @@ public class MapleCharacter extends BaseMapleCharacter {
         this.fall_counter = fallcounter;
     }
 
-    public final MapleClient getClient() {
-        return client;
-    }
-
-    public final void setClient(final MapleClient client) {
-        this.client = client;
-    }
-
     public int getExp() {
-        return exp;
+        return stats.getExp();
     }
 
     public void setExp(int exp) {
-        if (job.isCygnus() && level >= 120) {
-            this.exp = 0;
+        if (job.isCygnus() && stats.getLevel() >= 120) {
+            this.stats.setExp(0);
             return;
         }
-        this.exp = exp;
+        this.stats.setExp(exp);
     }
 
     public int getRemainingAp() {
@@ -2517,7 +2496,6 @@ public class MapleCharacter extends BaseMapleCharacter {
                 map.spawnDragon(dragon);
                 map.updateMapObjectVisibility(this, dragon);
             }
-            maxMastery();
             equipChanged();
             sendServerChangeJobCongratulations();
         } catch (Exception e) {
@@ -2530,8 +2508,8 @@ public class MapleCharacter extends BaseMapleCharacter {
             return;
         }
         String str = "[Lv. %s] Congratulations to %s on becoming a %s!";
-        BroadcastHelper.broadcastMessage(
-                MaplePacketCreator.serverNotice(6, String.format(str, level, getName(), this.job.getName())));
+        BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(
+                6, String.format(str, stats.getLevel(), getName(), this.job.getName())));
     }
 
     public void makeDragon() {
@@ -2649,7 +2627,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 client.getSession().write(MTSCSPacket.useCharm((byte) charms, (byte) 0));
             } else {
                 float diepercentage = 0.0f;
-                int expforlevel = GameConstants.getExpNeededForLevel(level);
+                int expforlevel = GameConstants.getExpNeededForLevel(stats.getLevel());
                 if (map.isTown() || FieldLimitType.RegularExpLoss.check(map.getFieldLimit())) {
                     diepercentage = 0.01f;
                 } else {
@@ -2661,14 +2639,14 @@ public class MapleCharacter extends BaseMapleCharacter {
                     }
                     diepercentage = (float) (v8 / this.stats.getLuk() + 0.05);
                 }
-                int v10 = (int) (exp - (long) ((double) expforlevel * diepercentage));
+                int v10 = (int) (this.stats.getExp() - (long) ((double) expforlevel * diepercentage));
                 if (v10 < 0) {
                     v10 = 0;
                 }
-                this.exp = v10;
+                this.stats.setExp(v10);
             }
         }
-        this.updateSingleStat(MapleStat.EXP, this.exp);
+        this.updateSingleStat(MapleStat.EXP, this.stats.getExp());
         if (!stats.checkEquipDurabilitys(this, -100)) { // i guess this is how
             // it works ?
             dropMessage(5, "An item has run out of durability but has no inventory room to go to.");
@@ -2795,34 +2773,31 @@ public class MapleCharacter extends BaseMapleCharacter {
         }
 
         try {
-            if (job.isCygnus() && level >= 120) {
+            if (job.isCygnus() && stats.getLevel() >= 120) {
                 return;
             }
-            int prevexp = getExp();
-            int needed = GameConstants.getExpNeededForLevel(level);
-            if (level >= 200) {
-                if (exp + total > needed) {
+            int needed = GameConstants.getExpNeededForLevel(stats.getLevel());
+            if (stats.getLevel() >= 200) {
+                if (stats.getExp() + total > needed) {
                     setExp(needed);
                 } else {
-                    exp += total;
+                    stats.addExp(total);
                 }
             } else {
-                boolean leveled = false;
-                if (exp + total >= needed) {
-                    exp += total;
+                if (stats.getExp() + total >= needed) {
+                    stats.addExp(total);
                     levelUp(true);
-                    leveled = true;
-                    needed = GameConstants.getExpNeededForLevel(level);
-                    if (exp > needed) {
+                    needed = GameConstants.getExpNeededForLevel(stats.getLevel());
+                    if (stats.getExp() > needed) {
                         setExp(needed);
                     }
                 } else {
-                    exp += total;
+                    stats.addExp(total);
                 }
             }
 
             if (total != 0) {
-                if (exp < 0) { // After adding, and negative
+                if (stats.getExp() < 0) { // After adding, and negative
                     if (total > 0) {
                         setExp(needed);
                     } else if (total < 0) {
@@ -2854,7 +2829,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         if (!isAlive()) {
             return;
         }
-        if (job.isCygnus() && level >= 120) {
+        if (job.isCygnus() && stats.getLevel() >= 120) {
             return;
         }
         mobKilledNo++; // Reset back to 0 when cc
@@ -2897,23 +2872,23 @@ public class MapleCharacter extends BaseMapleCharacter {
         if (gain > 0 && total < gain) { // just in case
             total = Integer.MAX_VALUE;
         }
-        if (exp < 0) { // Set first
+        if (stats.getExp() < 0) { // Set first
             setExp(0);
             updateSingleStat(MapleStat.EXP, 0);
         }
 
-        int needed = GameConstants.getExpNeededForLevel(level); // Calculate
+        int needed = GameConstants.getExpNeededForLevel(stats.getLevel()); // Calculate
         // based on the
         // first level
         boolean leveled = false;
         if (getLevel() < 200) {
-            long newexp = total + exp;
-            while (newexp >= GameConstants.getExpNeededForLevel(level) && level < 200) {
-                newexp -= GameConstants.getExpNeededForLevel(level);
+            long newexp = total + stats.getExp();
+            while (newexp >= GameConstants.getExpNeededForLevel(stats.getLevel()) && stats.getLevel() < 200) {
+                newexp -= GameConstants.getExpNeededForLevel(stats.getLevel());
                 levelUp(false); // Don't show animation for ALL of the levels.
                 leveled = true;
             }
-            if (newexp >= Integer.MAX_VALUE || level >= 200) {
+            if (newexp >= Integer.MAX_VALUE || stats.getLevel() >= 200) {
                 setExp(0);
             } else {
                 setExp((int) newexp);
@@ -2923,9 +2898,9 @@ public class MapleCharacter extends BaseMapleCharacter {
             return;
         }
         if (gain != 0) {
-            if (exp < 0) { // After adding, and negative
+            if (stats.getExp() < 0) { // After adding, and negative
                 if (gain > 0) {
-                    setExp(GameConstants.getExpNeededForLevel(level));
+                    setExp(GameConstants.getExpNeededForLevel(stats.getLevel()));
                 } else if (gain < 0) {
                     setExp(0);
                 }
@@ -2937,8 +2912,8 @@ public class MapleCharacter extends BaseMapleCharacter {
                 statup.add(new Pair<>(MapleStat.MAXMP, Math.min(30000, stats.getMaxMp())));
                 statup.add(new Pair<>(MapleStat.HP, Math.min(30000, stats.getMaxHp())));
                 statup.add(new Pair<>(MapleStat.MP, Math.min(30000, stats.getMaxMp())));
-                statup.add(new Pair<>(MapleStat.EXP, exp));
-                statup.add(new Pair<>(MapleStat.LEVEL, (int) level));
+                statup.add(new Pair<>(MapleStat.EXP, stats.getExp()));
+                statup.add(new Pair<>(MapleStat.LEVEL, (int) stats.getLevel()));
                 statup.add(new Pair<>(MapleStat.AVAILABLEAP, Math.min(199, remainingAp)));
                 client.getSession().write(MaplePacketCreator.updatePlayerStats(statup, getJob().getId()));
                 map.broadcastMessage(this, MaplePacketCreator.showForeignEffect(getId(), 0), false);
@@ -3344,8 +3319,8 @@ public class MapleCharacter extends BaseMapleCharacter {
             maxmp += Randomizer.rand(50, 100);
         }
         maxmp += stats.getTotalInt() / 10;
-        exp = 0;
-        level += 1;
+        stats.setExp(0);
+        stats.addLevel(1);
         int level = getLevel();
 
         maxhp = (short) Math.min(30000, Math.abs(maxhp));
@@ -3361,7 +3336,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         statup.add(new Pair<MapleStat, Integer>(MapleStat.MAXMP, maxmp));
         statup.add(new Pair<MapleStat, Integer>(MapleStat.HP, maxhp));
         statup.add(new Pair<MapleStat, Integer>(MapleStat.MP, maxmp));
-        statup.add(new Pair<MapleStat, Integer>(MapleStat.EXP, exp));
+        statup.add(new Pair<MapleStat, Integer>(MapleStat.EXP, this.stats.getExp()));
         statup.add(new Pair<MapleStat, Integer>(MapleStat.LEVEL, level));
         statup.add(new Pair<MapleStat, Integer>(MapleStat.AVAILABLEAP, remainingAp));
 
@@ -3731,10 +3706,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         }
     }
 
-    public final MapleKeyLayout getKeyLayout() {
-        return this.keyLayout;
-    }
-
     public MapleParty getParty() {
         if (party == null) {
             return null;
@@ -3751,14 +3722,6 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public int getPartyId() {
         return (party != null ? party.getId() : -1);
-    }
-
-    public byte getWorld() {
-        return world;
-    }
-
-    public void setWorld(byte world) {
-        this.world = world;
     }
 
     public MapleTrade getTrade() {
@@ -3884,7 +3847,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         if (guild_id <= 0) {
             return;
         }
-        mgc.setLevel(level);
+        mgc.setLevel(stats.getLevel());
         mgc.setJobId(job.getId());
         GuildManager.memberLevelJobUpdate(mgc);
     }
@@ -5431,68 +5394,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         this.remainingSp = remainingSp;
     }
 
-    public void maxAllSkills() {
-        for (ISkill skill : SkillFactory.getAllSkills()) {
-            if (GameConstants.isApplicableSkill(skill.getId())) {
-                if (skill.getId() >= 22000000
-                        && (GameConstants.isEvan((skill.getId() / 10000))
-                                || GameConstants.isResist((skill.getId() / 10000)))) {
-                    continue;
-                } // only beginner skills are not maxed!
-                if (skill.getId() < 10000
-                        || ((skill.getId() / 10000) == 1000)
-                        || ((skill.getId() / 10000) == 2000)
-                        || ((skill.getId() / 10000) == 2001)) {
-
-                    if (getSkillLevel(skill) > level) {
-                        level = getSkillLevel(skill);
-                    }
-                    changeSkillLevel(skill, (byte) level, skill.getMaxLevel());
-                }
-            }
-        }
-        for (var entry : getSkills().entrySet()) {
-            changeSkillLevel(entry.getKey(), (byte) level, entry.getKey().getMaxLevel());
-        }
-    }
-
-    public void maxMastery() {
-        for (ISkill skill_ : SkillFactory.getAllSkills()) {
-            try {
-                int skill_id = skill_.getId();
-                if ((skill_id % 10000000 >= 1000000) && ((skill_id >= 9000000) && (skill_id <= 10000000))) {
-                    continue;
-                }
-                ISkill skill = SkillFactory.getSkill(skill_id);
-                boolean add = ((skill_id / 10000000 == this.getJob().getId() / 1000) && (skill.hasMastery()))
-                        || (job.isCygnus());
-                if ((!add) && (job.isAran())) {
-                    switch (skill_id) {
-                        case 21000000:
-                        case 21001003:
-                        case 21100000:
-                        case 21100002:
-                        case 21100004:
-                        case 21100005:
-                        case 21110002:
-                            add = true;
-                    }
-                }
-                if (add) {
-                    int masterLevel = skill.getMasterLevel();
-                    if (masterLevel == 0) {
-                        continue;
-                    }
-                    changeSkillLevel(skill, getSkillLevel(skill), (byte) masterLevel);
-                }
-            } catch (NumberFormatException nfe) {
-                continue;
-            } catch (NullPointerException npe) {
-                continue;
-            }
-        }
-    }
-
     public void checkForDarkSight() {
         if (isActiveBuffedValue(Rogue.DARK_SIGHT)) {
             int incresePercent = 10 + getSkillLevel(BladeLord.ADVANCED_DARK_SIGHT) * 2;
@@ -5544,15 +5445,6 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public void setTravelTime(int duration) {
         travelTime = System.currentTimeMillis() + (duration * 1000L);
-    }
-
-    public ChannelServer getChannelServer() {
-        return WorldServer.getInstance().getChannel(client.getChannel());
-    }
-
-    @Override
-    public String toString() {
-        return getName() + " at " + getPosition() + " in map: " + map.getId();
     }
 
     public Map<MapleBuffStat, MapleBuffStatValueHolder> getEffects() {
