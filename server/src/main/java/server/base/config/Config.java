@@ -1,4 +1,4 @@
-package server.config;
+package server.base.config;
 
 import java.util.List;
 import lombok.Getter;

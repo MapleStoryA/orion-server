@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 import networking.packet.SendPacketOpcode;
 import provider.MapleData;
-import server.config.ServerConfig;
+import server.base.config.ServerConfig;
 import tools.collection.Pair;
 import tools.helper.StringUtil;
 

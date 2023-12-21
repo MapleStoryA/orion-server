@@ -7,7 +7,7 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import provider.MapleData;
 import provider.MapleDataTool;
-import server.config.ServerConfig;
+import server.base.config.ServerConfig;
 import tools.collection.Pair;
 
 @Slf4j

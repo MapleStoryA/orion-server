@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import provider.MapleData;
 import provider.MapleDataTool;
-import server.config.ServerConfig;
+import server.base.config.ServerConfig;
 
 @Slf4j
 public class LoginInformationProvider {

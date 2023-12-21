@@ -18,7 +18,7 @@ import org.mozilla.javascript.EvaluatorException;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Scriptable;
 import scripting.v1.base.FieldScripting;
-import server.config.ServerConfig;
+import server.base.config.ServerConfig;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
 

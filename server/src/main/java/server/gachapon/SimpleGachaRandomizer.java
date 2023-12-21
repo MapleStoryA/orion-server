@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.TreeMap;
 import lombok.extern.slf4j.Slf4j;
-import server.config.ServerConfig;
+import server.base.config.ServerConfig;
 
 @Slf4j
 public class SimpleGachaRandomizer implements RewardRandomizer {

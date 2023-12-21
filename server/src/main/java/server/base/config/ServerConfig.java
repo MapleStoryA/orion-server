@@ -1,4 +1,4 @@
-package server.config;
+package server.base.config;
 
 import java.io.File;
 import java.nio.file.Path;

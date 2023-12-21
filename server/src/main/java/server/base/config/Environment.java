@@ -1,4 +1,4 @@
-package server.config;
+package server.base.config;
 
 public enum Environment {
     LOCAL,

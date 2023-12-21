@@ -5,7 +5,7 @@ import client.MapleClient;
 import handling.AbstractMaplePacketHandler;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
-import server.timer.TimerManager;
+import server.base.timer.TimerManager;
 import tools.MaplePacketCreator;
 
 @Slf4j

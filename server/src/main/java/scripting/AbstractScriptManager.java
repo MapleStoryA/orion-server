@@ -5,7 +5,7 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import server.config.ServerConfig;
+import server.base.config.ServerConfig;
 import tools.helper.StringUtil;
 
 public abstract class AbstractScriptManager {

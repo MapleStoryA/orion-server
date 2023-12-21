@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import lombok.extern.slf4j.Slf4j;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.statement.Slf4JSqlLogger;
-import server.config.Config;
-import server.config.ServerConfig;
+import server.base.config.Config;
+import server.base.config.ServerConfig;
 
 @Slf4j
 public class DatabaseConnection {

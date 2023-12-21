@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import lombok.extern.slf4j.Slf4j;
-import server.timer.Timer.CheatTimer;
+import server.base.timer.Timer.CheatTimer;
 
 @Slf4j
 public class CheatingOffensePersister {

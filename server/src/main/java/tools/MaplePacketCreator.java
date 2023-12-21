@@ -50,7 +50,7 @@ import server.MapleItemInformationProvider;
 import server.MapleShopItem;
 import server.MapleStatEffect;
 import server.MapleTrade;
-import server.config.ServerConfig;
+import server.base.config.ServerConfig;
 import server.events.MapleSnowball;
 import server.life.MapleMonster;
 import server.life.MapleNPC;

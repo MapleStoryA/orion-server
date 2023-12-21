@@ -7,7 +7,7 @@ import networking.data.input.InPacket;
 import org.mozilla.javascript.ContinuationPending;
 import scripting.v1.base.AskAvatarHelper;
 import scripting.v1.base.NpcScripting;
-import server.config.ServerConfig;
+import server.base.config.ServerConfig;
 
 @Slf4j
 public class NpcTalkHelper {

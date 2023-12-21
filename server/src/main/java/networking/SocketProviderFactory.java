@@ -1,7 +1,7 @@
 package networking;
 
 import lombok.extern.slf4j.Slf4j;
-import server.config.ServerConfig;
+import server.base.config.ServerConfig;
 
 @Slf4j
 public class SocketProviderFactory {

@@ -11,7 +11,7 @@ import scripting.v1.base.InventoryScripting;
 import scripting.v1.base.NpcScripting;
 import scripting.v1.base.QuestScripting;
 import scripting.v1.base.TargetScripting;
-import server.config.ServerConfig;
+import server.base.config.ServerConfig;
 import server.quest.MapleQuest;
 import tools.helper.StringUtil;
 

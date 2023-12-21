@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
-import server.config.ServerConfig;
+import server.base.config.ServerConfig;
 
 @Slf4j
 public class CashItemFactory {

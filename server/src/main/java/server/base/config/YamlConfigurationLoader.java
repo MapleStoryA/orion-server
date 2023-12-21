@@ -1,4 +1,4 @@
-package server.config;
+package server.base.config;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;

@@ -1,4 +1,4 @@
-package server.autosave;
+package server.base.autosave;
 
 import client.MapleCharacter;
 import handling.channel.ChannelServer;

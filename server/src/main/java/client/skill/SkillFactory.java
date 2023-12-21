@@ -12,7 +12,7 @@ import provider.MapleDataDirectoryEntry;
 import provider.MapleDataFileEntry;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
-import server.config.ServerConfig;
+import server.base.config.ServerConfig;
 import tools.helper.StringUtil;
 
 @Slf4j

@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import lombok.extern.slf4j.Slf4j;
-import server.timer.Timer.PingTimer;
+import server.base.timer.Timer.PingTimer;
 
 @Slf4j
 public class PlayerStorage {

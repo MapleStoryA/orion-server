@@ -25,7 +25,7 @@ package server.events;
 import client.MapleCharacter;
 import java.util.concurrent.ScheduledFuture;
 import lombok.extern.slf4j.Slf4j;
-import server.timer.Timer.EventTimer;
+import server.base.timer.Timer.EventTimer;
 import tools.MaplePacketCreator;
 import tools.helper.Randomizer;
 
