@@ -26,13 +26,14 @@ import handling.world.messenger.MessengerManager;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import handling.world.party.PartyManager;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
 import tools.packet.MapleUserPackets;
 import tools.packet.ReportPackets;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public class InterServerHandler {
@@ -187,7 +188,6 @@ public class InterServerHandler {
         }
 
         c.getPlayer().getClient().getSession().write(MaplePacketCreator.setNPCScriptable(1201002, "Buy new skills"));
-        player.maxMastery(); // Necessary for now. TODO: Remove max mastery from login
         player.getClient().getSession().write(MaplePacketCreator.setNPCScriptable(ii));
         player.getMap().addPlayer(player);
         player.getClient().sendPacket(ReportPackets.enableReport());

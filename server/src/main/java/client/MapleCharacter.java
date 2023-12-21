@@ -60,6 +60,7 @@ import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import handling.world.party.PartyManager;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 import scripting.EventInstanceManager;
@@ -141,9 +142,11 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     @Getter
     private AccountData accountData;
-
-    private int id;
+    @Getter
+    @Setter
     private byte world;
+    @Getter
+    @Setter
     private String name;
     private String chalkText;
     private String blessOfFairy_Origin;
@@ -366,7 +369,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         ret.stats.setMp(50);
         ret.nx_credit = client.getAccountData().getNxCredit();
         ret.maple_points = client.getAccountData().getMPoints();
-
         return ret;
     }
 
@@ -2198,14 +2200,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public final String getBlessOfFairyOrigin() {
         return this.blessOfFairy_Origin;
     }
@@ -2516,7 +2510,6 @@ public class MapleCharacter extends BaseMapleCharacter {
                 map.spawnDragon(dragon);
                 map.updateMapObjectVisibility(this, dragon);
             }
-            maxMastery();
             equipChanged();
             sendServerChangeJobCongratulations();
         } catch (Exception e) {
@@ -3747,14 +3740,6 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public int getPartyId() {
         return (party != null ? party.getId() : -1);
-    }
-
-    public byte getWorld() {
-        return world;
-    }
-
-    public void setWorld(byte world) {
-        this.world = world;
     }
 
     public MapleTrade getTrade() {
@@ -5427,42 +5412,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         this.remainingSp = remainingSp;
     }
 
-    public void maxMastery() {
-        for (ISkill skill_ : SkillFactory.getAllSkills()) {
-            try {
-                int skill_id = skill_.getId();
-                if ((skill_id % 10000000 >= 1000000) && ((skill_id >= 9000000) && (skill_id <= 10000000))) {
-                    continue;
-                }
-                ISkill skill = SkillFactory.getSkill(skill_id);
-                boolean add = ((skill_id / 10000000 == this.getJob().getId() / 1000) && (skill.hasMastery()))
-                        || (job.isCygnus());
-                if ((!add) && (job.isAran())) {
-                    switch (skill_id) {
-                        case 21000000:
-                        case 21001003:
-                        case 21100000:
-                        case 21100002:
-                        case 21100004:
-                        case 21100005:
-                        case 21110002:
-                            add = true;
-                    }
-                }
-                if (add) {
-                    int masterLevel = skill.getMasterLevel();
-                    if (masterLevel == 0) {
-                        continue;
-                    }
-                    changeSkillLevel(skill, getSkillLevel(skill), (byte) masterLevel);
-                }
-            } catch (NumberFormatException nfe) {
-                continue;
-            } catch (NullPointerException npe) {
-                continue;
-            }
-        }
-    }
 
     public void checkForDarkSight() {
         if (isActiveBuffedValue(Rogue.DARK_SIGHT)) {
