@@ -1,7 +1,7 @@
 package client.anticheat;
 
 import client.MapleCharacter;
-import client.MapleCharacterHelper;
+import client.base.MapleCharacterHelper;
 import constants.GameConstants;
 import handling.world.helper.BroadcastHelper;
 import java.awt.*;

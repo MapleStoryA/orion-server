@@ -1,6 +1,6 @@
 package server.maplevar;
 
-import client.MapleCharacter;
+import client.base.BaseMapleCharacter;
 import database.DatabaseConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,9 +17,9 @@ public class SimpleMapleVar implements MapleVar {
     private static final String INSERT = "INSERT INTO maple_var(character_id, maple_key, value) VALUES(?, ?, ?);";
     private static final String SELECT =
             "SELECT maple_key, value FROM maple_var WHERE character_id = ? AND maple_key = ?";
-    private final MapleCharacter player;
+    private final BaseMapleCharacter player;
 
-    public SimpleMapleVar(MapleCharacter player) {
+    public SimpleMapleVar(BaseMapleCharacter player) {
         super();
         this.player = player;
     }

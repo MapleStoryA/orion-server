@@ -14,7 +14,6 @@ import client.skill.ISkill;
 import client.skill.SkillEntry;
 import client.skill.SkillFactory;
 import constants.GameConstants;
-import constants.JobConstants;
 import constants.ServerConstants;
 import database.DatabaseConnection;
 import handling.channel.ChannelServer;
@@ -32,9 +31,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +60,6 @@ import server.quest.MapleQuest;
 import server.shops.MapleShopFactory;
 import tools.MaplePacketCreator;
 import tools.collection.Pair;
-import tools.collection.Triple;
 import tools.helper.Randomizer;
 import tools.packet.CWVsContextOnMessagePackets;
 import tools.packet.PlayerShopPacket;
@@ -1527,115 +1523,6 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
         c.getPlayer().setSpeedQuiz(new SpeedQuiz(c, npc)); // 0 mode
         return null;
-    }
-
-    public String populateKeymapValues() {
-        if (GameConstants.isEvan(c.getPlayer().getJob().getId())) {
-            return "I'm sorry to say that since you're an Evan, you can't keep any skills as other"
-                    + " jobs do not have any dragon. Hence, you cannot keep any skills.";
-        }
-        final Collection<Triple<Byte, Integer, Byte>> keymap = c.getPlayer().getKeymap();
-        StringBuilder sb = new StringBuilder("Which of the skills would you like to keep? Please note that you can only"
-                + " select the skills which are on your keymap.\r\n");
-        Iterator<Triple<Byte, Integer, Byte>> itr = keymap.iterator();
-        int sel = -1;
-        while (itr.hasNext()) {
-            Triple<Byte, Integer, Byte> key = itr.next();
-            if (key.getLeft() == 1 && key.getRight() <= 0) {
-                if (!JobConstants.isEvanSkill(key.getMid())) { // not evan
-                    // skills
-                    if (key.getMid() >= 30000000
-                            || key.getMid() == 1004
-                            || key.getMid() == 10001004
-                            || key.getMid() == 20001004
-                            || key.getMid() == 20011004) {
-                        continue;
-                    }
-                    if (((key.getMid() / 10000 == 910) || (key.getMid() / 10000 == 900))
-                            && !c.getPlayer().isGameMaster()) { // is
-                        // gm
-                        // skills
-                        // but
-                        // person
-                        // not
-                        // gm
-                        continue;
-                    }
-                    if (GameConstants.getMountItem(key.getMid()) != 0 && key.getMid() != 5221006) { // special
-                        // mounts
-                        // and
-                        // skill
-                        // is
-                        // not
-                        // battleship
-                        continue;
-                    }
-                    sel++;
-                    sb.append("#L")
-                            .append(sel)
-                            .append("# #s")
-                            .append(key.getMid())
-                            .append("#");
-                    if (sel % 4 == 0 && sel != 0) {
-                        sb.append("\r\n");
-                    } else {
-                        sb.append("\t");
-                    }
-                }
-            }
-        }
-        if (sel == -1) {
-            return "Currently, you do not have any skills which can be kept as a reborn skill on" + " your keymap.";
-        }
-        return sb.toString();
-    }
-
-    public int getSkillIdKey(final int selection) {
-        if (GameConstants.isEvan(c.getPlayer().getJob().getId())) {
-            return -1;
-        }
-        final Collection<Triple<Byte, Integer, Byte>> keymap = c.getPlayer().getKeymap();
-        Iterator<Triple<Byte, Integer, Byte>> itr = keymap.iterator();
-        int sel = -1;
-        while (itr.hasNext()) {
-            Triple<Byte, Integer, Byte> key = itr.next();
-            if (key.getLeft() == 1 && key.getRight() <= 0) {
-                if (!JobConstants.isEvanSkill(key.getMid())) { // not evan
-                    // skills
-                    if (key.getMid() >= 30000000
-                            || key.getMid() == 1004
-                            || key.getMid() == 10001004
-                            || key.getMid() == 20001004
-                            || key.getMid() == 20011004) {
-                        continue;
-                    }
-                    if (((key.getMid() / 10000 == 910) || (key.getMid() / 10000 == 900))
-                            && !c.getPlayer().isGameMaster()) { // is
-                        // gm
-                        // skills
-                        // but
-                        // person
-                        // not
-                        // gm
-                        continue;
-                    }
-                    if (GameConstants.getMountItem(key.getMid()) != 0 && key.getMid() != 5221006) { // special
-                        // mounts
-                        // and
-                        // skill
-                        // is
-                        // not
-                        // battleship
-                        continue;
-                    }
-                    sel++;
-                    if (sel == selection) {
-                        return key.getMid();
-                    }
-                }
-            }
-        }
-        return 0;
     }
 
     public void changeGuildName(final String name) {

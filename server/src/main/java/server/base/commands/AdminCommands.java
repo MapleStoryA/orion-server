@@ -1,12 +1,12 @@
 package server.base.commands;
 
 import client.MapleCharacter;
-import client.MapleCharacterHelper;
 import client.MapleClient;
 import client.MapleDisease;
 import client.MapleStat;
 import client.anticheat.CheatingOffense;
 import client.anticheat.ReportType;
+import client.base.MapleCharacterHelper;
 import client.inventory.Equip;
 import client.inventory.IItem;
 import client.inventory.ItemFlag;

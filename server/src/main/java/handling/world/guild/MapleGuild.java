@@ -1,8 +1,8 @@
 package handling.world.guild;
 
 import client.MapleCharacter;
-import client.MapleCharacterHelper;
 import client.MapleClient;
+import client.base.MapleCharacterHelper;
 import database.DatabaseConnection;
 import handling.world.alliance.AllianceManager;
 import handling.world.guild.MapleBBSThread.MapleBBSReply;

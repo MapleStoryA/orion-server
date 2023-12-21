@@ -1,8 +1,8 @@
 package handling.login.handler;
 
 import client.MapleCharacter;
-import client.MapleCharacterHelper;
 import client.MapleClient;
+import client.base.MapleCharacterHelper;
 import client.inventory.Equip;
 import client.inventory.IItem;
 import client.inventory.Item;

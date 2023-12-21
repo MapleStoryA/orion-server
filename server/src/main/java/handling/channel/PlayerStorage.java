@@ -1,7 +1,7 @@
 package handling.channel;
 
 import client.MapleCharacter;
-import client.MapleCharacterHelper;
+import client.base.MapleCharacterHelper;
 import handling.world.helper.CharacterTransfer;
 import handling.world.helper.CheaterData;
 import handling.world.helper.FindCommand;

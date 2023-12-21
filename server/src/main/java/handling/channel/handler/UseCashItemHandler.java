@@ -1,10 +1,10 @@
 package handling.channel.handler;
 
 import client.MapleCharacter;
-import client.MapleCharacterHelper;
 import client.MapleClient;
 import client.MapleStat;
 import client.PlayerStats;
+import client.base.MapleCharacterHelper;
 import client.inventory.Equip;
 import client.inventory.IItem;
 import client.inventory.ItemFlag;
