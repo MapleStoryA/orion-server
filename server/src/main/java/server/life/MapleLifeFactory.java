@@ -250,13 +250,13 @@ public class MapleLifeFactory {
         return false;
     }
 
-    public static MapleNPC getNPC(final int nid) {
-        String name = npcNames.get(nid);
+    public static MapleNPC getNPC(final int npcId) {
+        String name = npcNames.get(npcId);
         String script = null;
         if (name == null) {
-            name = MapleDataTool.getString(nid + "/name", npcStringData, "MISSINGNO");
+            name = MapleDataTool.getString(npcId + "/name", npcStringData, "MISSINGNO");
             try {
-                MapleData npcData = npcDataWZ.getData(nid + ".img");
+                MapleData npcData = npcDataWZ.getData(npcId + ".img");
                 var infoNode = npcData.getChildByPath("info");
                 if (infoNode != null) {
                     MapleData scriptNode = infoNode.getChildByPath("script");
@@ -265,12 +265,12 @@ public class MapleLifeFactory {
                     }
                 }
             } catch (Exception ex) {
-                log.info("Error loading npc script for npc {}", nid);
+                log.info("Error loading npc script for npc {}", npcId, ex);
             }
 
-            npcNames.put(nid, name);
+            npcNames.put(npcId, name);
         }
-        var mapleNpc = new MapleNPC(nid, name);
+        var mapleNpc = new MapleNPC(npcId, name);
         mapleNpc.setScript(script);
         return mapleNpc;
     }

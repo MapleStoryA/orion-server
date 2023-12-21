@@ -5,8 +5,8 @@ import database.DatabaseConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.script.Invocable;
@@ -19,6 +19,7 @@ import server.maps.ReactorDropEntry;
 public class ReactorScriptManager extends AbstractScriptManager {
 
     private static final ReactorScriptManager instance = new ReactorScriptManager();
+
     private final Map<Integer, List<ReactorDropEntry>> drops = new HashMap<Integer, List<ReactorDropEntry>>();
 
     public static final ReactorScriptManager getInstance() {
@@ -28,54 +29,50 @@ public class ReactorScriptManager extends AbstractScriptManager {
     public final void act(final MapleClient c, final MapleReactor reactor) {
         try {
             final Invocable iv = getInvocable("reactor", String.valueOf(reactor.getReactorId()), c);
-
             if (iv == null) {
                 return;
             }
             final ScriptEngine scriptengine = (ScriptEngine) iv;
             ReactorActionManager rm = new ReactorActionManager(c, reactor);
-
             scriptengine.put("rm", rm);
             iv.invokeFunction("act");
         } catch (Exception e) {
-            System.err.println("Error executing reactor script. ReactorID: "
-                    + reactor.getReactorId()
-                    + ", ReactorName: "
-                    + reactor.getName()
-                    + ":"
-                    + e);
-            final String msg = "Error executing reactor script. ReactorID: "
-                    + reactor.getReactorId()
-                    + ", ReactorName: "
-                    + reactor.getName()
-                    + ":"
-                    + e;
-            log.info("Log_Script_Except.rtf" + " : " + msg);
+            log.error(
+                    "Error executing reactor id: {} name: {} mapId: {}",
+                    reactor.getReactorId(),
+                    reactor.getName(),
+                    c.getPlayer().getMapId(),
+                    e);
         }
     }
 
-    public final List<ReactorDropEntry> getDrops(final int rid) {
-        List<ReactorDropEntry> ret = drops.get(rid);
+    public final List<ReactorDropEntry> getDrops(final int reactorId) {
+        List<ReactorDropEntry> ret = drops.get(reactorId);
         if (ret != null) {
             return ret;
         }
-        ret = new LinkedList<>();
+        List<ReactorDropEntry> drops = loadDrops(reactorId);
+        this.drops.put(reactorId, drops);
+        return drops;
+    }
 
+    public List<ReactorDropEntry> loadDrops(int reactorID) {
         PreparedStatement ps = null;
         ResultSet rs = null;
-
+        List<ReactorDropEntry> listOfDrops = new ArrayList<>();
         try (var con = DatabaseConnection.getConnection()) {
             ps = con.prepareStatement("SELECT * FROM reactordrops WHERE reactorid = ?");
-            ps.setInt(1, rid);
+            ps.setInt(1, reactorID);
             rs = ps.executeQuery();
             while (rs.next()) {
-                ret.add(new ReactorDropEntry(rs.getInt("itemid"), rs.getInt("chance"), rs.getInt("questid")));
+                listOfDrops.add(new ReactorDropEntry(rs.getInt("itemid"), rs.getInt("chance"), rs.getInt("questid")));
             }
             rs.close();
             ps.close();
+            return listOfDrops;
         } catch (final SQLException e) {
-            System.err.println("Could not retrieve drops for reactor " + rid + e);
-            return ret;
+            log.info("Could not retrieve drops for reactor {}", reactorID, e);
+            return List.of();
         } finally {
             try {
                 if (rs != null) {
@@ -85,11 +82,9 @@ public class ReactorScriptManager extends AbstractScriptManager {
                     ps.close();
                 }
             } catch (SQLException ignore) {
-                return ret;
+                return listOfDrops;
             }
         }
-        drops.put(rid, ret);
-        return ret;
     }
 
     public final void clearDrops() {
