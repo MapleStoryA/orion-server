@@ -857,13 +857,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             }
         }
         final MobTimer timerManager = MobTimer.getInstance();
-        final Runnable cancelTask = new Runnable() {
-
-            @Override
-            public void run() {
-                cancelStatus(stat);
-            }
-        };
+        final Runnable cancelTask = () -> cancelStatus(stat);
         if (poison && getHp() > 1) {
             final int poisonDamage = (int) Math.min(
                     Short.MAX_VALUE, (long) (getMobMaxHp() / (70.0 - from.getSkillLevel(status.getSkill())) + 0.999));
@@ -977,17 +971,13 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             final MobSkill skill,
             final List<Integer> reflection) {
         MobTimer timerManager = MobTimer.getInstance();
-        final Runnable cancelTask = new Runnable() {
-
-            @Override
-            public void run() {
-                if (reflection.size() > 0) {
-                    MapleMonster.this.reflectpack = null;
-                }
-                if (isAlive()) {
-                    for (MonsterStatus z : effect.keySet()) {
-                        cancelStatus(z);
-                    }
+        final Runnable cancelTask = () -> {
+            if (reflection.size() > 0) {
+                MapleMonster.this.reflectpack = null;
+            }
+            if (isAlive()) {
+                for (MonsterStatus z : effect.keySet()) {
+                    cancelStatus(z);
                 }
             }
         };
@@ -1018,15 +1008,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
 
     public final void setTempEffectiveness(final Element e, final long milli) {
         stats.setEffectiveness(e, ElementalEffectiveness.WEAK);
-        MobTimer.getInstance()
-                .schedule(
-                        new Runnable() {
-
-                            public void run() {
-                                stats.removeEffectiveness(e);
-                            }
-                        },
-                        milli);
+        MobTimer.getInstance().schedule(() -> stats.removeEffectiveness(e), milli);
     }
 
     public final boolean isBuffed(final MonsterStatus status) {

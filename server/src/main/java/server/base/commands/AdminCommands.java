@@ -2507,21 +2507,18 @@ public class AdminCommands {
                 t = new Thread(ShutdownServer.getInstance());
                 ts = Timer.EventTimer.getInstance()
                         .register(
-                                new Runnable() {
-
-                                    public void run() {
-                                        if (ShutdownTime.this.minutesLeft == 0) {
-                                            ShutdownServer.getInstance().shutdown();
-                                            Shutdown.t.start();
-                                            ShutdownTime.ts.cancel(false);
-                                            return;
-                                        }
-                                        BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(
-                                                0,
-                                                "The server will shutdown in " + ShutdownTime.this.minutesLeft
-                                                        + " minutes. Please log off safely."));
-                                        ShutdownTime.this.minutesLeft--;
+                                () -> {
+                                    if (ShutdownTime.this.minutesLeft == 0) {
+                                        ShutdownServer.getInstance().shutdown();
+                                        Shutdown.t.start();
+                                        ShutdownTime.ts.cancel(false);
+                                        return;
                                     }
+                                    BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(
+                                            0,
+                                            "The server will shutdown in " + ShutdownTime.this.minutesLeft
+                                                    + " minutes. Please log off safely."));
+                                    ShutdownTime.this.minutesLeft--;
                                 },
                                 60000L);
             } else {
@@ -2999,17 +2996,12 @@ public class AdminCommands {
             c.getPlayer().dropMessage(5, "Message will pop up in " + sec + " seconds.");
             final long oldMillis = System.currentTimeMillis();
             toTest.schedule(
-                    new Runnable() {
-
-                        public void run() {
-                            c.getPlayer()
-                                    .dropMessage(
-                                            5,
-                                            "Message has popped up in "
-                                                    + ((System.currentTimeMillis() - oldMillis) / 1000)
-                                                    + " seconds, expected was " + sec + " seconds");
-                        }
-                    },
+                    () -> c.getPlayer()
+                            .dropMessage(
+                                    5,
+                                    "Message has popped up in "
+                                            + ((System.currentTimeMillis() - oldMillis) / 1000)
+                                            + " seconds, expected was " + sec + " seconds"),
                     sec * 1000L);
             return 1;
         }

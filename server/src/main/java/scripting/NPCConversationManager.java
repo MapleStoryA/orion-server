@@ -1436,63 +1436,56 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                 + " downtimes, crashes, and lags?"));
         CloneTimer.getInstance()
                 .schedule(
-                        new Runnable() {
-
-                            public void run() {
-                                if (chr == null || getPlayer() == null) {
-                                    warpMap(680000500, 0);
-                                } else {
-                                    getMap().broadcastMessage(MaplePacketCreator.yellowChat(chr.getName()
-                                            + ", do you take "
-                                            + getPlayer().getName()
-                                            + " as your husband and promise"
-                                            + " to stay beside him through"
-                                            + " all downtimes, crashes, and"
-                                            + " lags?"));
-                                }
+                        () -> {
+                            if (chr == null || getPlayer() == null) {
+                                warpMap(680000500, 0);
+                            } else {
+                                getMap().broadcastMessage(MaplePacketCreator.yellowChat(chr.getName()
+                                        + ", do you take "
+                                        + getPlayer().getName()
+                                        + " as your husband and promise"
+                                        + " to stay beside him through"
+                                        + " all downtimes, crashes, and"
+                                        + " lags?"));
                             }
                         },
                         10000);
         CloneTimer.getInstance()
                 .schedule(
-                        new Runnable() {
-
-                            public void run() {
-                                if (chr == null || getPlayer() == null) {
-                                    if (getPlayer() != null) {
-                                        setQuestRecord(getPlayer(), 160001, "3");
-                                        setQuestRecord(getPlayer(), 160002, "0");
-                                    } else if (chr != null) {
-                                        setQuestRecord(chr, 160001, "3");
-                                        setQuestRecord(chr, 160002, "0");
-                                    }
-                                    warpMap(680000500, 0);
-                                } else {
-                                    setQuestRecord(getPlayer(), 160001, "2");
-                                    setQuestRecord(chr, 160001, "2");
-                                    sendNPCText(
-                                            getPlayer().getName()
-                                                    + " and "
-                                                    + chr.getName()
-                                                    + ", I wish you two all the best on your"
-                                                    + " journey together!",
-                                            9201002);
-                                    getMap().startExtendedMapEffect(
-                                                    "You may now kiss the bride, "
-                                                            + getPlayer().getName()
-                                                            + "!",
-                                                    5120006);
-                                    if (chr.getGuildId() > 0) {
-                                        GuildManager.guildPacket(
-                                                chr.getGuildId(),
-                                                MaplePacketCreator.sendMarriage(false, chr.getName()));
-                                    }
-                                    if (getPlayer().getGuildId() > 0) {
-                                        GuildManager.guildPacket(
-                                                getPlayer().getGuildId(),
-                                                MaplePacketCreator.sendMarriage(
-                                                        false, getPlayer().getName()));
-                                    }
+                        () -> {
+                            if (chr == null || getPlayer() == null) {
+                                if (getPlayer() != null) {
+                                    setQuestRecord(getPlayer(), 160001, "3");
+                                    setQuestRecord(getPlayer(), 160002, "0");
+                                } else if (chr != null) {
+                                    setQuestRecord(chr, 160001, "3");
+                                    setQuestRecord(chr, 160002, "0");
+                                }
+                                warpMap(680000500, 0);
+                            } else {
+                                setQuestRecord(getPlayer(), 160001, "2");
+                                setQuestRecord(chr, 160001, "2");
+                                sendNPCText(
+                                        getPlayer().getName()
+                                                + " and "
+                                                + chr.getName()
+                                                + ", I wish you two all the best on your"
+                                                + " journey together!",
+                                        9201002);
+                                getMap().startExtendedMapEffect(
+                                                "You may now kiss the bride, "
+                                                        + getPlayer().getName()
+                                                        + "!",
+                                                5120006);
+                                if (chr.getGuildId() > 0) {
+                                    GuildManager.guildPacket(
+                                            chr.getGuildId(), MaplePacketCreator.sendMarriage(false, chr.getName()));
+                                }
+                                if (getPlayer().getGuildId() > 0) {
+                                    GuildManager.guildPacket(
+                                            getPlayer().getGuildId(),
+                                            MaplePacketCreator.sendMarriage(
+                                                    false, getPlayer().getName()));
                                 }
                             }
                         },

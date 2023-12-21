@@ -100,29 +100,26 @@ public class EventInstanceManager {
         }
         eventTimer = EventTimer.getInstance()
                 .schedule(
-                        new Runnable() {
-
-                            public void run() {
-                                if (disposed || eim == null || em == null) {
-                                    return;
-                                }
-                                try {
-                                    em.getIv().invokeFunction("scheduledTimeout", eim);
-                                } catch (Exception ex) {
-                                    final String msg = "Event name"
-                                            + em.getName()
-                                            + ", Instance name : "
-                                            + name
-                                            + ", method Name : scheduledTimeout:\n"
-                                            + ex;
-                                    log.info("Log_Script_Except.rtf" + " : " + msg);
-                                    log.info("Event name"
-                                            + em.getName()
-                                            + ", Instance name : "
-                                            + name
-                                            + ", method Name : scheduledTimeout:\n"
-                                            + ex);
-                                }
+                        () -> {
+                            if (disposed || eim == null || em == null) {
+                                return;
+                            }
+                            try {
+                                em.getIv().invokeFunction("scheduledTimeout", eim);
+                            } catch (Exception ex) {
+                                final String msg = "Event name"
+                                        + em.getName()
+                                        + ", Instance name : "
+                                        + name
+                                        + ", method Name : scheduledTimeout:\n"
+                                        + ex;
+                                log.info("Log_Script_Except.rtf" + " : " + msg);
+                                log.info("Event name"
+                                        + em.getName()
+                                        + ", Instance name : "
+                                        + name
+                                        + ", method Name : scheduledTimeout:\n"
+                                        + ex);
                             }
                         },
                         delay);
@@ -696,34 +693,31 @@ public class EventInstanceManager {
         }
         EventTimer.getInstance()
                 .schedule(
-                        new Runnable() {
-
-                            public void run() {
-                                if (disposed || EventInstanceManager.this == null || em == null) {
-                                    return;
-                                }
-                                try {
-                                    em.getIv().invokeFunction(methodName, EventInstanceManager.this);
-                                } catch (NullPointerException npe) {
-                                } catch (Exception ex) {
-                                    log.info("Event name"
-                                            + em.getName()
-                                            + ", Instance name : "
-                                            + name
-                                            + ", method Name : "
-                                            + methodName
-                                            + ":\n"
-                                            + ex);
-                                    final String msg = "Event name"
-                                            + em.getName()
-                                            + ", Instance name : "
-                                            + name
-                                            + ", method Name(schedule) : "
-                                            + methodName
-                                            + " :\n"
-                                            + ex;
-                                    log.info("Log_Script_Except.rtf" + " : " + msg);
-                                }
+                        () -> {
+                            if (disposed || EventInstanceManager.this == null || em == null) {
+                                return;
+                            }
+                            try {
+                                em.getIv().invokeFunction(methodName, EventInstanceManager.this);
+                            } catch (NullPointerException npe) {
+                            } catch (Exception ex) {
+                                log.info("Event name"
+                                        + em.getName()
+                                        + ", Instance name : "
+                                        + name
+                                        + ", method Name : "
+                                        + methodName
+                                        + ":\n"
+                                        + ex);
+                                final String msg = "Event name"
+                                        + em.getName()
+                                        + ", Instance name : "
+                                        + name
+                                        + ", method Name(schedule) : "
+                                        + methodName
+                                        + " :\n"
+                                        + ex;
+                                log.info("Log_Script_Except.rtf" + " : " + msg);
                             }
                         },
                         delay);

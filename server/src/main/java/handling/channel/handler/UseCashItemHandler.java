@@ -788,20 +788,16 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
 
                 MapTimer.getInstance()
                         .schedule(
-                                new Runnable() {
-
-                                    @Override
-                                    public void run() {
-                                        IItem item = c.getPlayer()
-                                                .getInventory(MapleInventoryType.EQUIP)
-                                                .getItem(dst);
-                                        c.getSession()
-                                                .write(MaplePacketCreator.updateInventorySlot(
-                                                        MapleInventoryType.EQUIP, item, false));
-                                        c.getSession().write(MaplePacketCreator.scrolledItem(item, item, false, false));
-                                        c.getSession().write(MTSCSPacket.VegasScroll(70));
-                                        c.enableActions();
-                                    }
+                                () -> {
+                                    IItem item = c.getPlayer()
+                                            .getInventory(MapleInventoryType.EQUIP)
+                                            .getItem(dst);
+                                    c.getSession()
+                                            .write(MaplePacketCreator.updateInventorySlot(
+                                                    MapleInventoryType.EQUIP, item, false));
+                                    c.getSession().write(MaplePacketCreator.scrolledItem(item, item, false, false));
+                                    c.getSession().write(MTSCSPacket.VegasScroll(70));
+                                    c.enableActions();
                                 },
                                 2000);
 

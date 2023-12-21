@@ -884,31 +884,20 @@ public class DamageParse {
 
                 MapTimer.getInstance()
                         .schedule(
-                                new Runnable() {
-
-                                    @Override
-                                    public void run() {
-                                        player.getMap()
-                                                .spawnMesoDrop(
-                                                        Math.min(
-                                                                (int) Math.max(
-                                                                        ((double) eachd / (double) 20000)
-                                                                                * (double) maxmeso,
-                                                                        1),
-                                                                maxmeso),
-                                                        new Point(
-                                                                (int) (mob.getPosition()
-                                                                                .getX()
-                                                                        + Randomizer.nextInt(100)
-                                                                        - 50),
-                                                                (int) (mob.getPosition()
-                                                                        .getY())),
-                                                        mob,
-                                                        player,
-                                                        true,
-                                                        (byte) 0);
-                                    }
-                                },
+                                () -> player.getMap()
+                                        .spawnMesoDrop(
+                                                Math.min(
+                                                        (int) Math.max(
+                                                                ((double) eachd / (double) 20000) * (double) maxmeso,
+                                                                1),
+                                                        maxmeso),
+                                                new Point(
+                                                        (int) (mob.getPosition().getX() + Randomizer.nextInt(100) - 50),
+                                                        (int) (mob.getPosition().getY())),
+                                                mob,
+                                                player,
+                                                true,
+                                                (byte) 0),
                                 100);
             }
         }

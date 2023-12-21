@@ -78,16 +78,8 @@ public class AramiaFireWorks {
         // Henesys Park
         EventTimer.getInstance()
                 .schedule(
-                        new Runnable() {
-
-                            @Override
-                            public void run() {
-                                startSun(c.getClient()
-                                        .getChannelServer()
-                                        .getMapFactory()
-                                        .getMap(970010000));
-                            }
-                        },
+                        () -> startSun(
+                                c.getClient().getChannelServer().getMapFactory().getMap(970010000)),
                         10000);
     }
 
@@ -97,16 +89,7 @@ public class AramiaFireWorks {
         }
         map.startMapEffect("The tree is bursting with sunshine!", 5120008);
         for (int i = 0; i < 3; i++) {
-            EventTimer.getInstance()
-                    .schedule(
-                            new Runnable() {
-
-                                @Override
-                                public void run() {
-                                    spawnItem(map);
-                                }
-                            },
-                            1000 + (i * 10000));
+            EventTimer.getInstance().schedule(() -> spawnItem(map), 1000 + (i * 10000));
         }
     }
 

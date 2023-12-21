@@ -54,27 +54,24 @@ public class MonsterBombHandler extends AbstractMaplePacketHandler {
                 c.enableActions();
                 TimerManager.getInstance()
                         .schedule(
-                                new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (mob2.isAlive()) {
-                                            mob2.damage(c.getPlayer(), damage, true);
-                                            c.getPlayer()
-                                                    .getMap()
-                                                    .broadcastMessage(
-                                                            c.getPlayer(),
-                                                            MaplePacketCreator.damageMonster(mob.getObjectId(), damage),
-                                                            true);
-                                            c.getPlayer()
-                                                    .getMap()
-                                                    .broadcastMessage(
-                                                            c.getPlayer(),
-                                                            MaplePacketCreator.showMonsterBombEffect(
-                                                                    mobPositionX, ypos, chr.getSkillLevel(skill)),
-                                                            true);
-                                        }
-                                        c.enableActions();
+                                () -> {
+                                    if (mob2.isAlive()) {
+                                        mob2.damage(c.getPlayer(), damage, true);
+                                        c.getPlayer()
+                                                .getMap()
+                                                .broadcastMessage(
+                                                        c.getPlayer(),
+                                                        MaplePacketCreator.damageMonster(mob.getObjectId(), damage),
+                                                        true);
+                                        c.getPlayer()
+                                                .getMap()
+                                                .broadcastMessage(
+                                                        c.getPlayer(),
+                                                        MaplePacketCreator.showMonsterBombEffect(
+                                                                mobPositionX, ypos, chr.getSkillLevel(skill)),
+                                                        true);
                                     }
+                                    c.enableActions();
                                 },
                                 3000);
             }

@@ -8,7 +8,6 @@ import java.awt.*;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -333,14 +332,10 @@ public class CheatTracker {
         } finally {
             rL.unlock();
         }
-        offenseList.sort(new Comparator<>() {
-
-            @Override
-            public int compare(final CheatingOffenseEntry o1, final CheatingOffenseEntry o2) {
-                final int thisVal = o1.getPoints();
-                final int anotherVal = o2.getPoints();
-                return (thisVal < anotherVal ? 1 : (thisVal == anotherVal ? 0 : -1));
-            }
+        offenseList.sort((o1, o2) -> {
+            final int thisVal = o1.getPoints();
+            final int anotherVal = o2.getPoints();
+            return (thisVal < anotherVal ? 1 : (thisVal == anotherVal ? 0 : -1));
         });
         final int to = Math.min(offenseList.size(), 4);
         for (int x = 0; x < to; x++) {

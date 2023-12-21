@@ -32,16 +32,7 @@ public class HiredMerchant extends AbstractPlayerStore {
         start = System.currentTimeMillis();
         blacklist = new LinkedHashSet<>();
         chatHistory = new ArrayList<>();
-        this.schedule = EtcTimer.getInstance()
-                .schedule(
-                        new Runnable() {
-
-                            @Override
-                            public void run() {
-                                closeShop(true, true);
-                            }
-                        },
-                        1000 * 60 * 60 * 24);
+        this.schedule = EtcTimer.getInstance().schedule(() -> closeShop(true, true), 1000 * 60 * 60 * 24);
     }
 
     private static int getFee(int meso) {

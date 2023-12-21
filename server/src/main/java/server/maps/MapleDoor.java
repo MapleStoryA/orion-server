@@ -5,7 +5,6 @@ import client.MapleClient;
 import java.awt.*;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import server.MaplePortal;
@@ -64,17 +63,13 @@ public class MapleDoor extends AbstractMapleMapObject {
                 freePortals.add(port);
             }
         }
-        freePortals.sort(new Comparator<>() {
-
-            @Override
-            public int compare(final MaplePortal o1, final MaplePortal o2) {
-                if (o1.getId() < o2.getId()) {
-                    return -1;
-                } else if (o1.getId() == o2.getId()) {
-                    return 0;
-                } else {
-                    return 1;
-                }
+        freePortals.sort((o1, o2) -> {
+            if (o1.getId() < o2.getId()) {
+                return -1;
+            } else if (o1.getId() == o2.getId()) {
+                return 0;
+            } else {
+                return 1;
             }
         });
         for (final MapleMapObject obj : town.getAllDoorsThreadsafe()) {

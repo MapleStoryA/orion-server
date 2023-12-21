@@ -13,7 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -168,18 +167,15 @@ public class MapleStorage implements Serializable {
 
     public void sendStorage(MapleClient c, int npcId) {
         // sort by inventorytype to avoid confusion
-        items.sort(new Comparator<>() {
-
-            public int compare(IItem o1, IItem o2) {
-                if (GameConstants.getInventoryType(o1.getItemId()).getType()
-                        < GameConstants.getInventoryType(o2.getItemId()).getType()) {
-                    return -1;
-                } else if (GameConstants.getInventoryType(o1.getItemId())
-                        == GameConstants.getInventoryType(o2.getItemId())) {
-                    return 0;
-                } else {
-                    return 1;
-                }
+        items.sort((o1, o2) -> {
+            if (GameConstants.getInventoryType(o1.getItemId()).getType()
+                    < GameConstants.getInventoryType(o2.getItemId()).getType()) {
+                return -1;
+            } else if (GameConstants.getInventoryType(o1.getItemId())
+                    == GameConstants.getInventoryType(o2.getItemId())) {
+                return 0;
+            } else {
+                return 1;
             }
         });
         for (MapleInventoryType type : MapleInventoryType.values()) {

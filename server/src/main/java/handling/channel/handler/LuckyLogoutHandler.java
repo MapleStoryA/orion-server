@@ -30,16 +30,7 @@ public class LuckyLogoutHandler extends AbstractMaplePacketHandler {
             c.getPlayer().dropMessage(1, "You will receive your gift in 3 days!");
             // I'm sure there's a packet to make the box disappear ==
             c.getSession().write(MaplePacketCreator.luckyLogoutGift((byte) 1, "70000393"));
-            TimerManager.getInstance()
-                    .schedule(
-                            new Runnable() {
-
-                                @Override
-                                public void run() {
-                                    c.getSession().close();
-                                }
-                            },
-                            2000);
+            TimerManager.getInstance().schedule(() -> c.getSession().close(), 2000);
         }
     }
 }

@@ -37,7 +37,6 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -181,14 +180,10 @@ public class MaplePacketCreator {
         }
         List<Pair<MapleStat, Integer>> mystats = stats;
         if (mystats.size() > 1) {
-            mystats.sort(new Comparator<>() {
-
-                @Override
-                public int compare(final Pair<MapleStat, Integer> o1, final Pair<MapleStat, Integer> o2) {
-                    int val1 = o1.getLeft().getValue();
-                    int val2 = o2.getLeft().getValue();
-                    return (val1 < val2 ? -1 : (val1 == val2 ? 0 : 1));
-                }
+            mystats.sort((o1, o2) -> {
+                int val1 = o1.getLeft().getValue();
+                int val2 = o2.getLeft().getValue();
+                return (val1 < val2 ? -1 : (val1 == val2 ? 0 : 1));
             });
         }
         packet.writeInt(updateMask);
@@ -4205,16 +4200,10 @@ public class MaplePacketCreator {
         }
         List<Pair<MapleStat.TemporaryMapleStat, Integer>> mystats = stats;
         if (mystats.size() > 1) {
-            mystats.sort(new Comparator<>() {
-
-                @Override
-                public int compare(
-                        final Pair<MapleStat.TemporaryMapleStat, Integer> o1,
-                        final Pair<MapleStat.TemporaryMapleStat, Integer> o2) {
-                    int val1 = o1.getLeft().getValue();
-                    int val2 = o2.getLeft().getValue();
-                    return (val1 < val2 ? -1 : (val1 == val2 ? 0 : 1));
-                }
+            mystats.sort((o1, o2) -> {
+                int val1 = o1.getLeft().getValue();
+                int val2 = o2.getLeft().getValue();
+                return (val1 < val2 ? -1 : (val1 == val2 ? 0 : 1));
             });
         }
         packet.writeInt(updateMask);
@@ -4900,13 +4889,10 @@ public class MaplePacketCreator {
         }
         List<Pair<MapleStat, Integer>> mystats = stats;
         if (mystats.size() > 1) {
-            mystats.sort(new Comparator<>() {
-                @Override
-                public int compare(Pair<MapleStat, Integer> o1, Pair<MapleStat, Integer> o2) {
-                    int val1 = o1.getLeft().getValue();
-                    int val2 = o2.getLeft().getValue();
-                    return (val1 < val2 ? -1 : (val1 == val2 ? 0 : 1));
-                }
+            mystats.sort((o1, o2) -> {
+                int val1 = o1.getLeft().getValue();
+                int val2 = o2.getLeft().getValue();
+                return (val1 < val2 ? -1 : (val1 == val2 ? 0 : 1));
             });
         }
         packet.writeInt(updateMask);

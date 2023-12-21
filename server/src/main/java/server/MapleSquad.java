@@ -83,17 +83,13 @@ public class MapleSquad {
     private void scheduleRemoval(final int time) {
         removal = CloneTimer.getInstance()
                 .schedule(
-                        new Runnable() {
-
-                            @Override
-                            public void run() {
-                                if (status != 0
-                                        && leader != null
-                                        && (getLeader() == null || status == 1)) { // leader itself = null
-                                    // means we're already
-                                    // cleared
-                                    clear();
-                                }
+                        () -> {
+                            if (status != 0
+                                    && leader != null
+                                    && (getLeader() == null || status == 1)) { // leader itself = null
+                                // means we're already
+                                // cleared
+                                clear();
                             }
                         },
                         time);
