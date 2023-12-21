@@ -259,8 +259,8 @@ public class MapleStatEffect implements Serializable {
             addBuffStatPairToListIfNotZero(statups, MapleBuffStat.ILLUSION, Integer.valueOf(ret.illusion));
             addBuffStatPairToListIfNotZero(statups, MapleBuffStat.HP_LOSS_GUARD, Integer.valueOf(ret.thaw));
             addBuffStatPairToListIfNotZero(statups, MapleBuffStat.ENHANCED_WATK, Integer.valueOf(ret.ewatk));
-            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.ENHANCED_WDEF, Integer.valueOf(ret.ewdef));
-            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.ENHANCED_MDEF, Integer.valueOf(ret.emdef));
+            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.ENHANCED_WEAPON_DEF, Integer.valueOf(ret.ewdef));
+            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.ENHANCED_MAGIC_DEF, Integer.valueOf(ret.emdef));
             addBuffStatPairToListIfNotZero(statups, MapleBuffStat.ENHANCED_MAXHP, Integer.valueOf(ret.ehp));
             addBuffStatPairToListIfNotZero(statups, MapleBuffStat.ENHANCED_MAXMP, Integer.valueOf(ret.ehp));
         }
@@ -509,15 +509,15 @@ public class MapleStatEffect implements Serializable {
                     break;
                 case 4001002: // disorder
                 case 14001002: // cygnus disorder
-                    monsterStatus.put(MonsterStatus.WATK, ret.x);
-                    monsterStatus.put(MonsterStatus.WDEF, ret.y);
+                    monsterStatus.put(MonsterStatus.WEAPON_ATTACK, ret.x);
+                    monsterStatus.put(MonsterStatus.WEAPON_DEFENSE, ret.y);
                     break;
                 case 5221009: // Mind Control
                     monsterStatus.put(MonsterStatus.HYPNOTIZE, 1);
                     break;
                 case 1201006: // threaten
-                    monsterStatus.put(MonsterStatus.WATK, ret.x);
-                    monsterStatus.put(MonsterStatus.WDEF, ret.y);
+                    monsterStatus.put(MonsterStatus.WEAPON_ATTACK, ret.x);
+                    monsterStatus.put(MonsterStatus.WEAPON_DEFENSE, ret.y);
                     break;
                 case 1211002: // charged blow
                 case 1111008: // shout
@@ -555,8 +555,8 @@ public class MapleStatEffect implements Serializable {
                 case 4121003:
                 case 33121005:
                     monsterStatus.put(MonsterStatus.SHOWDOWN, ret.x);
-                    monsterStatus.put(MonsterStatus.MDEF, ret.x);
-                    monsterStatus.put(MonsterStatus.WDEF, ret.x);
+                    monsterStatus.put(MonsterStatus.MAGIC_DEFENSE, ret.x);
+                    monsterStatus.put(MonsterStatus.WEAPON_DEFENSE, ret.x);
                     break;
                 case 2201004: // cold beam
                 case 2211002: // ice strike
@@ -731,8 +731,8 @@ public class MapleStatEffect implements Serializable {
                     break;
                 case 35121006: // satellite safety
                     ret.duration = 60 * 120 * 1000;
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.SATELLITESAFE_PROC, ret.x));
-                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.SATELLITESAFE_ABSORB, ret.y));
+                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.SATELLITE_SAFE_PROC, ret.x));
+                    statups.add(new Pair<MapleBuffStat, Integer>(MapleBuffStat.SATELLITE_SAFE_ABSORB, ret.y));
                     break;
                 case 35001001: // flame
                 case 35101009:
@@ -1162,19 +1162,19 @@ public class MapleStatEffect implements Serializable {
         List<MonsterStatus> cancel = new ArrayList<MonsterStatus>();
         switch (sourceid) {
             case 1111007:
-                cancel.add(MonsterStatus.WDEF);
+                cancel.add(MonsterStatus.WEAPON_DEFENSE);
                 cancel.add(MonsterStatus.WEAPON_DEFENSE_UP);
                 // cancel.add(MonsterStatus.WEAPON_IMMUNITY);
                 break;
             case 1211009:
-                cancel.add(MonsterStatus.MDEF);
+                cancel.add(MonsterStatus.MAGIC_DEFENSE);
                 cancel.add(MonsterStatus.MAGIC_DEFENSE_UP);
                 // cancel.add(MonsterStatus.MAGIC_IMMUNITY);
                 break;
             case 1311007:
-                cancel.add(MonsterStatus.WATK);
+                cancel.add(MonsterStatus.WEAPON_ATTACK);
                 cancel.add(MonsterStatus.WEAPON_ATTACK_UP);
-                cancel.add(MonsterStatus.MATK);
+                cancel.add(MonsterStatus.MAGIC_ATTACK);
                 cancel.add(MonsterStatus.MAGIC_ATTACK_UP);
                 break;
             default:

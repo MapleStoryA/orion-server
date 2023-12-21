@@ -344,7 +344,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         if (exp > 0) {
             final MonsterStatusEffect mse = stati.get(MonsterStatus.SHOWDOWN);
             if (mse != null) {
-                exp += (int) (exp * (mse.getX() / 100.0));
+                exp += (int) (exp * (mse.getMultiplier() / 100.0));
             }
             final Integer holySymbol = attacker.getBuffedValue(MapleBuffStat.HOLY_SYMBOL);
             if (holySymbol != null) {
@@ -833,7 +833,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                 break;
             }
         }
-        final MonsterStatus stat = status.getStati();
+        final MonsterStatus stat = status.getStatus();
         if (stats.isNoDoom() && stat == MonsterStatus.DOOM) {
             //     return;
         }
@@ -845,14 +845,14 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             if (checkboss
                     && stat != (MonsterStatus.SPEED)
                     && stat != (MonsterStatus.NINJA_AMBUSH)
-                    && stat != (MonsterStatus.WATK)) {
+                    && stat != (MonsterStatus.WEAPON_ATTACK)) {
                 return;
             }
         }
         final MonsterStatusEffect oldEffect = stati.get(stat);
         if (oldEffect != null) {
             stati.remove(stat);
-            if (oldEffect.getStati() == null) {
+            if (oldEffect.getStatus() == null) {
                 oldEffect.cancelTask();
                 oldEffect.cancelPoisonSchedule();
             }

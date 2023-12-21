@@ -7,10 +7,10 @@ public enum MonsterStatus implements Serializable {
     IMPRINT(0x04),
     MONSTER_BOMB(0x08),
     MAGIC_CRASH(0x10),
-    WATK(0x100000000L),
-    WDEF(0x200000000L),
-    MATK(0x400000000L),
-    MDEF(0x800000000L),
+    WEAPON_ATTACK(0x100000000L),
+    WEAPON_DEFENSE(0x200000000L),
+    MAGIC_ATTACK(0x400000000L),
+    MAGIC_DEFENSE(0x800000000L),
     ACC(0x1000000000L),
     AVOID(0x2000000000L),
     SPEED(0x4000000000L),
@@ -38,17 +38,12 @@ public enum MonsterStatus implements Serializable {
     SUMMON(0x8000000000000000L) // all summon bag mobs have.
 ;
     static final long serialVersionUID = 0L;
-    private final long i;
+    private final long value;
     private final boolean first;
 
-    MonsterStatus(long i) {
-        this.i = i;
+    MonsterStatus(long value) {
+        this.value = value;
         first = false;
-    }
-
-    MonsterStatus(int i, boolean first) {
-        this.i = i;
-        this.first = first;
     }
 
     public boolean isFirst() {
@@ -60,6 +55,6 @@ public enum MonsterStatus implements Serializable {
     }
 
     public long getValue() {
-        return i;
+        return value;
     }
 }

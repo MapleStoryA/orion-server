@@ -140,8 +140,8 @@ public class RespawnWorker implements Runnable {
         if (chr.getDiseaseSize() > 0) {
             dis = chr.getAllDiseases(dis);
             for (MapleDiseaseValueHolder m : dis) {
-                if (m.getStartTime() + m.getLength() < now) {
-                    chr.dispelDebuff(m.getDisease());
+                if (m.startTime() + m.length() < now) {
+                    chr.dispelDebuff(m.disease());
                 }
             }
         }

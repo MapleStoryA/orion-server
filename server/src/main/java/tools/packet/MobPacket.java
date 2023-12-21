@@ -167,30 +167,30 @@ public class MobPacket {
         packet.writeLong(getLongMask_NoRef(life.getStati().keySet()));
         boolean ignore_imm = false;
         for (MonsterStatusEffect buff : life.getStati().values()) {
-            if (buff.getStati() == MonsterStatus.MAGIC_DAMAGE_REFLECT
-                    || buff.getStati() == MonsterStatus.WEAPON_DAMAGE_REFLECT) {
+            if (buff.getStatus() == MonsterStatus.MAGIC_DAMAGE_REFLECT
+                    || buff.getStatus() == MonsterStatus.WEAPON_DAMAGE_REFLECT) {
                 ignore_imm = true;
                 break;
             }
         }
         for (MonsterStatusEffect buff : life.getStati().values()) {
-            if (buff.getStati() != MonsterStatus.MAGIC_DAMAGE_REFLECT
-                    && buff.getStati() != MonsterStatus.WEAPON_DAMAGE_REFLECT) {
+            if (buff.getStatus() != MonsterStatus.MAGIC_DAMAGE_REFLECT
+                    && buff.getStatus() != MonsterStatus.WEAPON_DAMAGE_REFLECT) {
                 if (ignore_imm) {
-                    if (buff.getStati() == MonsterStatus.MAGIC_IMMUNITY
-                            || buff.getStati() == MonsterStatus.WEAPON_IMMUNITY) {
+                    if (buff.getStatus() == MonsterStatus.MAGIC_IMMUNITY
+                            || buff.getStatus() == MonsterStatus.WEAPON_IMMUNITY) {
                         continue;
                     }
                 }
-                packet.writeShort(buff.getX().shortValue());
-                if (buff.getStati() != MonsterStatus.SUMMON) {
+                packet.writeShort(buff.getMultiplier().shortValue());
+                if (buff.getStatus() != MonsterStatus.SUMMON) {
                     if (buff.getMobSkill() != null) {
                         packet.writeShort(buff.getMobSkill().getSkillId());
                         packet.writeShort(buff.getMobSkill().getSkillLevel());
                     } else if (buff.getSkill() > 0) {
                         packet.writeInt(buff.getSkill());
                     }
-                    packet.writeShort(buff.getStati().isEmpty() ? 0 : 1);
+                    packet.writeShort(buff.getStatus().isEmpty() ? 0 : 1);
                 }
             }
         }
@@ -355,10 +355,10 @@ public class MobPacket {
 
         packet.writeShort(SendPacketOpcode.APPLY_MONSTER_STATUS.getValue());
         packet.writeInt(oid);
-        packet.writeLong(getSpecialLongMask(Collections.singletonList(mse.getStati())));
-        packet.writeLong(getLongMask(Collections.singletonList(mse.getStati())));
+        packet.writeLong(getSpecialLongMask(Collections.singletonList(mse.getStatus())));
+        packet.writeLong(getLongMask(Collections.singletonList(mse.getStatus())));
 
-        packet.writeShort(mse.getX());
+        packet.writeShort(mse.getMultiplier());
         if (mse.isMonsterSkill()) {
             packet.writeShort(mse.getMobSkill().getSkillId());
             packet.writeShort(mse.getMobSkill().getSkillLevel());
@@ -366,7 +366,7 @@ public class MobPacket {
             packet.writeInt(mse.getSkill());
         }
         packet.writeShort(
-                mse.getStati().isEmpty() ? 1 : 0); // might actually be the buffTime but it's not displayed anywhere
+                mse.getStatus().isEmpty() ? 1 : 0); // might actually be the buffTime but it's not displayed anywhere
         packet.writeShort(0); // delay in ms
         packet.write(1); // size
         packet.write(1); // ? v97

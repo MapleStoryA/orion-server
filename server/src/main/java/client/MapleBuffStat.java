@@ -3,11 +3,11 @@ package client;
 import java.io.Serializable;
 
 public enum MapleBuffStat implements Serializable {
-    ENHANCED_WDEF(0x1, 2),
-    ENHANCED_MDEF(0x2, 2),
+    ENHANCED_WEAPON_DEF(0x1, 2),
+    ENHANCED_MAGIC_DEF(0x2, 2),
     PERFECT_ARMOR(0x4, 2),
-    SATELLITESAFE_PROC(0x8, 2),
-    SATELLITESAFE_ABSORB(0x10, 2),
+    SATELLITE_SAFE_PROC(0x8, 2),
+    SATELLITE_SAFE_ABSORB(0x10, 2),
     CRITICAL_RATE_BUFF(0x40, 2),
     MP_BUFF(0x80, 2),
     DAMAGE_TAKEN_BUFF(0x100, 2),
@@ -106,16 +106,16 @@ public enum MapleBuffStat implements Serializable {
     MESOGUARD(0x1000000000000000L),
     HP_LOSS_GUARD(0x2000000000000000L);
     private static final long serialVersionUID = 0L;
-    private final long buffstat;
+    private final long value;
     private final int first;
 
-    MapleBuffStat(long buffstat) {
-        this.buffstat = buffstat;
+    MapleBuffStat(long value) {
+        this.value = value;
         this.first = 1;
     }
 
-    MapleBuffStat(long buffstat, int first) {
-        this.buffstat = buffstat;
+    MapleBuffStat(long value, int first) {
+        this.value = value;
         this.first = first;
     }
 
@@ -124,6 +124,6 @@ public enum MapleBuffStat implements Serializable {
     }
 
     public final long getValue() {
-        return buffstat;
+        return value;
     }
 }

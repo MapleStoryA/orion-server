@@ -20,7 +20,6 @@ public class MapleQuestStatus implements Serializable {
     private int forfeited = 0;
     private String customData;
 
-    /** Creates a new instance of MapleQuestStatus */
     public MapleQuestStatus(final MapleQuest quest, final byte status) {
         this.quest = quest;
         this.setStatus(status);
@@ -64,7 +63,7 @@ public class MapleQuestStatus implements Serializable {
         this.npc = npc;
     }
 
-    private final void registerMobs() {
+    private void registerMobs() {
         killedMobs = new LinkedHashMap<Integer, Integer>();
         for (final int i : quest.getRelevantMobs().keySet()) {
             killedMobs.put(i, 0);

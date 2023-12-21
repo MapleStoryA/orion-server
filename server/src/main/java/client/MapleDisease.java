@@ -23,16 +23,16 @@ public enum MapleDisease implements Serializable {
     ;
     // 0x100 is disable skill except buff
     private static final long serialVersionUID = 0L;
-    private final long i;
+    private final long value;
     private final boolean first;
 
-    MapleDisease(long i) {
-        this.i = i;
+    MapleDisease(long value) {
+        this.value = value;
         first = false;
     }
 
-    MapleDisease(long i, boolean first) {
-        this.i = i;
+    MapleDisease(long value, boolean first) {
+        this.value = value;
         this.first = first;
     }
 
@@ -120,6 +120,6 @@ public enum MapleDisease implements Serializable {
     }
 
     public long getValue() {
-        return i;
+        return value;
     }
 }

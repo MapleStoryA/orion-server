@@ -4,6 +4,7 @@ import client.anticheat.CheatTracker;
 import client.anticheat.ReportType;
 import client.base.BaseMapleCharacter;
 import client.base.MapleCharacterHelper;
+import client.base.PlayerRandomStream;
 import client.events.RockPaperScissors;
 import client.events.SpeedQuiz;
 import client.inventory.IItem;
@@ -3863,7 +3864,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     public final void giveSilentDebuff(final List<MapleDiseaseValueHolder> ld) {
         if (ld != null) {
             for (final MapleDiseaseValueHolder disease : ld) {
-                diseases.put(disease.getDisease(), disease);
+                diseases.put(disease.disease(), disease);
             }
         }
     }

@@ -8,37 +8,37 @@ import server.life.MobSkill;
 public class MonsterStatusEffect {
 
     private final int skill;
-    private final MobSkill mobskill;
+    private final MobSkill mobSkill;
     private final boolean monsterSkill;
-    private MonsterStatus stati;
-    private Integer x;
+    private MonsterStatus status;
+    private Integer multiplier;
     private ScheduledFuture<?> cancelTask;
     private ScheduledFuture<?> poisonSchedule;
 
     public MonsterStatusEffect(
-            final MonsterStatus stat,
-            final Integer x,
+            final MonsterStatus status,
+            final Integer multiplier,
             final int skillId,
             final MobSkill mobskill,
             final boolean monsterSkill) {
-        this.stati = stat;
+        this.status = status;
         this.skill = skillId;
         this.monsterSkill = monsterSkill;
-        this.mobskill = mobskill;
-        this.x = x;
+        this.mobSkill = mobskill;
+        this.multiplier = multiplier;
     }
 
-    public final MonsterStatus getStati() {
-        return stati;
+    public final MonsterStatus getStatus() {
+        return status;
     }
 
-    public final Integer getX() {
-        return x;
+    public final Integer getMultiplier() {
+        return multiplier;
     }
 
     public final void setValue(final MonsterStatus status, final Integer newVal) {
-        stati = status;
-        x = newVal;
+        this.status = status;
+        multiplier = newVal;
     }
 
     public final int getSkill() {
@@ -46,7 +46,7 @@ public class MonsterStatusEffect {
     }
 
     public final MobSkill getMobSkill() {
-        return mobskill;
+        return mobSkill;
     }
 
     public final boolean isMonsterSkill() {

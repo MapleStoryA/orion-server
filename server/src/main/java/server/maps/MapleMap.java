@@ -507,7 +507,7 @@ public final class MapleMap {
         double showdown = 100.0;
         final MonsterStatusEffect mse = mob.getBuff(MonsterStatus.SHOWDOWN);
         if (mse != null) {
-            showdown += mse.getX();
+            showdown += mse.getMultiplier();
         }
 
         final MapleMonsterInformationProvider mi = MapleMonsterInformationProvider.getInstance();
