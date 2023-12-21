@@ -146,10 +146,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     @Setter
     private byte world;
 
-    @Getter
-    @Setter
-    private String name;
-
     private String chalkText;
     private String blessOfFairy_Origin;
     private long lastCombo;
@@ -276,11 +272,9 @@ public class MapleCharacter extends BaseMapleCharacter {
     private long pqStartTime = 0;
 
     private AtomicInteger conversation_status;
-    private MapleClient client;
     private CheatTracker anti_cheat;
     private PlayerRandomStream playerRandomStream;
     private CashShop cs;
-    private MapleMap map;
     private MapleShop shop;
     private MapleDragon dragon;
     private RockPaperScissors rps;
@@ -2249,14 +2243,6 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public void setFallCounter(int fallcounter) {
         this.fall_counter = fallcounter;
-    }
-
-    public final MapleClient getClient() {
-        return client;
-    }
-
-    public final void setClient(final MapleClient client) {
-        this.client = client;
     }
 
     public int getExp() {
@@ -5461,15 +5447,6 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public void setTravelTime(int duration) {
         travelTime = System.currentTimeMillis() + (duration * 1000L);
-    }
-
-    public ChannelServer getChannelServer() {
-        return WorldServer.getInstance().getChannel(client.getChannel());
-    }
-
-    @Override
-    public String toString() {
-        return getName() + " at " + getPosition() + " in map: " + map.getId();
     }
 
     public Map<MapleBuffStat, MapleBuffStatValueHolder> getEffects() {
