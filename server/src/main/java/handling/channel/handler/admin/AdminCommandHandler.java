@@ -27,9 +27,14 @@ public final class AdminCommandHandler extends AbstractMaplePacketHandler {
 
     @Override
     public void handlePacket(InPacket packet, MapleClient c) {
-        if (!c.getPlayer().isGameMaster()) { // if ( (signed int)CWvsContext::GetAdminLevel((void *)v294) > 2
-            // )
+        if (!c.getPlayer().isGameMaster()) {
             return;
+        }
+        byte mode = packet.readByte();
+        switch (mode) {
+            case 66:
+                c.getPlayer().gainMeso(packet.readInt(), true);
+                break;
         }
         /*
         byte mode = packet.readByte();

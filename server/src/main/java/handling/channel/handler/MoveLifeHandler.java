@@ -97,9 +97,9 @@ public class MoveLifeHandler extends BaseMoveHandler {
         final MapleMap map = chr.getMap();
         res.decode(packet);
         if (res != null && chr != null) {
-            byte[] packet = MobPacket.moveMonsterResponse(
+            byte[] movePacket = MobPacket.moveMonsterResponse(
                     monster.getObjectId(), moveid, monster.getMp(), monster.isControllerHasAggro(), realskill, level);
-            c.getSession().write(packet);
+            c.getSession().write(movePacket);
             updatePosition(res, monster, -1);
             final Point endPos = monster.getPosition();
             map.moveMonster(monster, endPos);
