@@ -1,4 +1,4 @@
-package server;
+package server.carnival;
 
 import client.MapleDisease;
 import java.util.HashMap;

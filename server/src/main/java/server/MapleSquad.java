@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ScheduledFuture;
 import lombok.extern.slf4j.Slf4j;
 import server.base.timer.Timer.CloneTimer;
+import server.carnival.MapleCarnivalChallenge;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
 import tools.collection.Pair;

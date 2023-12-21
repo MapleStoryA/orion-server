@@ -1,4 +1,4 @@
-package server;
+package server.carnival;
 
 import client.MapleCharacter;
 import handling.world.WorldServer;
