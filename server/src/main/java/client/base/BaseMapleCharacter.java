@@ -4,13 +4,16 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import lombok.Getter;
 import scripting.v1.event.Event;
 import server.maps.AbstractAnimatedMapleMapObject;
 import server.maps.MapleMapObject;
 
 public abstract class BaseMapleCharacter extends AbstractAnimatedMapleMapObject {
 
+    @Getter
     protected int id;
+
     private final Set<MapleMapObject> visibleMapObjects;
     private final ReentrantReadWriteLock visibleMapObjectsLock;
     private Event event;

@@ -14,8 +14,7 @@ public class SkillHelper {
                     continue;
                 }
                 ISkill skill = SkillFactory.getSkill(skill_id);
-                boolean add = ((skill_id / 10000000 == job.getId() / 1000) && (skill.hasMastery()))
-                        || (job.isCygnus());
+                boolean add = ((skill_id / 10000000 == job.getId() / 1000) && (skill.hasMastery())) || (job.isCygnus());
                 if ((!add) && (job.isAran())) {
                     switch (skill_id) {
                         case 21000000:

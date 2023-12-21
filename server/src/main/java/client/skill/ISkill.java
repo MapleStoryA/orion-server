@@ -61,5 +61,4 @@ public interface ISkill {
     String getName();
 
     boolean hasMastery();
-
 }
