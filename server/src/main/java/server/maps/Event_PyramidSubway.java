@@ -8,7 +8,7 @@ import java.awt.*;
 import java.util.Random;
 import java.util.concurrent.ScheduledFuture;
 import lombok.extern.slf4j.Slf4j;
-import server.Timer.MapTimer;
+import server.base.timer.Timer.MapTimer;
 import server.life.MapleLifeFactory;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;

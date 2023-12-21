@@ -22,7 +22,7 @@ import provider.MapleDataFileEntry;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
 import server.StructSetItem.SetItem;
-import server.config.ServerConfig;
+import server.base.config.ServerConfig;
 import tools.collection.Pair;
 import tools.collection.Triple;
 import tools.helper.Randomizer;

@@ -1,4 +1,4 @@
-package server;
+package client.anticheat;
 
 import client.MapleClient;
 import handling.world.helper.BroadcastHelper;

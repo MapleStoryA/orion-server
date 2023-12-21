@@ -26,7 +26,7 @@ import client.MapleCharacter;
 import client.MapleDisease;
 import java.util.concurrent.ScheduledFuture;
 import lombok.extern.slf4j.Slf4j;
-import server.Timer.EventTimer;
+import server.base.timer.Timer.EventTimer;
 import server.life.MobSkillFactory;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;

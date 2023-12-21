@@ -32,7 +32,7 @@ import java.util.concurrent.ScheduledFuture;
 import lombok.extern.slf4j.Slf4j;
 import scripting.EventInstanceManager;
 import server.MapleItemInformationProvider;
-import server.Timer.MobTimer;
+import server.base.timer.Timer.MobTimer;
 import server.maps.MapScriptMethods;
 import server.maps.MapleMap;
 import server.maps.MapleMapObject;

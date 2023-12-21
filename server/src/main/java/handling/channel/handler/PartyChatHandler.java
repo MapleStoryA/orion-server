@@ -2,7 +2,6 @@ package handling.channel.handler;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import client.commands.CommandProcessor;
 import constants.ServerConstants.CommandType;
 import handling.AbstractMaplePacketHandler;
 import handling.world.alliance.AllianceManager;
@@ -11,6 +10,7 @@ import handling.world.guild.GuildManager;
 import handling.world.party.PartyManager;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
+import server.base.commands.CommandProcessor;
 
 @Slf4j
 public class PartyChatHandler extends AbstractMaplePacketHandler {

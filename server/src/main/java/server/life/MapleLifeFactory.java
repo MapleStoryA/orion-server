@@ -12,7 +12,7 @@ import provider.MapleDataFileEntry;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
 import provider.WzXML.MapleDataType;
-import server.config.ServerConfig;
+import server.base.config.ServerConfig;
 import tools.collection.Pair;
 import tools.helper.StringUtil;
 

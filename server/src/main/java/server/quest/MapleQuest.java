@@ -14,7 +14,7 @@ import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
 import scripting.NPCScriptManager;
-import server.config.ServerConfig;
+import server.base.config.ServerConfig;
 import tools.MaplePacketCreator;
 import tools.collection.Pair;
 

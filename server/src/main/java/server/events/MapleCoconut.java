@@ -26,7 +26,7 @@ import client.MapleCharacter;
 import java.util.LinkedList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import server.Timer.EventTimer;
+import server.base.timer.Timer.EventTimer;
 import tools.MaplePacketCreator;
 
 @Slf4j

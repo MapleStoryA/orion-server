@@ -3,7 +3,7 @@ package client.skill;
 import client.MapleJob;
 import java.util.HashMap;
 import lombok.extern.slf4j.Slf4j;
-import server.config.ServerConfig;
+import server.base.config.ServerConfig;
 
 @Slf4j
 public class EvanSkillPoints {

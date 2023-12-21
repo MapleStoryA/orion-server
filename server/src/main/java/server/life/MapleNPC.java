@@ -2,8 +2,8 @@ package server.life;
 
 import client.MapleClient;
 import lombok.extern.slf4j.Slf4j;
-import server.MapleShopFactory;
 import server.maps.MapleMapObjectType;
+import server.shops.MapleShopFactory;
 import tools.MaplePacketCreator;
 
 @Slf4j

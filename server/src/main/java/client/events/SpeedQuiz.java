@@ -5,8 +5,8 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import scripting.NPCConversationManager;
 import scripting.NPCScriptManager;
-import server.SpeedQuizFactory;
-import server.SpeedQuizFactory.QuizEntry;
+import server.events.SpeedQuizFactory;
+import server.events.SpeedQuizFactory.QuizEntry;
 import tools.MaplePacketCreator;
 import tools.helper.Randomizer;
 

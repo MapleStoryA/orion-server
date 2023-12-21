@@ -14,7 +14,7 @@ import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 import lombok.extern.slf4j.Slf4j;
 import server.MaplePortal;
-import server.config.ServerConfig;
+import server.base.config.ServerConfig;
 
 @Slf4j
 public class PortalScriptManager {

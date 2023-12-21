@@ -1,4 +1,4 @@
-package server;
+package server.carnival;
 
 import client.MapleDisease;
 import java.util.HashMap;
@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
-import server.config.ServerConfig;
+import server.base.config.ServerConfig;
 import server.life.MobSkill;
 import server.life.MobSkillFactory;
 

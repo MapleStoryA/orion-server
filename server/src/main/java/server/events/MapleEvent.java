@@ -28,7 +28,7 @@ import handling.world.WorldServer;
 import handling.world.helper.BroadcastHelper;
 import server.MapleInventoryManipulator;
 import server.RandomRewards;
-import server.Timer.EventTimer;
+import server.base.timer.Timer.EventTimer;
 import server.maps.MapleMap;
 import server.maps.SavedLocationType;
 import tools.MaplePacketCreator;

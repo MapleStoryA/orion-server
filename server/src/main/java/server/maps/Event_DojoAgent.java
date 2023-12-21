@@ -5,7 +5,7 @@ import handling.channel.ChannelServer;
 import handling.world.party.MaplePartyCharacter;
 import java.awt.*;
 import lombok.extern.slf4j.Slf4j;
-import server.Timer.MapTimer;
+import server.base.timer.Timer.MapTimer;
 import server.life.MapleLifeFactory;
 import tools.MaplePacketCreator;
 import tools.helper.Randomizer;

@@ -10,7 +10,7 @@ import networking.data.input.GenericSeekableLittleEndianAccessor;
 import networking.data.input.InPacket;
 import networking.packet.PacketProcessor;
 import networking.packet.RecvPacketOpcode;
-import server.config.ServerConfig;
+import server.base.config.ServerConfig;
 import tools.helper.HexTool;
 
 @Slf4j

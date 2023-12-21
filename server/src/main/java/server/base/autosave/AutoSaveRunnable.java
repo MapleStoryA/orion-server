@@ -1,4 +1,4 @@
-package server.autosave;
+package server.base.autosave;
 
 import handling.channel.ChannelServer;
 import lombok.extern.slf4j.Slf4j;

@@ -6,7 +6,7 @@ import lombok.Getter;
 import networking.NetworkSession;
 import networking.PingThread;
 import networking.encryption.MapleAESOFB;
-import server.Timer;
+import server.base.timer.Timer;
 import tools.MaplePacketCreator;
 import tools.packet.LoginPacket;
 

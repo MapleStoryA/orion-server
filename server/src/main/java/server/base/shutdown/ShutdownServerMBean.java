@@ -1,4 +1,4 @@
-package server;
+package server.base.shutdown;
 
 public interface ShutdownServerMBean extends Runnable {
 

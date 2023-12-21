@@ -47,10 +47,9 @@ import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
 import networking.packet.SendPacketOpcode;
 import server.MapleItemInformationProvider;
-import server.MapleShopItem;
 import server.MapleStatEffect;
 import server.MapleTrade;
-import server.config.ServerConfig;
+import server.base.config.ServerConfig;
 import server.events.MapleSnowball;
 import server.life.MapleMonster;
 import server.life.MapleNPC;
@@ -67,6 +66,7 @@ import server.maps.MapleSummon;
 import server.movement.MovePath;
 import server.shops.HiredMerchant;
 import server.shops.MaplePlayerShopItem;
+import server.shops.MapleShopItem;
 import tools.collection.Pair;
 import tools.collection.Triple;
 import tools.helper.HexTool;
@@ -1136,11 +1136,11 @@ public class MaplePacketCreator {
 
         if (skill == 4211006) {
             for (AttackPair oned : damage) {
-                if (oned.getAttack() != null) {
-                    packet.writeInt(oned.getObjectId());
+                if (oned.attack() != null) {
+                    packet.writeInt(oned.objectId());
                     packet.write(0x07);
-                    packet.write(oned.getAttack().size());
-                    for (Pair<Integer, Boolean> eachd : oned.getAttack()) {
+                    packet.write(oned.attack().size());
+                    for (Pair<Integer, Boolean> eachd : oned.attack()) {
                         packet.write(eachd.right ? 1 : 0);
                         packet.writeInt(eachd.left); // m.e. is never crit
                     }
@@ -1148,10 +1148,10 @@ public class MaplePacketCreator {
             }
         } else {
             for (AttackPair oned : damage) {
-                if (oned.getAttack() != null) {
-                    packet.writeInt(oned.getObjectId());
+                if (oned.attack() != null) {
+                    packet.writeInt(oned.objectId());
                     packet.write(0x07);
-                    for (Pair<Integer, Boolean> eachd : oned.getAttack()) {
+                    for (Pair<Integer, Boolean> eachd : oned.attack()) {
                         packet.write(eachd.right ? 1 : 0);
                         packet.writeInt(eachd.left.intValue());
                     }
@@ -1198,10 +1198,10 @@ public class MaplePacketCreator {
         packet.writeInt(itemid);
 
         for (AttackPair oned : damage) {
-            if (oned.getAttack() != null) {
-                packet.writeInt(oned.getObjectId());
+            if (oned.attack() != null) {
+                packet.writeInt(oned.objectId());
                 packet.write(0x07);
-                for (Pair<Integer, Boolean> eachd : oned.getAttack()) {
+                for (Pair<Integer, Boolean> eachd : oned.attack()) {
                     packet.write(eachd.right ? 1 : 0);
                     packet.writeInt(eachd.left.intValue());
                 }
@@ -1242,10 +1242,10 @@ public class MaplePacketCreator {
         packet.writeInt(0);
 
         for (AttackPair oned : damage) {
-            if (oned.getAttack() != null) {
-                packet.writeInt(oned.getObjectId());
+            if (oned.attack() != null) {
+                packet.writeInt(oned.objectId());
                 packet.write(7);
-                for (Pair<Integer, Boolean> eachd : oned.getAttack()) {
+                for (Pair<Integer, Boolean> eachd : oned.attack()) {
                     packet.write(eachd.right ? 1 : 0);
                     packet.writeInt(eachd.left.intValue());
                 }

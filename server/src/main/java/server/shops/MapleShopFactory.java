@@ -1,4 +1,4 @@
-package server;
+package server.shops;
 
 import java.util.HashMap;
 import java.util.Map;

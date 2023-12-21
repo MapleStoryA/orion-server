@@ -17,7 +17,7 @@ import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
 import server.PortalFactory;
-import server.config.ServerConfig;
+import server.base.config.ServerConfig;
 import server.life.AbstractLoadedMapleLife;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;

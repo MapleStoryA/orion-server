@@ -10,7 +10,7 @@ import handling.AbstractMaplePacketHandler;
 import java.util.Random;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;
-import server.TimerManager;
+import server.base.timer.TimerManager;
 import server.life.MapleMonster;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
