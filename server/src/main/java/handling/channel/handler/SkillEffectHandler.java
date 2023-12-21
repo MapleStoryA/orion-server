@@ -49,15 +49,9 @@ public class SkillEffectHandler extends AbstractMaplePacketHandler {
         if (skill_id == BladeMaster.FINAL_CUT) {
             TimerManager.getInstance()
                     .schedule(
-                            new Runnable() {
-
-                                @Override
-                                public void run() {
-                                    c.getPlayer()
-                                            .getMap()
-                                            .broadcastMessage(MaplePacketCreator.skillCancel(c.getPlayer(), skill_id));
-                                }
-                            },
+                            () -> c.getPlayer()
+                                    .getMap()
+                                    .broadcastMessage(MaplePacketCreator.skillCancel(c.getPlayer(), skill_id)),
                             1000);
         }
     }

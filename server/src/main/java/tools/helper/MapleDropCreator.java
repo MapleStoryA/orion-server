@@ -26,9 +26,9 @@ public class MapleDropCreator {
     private static final int ARROWS_RATE = 25000;
     private static final int lastmonstercardid = 2388070;
     protected static String monsterQueryData = "drop_data"; // Modify this to suite your source
-    protected static List<Pair<Integer, String>> itemNameCache = new ArrayList<Pair<Integer, String>>();
-    protected static List<Pair<Integer, MobInfo>> mobCache = new ArrayList<Pair<Integer, MobInfo>>();
-    protected static Map<Integer, Boolean> bossCache = new HashMap<Integer, Boolean>();
+    protected static List<Pair<Integer, String>> itemNameCache = new ArrayList<>();
+    protected static List<Pair<Integer, MobInfo>> mobCache = new ArrayList<>();
+    protected static Map<Integer, Boolean> bossCache = new HashMap<>();
     private static boolean addFlagData = false; // There isn't any flag on my source .. so.
 
     public static void main(String[] args)
@@ -665,7 +665,7 @@ public class MapleDropCreator {
     }
 
     private static Map<Integer, List<Integer>> getDropsNotInMonsterBook() {
-        Map<Integer, List<Integer>> drops = new HashMap<Integer, List<Integer>>();
+        Map<Integer, List<Integer>> drops = new HashMap<>();
 
         List<Integer> IndiviualMonsterDrop = new ArrayList();
 
@@ -818,21 +818,21 @@ public class MapleDropCreator {
     private static void getAllItems() {
         MapleDataProvider data = ServerConfig.serverConfig().getDataProvider("wz/String");
 
-        List<Pair<Integer, String>> itemPairs = new ArrayList<Pair<Integer, String>>();
+        List<Pair<Integer, String>> itemPairs = new ArrayList<>();
         MapleData itemsData;
 
         itemsData = data.getData("Cash.img");
         for (MapleData itemFolder : itemsData.getChildren()) {
             int itemId = Integer.parseInt(itemFolder.getName());
             String itemName = MapleDataTool.getString("name", itemFolder, "NO-NAME");
-            itemPairs.add(new Pair<Integer, String>(itemId, itemName));
+            itemPairs.add(new Pair<>(itemId, itemName));
         }
 
         itemsData = data.getData("Consume.img");
         for (MapleData itemFolder : itemsData.getChildren()) {
             int itemId = Integer.parseInt(itemFolder.getName());
             String itemName = MapleDataTool.getString("name", itemFolder, "NO-NAME");
-            itemPairs.add(new Pair<Integer, String>(itemId, itemName));
+            itemPairs.add(new Pair<>(itemId, itemName));
         }
 
         itemsData = data.getData("Eqp.img").getChildByPath("Eqp");
@@ -840,7 +840,7 @@ public class MapleDropCreator {
             for (MapleData itemFolder : eqpType.getChildren()) {
                 int itemId = Integer.parseInt(itemFolder.getName());
                 String itemName = MapleDataTool.getString("name", itemFolder, "NO-NAME");
-                itemPairs.add(new Pair<Integer, String>(itemId, itemName));
+                itemPairs.add(new Pair<>(itemId, itemName));
             }
         }
 
@@ -848,27 +848,27 @@ public class MapleDropCreator {
         for (MapleData itemFolder : itemsData.getChildren()) {
             int itemId = Integer.parseInt(itemFolder.getName());
             String itemName = MapleDataTool.getString("name", itemFolder, "NO-NAME");
-            itemPairs.add(new Pair<Integer, String>(itemId, itemName));
+            itemPairs.add(new Pair<>(itemId, itemName));
         }
 
         itemsData = data.getData("Ins.img");
         for (MapleData itemFolder : itemsData.getChildren()) {
             int itemId = Integer.parseInt(itemFolder.getName());
             String itemName = MapleDataTool.getString("name", itemFolder, "NO-NAME");
-            itemPairs.add(new Pair<Integer, String>(itemId, itemName));
+            itemPairs.add(new Pair<>(itemId, itemName));
         }
 
         itemsData = data.getData("Pet.img");
         for (MapleData itemFolder : itemsData.getChildren()) {
             int itemId = Integer.parseInt(itemFolder.getName());
             String itemName = MapleDataTool.getString("name", itemFolder, "NO-NAME");
-            itemPairs.add(new Pair<Integer, String>(itemId, itemName));
+            itemPairs.add(new Pair<>(itemId, itemName));
         }
         itemNameCache.addAll(itemPairs);
     }
 
     public static void getAllMobs() {
-        List<Pair<Integer, MobInfo>> itemPairs = new ArrayList<Pair<Integer, MobInfo>>();
+        List<Pair<Integer, MobInfo>> itemPairs = new ArrayList<>();
         MapleDataProvider data = ServerConfig.serverConfig().getDataProvider("wz/String");
         MapleDataProvider mobData = ServerConfig.serverConfig().getDataProvider("wz/Mob");
         MapleData mob = data.getData("Mob.img");
@@ -893,7 +893,7 @@ public class MapleDropCreator {
                         MapleDataTool.getIntConvert("rareItemDropLevel", monsterData.getChildByPath("info"), 0),
                         MapleDataTool.getString("name", itemFolder, "NO-NAME"));
 
-                itemPairs.add(new Pair<Integer, MobInfo>(id, mobInfo));
+                itemPairs.add(new Pair<>(id, mobInfo));
             } catch (Exception fe) {
             }
         }

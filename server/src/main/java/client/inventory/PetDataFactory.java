@@ -14,12 +14,11 @@ public class PetDataFactory {
 
     private static final MapleDataProvider dataRoot =
             ServerConfig.serverConfig().getDataProvider("wz/Item");
-    private static final Map<Pair<Integer, Integer>, PetCommand> petCommands =
-            new HashMap<Pair<Integer, Integer>, PetCommand>();
-    private static final Map<Integer, Integer> petHunger = new HashMap<Integer, Integer>();
+    private static final Map<Pair<Integer, Integer>, PetCommand> petCommands = new HashMap<>();
+    private static final Map<Integer, Integer> petHunger = new HashMap<>();
 
     public static final PetCommand getPetCommand(final int petId, final int skillId) {
-        PetCommand ret = petCommands.get(new Pair<Integer, Integer>(Integer.valueOf(petId), Integer.valueOf(skillId)));
+        PetCommand ret = petCommands.get(new Pair<>(Integer.valueOf(petId), Integer.valueOf(skillId)));
         if (ret != null) {
             return ret;
         }
@@ -31,7 +30,7 @@ public class PetDataFactory {
             inc = MapleDataTool.getInt("interact/" + skillId + "/inc", skillData, 0);
         }
         ret = new PetCommand(petId, skillId, prob, inc);
-        petCommands.put(new Pair<Integer, Integer>(Integer.valueOf(petId), Integer.valueOf(skillId)), ret);
+        petCommands.put(new Pair<>(Integer.valueOf(petId), Integer.valueOf(skillId)), ret);
 
         return ret;
     }

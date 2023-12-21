@@ -37,26 +37,23 @@ public class Event_PyramidSubway {
             commenceTimerNextMap(c, 1);
             energyBarDecrease = MapTimer.getInstance()
                     .register(
-                            new Runnable() {
-
-                                public void run() {
-                                    energybar -= (c.getParty() != null
-                                                            && c.getParty()
-                                                                            .getMembers()
-                                                                            .size()
-                                                                    > 1
-                                                    ? 10
-                                                    : 5)
-                                            * calculateTimingVariable();
-                                    broadcastUpdate(c);
-                                    if (broaded) {
-                                        c.getMap().respawn(true);
-                                    } else {
-                                        broaded = true;
-                                    }
-                                    if (energybar <= 0) { // why
-                                        fail(c);
-                                    }
+                            () -> {
+                                energybar -= (c.getParty() != null
+                                                        && c.getParty()
+                                                                        .getMembers()
+                                                                        .size()
+                                                                > 1
+                                                ? 10
+                                                : 5)
+                                        * calculateTimingVariable();
+                                broadcastUpdate(c);
+                                if (broaded) {
+                                    c.getMap().respawn(true);
+                                } else {
+                                    broaded = true;
+                                }
+                                if (energybar <= 0) { // why
+                                    fail(c);
                                 }
                             },
                             1000);
@@ -269,31 +266,24 @@ public class Event_PyramidSubway {
             final MapleMap map = c.getMap();
             yetiSchedule = MapTimer.getInstance()
                     .register(
-                            new Runnable() {
-
-                                public void run() {
-                                    if (map.countMonsterById(9300021) <= (stage == 4 ? 1 : 2)) {
-                                        map.spawnMonsterOnGroundBelow(
-                                                MapleLifeFactory.getMonster(9300021), new Point(pos));
-                                    }
+                            () -> {
+                                if (map.countMonsterById(9300021) <= (stage == 4 ? 1 : 2)) {
+                                    map.spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(9300021), new Point(pos));
                                 }
                             },
                             10000L);
         }
         timerSchedule = MapTimer.getInstance()
                 .schedule(
-                        new Runnable() {
-
-                            public void run() {
-                                boolean ret = false;
-                                if (type == Difficulty.OTHER) {
-                                    ret = warpNextMap_Subway(c);
-                                } else {
-                                    ret = warpNextMap_Pyramid(c, type);
-                                }
-                                if (!ret) {
-                                    fail(c);
-                                }
+                        () -> {
+                            boolean ret = false;
+                            if (type == Difficulty.OTHER) {
+                                ret = warpNextMap_Subway(c);
+                            } else {
+                                ret = warpNextMap_Pyramid(c, type);
+                            }
+                            if (!ret) {
+                                fail(c);
                             }
                         },
                         time * 1000L);

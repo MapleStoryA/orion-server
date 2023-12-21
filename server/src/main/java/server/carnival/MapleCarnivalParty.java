@@ -12,7 +12,7 @@ import tools.MaplePacketCreator;
 @Slf4j
 public class MapleCarnivalParty {
 
-    private final List<Integer> members = new LinkedList<Integer>();
+    private final List<Integer> members = new LinkedList<>();
     private final WeakReference<MapleCharacter> leader;
     private final byte team;
     private final int channel;
@@ -20,7 +20,7 @@ public class MapleCarnivalParty {
     private boolean winner = false;
 
     public MapleCarnivalParty(final MapleCharacter owner, final List<MapleCharacter> members1, final byte team1) {
-        leader = new WeakReference<MapleCharacter>(owner);
+        leader = new WeakReference<>(owner);
         for (MapleCharacter mem : members1) {
             members.add(mem.getId());
             mem.setCarnivalParty(this);

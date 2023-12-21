@@ -116,16 +116,7 @@ public class MapleReactor extends AbstractMapleMapObject {
     }
 
     public void delayedDestroyReactor(long delay) {
-        MapTimer.getInstance()
-                .schedule(
-                        new Runnable() {
-
-                            @Override
-                            public void run() {
-                                map.destroyReactor(getObjectId());
-                            }
-                        },
-                        delay);
+        MapTimer.getInstance().schedule(() -> map.destroyReactor(getObjectId()), delay);
     }
 
     public void hitReactor(int charPos, short stance, MapleClient c) {
@@ -196,28 +187,15 @@ public class MapleReactor extends AbstractMapleMapObject {
     }
 
     public void delayedHitReactor(final MapleClient c, long delay) {
-        MapTimer.getInstance()
-                .schedule(
-                        new Runnable() {
-
-                            @Override
-                            public void run() {
-                                hitReactor(c);
-                            }
-                        },
-                        delay);
+        MapTimer.getInstance().schedule(() -> hitReactor(c), delay);
     }
 
     public void scheduleSetState(final byte oldState, final byte newState, long delay) {
         MapTimer.getInstance()
                 .schedule(
-                        new Runnable() {
-
-                            @Override
-                            public void run() {
-                                if (MapleReactor.this.state == oldState) {
-                                    forceHitReactor(newState);
-                                }
+                        () -> {
+                            if (MapleReactor.this.state == oldState) {
+                                forceHitReactor(newState);
                             }
                         },
                         delay);

@@ -20,7 +20,7 @@ public class MapleInventory implements Iterable<IItem>, Serializable {
 
     /** Creates a new instance of MapleInventory */
     public MapleInventory(MapleInventoryType type) {
-        this.inventory = new LinkedHashMap<Short, IItem>();
+        this.inventory = new LinkedHashMap<>();
         this.type = type;
     }
 
@@ -76,7 +76,7 @@ public class MapleInventory implements Iterable<IItem>, Serializable {
     }
 
     public List<IItem> listById(int itemId) {
-        List<IItem> ret = new ArrayList<IItem>();
+        List<IItem> ret = new ArrayList<>();
         for (IItem item : inventory.values()) {
             if (item.getItemId() == itemId) {
                 ret.add(item);

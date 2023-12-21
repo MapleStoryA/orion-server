@@ -30,7 +30,7 @@ import tools.collection.ArrayMap;
 public class MapleAchievements {
 
     private static final MapleAchievements instance = new MapleAchievements();
-    private final Map<Integer, MapleAchievement> achievements = new ArrayMap<Integer, MapleAchievement>();
+    private final Map<Integer, MapleAchievement> achievements = new ArrayMap<>();
 
     protected MapleAchievements() {
         achievements.put(1, new MapleAchievement("got their first point", 1000, false));

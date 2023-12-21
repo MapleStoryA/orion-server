@@ -11,7 +11,7 @@ public class SummonAttackEntry {
 
     public SummonAttackEntry(MapleMonster mob, int damage) {
         super();
-        this.mob = new WeakReference<MapleMonster>(mob);
+        this.mob = new WeakReference<>(mob);
         this.damage = damage;
     }
 

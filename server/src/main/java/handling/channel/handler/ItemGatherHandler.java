@@ -19,14 +19,14 @@ import tools.MaplePacketCreator;
 public class ItemGatherHandler extends AbstractMaplePacketHandler {
 
     private static final List<IItem> sortItems(final List<IItem> passedMap) {
-        final List<Integer> itemIds = new ArrayList<Integer>(); // empty list.
+        final List<Integer> itemIds = new ArrayList<>(); // empty list.
         for (IItem item : passedMap) {
             itemIds.add(item.getItemId()); // adds all item ids to the empty
             // list to be sorted.
         }
         Collections.sort(itemIds); // sorts item ids
 
-        final List<IItem> sortedList = new LinkedList<IItem>(); // ordered list
+        final List<IItem> sortedList = new LinkedList<>(); // ordered list
         // pl0x <3.
 
         for (Integer val : itemIds) {

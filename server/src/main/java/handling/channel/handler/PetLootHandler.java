@@ -92,7 +92,7 @@ public class PetLootHandler extends AbstractMaplePacketHandler {
                 }
 
                 if (chr.getParty() != null && mapitem.getOwner() != chr.getId()) {
-                    final List<MapleCharacter> toGive = new LinkedList<MapleCharacter>();
+                    final List<MapleCharacter> toGive = new LinkedList<>();
 
                     for (MaplePartyCharacter z : chr.getParty().getMembers()) {
                         MapleCharacter m = chr.getMap().getCharacterById(z.getId());

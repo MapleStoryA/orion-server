@@ -201,13 +201,9 @@ public class MapleSnowball extends MapleEvent {
                             oBall.broadcast(map, 4);
                             oBall.snowmanSchedule = EventTimer.getInstance()
                                     .schedule(
-                                            new Runnable() {
-
-                                                @Override
-                                                public void run() {
-                                                    oBall.setHittable(true);
-                                                    oBall.broadcast(map, 5);
-                                                }
+                                            () -> {
+                                                oBall.setHittable(true);
+                                                oBall.broadcast(map, 5);
                                             },
                                             10000);
                             for (MapleCharacter chrz : chr.getMap().getCharactersThreadsafe()) {

@@ -74,7 +74,7 @@ public class WorldServer {
     }
 
     public Map<Integer, Integer> getChannelLoad() {
-        Map<Integer, Integer> ret = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> ret = new HashMap<>();
         for (ChannelServer cs : channels.values()) {
             ret.put(cs.getChannel(), cs.getConnectedClients());
         }

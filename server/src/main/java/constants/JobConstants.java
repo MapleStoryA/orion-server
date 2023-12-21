@@ -1,5 +1,19 @@
 package constants;
 
+import static client.MapleJob.BEGINNER;
+import static client.MapleJob.BLAZEWIZARD1;
+import static client.MapleJob.BOWMAN;
+import static client.MapleJob.DAWNWARRIOR1;
+import static client.MapleJob.LEGEND;
+import static client.MapleJob.MAGICIAN;
+import static client.MapleJob.NIGHTWALKER1;
+import static client.MapleJob.NOBLESSE;
+import static client.MapleJob.PIRATE;
+import static client.MapleJob.THIEF;
+import static client.MapleJob.THUNDERBREAKER1;
+import static client.MapleJob.WARRIOR;
+import static client.MapleJob.WINDARCHER1;
+
 import client.MapleJob;
 import client.skill.ISkill;
 import client.skill.SkillEntry;
@@ -147,5 +161,36 @@ public class JobConstants {
     public static Map<ISkill, SkillEntry> getQuestSkills() {
         Map<ISkill, SkillEntry> map = new HashMap<>();
         return map;
+    }
+
+    public static MapleJob getBy5ByteEncoding(int encoded) {
+        switch (encoded) {
+            case 2:
+                return WARRIOR;
+            case 4:
+                return MAGICIAN;
+            case 8:
+                return BOWMAN;
+            case 16:
+                return THIEF;
+            case 32:
+                return PIRATE;
+            case 1024:
+                return NOBLESSE;
+            case 2048:
+                return DAWNWARRIOR1;
+            case 4096:
+                return BLAZEWIZARD1;
+            case 8192:
+                return WINDARCHER1;
+            case 16384:
+                return NIGHTWALKER1;
+            case 32768:
+                return THUNDERBREAKER1;
+            case 65536:
+                return LEGEND;
+            default:
+                return BEGINNER;
+        }
     }
 }

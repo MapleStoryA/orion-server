@@ -1,4 +1,4 @@
-package client;
+package client.base;
 
 import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;

@@ -67,8 +67,7 @@ public enum ItemLoader {
     // does not need connection con to be auto commit
     public Map<Integer, Pair<IItem, MapleInventoryType>> loadItems(boolean login, Integer... id) throws SQLException {
         List<Integer> lulz = Arrays.asList(id);
-        Map<Integer, Pair<IItem, MapleInventoryType>> items =
-                new LinkedHashMap<Integer, Pair<IItem, MapleInventoryType>>();
+        Map<Integer, Pair<IItem, MapleInventoryType>> items = new LinkedHashMap<>();
         if (lulz.size() != arg.size()) {
             return items;
         }
@@ -145,7 +144,7 @@ public enum ItemLoader {
                             }
                         }
                     }
-                    items.put(rs.getInt("inventoryitemid"), new Pair<IItem, MapleInventoryType>(equip.copy(), mit));
+                    items.put(rs.getInt("inventoryitemid"), new Pair<>(equip.copy(), mit));
                 } else {
                     Item item = new Item(
                             rs.getInt("itemid"), rs.getShort("position"), rs.getShort("quantity"), rs.getByte("flag"));
@@ -166,7 +165,7 @@ public enum ItemLoader {
                             item.setPet(MaplePet.createPet(item.getItemId(), new_unique));
                         }
                     }
-                    items.put(rs.getInt("inventoryitemid"), new Pair<IItem, MapleInventoryType>(item.copy(), mit));
+                    items.put(rs.getInt("inventoryitemid"), new Pair<>(item.copy(), mit));
                 }
             }
 

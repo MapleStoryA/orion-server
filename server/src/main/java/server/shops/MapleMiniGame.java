@@ -39,7 +39,7 @@ public class MapleMiniGame extends AbstractPlayerStore {
     private final boolean[] exitAfter;
     private final boolean[] ready;
     private final int[] points;
-    private final List<Integer> matchCards = new ArrayList<Integer>();
+    private final List<Integer> matchCards = new ArrayList<>();
     int loser = 0;
     int turn = 1;
     int pieceType = 0;

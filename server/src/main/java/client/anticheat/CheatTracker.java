@@ -1,14 +1,13 @@
 package client.anticheat;
 
 import client.MapleCharacter;
-import client.MapleCharacterHelper;
+import client.base.MapleCharacterHelper;
 import constants.GameConstants;
 import handling.world.helper.BroadcastHelper;
 import java.awt.*;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +24,7 @@ public class CheatTracker {
 
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     private final Lock rL = lock.readLock(), wL = lock.writeLock();
-    private final Map<CheatingOffense, CheatingOffenseEntry> offenses =
-            new LinkedHashMap<CheatingOffense, CheatingOffenseEntry>();
+    private final Map<CheatingOffense, CheatingOffenseEntry> offenses = new LinkedHashMap<>();
     private final WeakReference<MapleCharacter> chr;
     // For keeping track of speed attack hack.
     private int lastAttackTickCount = 0;
@@ -52,7 +50,7 @@ public class CheatTracker {
     private int lastTickCount = 0, tickSame = 0;
 
     public CheatTracker(final MapleCharacter chr) {
-        this.chr = new WeakReference<MapleCharacter>(chr);
+        this.chr = new WeakReference<>(chr);
         invalidationTask = CheatTimer.getInstance().register(new InvalidationTask(), 60000);
         takingDamageSince = System.currentTimeMillis();
     }
@@ -323,7 +321,7 @@ public class CheatTracker {
 
     public final String getSummary() {
         final StringBuilder ret = new StringBuilder();
-        final List<CheatingOffenseEntry> offenseList = new ArrayList<CheatingOffenseEntry>();
+        final List<CheatingOffenseEntry> offenseList = new ArrayList<>();
         rL.lock();
         try {
             for (final CheatingOffenseEntry entry : offenses.values()) {
@@ -334,14 +332,10 @@ public class CheatTracker {
         } finally {
             rL.unlock();
         }
-        Collections.sort(offenseList, new Comparator<CheatingOffenseEntry>() {
-
-            @Override
-            public int compare(final CheatingOffenseEntry o1, final CheatingOffenseEntry o2) {
-                final int thisVal = o1.getPoints();
-                final int anotherVal = o2.getPoints();
-                return (thisVal < anotherVal ? 1 : (thisVal == anotherVal ? 0 : -1));
-            }
+        offenseList.sort((o1, o2) -> {
+            final int thisVal = o1.getPoints();
+            final int anotherVal = o2.getPoints();
+            return (thisVal < anotherVal ? 1 : (thisVal == anotherVal ? 0 : -1));
         });
         final int to = Math.min(offenseList.size(), 4);
         for (int x = 0; x < to; x++) {

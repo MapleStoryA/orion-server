@@ -36,9 +36,9 @@ public class PlayerStats implements Serializable {
 
     private static final long serialVersionUID = -679541993413738569L;
     private final transient WeakReference<MapleCharacter> chr;
-    private final Map<Integer, Integer> setHandling = new HashMap<Integer, Integer>();
-    private final List<Equip> durabilityHandling = new ArrayList<Equip>();
-    private final List<Equip> equipLevelHandling = new ArrayList<Equip>();
+    private final Map<Integer, Integer> setHandling = new HashMap<>();
+    private final List<Equip> durabilityHandling = new ArrayList<>();
+    private final List<Equip> equipLevelHandling = new ArrayList<>();
 
     @Getter
     @Setter
@@ -89,7 +89,7 @@ public class PlayerStats implements Serializable {
 
     public PlayerStats(final MapleCharacter chr) {
         // TODO, move str/dex/int etc here -_-
-        this.chr = new WeakReference<MapleCharacter>(chr);
+        this.chr = new WeakReference<>(chr);
     }
 
     // POTENTIALS:
@@ -879,7 +879,7 @@ public class PlayerStats implements Serializable {
     public boolean checkEquipLevels(final MapleCharacter chr, int gain) {
         boolean changed = false;
         final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-        List<Equip> all = new ArrayList<Equip>(equipLevelHandling);
+        List<Equip> all = new ArrayList<>(equipLevelHandling);
         for (Equip eq : all) {
             int lvlz = eq.getEquipLevel();
             eq.setItemEXP(eq.getItemEXP() + gain);
@@ -929,7 +929,7 @@ public class PlayerStats implements Serializable {
                 item.setDurability(0);
             }
         }
-        List<Equip> all = new ArrayList<Equip>(durabilityHandling);
+        List<Equip> all = new ArrayList<>(durabilityHandling);
         for (Equip eqq : all) {
             if (eqq.getDurability() == 0) { // > 0 went to negative
                 if (chr.getInventory(MapleInventoryType.EQUIP).isFull()) {

@@ -1,8 +1,8 @@
 package handling.channel.handler;
 
 import client.MapleCharacter;
-import client.MapleCharacterHelper;
 import client.MapleClient;
+import client.base.MapleCharacterHelper;
 import client.inventory.IItem;
 import client.inventory.MapleInventoryIdentifier;
 import client.inventory.MapleInventoryType;

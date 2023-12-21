@@ -8,6 +8,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import lombok.Getter;
 import lombok.Setter;
 import scripting.v1.event.Event;
+import server.maplevar.MapleVar;
+import server.maplevar.SimpleMapleVar;
 import server.maps.AbstractAnimatedMapleMapObject;
 import server.maps.MapleMap;
 import server.maps.MapleMapObject;
@@ -91,6 +93,32 @@ public abstract class BaseMapleCharacter extends AbstractAnimatedMapleMapObject 
 
     public void leaveEvent() {
         this.event = null;
+    }
+
+    public void set(String key, String value) {
+        MapleVar var = new SimpleMapleVar(this);
+        var.set(key, value);
+    }
+
+    public String get(String key) {
+        MapleVar var = new SimpleMapleVar(this);
+        return var.get(key);
+    }
+
+    /**
+     * Oid of players is always = the cid
+     */
+    @Override
+    public int getObjectId() {
+        return getId();
+    }
+
+    /**
+     * Throws unsupported operation exception, oid of players is read only
+     */
+    @Override
+    public void setObjectId(int id) {
+        throw new UnsupportedOperationException();
     }
 
     @Override

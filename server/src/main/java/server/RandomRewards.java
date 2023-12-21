@@ -22,53 +22,53 @@ public class RandomRewards {
 
     protected RandomRewards() {
         // Gold Box
-        List<Integer> returnArray = new ArrayList<Integer>();
+        List<Integer> returnArray = new ArrayList<>();
 
         processRewards(returnArray, GameConstants.goldrewards);
 
         compiledGold = returnArray;
 
         // Silver Box
-        returnArray = new ArrayList<Integer>();
+        returnArray = new ArrayList<>();
 
         processRewards(returnArray, GameConstants.silverrewards);
 
         compiledSilver = returnArray;
 
         // Fishing Rewards
-        returnArray = new ArrayList<Integer>();
+        returnArray = new ArrayList<>();
 
         processRewards(returnArray, GameConstants.fishingReward);
 
         compiledFishing = returnArray;
 
         // Cash Shop Surprise Rewards
-        returnArray = new ArrayList<Integer>();
+        returnArray = new ArrayList<>();
 
         processRewards(returnArray, GameConstants.cashSurpriseRewards);
 
         compiledCashSurprise = returnArray;
 
         // Event Rewards
-        returnArray = new ArrayList<Integer>();
+        returnArray = new ArrayList<>();
 
         processRewards(returnArray, GameConstants.eventCommonReward);
 
         compiledEventC = returnArray;
 
-        returnArray = new ArrayList<Integer>();
+        returnArray = new ArrayList<>();
 
         processRewards(returnArray, GameConstants.eventUncommonReward);
 
         compiledEventB = returnArray;
 
-        returnArray = new ArrayList<Integer>();
+        returnArray = new ArrayList<>();
 
         processRewards(returnArray, GameConstants.eventRareReward);
 
         compiledEventA = returnArray;
 
-        returnArray = new ArrayList<Integer>();
+        returnArray = new ArrayList<>();
 
         processRewards(returnArray, GameConstants.eventSuperReward);
 

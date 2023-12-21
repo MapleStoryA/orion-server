@@ -61,7 +61,7 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
     private void dropItems(boolean meso, int mesoChance, int minMeso, int maxMeso, int minItems) {
         final List<ReactorDropEntry> chances =
                 ReactorScriptManager.getInstance().getDrops(reactor.getReactorId());
-        final List<ReactorDropEntry> items = new LinkedList<ReactorDropEntry>();
+        final List<ReactorDropEntry> items = new LinkedList<>();
         if (meso) {
             if (Math.random() < (1 / (double) mesoChance)) {
                 items.add(new ReactorDropEntry(0, mesoChance, -1));

@@ -84,16 +84,12 @@ public class SpawnPoint extends Spawns {
         mob.setPosition(pos);
         mob.setCarnivalTeam(carnivalTeam);
         spawnedMonsters.incrementAndGet();
-        mob.addListener(new MonsterListener() {
-
-            @Override
-            public void monsterKilled() {
-                nextPossibleSpawn = System.currentTimeMillis();
-                if (mobTime > 0) {
-                    nextPossibleSpawn += mobTime;
-                }
-                spawnedMonsters.decrementAndGet();
+        mob.addListener(() -> {
+            nextPossibleSpawn = System.currentTimeMillis();
+            if (mobTime > 0) {
+                nextPossibleSpawn += mobTime;
             }
+            spawnedMonsters.decrementAndGet();
         });
         map.spawnMonster(mob, -2);
         if (carnivalTeam > -1) {

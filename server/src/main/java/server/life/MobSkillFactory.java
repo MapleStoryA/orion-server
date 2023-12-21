@@ -15,14 +15,13 @@ import tools.collection.Pair;
 @Slf4j
 public class MobSkillFactory {
 
-    private static final Map<Pair<Integer, Integer>, MobSkill> mobSkills =
-            new HashMap<Pair<Integer, Integer>, MobSkill>();
+    private static final Map<Pair<Integer, Integer>, MobSkill> mobSkills = new HashMap<>();
     private static final MapleDataProvider dataSource =
             ServerConfig.serverConfig().getDataProvider("wz/Skill");
     private static final MapleData skillRoot = dataSource.getData("MobSkill.img");
 
     public static MobSkill getMobSkill(int skillId, int level) {
-        MobSkill ret = mobSkills.get(new Pair<Integer, Integer>(Integer.valueOf(skillId), Integer.valueOf(level)));
+        MobSkill ret = mobSkills.get(new Pair<>(Integer.valueOf(skillId), Integer.valueOf(level)));
         if (ret != null) {
             return ret;
         }
@@ -35,7 +34,7 @@ public class MobSkillFactory {
         }
         final MapleData skillData = skillRoot.getChildByPath(skillId + "/level/" + level);
         if (skillData != null && skillData.getChildren() != null) {
-            List<Integer> toSummon = new ArrayList<Integer>();
+            List<Integer> toSummon = new ArrayList<>();
             for (int i = 0; i > -1; i++) {
                 if (skillData.getChildByPath(String.valueOf(i)) == null) {
                     break;
@@ -62,7 +61,7 @@ public class MobSkillFactory {
             ret.setLimit((short) MapleDataTool.getInt("limit", skillData, 0));
             ret.setLtRb(lt, rb);
 
-            mobSkills.put(new Pair<Integer, Integer>(Integer.valueOf(skillId), Integer.valueOf(level)), ret);
+            mobSkills.put(new Pair<>(Integer.valueOf(skillId), Integer.valueOf(level)), ret);
         }
         return ret;
     }

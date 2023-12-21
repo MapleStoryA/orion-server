@@ -35,20 +35,20 @@ public class MapleQuestRequirement implements Serializable {
         switch (type) {
             case job: {
                 final List<MapleData> child = data.getChildren();
-                dataStore = new LinkedList<Pair<Integer, Integer>>();
+                dataStore = new LinkedList<>();
 
                 for (int i = 0; i < child.size(); i++) {
-                    dataStore.add(new Pair<Integer, Integer>(i, MapleDataTool.getInt(child.get(i), -1)));
+                    dataStore.add(new Pair<>(i, MapleDataTool.getInt(child.get(i), -1)));
                 }
                 break;
             }
             case skill: {
                 final List<MapleData> child = data.getChildren();
-                dataStore = new LinkedList<Pair<Integer, Integer>>();
+                dataStore = new LinkedList<>();
 
                 for (int i = 0; i < child.size(); i++) {
                     final MapleData childdata = child.get(i);
-                    dataStore.add(new Pair<Integer, Integer>(
+                    dataStore.add(new Pair<>(
                             MapleDataTool.getInt(childdata.getChildByPath("id"), 0),
                             MapleDataTool.getInt(childdata.getChildByPath("acquire"), 0)));
                 }
@@ -56,11 +56,11 @@ public class MapleQuestRequirement implements Serializable {
             }
             case quest: {
                 final List<MapleData> child = data.getChildren();
-                dataStore = new LinkedList<Pair<Integer, Integer>>();
+                dataStore = new LinkedList<>();
 
                 for (int i = 0; i < child.size(); i++) {
                     final MapleData childdata = child.get(i);
-                    dataStore.add(new Pair<Integer, Integer>(
+                    dataStore.add(new Pair<>(
                             MapleDataTool.getInt(childdata.getChildByPath("id")),
                             MapleDataTool.getInt(childdata.getChildByPath("state"), 0)));
                 }
@@ -68,11 +68,11 @@ public class MapleQuestRequirement implements Serializable {
             }
             case item: {
                 final List<MapleData> child = data.getChildren();
-                dataStore = new LinkedList<Pair<Integer, Integer>>();
+                dataStore = new LinkedList<>();
 
                 for (int i = 0; i < child.size(); i++) {
                     final MapleData childdata = child.get(i);
-                    dataStore.add(new Pair<Integer, Integer>(
+                    dataStore.add(new Pair<>(
                             MapleDataTool.getInt(childdata.getChildByPath("id")),
                             MapleDataTool.getInt(childdata.getChildByPath("count"), 0)));
                 }
@@ -95,11 +95,11 @@ public class MapleQuestRequirement implements Serializable {
             }
             case mob: {
                 final List<MapleData> child = data.getChildren();
-                dataStore = new LinkedList<Pair<Integer, Integer>>();
+                dataStore = new LinkedList<>();
 
                 for (int i = 0; i < child.size(); i++) {
                     final MapleData childdata = child.get(i);
-                    dataStore.add(new Pair<Integer, Integer>(
+                    dataStore.add(new Pair<>(
                             MapleDataTool.getInt(childdata.getChildByPath("id"), 0),
                             MapleDataTool.getInt(childdata.getChildByPath("count"), 0)));
                 }
@@ -116,21 +116,21 @@ public class MapleQuestRequirement implements Serializable {
             }
             case mbcard: {
                 final List<MapleData> child = data.getChildren();
-                dataStore = new LinkedList<Pair<Integer, Integer>>();
+                dataStore = new LinkedList<>();
 
                 for (int i = 0; i < child.size(); i++) {
                     final MapleData childdata = child.get(i);
-                    dataStore.add(new Pair<Integer, Integer>(
+                    dataStore.add(new Pair<>(
                             MapleDataTool.getInt(childdata.getChildByPath("id"), 0),
                             MapleDataTool.getInt(childdata.getChildByPath("min"), 0)));
                 }
                 break;
             }
             case pet: {
-                dataStore = new LinkedList<Pair<Integer, Integer>>();
+                dataStore = new LinkedList<>();
 
                 for (MapleData child : data) {
-                    dataStore.add(new Pair<Integer, Integer>(-1, MapleDataTool.getInt("id", child, 0)));
+                    dataStore.add(new Pair<>(-1, MapleDataTool.getInt("id", child, 0)));
                 }
                 break;
             }

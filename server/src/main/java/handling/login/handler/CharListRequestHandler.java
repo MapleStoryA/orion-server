@@ -103,8 +103,8 @@ public class CharListRequestHandler extends AbstractMaplePacketHandler {
         packet.write(mega ? 0 : 1);
         packet.writeInt(chr.getHair());
 
-        final Map<Byte, Integer> myEquip = new LinkedHashMap<Byte, Integer>();
-        final Map<Byte, Integer> maskedEquip = new LinkedHashMap<Byte, Integer>();
+        final Map<Byte, Integer> myEquip = new LinkedHashMap<>();
+        final Map<Byte, Integer> maskedEquip = new LinkedHashMap<>();
         MapleInventory equip = chr.getInventory(MapleInventoryType.EQUIPPED);
 
         for (final IItem item : equip.list()) {

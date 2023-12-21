@@ -17,10 +17,9 @@ import tools.helper.StringUtil;
 @Slf4j
 public class SkillFactory {
 
-    private static final Map<Integer, ISkill> skills = new HashMap<Integer, ISkill>();
-    private static final Map<Integer, List<Integer>> skillsByJob = new HashMap<Integer, List<Integer>>();
-    private static final Map<Integer, SummonSkillEntry> SummonSkillInformation =
-            new HashMap<Integer, SummonSkillEntry>();
+    private static final Map<Integer, ISkill> skills = new HashMap<>();
+    private static final Map<Integer, List<Integer>> skillsByJob = new HashMap<>();
+    private static final Map<Integer, SummonSkillEntry> SummonSkillInformation = new HashMap<>();
     private static final MapleData stringData =
             ServerConfig.serverConfig().getDataProvider("wz/String").getData("Skill.img");
 
@@ -47,7 +46,7 @@ public class SkillFactory {
                                 Skill skil = Skill.loadFromData(skillid, data2);
                                 List<Integer> job = skillsByJob.get(skillid / 10000);
                                 if (job == null) {
-                                    job = new ArrayList<Integer>();
+                                    job = new ArrayList<>();
                                     skillsByJob.put(skillid / 10000, job);
                                 }
                                 job.add(skillid);

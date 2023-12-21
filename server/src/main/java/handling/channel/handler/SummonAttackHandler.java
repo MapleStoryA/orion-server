@@ -62,7 +62,7 @@ public class SummonAttackHandler extends AbstractMaplePacketHandler {
             return;
         }
         packet.skip(8); // some pos stuff
-        final List<SummonAttackEntry> allDamage = new ArrayList<SummonAttackEntry>();
+        final List<SummonAttackEntry> allDamage = new ArrayList<>();
         chr.getCheatTracker().checkSummonAttack();
 
         for (int i = 0; i < numAttacked; i++) {

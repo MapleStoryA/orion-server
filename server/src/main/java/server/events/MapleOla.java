@@ -67,16 +67,12 @@ public class MapleOla extends MapleEvent {
 
         olaSchedule = EventTimer.getInstance()
                 .schedule(
-                        new Runnable() {
-
-                            @Override
-                            public void run() {
-                                for (int i = 0; i < mapid.length; i++) {
-                                    for (MapleCharacter chr : getMap(i).getCharactersThreadsafe()) {
-                                        warpBack(chr);
-                                    }
-                                    unreset();
+                        () -> {
+                            for (int i = 0; i < mapid.length; i++) {
+                                for (MapleCharacter chr : getMap(i).getCharactersThreadsafe()) {
+                                    warpBack(chr);
                                 }
+                                unreset();
                             }
                         },
                         this.time);

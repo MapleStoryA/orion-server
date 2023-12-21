@@ -98,11 +98,11 @@ public enum MapleJob {
     Mechanic1(3500, "WildHunter"),
     Mechanic2(3510, "WildHunter"),
     ADDITIONAL_SKILLS(9000, "???");
-    private final int jobid;
+    private final int jobId;
     private final String name;
 
     MapleJob(int id, String name) {
-        jobid = id;
+        jobId = id;
         this.name = name;
     }
 
@@ -115,47 +115,12 @@ public enum MapleJob {
         return null;
     }
 
-    public static MapleJob getBy5ByteEncoding(int encoded) {
-        switch (encoded) {
-            case 2:
-                return WARRIOR;
-            case 4:
-                return MAGICIAN;
-            case 8:
-                return BOWMAN;
-            case 16:
-                return THIEF;
-            case 32:
-                return PIRATE;
-            case 1024:
-                return NOBLESSE;
-            case 2048:
-                return DAWNWARRIOR1;
-            case 4096:
-                return BLAZEWIZARD1;
-            case 8192:
-                return WINDARCHER1;
-            case 16384:
-                return NIGHTWALKER1;
-            case 32768:
-                return THUNDERBREAKER1;
-            case 65536:
-                return LEGEND;
-            default:
-                return BEGINNER;
-        }
-    }
-
     public static boolean isExtendSPJob(int jobId) {
         return jobId / 1000 == 3 || jobId / 100 == 22 || jobId == 2001;
     }
 
-    public static boolean isExtendSPJob(MapleJob job) {
-        return isExtendSPJob(job.getId());
-    }
-
     public int getId() {
-        return jobid;
+        return jobId;
     }
 
     public boolean isA(MapleJob basejob) {

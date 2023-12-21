@@ -54,15 +54,7 @@ public abstract class MapleEvent {
                         if (cserv.getEvent() == i) {
                             e.broadcast(MaplePacketCreator.serverNotice(0, "The event will start in 30 seconds!"));
                             e.broadcast(MaplePacketCreator.getClock(30));
-                            EventTimer.getInstance()
-                                    .schedule(
-                                            new Runnable() {
-
-                                                public void run() {
-                                                    e.startEvent();
-                                                }
-                                            },
-                                            30000);
+                            EventTimer.getInstance().schedule(() -> e.startEvent(), 30000);
                             break;
                         }
                     }

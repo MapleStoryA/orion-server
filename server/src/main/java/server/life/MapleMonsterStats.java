@@ -11,8 +11,8 @@ import tools.collection.Pair;
 @Slf4j
 public class MapleMonsterStats {
 
-    private final Map<Element, ElementalEffectiveness> resistance = new HashMap<Element, ElementalEffectiveness>();
-    private final List<Pair<Integer, Integer>> skills = new ArrayList<Pair<Integer, Integer>>();
+    private final Map<Element, ElementalEffectiveness> resistance = new HashMap<>();
+    private final List<Pair<Integer, Integer>> skills = new ArrayList<>();
     private byte cp, selfDestruction_action, tagColor, tagBgColor, rareItemDropLevel, HPDisplayType;
     private short level, PhysicalDefense, MagicDefense, eva;
     private long hp;
@@ -28,7 +28,7 @@ public class MapleMonsterStats {
             friendly,
             noDoom;
     private String name;
-    private List<Integer> revives = new ArrayList<Integer>();
+    private List<Integer> revives = new ArrayList<>();
     private BanishInfo banish;
 
     public int getExp() {

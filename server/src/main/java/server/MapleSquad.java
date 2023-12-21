@@ -23,8 +23,8 @@ public class MapleSquad {
 
     private final MapleSquadType squadType;
     private final String leaderName;
-    private final Map<String, String> members = new LinkedHashMap<String, String>();
-    private final Map<String, String> bannedMembers = new LinkedHashMap<String, String>();
+    private final Map<String, String> members = new LinkedHashMap<>();
+    private final Map<String, String> bannedMembers = new LinkedHashMap<>();
     private final int channel;
     private final long startTime;
     private final int expiration;
@@ -35,7 +35,7 @@ public class MapleSquad {
     private ScheduledFuture<?> removal;
 
     public MapleSquad(final int ch, final String type, final MapleCharacter leader, final int expiration) {
-        this.leader = new WeakReference<MapleCharacter>(leader);
+        this.leader = new WeakReference<>(leader);
         this.members.put(
                 leader.getName(),
                 MapleCarnivalChallenge.getJobBasicNameById(leader.getJob().getId()));
@@ -44,8 +44,8 @@ public class MapleSquad {
         this.type = type;
         this.squadType = MapleSquadType.valueOf(type.toLowerCase());
         if (this.squadType.queue.get(ch) == null) {
-            this.squadType.queue.put(ch, new ArrayList<Pair<String, Long>>());
-            this.squadType.queuedPlayers.put(ch, new ArrayList<Pair<String, String>>());
+            this.squadType.queue.put(ch, new ArrayList<>());
+            this.squadType.queuedPlayers.put(ch, new ArrayList<>());
         }
         this.status = 1;
         this.beginMapId = leader.getMapId();
@@ -83,17 +83,13 @@ public class MapleSquad {
     private void scheduleRemoval(final int time) {
         removal = CloneTimer.getInstance()
                 .schedule(
-                        new Runnable() {
-
-                            @Override
-                            public void run() {
-                                if (status != 0
-                                        && leader != null
-                                        && (getLeader() == null || status == 1)) { // leader itself = null
-                                    // means we're already
-                                    // cleared
-                                    clear();
-                                }
+                        () -> {
+                            if (status != 0
+                                    && leader != null
+                                    && (getLeader() == null || status == 1)) { // leader itself = null
+                                // means we're already
+                                // cleared
+                                clear();
                             }
                         },
                         time);
@@ -106,7 +102,7 @@ public class MapleSquad {
     public MapleCharacter getLeader() {
         if (leader == null || leader.get() == null) {
             if (members.size() > 0 && getChar(leaderName) != null) {
-                leader = new WeakReference<MapleCharacter>(getChar(leaderName));
+                leader = new WeakReference<>(getChar(leaderName));
             } else {
                 if (status != 0) {
                     clear();
@@ -127,11 +123,11 @@ public class MapleSquad {
     }
 
     public List<String> getMembers() {
-        return new LinkedList<String>(members.keySet());
+        return new LinkedList<>(members.keySet());
     }
 
     public List<String> getBannedMembers() {
-        return new LinkedList<String>(bannedMembers.keySet());
+        return new LinkedList<>(bannedMembers.keySet());
     }
 
     public int getSquadSize() {
@@ -316,7 +312,7 @@ public class MapleSquad {
     }
 
     public final Map<String, Integer> getJobs() {
-        final Map<String, Integer> jobs = new LinkedHashMap<String, Integer>();
+        final Map<String, Integer> jobs = new LinkedHashMap<>();
         for (Entry<String, String> chr : members.entrySet()) {
             if (jobs.containsKey(chr.getValue())) {
                 jobs.put(chr.getValue(), jobs.get(chr.getValue()) + 1);

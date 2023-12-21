@@ -7,7 +7,7 @@ import tools.MaplePacketCreator;
 @Slf4j
 public class GuildHandlerUtils {
 
-    public static final java.util.List<Invited> invited = new java.util.LinkedList<Invited>();
+    public static final java.util.List<Invited> invited = new java.util.LinkedList<>();
     public static long nextPruneTime = System.currentTimeMillis() + 20 * 60 * 1000;
 
     public static final boolean isGuildNameAcceptable(final String name) {

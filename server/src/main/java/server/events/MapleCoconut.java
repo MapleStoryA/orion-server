@@ -32,7 +32,7 @@ import tools.MaplePacketCreator;
 @Slf4j
 public class MapleCoconut extends MapleEvent {
 
-    private final List<MapleCoconuts> coconuts = new LinkedList<MapleCoconuts>();
+    private final List<MapleCoconuts> coconuts = new LinkedList<>();
     private final int[] coconutscore = new int[2];
     private int countBombing = 0;
     private int countFalling = 0;
@@ -140,51 +140,47 @@ public class MapleCoconut extends MapleEvent {
 
         EventTimer.getInstance()
                 .schedule(
-                        new Runnable() {
-
-                            @Override
-                            public void run() {
-                                if (getMapleScore() == getStoryScore()) {
-                                    bonusTime();
-                                } else if (getMapleScore() > getStoryScore()) {
-                                    for (MapleCharacter chr : getMap(0).getCharactersThreadsafe()) {
-                                        if (chr.getCoconutTeam() == 0) {
-                                            chr.getClient()
-                                                    .getSession()
-                                                    .write(MaplePacketCreator.showEffect("event/coconut/victory"));
-                                            chr.getClient()
-                                                    .getSession()
-                                                    .write(MaplePacketCreator.playSound("Coconut/Victory"));
-                                        } else {
-                                            chr.getClient()
-                                                    .getSession()
-                                                    .write(MaplePacketCreator.showEffect("event/coconut/lose"));
-                                            chr.getClient()
-                                                    .getSession()
-                                                    .write(MaplePacketCreator.playSound("Coconut/Failed"));
-                                        }
+                        () -> {
+                            if (getMapleScore() == getStoryScore()) {
+                                bonusTime();
+                            } else if (getMapleScore() > getStoryScore()) {
+                                for (MapleCharacter chr : getMap(0).getCharactersThreadsafe()) {
+                                    if (chr.getCoconutTeam() == 0) {
+                                        chr.getClient()
+                                                .getSession()
+                                                .write(MaplePacketCreator.showEffect("event/coconut/victory"));
+                                        chr.getClient()
+                                                .getSession()
+                                                .write(MaplePacketCreator.playSound("Coconut/Victory"));
+                                    } else {
+                                        chr.getClient()
+                                                .getSession()
+                                                .write(MaplePacketCreator.showEffect("event/coconut/lose"));
+                                        chr.getClient()
+                                                .getSession()
+                                                .write(MaplePacketCreator.playSound("Coconut/Failed"));
                                     }
-                                    warpOut();
-                                } else {
-                                    for (MapleCharacter chr : getMap(0).getCharactersThreadsafe()) {
-                                        if (chr.getCoconutTeam() == 1) {
-                                            chr.getClient()
-                                                    .getSession()
-                                                    .write(MaplePacketCreator.showEffect("event/coconut/victory"));
-                                            chr.getClient()
-                                                    .getSession()
-                                                    .write(MaplePacketCreator.playSound("Coconut/Victory"));
-                                        } else {
-                                            chr.getClient()
-                                                    .getSession()
-                                                    .write(MaplePacketCreator.showEffect("event/coconut/lose"));
-                                            chr.getClient()
-                                                    .getSession()
-                                                    .write(MaplePacketCreator.playSound("Coconut/Failed"));
-                                        }
-                                    }
-                                    warpOut();
                                 }
+                                warpOut();
+                            } else {
+                                for (MapleCharacter chr : getMap(0).getCharactersThreadsafe()) {
+                                    if (chr.getCoconutTeam() == 1) {
+                                        chr.getClient()
+                                                .getSession()
+                                                .write(MaplePacketCreator.showEffect("event/coconut/victory"));
+                                        chr.getClient()
+                                                .getSession()
+                                                .write(MaplePacketCreator.playSound("Coconut/Victory"));
+                                    } else {
+                                        chr.getClient()
+                                                .getSession()
+                                                .write(MaplePacketCreator.showEffect("event/coconut/lose"));
+                                        chr.getClient()
+                                                .getSession()
+                                                .write(MaplePacketCreator.playSound("Coconut/Failed"));
+                                    }
+                                }
+                                warpOut();
                             }
                         },
                         360000);
@@ -194,12 +190,25 @@ public class MapleCoconut extends MapleEvent {
         getMap(0).broadcastMessage(MaplePacketCreator.getClock(120));
         EventTimer.getInstance()
                 .schedule(
-                        new Runnable() {
-
-                            @Override
-                            public void run() {
-                                if (getMapleScore() == getStoryScore()) {
-                                    for (MapleCharacter chr : getMap(0).getCharactersThreadsafe()) {
+                        () -> {
+                            if (getMapleScore() == getStoryScore()) {
+                                for (MapleCharacter chr : getMap(0).getCharactersThreadsafe()) {
+                                    chr.getClient()
+                                            .getSession()
+                                            .write(MaplePacketCreator.showEffect("event/coconut/lose"));
+                                    chr.getClient().getSession().write(MaplePacketCreator.playSound("Coconut/Failed"));
+                                }
+                                warpOut();
+                            } else if (getMapleScore() > getStoryScore()) {
+                                for (MapleCharacter chr : getMap(0).getCharactersThreadsafe()) {
+                                    if (chr.getCoconutTeam() == 0) {
+                                        chr.getClient()
+                                                .getSession()
+                                                .write(MaplePacketCreator.showEffect("event/coconut/victory"));
+                                        chr.getClient()
+                                                .getSession()
+                                                .write(MaplePacketCreator.playSound("Coconut/Victory"));
+                                    } else {
                                         chr.getClient()
                                                 .getSession()
                                                 .write(MaplePacketCreator.showEffect("event/coconut/lose"));
@@ -207,46 +216,27 @@ public class MapleCoconut extends MapleEvent {
                                                 .getSession()
                                                 .write(MaplePacketCreator.playSound("Coconut/Failed"));
                                     }
-                                    warpOut();
-                                } else if (getMapleScore() > getStoryScore()) {
-                                    for (MapleCharacter chr : getMap(0).getCharactersThreadsafe()) {
-                                        if (chr.getCoconutTeam() == 0) {
-                                            chr.getClient()
-                                                    .getSession()
-                                                    .write(MaplePacketCreator.showEffect("event/coconut/victory"));
-                                            chr.getClient()
-                                                    .getSession()
-                                                    .write(MaplePacketCreator.playSound("Coconut/Victory"));
-                                        } else {
-                                            chr.getClient()
-                                                    .getSession()
-                                                    .write(MaplePacketCreator.showEffect("event/coconut/lose"));
-                                            chr.getClient()
-                                                    .getSession()
-                                                    .write(MaplePacketCreator.playSound("Coconut/Failed"));
-                                        }
-                                    }
-                                    warpOut();
-                                } else {
-                                    for (MapleCharacter chr : getMap(0).getCharactersThreadsafe()) {
-                                        if (chr.getCoconutTeam() == 1) {
-                                            chr.getClient()
-                                                    .getSession()
-                                                    .write(MaplePacketCreator.showEffect("event/coconut/victory"));
-                                            chr.getClient()
-                                                    .getSession()
-                                                    .write(MaplePacketCreator.playSound("Coconut/Victory"));
-                                        } else {
-                                            chr.getClient()
-                                                    .getSession()
-                                                    .write(MaplePacketCreator.showEffect("event/coconut/lose"));
-                                            chr.getClient()
-                                                    .getSession()
-                                                    .write(MaplePacketCreator.playSound("Coconut/Failed"));
-                                        }
-                                    }
-                                    warpOut();
                                 }
+                                warpOut();
+                            } else {
+                                for (MapleCharacter chr : getMap(0).getCharactersThreadsafe()) {
+                                    if (chr.getCoconutTeam() == 1) {
+                                        chr.getClient()
+                                                .getSession()
+                                                .write(MaplePacketCreator.showEffect("event/coconut/victory"));
+                                        chr.getClient()
+                                                .getSession()
+                                                .write(MaplePacketCreator.playSound("Coconut/Victory"));
+                                    } else {
+                                        chr.getClient()
+                                                .getSession()
+                                                .write(MaplePacketCreator.showEffect("event/coconut/lose"));
+                                        chr.getClient()
+                                                .getSession()
+                                                .write(MaplePacketCreator.playSound("Coconut/Failed"));
+                                    }
+                                }
+                                warpOut();
                             }
                         },
                         120000);
@@ -256,19 +246,15 @@ public class MapleCoconut extends MapleEvent {
         setHittable(false);
         EventTimer.getInstance()
                 .schedule(
-                        new Runnable() {
-
-                            @Override
-                            public void run() {
-                                for (MapleCharacter chr : getMap(0).getCharactersThreadsafe()) {
-                                    if ((getMapleScore() > getStoryScore() && chr.getCoconutTeam() == 0)
-                                            || (getStoryScore() > getMapleScore() && chr.getCoconutTeam() == 1)) {
-                                        givePrize(chr);
-                                    }
-                                    warpBack(chr);
+                        () -> {
+                            for (MapleCharacter chr : getMap(0).getCharactersThreadsafe()) {
+                                if ((getMapleScore() > getStoryScore() && chr.getCoconutTeam() == 0)
+                                        || (getStoryScore() > getMapleScore() && chr.getCoconutTeam() == 1)) {
+                                    givePrize(chr);
                                 }
-                                unreset();
+                                warpBack(chr);
                             }
+                            unreset();
                         },
                         12000);
     }

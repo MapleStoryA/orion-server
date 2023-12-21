@@ -11,11 +11,11 @@ public class StructSetItem {
 
     private byte completeCount;
     private byte setItemID;
-    private Map<Integer, SetItem> items = new LinkedHashMap<Integer, SetItem>();
-    private List<Integer> itemIDs = new ArrayList<Integer>();
+    private Map<Integer, SetItem> items = new LinkedHashMap<>();
+    private List<Integer> itemIDs = new ArrayList<>();
 
     public Map<Integer, SetItem> getItems() {
-        return new LinkedHashMap<Integer, SetItem>(items);
+        return new LinkedHashMap<>(items);
     }
 
     public byte getCompleteCount() {

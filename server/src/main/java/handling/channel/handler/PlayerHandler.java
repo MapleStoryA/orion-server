@@ -198,12 +198,12 @@ public class PlayerHandler {
             if (blueAura != null) {
                 damage -= (int) ((blueAura.getY() / 100.0) * damage);
             }
-            if (chr.getBuffedValue(MapleBuffStat.SATELLITESAFE_PROC) != null
-                    && chr.getBuffedValue(MapleBuffStat.SATELLITESAFE_ABSORB) != null) {
+            if (chr.getBuffedValue(MapleBuffStat.SATELLITE_SAFE_PROC) != null
+                    && chr.getBuffedValue(MapleBuffStat.SATELLITE_SAFE_ABSORB) != null) {
                 double buff =
-                        chr.getBuffedValue(MapleBuffStat.SATELLITESAFE_PROC).doubleValue();
+                        chr.getBuffedValue(MapleBuffStat.SATELLITE_SAFE_PROC).doubleValue();
                 double buffz =
-                        chr.getBuffedValue(MapleBuffStat.SATELLITESAFE_ABSORB).doubleValue();
+                        chr.getBuffedValue(MapleBuffStat.SATELLITE_SAFE_ABSORB).doubleValue();
                 if ((int) ((buff / 100.0) * chr.getStat().getMaxHp()) <= damage) {
                     damage -= (int) ((buffz / 100.0) * damage);
                     chr.cancelEffectFromBuffStat(MapleBuffStat.SUMMON);

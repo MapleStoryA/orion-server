@@ -51,11 +51,7 @@ public class TimerManager implements TimerManagerMBean {
     }
 
     public Runnable purge() { // Yay?
-        return new Runnable() {
-            public void run() {
-                ses.purge();
-            }
-        };
+        return () -> ses.purge();
     }
 
     public ScheduledFuture<?> register(Runnable r, long repeatTime, long delay) {

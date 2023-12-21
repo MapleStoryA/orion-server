@@ -30,7 +30,7 @@ public class MobSkill {
     private float prop;
     //    private short effect_delay;
     private short limit;
-    private List<Integer> toSummon = new ArrayList<Integer>();
+    private List<Integer> toSummon = new ArrayList<>();
     private Point lt, rb;
 
     public MobSkill(int skillId, int level) {
@@ -98,8 +98,8 @@ public class MobSkill {
 
     public void applyEffect(MapleCharacter player, MapleMonster monster, boolean skill) {
         MapleDisease disease = null;
-        Map<MonsterStatus, Integer> stats = new EnumMap<MonsterStatus, Integer>(MonsterStatus.class);
-        List<Integer> reflection = new LinkedList<Integer>();
+        Map<MonsterStatus, Integer> stats = new EnumMap<>(MonsterStatus.class);
+        List<Integer> reflection = new LinkedList<>();
 
         switch (skillId) {
             case 100:
@@ -420,14 +420,14 @@ public class MobSkill {
 
     private List<MapleCharacter> getPlayersInRange(MapleMonster monster, MapleCharacter player) {
         final Rectangle bounds = calculateBoundingBox(monster.getPosition(), monster.isFacingLeft());
-        List<MapleCharacter> players = new ArrayList<MapleCharacter>();
+        List<MapleCharacter> players = new ArrayList<>();
         players.add(player);
         return monster.getMap().getPlayersInRectAndInList(bounds, players);
     }
 
     private List<MapleMapObject> getObjectsInRange(MapleMonster monster, MapleMapObjectType objectType) {
         final Rectangle bounds = calculateBoundingBox(monster.getPosition(), monster.isFacingLeft());
-        List<MapleMapObjectType> objectTypes = new ArrayList<MapleMapObjectType>();
+        List<MapleMapObjectType> objectTypes = new ArrayList<>();
         objectTypes.add(objectType);
         return monster.getMap().getMapObjectsInRect(bounds, objectTypes);
     }

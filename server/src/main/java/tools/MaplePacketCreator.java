@@ -37,7 +37,6 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -181,14 +180,10 @@ public class MaplePacketCreator {
         }
         List<Pair<MapleStat, Integer>> mystats = stats;
         if (mystats.size() > 1) {
-            Collections.sort(mystats, new Comparator<Pair<MapleStat, Integer>>() {
-
-                @Override
-                public int compare(final Pair<MapleStat, Integer> o1, final Pair<MapleStat, Integer> o2) {
-                    int val1 = o1.getLeft().getValue();
-                    int val2 = o2.getLeft().getValue();
-                    return (val1 < val2 ? -1 : (val1 == val2 ? 0 : 1));
-                }
+            mystats.sort((o1, o2) -> {
+                int val1 = o1.getLeft().getValue();
+                int val2 = o2.getLeft().getValue();
+                return (val1 < val2 ? -1 : (val1 == val2 ? 0 : 1));
             });
         }
         packet.writeInt(updateMask);
@@ -576,8 +571,8 @@ public class MaplePacketCreator {
         packet.write(0);
         packet.writeInt(npc.getHair());
         Map<Byte, Integer> equip = npc.getEquips();
-        Map<Byte, Integer> myEquip = new LinkedHashMap<Byte, Integer>();
-        Map<Byte, Integer> maskedEquip = new LinkedHashMap<Byte, Integer>();
+        Map<Byte, Integer> myEquip = new LinkedHashMap<>();
+        Map<Byte, Integer> maskedEquip = new LinkedHashMap<>();
         for (Entry<Byte, Integer> position : equip.entrySet()) {
             byte pos = (byte) (position.getKey() * -1);
             if (pos < 100 && myEquip.get(pos) == null) {
@@ -856,7 +851,7 @@ public class MaplePacketCreator {
             }
         }
         // packet.writeInt(3); after aftershock
-        List<Pair<Integer, Integer>> buffvalue = new ArrayList<Pair<Integer, Integer>>();
+        List<Pair<Integer, Integer>> buffvalue = new ArrayList<>();
         long fbuffmask = 0x3F80000L; // becomes F8000000 after bb?
         /** TODO: Removed for now, it d/c's other people */
         if (chr.getBuffedValue(MapleBuffStat.FINAL_CUT) != null) {
@@ -905,7 +900,7 @@ public class MaplePacketCreator {
         }
         if (chr.getBuffedValue(MapleBuffStat.COMBO) != null) {
             buffmask |= MapleBuffStat.COMBO.getValue();
-            buffvalue.add(new Pair<Integer, Integer>(
+            buffvalue.add(new Pair<>(
                     Integer.valueOf(chr.getBuffedValue(MapleBuffStat.COMBO).intValue()),
                     MapleBuffStat.COMBO.isFirst()));
         }
@@ -923,7 +918,7 @@ public class MaplePacketCreator {
         }
         if (chr.getBuffedValue(MapleBuffStat.MORPH) != null) {
             buffmask |= MapleBuffStat.MORPH.getValue();
-            buffvalue.add(new Pair<Integer, Integer>(
+            buffvalue.add(new Pair<>(
                     Integer.valueOf(chr.getBuffedValue(MapleBuffStat.MORPH).intValue()), 2));
         }
 
@@ -1836,7 +1831,7 @@ public class MaplePacketCreator {
 
         IItem medal = chr.getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -46);
         packet.writeInt(medal == null ? 0 : medal.getItemId());
-        List<Integer> medalQuests = new ArrayList<Integer>();
+        List<Integer> medalQuests = new ArrayList<>();
         List<MapleQuestStatus> completed = chr.getCompletedQuests();
         for (MapleQuestStatus q : completed) {
             if (q.getQuest().getMedalItem() > 0
@@ -1855,7 +1850,7 @@ public class MaplePacketCreator {
             packet.writeShort(x);
         }
         // v90 New
-        List<Integer> chairs = new ArrayList<Integer>();
+        List<Integer> chairs = new ArrayList<>();
         for (IItem item : chr.getInventory(MapleInventoryType.SETUP)) {
             if (item.getItemId() / 10000 == 301 && !chairs.contains(item.getItemId())) {
                 chairs.add(item.getItemId());
@@ -4164,37 +4159,29 @@ public class MaplePacketCreator {
     }
 
     public static final byte[] temporaryStats_Aran() {
-        final List<Pair<MapleStat.TemporaryMapleStat, Integer>> stats =
-                new ArrayList<Pair<MapleStat.TemporaryMapleStat, Integer>>();
-        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.STR, 999));
-        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.DEX, 999));
-        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.INT, 999));
-        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.LUK, 999));
-        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.WATK, 255));
-        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.ACC, 999));
-        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.AVOID, 999));
-        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.SPEED, 140));
-        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(MapleStat.TemporaryMapleStat.JUMP, 120));
+        final List<Pair<MapleStat.TemporaryMapleStat, Integer>> stats = new ArrayList<>();
+        stats.add(new Pair<>(MapleStat.TemporaryMapleStat.STR, 999));
+        stats.add(new Pair<>(MapleStat.TemporaryMapleStat.DEX, 999));
+        stats.add(new Pair<>(MapleStat.TemporaryMapleStat.INT, 999));
+        stats.add(new Pair<>(MapleStat.TemporaryMapleStat.LUK, 999));
+        stats.add(new Pair<>(MapleStat.TemporaryMapleStat.WATK, 255));
+        stats.add(new Pair<>(MapleStat.TemporaryMapleStat.ACC, 999));
+        stats.add(new Pair<>(MapleStat.TemporaryMapleStat.AVOID, 999));
+        stats.add(new Pair<>(MapleStat.TemporaryMapleStat.SPEED, 140));
+        stats.add(new Pair<>(MapleStat.TemporaryMapleStat.JUMP, 120));
         return temporaryStats(stats);
     }
 
     public static final byte[] temporaryStats_Balrog(final MapleCharacter chr) {
-        final List<Pair<MapleStat.TemporaryMapleStat, Integer>> stats =
-                new ArrayList<Pair<MapleStat.TemporaryMapleStat, Integer>>();
+        final List<Pair<MapleStat.TemporaryMapleStat, Integer>> stats = new ArrayList<>();
         int offset = 1 + (chr.getLevel() - 90) / 20;
         // every 20 levels above 90, +1
-        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(
-                MapleStat.TemporaryMapleStat.STR, chr.getStat().getTotalStr() / offset));
-        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(
-                MapleStat.TemporaryMapleStat.DEX, chr.getStat().getTotalDex() / offset));
-        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(
-                MapleStat.TemporaryMapleStat.INT, chr.getStat().getTotalInt() / offset));
-        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(
-                MapleStat.TemporaryMapleStat.LUK, chr.getStat().getTotalLuk() / offset));
-        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(
-                MapleStat.TemporaryMapleStat.WATK, chr.getStat().getTotalWatk() / offset));
-        stats.add(new Pair<MapleStat.TemporaryMapleStat, Integer>(
-                MapleStat.TemporaryMapleStat.MATK, chr.getStat().getTotalMagic() / offset));
+        stats.add(new Pair<>(MapleStat.TemporaryMapleStat.STR, chr.getStat().getTotalStr() / offset));
+        stats.add(new Pair<>(MapleStat.TemporaryMapleStat.DEX, chr.getStat().getTotalDex() / offset));
+        stats.add(new Pair<>(MapleStat.TemporaryMapleStat.INT, chr.getStat().getTotalInt() / offset));
+        stats.add(new Pair<>(MapleStat.TemporaryMapleStat.LUK, chr.getStat().getTotalLuk() / offset));
+        stats.add(new Pair<>(MapleStat.TemporaryMapleStat.WATK, chr.getStat().getTotalWatk() / offset));
+        stats.add(new Pair<>(MapleStat.TemporaryMapleStat.MATK, chr.getStat().getTotalMagic() / offset));
         return temporaryStats(stats);
     }
 
@@ -4213,16 +4200,10 @@ public class MaplePacketCreator {
         }
         List<Pair<MapleStat.TemporaryMapleStat, Integer>> mystats = stats;
         if (mystats.size() > 1) {
-            Collections.sort(mystats, new Comparator<Pair<MapleStat.TemporaryMapleStat, Integer>>() {
-
-                @Override
-                public int compare(
-                        final Pair<MapleStat.TemporaryMapleStat, Integer> o1,
-                        final Pair<MapleStat.TemporaryMapleStat, Integer> o2) {
-                    int val1 = o1.getLeft().getValue();
-                    int val2 = o2.getLeft().getValue();
-                    return (val1 < val2 ? -1 : (val1 == val2 ? 0 : 1));
-                }
+            mystats.sort((o1, o2) -> {
+                int val1 = o1.getLeft().getValue();
+                int val2 = o2.getLeft().getValue();
+                return (val1 < val2 ? -1 : (val1 == val2 ? 0 : 1));
             });
         }
         packet.writeInt(updateMask);
@@ -4908,13 +4889,10 @@ public class MaplePacketCreator {
         }
         List<Pair<MapleStat, Integer>> mystats = stats;
         if (mystats.size() > 1) {
-            Collections.sort(mystats, new Comparator<Pair<MapleStat, Integer>>() {
-                @Override
-                public int compare(Pair<MapleStat, Integer> o1, Pair<MapleStat, Integer> o2) {
-                    int val1 = o1.getLeft().getValue();
-                    int val2 = o2.getLeft().getValue();
-                    return (val1 < val2 ? -1 : (val1 == val2 ? 0 : 1));
-                }
+            mystats.sort((o1, o2) -> {
+                int val1 = o1.getLeft().getValue();
+                int val2 = o2.getLeft().getValue();
+                return (val1 < val2 ? -1 : (val1 == val2 ? 0 : 1));
             });
         }
         packet.writeInt(updateMask);

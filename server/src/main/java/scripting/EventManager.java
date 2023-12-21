@@ -57,7 +57,7 @@ public class EventManager {
     private static int eventChannel = 1;
     private final Invocable iv;
     private final int channel;
-    private final Map<String, EventInstanceManager> instances = new WeakHashMap<String, EventInstanceManager>();
+    private final Map<String, EventInstanceManager> instances = new WeakHashMap<>();
     private final Properties props = new Properties();
     private final String name;
 
@@ -81,17 +81,14 @@ public class EventManager {
     public ScheduledFuture<?> schedule(final String methodName, long delay) {
         return EventTimer.getInstance()
                 .schedule(
-                        new Runnable() {
-
-                            public void run() {
-                                try {
-                                    iv.invokeFunction(methodName, (Object) null);
-                                } catch (Exception ex) {
-                                    log.info("Event name : " + name + ", method Name : " + methodName + ":\n" + ex);
-                                    log.info("Log_Script_Except.rtf"
-                                            + " : "
-                                            + ("Event name : " + name + ", method Name : " + methodName + ":\n" + ex));
-                                }
+                        () -> {
+                            try {
+                                iv.invokeFunction(methodName, (Object) null);
+                            } catch (Exception ex) {
+                                log.info("Event name : " + name + ", method Name : " + methodName + ":\n" + ex);
+                                log.info("Log_Script_Except.rtf"
+                                        + " : "
+                                        + ("Event name : " + name + ", method Name : " + methodName + ":\n" + ex));
                             }
                         },
                         delay);
@@ -100,17 +97,14 @@ public class EventManager {
     public ScheduledFuture<?> schedule(final String methodName, long delay, final EventInstanceManager eim) {
         return EventTimer.getInstance()
                 .schedule(
-                        new Runnable() {
-
-                            public void run() {
-                                try {
-                                    iv.invokeFunction(methodName, eim);
-                                } catch (Exception ex) {
-                                    log.info("Event name : " + name + ", method Name : " + methodName + ":\n" + ex);
-                                    log.info("Log_Script_Except.rtf"
-                                            + " : "
-                                            + ("Event name : " + name + ", method Name : " + methodName + ":\n" + ex));
-                                }
+                        () -> {
+                            try {
+                                iv.invokeFunction(methodName, eim);
+                            } catch (Exception ex) {
+                                log.info("Event name : " + name + ", method Name : " + methodName + ":\n" + ex);
+                                log.info("Log_Script_Except.rtf"
+                                        + " : "
+                                        + ("Event name : " + name + ", method Name : " + methodName + ":\n" + ex));
                             }
                         },
                         delay);
@@ -119,16 +113,13 @@ public class EventManager {
     public ScheduledFuture<?> scheduleAtTimestamp(final String methodName, long timestamp) {
         return EventTimer.getInstance()
                 .scheduleAtTimestamp(
-                        new Runnable() {
-
-                            public void run() {
-                                try {
-                                    iv.invokeFunction(methodName, (Object) null);
-                                } catch (ScriptException ex) {
-                                    log.info("Event name : " + name + ", method Name : " + methodName + ":\n" + ex);
-                                } catch (NoSuchMethodException ex) {
-                                    log.info("Event name : " + name + ", method Name : " + methodName + ":\n" + ex);
-                                }
+                        () -> {
+                            try {
+                                iv.invokeFunction(methodName, (Object) null);
+                            } catch (ScriptException ex) {
+                                log.info("Event name : " + name + ", method Name : " + methodName + ":\n" + ex);
+                            } catch (NoSuchMethodException ex) {
+                                log.info("Event name : " + name + ", method Name : " + methodName + ":\n" + ex);
                             }
                         },
                         timestamp);
@@ -362,7 +353,7 @@ public class EventManager {
     }
 
     public List<MapleCharacter> newCharList() {
-        return new ArrayList<MapleCharacter>();
+        return new ArrayList<>();
     }
 
     public MapleMonster getMonster(final int id) {

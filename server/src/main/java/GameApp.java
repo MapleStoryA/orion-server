@@ -104,14 +104,12 @@ public class GameApp {
                 t.start();
                 EtcTimer.getInstance()
                         .schedule(
-                                new Runnable() {
-                                    public void run() {
-                                        String[] args = {"restart"};
-                                        try {
-                                            main(args);
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
+                                () -> {
+                                    String[] args = {"restart"};
+                                    try {
+                                        main(args);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
                                 },
                                 3 * 1000);

@@ -1,4 +1,4 @@
-package client;
+package client.base;
 
 import constants.GameConstants;
 import database.DatabaseConnection;

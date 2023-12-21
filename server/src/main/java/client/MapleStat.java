@@ -20,15 +20,15 @@ public enum MapleStat {
     FAME(0x20000),
     MESO(0x40000),
     PET(0x180008);
-    private final int i;
+    private final int value;
 
-    MapleStat(int i) {
-        this.i = i;
+    MapleStat(int value) {
+        this.value = value;
     }
 
     public static final MapleStat getByValue(final int value) {
         for (final MapleStat stat : MapleStat.values()) {
-            if (stat.i == value) {
+            if (stat.value == value) {
                 return stat;
             }
         }
@@ -36,7 +36,7 @@ public enum MapleStat {
     }
 
     public int getValue() {
-        return i;
+        return value;
     }
 
     public enum TemporaryMapleStat {
