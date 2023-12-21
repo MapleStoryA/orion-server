@@ -107,10 +107,10 @@ public class DamageParse {
 
         if (attack.skill == 4211006) { // meso explosion
             for (AttackPair oned : attack.allDamage) {
-                if (oned.getAttack() != null) {
+                if (oned.attack() != null) {
                     continue;
                 }
-                final MapleMapObject mapobject = map.getMapObject(oned.getObjectId(), MapleMapObjectType.ITEM);
+                final MapleMapObject mapobject = map.getMapObject(oned.objectId(), MapleMapObjectType.ITEM);
 
                 if (mapobject != null) {
                     final MapleMapItem mapitem = (MapleMapItem) mapobject;
@@ -166,7 +166,7 @@ public class DamageParse {
         boolean Tempest;
 
         for (final AttackPair oned : attack.allDamage) {
-            monster = map.getMonsterByOid(oned.getObjectId());
+            monster = map.getMonsterByOid(oned.objectId());
 
             if (monster != null) {
                 totDamageToOneMonster = 0;
@@ -188,7 +188,7 @@ public class DamageParse {
                 overallAttackCount = 0; // Tracking of Shadow Partner additional damage.
                 Integer eachd;
 
-                for (Pair<Integer, Boolean> eachde : oned.getAttack()) {
+                for (Pair<Integer, Boolean> eachde : oned.attack()) {
 
                     eachd = eachde.left;
                     overallAttackCount++;
@@ -644,7 +644,7 @@ public class DamageParse {
         final MapleMap map = player.getMap();
 
         for (final AttackPair oned : attack.allDamage) {
-            final MapleMonster monster = map.getMonsterByOid(oned.getObjectId());
+            final MapleMonster monster = map.getMonsterByOid(oned.objectId());
 
             if (monster != null) {
                 Tempest = monster.getStatusSourceID(MonsterStatus.FREEZE) == 21120006
@@ -671,7 +671,7 @@ public class DamageParse {
                 }
                 overallAttackCount = 0;
                 Integer eachd;
-                for (Pair<Integer, Boolean> eachde : oned.getAttack()) {
+                for (Pair<Integer, Boolean> eachde : oned.attack()) {
                     eachd = eachde.left;
                     overallAttackCount++;
                     if (fixeddmg != -1) {
@@ -878,7 +878,7 @@ public class DamageParse {
         final ISkill skill = SkillFactory.getSkill(4211003);
         final MapleStatEffect s = skill.getEffect(player.getSkillLevel(skill));
 
-        for (final Pair<Integer, Boolean> eachde : oned.getAttack()) {
+        for (final Pair<Integer, Boolean> eachde : oned.attack()) {
             final Integer eachd = eachde.left;
             if (s.makeChanceResult()) {
 
@@ -1089,8 +1089,8 @@ public class DamageParse {
             return attack;
         }
         for (AttackPair p : attack.allDamage) {
-            if (p.getAttack() != null) {
-                for (Pair<Integer, Boolean> eachd : p.getAttack()) {
+            if (p.attack() != null) {
+                for (Pair<Integer, Boolean> eachd : p.attack()) {
                     eachd.left = (int) (eachd.left / rate);
                 }
             }
@@ -1111,12 +1111,11 @@ public class DamageParse {
                                 || attack.skill == 4221001
                                 || attack.skill == 3221007)) { // blizz + shadow meso + m.e no crits
             for (AttackPair p : attack.allDamage) {
-                if (p.getAttack() != null) {
+                if (p.attack() != null) {
                     int hit = 0;
-                    final int mid_att = p.getAttack().size() / 2;
-                    final List<Pair<Integer, Boolean>> eachd_copy =
-                            new ArrayList<Pair<Integer, Boolean>>(p.getAttack());
-                    for (Pair<Integer, Boolean> eachd : p.getAttack()) {
+                    final int mid_att = p.attack().size() / 2;
+                    final List<Pair<Integer, Boolean>> eachd_copy = new ArrayList<Pair<Integer, Boolean>>(p.attack());
+                    for (Pair<Integer, Boolean> eachd : p.attack()) {
                         hit++;
                         if (!eachd.right) {
                             if (attack.skill == 4221001) { // assassinate never crit first 3, always crit
