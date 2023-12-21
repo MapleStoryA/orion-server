@@ -1,4 +1,4 @@
-package client;
+package client.base;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;

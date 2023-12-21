@@ -226,7 +226,7 @@ public class PacketHelper {
         }
         packet.write(chr.getLevel()); // level
         packet.writeShort(chr.getJob().getId()); // job
-        chr.getStat().connectData(packet);
+        chr.getStat().encodeConnectData(packet);
         packet.writeShort(Math.min(199, chr.getRemainingAp())); // Avoid Popup
         if (chr.getJob().isEvan() && (chr.getLevel() >= 10) && (chr.getJob().getId() != 2001)) {
             EvanSkillPoints esp;

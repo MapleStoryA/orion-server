@@ -1,4 +1,4 @@
-package client;
+package database;
 
 import lombok.Getter;
 

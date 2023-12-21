@@ -2,6 +2,7 @@ package client;
 
 import client.anticheat.CheatTracker;
 import client.anticheat.ReportType;
+import client.base.BaseMapleCharacter;
 import client.events.RockPaperScissors;
 import client.events.SpeedQuiz;
 import client.inventory.IItem;
@@ -17,6 +18,7 @@ import client.inventory.MapleRing;
 import client.keymap.MapleKeyLayout;
 import client.skill.EvanSkillPoints;
 import client.skill.ISkill;
+import client.skill.SavedSkillMacro;
 import client.skill.SkillEntry;
 import client.skill.SkillFactory;
 import client.skill.SkillMacro;

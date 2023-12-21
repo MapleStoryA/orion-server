@@ -1,6 +1,6 @@
-package client;
+package client.skill;
 
-import client.skill.SkillMacro;
+import client.MapleClient;
 import tools.MaplePacketCreator;
 
 public class SavedSkillMacro {

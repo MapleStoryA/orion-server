@@ -1,13 +1,12 @@
 package database;
 
-import client.CharNameAndId;
 import client.FinishedAchievements;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleJob;
 import client.SavedLocations;
-import client.SavedSkillMacro;
 import client.skill.EvanSkillPoints;
+import client.skill.SavedSkillMacro;
 import client.skill.SkillMacro;
 import handling.world.guild.GuildManager;
 import java.sql.Connection;

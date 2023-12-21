@@ -1,6 +1,5 @@
 package client.skill;
 
-import client.SummonSkillEntry;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;

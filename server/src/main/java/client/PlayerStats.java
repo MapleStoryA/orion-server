@@ -1278,7 +1278,7 @@ public class PlayerStats implements Serializable {
         shouldHealMP *= 2; // 1.5
     }
 
-    public final void connectData(final OutPacket packet) {
+    public final void encodeConnectData(final OutPacket packet) {
         packet.writeShort(str); // str
         packet.writeShort(dex); // dex
         packet.writeShort(int_); // int
