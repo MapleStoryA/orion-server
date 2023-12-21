@@ -10,7 +10,6 @@ import client.anticheat.ReportType;
 import client.inventory.Equip;
 import client.inventory.IItem;
 import client.inventory.ItemFlag;
-import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.skill.ISkill;
 import client.skill.SkillFactory;
@@ -22,12 +21,7 @@ import handling.world.helper.BroadcastHelper;
 import handling.world.helper.CheaterData;
 import handling.world.helper.FindCommand;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
@@ -90,70 +84,10 @@ import tools.collection.Pair;
 import tools.helper.Api;
 import tools.helper.StringUtil;
 import tools.packet.MobPacket;
-import tools.packet.PlayerShopPacket;
 
 @Api
 @Slf4j
 public class AdminCommands {
-
-    class CommandProcessorUtil {
-
-        public static int getOptionalIntArg(String[] splitted, int position, int def) {
-            if (splitted.length > position) {
-                try {
-                    return Integer.parseInt(splitted[position]);
-                } catch (NumberFormatException nfe) {
-                    return def;
-                }
-            }
-            return def;
-        }
-
-        public static String getNamedArg(String[] splitted, int startpos, String name) {
-            for (int i = startpos; i < splitted.length; i++) {
-                if (splitted[i].equalsIgnoreCase(name) && i + 1 < splitted.length) {
-                    return splitted[i + 1];
-                }
-            }
-            return null;
-        }
-
-        public static Long getNamedLongArg(String[] splitted, int startpos, String name) {
-            String arg = getNamedArg(splitted, startpos, name);
-            if (arg != null) {
-                try {
-                    return Long.parseLong(arg);
-                } catch (NumberFormatException nfe) {
-                    // swallow - we don't really care
-                }
-            }
-            return null;
-        }
-
-        public static Integer getNamedIntArg(String[] splitted, int startpos, String name) {
-            String arg = getNamedArg(splitted, startpos, name);
-            if (arg != null) {
-                try {
-                    return Integer.parseInt(arg);
-                } catch (NumberFormatException nfe) {
-                    // swallow - we don't really care
-                }
-            }
-            return null;
-        }
-
-        public static Double getNamedDoubleArg(String[] splitted, int startpos, String name) {
-            String arg = getNamedArg(splitted, startpos, name);
-            if (arg != null) {
-                try {
-                    return Double.parseDouble(arg);
-                } catch (NumberFormatException nfe) {
-                    // swallow - we don't really care
-                }
-            }
-            return null;
-        }
-    }
 
     @Api(description = "Hides the character with the GM skill.")
     public static class Hide implements Command {
@@ -849,19 +783,6 @@ public class AdminCommands {
     }
 
     @Api
-    public static class StartAutoEvent implements Command {
-
-        @Override
-        public int execute(MapleClient c, String[] args) {
-            final EventManager em = c.getChannelServer().getEventSM().getEventManager("AutomatedEvent");
-            if (em != null) {
-                em.scheduleRandomEvent();
-            }
-            return 1;
-        }
-    }
-
-    @Api
     public static class SetEvent implements Command {
 
         @Override
@@ -989,89 +910,6 @@ public class AdminCommands {
     }
 
     @Api
-    public static class SpeakMega implements Command {
-
-        @Override
-        public int execute(MapleClient c, String[] args) {
-            MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(args[1]);
-            BroadcastHelper.broadcastSmega(MaplePacketCreator.serverNotice(
-                    3,
-                    victim == null ? c.getChannel() : victim.getClient().getChannel(),
-                    victim == null ? args[1] : victim.getName() + " : " + StringUtil.joinStringFrom(args, 2),
-                    true));
-            return 1;
-        }
-    }
-
-    @Api
-    public static class Speak implements Command {
-
-        @Override
-        public int execute(MapleClient c, String[] args) {
-            MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(args[1]);
-            if (victim == null) {
-                c.getPlayer().dropMessage(5, "unable to find '" + args[1]);
-                return 0;
-            } else {
-                victim.getMap()
-                        .broadcastMessage(MaplePacketCreator.getChatText(
-                                victim.getId(), StringUtil.joinStringFrom(args, 2), victim.isGameMaster(), 0));
-            }
-            return 1;
-        }
-    }
-
-    @Api
-    public static class SpeakMap implements Command {
-
-        @Override
-        public int execute(MapleClient c, String[] args) {
-            for (MapleCharacter victim : c.getPlayer().getMap().getCharactersThreadsafe()) {
-                if (victim.getId() != c.getPlayer().getId()) {
-                    victim.getMap()
-                            .broadcastMessage(MaplePacketCreator.getChatText(
-                                    victim.getId(), StringUtil.joinStringFrom(args, 1), victim.isGameMaster(), 0));
-                }
-            }
-            return 1;
-        }
-    }
-
-    @Api
-    public static class SpeakChn implements Command {
-
-        @Override
-        public int execute(MapleClient c, String[] args) {
-            for (MapleCharacter victim : c.getChannelServer().getPlayerStorage().getAllCharacters()) {
-                if (victim.getId() != c.getPlayer().getId()) {
-                    victim.getMap()
-                            .broadcastMessage(MaplePacketCreator.getChatText(
-                                    victim.getId(), StringUtil.joinStringFrom(args, 1), victim.isGameMaster(), 0));
-                }
-            }
-            return 1;
-        }
-    }
-
-    @Api
-    public static class SpeakWorld implements Command {
-
-        @Override
-        public int execute(MapleClient c, String[] args) {
-            for (ChannelServer cserv : WorldServer.getInstance().getAllChannels()) {
-                for (MapleCharacter victim : cserv.getPlayerStorage().getAllCharacters()) {
-                    if (victim.getId() != c.getPlayer().getId()) {
-                        victim.getMap()
-                                .broadcastMessage(MaplePacketCreator.getChatText(
-                                        victim.getId(), StringUtil.joinStringFrom(args, 1), victim.isGameMaster(), 0));
-                    }
-                }
-            }
-            return 1;
-        }
-    }
-
-    @Api
     public static class Disease implements Command {
 
         @Override
@@ -1147,46 +985,6 @@ public class AdminCommands {
                                     false);
                     victim.giveDebuff(
                             dis, MobSkillFactory.getMobSkill(type, CommandProcessorUtil.getOptionalIntArg(args, 2, 1)));
-                }
-            }
-            return 1;
-        }
-    }
-
-    @Api
-    public static class SQL implements Command {
-
-        @Override
-        public int execute(MapleClient c, String[] args) {
-            try (var con = DatabaseConnection.getConnection()) {
-                PreparedStatement ps = con.prepareStatement(StringUtil.joinStringFrom(args, 1));
-                ps.executeUpdate();
-                ps.close();
-            } catch (SQLException e) {
-                c.getPlayer().dropMessage(6, "An error occurred : " + e.getMessage());
-            }
-            return 1;
-        }
-    }
-
-    @Api
-    public static class StripEveryone implements Command {
-
-        @Override
-        public int execute(MapleClient c, String[] args) {
-            ChannelServer cs = c.getChannelServer();
-            for (MapleCharacter mchr : cs.getPlayerStorage().getAllCharacters()) {
-                if (mchr.isGameMaster()) {
-                    continue;
-                }
-                MapleInventory equipped = mchr.getInventory(MapleInventoryType.EQUIPPED);
-                MapleInventory equip = mchr.getInventory(MapleInventoryType.EQUIP);
-                List<Byte> ids = new ArrayList<Byte>();
-                for (IItem item : equipped.list()) {
-                    ids.add((byte) item.getPosition());
-                }
-                for (byte id : ids) {
-                    MapleInventoryManipulator.unequip(mchr.getClient(), id, equip.getNextFreeSlot());
                 }
             }
             return 1;
@@ -2825,16 +2623,6 @@ public class AdminCommands {
     }
 
     @Api
-    public static class Test2 implements Command {
-
-        @Override
-        public int execute(MapleClient c, String[] args) {
-            c.getSession().write(PlayerShopPacket.Merchant_Buy_Error(Byte.parseByte(args[1])));
-            return 1;
-        }
-    }
-
-    @Api
     public static class Clock implements Command {
 
         @Override
@@ -2842,20 +2630,6 @@ public class AdminCommands {
             c.getPlayer()
                     .getMap()
                     .broadcastMessage(MaplePacketCreator.getClock(CommandProcessorUtil.getOptionalIntArg(args, 1, 60)));
-            return 1;
-        }
-    }
-
-    @Api
-    public static class Packet implements Command {
-
-        @Override
-        public int execute(MapleClient c, String[] args) {
-            if (args.length > 1) {
-                c.getSession().write(MaplePacketCreator.getPacketFromHexString(StringUtil.joinStringFrom(args, 1)));
-            } else {
-                c.getPlayer().dropMessage(6, "Please enter packet data!");
-            }
             return 1;
         }
     }
@@ -3003,27 +2777,6 @@ public class AdminCommands {
                 }
                 victim.changeChannel(c.getChannel());
             }
-            return 1;
-        }
-    }
-
-    @Api
-    public static class LOLCastle implements Command {
-
-        @Override
-        public int execute(MapleClient c, String[] args) {
-            if (args.length != 2) {
-                c.getPlayer().dropMessage(6, "Syntax: !lolcastle level (level = 1-5)");
-                return 0;
-            }
-            MapleMap target = c.getChannelServer()
-                    .getEventSM()
-                    .getEventManager("lolcastle")
-                    .getInstance("lolcastle" + args[1])
-                    .getMapFactory()
-                    .getMap(990000300, false, false);
-            c.getPlayer().changeMap(target, target.getPortal(0));
-
             return 1;
         }
     }
@@ -3321,123 +3074,9 @@ public class AdminCommands {
     }
 
     @Api
-    public static class printarray implements Command { // Syntax:
-        // !printoutarray
-        // <low range> <high
-        // range>
-        @Override
-        public int execute(MapleClient c, String[] args) {
-            StringBuilder s = new StringBuilder("[");
-            if (args.length < 2) {
-                c.getSession()
-                        .write(MaplePacketCreator.getGameMessage(
-                                6, "Correct Syntax: !printoutarray <low range> <high range>"));
-            } else if (args.length == 2) {
-                for (int i = Integer.parseInt(args[1]); i < Integer.parseInt(args[2]); i++) {
-                    if (i < 1000000) {
-                        break;
-                    } else {
-                        if (i == Integer.parseInt(args[2])) {
-                            s.append(i).append("];");
-                        } else {
-                            s.append(i).append(",").append(" ");
-                        }
-                    }
-                }
-                System.out.print(s.toString()); // or change this to print
-                // wherever you want
-            }
-            return 0;
-        }
-    }
-
-    @Api
-    public static class lifeoverride implements Command {
-
-        @Override
-        public int execute(MapleClient c, String[] args) {
-
-            return 1;
-        }
-    }
-
-    @Api
-    public static class clearlife implements Command {
-        @Override
-        public int execute(MapleClient c, String[] args) {
-            BufferedReader br = null;
-            BufferedWriter bw = null;
-            boolean isLife = false; // is this content inside of life?
-            boolean clearing = false; // should we delete lines?
-            boolean toggle = false;
-
-            File f = new File("wz/Map.wz/Map/Map"
-                    + String.valueOf(c.getPlayer().getMapId()).charAt(0) + "/"
-                    + c.getPlayer().getMapId() + ".img.xml");
-            log.info("Map loaded! Ready for clearing life image diretory");
-            // file reading
-            try {
-                br = new BufferedReader(new FileReader(f)); // 0.1
-                log.info("executing 0.1");
-                bw = new BufferedWriter(new FileWriter(f)); // 0.2 //new
-                // File(f.getAbsolutePath())));
-                log.info("executing 0.2");
-                br.readLine();
-                while (br.readLine() != null) {
-                    log.info("reading lines");
-                    while (clearing) { // clear the content of life
-                    }
-                    if (br.readLine().contains("<imgdir name=\"life\">")) { // 1
-                        log.info("executing 1");
-                        isLife = true;
-                    }
-                    if (br.readLine().contains("<imgdir name=") && isLife) { // 2
-                        log.info("executing 2");
-                        clearing = true;
-                        toggle = true;
-                    }
-                    if (br.readLine().contains("</imgdir>")) { // 3
-                        log.info("executing 3");
-                        if (toggle) { // 4
-                            log.info("executing 4");
-                            toggle = false;
-                        }
-                        if (!toggle) { // 5
-                            log.info("executing 5");
-                            c.getPlayer()
-                                    .dropMessage(
-                                            6,
-                                            "Life cleaned for map "
-                                                    + c.getPlayer().getMapId() + ". Please reload map to see changes.");
-                            clearing = false;
-                            bw.flush();
-                            bw.close();
-                            br.close();
-                        }
-                    }
-                }
-                // error handling
-                return 1;
-            } catch (FileNotFoundException fnf) {
-                System.err.println("File could not be located in your wz directory \n" + fnf);
-            } catch (IOException i) {
-                System.err.println(i);
-            } finally {
-                try {
-                    br.close();
-                    bw.close();
-                } catch (IOException io) {
-                    System.err.println(io);
-                }
-            }
-            return 1;
-        }
-    }
-
-    @Api
     public static class finddrop implements Command {
 
-        private static final String getPaddedLine(String text) {
+        private static String getPaddedLine(String text) {
             StringBuilder builder = new StringBuilder();
             int len = (75 - text.length()) / 2;
             for (int i = 0; i <= len; i++) {
@@ -3501,6 +3140,65 @@ public class AdminCommands {
                 MapleInventoryManipulator.addById(
                         c, itemId, (short) 1, c.getPlayer().getName());
             }
+        }
+    }
+
+    class CommandProcessorUtil {
+
+        public static int getOptionalIntArg(String[] splitted, int position, int def) {
+            if (splitted.length > position) {
+                try {
+                    return Integer.parseInt(splitted[position]);
+                } catch (NumberFormatException nfe) {
+                    return def;
+                }
+            }
+            return def;
+        }
+
+        public static String getNamedArg(String[] splitted, int startpos, String name) {
+            for (int i = startpos; i < splitted.length; i++) {
+                if (splitted[i].equalsIgnoreCase(name) && i + 1 < splitted.length) {
+                    return splitted[i + 1];
+                }
+            }
+            return null;
+        }
+
+        public static Long getNamedLongArg(String[] splitted, int startpos, String name) {
+            String arg = getNamedArg(splitted, startpos, name);
+            if (arg != null) {
+                try {
+                    return Long.parseLong(arg);
+                } catch (NumberFormatException nfe) {
+                    // swallow - we don't really care
+                }
+            }
+            return null;
+        }
+
+        public static Integer getNamedIntArg(String[] splitted, int startpos, String name) {
+            String arg = getNamedArg(splitted, startpos, name);
+            if (arg != null) {
+                try {
+                    return Integer.parseInt(arg);
+                } catch (NumberFormatException nfe) {
+                    // swallow - we don't really care
+                }
+            }
+            return null;
+        }
+
+        public static Double getNamedDoubleArg(String[] splitted, int startpos, String name) {
+            String arg = getNamedArg(splitted, startpos, name);
+            if (arg != null) {
+                try {
+                    return Double.parseDouble(arg);
+                } catch (NumberFormatException nfe) {
+                    // swallow - we don't really care
+                }
+            }
+            return null;
         }
     }
 }
