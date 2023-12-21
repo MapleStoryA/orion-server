@@ -1,6 +1,5 @@
 package client.commands;
 
-
 import client.MapleCharacter;
 import client.MapleCharacterHelper;
 import client.MapleClient;
@@ -23,6 +22,27 @@ import handling.world.WorldServer;
 import handling.world.helper.BroadcastHelper;
 import handling.world.helper.CheaterData;
 import handling.world.helper.FindCommand;
+import java.awt.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.concurrent.ScheduledFuture;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
@@ -72,34 +92,10 @@ import tools.helper.StringUtil;
 import tools.packet.MobPacket;
 import tools.packet.PlayerShopPacket;
 
-import java.awt.*;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.concurrent.ScheduledFuture;
-
 @lombok.extern.slf4j.Slf4j
 public class AdminCommands {
 
-
     class CommandProcessorUtil {
-
 
         public static int getOptionalIntArg(String[] splitted, int position, int def) {
             if (splitted.length > position) {
@@ -145,7 +141,6 @@ public class AdminCommands {
             return null;
         }
 
-
         public static Double getNamedDoubleArg(String[] splitted, int startpos, String name) {
             String arg = getNamedArg(splitted, startpos, name);
             if (arg != null) {
@@ -158,7 +153,6 @@ public class AdminCommands {
             return null;
         }
     }
-
 
     public static class Hide implements Command {
 
@@ -180,15 +174,19 @@ public class AdminCommands {
             c.getPlayer().dropMessage(5, "You must be over level 10 to use this command.");
             return false;
         }
-        if (other.getMap().getSquadByMap() != null || other.getEventInstance() != null
-                || other.getMap().getEMByMap() != null || MapConstants.isStorylineMap(other.getMapId())) {
+        if (other.getMap().getSquadByMap() != null
+                || other.getEventInstance() != null
+                || other.getMap().getEMByMap() != null
+                || MapConstants.isStorylineMap(other.getMapId())) {
             c.getPlayer().dropMessage(5, "You may not use this command here.");
             return false;
         }
         if ((other.getMapId() >= 680000210 && other.getMapId() <= 680000502)
                 || (other.getMapId() / 1000 == 980000 && other.getMapId() != 980000000)
-                || (other.getMapId() / 100 == 1030008) || (other.getMapId() / 100 == 922010)
-                || (other.getMapId() / 10 == 13003000) || (other.getMapId() >= 990000000)) {
+                || (other.getMapId() / 100 == 1030008)
+                || (other.getMapId() / 100 == 922010)
+                || (other.getMapId() / 10 == 13003000)
+                || (other.getMapId() >= 990000000)) {
             c.getPlayer().dropMessage(5, "You may not use this command here.");
             return false;
         }
@@ -270,7 +268,6 @@ public class AdminCommands {
         }
     }
 
-
     public static class DC implements Command {
 
         @Override
@@ -331,8 +328,9 @@ public class AdminCommands {
                 return 0;
             }
             ISkill skill = SkillFactory.getSkill(Integer.parseInt(splitted[1]));
-            if (skill.getId() >= 22000000 && (GameConstants.isEvan((skill.getId() / 10000))
-                    || GameConstants.isResist((skill.getId() / 10000)))) {
+            if (skill.getId() >= 22000000
+                    && (GameConstants.isEvan((skill.getId() / 10000))
+                            || GameConstants.isResist((skill.getId() / 10000)))) {
                 c.getPlayer().dropMessage(5, "Please change your job to an Evan instead.");
                 return 0;
             }
@@ -380,15 +378,18 @@ public class AdminCommands {
             for (MapleCharacter mch : player.getMap().getCharacters()) {
                 if (mch != null) {
                     c.getPlayer().getStat().setHp(c.getPlayer().getStat().getMaxHp());
-                    c.getPlayer().updateSingleStat(MapleStat.HP, c.getPlayer().getStat().getMaxHp());
+                    c.getPlayer()
+                            .updateSingleStat(
+                                    MapleStat.HP, c.getPlayer().getStat().getMaxHp());
                     c.getPlayer().getStat().setMp(c.getPlayer().getStat().getMaxMp());
-                    c.getPlayer().updateSingleStat(MapleStat.MP, c.getPlayer().getStat().getMaxMp());
+                    c.getPlayer()
+                            .updateSingleStat(
+                                    MapleStat.MP, c.getPlayer().getStat().getMaxMp());
                 }
             }
             return 1;
         }
     }
-
 
     public static class GiveSkill implements Command {
 
@@ -420,7 +421,12 @@ public class AdminCommands {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().dropMessage(5, "You are on map " + c.getPlayer().getMap().getId() + " on x: " + c.getPlayer().getPosition().x + " y: " + c.getPlayer().getPosition().y);
+            c.getPlayer()
+                    .dropMessage(
+                            5,
+                            "You are on map " + c.getPlayer().getMap().getId() + " on x: "
+                                    + c.getPlayer().getPosition().x + " y: "
+                                    + c.getPlayer().getPosition().y);
             return 1;
         }
     }
@@ -480,7 +486,6 @@ public class AdminCommands {
         }
     }
 
-
     public static class LevelUp implements Command {
 
         @Override
@@ -505,7 +510,8 @@ public class AdminCommands {
                 }
             } else if (splitted[1].equals("eqp")) {
                 for (IItem item : c.getPlayer().getInventory(MapleInventoryType.EQUIPPED)) {
-                    eqs.put(new Pair<Short, Short>(item.getPosition(), item.getQuantity()),
+                    eqs.put(
+                            new Pair<Short, Short>(item.getPosition(), item.getQuantity()),
                             MapleInventoryType.EQUIPPED);
                 }
             } else if (splitted[1].equals("eq")) {
@@ -532,8 +538,8 @@ public class AdminCommands {
                 c.getPlayer().dropMessage(6, "[all/eqp/eq/u/s/e/c]");
             }
             for (Entry<Pair<Short, Short>, MapleInventoryType> eq : eqs.entrySet()) {
-                MapleInventoryManipulator.removeFromSlot(c, eq.getValue(), eq.getKey().left, eq.getKey().right, false,
-                        false);
+                MapleInventoryManipulator.removeFromSlot(
+                        c, eq.getValue(), eq.getKey().left, eq.getKey().right, false, false);
             }
             return 1;
         }
@@ -698,7 +704,6 @@ public class AdminCommands {
             final int itemId = Integer.parseInt(splitted[1]);
             final short quantity = (short) CommandProcessorUtil.getOptionalIntArg(splitted, 2, 1);
 
-
             MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
             if (GameConstants.isPet(itemId)) {
                 c.getPlayer().dropMessage(5, "Please purchase a pet from the cash shop instead.");
@@ -717,7 +722,6 @@ public class AdminCommands {
                     item.setFlag(flag);
                 }
                 item.setOwner(c.getPlayer().getName());
-
 
                 MapleInventoryManipulator.addbyItem(c, item);
             }
@@ -744,8 +748,15 @@ public class AdminCommands {
                     toDrop = new client.inventory.Item(itemId, (byte) 0, quantity, (byte) 0);
                 }
 
-                c.getPlayer().getMap().spawnItemDrop(c.getPlayer(), c.getPlayer(), toDrop, c.getPlayer().getPosition(),
-                        true, true);
+                c.getPlayer()
+                        .getMap()
+                        .spawnItemDrop(
+                                c.getPlayer(),
+                                c.getPlayer(),
+                                toDrop,
+                                c.getPlayer().getPosition(),
+                                true,
+                                true);
             }
             return 1;
         }
@@ -781,10 +792,7 @@ public class AdminCommands {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length > 1) {
-                String sb = "[" +
-                        c.getPlayer().getName() +
-                        "] " +
-                        StringUtil.joinStringFrom(splitted, 1);
+                String sb = "[" + c.getPlayer().getName() + "] " + StringUtil.joinStringFrom(splitted, 1);
                 BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(6, sb));
             } else {
                 c.getPlayer().dropMessage(6, "Syntax: !say <message>");
@@ -835,14 +843,28 @@ public class AdminCommands {
                 } else if (i < 200) {
                     int val = start + i - (int) ('A');
                     client.inventory.Item item = new client.inventory.Item(val, (byte) 0, (short) 1);
-                    c.getPlayer().getMap().spawnItemDrop(c.getPlayer(), c.getPlayer(), item,
-                            new Point(dStart, c.getPlayer().getPosition().y), false, false);
+                    c.getPlayer()
+                            .getMap()
+                            .spawnItemDrop(
+                                    c.getPlayer(),
+                                    c.getPlayer(),
+                                    item,
+                                    new Point(dStart, c.getPlayer().getPosition().y),
+                                    false,
+                                    false);
                     dStart += w;
                 } else if (i >= 200 && i <= 300) {
                     int val = nstart + i - (int) ('0') - 200;
                     client.inventory.Item item = new client.inventory.Item(val, (byte) 0, (short) 1);
-                    c.getPlayer().getMap().spawnItemDrop(c.getPlayer(), c.getPlayer(), item,
-                            new Point(dStart, c.getPlayer().getPosition().y), false, false);
+                    c.getPlayer()
+                            .getMap()
+                            .spawnItemDrop(
+                                    c.getPlayer(),
+                                    c.getPlayer(),
+                                    item,
+                                    new Point(dStart, c.getPlayer().getPosition().y),
+                                    false,
+                                    false);
                     dStart += w;
                 }
             }
@@ -854,7 +876,10 @@ public class AdminCommands {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            if (splitted.length < 3 || splitted[1] == null || splitted[1].equals("") || splitted[2] == null
+            if (splitted.length < 3
+                    || splitted[1] == null
+                    || splitted[1].equals("")
+                    || splitted[2] == null
                     || splitted[2].equals("")) {
                 c.getPlayer().dropMessage(6, "!itemcheck <playername> <itemid>");
                 return 0;
@@ -902,7 +927,6 @@ public class AdminCommands {
         }
     }
 
-
     public static class StartEvent implements Command {
 
         @Override
@@ -912,8 +936,8 @@ public class AdminCommands {
                 c.getPlayer().dropMessage(5, "Started the event and closed off");
                 return 1;
             } else {
-                c.getPlayer().dropMessage(5,
-                        "!scheduleevent must've been done first, and you must be in the event map.");
+                c.getPlayer()
+                        .dropMessage(5, "!scheduleevent must've been done first, and you must be in the event map.");
                 return 0;
             }
         }
@@ -954,10 +978,12 @@ public class AdminCommands {
                 return 0;
             }
             chr.removeAll(Integer.parseInt(splitted[2]));
-            c.getPlayer().dropMessage(6, "All items with the ID " + splitted[2]
-                    + " has been removed from the inventory of " + splitted[1] + ".");
+            c.getPlayer()
+                    .dropMessage(
+                            6,
+                            "All items with the ID " + splitted[2] + " has been removed from the inventory of "
+                                    + splitted[1] + ".");
             return 1;
-
         }
     }
 
@@ -988,8 +1014,11 @@ public class AdminCommands {
                     // type.getType()));
                 }
             }
-            c.getPlayer().dropMessage(6, "All items with the ID " + splitted[2]
-                    + " has been locked from the inventory of " + splitted[1] + ".");
+            c.getPlayer()
+                    .dropMessage(
+                            6,
+                            "All items with the ID " + splitted[2] + " has been locked from the inventory of "
+                                    + splitted[1] + ".");
             return 1;
         }
     }
@@ -1015,11 +1044,11 @@ public class AdminCommands {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
-            BroadcastHelper
-                    .broadcastSmega(MaplePacketCreator.serverNotice(3,
-                            victim == null ? c.getChannel() : victim.getClient().getChannel(), victim == null
-                                    ? splitted[1] : victim.getName() + " : " + StringUtil.joinStringFrom(splitted, 2),
-                            true));
+            BroadcastHelper.broadcastSmega(MaplePacketCreator.serverNotice(
+                    3,
+                    victim == null ? c.getChannel() : victim.getClient().getChannel(),
+                    victim == null ? splitted[1] : victim.getName() + " : " + StringUtil.joinStringFrom(splitted, 2),
+                    true));
             return 1;
         }
     }
@@ -1033,8 +1062,9 @@ public class AdminCommands {
                 c.getPlayer().dropMessage(5, "unable to find '" + splitted[1]);
                 return 0;
             } else {
-                victim.getMap().broadcastMessage(MaplePacketCreator.getChatText(victim.getId(),
-                        StringUtil.joinStringFrom(splitted, 2), victim.isGameMaster(), 0));
+                victim.getMap()
+                        .broadcastMessage(MaplePacketCreator.getChatText(
+                                victim.getId(), StringUtil.joinStringFrom(splitted, 2), victim.isGameMaster(), 0));
             }
             return 1;
         }
@@ -1046,8 +1076,9 @@ public class AdminCommands {
         public int execute(MapleClient c, String[] splitted) {
             for (MapleCharacter victim : c.getPlayer().getMap().getCharactersThreadsafe()) {
                 if (victim.getId() != c.getPlayer().getId()) {
-                    victim.getMap().broadcastMessage(MaplePacketCreator.getChatText(victim.getId(),
-                            StringUtil.joinStringFrom(splitted, 1), victim.isGameMaster(), 0));
+                    victim.getMap()
+                            .broadcastMessage(MaplePacketCreator.getChatText(
+                                    victim.getId(), StringUtil.joinStringFrom(splitted, 1), victim.isGameMaster(), 0));
                 }
             }
             return 1;
@@ -1060,8 +1091,9 @@ public class AdminCommands {
         public int execute(MapleClient c, String[] splitted) {
             for (MapleCharacter victim : c.getChannelServer().getPlayerStorage().getAllCharacters()) {
                 if (victim.getId() != c.getPlayer().getId()) {
-                    victim.getMap().broadcastMessage(MaplePacketCreator.getChatText(victim.getId(),
-                            StringUtil.joinStringFrom(splitted, 1), victim.isGameMaster(), 0));
+                    victim.getMap()
+                            .broadcastMessage(MaplePacketCreator.getChatText(
+                                    victim.getId(), StringUtil.joinStringFrom(splitted, 1), victim.isGameMaster(), 0));
                 }
             }
             return 1;
@@ -1075,8 +1107,12 @@ public class AdminCommands {
             for (ChannelServer cserv : WorldServer.getInstance().getAllChannels()) {
                 for (MapleCharacter victim : cserv.getPlayerStorage().getAllCharacters()) {
                     if (victim.getId() != c.getPlayer().getId()) {
-                        victim.getMap().broadcastMessage(MaplePacketCreator.getChatText(victim.getId(),
-                                StringUtil.joinStringFrom(splitted, 1), victim.isGameMaster(), 0));
+                        victim.getMap()
+                                .broadcastMessage(MaplePacketCreator.getChatText(
+                                        victim.getId(),
+                                        StringUtil.joinStringFrom(splitted, 1),
+                                        victim.isGameMaster(),
+                                        0));
                     }
                 }
             }
@@ -1089,8 +1125,10 @@ public class AdminCommands {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 3) {
-                c.getPlayer().dropMessage(6,
-                        "!disease <type> [charname] <level> where type = SEAL/DARKNESS/WEAKEN/STUN/CURSE/POISON/SLOW/SEDUCE/REVERSE/ZOMBIFY/POTION/SHADOW/BLIND/FREEZE");
+                c.getPlayer()
+                        .dropMessage(
+                                6,
+                                "!disease <type> [charname] <level> where type = SEAL/DARKNESS/WEAKEN/STUN/CURSE/POISON/SLOW/SEDUCE/REVERSE/ZOMBIFY/POTION/SHADOW/BLIND/FREEZE");
                 return 0;
             }
             int type = 0;
@@ -1124,8 +1162,10 @@ public class AdminCommands {
             } else if (splitted[1].equalsIgnoreCase("FREEZE")) {
                 type = 137;
             } else {
-                c.getPlayer().dropMessage(6,
-                        "!disease <type> [charname] <level> where type = SEAL/DARKNESS/WEAKEN/STUN/CURSE/POISON/SLOW/SEDUCE/REVERSE/ZOMBIFY/POTION/SHADOW/BLIND/FREEZE");
+                c.getPlayer()
+                        .dropMessage(
+                                6,
+                                "!disease <type> [charname] <level> where type = SEAL/DARKNESS/WEAKEN/STUN/CURSE/POISON/SLOW/SEDUCE/REVERSE/ZOMBIFY/POTION/SHADOW/BLIND/FREEZE");
                 return 0;
             }
             dis = MapleDisease.getBySkill(type);
@@ -1137,16 +1177,24 @@ public class AdminCommands {
                 }
                 victim.setChair(0);
                 victim.getClient().getSession().write(MaplePacketCreator.cancelChair(-1));
-                victim.getMap().broadcastMessage(victim, MaplePacketCreator.showChair(c.getPlayer().getId(), 0), false);
-                victim.giveDebuff(dis,
-                        MobSkillFactory.getMobSkill(type, CommandProcessorUtil.getOptionalIntArg(splitted, 3, 1)));
+                victim.getMap()
+                        .broadcastMessage(
+                                victim,
+                                MaplePacketCreator.showChair(c.getPlayer().getId(), 0),
+                                false);
+                victim.giveDebuff(
+                        dis, MobSkillFactory.getMobSkill(type, CommandProcessorUtil.getOptionalIntArg(splitted, 3, 1)));
             } else {
                 for (MapleCharacter victim : c.getPlayer().getMap().getCharactersThreadsafe()) {
                     victim.setChair(0);
                     victim.getClient().getSession().write(MaplePacketCreator.cancelChair(-1));
-                    victim.getMap().broadcastMessage(victim, MaplePacketCreator.showChair(c.getPlayer().getId(), 0),
-                            false);
-                    victim.giveDebuff(dis,
+                    victim.getMap()
+                            .broadcastMessage(
+                                    victim,
+                                    MaplePacketCreator.showChair(c.getPlayer().getId(), 0),
+                                    false);
+                    victim.giveDebuff(
+                            dis,
                             MobSkillFactory.getMobSkill(type, CommandProcessorUtil.getOptionalIntArg(splitted, 2, 1)));
                 }
             }
@@ -1159,8 +1207,7 @@ public class AdminCommands {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             try (var con = DatabaseConnection.getConnection()) {
-                PreparedStatement ps = con
-                        .prepareStatement(StringUtil.joinStringFrom(splitted, 1));
+                PreparedStatement ps = con.prepareStatement(StringUtil.joinStringFrom(splitted, 1));
                 ps.executeUpdate();
                 ps.close();
             } catch (SQLException e) {
@@ -1200,7 +1247,8 @@ public class AdminCommands {
 
             if (splitted.length >= 1) {
                 String text = StringUtil.joinStringFrom(splitted, 1);
-                for (MapleCharacter mch : c.getChannelServer().getPlayerStorage().getAllCharacters()) {
+                for (MapleCharacter mch :
+                        c.getChannelServer().getPlayerStorage().getAllCharacters()) {
                     c.getPlayer().sendNote(mch.getName(), text);
                 }
             } else {
@@ -1320,7 +1368,8 @@ public class AdminCommands {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            java.util.Map<Integer, Integer> connected = WorldServer.getInstance().getConnected();
+            java.util.Map<Integer, Integer> connected =
+                    WorldServer.getInstance().getConnected();
             StringBuilder conStr = new StringBuilder("Connected Clients: ");
             boolean first = true;
             for (int i : connected.keySet()) {
@@ -1351,8 +1400,6 @@ public class AdminCommands {
             MapleQuest.getInstance(Integer.parseInt(splitted[1])).forfeit(c.getPlayer());
             return 1;
         }
-
-
     }
 
     public static class StartQuest implements Command {
@@ -1368,8 +1415,8 @@ public class AdminCommands {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            MapleQuest.getInstance(Integer.parseInt(splitted[1])).complete(c.getPlayer(), Integer.parseInt(splitted[2]),
-                    Integer.parseInt(splitted[3]));
+            MapleQuest.getInstance(Integer.parseInt(splitted[1]))
+                    .complete(c.getPlayer(), Integer.parseInt(splitted[2]), Integer.parseInt(splitted[3]));
             return 1;
         }
     }
@@ -1378,8 +1425,9 @@ public class AdminCommands {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            MapleQuest.getInstance(Integer.parseInt(splitted[1])).forceStart(c.getPlayer(),
-                    Integer.parseInt(splitted[2]), splitted.length >= 4 ? splitted[3] : null);
+            MapleQuest.getInstance(Integer.parseInt(splitted[1]))
+                    .forceStart(
+                            c.getPlayer(), Integer.parseInt(splitted[2]), splitted.length >= 4 ? splitted[3] : null);
             return 1;
         }
     }
@@ -1388,8 +1436,8 @@ public class AdminCommands {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            MapleQuest.getInstance(Integer.parseInt(splitted[1])).forceComplete(c.getPlayer(),
-                    Integer.parseInt(splitted[2]));
+            MapleQuest.getInstance(Integer.parseInt(splitted[1]))
+                    .forceComplete(c.getPlayer(), Integer.parseInt(splitted[2]));
             return 1;
         }
     }
@@ -1398,9 +1446,11 @@ public class AdminCommands {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            MapleQuest.getInstance(Integer.parseInt(splitted[2])).forceStart(
-                    c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]),
-                    Integer.parseInt(splitted[3]), splitted.length >= 4 ? splitted[4] : null);
+            MapleQuest.getInstance(Integer.parseInt(splitted[2]))
+                    .forceStart(
+                            c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]),
+                            Integer.parseInt(splitted[3]),
+                            splitted.length >= 4 ? splitted[4] : null);
             return 1;
         }
     }
@@ -1409,9 +1459,10 @@ public class AdminCommands {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            MapleQuest.getInstance(Integer.parseInt(splitted[2])).forceComplete(
-                    c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]),
-                    Integer.parseInt(splitted[3]));
+            MapleQuest.getInstance(Integer.parseInt(splitted[2]))
+                    .forceComplete(
+                            c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]),
+                            Integer.parseInt(splitted[3]));
             return 1;
         }
     }
@@ -1420,9 +1471,10 @@ public class AdminCommands {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            MaplePortal portal = c.getPlayer().getMap().findClosestSpawnpoint(c.getPlayer().getPosition());
-            c.getPlayer().dropMessage(6,
-                    portal.getName() + " id: " + portal.getId() + " script: " + portal.getScriptName());
+            MaplePortal portal =
+                    c.getPlayer().getMap().findClosestSpawnpoint(c.getPlayer().getPosition());
+            c.getPlayer()
+                    .dropMessage(6, portal.getName() + " id: " + portal.getId() + " script: " + portal.getScriptName());
 
             return 1;
         }
@@ -1516,8 +1568,11 @@ public class AdminCommands {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             WorldServer.getInstance().toggleMegaphoneMuteState();
-            c.getPlayer().dropMessage(6,
-                    "Megaphone state : " + (c.getChannelServer().getMegaphoneMuteState() ? "Enabled" : "Disabled"));
+            c.getPlayer()
+                    .dropMessage(
+                            6,
+                            "Megaphone state : "
+                                    + (c.getChannelServer().getMegaphoneMuteState() ? "Enabled" : "Disabled"));
             return 1;
         }
     }
@@ -1539,7 +1594,10 @@ public class AdminCommands {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().getMap().getReactorByOid(Integer.parseInt(splitted[1])).hitReactor(c);
+            c.getPlayer()
+                    .getMap()
+                    .getReactorByOid(Integer.parseInt(splitted[1]))
+                    .hitReactor(c);
             return 1;
         }
     }
@@ -1549,8 +1607,10 @@ public class AdminCommands {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             MapleMap map = c.getPlayer().getMap();
-            List<MapleMapObject> reactors = map.getMapObjectsInRange(c.getPlayer().getPosition(),
-                    Double.POSITIVE_INFINITY, Collections.singletonList(MapleMapObjectType.REACTOR));
+            List<MapleMapObject> reactors = map.getMapObjectsInRange(
+                    c.getPlayer().getPosition(),
+                    Double.POSITIVE_INFINITY,
+                    Collections.singletonList(MapleMapObjectType.REACTOR));
             if (splitted[1].equals("all")) {
                 for (MapleMapObject reactorL : reactors) {
                     MapleReactor reactor2l = (MapleReactor) reactorL;
@@ -1679,12 +1739,16 @@ public class AdminCommands {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            for (Entry<String, MapleSquad> squads : c.getChannelServer().getAllSquads().entrySet()) {
-                c.getPlayer().dropMessage(5,
-                        "TYPE: " + squads.getKey() + ", Leader: " + squads.getValue().getLeader().getName()
-                                + ", status: " + squads.getValue().getStatus() + ", numMembers: "
-                                + squads.getValue().getSquadSize() + ", numBanned: "
-                                + squads.getValue().getBannedMemberSize());
+            for (Entry<String, MapleSquad> squads :
+                    c.getChannelServer().getAllSquads().entrySet()) {
+                c.getPlayer()
+                        .dropMessage(
+                                5,
+                                "TYPE: " + squads.getKey() + ", Leader: "
+                                        + squads.getValue().getLeader().getName()
+                                        + ", status: " + squads.getValue().getStatus() + ", numMembers: "
+                                        + squads.getValue().getSquadSize() + ", numBanned: "
+                                        + squads.getValue().getBannedMemberSize());
             }
             return 1;
         }
@@ -1729,8 +1793,12 @@ public class AdminCommands {
                 c.getPlayer().dropMessage(5, "none");
             } else {
                 for (EventInstanceManager eim : em.getInstances()) {
-                    c.getPlayer().dropMessage(5, "Event " + eim.getName() + ", eventManager: " + em.getName()
-                            + " iprops: " + eim.getProperty(splitted[2]) + ", eprops: " + em.getProperty(splitted[2]));
+                    c.getPlayer()
+                            .dropMessage(
+                                    5,
+                                    "Event " + eim.getName() + ", eventManager: " + em.getName() + " iprops: "
+                                            + eim.getProperty(splitted[2]) + ", eprops: "
+                                            + em.getProperty(splitted[2]));
                 }
             }
             return 1;
@@ -1746,10 +1814,18 @@ public class AdminCommands {
                 c.getPlayer().dropMessage(5, "none");
             } else {
                 for (EventInstanceManager eim : em.getInstances()) {
-                    c.getPlayer().dropMessage(5, "Event " + eim.getName() + ", charSize: " + eim.getPlayers().size()
-                            + ", dcedSize: " + eim.getDisconnected().size() + ", mobSize: " + eim.getMobs().size()
-                            + ", eventManager: " + em.getName() + ", timeLeft: " + eim.getTimeLeft() + ", iprops: "
-                            + eim.getProperties().toString() + ", eprops: " + em.getProperties().toString());
+                    c.getPlayer()
+                            .dropMessage(
+                                    5,
+                                    "Event " + eim.getName() + ", charSize: "
+                                            + eim.getPlayers().size()
+                                            + ", dcedSize: "
+                                            + eim.getDisconnected().size() + ", mobSize: "
+                                            + eim.getMobs().size()
+                                            + ", eventManager: " + em.getName() + ", timeLeft: " + eim.getTimeLeft()
+                                            + ", iprops: "
+                                            + eim.getProperties().toString() + ", eprops: "
+                                            + em.getProperties().toString());
                 }
             }
             return 1;
@@ -1786,7 +1862,6 @@ public class AdminCommands {
                 c.getPlayer().dropMessage(5, "!startinstance [eventmanager] [eventinstance]");
             }
             return 1;
-
         }
     }
 
@@ -1798,12 +1873,18 @@ public class AdminCommands {
                 c.getPlayer().dropMessage(5, "none");
             } else {
                 EventInstanceManager eim = c.getPlayer().getEventInstance();
-                c.getPlayer().dropMessage(5,
-                        "Event " + eim.getName() + ", charSize: " + eim.getPlayers().size() + ", dcedSize: "
-                                + eim.getDisconnected().size() + ", mobSize: " + eim.getMobs().size()
-                                + ", eventManager: " + eim.getEventManager().getName() + ", timeLeft: "
-                                + eim.getTimeLeft() + ", iprops: " + eim.getProperties().toString() + ", eprops: "
-                                + eim.getEventManager().getProperties().toString());
+                c.getPlayer()
+                        .dropMessage(
+                                5,
+                                "Event " + eim.getName() + ", charSize: "
+                                        + eim.getPlayers().size() + ", dcedSize: "
+                                        + eim.getDisconnected().size() + ", mobSize: "
+                                        + eim.getMobs().size()
+                                        + ", eventManager: "
+                                        + eim.getEventManager().getName() + ", timeLeft: "
+                                        + eim.getTimeLeft() + ", iprops: "
+                                        + eim.getProperties().toString() + ", eprops: "
+                                        + eim.getEventManager().getProperties().toString());
             }
             return 1;
         }
@@ -1813,8 +1894,13 @@ public class AdminCommands {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().dropMessage(6, "Server has been up for "
-                    + StringUtil.getReadableMillis(WorldServer.getInstance().getServerStartTime(), System.currentTimeMillis()));
+            c.getPlayer()
+                    .dropMessage(
+                            6,
+                            "Server has been up for "
+                                    + StringUtil.getReadableMillis(
+                                            WorldServer.getInstance().getServerStartTime(),
+                                            System.currentTimeMillis()));
             return 1;
         }
     }
@@ -1930,8 +2016,10 @@ public class AdminCommands {
                         }
                         c.getPlayer().dropMessage(6, sb.substring(0, sb.length() - 2));
                     } else {
-                        c.getPlayer().dropMessage(6,
-                                "Invalid command syntax - Use !goto <location>. For a list of locations, use !goto locations.");
+                        c.getPlayer()
+                                .dropMessage(
+                                        6,
+                                        "Invalid command syntax - Use !goto <location>. For a list of locations, use !goto locations.");
                     }
                 }
             }
@@ -1955,8 +2043,8 @@ public class AdminCommands {
                 }
             }
             MapleMonster mob;
-            for (MapleMapObject monstermo : map.getMapObjectsInRange(c.getPlayer().getPosition(), range,
-                    Collections.singletonList(MapleMapObjectType.MONSTER))) {
+            for (MapleMapObject monstermo : map.getMapObjectsInRange(
+                    c.getPlayer().getPosition(), range, Collections.singletonList(MapleMapObjectType.MONSTER))) {
                 mob = (MapleMonster) monstermo;
                 map.killMonster(mob, c.getPlayer(), true, false, (byte) 1);
             }
@@ -1980,8 +2068,8 @@ public class AdminCommands {
             MapleMap map = c.getPlayer().getMap();
             double range = Double.POSITIVE_INFINITY;
             MapleMonster mob;
-            for (MapleMapObject monstermo : map.getMapObjectsInRange(c.getPlayer().getPosition(), range,
-                    Collections.singletonList(MapleMapObjectType.MONSTER))) {
+            for (MapleMapObject monstermo : map.getMapObjectsInRange(
+                    c.getPlayer().getPosition(), range, Collections.singletonList(MapleMapObjectType.MONSTER))) {
                 mob = (MapleMonster) monstermo;
                 if (mob.getId() == Integer.parseInt(splitted[1])) {
                     mob.damage(c.getPlayer(), mob.getHp(), false);
@@ -2037,8 +2125,8 @@ public class AdminCommands {
             }
             int damage = Integer.parseInt(splitted[1]);
             MapleMonster mob;
-            for (MapleMapObject monstermo : map.getMapObjectsInRange(c.getPlayer().getPosition(), range,
-                    Collections.singletonList(MapleMapObjectType.MONSTER))) {
+            for (MapleMapObject monstermo : map.getMapObjectsInRange(
+                    c.getPlayer().getPosition(), range, Collections.singletonList(MapleMapObjectType.MONSTER))) {
                 mob = (MapleMonster) monstermo;
                 map.broadcastMessage(MobPacket.damageMonster(mob.getObjectId(), damage));
                 mob.damage(c.getPlayer(), damage, false);
@@ -2055,8 +2143,8 @@ public class AdminCommands {
             double range = Double.POSITIVE_INFINITY;
             int damage = Integer.parseInt(splitted[1]);
             MapleMonster mob;
-            for (MapleMapObject monstermo : map.getMapObjectsInRange(c.getPlayer().getPosition(), range,
-                    Collections.singletonList(MapleMapObjectType.MONSTER))) {
+            for (MapleMapObject monstermo : map.getMapObjectsInRange(
+                    c.getPlayer().getPosition(), range, Collections.singletonList(MapleMapObjectType.MONSTER))) {
                 mob = (MapleMonster) monstermo;
                 if (mob.getId() == Integer.parseInt(splitted[2])) {
                     map.broadcastMessage(MobPacket.damageMonster(mob.getObjectId(), damage));
@@ -2087,8 +2175,8 @@ public class AdminCommands {
                 }
             }
             MapleMonster mob;
-            for (MapleMapObject monstermo : map.getMapObjectsInRange(c.getPlayer().getPosition(), range,
-                    Collections.singletonList(MapleMapObjectType.MONSTER))) {
+            for (MapleMapObject monstermo : map.getMapObjectsInRange(
+                    c.getPlayer().getPosition(), range, Collections.singletonList(MapleMapObjectType.MONSTER))) {
                 mob = (MapleMonster) monstermo;
                 map.killMonster(mob, c.getPlayer(), true, false, (byte) 1);
             }
@@ -2126,8 +2214,8 @@ public class AdminCommands {
                 }
             }
             MapleMonster mob;
-            for (MapleMapObject monstermo : map.getMapObjectsInRange(c.getPlayer().getPosition(), range,
-                    Collections.singletonList(MapleMapObjectType.MONSTER))) {
+            for (MapleMapObject monstermo : map.getMapObjectsInRange(
+                    c.getPlayer().getPosition(), range, Collections.singletonList(MapleMapObjectType.MONSTER))) {
                 mob = (MapleMonster) monstermo;
                 c.getPlayer().dropMessage(6, "Monster " + mob.toString());
             }
@@ -2146,7 +2234,11 @@ public class AdminCommands {
                 npc.setCy(c.getPlayer().getPosition().y);
                 npc.setRx0(c.getPlayer().getPosition().x);
                 npc.setRx1(c.getPlayer().getPosition().x);
-                npc.setFh(c.getPlayer().getMap().getFootholds().findBelow(c.getPlayer().getPosition()).getId());
+                npc.setFh(c.getPlayer()
+                        .getMap()
+                        .getFootholds()
+                        .findBelow(c.getPlayer().getPosition())
+                        .getId());
                 npc.setCustom(true);
                 c.getPlayer().getMap().addMapObject(npc);
                 c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.spawnNPC(npc, true));
@@ -2173,8 +2265,11 @@ public class AdminCommands {
         public int execute(MapleClient c, String[] splitted) {
             for (MapleMapObject reactor1l : c.getPlayer().getMap().getAllNPCsThreadsafe()) {
                 MapleNPC reactor2l = (MapleNPC) reactor1l;
-                c.getPlayer().dropMessage(5, "NPC: oID: " + reactor2l.getObjectId() + " npcID: " + reactor2l.getId()
-                        + " Position: " + reactor2l.getPosition().toString() + " Name: " + reactor2l.getName());
+                c.getPlayer()
+                        .dropMessage(
+                                5,
+                                "NPC: oID: " + reactor2l.getObjectId() + " npcID: " + reactor2l.getId() + " Position: "
+                                        + reactor2l.getPosition().toString() + " Name: " + reactor2l.getName());
             }
             return 1;
         }
@@ -2186,10 +2281,13 @@ public class AdminCommands {
         public int execute(MapleClient c, String[] splitted) {
             for (MapleMapObject reactor1l : c.getPlayer().getMap().getAllReactorsThreadsafe()) {
                 MapleReactor reactor2l = (MapleReactor) reactor1l;
-                c.getPlayer().dropMessage(5,
-                        "Reactor: oID: " + reactor2l.getObjectId() + " reactorID: " + reactor2l.getReactorId()
-                                + " Position: " + reactor2l.getPosition().toString() + " State: " + reactor2l.getState()
-                                + " Name: " + reactor2l.getName());
+                c.getPlayer()
+                        .dropMessage(
+                                5,
+                                "Reactor: oID: " + reactor2l.getObjectId() + " reactorID: " + reactor2l.getReactorId()
+                                        + " Position: "
+                                        + reactor2l.getPosition().toString() + " State: " + reactor2l.getState()
+                                        + " Name: " + reactor2l.getName());
             }
             return 1;
         }
@@ -2200,10 +2298,13 @@ public class AdminCommands {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             for (MaplePortal portal : c.getPlayer().getMap().getPortals()) {
-                c.getPlayer().dropMessage(5,
-                        "Portal: ID: " + portal.getId() + " script: " + portal.getScriptName() + " name: "
-                                + portal.getName() + " pos: " + portal.getPosition().x + "," + portal.getPosition().y
-                                + " target: " + portal.getTargetMapId() + " / " + portal.getTarget());
+                c.getPlayer()
+                        .dropMessage(
+                                5,
+                                "Portal: ID: " + portal.getId() + " script: " + portal.getScriptName() + " name: "
+                                        + portal.getName() + " pos: " + portal.getPosition().x + ","
+                                        + portal.getPosition().y
+                                        + " target: " + portal.getTargetMapId() + " / " + portal.getTarget());
             }
             return 1;
         }
@@ -2220,8 +2321,8 @@ public class AdminCommands {
                     c.getPlayer().dropMessage(6, splitted[1] + " is not online");
                     return 0;
                 }
-                PlayerNPC npc = new PlayerNPC(chhr, Integer.parseInt(splitted[2]), c.getPlayer().getMap(),
-                        c.getPlayer());
+                PlayerNPC npc = new PlayerNPC(
+                        chhr, Integer.parseInt(splitted[2]), c.getPlayer().getMap(), c.getPlayer());
                 npc.addToServer();
                 c.getPlayer().dropMessage(6, "Done");
             } catch (Exception e) {
@@ -2231,7 +2332,6 @@ public class AdminCommands {
             return 1;
         }
     }
-
 
     public static class DestroyPNPC implements Command {
 
@@ -2259,8 +2359,11 @@ public class AdminCommands {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             Point pos = c.getPlayer().getPosition();
-            c.getPlayer().dropMessage(6, "X: " + pos.x + " | Y: " + pos.y + " | RX0: " + (pos.x) + " | RX1: " + (pos.x)
-                    + " | FH: " + c.getPlayer().getFH());
+            c.getPlayer()
+                    .dropMessage(
+                            6,
+                            "X: " + pos.x + " | Y: " + pos.y + " | RX0: " + (pos.x) + " | RX1: " + (pos.x) + " | FH: "
+                                    + c.getPlayer().getFH());
             return 1;
         }
     }
@@ -2341,8 +2444,8 @@ public class AdminCommands {
             if (range == -1) {
                 range = 2;
             }
-            byte[] packet = MaplePacketCreator
-                    .yellowChat((splitted[0].equals("!y") ? ("[" + c.getPlayer().getName() + "] ") : "")
+            byte[] packet = MaplePacketCreator.yellowChat(
+                    (splitted[0].equals("!y") ? ("[" + c.getPlayer().getName() + "] ") : "")
                             + StringUtil.joinStringFrom(splitted, 2));
             if (range == 0) {
                 c.getPlayer().getMap().broadcastMessage(packet);
@@ -2355,8 +2458,7 @@ public class AdminCommands {
         }
     }
 
-    public static class Y extends Yellow {
-    }
+    public static class Y extends Yellow {}
 
     public static class ReloadDrops implements Command {
 
@@ -2426,7 +2528,8 @@ public class AdminCommands {
                     data = dataProvider.getData("Npc.img");
                     List<Pair<Integer, String>> npcPairList = new LinkedList<Pair<Integer, String>>();
                     for (MapleData npcIdData : data.getChildren()) {
-                        npcPairList.add(new Pair<Integer, String>(Integer.parseInt(npcIdData.getName()),
+                        npcPairList.add(new Pair<Integer, String>(
+                                Integer.parseInt(npcIdData.getName()),
                                 MapleDataTool.getString(npcIdData.getChildByPath("name"), "NO-NAME")));
                     }
                     for (Pair<Integer, String> npcPair : npcPairList) {
@@ -2448,11 +2551,10 @@ public class AdminCommands {
                     List<Pair<Integer, String>> mapPairList = new LinkedList<Pair<Integer, String>>();
                     for (MapleData mapAreaData : data.getChildren()) {
                         for (MapleData mapIdData : mapAreaData.getChildren()) {
-                            mapPairList
-                                    .add(new Pair<Integer, String>(Integer.parseInt(mapIdData.getName()),
-                                            MapleDataTool.getString(mapIdData.getChildByPath("streetName"),
-                                                    "NO-NAME") + " - "
-                                                    + MapleDataTool.getString(mapIdData.getChildByPath("mapName"), "NO-NAME")));
+                            mapPairList.add(new Pair<Integer, String>(
+                                    Integer.parseInt(mapIdData.getName()),
+                                    MapleDataTool.getString(mapIdData.getChildByPath("streetName"), "NO-NAME") + " - "
+                                            + MapleDataTool.getString(mapIdData.getChildByPath("mapName"), "NO-NAME")));
                         }
                     }
                     for (Pair<Integer, String> mapPair : mapPairList) {
@@ -2472,7 +2574,8 @@ public class AdminCommands {
                     data = dataProvider.getData("Mob.img");
                     List<Pair<Integer, String>> mobPairList = new LinkedList<Pair<Integer, String>>();
                     for (MapleData mobIdData : data.getChildren()) {
-                        mobPairList.add(new Pair<Integer, String>(Integer.parseInt(mobIdData.getName()),
+                        mobPairList.add(new Pair<Integer, String>(
+                                Integer.parseInt(mobIdData.getName()),
                                 MapleDataTool.getString(mobIdData.getChildByPath("name"), "NO-NAME")));
                     }
                     for (Pair<Integer, String> mobPair : mobPairList) {
@@ -2490,7 +2593,8 @@ public class AdminCommands {
 
                 } else if (type.equalsIgnoreCase("ITEM")) {
                     List<String> retItems = new ArrayList<String>();
-                    for (Pair<Integer, String> itemPair : MapleItemInformationProvider.getInstance().getAllItems()) {
+                    for (Pair<Integer, String> itemPair :
+                            MapleItemInformationProvider.getInstance().getAllItems()) {
                         if (itemPair.getRight().toLowerCase().contains(search.toLowerCase())) {
                             retItems.add(itemPair.getLeft() + " - " + itemPair.getRight());
                         }
@@ -2518,7 +2622,8 @@ public class AdminCommands {
                     data = dataProvider.getData("Skill.img");
                     List<Pair<Integer, String>> skillPairList = new LinkedList<Pair<Integer, String>>();
                     for (MapleData skillIdData : data.getChildren()) {
-                        skillPairList.add(new Pair<Integer, String>(Integer.parseInt(skillIdData.getName()),
+                        skillPairList.add(new Pair<Integer, String>(
+                                Integer.parseInt(skillIdData.getName()),
                                 MapleDataTool.getString(skillIdData.getChildByPath("name"), "NO-NAME")));
                     }
                     for (Pair<Integer, String> skillPair : skillPairList) {
@@ -2534,7 +2639,8 @@ public class AdminCommands {
                         c.getPlayer().dropMessage(6, "No Skills Found");
                     }
                 } else if (type.equalsIgnoreCase("QUEST")) {
-                    MapleDataProvider questProvider = ServerConfig.serverConfig().getDataProvider("wz/Quest");
+                    MapleDataProvider questProvider =
+                            ServerConfig.serverConfig().getDataProvider("wz/Quest");
                     data = questProvider.getData("QuestInfo.img");
                     for (MapleData node : data.getChildren()) {
                         String name = String.valueOf(node.getChildByPath("name").getData());
@@ -2550,14 +2656,11 @@ public class AdminCommands {
         }
     }
 
-    public static class ID extends Find {
-    }
+    public static class ID extends Find {}
 
-    public static class LookUp extends Find {
-    }
+    public static class LookUp extends Find {}
 
-    public static class Search extends Find {
-    }
+    public static class Search extends Find {}
 
     public static class ServerMessage implements Command {
 
@@ -2583,24 +2686,30 @@ public class AdminCommands {
             c.getPlayer().dropMessage(6, "Shutting down... in " + this.minutesLeft + " minutes");
             if (ts == null && (t == null || !t.isAlive())) {
                 t = new Thread(ShutdownServer.getInstance());
-                ts = Timer.EventTimer.getInstance().register(new Runnable() {
+                ts = Timer.EventTimer.getInstance()
+                        .register(
+                                new Runnable() {
 
-                    public void run() {
-                        if (ShutdownTime.this.minutesLeft == 0) {
-                            ShutdownServer.getInstance().shutdown();
-                            Shutdown.t.start();
-                            ShutdownTime.ts.cancel(false);
-                            return;
-                        }
-                        BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(0,
-                                "The server will shutdown in " + ShutdownTime.this.minutesLeft
-                                        + " minutes. Please log off safely."));
-                        ShutdownTime.this.minutesLeft--;
-                    }
-                }, 60000L);
+                                    public void run() {
+                                        if (ShutdownTime.this.minutesLeft == 0) {
+                                            ShutdownServer.getInstance().shutdown();
+                                            Shutdown.t.start();
+                                            ShutdownTime.ts.cancel(false);
+                                            return;
+                                        }
+                                        BroadcastHelper.broadcastMessage(MaplePacketCreator.serverNotice(
+                                                0,
+                                                "The server will shutdown in " + ShutdownTime.this.minutesLeft
+                                                        + " minutes. Please log off safely."));
+                                        ShutdownTime.this.minutesLeft--;
+                                    }
+                                },
+                                60000L);
             } else {
-                c.getPlayer().dropMessage(6,
-                        "A shutdown thread is already in progress or shutdown has not been done. Please wait.");
+                c.getPlayer()
+                        .dropMessage(
+                                6,
+                                "A shutdown thread is already in progress or shutdown has not been done. Please wait.");
             }
             return 1;
         }
@@ -2632,7 +2741,6 @@ public class AdminCommands {
                 cserv.closeAllMerchant();
             }
             return 1;
-
         }
     }
 
@@ -2676,13 +2784,15 @@ public class AdminCommands {
                 newhp = 1;
             }
 
-            final OverrideMonsterStats overrideStats = new OverrideMonsterStats(newhp, onemob.getMobMaxMp(), newexp,
-                    false);
+            final OverrideMonsterStats overrideStats =
+                    new OverrideMonsterStats(newhp, onemob.getMobMaxMp(), newexp, false);
             for (int i = 0; i < num; i++) {
                 MapleMonster mob = MapleLifeFactory.getMonster(mid);
                 mob.setHp(newhp);
                 mob.setOverrideStats(overrideStats);
-                c.getPlayer().getMap().spawnMonsterOnGroundBelow(mob, c.getPlayer().getPosition());
+                c.getPlayer()
+                        .getMap()
+                        .spawnMonsterOnGroundBelow(mob, c.getPlayer().getPosition());
             }
             return 1;
         }
@@ -2694,7 +2804,6 @@ public class AdminCommands {
         public int execute(MapleClient c, String[] splitted) {
             c.getSession().write(PlayerShopPacket.Merchant_Buy_Error(Byte.parseByte(splitted[1])));
             return 1;
-
         }
     }
 
@@ -2702,8 +2811,10 @@ public class AdminCommands {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            c.getPlayer().getMap().broadcastMessage(
-                    MaplePacketCreator.getClock(CommandProcessorUtil.getOptionalIntArg(splitted, 1, 60)));
+            c.getPlayer()
+                    .getMap()
+                    .broadcastMessage(
+                            MaplePacketCreator.getClock(CommandProcessorUtil.getOptionalIntArg(splitted, 1, 60)));
             return 1;
         }
     }
@@ -2726,7 +2837,7 @@ public class AdminCommands {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             // smart player selection
-            MapleCharacter victim = null;// =
+            MapleCharacter victim = null; // =
             // c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
             List<String> possibility = new LinkedList<>();
             // HashMap<Integer, String> possibility = new HashMap<Integer,
@@ -2752,10 +2863,13 @@ public class AdminCommands {
             } else {
                 if (victim != null) {
                     if (splitted.length == 2) {
-                        c.getPlayer().changeMap(victim.getMap(),
-                                victim.getMap().findClosestSpawnpoint(victim.getPosition()));
+                        c.getPlayer()
+                                .changeMap(
+                                        victim.getMap(), victim.getMap().findClosestSpawnpoint(victim.getPosition()));
                     } else {
-                        MapleMap target = WorldServer.getInstance().getChannel(c.getChannel()).getMapFactory()
+                        MapleMap target = WorldServer.getInstance()
+                                .getChannel(c.getChannel())
+                                .getMapFactory()
                                 .getMap(Integer.parseInt(splitted[2]));
                         victim.changeMap(target, target.getPortal(0));
                     }
@@ -2764,14 +2878,18 @@ public class AdminCommands {
                         victim = c.getPlayer();
                         int ch = FindCommand.findChannel(splitted[1]);
                         if (ch < 0) {
-                            MapleMap target = c.getChannelServer().getMapFactory()
-                                    .getMap(Integer.parseInt(splitted[1]));
+                            MapleMap target =
+                                    c.getChannelServer().getMapFactory().getMap(Integer.parseInt(splitted[1]));
                             c.getPlayer().changeMap(target, target.getPortal(0));
                         } else {
-                            victim = WorldServer.getInstance().getChannel(ch).getPlayerStorage().getCharacterByName(splitted[1]);
+                            victim = WorldServer.getInstance()
+                                    .getChannel(ch)
+                                    .getPlayerStorage()
+                                    .getCharacterByName(splitted[1]);
                             c.getPlayer().dropMessage(6, "Cross changing channel. Please wait.");
                             if (victim.getMapId() != c.getPlayer().getMapId()) {
-                                final MapleMap mapp = c.getChannelServer().getMapFactory().getMap(victim.getMapId());
+                                final MapleMap mapp =
+                                        c.getChannelServer().getMapFactory().getMap(victim.getMapId());
                                 c.getPlayer().changeMap(mapp, mapp.getPortal(0));
                             }
                             c.getPlayer().changeChannel(ch);
@@ -2790,7 +2908,8 @@ public class AdminCommands {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             try {
-                for (MapleCharacter chr : c.getChannelServer().getPlayerStorage().getAllCharacters()) {
+                for (MapleCharacter chr :
+                        c.getChannelServer().getPlayerStorage().getAllCharacters()) {
                     chr.changeMap(c.getPlayer().getMap(), c.getPlayer().getPosition());
                     chr.dcolormsg(5, "You have been warped to the event");
                 }
@@ -2826,19 +2945,27 @@ public class AdminCommands {
         public int execute(MapleClient c, String[] splitted) {
             MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
             if (victim != null) {
-                victim.changeMap(c.getPlayer().getMap(),
-                        c.getPlayer().getMap().findClosestSpawnpoint(c.getPlayer().getPosition()));
+                victim.changeMap(
+                        c.getPlayer().getMap(),
+                        c.getPlayer()
+                                .getMap()
+                                .findClosestSpawnpoint(c.getPlayer().getPosition()));
             } else {
                 int ch = FindCommand.findChannel(splitted[1]);
                 if (ch < 0) {
                     c.getPlayer().dropMessage(5, "Not found.");
                     return 0;
                 }
-                victim = WorldServer.getInstance().getChannel(ch).getPlayerStorage().getCharacterByName(splitted[1]);
+                victim = WorldServer.getInstance()
+                        .getChannel(ch)
+                        .getPlayerStorage()
+                        .getCharacterByName(splitted[1]);
                 c.getPlayer().dropMessage(5, "Victim is cross changing channel.");
                 victim.dropMessage(5, "Cross changing channel.");
                 if (victim.getMapId() != c.getPlayer().getMapId()) {
-                    final MapleMap mapp = victim.getClient().getChannelServer().getMapFactory()
+                    final MapleMap mapp = victim.getClient()
+                            .getChannelServer()
+                            .getMapFactory()
                             .getMap(c.getPlayer().getMapId());
                     victim.changeMap(mapp, mapp.getPortal(0));
                 }
@@ -2856,8 +2983,12 @@ public class AdminCommands {
                 c.getPlayer().dropMessage(6, "Syntax: !lolcastle level (level = 1-5)");
                 return 0;
             }
-            MapleMap target = c.getChannelServer().getEventSM().getEventManager("lolcastle")
-                    .getInstance("lolcastle" + splitted[1]).getMapFactory().getMap(990000300, false, false);
+            MapleMap target = c.getChannelServer()
+                    .getEventSM()
+                    .getEventManager("lolcastle")
+                    .getInstance("lolcastle" + splitted[1])
+                    .getMapFactory()
+                    .getMap(990000300, false, false);
             c.getPlayer().changeMap(target, target.getPortal(0));
 
             return 1;
@@ -2933,7 +3064,6 @@ public class AdminCommands {
         }
     }
 
-
     public static class PNPC implements Command {
 
         @Override
@@ -2947,7 +3077,11 @@ public class AdminCommands {
             if (npc != null && !npc.getName().equals("MISSINGNO")) {
                 final int xpos = c.getPlayer().getPosition().x;
                 final int ypos = c.getPlayer().getPosition().y;
-                final int fh = c.getPlayer().getMap().getFootholds().findBelow(c.getPlayer().getPosition()).getId();
+                final int fh = c.getPlayer()
+                        .getMap()
+                        .getFootholds()
+                        .findBelow(c.getPlayer().getPosition())
+                        .getId();
                 npc.setPosition(c.getPlayer().getPosition());
                 npc.setCy(ypos);
                 npc.setRx0(xpos);
@@ -2975,8 +3109,10 @@ public class AdminCommands {
                 }
                 c.getPlayer().getMap().addMapObject(npc);
                 c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.spawnNPC(npc, true));
-                c.getPlayer().dropMessage(6,
-                        "Please do not reload this map or else the NPC will disappear till the next restart.");
+                c.getPlayer()
+                        .dropMessage(
+                                6,
+                                "Please do not reload this map or else the NPC will disappear till the next restart.");
             } else {
                 c.getPlayer().dropMessage(6, "You have entered an invalid Npc-Id");
                 return 0;
@@ -3005,7 +3141,11 @@ public class AdminCommands {
             if (npc != null) {
                 final int xpos = c.getPlayer().getPosition().x;
                 final int ypos = c.getPlayer().getPosition().y;
-                final int fh = c.getPlayer().getMap().getFootholds().findBelow(c.getPlayer().getPosition()).getId();
+                final int fh = c.getPlayer()
+                        .getMap()
+                        .getFootholds()
+                        .findBelow(c.getPlayer().getPosition())
+                        .getId();
                 npc.setPosition(c.getPlayer().getPosition());
                 npc.setCy(ypos);
                 npc.setRx0(xpos);
@@ -3032,8 +3172,10 @@ public class AdminCommands {
                     c.getPlayer().dropMessage(6, "Failed to save NPC to the database");
                 }
                 c.getPlayer().getMap().addMonsterSpawn(npc, mobTime, (byte) -1, null);
-                c.getPlayer().dropMessage(6,
-                        "Please do not reload this map or else the MOB will disappear till the next restart.");
+                c.getPlayer()
+                        .dropMessage(
+                                6,
+                                "Please do not reload this map or else the MOB will disappear till the next restart.");
             } else {
                 c.getPlayer().dropMessage(6, "You have entered an invalid Mob-Id");
                 return 0;
@@ -3065,14 +3207,19 @@ public class AdminCommands {
             final int sec = Integer.parseInt(splitted[1]);
             c.getPlayer().dropMessage(5, "Message will pop up in " + sec + " seconds.");
             final long oldMillis = System.currentTimeMillis();
-            toTest.schedule(new Runnable() {
+            toTest.schedule(
+                    new Runnable() {
 
-                public void run() {
-                    c.getPlayer().dropMessage(5,
-                            "Message has popped up in " + ((System.currentTimeMillis() - oldMillis) / 1000)
-                                    + " seconds, expected was " + sec + " seconds");
-                }
-            }, sec * 1000L);
+                        public void run() {
+                            c.getPlayer()
+                                    .dropMessage(
+                                            5,
+                                            "Message has popped up in "
+                                                    + ((System.currentTimeMillis() - oldMillis) / 1000)
+                                                    + " seconds, expected was " + sec + " seconds");
+                        }
+                    },
+                    sec * 1000L);
             return 1;
         }
     }
@@ -3126,7 +3273,6 @@ public class AdminCommands {
         }
     }
 
-
     public static class printarray implements Command { // Syntax:
         // !printoutarray
         // <low range> <high
@@ -3135,8 +3281,9 @@ public class AdminCommands {
         public int execute(MapleClient c, String[] splitted) {
             StringBuilder s = new StringBuilder("[");
             if (splitted.length < 2) {
-                c.getSession().write(MaplePacketCreator.getGameMessage(6,
-                        "Correct Syntax: !printoutarray <low range> <high range>"));
+                c.getSession()
+                        .write(MaplePacketCreator.getGameMessage(
+                                6, "Correct Syntax: !printoutarray <low range> <high range>"));
             } else if (splitted.length == 2) {
                 for (int i = Integer.parseInt(splitted[1]); i < Integer.parseInt(splitted[2]); i++) {
                     if (i < 1000000) {
@@ -3174,7 +3321,8 @@ public class AdminCommands {
             boolean clearing = false; // should we delete lines?
             boolean toggle = false;
 
-            File f = new File("wz/Map.wz/Map/Map" + String.valueOf(c.getPlayer().getMapId()).charAt(0) + "/"
+            File f = new File("wz/Map.wz/Map/Map"
+                    + String.valueOf(c.getPlayer().getMapId()).charAt(0) + "/"
                     + c.getPlayer().getMapId() + ".img.xml");
             log.info("Map loaded! Ready for clearing life image diretory");
             // file reading
@@ -3188,7 +3336,6 @@ public class AdminCommands {
                 while (br.readLine() != null) {
                     log.info("reading lines");
                     while (clearing) { // clear the content of life
-
                     }
                     if (br.readLine().contains("<imgdir name=\"life\">")) { // 1
                         log.info("executing 1");
@@ -3207,8 +3354,11 @@ public class AdminCommands {
                         }
                         if (!toggle) { // 5
                             log.info("executing 5");
-                            c.getPlayer().dropMessage(6, "Life cleaned for map " + c.getPlayer().getMapId()
-                                    + ". Please reload map to see changes.");
+                            c.getPlayer()
+                                    .dropMessage(
+                                            6,
+                                            "Life cleaned for map "
+                                                    + c.getPlayer().getMapId() + ". Please reload map to see changes.");
                             clearing = false;
                             bw.flush();
                             bw.close();
@@ -3252,10 +3402,7 @@ public class AdminCommands {
         @Override
         public int execute(MapleClient c, String[] splitted) {
 
-            final List<MapleMonster> ids = c.getPlayer()
-                    .getMap()
-                    .getAllMonster();
-
+            final List<MapleMonster> ids = c.getPlayer().getMap().getAllMonster();
 
             if (ids == null || ids.size() < 0) {
                 return 0;
@@ -3263,27 +3410,24 @@ public class AdminCommands {
             final MapleDropProvider provider = new DropDataProvider();
             List<Integer> visited = new ArrayList<>();
 
-            ids.stream()
-                    .forEach((o) -> {
-                        if (!visited.contains(o.getId())) {
-                            List<MapleDropData> data = provider.search(o);
-                            StringBuilder builder = new StringBuilder();
-                            builder.append(getPaddedLine(o.getStats().getName()));
-                            for (int i = 0; i < data.size(); i++) {
-                                MapleDropData currentDataElement = data.get(i);
-                                builder.append(currentDataElement.getName());
-                                if (!(i == data.size() - 1)) {
-                                    builder.append(", ");
-                                }
-
-                            }
-                            c.getPlayer().dropMessage(6, builder.toString());
-                            visited.add(o.getId());
+            ids.stream().forEach((o) -> {
+                if (!visited.contains(o.getId())) {
+                    List<MapleDropData> data = provider.search(o);
+                    StringBuilder builder = new StringBuilder();
+                    builder.append(getPaddedLine(o.getStats().getName()));
+                    for (int i = 0; i < data.size(); i++) {
+                        MapleDropData currentDataElement = data.get(i);
+                        builder.append(currentDataElement.getName());
+                        if (!(i == data.size() - 1)) {
+                            builder.append(", ");
                         }
-                    });
+                    }
+                    c.getPlayer().dropMessage(6, builder.toString());
+                    visited.add(o.getId());
+                }
+            });
 
             return 0;
         }
-
     }
 }

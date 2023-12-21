@@ -1,11 +1,10 @@
 package client.commands;
 
 import client.MapleClient;
+import java.util.HashMap;
 import server.MaplePortal;
 import server.maps.MapleMap;
 import tools.helper.Api;
-
-import java.util.HashMap;
 
 @Api
 class GoToCommand implements Command {

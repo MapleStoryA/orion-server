@@ -2,9 +2,6 @@ package client.commands;
 
 import client.MapleClient;
 import constants.ServerConstants;
-import lombok.extern.slf4j.Slf4j;
-import tools.helper.Api;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
@@ -15,6 +12,8 @@ import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
+import tools.helper.Api;
 
 @Slf4j
 @Api
