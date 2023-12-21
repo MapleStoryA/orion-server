@@ -4,9 +4,9 @@ import client.MapleCharacter;
 import client.MapleClient;
 import handling.channel.ChannelServer;
 import handling.world.WorldServer;
-import tools.helper.Scripting;
+import tools.helper.Api;
 
-@Scripting
+@Api
 class WarpCommand implements Command {
     @Override
     public void execute(MapleClient c, String[] args) {

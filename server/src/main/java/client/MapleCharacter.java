@@ -122,7 +122,7 @@ import tools.collection.Pair;
 import tools.collection.Triple;
 import tools.helper.DateHelper;
 import tools.helper.Randomizer;
-import tools.helper.Scripting;
+import tools.helper.Api;
 import tools.helper.StringUtil;
 import tools.packet.CWVsContextOnMessagePackets;
 import tools.packet.MTSCSPacket;
@@ -5535,7 +5535,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         return var.get(key);
     }
 
-    @Scripting
+    @Api
     public boolean isRideFinished() {
         return travelTime < System.currentTimeMillis();
     }

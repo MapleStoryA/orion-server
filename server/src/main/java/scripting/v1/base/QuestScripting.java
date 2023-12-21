@@ -5,7 +5,7 @@ import client.MapleQuestStatus;
 import lombok.extern.slf4j.Slf4j;
 import scripting.v1.api.QuestRecord;
 import server.quest.MapleQuest;
-import tools.helper.Scripting;
+import tools.helper.Api;
 
 @Slf4j
 public class QuestScripting extends PlayerScripting implements QuestRecord {
@@ -14,28 +14,28 @@ public class QuestScripting extends PlayerScripting implements QuestRecord {
     private static final int ACTIVE_QUEST = 1;
     private final MapleQuest quest;
 
-    @Scripting
+    @Api
     public QuestScripting(MapleClient client, MapleQuest quest) {
         super(client);
         this.quest = quest;
     }
 
-    @Scripting
+    @Api
     public MapleQuest getQuest() {
         return quest;
     }
 
-    @Scripting
+    @Api
     public final byte getQuestStatus(final int id) {
         return player.getQuestStatus(id);
     }
 
-    @Scripting
+    @Api
     public final boolean isQuestActive(final int id) {
         return getQuestStatus(id) == ACTIVE_QUEST;
     }
 
-    @Scripting
+    @Api
     public final boolean isQuestFinished(final int id) {
         return getQuestStatus(id) == COMPLETE_QUEST;
     }

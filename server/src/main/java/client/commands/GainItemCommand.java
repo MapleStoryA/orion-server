@@ -8,9 +8,9 @@ import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
-import tools.helper.Scripting;
+import tools.helper.Api;
 
-@Scripting
+@Api
 class GainItemCommand implements Command {
     @Override
     public void execute(MapleClient c, String[] args) {

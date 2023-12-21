@@ -12,10 +12,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import tools.helper.Scripting;
+import tools.helper.Api;
 
 @Slf4j
-@Scripting
+@Api
 public class CommandProcessor {
 
     private final Map<String, Command> commands = new LinkedHashMap<>();

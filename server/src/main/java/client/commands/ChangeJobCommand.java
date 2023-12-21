@@ -1,9 +1,9 @@
 package client.commands;
 
 import client.MapleClient;
-import tools.helper.Scripting;
+import tools.helper.Api;
 
-@Scripting
+@Api
 class ChangeJobCommand implements Command {
     @Override
     public void execute(MapleClient c, String[] args) {

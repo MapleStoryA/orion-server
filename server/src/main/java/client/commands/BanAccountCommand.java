@@ -2,9 +2,9 @@ package client.commands;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import tools.helper.Scripting;
+import tools.helper.Api;
 
-@Scripting
+@Api
 class BanAccountCommand implements Command {
 
     private static final int MIN_NAME_LENGTH = 2;
