@@ -181,7 +181,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     private short hpApUsed;
     private short fame;
     private int meso;
-    private int exp;
     private int map_id;
 
     private byte gender;
@@ -349,7 +348,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         MapleCharacter ret = new MapleCharacter(false);
         ret.client = client;
         ret.map = null;
-        ret.exp = 0;
+        ret.stats.setExp(0);
         ret.job = JobUtils.mapTypeToJob(type);
         ret.meso = 0;
         ret.stats.setLevel((short) 1);
@@ -388,7 +387,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         ret.playerRandomStream = new PlayerRandomStream();
 
         ret.chalkText = ct.getChalkboard();
-        ret.exp = ct.getExp();
+        ret.stats.setExp(ct.getExp());
         ret.setHpApUsed(ct.getHpApUsed());
         ret.remainingAp = ct.getRemainingAp();
         ret.remainingSp = ct.getRemainingSp();
@@ -542,7 +541,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         ret.setName(characterData.getName());
         ret.stats.setLevel(characterData.getLevel());
         ret.fame = characterData.getFame();
-        ret.exp = characterData.getExp();
+        ret.stats.setExp(characterData.getExp());
         ret.setHpApUsed((short) characterData.getHpApUsed());
         ret.remainingAp = characterData.getAp();
         ret.remainingSp = characterData.getSp();
@@ -1158,7 +1157,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             ps.setShort(4, stats.getDex());
             ps.setShort(5, stats.getLuk());
             ps.setShort(6, stats.getInt());
-            ps.setInt(7, exp < 0 ? 0 : exp);
+            ps.setInt(7, stats.getExp() < 0 ? 0 : stats.getExp());
             ps.setInt(8, stats.getHp() < 1 ? 50 : stats.getHp());
             ps.setInt(9, stats.getMp());
             ps.setInt(10, stats.getMaxHp());
@@ -2265,15 +2264,15 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public int getExp() {
-        return exp;
+        return stats.getExp();
     }
 
     public void setExp(int exp) {
         if (job.isCygnus() && stats.getLevel() >= 120) {
-            this.exp = 0;
+            this.stats.setExp(0);
             return;
         }
-        this.exp = exp;
+        this.stats.setExp(exp);
     }
 
     public int getRemainingAp() {
@@ -2661,14 +2660,14 @@ public class MapleCharacter extends BaseMapleCharacter {
                     }
                     diepercentage = (float) (v8 / this.stats.getLuk() + 0.05);
                 }
-                int v10 = (int) (exp - (long) ((double) expforlevel * diepercentage));
+                int v10 = (int) (this.stats.getExp() - (long) ((double) expforlevel * diepercentage));
                 if (v10 < 0) {
                     v10 = 0;
                 }
-                this.exp = v10;
+                this.stats.setExp(v10);
             }
         }
-        this.updateSingleStat(MapleStat.EXP, this.exp);
+        this.updateSingleStat(MapleStat.EXP, this.stats.getExp());
         if (!stats.checkEquipDurabilitys(this, -100)) { // i guess this is how
             // it works ?
             dropMessage(5, "An item has run out of durability but has no inventory room to go to.");
@@ -2798,31 +2797,28 @@ public class MapleCharacter extends BaseMapleCharacter {
             if (job.isCygnus() && stats.getLevel() >= 120) {
                 return;
             }
-            int prevexp = getExp();
             int needed = GameConstants.getExpNeededForLevel(stats.getLevel());
             if (stats.getLevel() >= 200) {
-                if (exp + total > needed) {
+                if (stats.getExp() + total > needed) {
                     setExp(needed);
                 } else {
-                    exp += total;
+                    stats.addExp(total);
                 }
             } else {
-                boolean leveled = false;
-                if (exp + total >= needed) {
-                    exp += total;
+                if (stats.getExp() + total >= needed) {
+                    stats.addExp(total);
                     levelUp(true);
-                    leveled = true;
                     needed = GameConstants.getExpNeededForLevel(stats.getLevel());
-                    if (exp > needed) {
+                    if (stats.getExp() > needed) {
                         setExp(needed);
                     }
                 } else {
-                    exp += total;
+                    stats.addExp(total);
                 }
             }
 
             if (total != 0) {
-                if (exp < 0) { // After adding, and negative
+                if (stats.getExp() < 0) { // After adding, and negative
                     if (total > 0) {
                         setExp(needed);
                     } else if (total < 0) {
@@ -2897,7 +2893,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         if (gain > 0 && total < gain) { // just in case
             total = Integer.MAX_VALUE;
         }
-        if (exp < 0) { // Set first
+        if (stats.getExp() < 0) { // Set first
             setExp(0);
             updateSingleStat(MapleStat.EXP, 0);
         }
@@ -2907,7 +2903,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         // first level
         boolean leveled = false;
         if (getLevel() < 200) {
-            long newexp = total + exp;
+            long newexp = total + stats.getExp();
             while (newexp >= GameConstants.getExpNeededForLevel(stats.getLevel()) && stats.getLevel() < 200) {
                 newexp -= GameConstants.getExpNeededForLevel(stats.getLevel());
                 levelUp(false); // Don't show animation for ALL of the levels.
@@ -2923,7 +2919,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             return;
         }
         if (gain != 0) {
-            if (exp < 0) { // After adding, and negative
+            if (stats.getExp() < 0) { // After adding, and negative
                 if (gain > 0) {
                     setExp(GameConstants.getExpNeededForLevel(stats.getLevel()));
                 } else if (gain < 0) {
@@ -2937,7 +2933,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 statup.add(new Pair<>(MapleStat.MAXMP, Math.min(30000, stats.getMaxMp())));
                 statup.add(new Pair<>(MapleStat.HP, Math.min(30000, stats.getMaxHp())));
                 statup.add(new Pair<>(MapleStat.MP, Math.min(30000, stats.getMaxMp())));
-                statup.add(new Pair<>(MapleStat.EXP, exp));
+                statup.add(new Pair<>(MapleStat.EXP, stats.getExp()));
                 statup.add(new Pair<>(MapleStat.LEVEL, (int) stats.getLevel()));
                 statup.add(new Pair<>(MapleStat.AVAILABLEAP, Math.min(199, remainingAp)));
                 client.getSession().write(MaplePacketCreator.updatePlayerStats(statup, getJob().getId()));
@@ -3344,7 +3340,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             maxmp += Randomizer.rand(50, 100);
         }
         maxmp += stats.getTotalInt() / 10;
-        exp = 0;
+        stats.setExp(0);
         stats.addLevel(1);
         int level = getLevel();
 
@@ -3361,7 +3357,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         statup.add(new Pair<MapleStat, Integer>(MapleStat.MAXMP, maxmp));
         statup.add(new Pair<MapleStat, Integer>(MapleStat.HP, maxhp));
         statup.add(new Pair<MapleStat, Integer>(MapleStat.MP, maxmp));
-        statup.add(new Pair<MapleStat, Integer>(MapleStat.EXP, exp));
+        statup.add(new Pair<MapleStat, Integer>(MapleStat.EXP, this.stats.getExp()));
         statup.add(new Pair<MapleStat, Integer>(MapleStat.LEVEL, level));
         statup.add(new Pair<MapleStat, Integer>(MapleStat.AVAILABLEAP, remainingAp));
 
