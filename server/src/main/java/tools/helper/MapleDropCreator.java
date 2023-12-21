@@ -1,16 +1,5 @@
 package tools.helper;
 
-import lombok.extern.slf4j.Slf4j;
-import provider.MapleData;
-import provider.MapleDataProvider;
-import provider.MapleDataTool;
-import server.base.config.ServerConfig;
-import tools.collection.Pair;
-
-import javax.management.InstanceAlreadyExistsException;
-import javax.management.MBeanRegistrationException;
-import javax.management.MalformedObjectNameException;
-import javax.management.NotCompliantMBeanException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.rmi.NotBoundException;
@@ -18,6 +7,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.management.InstanceAlreadyExistsException;
+import javax.management.MBeanRegistrationException;
+import javax.management.MalformedObjectNameException;
+import javax.management.NotCompliantMBeanException;
+import lombok.extern.slf4j.Slf4j;
+import provider.MapleData;
+import provider.MapleDataProvider;
+import provider.MapleDataTool;
+import server.base.config.ServerConfig;
+import tools.collection.Pair;
 
 @Slf4j
 public class MapleDropCreator {
@@ -34,9 +33,9 @@ public class MapleDropCreator {
 
     public static void main(String[] args)
             throws IOException, NotBoundException, InstanceAlreadyExistsException, MBeanRegistrationException,
-            NotCompliantMBeanException, MalformedObjectNameException {
-        MapleData data = ServerConfig.serverConfig().getDataProvider("wz/String")
-                .getData("MonsterBook.img");
+                    NotCompliantMBeanException, MalformedObjectNameException {
+        MapleData data =
+                ServerConfig.serverConfig().getDataProvider("wz/String").getData("MonsterBook.img");
 
         log.info("Warning : Use this only at your own risk!");
         log.info("Press any key to continue...");
@@ -220,7 +219,9 @@ public class MapleDropCreator {
                         if (Pair_.getRight().getBoss() > 0) {
                             rate *= 25;
                         }
-                        SQL.append("INSERT IGNORE INTO ").append(monsterQueryData).append(" VALUES ");
+                        SQL.append("INSERT IGNORE INTO ")
+                                .append(monsterQueryData)
+                                .append(" VALUES ");
                         SQL.append("(DEFAULT, ");
                         SQL.append(Pair_.getLeft()).append(", "); // Dropperid
                         if (addFlagData) {
@@ -244,30 +245,30 @@ public class MapleDropCreator {
         int i = 1;
         int lastmonsterbookid = 0;
         /*for (Pair<Integer, String> Pair : itemNameCache) {
-            if (Pair.getLeft() >= 2380000 && Pair.getLeft() <= lastmonstercardid) {
-                bookName.append(Pair.getRight());
+        	if (Pair.getLeft() >= 2380000 && Pair.getLeft() <= lastmonstercardid) {
+        		bookName.append(Pair.getRight());
 
-                if (bookName.toString().contains(" Card")) {
-                    bookName.delete(bookName.length() - 5, bookName.length()); // Get rid of the " Card" string
-                }
+        		if (bookName.toString().contains(" Card")) {
+        			bookName.delete(bookName.length() - 5, bookName.length()); // Get rid of the " Card" string
+        		}
 
-                if (Pair.getLeft() == lastmonsterbookid) {
-                    continue; // Fix for multiple monster shet
-                }
-                for (Pair<Integer, MobInfo> Pair_ : mobCache) {
-                    if (Pair_.getRight().getName().equalsIgnoreCase(bookName.toString())) {
-                        SQL.append("INSERT IGNORE INTO ").append("monstercarddata").append(" VALUES (");
-                        SQL.append(i).append(", ");
-                        SQL.append(Pair.getLeft());
-                        SQL.append(", ");
-                        SQL.append(Pair_.getLeft()).append(");\n");
-                        lastmonsterbookid = Pair.getLeft();
-                        i++;
-                        break;
-                    }
-                }
-                bookName.delete(0, 2147483647); // ;P wild guess LOL
-            }
+        		if (Pair.getLeft() == lastmonsterbookid) {
+        			continue; // Fix for multiple monster shet
+        		}
+        		for (Pair<Integer, MobInfo> Pair_ : mobCache) {
+        			if (Pair_.getRight().getName().equalsIgnoreCase(bookName.toString())) {
+        				SQL.append("INSERT IGNORE INTO ").append("monstercarddata").append(" VALUES (");
+        				SQL.append(i).append(", ");
+        				SQL.append(Pair.getLeft());
+        				SQL.append(", ");
+        				SQL.append(Pair_.getLeft()).append(");\n");
+        				lastmonsterbookid = Pair.getLeft();
+        				i++;
+        				break;
+        			}
+        		}
+        		bookName.delete(0, 2147483647); // ;P wild guess LOL
+        	}
         }*/
         out.write(SQL.toString().getBytes());
         out.close();
@@ -640,7 +641,7 @@ public class MapleDropCreator {
                     case 2070006: // Ilbi Throwing-Stars
                     case 2070007: // Hwabi Throwing-Stars
                         return 200;
-                    //		    case 2070011: // Maple Throwing star
+                        //		    case 2070011: // Maple Throwing star
                     case 2070012: // Paper Fighter Plane
                     case 2070013: // Orange
                         return 1500;
@@ -815,8 +816,7 @@ public class MapleDropCreator {
     }
 
     private static void getAllItems() {
-        MapleDataProvider data =
-                ServerConfig.serverConfig().getDataProvider("wz/String");
+        MapleDataProvider data = ServerConfig.serverConfig().getDataProvider("wz/String");
 
         List<Pair<Integer, String>> itemPairs = new ArrayList<Pair<Integer, String>>();
         MapleData itemsData;
@@ -869,10 +869,8 @@ public class MapleDropCreator {
 
     public static void getAllMobs() {
         List<Pair<Integer, MobInfo>> itemPairs = new ArrayList<Pair<Integer, MobInfo>>();
-        MapleDataProvider data =
-                ServerConfig.serverConfig().getDataProvider("wz/String");
-        MapleDataProvider mobData =
-                ServerConfig.serverConfig().getDataProvider("wz/Mob");
+        MapleDataProvider data = ServerConfig.serverConfig().getDataProvider("wz/String");
+        MapleDataProvider mobData = ServerConfig.serverConfig().getDataProvider("wz/Mob");
         MapleData mob = data.getData("Mob.img");
 
         int id;

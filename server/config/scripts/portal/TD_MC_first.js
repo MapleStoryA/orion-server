@@ -1,6 +1,6 @@
 function enter(pi) {
     var level = pi.getPlayerStat("LVL");
-    if (level >= 30 && level <= 40) {
+    if (level >= 30 && level <= 60) {
         pi.playPortalSE();
         pi.warp(106020000, 1);
     } else {

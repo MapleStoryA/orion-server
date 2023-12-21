@@ -18,6 +18,10 @@ public class ServerConfig {
         this.configuration = configuration;
     }
 
+    public static boolean isDebugPacket() {
+        return INSTANCE.getConfig().isDebugPacket();
+    }
+
     public MapleDataProvider getDataProvider(String path) {
         return MapleDataProviderFactory.getDataProvider(new File("config/" + path));
     }

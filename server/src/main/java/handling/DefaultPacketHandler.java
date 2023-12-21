@@ -25,10 +25,10 @@ public class DefaultPacketHandler {
             }
             var header_num = slea.readShort();
             var packetHandler = processor.getHandler(header_num);
-            if (ServerConfig.isDebugEnabled()) {
+            if (ServerConfig.isDebugPacket()) {
                 log.info("Received: " + header_num);
             }
-            if (ServerConfig.isDebugEnabled() && packetHandler != null) {
+            if (ServerConfig.isDebugPacket() && packetHandler != null) {
                 log.info("[" + packetHandler.getClass().getSimpleName() + "]");
             }
             if (packetHandler != null && packetHandler.validateState(client)) {
