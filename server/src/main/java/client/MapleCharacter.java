@@ -62,6 +62,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.output.OutPacket;
+import org.jdbi.v3.core.statement.Update;
 import scripting.EventInstanceManager;
 import scripting.NPCScriptManager;
 import server.MapleInventoryManipulator;
@@ -1096,69 +1097,80 @@ public class MapleCharacter extends BaseMapleCharacter {
         for (MaplePet pet : pets) {
             petPosition += pet.getInventoryPosition() + ";";
         }
+
+
         try {
-            //   con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-            //     con.setAutoCommit(false);
-            ps = con.prepareStatement(
-                    "UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?,"
-                            + " `int` = ?, exp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, ap ="
-                            + " ?, skincolor = ?, gender = ?, job = ?, hair = ?, face ="
-                            + " ?, map = ?, meso = ?, hpApUsed = ?, spawnpoint = ?, party = ?,"
-                            + " buddyCapacity = ?, monsterbookcover = ?, dojo_pts = ?,"
-                            + " dojoRecord = ?, pets = ?, subcategory = ?, marriageId = ?, name"
-                            + " = ?, sp = ? WHERE id = ?",
-                    DatabaseConnection.RETURN_GENERATED_KEYS);
-            ps.setInt(1, stats.getLevel());
-            ps.setShort(2, fame);
-            ps.setShort(3, stats.getStr());
-            ps.setShort(4, stats.getDex());
-            ps.setShort(5, stats.getLuk());
-            ps.setShort(6, stats.getInt());
-            ps.setInt(7, stats.getExp() < 0 ? 0 : stats.getExp());
-            ps.setInt(8, stats.getHp() < 1 ? 50 : stats.getHp());
-            ps.setInt(9, stats.getMp());
-            ps.setInt(10, stats.getMaxHp());
-            ps.setInt(11, stats.getMaxMp());
-            ps.setInt(12, remainingAp);
-            ps.setByte(13, getSkinColor());
-            ps.setByte(14, gender);
-            ps.setShort(15, (short) job.getId());
-            ps.setInt(16, hair);
-            ps.setInt(17, getFace());
-            if (!fromcs && map != null) {
-                if (map.getForcedReturnId() != 999999999) {
-                    ps.setInt(18, map.getForcedReturnId());
-                } else {
-                    ps.setInt(18, stats.getHp() < 1 ? map.getReturnMapId() : map.getId());
-                }
-            } else {
-                ps.setInt(18, map_id);
+
+            try (var handle = DatabaseConnection.getConnector().open()) {
+                String saveCharacterQuery = "UPDATE characters SET level = :level, fame = :fame, str = :str, dex = :dex, luk = :luk, "
+                        + "`int` = :int, exp = :exp, hp = :hp, mp = :mp, maxhp = :maxhp, maxmp = :maxmp, ap = :ap, "
+                        + "skincolor = :skincolor, gender = :gender, job = :job, hair = :hair, face = :face, "
+                        + "map = :map, meso = :meso, hpApUsed = :hpApUsed, spawnpoint = :spawnpoint, party = :party, "
+                        + "buddyCapacity = :buddyCapacity, monsterbookcover = :monsterbookcover, dojo_pts = :dojo_pts, "
+                        + "dojoRecord = :dojoRecord, pets = :pets, subcategory = :subcategory, marriageId = :marriageId, name = :name, "
+                        + "sp = :sp WHERE id = :id";
+
+                String finalPetPosition = petPosition;
+                handle.inTransaction(h -> {
+                    Update update = h.createUpdate(saveCharacterQuery);
+
+                    int returnMapId;
+                    if (!fromcs && map != null) {
+                        if (map.getForcedReturnId() != 999999999) {
+                            returnMapId = map.getForcedReturnId();
+                        } else {
+                            returnMapId = stats.getHp() < 1 ? map.getReturnMapId() : map.getId();
+                        }
+                    } else {
+                        returnMapId = map_id;
+                    }
+
+                    int nearestSpawnPoint;
+                    if (map == null) {
+                        nearestSpawnPoint = 0;
+                    } else {
+                        final MaplePortal closest = map.findClosestSpawnpoint(getPosition());
+                        nearestSpawnPoint = (closest != null ? closest.getId() : 0);
+                    }
+                    return update.bind("level", stats.getLevel())
+                            .bind("fame", fame)
+                            .bind("str", stats.getStr())
+                            .bind("dex", stats.getDex())
+                            .bind("luk", stats.getLuk())
+                            .bind("int", stats.getInt())
+                            .bind("exp", stats.getExp())
+                            .bind("hp", stats.getHp())
+                            .bind("mp", stats.getMp())
+                            .bind("maxhp", stats.getMaxHp())
+                            .bind("maxmp", stats.getMaxMp())
+                            .bind("ap", remainingAp)
+                            .bind("skincolor", getSkinColor())
+                            .bind("gender", gender)
+                            .bind("job", job.getId())
+                            .bind("hair", hair)
+                            .bind("face", getFace())
+                            .bind("map", returnMapId)
+                            .bind("meso", meso)
+                            .bind("hpApUsed", getHpApUsed())
+                            .bind("spawnpoint", nearestSpawnPoint)
+                            .bind("party", party != null ? party.getId() : -1)
+                            .bind("buddyCapacity", buddyList.getCapacity())
+                            .bind("monsterbookcover", bookCover)
+                            .bind("dojo_pts", dojo)
+                            .bind("dojoRecord", dojoRecord)
+                            .bind("pets", finalPetPosition)
+                            .bind("subcategory", subcategory)
+                            .bind("marriageId", marriageId)
+                            .bind("name", getName())
+                            .bind("sp", remainingSp)
+                            .bind("id", id)
+                            .execute();
+
+                });
+            } catch (Exception ex) {
+                log.error("Error saving character", ex);
             }
-            ps.setInt(19, meso);
-            ps.setShort(20, getHpApUsed());
-            if (map == null) {
-                ps.setByte(21, (byte) 0);
-            } else {
-                final MaplePortal closest = map.findClosestSpawnpoint(getPosition());
-                ps.setByte(21, (byte) (closest != null ? closest.getId() : 0));
-            }
-            ps.setInt(22, party != null ? party.getId() : -1);
-            ps.setShort(23, buddyList.getCapacity());
-            ps.setInt(24, bookCover);
-            ps.setInt(25, dojo);
-            ps.setInt(26, dojoRecord);
-            // TODO: remove this from character table pet thing
-            ps.setString(27, petPosition);
-            ps.setByte(28, subcategory);
-            ps.setInt(29, marriageId);
-            ps.setString(30, getName());
-            ps.setInt(31, remainingSp);
-            ps.setInt(32, id);
-            if (ps.executeUpdate() < 1) {
-                ps.close();
-                throw new DatabaseException("Character not in database (" + id + ")");
-            }
-            ps.close();
+
 
             CharacterService.saveSkillMacro(skillMacros, id);
 
