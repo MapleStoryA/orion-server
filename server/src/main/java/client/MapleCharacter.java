@@ -779,9 +779,7 @@ public class MapleCharacter extends BaseMapleCharacter {
 
         public static final MapleCharacter reconstructChr(
                 final CharacterTransfer ct, final MapleClient client, final boolean isChannel) {
-            final MapleCharacter ret = new MapleCharacter(true); // Always true,
-            // it's change
-            // channel
+            final MapleCharacter ret = new MapleCharacter(true);
             ret.client = client;
             if (!isChannel) {
                 ret.client.setChannel(ct.getChannel());
