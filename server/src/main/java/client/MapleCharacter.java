@@ -1087,7 +1087,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         }
     }
 
-
     public void saveToDB(boolean dc, boolean fromcs) {
         var con = DatabaseConnection.getConnection();
         PreparedStatement ps = null;
@@ -1163,17 +1162,7 @@ public class MapleCharacter extends BaseMapleCharacter {
 
             CharacterService.saveSkillMacro(skillMacros, id);
 
-            deleteWhereCharacterId(con, "DELETE FROM inventoryslot WHERE characterid = ?");
-            ps = con.prepareStatement("INSERT INTO inventoryslot (characterid, `equip`, `use`, `setup`,"
-                    + " `etc`, `cash`) VALUES (?, ?, ?, ?, ?, ?)");
-            ps.setInt(1, id);
-            ps.setByte(2, getInventory(MapleInventoryType.EQUIP).getSlotLimit());
-            ps.setByte(3, getInventory(MapleInventoryType.USE).getSlotLimit());
-            ps.setByte(4, getInventory(MapleInventoryType.SETUP).getSlotLimit());
-            ps.setByte(5, getInventory(MapleInventoryType.ETC).getSlotLimit());
-            ps.setByte(6, getInventory(MapleInventoryType.CASH).getSlotLimit());
-            ps.execute();
-            ps.close();
+            LoginService.saveInventorySlot(id, inventory);
 
             saveInventory(con);
 

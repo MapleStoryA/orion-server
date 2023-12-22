@@ -17,16 +17,15 @@ import constants.GameConstants;
 import constants.MapConstants;
 import handling.cashshop.CashItemFactory;
 import handling.cashshop.CashItemInfo;
+import java.awt.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import tools.MaplePacketCreator;
 import tools.collection.Triple;
 import tools.helper.Randomizer;
 import tools.packet.MTSCSPacket;
-
-import java.awt.*;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 @Slf4j
 public class MapleInventoryManipulator {
@@ -636,7 +635,7 @@ public class MapleInventoryManipulator {
         }
         if (!ii.isCash(source.getItemId())
                 && !GameConstants.isMountItemAvailable(
-                source.getItemId(), c.getPlayer().getJob().getId())) {
+                        source.getItemId(), c.getPlayer().getJob().getId())) {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
         }
@@ -698,8 +697,8 @@ public class MapleInventoryManipulator {
                 IItem weapon = chr.getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -11);
                 if (GameConstants.isKatara(source.getItemId())) {
                     if ((chr.getJob().getId() != 900
-                            && (chr.getJob().getId() < 430
-                            || chr.getJob().getId() > 434))
+                                    && (chr.getJob().getId() < 430
+                                            || chr.getJob().getId() > 434))
                             || weapon == null
                             || !GameConstants.isDagger(weapon.getItemId())) {
                         c.getSession().write(MaplePacketCreator.getInventoryFull());
@@ -809,7 +808,7 @@ public class MapleInventoryManipulator {
             return;
         }
         if (
-            /*!c.getPlayer().isGM() && */ MapConstants.isStorylineMap(c.getPlayer().getMapId())) {
+        /*!c.getPlayer().isGM() && */ MapConstants.isStorylineMap(c.getPlayer().getMapId())) {
             if (GameConstants.isVisitorEquip(source.getItemId())) {
                 c.getPlayer().dropMessage(5, "You cannot unequip this item until you finished the storyline.");
                 c.getSession().write(MaplePacketCreator.enableActions());
@@ -870,7 +869,7 @@ public class MapleInventoryManipulator {
             return false;
         }
         if (
-            /*!c.getPlayer().isGM() && */ MapConstants.isStorylineMap(c.getPlayer().getMapId())) {
+        /*!c.getPlayer().isGM() && */ MapConstants.isStorylineMap(c.getPlayer().getMapId())) {
             if (GameConstants.isVisitorEquip(source.getItemId())
                     || source.getItemId() == 4031753
                     || source.getItemId() == 4031752
