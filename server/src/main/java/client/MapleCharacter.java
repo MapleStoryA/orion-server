@@ -58,6 +58,29 @@ import handling.world.messenger.MessengerManager;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import handling.world.party.PartyManager;
+import java.awt.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Random;
+import java.util.Set;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -110,30 +133,6 @@ import tools.packet.PetPacket;
 import tools.packet.PlayerShopPacket;
 import tools.packet.UIPacket;
 
-import java.awt.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Random;
-import java.util.Set;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.atomic.AtomicInteger;
-
 @Getter
 @Slf4j
 public class MapleCharacter extends BaseMapleCharacter {
@@ -144,12 +143,15 @@ public class MapleCharacter extends BaseMapleCharacter {
     // database stuff
     @Getter
     protected int id;
+
     @Getter
     @Setter
     private String name;
+
     @Getter
     @Setter
     private byte world;
+
     private byte dojoRecord;
     private byte initialSpawnPoint;
     private byte skinColor;
@@ -157,16 +159,21 @@ public class MapleCharacter extends BaseMapleCharacter {
     private byte allianceRank = 5;
     private byte fairyExp = 10;
     private byte subcategory;
+
     @Getter
     private short availableCP;
+
     private short totalCP;
     private MapleJob job;
+
     @Getter
     @Setter
     private int remainingAp;
+
     @Getter
     @Setter
     private int remainingSp;
+
     private short fame;
     private int meso;
     private byte gender;
@@ -179,7 +186,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     private int nx_credit;
     private int marriageId;
 
-    //end db stuff
+    // end db stuff
     private int fall_counter = 0;
     private int itemEffect;
     private int chair;
@@ -200,9 +207,11 @@ public class MapleCharacter extends BaseMapleCharacter {
     private boolean superMegaEnabled;
     private boolean hidden;
     private boolean hasSummon = false;
+
     @Getter
     @Setter
     private long lastBerserkTime;
+
     private long lastHPTime;
     private long lastMPTime;
     private long lastFairyTime;
@@ -211,7 +220,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     private byte morphId = 0;
     private short mu_lung_energy;
     private short combo;
-
 
     private List<Integer> lastMonthFameIds;
     private List<MapleDoor> doors;
@@ -1585,7 +1593,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         }
         for (MapleBuffStatValueHolder cancelEffectCancelTasks : effectsToCancel) {
             if (getBuffStats(cancelEffectCancelTasks.getEffect(), cancelEffectCancelTasks.getStartTime())
-                    .size()
+                            .size()
                     == 0) {
                 if (cancelEffectCancelTasks.getSchedule() != null) {
                     cancelEffectCancelTasks.getSchedule().cancel(false);
@@ -1704,19 +1712,19 @@ public class MapleCharacter extends BaseMapleCharacter {
             if (skillid == 0) {
                 if (mbsvh.getEffect().isSkill()
                         && (mbsvh.getEffect().getSourceId() == 4331003
-                        || mbsvh.getEffect().getSourceId() == 4331002
-                        || mbsvh.getEffect().getSourceId() == 4341002
-                        || mbsvh.getEffect().getSourceId() == 22131001
-                        || mbsvh.getEffect().getSourceId() == 1321007
-                        || mbsvh.getEffect().getSourceId() == 2121005
-                        || mbsvh.getEffect().getSourceId() == 2221005
-                        || mbsvh.getEffect().getSourceId() == 2311006
-                        || mbsvh.getEffect().getSourceId() == 2321003
-                        || mbsvh.getEffect().getSourceId() == 3111002
-                        || mbsvh.getEffect().getSourceId() == 3111005
-                        || mbsvh.getEffect().getSourceId() == 3211002
-                        || mbsvh.getEffect().getSourceId() == 3211005
-                        || mbsvh.getEffect().getSourceId() == 4111002)) {
+                                || mbsvh.getEffect().getSourceId() == 4331002
+                                || mbsvh.getEffect().getSourceId() == 4341002
+                                || mbsvh.getEffect().getSourceId() == 22131001
+                                || mbsvh.getEffect().getSourceId() == 1321007
+                                || mbsvh.getEffect().getSourceId() == 2121005
+                                || mbsvh.getEffect().getSourceId() == 2221005
+                                || mbsvh.getEffect().getSourceId() == 2311006
+                                || mbsvh.getEffect().getSourceId() == 2321003
+                                || mbsvh.getEffect().getSourceId() == 3111002
+                                || mbsvh.getEffect().getSourceId() == 3111005
+                                || mbsvh.getEffect().getSourceId() == 3211002
+                                || mbsvh.getEffect().getSourceId() == 3211005
+                                || mbsvh.getEffect().getSourceId() == 4111002)) {
                     cancelEffect(mbsvh.getEffect(), false, mbsvh.getStartTime());
                     break;
                 }
@@ -2280,7 +2288,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     public void changeSkillLevel(final ISkill skill, byte newLevel, byte newMasterlevel, long expiration) {
         if (skill == null
                 || (!GameConstants.isApplicableSkill(skill.getId())
-                && !GameConstants.isApplicableSkill_(skill.getId()))) {
+                        && !GameConstants.isApplicableSkill_(skill.getId()))) {
             return;
         }
         client.getSession().write(MaplePacketCreator.updateSkill(skill.getId(), newLevel, newMasterlevel, expiration));
@@ -2762,8 +2770,8 @@ public class MapleCharacter extends BaseMapleCharacter {
                         toberemove.add(new Pair<>(inv, item));
                     }
                 } else if ((item.getItemId() == 5000054
-                        && item.getPet() != null
-                        && item.getPet().getSecondsLeft() <= 0)
+                                && item.getPet() != null
+                                && item.getPet().getSecondsLeft() <= 0)
                         || (firstLoad && ii.isLogoutExpire(item.getItemId()))) {
                     toberemove.add(new Pair<>(inv, item));
                 }
@@ -3791,7 +3799,7 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public void checkBerserk() {
         if (
-            /* job != 132 || */ getLastBerserkTime() < 0 || getLastBerserkTime() + 10000 > System.currentTimeMillis()) {
+        /* job != 132 || */ getLastBerserkTime() < 0 || getLastBerserkTime() + 10000 > System.currentTimeMillis()) {
             return;
         }
         final ISkill BerserkX = SkillFactory.getSkill(1320006);
@@ -4191,7 +4199,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             }
         }
         client.getSession().write(PetPacket.petStatUpdate(this));
-        petStore = new byte[]{-1, -1, -1};
+        petStore = new byte[] {-1, -1, -1};
     }
 
     public final byte[] getPetStores() {

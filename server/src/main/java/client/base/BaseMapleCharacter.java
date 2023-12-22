@@ -22,8 +22,6 @@ public abstract class BaseMapleCharacter extends AbstractAnimatedMapleMapObject 
     @Getter
     protected MapleClient client;
 
-
-
     protected MapleMap map;
 
     protected int map_id;
@@ -149,6 +147,4 @@ public abstract class BaseMapleCharacter extends AbstractAnimatedMapleMapObject 
         }
         return map_id;
     }
-
-
 }
