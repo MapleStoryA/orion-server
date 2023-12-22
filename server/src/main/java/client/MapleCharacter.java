@@ -1193,24 +1193,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             LoginService.updateQuestStatus(id, quests);
 
             if (changed_skills) {
-                deleteWhereCharacterId(con, "DELETE FROM skills WHERE characterid = ?");
-                ps = con.prepareStatement("INSERT INTO skills (characterid, skillid, skilllevel, masterlevel,"
-                        + " expiration) VALUES (?, ?, ?, ?, ?)");
-                ps.setInt(1, id);
-
-                for (final Entry<ISkill, SkillEntry> skill : skills.entrySet()) {
-                    if (ServerConfig.isSkillSavingEnabled()) {
-                        log.info("Saving skill: " + skill.getKey().getName() + " Level: " + skill.getValue().skillevel);
-                    }
-
-                    int skillId = skill.getKey().getId();
-                    ps.setInt(2, skillId);
-                    ps.setByte(3, skill.getValue().skillevel);
-                    ps.setByte(4, skill.getValue().masterlevel);
-                    ps.setLong(5, skill.getValue().expiration);
-                    ps.execute();
-                }
-                ps.close();
+                LoginService.updateSkills(id, skills);
             }
             if (job.isEvan()) {
                 LoginService.saveEvanSkills(getId(), this.evanSP);

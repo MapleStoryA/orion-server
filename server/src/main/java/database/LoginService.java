@@ -9,6 +9,8 @@ import client.inventory.ItemLoader;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.skill.EvanSkillPoints;
+import client.skill.ISkill;
+import client.skill.SkillEntry;
 import handling.world.buddy.BuddyListEntry;
 import lombok.extern.slf4j.Slf4j;
 import org.jdbi.v3.core.result.ResultIterable;
@@ -327,6 +329,30 @@ public class LoginService {
                             h.execute(questMobsQuery, generatedKey, mob, q.getMobKills(mob));
                         }
                     }
+                }
+                return true;
+            });
+        } catch (Exception ex) {
+            log.error("error updating quest status", ex);
+        }
+    }
+
+    public static void updateSkills(int id, Map<ISkill, SkillEntry> skills) {
+        String deleteQuery = "DELETE FROM skills WHERE characterid = ?";
+        String skillQuery = "INSERT INTO skills (characterid, skillid, skilllevel, masterlevel,"
+                + " expiration) VALUES (?, ?, ?, ?, ?)";
+        try (var handle = DatabaseConnection.getConnector().open()) {
+            handle.inTransaction(h -> {
+                h.execute(deleteQuery, id);
+                for (final Map.Entry<ISkill, SkillEntry> skill : skills.entrySet()) {
+                    int skillId = skill.getKey().getId();
+                    var update = h.createUpdate(skillQuery)
+                            .bind(0, id)
+                            .bind(1, skillId)
+                            .bind(2, skill.getValue().skillevel)
+                            .bind(3, skill.getValue().masterlevel)
+                            .bind(4, skill.getValue().expiration);
+                    update.execute();
                 }
                 return true;
             });
