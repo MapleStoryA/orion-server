@@ -975,11 +975,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
     public static void saveNewCharToDB(final MapleCharacter chr, final int type, final boolean db) {
-
-        PreparedStatement ps = null;
-        PreparedStatement pse = null;
-        ResultSet rs = null;
-
         try (var handle = DatabaseConnection.getConnector().open()) {
             String insertCharacterQuery = "INSERT INTO characters (level, fame, str, dex, luk, `int`, exp, hp,"
                     + " mp, maxhp, maxmp, ap, skincolor, gender, job, hair, face,"
@@ -990,10 +985,10 @@ public class MapleCharacter extends BaseMapleCharacter {
                     + " :spawnpoint, :party, :buddyCapacity, :monsterbookcover, :dojo_pts, :dojoRecord, :pets, :subcategory,"
                     + " :marriageId, :accountid, :name, :world)";
 
-            final PlayerStats stat = chr.stats;
             handle.inTransaction(h -> {
+                final PlayerStats stat = chr.stats;
                 Update update = h.createUpdate(insertCharacterQuery);
-                Integer generatedKey = update.bind("level", stat.getLevel())
+                Integer generatedCharacterId = update.bind("level", stat.getLevel())
                         .bind("fame", 0)
                         .bind("str", stat.getStr())
                         .bind("dex", stat.getDex())
@@ -1030,64 +1025,20 @@ public class MapleCharacter extends BaseMapleCharacter {
                         .mapTo(Integer.class)
                         .one();
 
-                chr.id = generatedKey;
+                chr.id = generatedCharacterId;
                 return true;
             });
         } catch (Exception ex) {
             log.error("Error saving character", ex);
         }
 
+        LoginService.updateQuestStatus(chr.getId(), chr.getQuests());
+        LoginService.saveDefaultInventorySlot(chr.getId());
+        LoginService.saveDefaultMountData(chr.getId());
+        var keyLayout = new MapleKeyLayout(chr.id);
+        keyLayout.setDefaultKeys();
+        keyLayout.saveKeys();
         try (var con = DatabaseConnection.getConnection()) {
-            ps = con.prepareStatement(
-                    "INSERT INTO queststatus (`queststatusid`, `characterid`, `quest`,"
-                            + " `status`, `time`, `forfeited`, `customData`) VALUES (DEFAULT,"
-                            + " ?, ?, ?, ?, ?, ?)",
-                    DatabaseConnection.RETURN_GENERATED_KEYS);
-            pse = con.prepareStatement("INSERT INTO queststatusmobs VALUES (DEFAULT, ?, ?, ?)");
-            ps.setInt(1, chr.id);
-            for (final MapleQuestStatus q : chr.quests.values()) {
-                ps.setInt(2, q.getQuest().getId());
-                ps.setInt(3, q.getStatus());
-                ps.setInt(4, (int) (q.getCompletionTime() / 1000));
-                ps.setInt(5, q.getForfeited());
-                ps.setString(6, q.getCustomData());
-                ps.executeUpdate();
-                rs = ps.getGeneratedKeys();
-                rs.next();
-
-                if (q.hasMobKills()) {
-                    for (int mob : q.getMobKills().keySet()) {
-                        pse.setInt(1, rs.getInt(1));
-                        pse.setInt(2, mob);
-                        pse.setInt(3, q.getMobKills(mob));
-                        pse.executeUpdate();
-                    }
-                }
-                rs.close();
-            }
-            ps.close();
-            pse.close();
-
-            ps = con.prepareStatement("INSERT INTO inventoryslot (characterid, `equip`, `use`, `setup`,"
-                    + " `etc`, `cash`) VALUES (?, ?, ?, ?, ?, ?)");
-            ps.setInt(1, chr.id);
-            ps.setByte(2, (byte) 60); // Eq
-            ps.setByte(3, (byte) 60); // Use
-            ps.setByte(4, (byte) 60); // Setup
-            ps.setByte(5, (byte) 60); // ETC
-            ps.setByte(6, (byte) 60); // Cash
-            ps.execute();
-            ps.close();
-
-            ps = con.prepareStatement(
-                    "INSERT INTO mountdata (characterid, `Level`, `Exp`, `Fatigue`) VALUES" + " (?, ?, ?, ?)");
-            ps.setInt(1, chr.id);
-            ps.setByte(2, (byte) 1);
-            ps.setInt(3, 0);
-            ps.setByte(4, (byte) 0);
-            ps.execute();
-            ps.close();
-
             List<Pair<IItem, MapleInventoryType>> listing = new ArrayList<>();
             for (final MapleInventory iv : chr.inventory) {
                 for (final IItem item : iv.list()) {
@@ -1095,27 +1046,9 @@ public class MapleCharacter extends BaseMapleCharacter {
                 }
             }
             ItemLoader.INVENTORY.saveItems(listing, con, chr.id);
-            var keyLayout = new MapleKeyLayout(chr.id);
-            keyLayout.setDefaultKeys();
-            keyLayout.saveKeys();
-            ps.close();
+
         } catch (Exception ex) {
             log.error("Could not save new character to database", ex);
-        } finally {
-            try {
-                if (pse != null) {
-                    pse.close();
-                }
-                if (ps != null) {
-                    ps.close();
-                }
-                if (rs != null) {
-                    rs.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                System.err.println("[charsave] Error going back to autocommit mode");
-            }
         }
     }
 

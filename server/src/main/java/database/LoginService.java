@@ -401,4 +401,29 @@ public class LoginService {
             log.error("error saving inventory slot", ex);
         }
     }
+
+    public static void saveDefaultInventorySlot(int id) {
+        String insertQuery =
+                "INSERT INTO inventoryslot (characterid, `equip`, `use`, `setup`,`etc`, `cash`) VALUES (?, ?, ?, ?, ?, ?)";
+        try (var handle = DatabaseConnection.getConnector().open()) {
+            handle.inTransaction(h -> {
+                h.execute(insertQuery, id, 60, 60, 60, 60, 60);
+                return true;
+            });
+        } catch (Exception ex) {
+            log.error("error saving inventory slot", ex);
+        }
+    }
+
+    public static void saveDefaultMountData(int id) {
+        String insertQuery = "INSERT INTO mountdata (characterid, `Level`, `Exp`, `Fatigue`) VALUES" + " (?, ?, ?, ?)";
+        try (var handle = DatabaseConnection.getConnector().open()) {
+            handle.inTransaction(h -> {
+                h.execute(insertQuery, id, 1, 0, 0);
+                return true;
+            });
+        } catch (Exception ex) {
+            log.error("error saving default mount data", ex);
+        }
+    }
 }
