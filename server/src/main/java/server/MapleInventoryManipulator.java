@@ -17,15 +17,16 @@ import constants.GameConstants;
 import constants.MapConstants;
 import handling.cashshop.CashItemFactory;
 import handling.cashshop.CashItemInfo;
-import java.awt.*;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import tools.MaplePacketCreator;
 import tools.collection.Triple;
 import tools.helper.Randomizer;
 import tools.packet.MTSCSPacket;
+
+import java.awt.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 public class MapleInventoryManipulator {
@@ -40,8 +41,6 @@ public class MapleInventoryManipulator {
             return;
         }
         chr.getCashInventory().addToInventory(ring);
-        // chr.getClient().getSession().write(MTSCSPacket.confirmToCSInventory(ring,
-        // chr.getClient().getAccID(), csi.getSN()));
         chr.getClient()
                 .getSession()
                 .write(MTSCSPacket.OnCashItemResCoupleDone(
@@ -50,8 +49,6 @@ public class MapleInventoryManipulator {
                         chr.getClient().getAccountData().getId(),
                         partner,
                         GameConstants.isCrushRing(itemId)));
-        // chr.getClient().getSession().write(MTSCSPacket.showBoughtCSItem(ring, sn,
-        // chr.getClient().getAccID()));
     }
 
     public static boolean addbyItem(final MapleClient c, final IItem item) {
@@ -639,7 +636,7 @@ public class MapleInventoryManipulator {
         }
         if (!ii.isCash(source.getItemId())
                 && !GameConstants.isMountItemAvailable(
-                        source.getItemId(), c.getPlayer().getJob().getId())) {
+                source.getItemId(), c.getPlayer().getJob().getId())) {
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
         }
@@ -701,8 +698,8 @@ public class MapleInventoryManipulator {
                 IItem weapon = chr.getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -11);
                 if (GameConstants.isKatara(source.getItemId())) {
                     if ((chr.getJob().getId() != 900
-                                    && (chr.getJob().getId() < 430
-                                            || chr.getJob().getId() > 434))
+                            && (chr.getJob().getId() < 430
+                            || chr.getJob().getId() > 434))
                             || weapon == null
                             || !GameConstants.isDagger(weapon.getItemId())) {
                         c.getSession().write(MaplePacketCreator.getInventoryFull());
@@ -812,7 +809,7 @@ public class MapleInventoryManipulator {
             return;
         }
         if (
-        /*!c.getPlayer().isGM() && */ MapConstants.isStorylineMap(c.getPlayer().getMapId())) {
+            /*!c.getPlayer().isGM() && */ MapConstants.isStorylineMap(c.getPlayer().getMapId())) {
             if (GameConstants.isVisitorEquip(source.getItemId())) {
                 c.getPlayer().dropMessage(5, "You cannot unequip this item until you finished the storyline.");
                 c.getSession().write(MaplePacketCreator.enableActions());
@@ -873,7 +870,7 @@ public class MapleInventoryManipulator {
             return false;
         }
         if (
-        /*!c.getPlayer().isGM() && */ MapConstants.isStorylineMap(c.getPlayer().getMapId())) {
+            /*!c.getPlayer().isGM() && */ MapConstants.isStorylineMap(c.getPlayer().getMapId())) {
             if (GameConstants.isVisitorEquip(source.getItemId())
                     || source.getItemId() == 4031753
                     || source.getItemId() == 4031752
@@ -1014,5 +1011,52 @@ public class MapleInventoryManipulator {
 
         // Return items edited
         return (edited);
+    }
+
+    public static final int gainItem(
+            final int id,
+            final short quantity,
+            final boolean randomStats,
+            final long period,
+            final int slots,
+            final String owner,
+            final MapleClient client) {
+        if (quantity >= 0) {
+            final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+            final MapleInventoryType type = GameConstants.getInventoryType(id);
+
+            if (!MapleInventoryManipulator.checkSpace(client, id, quantity, "")) {
+                return 0;
+            }
+            if (type.equals(MapleInventoryType.EQUIP)
+                    && !GameConstants.isThrowingStar(id)
+                    && !GameConstants.isBullet(id)) {
+                final Equip item =
+                        (Equip) (randomStats ? ii.randomizeStats((Equip) ii.getEquipById(id)) : ii.getEquipById(id));
+                if (period > 0) {
+                    item.setExpiration(System.currentTimeMillis() + (period * 24 * 60 * 60 * 1000));
+                }
+                if (slots > 0) {
+                    item.setUpgradeSlots((byte) (item.getUpgradeSlots() + slots));
+                }
+                if (owner != null) {
+                    item.setOwner(owner);
+                }
+                final String name = ii.getName(id);
+                if (id / 10000 == 114 && name != null && name.length() > 0) { // medal
+                    final String msg = "You have attained title <" + name + ">";
+                    client.getPlayer().dropMessage(-1, msg);
+                    client.getPlayer().dropMessage(5, msg);
+                }
+                MapleInventoryManipulator.addbyItem(client, item.copy());
+            } else {
+                MapleInventoryManipulator.addById(client, id, quantity, owner == null ? "" : owner, null, period);
+            }
+        } else {
+            MapleInventoryManipulator.removeById(
+                    client, GameConstants.getInventoryType(id), id, -quantity, true, false);
+        }
+        client.getSession().write(MaplePacketCreator.getShowItemGain(id, quantity, true));
+        return 1;
     }
 }
