@@ -48,7 +48,6 @@ import handling.channel.ChannelServer;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
 import handling.world.Broadcast;
 import handling.world.WorldServer;
-import handling.world.buddy.BuddyListEntry;
 import handling.world.buddy.MapleBuddyList;
 import handling.world.guild.GuildManager;
 import handling.world.guild.MapleGuild;
@@ -60,29 +59,6 @@ import handling.world.messenger.MessengerManager;
 import handling.world.party.MapleParty;
 import handling.world.party.MaplePartyCharacter;
 import handling.world.party.PartyManager;
-import java.awt.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Random;
-import java.util.Set;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.atomic.AtomicInteger;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -133,6 +109,30 @@ import tools.packet.MonsterCarnivalPacket;
 import tools.packet.PetPacket;
 import tools.packet.PlayerShopPacket;
 import tools.packet.UIPacket;
+
+import java.awt.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Random;
+import java.util.Set;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 @Slf4j
@@ -1159,8 +1159,8 @@ public class MapleCharacter extends BaseMapleCharacter {
             petPosition += pet.getInventoryPosition() + ";";
         }
         try {
-            con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-            con.setAutoCommit(false);
+            //   con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+            //     con.setAutoCommit(false);
             ps = con.prepareStatement(
                     "UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?,"
                             + " `int` = ?, exp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, ap ="
@@ -1303,58 +1303,20 @@ public class MapleCharacter extends BaseMapleCharacter {
                 ps.close();
             }
             if (job.isEvan()) {
-                deleteWhereCharacterId(con, "DELETE FROM evan_skillpoints where characterid = ?");
-                ps = con.prepareStatement(this.evanSP.prepareSkillQuery(this.id));
-                ps.executeUpdate();
-                ps.close();
+                LoginService.saveEvanSkills(getId(), this.evanSP);
             }
-            List<MapleCoolDownValueHolder> cd = getCooldowns();
-            if (dc && cd.size() > 0) {
-                ps = con.prepareStatement(
-                        "INSERT INTO skills_cooldowns (charid, SkillID, StartTime, length)" + " VALUES (?, ?, ?, ?)");
-                ps.setInt(1, getId());
-                for (final MapleCoolDownValueHolder cooling : cd) {
-                    ps.setInt(2, cooling.getSkillId());
-                    ps.setLong(3, cooling.getStartTime());
-                    ps.setLong(4, cooling.getLength());
-                    ps.execute();
-                }
-                ps.close();
-            }
+            LoginService.saveSkillCoolDowns(getId(), getCooldowns());
 
             CharacterService.saveLocation(savedLocations, id);
             CharacterService.saveAchievement(finishedAchievements, this.accountData.getId(), this.id);
 
             if (changed_reports) {
-                deleteWhereCharacterId(con, "DELETE FROM reports WHERE characterid = ?");
-                ps = con.prepareStatement("INSERT INTO reports VALUES(DEFAULT, ?, ?, ?)");
-                for (Map.Entry<ReportType, Integer> achid : reports.entrySet()) {
-                    ps.setInt(1, id);
-                    ps.setByte(2, achid.getKey().i);
-                    ps.setInt(3, achid.getValue());
-                    ps.execute();
-                }
-                ps.close();
+                LoginService.saveReports(id, reports);
             }
 
-            deleteWhereCharacterId(con, "DELETE FROM `buddyentries` WHERE `owner` = ?");
-            ps = con.prepareStatement(
-                    "INSERT INTO `buddyentries` (owner, `buddyid`,`groupName`) VALUES (?," + " ?, ?)");
-            ps.setInt(1, id);
-            for (BuddyListEntry entry : buddyList.getBuddies()) {
-                ps.setInt(2, entry.getCharacterId());
-                ps.setString(3, entry.getGroup());
-                ps.addBatch();
-            }
-            ps.executeBatch();
-            ps.close();
+            LoginService.saveBuddyEntries(id, buddyList.getBuddies());
 
-            ps = con.prepareStatement("UPDATE accounts SET `nxCredit` = ?, `mPoints` = ? WHERE" + " id = ?");
-            ps.setInt(1, nx_credit);
-            ps.setInt(2, maple_points);
-            ps.setInt(3, client.getAccountData().getId());
-            ps.execute();
-            ps.close();
+            LoginService.updateAccountCash(client.getAccountData().getId(), nx_credit, maple_points);
 
             if (storage != null) {
                 storage.saveToDB();
@@ -1374,7 +1336,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             changed_skills = false;
             changed_reports = false;
 
-            con.commit();
+            //    con.commit();
         } catch (Exception e) {
             e.printStackTrace();
             try {
@@ -1393,8 +1355,8 @@ public class MapleCharacter extends BaseMapleCharacter {
                 if (rs != null) {
                     rs.close();
                 }
-                con.setAutoCommit(true);
-                con.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+                //    con.setAutoCommit(true);
+                //   con.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
                 con.close();
             } catch (SQLException ex) {
                 log.error("Could not close saveToDB", ex);
@@ -1758,7 +1720,7 @@ public class MapleCharacter extends BaseMapleCharacter {
         }
         for (MapleBuffStatValueHolder cancelEffectCancelTasks : effectsToCancel) {
             if (getBuffStats(cancelEffectCancelTasks.getEffect(), cancelEffectCancelTasks.getStartTime())
-                            .size()
+                    .size()
                     == 0) {
                 if (cancelEffectCancelTasks.getSchedule() != null) {
                     cancelEffectCancelTasks.getSchedule().cancel(false);
@@ -1821,8 +1783,6 @@ public class MapleCharacter extends BaseMapleCharacter {
                 }
             }
         }
-        // log.info("Effect deregistered. Effect: " +
-        // effect.getSourceId());
     }
 
     public void cancelBuffStats(MapleBuffStat... stat) {
@@ -1879,19 +1839,19 @@ public class MapleCharacter extends BaseMapleCharacter {
             if (skillid == 0) {
                 if (mbsvh.getEffect().isSkill()
                         && (mbsvh.getEffect().getSourceId() == 4331003
-                                || mbsvh.getEffect().getSourceId() == 4331002
-                                || mbsvh.getEffect().getSourceId() == 4341002
-                                || mbsvh.getEffect().getSourceId() == 22131001
-                                || mbsvh.getEffect().getSourceId() == 1321007
-                                || mbsvh.getEffect().getSourceId() == 2121005
-                                || mbsvh.getEffect().getSourceId() == 2221005
-                                || mbsvh.getEffect().getSourceId() == 2311006
-                                || mbsvh.getEffect().getSourceId() == 2321003
-                                || mbsvh.getEffect().getSourceId() == 3111002
-                                || mbsvh.getEffect().getSourceId() == 3111005
-                                || mbsvh.getEffect().getSourceId() == 3211002
-                                || mbsvh.getEffect().getSourceId() == 3211005
-                                || mbsvh.getEffect().getSourceId() == 4111002)) {
+                        || mbsvh.getEffect().getSourceId() == 4331002
+                        || mbsvh.getEffect().getSourceId() == 4341002
+                        || mbsvh.getEffect().getSourceId() == 22131001
+                        || mbsvh.getEffect().getSourceId() == 1321007
+                        || mbsvh.getEffect().getSourceId() == 2121005
+                        || mbsvh.getEffect().getSourceId() == 2221005
+                        || mbsvh.getEffect().getSourceId() == 2311006
+                        || mbsvh.getEffect().getSourceId() == 2321003
+                        || mbsvh.getEffect().getSourceId() == 3111002
+                        || mbsvh.getEffect().getSourceId() == 3111005
+                        || mbsvh.getEffect().getSourceId() == 3211002
+                        || mbsvh.getEffect().getSourceId() == 3211005
+                        || mbsvh.getEffect().getSourceId() == 4111002)) {
                     cancelEffect(mbsvh.getEffect(), false, mbsvh.getStartTime());
                     break;
                 }
@@ -2474,7 +2434,7 @@ public class MapleCharacter extends BaseMapleCharacter {
     public void changeSkillLevel(final ISkill skill, byte newLevel, byte newMasterlevel, long expiration) {
         if (skill == null
                 || (!GameConstants.isApplicableSkill(skill.getId())
-                        && !GameConstants.isApplicableSkill_(skill.getId()))) {
+                && !GameConstants.isApplicableSkill_(skill.getId()))) {
             return;
         }
         client.getSession().write(MaplePacketCreator.updateSkill(skill.getId(), newLevel, newMasterlevel, expiration));
@@ -2956,8 +2916,8 @@ public class MapleCharacter extends BaseMapleCharacter {
                         toberemove.add(new Pair<>(inv, item));
                     }
                 } else if ((item.getItemId() == 5000054
-                                && item.getPet() != null
-                                && item.getPet().getSecondsLeft() <= 0)
+                        && item.getPet() != null
+                        && item.getPet().getSecondsLeft() <= 0)
                         || (firstLoad && ii.isLogoutExpire(item.getItemId()))) {
                     toberemove.add(new Pair<>(inv, item));
                 }
@@ -3985,7 +3945,7 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     public void checkBerserk() {
         if (
-        /* job != 132 || */ getLastBerserkTime() < 0 || getLastBerserkTime() + 10000 > System.currentTimeMillis()) {
+            /* job != 132 || */ getLastBerserkTime() < 0 || getLastBerserkTime() + 10000 > System.currentTimeMillis()) {
             return;
         }
         final ISkill BerserkX = SkillFactory.getSkill(1320006);
@@ -4385,7 +4345,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             }
         }
         client.getSession().write(PetPacket.petStatUpdate(this));
-        petStore = new byte[] {-1, -1, -1};
+        petStore = new byte[]{-1, -1, -1};
     }
 
     public final byte[] getPetStores() {
