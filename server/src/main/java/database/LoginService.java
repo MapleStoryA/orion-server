@@ -238,4 +238,65 @@ public class LoginService {
             log.error("error updating login state", e);
         }
     }
+
+    public static boolean ban(String id, String reason, boolean useAccountId, int gmlevel) {
+        try (var con = DatabaseConnection.getConnection()) {
+            PreparedStatement ps;
+            if (id.matches("/[0-9]{1,3}\\..*")) {
+                ps = con.prepareStatement("INSERT INTO ipbans VALUES (DEFAULT, ?)");
+                ps.setString(1, id);
+                ps.execute();
+                ps.close();
+                return true;
+            }
+            if (useAccountId) {
+                ps = con.prepareStatement("SELECT id FROM accounts WHERE name = ?");
+            } else {
+                ps = con.prepareStatement("SELECT accountid FROM characters WHERE name = ?");
+            }
+            boolean ret = false;
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int z = rs.getInt(1);
+                PreparedStatement psb = con.prepareStatement(
+                        "UPDATE accounts SET banned = 1, banreason = ? WHERE id = ? AND gm" + " < ?");
+                psb.setString(1, reason);
+                psb.setInt(2, z);
+                psb.setInt(3, gmlevel);
+                psb.execute();
+                psb.close();
+
+                if (gmlevel > 100) { // admin ban
+                    PreparedStatement psa = con.prepareStatement("SELECT * FROM accounts WHERE id = ?");
+                    psa.setInt(1, z);
+                    ResultSet rsa = psa.executeQuery();
+                    if (rsa.next()) {
+                        String sessionIP = rsa.getString("sessionIP");
+                        if (sessionIP != null && sessionIP.matches("/[0-9]{1,3}\\..*")) {
+                            PreparedStatement psz = con.prepareStatement("INSERT INTO ipbans VALUES (DEFAULT, ?)");
+                            psz.setString(1, sessionIP);
+                            psz.execute();
+                            psz.close();
+                        }
+                        if (rsa.getString("macs") != null) {
+                            String[] macData = rsa.getString("macs").split(", ");
+                            if (macData.length > 0) {
+                                BanService.banMacs(macData);
+                            }
+                        }
+                    }
+                    rsa.close();
+                    psa.close();
+                }
+                ret = true;
+            }
+            rs.close();
+            ps.close();
+            return ret;
+        } catch (SQLException ex) {
+            System.err.println("Error while banning" + ex);
+        }
+        return false;
+    }
 }

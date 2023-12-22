@@ -2,6 +2,7 @@ package server.base.commands;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import database.LoginService;
 import tools.helper.Api;
 
 @Api
@@ -60,7 +61,7 @@ class BanAccountCommand implements Command {
 
     private void banOfflinePlayer(MapleClient client, String playerName, String reason) {
         boolean banSuccess =
-                MapleCharacter.ban(playerName, reason, false, client.getPlayer().getGMLevel());
+                LoginService.ban(playerName, reason, false, client.getPlayer().getGMLevel());
         sendBanMessage(client, playerName, banSuccess, true);
     }
 
