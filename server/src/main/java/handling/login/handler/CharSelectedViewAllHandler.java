@@ -3,7 +3,7 @@ package handling.login.handler;
 import client.MapleClient;
 import database.CharacterService;
 import database.LoginState;
-import handling.ServerMigration;
+import handling.world.ServerMigration;
 import handling.world.WorldServer;
 import lombok.extern.slf4j.Slf4j;
 import networking.data.input.InPacket;

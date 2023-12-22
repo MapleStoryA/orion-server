@@ -6,7 +6,7 @@ import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import database.LoginState;
-import handling.ServerMigration;
+import handling.world.ServerMigration;
 import handling.world.WorldServer;
 import handling.world.helper.CharacterTransfer;
 import java.util.List;
