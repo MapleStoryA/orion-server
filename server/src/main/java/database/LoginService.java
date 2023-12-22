@@ -2,6 +2,7 @@ package database;
 
 import client.MapleCoolDownValueHolder;
 import client.MapleJob;
+import client.MapleQuestStatus;
 import client.anticheat.ReportType;
 import client.inventory.IItem;
 import client.inventory.ItemLoader;
@@ -11,6 +12,7 @@ import client.skill.EvanSkillPoints;
 import handling.world.buddy.BuddyListEntry;
 import lombok.extern.slf4j.Slf4j;
 import org.jdbi.v3.core.result.ResultIterable;
+import server.quest.MapleQuest;
 import tools.collection.Pair;
 
 import java.sql.PreparedStatement;
@@ -295,8 +297,41 @@ public class LoginService {
             ps.close();
             return ret;
         } catch (SQLException ex) {
-            System.err.println("Error while banning" + ex);
+            log.error("error while banning", ex);
         }
         return false;
+    }
+
+    public static void updateQuestStatus(int id, Map<MapleQuest, MapleQuestStatus> quests) {
+        String deleteQuery = "DELETE FROM queststatus WHERE characterid = ?";
+        String questStatusQuery = "INSERT INTO queststatus (`queststatusid`, `characterid`, `quest`,"
+                + " `status`, `time`, `forfeited`, `customData`) VALUES (DEFAULT,"
+                + " ?, ?, ?, ?, ?, ?)";
+        String questMobsQuery = "INSERT INTO queststatusmobs VALUES (DEFAULT, ?, ?, ?)";
+        try (var handle = DatabaseConnection.getConnector().open()) {
+            handle.inTransaction(h -> {
+                h.execute(deleteQuery, id);
+                for (final MapleQuestStatus q : quests.values()) {
+                    var update = h.createUpdate(questStatusQuery)
+                            .bind(0, id)
+                            .bind(1, q.getQuest().getId())
+                            .bind(2, q.getStatus())
+                            .bind(3, (int) (q.getCompletionTime() / 1000))
+                            .bind(4, q.getForfeited())
+                            .bind(5, q.getCustomData());
+                    Long generatedKey = update.executeAndReturnGeneratedKeys("queststatusid")
+                            .mapTo(Long.class)
+                            .one();
+                    if (q.hasMobKills()) {
+                        for (int mob : q.getMobKills().keySet()) {
+                            h.execute(questMobsQuery, generatedKey, mob, q.getMobKills(mob));
+                        }
+                    }
+                }
+                return true;
+            });
+        } catch (Exception ex) {
+            log.error("error updating quest status", ex);
+        }
     }
 }

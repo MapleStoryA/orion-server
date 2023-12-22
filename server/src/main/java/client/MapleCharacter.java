@@ -33,7 +33,6 @@ import constants.ServerConstants;
 import constants.skills.BladeLord;
 import constants.skills.Rogue;
 import database.AccountData;
-import database.BanService;
 import database.CashShopService;
 import database.CharacterData;
 import database.CharacterService;
@@ -1089,7 +1088,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     }
 
 
-
     public void saveToDB(boolean dc, boolean fromcs) {
         var con = DatabaseConnection.getConnection();
         PreparedStatement ps = null;
@@ -1192,36 +1190,7 @@ public class MapleCharacter extends BaseMapleCharacter {
                 ps.close();
             }
 
-            deleteWhereCharacterId(con, "DELETE FROM queststatus WHERE characterid = ?");
-            ps = con.prepareStatement(
-                    "INSERT INTO queststatus (`queststatusid`, `characterid`, `quest`,"
-                            + " `status`, `time`, `forfeited`, `customData`) VALUES (DEFAULT,"
-                            + " ?, ?, ?, ?, ?, ?)",
-                    DatabaseConnection.RETURN_GENERATED_KEYS);
-            pse = con.prepareStatement("INSERT INTO queststatusmobs VALUES (DEFAULT, ?, ?, ?)");
-            ps.setInt(1, id);
-            for (final MapleQuestStatus q : quests.values()) {
-                ps.setInt(2, q.getQuest().getId());
-                ps.setInt(3, q.getStatus());
-                ps.setInt(4, (int) (q.getCompletionTime() / 1000));
-                ps.setInt(5, q.getForfeited());
-                ps.setString(6, q.getCustomData());
-                ps.executeUpdate();
-                rs = ps.getGeneratedKeys();
-                rs.next();
-
-                if (q.hasMobKills()) {
-                    for (int mob : q.getMobKills().keySet()) {
-                        pse.setInt(1, rs.getInt(1));
-                        pse.setInt(2, mob);
-                        pse.setInt(3, q.getMobKills(mob));
-                        pse.executeUpdate();
-                    }
-                }
-                rs.close();
-            }
-            ps.close();
-            pse.close();
+            LoginService.updateQuestStatus(id, quests);
 
             if (changed_skills) {
                 deleteWhereCharacterId(con, "DELETE FROM skills WHERE characterid = ?");
