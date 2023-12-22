@@ -1,6 +1,7 @@
 package client.base;
 
 import client.MapleClient;
+import client.PlayerStats;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -8,6 +9,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import lombok.Getter;
 import lombok.Setter;
 import scripting.v1.event.Event;
+import server.MaplePortal;
 import server.maplevar.MapleVar;
 import server.maplevar.SimpleMapleVar;
 import server.maps.AbstractAnimatedMapleMapObject;
@@ -28,6 +30,10 @@ public abstract class BaseMapleCharacter extends AbstractAnimatedMapleMapObject 
     private String name;
 
     protected MapleMap map;
+
+    protected int map_id;
+
+    protected PlayerStats stats;
 
     private final Set<MapleMapObject> visibleMapObjects;
     private final ReentrantReadWriteLock visibleMapObjectsLock;
@@ -103,6 +109,50 @@ public abstract class BaseMapleCharacter extends AbstractAnimatedMapleMapObject 
     public String get(String key) {
         MapleVar var = new SimpleMapleVar(this);
         return var.get(key);
+    }
+
+    protected int getNearestSpawnPoint() {
+        int nearestSpawnPoint;
+        if (map == null) {
+            nearestSpawnPoint = 0;
+        } else {
+            final MaplePortal closest = map.findClosestSpawnpoint(getPosition());
+            nearestSpawnPoint = (closest != null ? closest.getId() : 0);
+        }
+        return nearestSpawnPoint;
+    }
+
+    protected int getReturnMapId(boolean fromCashShop) {
+        int returnMapId;
+        if (!fromCashShop && map != null) {
+            if (map.getForcedReturnId() != 999999999) {
+                returnMapId = map.getForcedReturnId();
+            } else {
+                returnMapId = stats.getHp() < 1 ? map.getReturnMapId() : map.getId();
+            }
+        } else {
+            returnMapId = map_id;
+        }
+        return returnMapId;
+    }
+
+    public MapleMap getMap() {
+        return map;
+    }
+
+    public void setMap(MapleMap newmap) {
+        this.map = newmap;
+    }
+
+    public void setMap(int PmapId) {
+        this.map_id = PmapId;
+    }
+
+    public int getMapId() {
+        if (map != null) {
+            return map.getId();
+        }
+        return map_id;
     }
 
     /**

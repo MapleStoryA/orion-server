@@ -190,7 +190,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     private short hpApUsed;
     private short fame;
     private int meso;
-    private int map_id;
 
     private byte gender;
     private int hair;
@@ -228,7 +227,6 @@ public class MapleCharacter extends BaseMapleCharacter {
     private final Map<Integer, MapleCoolDownValueHolder> coolDowns = new LinkedHashMap<>();
     private final Map<MapleDisease, MapleDiseaseValueHolder> diseases = new ConcurrentEnumMap<>(MapleDisease.class);
     private final Map<ReportType, Integer> reports = new EnumMap<>(ReportType.class);
-    private final PlayerStats stats;
 
     private final Map<Integer, Integer> movedMobs = new HashMap<>();
     private final HashMap<String, Object> temporaryData = new HashMap<>();
@@ -1201,31 +1199,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         }
     }
 
-    private int getNearestSpawnPoint() {
-        int nearestSpawnPoint;
-        if (map == null) {
-            nearestSpawnPoint = 0;
-        } else {
-            final MaplePortal closest = map.findClosestSpawnpoint(getPosition());
-            nearestSpawnPoint = (closest != null ? closest.getId() : 0);
-        }
-        return nearestSpawnPoint;
-    }
-
-    private int getReturnMapId(boolean fromCashShop) {
-        int returnMapId;
-        if (!fromCashShop && map != null) {
-            if (map.getForcedReturnId() != 999999999) {
-                returnMapId = map.getForcedReturnId();
-            } else {
-                returnMapId = stats.getHp() < 1 ? map.getReturnMapId() : map.getId();
-            }
-        } else {
-            returnMapId = map_id;
-        }
-        return returnMapId;
-    }
-
     public void saveInventory() {
         try (var con = DatabaseConnection.getConnection()) {
             List<Pair<IItem, MapleInventoryType>> listing = new ArrayList<>();
@@ -1968,25 +1941,6 @@ public class MapleCharacter extends BaseMapleCharacter {
         if (statups.size() > 0) {
             client.getSession().write(MaplePacketCreator.updatePlayerStats(statups, getJob().getId()));
         }
-    }
-
-    public MapleMap getMap() {
-        return map;
-    }
-
-    public void setMap(MapleMap newmap) {
-        this.map = newmap;
-    }
-
-    public void setMap(int PmapId) {
-        this.map_id = PmapId;
-    }
-
-    public int getMapId() {
-        if (map != null) {
-            return map.getId();
-        }
-        return map_id;
     }
 
     public byte getInitialSpawnpoint() {
