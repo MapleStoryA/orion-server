@@ -1,5 +1,9 @@
 package database;
 
+import static database.LoginResult.ALREADY_LOGGED_IN;
+import static database.LoginResult.INCORRECT_PASSWORD;
+import static database.LoginResult.NOT_REGISTERED_ID;
+
 import client.MapleCoolDownValueHolder;
 import client.MapleJob;
 import client.MapleQuestStatus;
@@ -12,11 +16,6 @@ import client.skill.EvanSkillPoints;
 import client.skill.ISkill;
 import client.skill.SkillEntry;
 import handling.world.buddy.BuddyListEntry;
-import lombok.extern.slf4j.Slf4j;
-import org.jdbi.v3.core.result.ResultIterable;
-import server.quest.MapleQuest;
-import tools.collection.Pair;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,10 +23,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static database.LoginResult.ALREADY_LOGGED_IN;
-import static database.LoginResult.INCORRECT_PASSWORD;
-import static database.LoginResult.NOT_REGISTERED_ID;
+import lombok.extern.slf4j.Slf4j;
+import org.jdbi.v3.core.result.ResultIterable;
+import server.quest.MapleQuest;
+import tools.collection.Pair;
 
 @Slf4j
 public class LoginService {
@@ -42,7 +41,8 @@ public class LoginService {
 
     public static CharacterData loadCharacterData(int accountId, int characterId) {
         try (var handle = DatabaseConnection.getConnector().open()) {
-            var result = handle.select("SELECT * FROM characters WHERE accountid = ? AND id = ?", accountId, characterId);
+            var result =
+                    handle.select("SELECT * FROM characters WHERE accountid = ? AND id = ?", accountId, characterId);
             ResultIterable<CharacterData> accountData = result.mapToBean(CharacterData.class);
             return accountData.findOne().orElse(null);
         }
@@ -50,15 +50,19 @@ public class LoginService {
 
     public static CharacterListResult loadCharacterList(int accountId, int world) {
         try (var handle = DatabaseConnection.getConnector().open()) {
-            var result = handle.select("SELECT * FROM characters WHERE accountid = ? AND world =" + " ?", accountId, world);
-            var characterDataList = result.mapToBean(CharacterData.class).stream().collect(Collectors.toList());
+            var result =
+                    handle.select("SELECT * FROM characters WHERE accountid = ? AND world =" + " ?", accountId, world);
+            var characterDataList =
+                    result.mapToBean(CharacterData.class).stream().collect(Collectors.toList());
             for (var characterData : characterDataList) {
                 var inventory = new MapleInventory[MapleInventoryType.values().length];
                 for (MapleInventoryType type : MapleInventoryType.values()) {
                     inventory[type.ordinal()] = new MapleInventory(type);
                 }
                 try {
-                    for (Pair<IItem, MapleInventoryType> mit : ItemLoader.INVENTORY.loadItems(true, characterData.getId()).values()) {
+                    for (Pair<IItem, MapleInventoryType> mit : ItemLoader.INVENTORY
+                            .loadItems(true, characterData.getId())
+                            .values()) {
                         var current = inventory[mit.getRight().ordinal()];
                         current.addFromDB(mit.getLeft());
                     }
@@ -73,7 +77,8 @@ public class LoginService {
 
     public static void updateAccountCash(int accountId, int nx, int maplePoints) {
         try (var handle = DatabaseConnection.getConnector().open()) {
-            handle.execute("UPDATE accounts SET `nxCredit` = ?, `mPoints` = ? WHERE" + " id = ?", nx, maplePoints, accountId);
+            handle.execute(
+                    "UPDATE accounts SET `nxCredit` = ?, `mPoints` = ? WHERE" + " id = ?", nx, maplePoints, accountId);
         }
     }
 
@@ -125,7 +130,11 @@ public class LoginService {
             handle.inTransaction((h -> {
                 h.execute(deleteQuery, characterId);
                 for (Map.Entry<ReportType, Integer> report : reports.entrySet()) {
-                    h.execute("INSERT INTO reports VALUES(DEFAULT, ?, ?, ?)", characterId, report.getKey().i, report.getValue());
+                    h.execute(
+                            "INSERT INTO reports VALUES(DEFAULT, ?, ?, ?)",
+                            characterId,
+                            report.getKey().i,
+                            report.getValue());
                 }
                 return true;
             }));
@@ -152,7 +161,9 @@ public class LoginService {
 
     public static LoginResult checkPassword(String name, String password) {
         try (var handle = DatabaseConnection.getConnector().open()) {
-            var result = handle.select("SELECT * FROM accounts WHERE name = ?", name).mapToBean(AccountData.class).findOne();
+            var result = handle.select("SELECT * FROM accounts WHERE name = ?", name)
+                    .mapToBean(AccountData.class)
+                    .findOne();
             if (result.isEmpty()) {
                 return new LoginResult(NOT_REGISTERED_ID, null);
             }
@@ -211,7 +222,8 @@ public class LoginService {
             inventory[type.ordinal()] = new MapleInventory(type);
         }
         try {
-            for (Pair<IItem, MapleInventoryType> mit : ItemLoader.INVENTORY.loadItems(false, charId).values()) {
+            for (Pair<IItem, MapleInventoryType> mit :
+                    ItemLoader.INVENTORY.loadItems(false, charId).values()) {
                 var current = inventory[mit.getRight().ordinal()];
                 current.addFromDB(mit.getLeft());
             }
@@ -223,7 +235,8 @@ public class LoginService {
 
     public static void setClientAccountLoginState(AccountData data, LoginState loginState, String sessionIp) {
         try (var con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("UPDATE accounts SET loggedin = ?, SessionIP = ?, lastlogin =" + " CURRENT_TIMESTAMP() WHERE id = ?");
+            PreparedStatement ps = con.prepareStatement("UPDATE accounts SET loggedin = ?, SessionIP = ?, lastlogin ="
+                    + " CURRENT_TIMESTAMP() WHERE id = ?");
             ps.setInt(1, loginState.getCode());
             ps.setString(2, sessionIp);
             ps.setInt(3, data.getId());
@@ -254,7 +267,8 @@ public class LoginService {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 int z = rs.getInt(1);
-                PreparedStatement psb = con.prepareStatement("UPDATE accounts SET banned = 1, banreason = ? WHERE id = ? AND gm" + " < ?");
+                PreparedStatement psb = con.prepareStatement(
+                        "UPDATE accounts SET banned = 1, banreason = ? WHERE id = ? AND gm" + " < ?");
                 psb.setString(1, reason);
                 psb.setInt(2, z);
                 psb.setInt(3, gmlevel);
@@ -296,14 +310,23 @@ public class LoginService {
 
     public static void updateQuestStatus(int id, Map<MapleQuest, MapleQuestStatus> quests) {
         String deleteQuery = "DELETE FROM queststatus WHERE characterid = ?";
-        String questStatusQuery = "INSERT INTO queststatus (`queststatusid`, `characterid`, `quest`," + " `status`, `time`, `forfeited`, `customData`) VALUES (DEFAULT," + " ?, ?, ?, ?, ?, ?)";
+        String questStatusQuery = "INSERT INTO queststatus (`queststatusid`, `characterid`, `quest`,"
+                + " `status`, `time`, `forfeited`, `customData`) VALUES (DEFAULT," + " ?, ?, ?, ?, ?, ?)";
         String questMobsQuery = "INSERT INTO queststatusmobs VALUES (DEFAULT, ?, ?, ?)";
         try (var handle = DatabaseConnection.getConnector().open()) {
             handle.inTransaction(h -> {
                 h.execute(deleteQuery, id);
                 for (final MapleQuestStatus q : quests.values()) {
-                    var update = h.createUpdate(questStatusQuery).bind(0, id).bind(1, q.getQuest().getId()).bind(2, q.getStatus()).bind(3, (int) (q.getCompletionTime() / 1000)).bind(4, q.getForfeited()).bind(5, q.getCustomData());
-                    Long generatedKey = update.executeAndReturnGeneratedKeys("queststatusid").mapTo(Long.class).one();
+                    var update = h.createUpdate(questStatusQuery)
+                            .bind(0, id)
+                            .bind(1, q.getQuest().getId())
+                            .bind(2, q.getStatus())
+                            .bind(3, (int) (q.getCompletionTime() / 1000))
+                            .bind(4, q.getForfeited())
+                            .bind(5, q.getCustomData());
+                    Long generatedKey = update.executeAndReturnGeneratedKeys("queststatusid")
+                            .mapTo(Long.class)
+                            .one();
                     update.close();
                     if (q.hasMobKills()) {
                         for (int mob : q.getMobKills().keySet()) {
@@ -320,13 +343,19 @@ public class LoginService {
 
     public static void updateSkills(int id, Map<ISkill, SkillEntry> skills) {
         String deleteQuery = "DELETE FROM skills WHERE characterid = ?";
-        String skillQuery = "INSERT INTO skills (characterid, skillid, skilllevel, masterlevel," + " expiration) VALUES (?, ?, ?, ?, ?)";
+        String skillQuery = "INSERT INTO skills (characterid, skillid, skilllevel, masterlevel,"
+                + " expiration) VALUES (?, ?, ?, ?, ?)";
         try (var handle = DatabaseConnection.getConnector().open()) {
             handle.inTransaction(h -> {
                 h.execute(deleteQuery, id);
                 for (final Map.Entry<ISkill, SkillEntry> skill : skills.entrySet()) {
                     int skillId = skill.getKey().getId();
-                    var update = h.createUpdate(skillQuery).bind(0, id).bind(1, skillId).bind(2, skill.getValue().skillevel).bind(3, skill.getValue().masterlevel).bind(4, skill.getValue().expiration);
+                    var update = h.createUpdate(skillQuery)
+                            .bind(0, id)
+                            .bind(1, skillId)
+                            .bind(2, skill.getValue().skillevel)
+                            .bind(3, skill.getValue().masterlevel)
+                            .bind(4, skill.getValue().expiration);
                     update.execute();
                     update.close();
                 }
@@ -360,7 +389,8 @@ public class LoginService {
         var etc = inventory[MapleInventoryType.ETC.ordinal()].getSlotLimit();
         var cash = inventory[MapleInventoryType.CASH.ordinal()].getSlotLimit();
         String deleteQuery = "DELETE FROM inventoryslot WHERE characterid = ?";
-        String insertQuery = "INSERT INTO inventoryslot (characterid, `equip`, `use`, `setup`,`etc`, `cash`) VALUES (?, ?, ?, ?, ?, ?)";
+        String insertQuery =
+                "INSERT INTO inventoryslot (characterid, `equip`, `use`, `setup`,`etc`, `cash`) VALUES (?, ?, ?, ?, ?, ?)";
         try (var handle = DatabaseConnection.getConnector().open()) {
             handle.inTransaction(h -> {
                 h.execute(deleteQuery, id);
