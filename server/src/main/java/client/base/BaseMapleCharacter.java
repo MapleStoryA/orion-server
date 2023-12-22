@@ -22,12 +22,7 @@ public abstract class BaseMapleCharacter extends AbstractAnimatedMapleMapObject 
     @Getter
     protected MapleClient client;
 
-    @Getter
-    protected int id;
 
-    @Getter
-    @Setter
-    private String name;
 
     protected MapleMap map;
 
@@ -155,24 +150,5 @@ public abstract class BaseMapleCharacter extends AbstractAnimatedMapleMapObject 
         return map_id;
     }
 
-    /**
-     * Oid of players is always = the cid
-     */
-    @Override
-    public int getObjectId() {
-        return getId();
-    }
 
-    /**
-     * Throws unsupported operation exception, oid of players is read only
-     */
-    @Override
-    public void setObjectId(int id) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public String toString() {
-        return getName() + " at " + getPosition() + " in map: " + map.getId();
-    }
 }
