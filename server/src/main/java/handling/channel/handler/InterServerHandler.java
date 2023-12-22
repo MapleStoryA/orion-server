@@ -53,10 +53,10 @@ public class InterServerHandler {
         final CharacterTransfer transfer = serverMigration.getCharacterTransfer();
 
         if (transfer == null) { // Logged for the first time
-            player = MapleCharacter.loadCharFromDB(characterId, c, true);
+            player = MapleCharacter.CharacterLoader.loadCharFromDB(characterId, c, true);
             player.setLoginTime(System.currentTimeMillis());
         } else {
-            player = MapleCharacter.reconstructChr(transfer, c, true);
+            player = MapleCharacter.CharacterLoader.reconstructChr(transfer, c, true);
         }
         c.setPlayer(player);
 

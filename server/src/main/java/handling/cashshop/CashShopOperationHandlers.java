@@ -51,7 +51,7 @@ public class CashShopOperationHandlers {
             c.getSession().close();
             return;
         }
-        MapleCharacter chr = MapleCharacter.reconstructChr(transfer, c, false);
+        MapleCharacter chr = MapleCharacter.CharacterLoader.reconstructChr(transfer, c, false);
 
         c.setPlayer(chr);
         c.loadAccountData(chr.getAccountID());
