@@ -1178,16 +1178,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             saveInventory(con);
 
             if (changed_quest_info) {
-                deleteWhereCharacterId(con, "DELETE FROM questinfo WHERE characterid = ?");
-                ps = con.prepareStatement(
-                        "INSERT INTO questinfo (`characterid`, `quest`, `customData`)" + " VALUES (?, ?, ?)");
-                ps.setInt(1, id);
-                for (final Entry<Integer, String> q : questInfo.entrySet()) {
-                    ps.setInt(2, q.getKey());
-                    ps.setString(3, q.getValue());
-                    ps.execute();
-                }
-                ps.close();
+                LoginService.updateQuestInfo(id, questInfo);
             }
 
             LoginService.updateQuestStatus(id, quests);

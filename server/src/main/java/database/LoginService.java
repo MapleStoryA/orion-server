@@ -324,6 +324,7 @@ public class LoginService {
                     Long generatedKey = update.executeAndReturnGeneratedKeys("queststatusid")
                             .mapTo(Long.class)
                             .one();
+                    update.close();
                     if (q.hasMobKills()) {
                         for (int mob : q.getMobKills().keySet()) {
                             h.execute(questMobsQuery, generatedKey, mob, q.getMobKills(mob));
@@ -353,11 +354,28 @@ public class LoginService {
                             .bind(3, skill.getValue().masterlevel)
                             .bind(4, skill.getValue().expiration);
                     update.execute();
+                    update.close();
                 }
                 return true;
             });
         } catch (Exception ex) {
             log.error("error updating quest status", ex);
+        }
+    }
+
+    public static void updateQuestInfo(int id, Map<Integer, String> questInfo) {
+        String deleteQuery = "DELETE FROM questinfo WHERE characterid = ?";
+        String insertQuery = "INSERT INTO questinfo (`characterid`, `quest`, `customData`)" + " VALUES (?, ?, ?)";
+        try (var handle = DatabaseConnection.getConnector().open()) {
+            handle.inTransaction(h -> {
+                h.execute(deleteQuery, id);
+                for (final Map.Entry<Integer, String> q : questInfo.entrySet()) {
+                    h.execute(insertQuery, id, q.getKey(), q.getValue());
+                }
+                return true;
+            });
+        } catch (Exception ex) {
+            log.error("error updating quest info", ex);
         }
     }
 }
