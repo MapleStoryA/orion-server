@@ -37,7 +37,6 @@ import database.CashShopService;
 import database.CharacterData;
 import database.CharacterService;
 import database.DatabaseConnection;
-import database.DatabaseException;
 import database.LoginService;
 import database.LoginState;
 import database.TeleportRockService;
@@ -139,10 +138,6 @@ public class MapleCharacter extends BaseMapleCharacter {
 
     @Getter
     private AccountData accountData;
-
-    // database stuff
-    @Getter
-    protected int id;
 
     @Getter
     @Setter
@@ -984,60 +979,65 @@ public class MapleCharacter extends BaseMapleCharacter {
         PreparedStatement ps = null;
         PreparedStatement pse = null;
         ResultSet rs = null;
-        try (var con = DatabaseConnection.getConnection()) {
-            ps = con.prepareStatement(
-                    "INSERT INTO characters (level, fame, str, dex, luk, `int`, exp, hp,"
-                            + " mp, maxhp, maxmp, ap, skincolor, gender, job, hair, face,"
-                            + " map, meso, hpApUsed, spawnpoint, party, buddyCapacity,"
-                            + " monsterbookcover, dojo_pts, dojoRecord, pets, subcategory,"
-                            + " marriageId, accountid, name, world) VALUES (?, ?, ?, ?, ?, ?,"
-                            + " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
-                            + " ?, ?, ?, ?, ?)",
-                    DatabaseConnection.RETURN_GENERATED_KEYS);
-            ps.setInt(1, 1);
-            ps.setShort(2, (short) 0); // Fame
+
+        try (var handle = DatabaseConnection.getConnector().open()) {
+            String insertCharacterQuery = "INSERT INTO characters (level, fame, str, dex, luk, `int`, exp, hp,"
+                    + " mp, maxhp, maxmp, ap, skincolor, gender, job, hair, face,"
+                    + " map, meso, hpApUsed, spawnpoint, party, buddyCapacity,"
+                    + " monsterbookcover, dojo_pts, dojoRecord, pets, subcategory,"
+                    + " marriageId, accountid, name, world) VALUES (:level, :fame, :str, :dex, :luk, :int,"
+                    + " :exp, :hp, :mp, :maxhp, :maxmp, :ap, :skincolor, :gender, :job, :hair, :face, :map, :meso, :hpApUsed,"
+                    + " :spawnpoint, :party, :buddyCapacity, :monsterbookcover, :dojo_pts, :dojoRecord, :pets, :subcategory,"
+                    + " :marriageId, :accountid, :name, :world)";
+
             final PlayerStats stat = chr.stats;
-            ps.setShort(3, stat.getStr()); // Str
-            ps.setShort(4, stat.getDex()); // Dex
-            ps.setShort(5, stat.getInt()); // Int
-            ps.setShort(6, stat.getLuk()); // Luk
-            ps.setInt(7, 0); // EXP
-            ps.setInt(8, stat.getHp()); // HP
-            ps.setInt(9, stat.getMp());
-            ps.setInt(10, stat.getMaxHp()); // MP
-            ps.setInt(11, stat.getMaxMp());
-            ps.setShort(12, (short) 0); // Remaining AP
-            ps.setByte(13, chr.getSkinColor());
-            ps.setByte(14, chr.gender);
-            ps.setShort(15, (short) chr.job.getId());
-            ps.setInt(16, chr.hair);
-            ps.setInt(17, chr.getFace());
-            ps.setInt(18, type == 1 ? 0 : (type == 0 ? 130030000 : (type == 3 ? 900090000 : 914000000)));
-            ps.setInt(19, chr.meso); // Meso
-            ps.setShort(20, (short) 0); // HP ap used
-            ps.setByte(21, (byte) 0); // Spawnpoint
-            ps.setInt(22, -1); // Party
-            ps.setByte(23, chr.buddyList.getCapacity()); // Buddylist
-            ps.setInt(24, 0); // Monster book cover
-            ps.setInt(25, 0); // Dojo
-            ps.setInt(26, 0); // Dojo record
-            ps.setString(27, "-1;-1;-1");
-            ps.setInt(28, db ? 1 : 0);
-            ps.setInt(29, 0);
-            ps.setInt(30, chr.getAccountID());
-            ps.setString(31, chr.getName());
-            ps.setByte(32, chr.world);
-            ps.executeUpdate();
+            handle.inTransaction(h -> {
+                Update update = h.createUpdate(insertCharacterQuery);
+                Integer generatedKey = update.bind("level", stat.getLevel())
+                        .bind("fame", 0)
+                        .bind("str", stat.getStr())
+                        .bind("dex", stat.getDex())
+                        .bind("luk", stat.getLuk())
+                        .bind("int", stat.getInt())
+                        .bind("exp", stat.getExp())
+                        .bind("hp", stat.getHp())
+                        .bind("mp", stat.getMp())
+                        .bind("maxhp", stat.getMaxHp())
+                        .bind("maxmp", stat.getMaxMp())
+                        .bind("ap", chr.getRemainingAp())
+                        .bind("skincolor", chr.getSkinColor())
+                        .bind("gender", chr.getGender())
+                        .bind("job", chr.getJob().getId())
+                        .bind("hair", chr.getHair())
+                        .bind("face", chr.getFace())
+                        .bind("map", type == 1 ? 0 : (type == 0 ? 130030000 : (type == 3 ? 900090000 : 914000000)))
+                        .bind("meso", chr.getMeso())
+                        .bind("hpApUsed", chr.getHpApUsed())
+                        .bind("spawnpoint", 0)
+                        .bind("party", -1)
+                        .bind("buddyCapacity", chr.buddyList.getCapacity())
+                        .bind("monsterbookcover", 0)
+                        .bind("dojo_pts", 0)
+                        .bind("dojoRecord", 0)
+                        .bind("pets", "-1;-1;-1")
+                        .bind("subcategory", db ? 1 : 0)
+                        .bind("marriageId", 0)
+                        .bind("accountid", chr.getAccountID())
+                        .bind("name", chr.getName())
+                        .bind("sp", chr.getRemainingSp())
+                        .bind("world", chr.getWorld())
+                        .executeAndReturnGeneratedKeys(insertCharacterQuery)
+                        .mapTo(Integer.class)
+                        .one();
 
-            rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                chr.id = rs.getInt(1);
-            } else {
-                throw new DatabaseException("Inserting char failed.");
-            }
-            ps.close();
-            rs.close();
+                chr.id = generatedKey;
+                return true;
+            });
+        } catch (Exception ex) {
+            log.error("Error saving character", ex);
+        }
 
+        try (var con = DatabaseConnection.getConnection()) {
             ps = con.prepareStatement(
                     "INSERT INTO queststatus (`queststatusid`, `characterid`, `quest`,"
                             + " `status`, `time`, `forfeited`, `customData`) VALUES (DEFAULT,"
