@@ -61,7 +61,7 @@ public class LoginService {
                 }
                 try {
                     for (Pair<IItem, MapleInventoryType> mit : ItemLoader.INVENTORY
-                            .loadItems(true, characterData.getId())
+                            .loadItems(characterData.getId())
                             .values()) {
                         var current = inventory[mit.getRight().ordinal()];
                         current.addFromDB(mit.getLeft());
@@ -223,7 +223,7 @@ public class LoginService {
         }
         try {
             for (Pair<IItem, MapleInventoryType> mit :
-                    ItemLoader.INVENTORY.loadItems(false, charId).values()) {
+                    ItemLoader.INVENTORY.loadItems(charId).values()) {
                 var current = inventory[mit.getRight().ordinal()];
                 current.addFromDB(mit.getLeft());
             }

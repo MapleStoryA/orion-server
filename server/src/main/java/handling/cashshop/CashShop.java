@@ -76,7 +76,7 @@ public class CashShop implements Serializable {
         }
 
         for (Pair<IItem, MapleInventoryType> item :
-                factory.loadItems(false, accountId).values()) {
+                factory.loadItems(accountId).values()) {
             inventory.add(item.getLeft());
         }
     }
