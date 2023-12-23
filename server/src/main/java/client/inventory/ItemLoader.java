@@ -24,9 +24,6 @@ package client.inventory;
 
 import constants.GameConstants;
 import database.DatabaseConnection;
-import lombok.extern.slf4j.Slf4j;
-import tools.collection.Pair;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,6 +33,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
+import tools.collection.Pair;
 
 @Slf4j
 public enum ItemLoader {
