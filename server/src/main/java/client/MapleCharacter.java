@@ -3637,7 +3637,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             rs.close();
             ps.close();
         } catch (SQLException e) {
-            System.err.println("Unable to show note" + e);
+            log.error("Unable to show note" + e);
         }
     }
 
@@ -3661,7 +3661,7 @@ public class MapleCharacter extends BaseMapleCharacter {
             ps.execute();
             ps.close();
         } catch (SQLException e) {
-            System.err.println("Unable to delete note" + e);
+            log.error("Unable to delete note" + e);
         }
     }
 
