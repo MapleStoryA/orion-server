@@ -1,4 +1,4 @@
-package handling;
+package handling.world;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

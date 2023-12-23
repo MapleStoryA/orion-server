@@ -1,4 +1,4 @@
-package handling;
+package handling.world;
 
 public interface MigrationService {
 

@@ -317,15 +317,20 @@ public class AdminCommands {
         public int execute(MapleClient c, String[] args) {
             if (args.length > 1) {
                 String zero = args[1];
-                if (zero != null && !zero.isEmpty()) {
-                    c.getPlayer().gainMeso(-c.getPlayer().getMeso(), true);
+                if (zero != null
+                        && !zero.isEmpty()
+                        && Integer.valueOf(zero) > 0
+                        && Integer.valueOf(zero) < Integer.MAX_VALUE) {
+                    c.getPlayer().gainMeso(Integer.valueOf(zero), true);
                     return 1;
                 }
             }
-            c.getPlayer().gainMeso(Integer.MAX_VALUE - c.getPlayer().getMeso(), true);
             return 1;
         }
     }
+
+    @Api
+    public static class Meso extends GainMeso {}
 
     @Api
     public static class GainCash implements Command {

@@ -7,11 +7,11 @@ import client.MapleQuestStatus;
 import client.skill.SkillFactory;
 import constants.ServerConstants;
 import database.LoginState;
-import handling.ServerMigration;
 import handling.channel.ChannelServer;
 import handling.channel.CharacterIdChannelPair;
 import handling.channel.handler.utils.PartyHandlerUtils.PartyOperation;
 import handling.world.FindCommand;
+import handling.world.ServerMigration;
 import handling.world.WorldServer;
 import handling.world.alliance.AllianceManager;
 import handling.world.buddy.BuddyListEntry;
@@ -53,10 +53,10 @@ public class InterServerHandler {
         final CharacterTransfer transfer = serverMigration.getCharacterTransfer();
 
         if (transfer == null) { // Logged for the first time
-            player = MapleCharacter.loadCharFromDB(characterId, c, true);
+            player = MapleCharacter.CharacterLoader.loadCharFromDB(characterId, c, true);
             player.setLoginTime(System.currentTimeMillis());
         } else {
-            player = MapleCharacter.reconstructChr(transfer, c, true);
+            player = MapleCharacter.CharacterLoader.reconstructChr(transfer, c, true);
         }
         c.setPlayer(player);
 

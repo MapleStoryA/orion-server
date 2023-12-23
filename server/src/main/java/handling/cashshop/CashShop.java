@@ -62,21 +62,21 @@ public class CashShop implements Serializable {
         this.characterId = characterId;
         int job_id = mapleJob.getId();
         if (job_id / 1000 == 1) {
-            factory = ItemLoader.CASHSHOP_CYGNUS;
+            factory = ItemLoader.CASH_SHOP_CYGNUS;
         } else if ((job_id / 100 == 21 || job_id / 100 == 20) && job_id != 2001) {
-            factory = ItemLoader.CASHSHOP_ARAN;
+            factory = ItemLoader.CASH_SHOP_ARAN;
         } else if (job_id == 2001 || job_id / 100 == 22) {
-            factory = ItemLoader.CASHSHOP_EVAN;
+            factory = ItemLoader.CASH_SHOP_EVAN;
         } else if (job_id >= 3000) {
-            factory = ItemLoader.CASHSHOP_RESIST;
+            factory = ItemLoader.CASH_SHOP_RESIST;
         } else if (job_id / 10 == 43) {
-            factory = ItemLoader.CASHSHOP_DB;
+            factory = ItemLoader.CASH_SHOP_DB;
         } else {
-            factory = ItemLoader.CASHSHOP_EXPLORER;
+            factory = ItemLoader.CASH_SHOP_EXPLORER;
         }
 
         for (Pair<IItem, MapleInventoryType> item :
-                factory.loadItems(false, accountId).values()) {
+                factory.loadInventoryItems(accountId).values()) {
             inventory.add(item.getLeft());
         }
     }

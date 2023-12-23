@@ -77,7 +77,7 @@ public class MapleStorage implements Serializable {
                 ps.close();
 
                 for (Pair<IItem, MapleInventoryType> mit :
-                        ItemLoader.STORAGE.loadItems(false, id).values()) {
+                        ItemLoader.STORAGE.loadInventoryItems(id).values()) {
                     ret.items.add(mit.getLeft());
                 }
             } else {

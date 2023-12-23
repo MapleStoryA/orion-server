@@ -1,4 +1,4 @@
-package handling;
+package handling.world;
 
 import client.MapleCoolDownValueHolder;
 import client.MapleDiseaseValueHolder;

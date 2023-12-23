@@ -201,7 +201,7 @@ public class CharacterService {
         final List<Integer> allowedChar = new LinkedList<>();
 
         for (final CharNameAndId cni : loadCharactersInternal(serverId, accountId)) {
-            final MapleCharacter chr = MapleCharacter.loadCharFromDB(cni.id, client, false);
+            final MapleCharacter chr = MapleCharacter.CharacterLoader.loadCharFromDB(cni.id, client, false);
             chars.add(chr);
             allowedChar.add(chr.getId());
         }

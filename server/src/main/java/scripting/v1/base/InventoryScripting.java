@@ -5,6 +5,7 @@ import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import lombok.extern.slf4j.Slf4j;
 import scripting.v1.api.Inventory;
+import server.MapleInventoryManipulator;
 import tools.helper.Api;
 
 @Slf4j
@@ -38,7 +39,7 @@ public class InventoryScripting extends PlayerScripting implements Inventory {
         if (money != 0) {
             player.gainMeso(money, true, false, true);
         }
-        return InventoryHelper.gainItem(id, quantity, false, 0, -1, "", client);
+        return MapleInventoryManipulator.gainItem(id, quantity, false, 0, -1, "", client);
     }
 
     @Override
@@ -73,7 +74,7 @@ public class InventoryScripting extends PlayerScripting implements Inventory {
         for (int i = 0; i <= items.length - 1; i += 2) {
             int id = items[i];
             short quantity = (short) items[i + 1];
-            InventoryHelper.gainItem(id, quantity, false, 0, -1, "", client);
+            MapleInventoryManipulator.gainItem(id, quantity, false, 0, -1, "", client);
         }
 
         return 1;

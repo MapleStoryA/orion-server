@@ -6,7 +6,7 @@ import client.inventory.IItem;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import database.LoginState;
-import handling.ServerMigration;
+import handling.world.ServerMigration;
 import handling.world.WorldServer;
 import handling.world.helper.CharacterTransfer;
 import java.util.List;
@@ -51,7 +51,7 @@ public class CashShopOperationHandlers {
             c.getSession().close();
             return;
         }
-        MapleCharacter chr = MapleCharacter.reconstructChr(transfer, c, false);
+        MapleCharacter chr = MapleCharacter.CharacterLoader.reconstructChr(transfer, c, false);
 
         c.setPlayer(chr);
         c.loadAccountData(chr.getAccountID());
