@@ -7,10 +7,6 @@ import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import database.DatabaseConnection;
 import database.DatabaseException;
-import lombok.extern.slf4j.Slf4j;
-import tools.MaplePacketCreator;
-import tools.collection.Pair;
-
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,6 +17,9 @@ import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
+import tools.MaplePacketCreator;
+import tools.collection.Pair;
 
 @Slf4j
 public class MapleStorage implements Serializable {
@@ -44,9 +43,9 @@ public class MapleStorage implements Serializable {
 
     public static int create(int id) throws SQLException {
         try (var con = DatabaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(
-                     "INSERT INTO storages (accountid, slots, meso) VALUES (?, ?, ?)",
-                     DatabaseConnection.RETURN_GENERATED_KEYS)) {
+                PreparedStatement ps = con.prepareStatement(
+                        "INSERT INTO storages (accountid, slots, meso) VALUES (?, ?, ?)",
+                        DatabaseConnection.RETURN_GENERATED_KEYS)) {
 
             ps.setInt(1, id);
             ps.setInt(2, 4);
@@ -78,7 +77,7 @@ public class MapleStorage implements Serializable {
                 ps.close();
 
                 for (Pair<IItem, MapleInventoryType> mit :
-                        ItemLoader.STORAGE.loadItems(id).values()) {
+                        ItemLoader.STORAGE.loadInventoryItems(id).values()) {
                     ret.items.add(mit.getLeft());
                 }
             } else {

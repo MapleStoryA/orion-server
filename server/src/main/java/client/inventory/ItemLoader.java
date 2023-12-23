@@ -24,9 +24,6 @@ package client.inventory;
 
 import constants.GameConstants;
 import database.DatabaseConnection;
-import lombok.extern.slf4j.Slf4j;
-import tools.collection.Pair;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,35 +33,36 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
+import tools.collection.Pair;
 
 @Slf4j
 public enum ItemLoader {
     INVENTORY("inventoryitems", "inventoryequipment", 0, "characterid"),
     STORAGE("inventoryitems", "inventoryequipment", 1, "accountid"),
-    CASHSHOP_EXPLORER("csitems", "csequipment", 2, "accountid"),
-    CASHSHOP_CYGNUS("csitems", "csequipment", 3, "accountid"),
-    CASHSHOP_ARAN("csitems", "csequipment", 4, "accountid"),
+    CASH_SHOP_EXPLORER("csitems", "csequipment", 2, "accountid"),
+    CASH_SHOP_CYGNUS("csitems", "csequipment", 3, "accountid"),
+    CASH_SHOP_ARAN("csitems", "csequipment", 4, "accountid"),
     HIRED_MERCHANT("hiredmerchitems", "hiredmerchequipment", 5, "packageid", "accountid", "characterid"),
-    CASHSHOP_EVAN("csitems", "csequipment", 7, "accountid"),
-    CASHSHOP_DB("csitems", "csequipment", 10, "accountid"),
-    CASHSHOP_RESIST("csitems", "csequipment", 11, "accountid");
+    CASH_SHOP_EVAN("csitems", "csequipment", 7, "accountid"),
+    CASH_SHOP_DB("csitems", "csequipment", 10, "accountid"),
+    CASH_SHOP_RESIST("csitems", "csequipment", 11, "accountid");
     private final int value;
-    private final String table;
-    private final String table_equip;
-    private final List<String> fields;
+    private final String tableInventoryItemsName;
+    private final String tableEquipName;
+    private final List<String> filterFields;
 
-    ItemLoader(String table, String table_equip, int value, String... fields) {
-        this.table = table;
-        this.table_equip = table_equip;
+    ItemLoader(String tableInventoryItemsName, String tableEquipName, int value, String... filterFields) {
+        this.tableInventoryItemsName = tableInventoryItemsName;
+        this.tableEquipName = tableEquipName;
         this.value = value;
-        this.fields = Arrays.asList(fields);
+        this.filterFields = Arrays.asList(filterFields);
     }
 
-
-    public Map<Integer, Pair<IItem, MapleInventoryType>> loadItems(Integer... id) throws SQLException {
+    public Map<Integer, Pair<IItem, MapleInventoryType>> loadInventoryItems(Integer... id) throws SQLException {
         List<Integer> ids = Arrays.asList(id);
         Map<Integer, Pair<IItem, MapleInventoryType>> items = new LinkedHashMap<>();
-        if (ids.size() != fields.size()) {
+        if (ids.size() != filterFields.size()) {
             return items;
         }
         try (var con = DatabaseConnection.getConnection()) {
@@ -78,7 +76,7 @@ public enum ItemLoader {
             while (rs.next()) {
                 MapleInventoryType mapleInventoryType = MapleInventoryType.getByType(rs.getByte("inventorytype"));
                 Item item;
-                if (mapleInventoryType.equals(MapleInventoryType.EQUIP) || mapleInventoryType.equals(MapleInventoryType.EQUIPPED)) {
+                if (isEquipInventory(mapleInventoryType)) {
                     item = mapEquipFromResultSet(rs, mapleInventoryType);
                 } else {
                     item = mapItemFromResultSet(rs);
@@ -94,13 +92,11 @@ public enum ItemLoader {
         return items;
     }
 
-
     public void saveItems(List<Pair<IItem, MapleInventoryType>> items, Integer... id) {
         List<Integer> ids = Arrays.asList(id);
-        if (ids.size() != fields.size()) {
+        if (ids.size() != filterFields.size()) {
             return;
         }
-
 
         try (var con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement(createDeleteFromQuery());
@@ -111,13 +107,13 @@ public enum ItemLoader {
             ps.executeUpdate();
             ps.close();
 
-            StringBuilder insertIntoQuery = createInsertQuery();
+            StringBuilder insertIntoQuery = createInsertInventoryItemsQuery();
             ps = con.prepareStatement(insertIntoQuery.toString(), Statement.RETURN_GENERATED_KEYS);
             PreparedStatement pse = con.prepareStatement(createInsertIntoTableEquipQuery());
-            final Iterator<Pair<IItem, MapleInventoryType>> iter = items.iterator();
+            final Iterator<Pair<IItem, MapleInventoryType>> it = items.iterator();
             Pair<IItem, MapleInventoryType> pair;
-            while (iter.hasNext()) {
-                pair = iter.next();
+            while (it.hasNext()) {
+                pair = it.next();
                 IItem item = pair.getLeft();
                 MapleInventoryType mapleInventoryType = pair.getRight();
                 int i = 1;
@@ -137,7 +133,7 @@ public enum ItemLoader {
                 ps.setString(i + 9, item.getGiftFrom());
                 ps.executeUpdate();
 
-                if (mapleInventoryType.equals(MapleInventoryType.EQUIP) || mapleInventoryType.equals(MapleInventoryType.EQUIPPED)) {
+                if (isEquipInventory(mapleInventoryType)) {
                     ResultSet rs = ps.getGeneratedKeys();
 
                     if (!rs.next()) {
@@ -146,6 +142,7 @@ public enum ItemLoader {
 
                     pse.setInt(1, rs.getInt(1));
                     rs.close();
+
                     setEquipInsertParameters(pse, (IEquip) item);
                     pse.executeUpdate();
                 }
@@ -155,12 +152,14 @@ public enum ItemLoader {
         } catch (SQLException ex) {
             log.error("Error while saving items", ex);
         }
-
-
     }
 
-    private static void setEquipInsertParameters(PreparedStatement pse, IEquip item) throws SQLException {
-        IEquip equip = item;
+    private static boolean isEquipInventory(MapleInventoryType mapleInventoryType) {
+        return mapleInventoryType.equals(MapleInventoryType.EQUIP)
+                || mapleInventoryType.equals(MapleInventoryType.EQUIPPED);
+    }
+
+    private static void setEquipInsertParameters(PreparedStatement pse, IEquip equip) throws SQLException {
         pse.setInt(2, equip.getUpgradeSlots());
         pse.setInt(3, equip.getLevel());
         pse.setInt(4, equip.getStr());
@@ -192,14 +191,14 @@ public enum ItemLoader {
     private String createDeleteFromQuery() {
         StringBuilder query = new StringBuilder();
         query.append("DELETE FROM `");
-        query.append(table);
+        query.append(tableInventoryItemsName);
         query.append("` WHERE `type` = ? AND (`");
-        query.append(fields.get(0));
+        query.append(filterFields.get(0));
         query.append("` = ?");
-        if (fields.size() > 1) {
-            for (int i = 1; i < fields.size(); i++) {
+        if (filterFields.size() > 1) {
+            for (int i = 1; i < filterFields.size(); i++) {
                 query.append(" OR `");
-                query.append(fields.get(i));
+                query.append(filterFields.get(i));
                 query.append("` = ?");
             }
         }
@@ -209,22 +208,22 @@ public enum ItemLoader {
 
     private String createInsertIntoTableEquipQuery() {
         return "INSERT INTO "
-                + table_equip
+                + tableEquipName
                 + " VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
                 + " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     }
 
-    private StringBuilder createInsertQuery() {
+    private StringBuilder createInsertInventoryItemsQuery() {
         StringBuilder insertIntoQuery = new StringBuilder("INSERT INTO `");
-        insertIntoQuery.append(table);
+        insertIntoQuery.append(tableInventoryItemsName);
         insertIntoQuery.append("` (");
-        for (String g : fields) {
+        for (String g : filterFields) {
             insertIntoQuery.append(g);
             insertIntoQuery.append(", ");
         }
         insertIntoQuery.append("itemid, inventorytype, position, quantity, owner, uniqueid, expiredate, flag,"
                 + " `type`, sender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?");
-        for (String g : fields) {
+        for (String g : filterFields) {
             insertIntoQuery.append(", ?");
         }
         insertIntoQuery.append(")");
@@ -234,11 +233,11 @@ public enum ItemLoader {
     private String createSelectAllQuery() {
         StringBuilder query = new StringBuilder();
         query.append("SELECT * FROM `");
-        query.append(table);
+        query.append(tableInventoryItemsName);
         query.append("` LEFT JOIN `");
-        query.append(table_equip);
+        query.append(tableEquipName);
         query.append("` USING(`inventoryitemid`) WHERE `type` = ?");
-        for (String g : fields) {
+        for (String g : filterFields) {
             query.append(" AND `");
             query.append(g);
             query.append("` = ?");
@@ -248,8 +247,7 @@ public enum ItemLoader {
     }
 
     private static Item mapItemFromResultSet(ResultSet rs) throws SQLException {
-        Item item = new Item(
-                rs.getInt("itemid"), rs.getShort("position"), rs.getShort("quantity"), rs.getByte("flag"));
+        Item item = new Item(rs.getInt("itemid"), rs.getShort("position"), rs.getShort("quantity"), rs.getByte("flag"));
         item.setSN(rs.getInt("uniqueid"));
         item.setOwner(rs.getString("owner"));
         item.setInventoryId(rs.getLong("inventoryitemid"));
@@ -271,8 +269,8 @@ public enum ItemLoader {
     }
 
     private static Equip mapEquipFromResultSet(ResultSet rs, MapleInventoryType mit) throws SQLException {
-        Equip equip = new Equip(
-                rs.getInt("itemid"), rs.getShort("position"), rs.getInt("uniqueid"), rs.getByte("flag"));
+        Equip equip =
+                new Equip(rs.getInt("itemid"), rs.getShort("position"), rs.getInt("uniqueid"), rs.getByte("flag"));
 
         equip.setQuantity((short) 1);
         equip.setInventoryId(rs.getLong("inventoryitemid"));
@@ -307,8 +305,7 @@ public enum ItemLoader {
         equip.setGiftFrom(rs.getString("sender"));
         if (equip.getSN() > -1) {
             if (GameConstants.isEffectRing(rs.getInt("itemid"))) {
-                MapleRing ring =
-                        MapleRing.loadFromDb(equip.getSN(), mit.equals(MapleInventoryType.EQUIPPED));
+                MapleRing ring = MapleRing.loadFromDb(equip.getSN(), mit.equals(MapleInventoryType.EQUIPPED));
                 if (ring != null) {
                     equip.setRing(ring);
                 }
