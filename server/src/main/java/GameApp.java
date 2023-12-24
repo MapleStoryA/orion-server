@@ -23,6 +23,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
+import networking.encryption.MapleAESOFB;
+import networking.encryption.MapleKeys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import server.ItemMakerFactory;
@@ -60,6 +62,12 @@ public class GameApp {
         ServerConfig.serverConfig();
         ServerConstants.MAPLE_VERSION = ServerConfig.serverConfig().getConfig().getVersion();
         ServerConstants.MAPLE_PATCH = ServerConfig.serverConfig().getConfig().getPatch();
+        if (ServerConstants.MAPLE_VERSION == 90) {
+            MapleAESOFB.userKey = MapleKeys.Version90.getUserKey();
+        } else {
+            MapleAESOFB.userKey = MapleKeys.Version92_1.getUserKey();
+        }
+
         GameApp server = new GameApp();
         server.start();
         log.info("[" + ServerConfig.serverConfig().getConfig().getLogin().getServerName() + "]");

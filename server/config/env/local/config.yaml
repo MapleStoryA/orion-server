@@ -1,5 +1,5 @@
 debug: true
-debugPacket: true
+debugPacket: false
 version: 92
 patch: 1
 database:

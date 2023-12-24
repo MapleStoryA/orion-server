@@ -14,47 +14,8 @@ import tools.helper.HexTool;
 @Slf4j
 public class MapleAESOFB {
 
-    private static final SecretKeySpec skey = new SecretKeySpec(
-            new byte[] {
-                0x13,
-                0x00,
-                0x00,
-                0x00,
-                0x08,
-                0x00,
-                0x00,
-                0x00,
-                0x06,
-                0x00,
-                0x00,
-                0x00,
-                (byte) 0xB4,
-                0x00,
-                0x00,
-                0x00,
-                0x1B,
-                0x00,
-                0x00,
-                0x00,
-                0x0F,
-                0x00,
-                0x00,
-                0x00,
-                0x34,
-                0x00,
-                0x00,
-                0x00,
-                0x52,
-                0x00,
-                0x00,
-                0x00
-            },
-            "AES");
-    // KMS
-    //    {0x13, 0x00, 0x00, 0x00, 0x52, 0x00, 0x00, 0x00, 0x2A, 0x00, 0x00, 0x00, 0x5B, 0x00, 0x00,
-    // 0x00, 0x08, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x60, 0x00,
-    // 0x00, 0x00}
-    /* VANA */
+    public static SecretKeySpec userKey = null;
+
     private static final byte[] funnyBytes = new byte[] {
         (byte) 0xEC,
         (byte) 0x3F,
@@ -321,12 +282,12 @@ public class MapleAESOFB {
      * Class constructor - Creates an instance of the MapleStory encryption cipher.
      *
      * @param key The 256 bit AES key to use.
-     * @param iv The 4-byte IV to use.
+     * @param iv  The 4-byte IV to use.
      */
     public MapleAESOFB(byte[] iv, short mapleVersion) {
         try {
             cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.ENCRYPT_MODE, skey);
+            cipher.init(Cipher.ENCRYPT_MODE, userKey);
         } catch (NoSuchAlgorithmException e) {
             System.err.println("ERROR" + e);
         } catch (NoSuchPaddingException e) {
@@ -373,7 +334,7 @@ public class MapleAESOFB {
      * </code> and returns it for convenience.
      *
      * @param inputByte The byte to apply the funny stuff to.
-     * @param in Something needed for all this to occur.
+     * @param in        Something needed for all this to occur.
      * @return The modified version of <code>in</code>.
      */
     public static final void funnyShit(byte inputByte, byte[] in) {
@@ -468,7 +429,9 @@ public class MapleAESOFB {
         return data;
     }
 
-    /** Generates a new IV. */
+    /**
+     * Generates a new IV.
+     */
     private void updateIv() {
         this.iv = getNewIv(this.iv);
     }
@@ -509,7 +472,9 @@ public class MapleAESOFB {
         return checkPacket(new byte[] {(byte) ((packetHeader >> 24) & 0xFF), (byte) ((packetHeader >> 16) & 0xFF)});
     }
 
-    /** Returns the IV of this instance as a string. */
+    /**
+     * Returns the IV of this instance as a string.
+     */
     @Override
     public String toString() {
         return "IV: " + HexTool.toString(this.iv);

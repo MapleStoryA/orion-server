@@ -1,0 +1,85 @@
+package networking.encryption;
+
+import javax.crypto.spec.SecretKeySpec;
+
+public enum MapleKeys {
+    Version90(new byte[] {
+        0x13,
+        0x00,
+        0x00,
+        0x00,
+        0x08,
+        0x00,
+        0x00,
+        0x00,
+        0x06,
+        0x00,
+        0x00,
+        0x00,
+        (byte) 0xB4,
+        0x00,
+        0x00,
+        0x00,
+        0x1B,
+        0x00,
+        0x00,
+        0x00,
+        0x0F,
+        0x00,
+        0x00,
+        0x00,
+        0x34,
+        0x00,
+        0x00,
+        0x00,
+        0x52,
+        0x00,
+        0x00,
+        0x00
+    }),
+
+    Version92_1(new byte[] {
+        0x13,
+        0x00,
+        0x00,
+        0x00,
+        0x08,
+        0x00,
+        0x00,
+        0x00,
+        0x06,
+        0x00,
+        0x00,
+        0x00,
+        (byte) 0xB4,
+        0x00,
+        0x00,
+        0x00,
+        0x1B,
+        0x00,
+        0x00,
+        0x00,
+        0x0F,
+        0x00,
+        0x00,
+        0x00,
+        0x33,
+        0x00,
+        0x00,
+        0x00,
+        0x52,
+        0x00,
+        0x00,
+        0x00
+    });
+
+    SecretKeySpec key;
+
+    MapleKeys(byte[] key) {
+        this.key = new SecretKeySpec(key, "AES");
+    }
+
+    public SecretKeySpec getUserKey() {
+        return key;
+    }
+}
