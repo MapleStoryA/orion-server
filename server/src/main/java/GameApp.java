@@ -4,6 +4,7 @@ import ch.qos.logback.classic.ClassicConstants;
 import client.anticheat.AutobanManager;
 import client.skill.SkillFactory;
 import constants.JobConstants;
+import constants.ServerConstants;
 import database.DatabaseConnection;
 import handling.cashshop.CashItemFactory;
 import handling.cashshop.CashShopServer;
@@ -57,6 +58,8 @@ public class GameApp {
 
     public static void main(String[] args) throws InterruptedException {
         ServerConfig.serverConfig();
+        ServerConstants.MAPLE_VERSION = ServerConfig.serverConfig().getConfig().getVersion();
+        ServerConstants.MAPLE_PATCH = ServerConfig.serverConfig().getConfig().getPatch();
         GameApp server = new GameApp();
         server.start();
         log.info("[" + ServerConfig.serverConfig().getConfig().getLogin().getServerName() + "]");

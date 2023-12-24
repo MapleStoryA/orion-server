@@ -1,5 +1,7 @@
 debug: true
-debugPacket: false
+debugPacket: true
+version: 90
+patch: 3
 database:
   url: jdbc:mysql://127.0.0.1:7900/orion?autoReconnect=true
   user: root
