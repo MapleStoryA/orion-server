@@ -21,9 +21,9 @@ public class ServerConstants {
     // Default is 500. If the map contains > this amount, it will automatically clear drops
     public static final int MAX_ITEMS = 600;
     // End of Poll
-    public static final short MAPLE_VERSION = 90;
+    public static short MAPLE_VERSION = 90;
 
-    public static final String MAPLE_PATCH = "3";
+    public static String MAPLE_PATCH = "3";
 
     public static final String WORLD_MESSAGE = "Welcome to Maple Story Global ";
 

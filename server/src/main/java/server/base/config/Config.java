@@ -11,6 +11,8 @@ import lombok.Setter;
 public class Config {
     private boolean debug;
     private boolean debugPacket;
+    private short version;
+    private String patch;
     private Database database;
     private Socket socket;
     private Login login;
