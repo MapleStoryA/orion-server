@@ -164,14 +164,13 @@ public class LoginPacket {
             final int serverId, final String serverName, final Map<Integer, Integer> channelLoad) {
         final OutPacket packet = new OutPacket();
 
-        packet.writeShort(SendPacketOpcode.SERVERLIST.getValue());
+        packet.writeShort(SendPacketOpcode.CLogin__OnWorldInformation.getValue());
         packet.write(serverId); // 0 = Aquilla, 1 = bootes, 2 = cass, 3 = delphinus
-        final String worldName = serverName.substring(0, serverName.length() - 3); // remove the SEA
-        packet.writeMapleAsciiString(worldName);
+        packet.writeMapleAsciiString(serverName);
         packet.write(LoginServer.getInstance().getServerFlag());
         packet.writeMapleAsciiString(LoginServer.getInstance().getServerEventMessage());
-        packet.writeShort(100);
-        packet.writeShort(100);
+        packet.writeShort(1);
+        packet.writeShort(1);
         packet.write(0);
 
         int lastChannel = 1;
@@ -182,6 +181,7 @@ public class LoginPacket {
                 break;
             }
         }
+
         packet.write(lastChannel);
 
         int load;
@@ -191,12 +191,13 @@ public class LoginPacket {
             } else {
                 load = 1200;
             }
-            packet.writeMapleAsciiString(worldName + "-" + i);
+            packet.writeMapleAsciiString(serverName + "-" + i);
             packet.writeInt(load);
             packet.write(serverId);
-            packet.writeShort(i - 1);
+            packet.write(i - 1);
+            packet.write(0); // Adult channel
         }
-        packet.writeShort(1);
+        packet.writeShort(0); // this is a list of messages
         packet.writePos(new Point(0, 280));
         packet.writeMapleAsciiString(ServerConstants.WORLD_MESSAGE);
 
@@ -206,7 +207,7 @@ public class LoginPacket {
     public static final byte[] getEndOfServerList() {
         final OutPacket packet = new OutPacket();
 
-        packet.writeShort(SendPacketOpcode.SERVERLIST.getValue());
+        packet.writeShort(SendPacketOpcode.CLogin__OnWorldInformation.getValue());
         packet.write(0xFF);
 
         return packet.getPacket();

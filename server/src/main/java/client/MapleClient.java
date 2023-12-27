@@ -66,6 +66,10 @@ public class MapleClient extends BaseMapleClient {
     private boolean serverTransition = false;
     private boolean loggedIn = false;
 
+    @Getter
+    @Setter
+    private long lastCharList = 0;
+
     @Setter
     private long lastNPCTalk;
 
