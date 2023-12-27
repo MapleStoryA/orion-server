@@ -10,7 +10,7 @@ public enum SendPacketOpcode {
     PIN_OPERATION(6),
     PIN_ASSIGNED(7),
     ALL_CHARLIST(8),
-    SERVERLIST(10),
+    CLogin__OnWorldInformation(10),
     CHARLIST(11),
     SERVER_IP(12),
     CHAR_NAME_RESPONSE(13),

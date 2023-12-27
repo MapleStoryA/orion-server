@@ -22,10 +22,23 @@ public class CharSelectedViewAllHandler extends AbstractMaplePacketHandler {
         c.setChannel(channel);
         String mac = packet.readMapleAsciiString();
         log.info("Mac connected: {}", mac);
+        if (checkIfCharacterExists(c, characterId)) {
+            return;
+        }
+        c.getSession()
+                .write(MaplePacketCreator.getServerIP(
+                        Integer.parseInt(WorldServer.getInstance()
+                                .getChannel(c.getChannel())
+                                .getPublicAddress()
+                                .split(":")[1]),
+                        characterId));
+    }
+
+    static boolean checkIfCharacterExists(MapleClient c, int characterId) {
         if (c.tooManyLogin()
                 || !CharacterService.checkIfCharacterExist(c.getAccountData().getId(), characterId)) {
             c.getSession().close();
-            return;
+            return true;
         }
 
         if (c.getIdleTask() != null) {
@@ -37,12 +50,6 @@ public class CharSelectedViewAllHandler extends AbstractMaplePacketHandler {
                 .putMigrationEntry(new ServerMigration(characterId, c.getAccountData(), c.getSessionIPAddress()));
 
         c.updateLoginState(LoginState.LOGIN_SERVER_TRANSITION, c.getSessionIPAddress());
-        c.getSession()
-                .write(MaplePacketCreator.getServerIP(
-                        Integer.parseInt(WorldServer.getInstance()
-                                .getChannel(c.getChannel())
-                                .getPublicAddress()
-                                .split(":")[1]),
-                        characterId));
+        return false;
     }
 }
