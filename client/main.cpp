@@ -14,15 +14,83 @@ CLog *Logger = new CLog("./LOG.txt");
 
 extern void ApplyPatches();
 
+static int height = 1024;
+static int width = 800;
 
 
-void ApplyPatches() {
-	int height = 800;
-    int width = 600;
-	// CWvsApp::CreateMainWindow
+void PatchWindowsMode() {
+	// on CWvsApp::SetUp(_DWORD *this) set the pointer to start in Window mode
+	// above InitializePCOM
+	MemoryEdit::writeByte(0x009A0757 + 6, 0);
+}
+
+
+void ApplyPatches(){
+	PatchWindowsMode();
+	// CWvsApp::CreateWndManager(_DWORD *this)
+	MemoryEdit::writeInt(0x00997A6D + 1, height);
+	MemoryEdit::writeInt(0x00997A68 + 1, width);
+	// CWvsApp::CreateMainWindow(_DWORD *this)
+
 	MemoryEdit::writeInt(0x0099CB4E + 3, height);
 	MemoryEdit::writeInt(0x0099CB55 + 3, width);
-	MemoryEdit::writeByte(0x009A0757 + 6, (BYTE)0);
+
+	MemoryEdit::writeInt(0x004430A2 + 1, height);
+	MemoryEdit::writeInt(0x0044309D + 1, width);
+
+	MemoryEdit::writeInt(0x00443198 + 1, height);
+	MemoryEdit::writeInt(0x00443193 + 1, width);
+
+	MemoryEdit::writeInt(0x0044451C + 1, height);
+	MemoryEdit::writeInt(0x00444517 + 1, width);
+
+	MemoryEdit::writeInt(0x00444610 + 1, height);
+	MemoryEdit::writeInt(0x0044460B + 1, width);
+
+	MemoryEdit::writeInt(0x00533F92 + 1, height);
+	MemoryEdit::writeInt(0x00533F8D + 1, width);
+
+	MemoryEdit::writeInt(0x00534971 + 1, height);
+	MemoryEdit::writeInt(0x0053496C + 1, width);
+
+	MemoryEdit::writeInt(0x0054E1EB + 1, height);
+	MemoryEdit::writeInt(0x0054E1E6 + 1, width);
+
+	MemoryEdit::writeInt(0x0054E286 + 1, height);
+	MemoryEdit::writeInt(0x0054E281 + 1, width);
+
+	MemoryEdit::writeInt(0x005E5779 + 1, height);
+	MemoryEdit::writeInt(0x005E5774 + 1, width);
+
+	MemoryEdit::writeInt(0x005E80DF + 1, height);
+	MemoryEdit::writeInt(0x005E80DA + 1, width);
+
+	MemoryEdit::writeInt(0x00601170 + 1, height);
+	MemoryEdit::writeInt(0x0060116B + 1, width);
+
+	MemoryEdit::writeInt(0x006017DF + 1, height);
+	MemoryEdit::writeInt(0x006017DA + 1, width);
+
+	MemoryEdit::writeInt(0x00601E2E + 1, height);
+	MemoryEdit::writeInt(0x00601E29 + 1, width);
+
+	MemoryEdit::writeInt(0x0060223A + 1, height);
+	MemoryEdit::writeInt(0x00602235 + 1, width);
+
+	MemoryEdit::writeInt(0x006024FA + 1, height);
+	MemoryEdit::writeInt(0x006024F5 + 1, width);
+
+	MemoryEdit::writeInt(0x0075E146 + 1, height);
+	MemoryEdit::writeInt(0x0075E141 + 1, width);
+
+	MemoryEdit::writeInt(0x0082FB7E + 1, height);
+	MemoryEdit::writeInt(0x0082FB79 + 1, width);
+
+	MemoryEdit::writeInt(0x00857862 + 1, height);
+	MemoryEdit::writeInt(0x0085785D + 1, width);
+
+	MemoryEdit::writeInt(0x004430A2 + 1, height);
+	MemoryEdit::writeInt(0x0044309D + 1, width);
 }
 
 
