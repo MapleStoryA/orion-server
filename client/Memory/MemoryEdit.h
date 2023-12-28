@@ -16,9 +16,9 @@ namespace MemoryEdit {
 
 	void ret(DWORD function, char retOffset);
 
-	int calculateHash(LPVOID startAddress, int len);
-
 	void writeInt(DWORD addy, int value);
+
+	void writeByte(DWORD addy, BYTE value);
 
 	DWORD unprotect(LPVOID start, size_t len);
 

@@ -23,19 +23,19 @@
     <ProjectGuid>{7FCB997D-83E7-4B46-8F07-DDAD57F3794D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>bmsclient</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>false</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
     <CLRSupport>false</CLRSupport>
@@ -177,7 +177,6 @@
     <ClInclude Include="Common\ZXString.h" />
     <ClInclude Include="detours.h" />
     <ClInclude Include="DummyExport.h" />
-    <ClInclude Include="Config.h" />
     <ClInclude Include="Hook/Hook.h" />
     <ClInclude Include="Memory\MemoryEdit.h" />
     <ClInclude Include="StringPool.h" />

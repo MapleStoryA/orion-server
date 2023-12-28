@@ -64,7 +64,13 @@ void hookCall(BYTE* toHookAddy, DWORD jmpTo) {
 		DWORD dwProtect;
 		VirtualProtect((LPVOID)addy, 4, PAGE_EXECUTE_READWRITE, &dwProtect);
 		*((int*)addy) = value;
-	};
+	}
+
+	void writeByte(DWORD addy, BYTE value) {
+		DWORD dwProtect;
+		VirtualProtect((LPVOID)addy, 1, PAGE_EXECUTE_READWRITE, &dwProtect);
+		*((BYTE*)addy) = value;
+	}
 
 	DWORD unprotect(LPVOID start, size_t len) {
 		DWORD dwProtect;
