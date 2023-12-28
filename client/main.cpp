@@ -14,8 +14,8 @@ CLog *Logger = new CLog("./LOG.txt");
 
 extern void ApplyPatches();
 
-static int height = 1024;
-static int width = 800;
+static int height = 800;
+static int width = 1024;
 
 
 void PatchWindowsMode() {
@@ -24,6 +24,15 @@ void PatchWindowsMode() {
 	MemoryEdit::writeByte(0x009A0757 + 6, 0);
 }
 
+int get_screen_width()
+{
+	return width;
+}
+
+int get_screen_height()
+{
+	return height;
+}
 
 void ApplyPatches(){
 	PatchWindowsMode();
@@ -91,7 +100,20 @@ void ApplyPatches(){
 
 	MemoryEdit::writeInt(0x004430A2 + 1, height);
 	MemoryEdit::writeInt(0x0044309D + 1, width);
+
+	//
+	DWORD TSingleton_CWvsContext___ms_pInstance = 0x00C2EFA4;
+	MemoryEdit::writeInt(TSingleton_CWvsContext___ms_pInstance + 16236, height);
+	MemoryEdit::writeInt(TSingleton_CWvsContext___ms_pInstance + 16232, width);
+
+	MemoryEdit::hookCall((BYTE*)0x00936FA0, (DWORD)&get_screen_width);
+	MemoryEdit::ret(0x00936FA5, 0);
+	MemoryEdit::hookCall((BYTE*)0x00936FB0, (DWORD)&get_screen_height);
+	MemoryEdit::ret(0x00936FB5, 0);
+
 }
+
+
 
 
 BOOL APIENTRY DllMain(HMODULE hModule,
