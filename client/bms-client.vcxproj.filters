@@ -54,6 +54,12 @@
     <ClCompile Include="CLog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ClientApp.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Memory\MemoryEdit.h">

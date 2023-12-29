@@ -23,7 +23,7 @@
     <ProjectGuid>{7FCB997D-83E7-4B46-8F07-DDAD57F3794D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>bmsclient</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -35,7 +35,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>false</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
     <CLRSupport>false</CLRSupport>
@@ -135,6 +135,7 @@
       <DebugInformationFormat>None</DebugInformationFormat>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -167,6 +168,8 @@
     <ClCompile Include="Common\ZXString.cpp" />
     <ClCompile Include="DummyExport.cpp" />
     <ClCompile Include="Hook/Hook.cpp" />
+    <ClCompile Include="ClientApp.cpp" />
+    <ClCompile Include="ClientApp.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Memory\MemoryEdit.cpp" />
     <ClCompile Include="StringPool.cpp" />

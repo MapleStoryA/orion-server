@@ -2,27 +2,26 @@
 #include <intrin.h>
 #include <functional>
 #include <dbghelp.h>
+#include <iostream>
+#include <format>
 #include "Config.h"
 #include "StringPool.h"
 #include "Hook\Hook.h"
 #include "Memory\MemoryEdit.h"
 #include "Common\Utils.h"
 #include "CLog.h"
+#include "ClientApp.h"
 
 
 CLog *Logger = new CLog("./LOG.txt");
 
+
+
 extern void ApplyPatches();
 
-static int height = 1080;
 static int width = 1980;
+static int height = 1080;
 
-
-void PatchWindowsMode() {
-	// on CWvsApp::SetUp(_DWORD *this) set the pointer to start in Window mode
-	// above InitializePCOM
-	MemoryEdit::writeByte(0x009A0757 + 6, 0);
-}
 
 int get_screen_width()
 {
@@ -34,8 +33,32 @@ int get_screen_height()
 	return height;
 }
 
+
+void PatchWindowsMode() {
+	// on CWvsApp::SetUp(_DWORD *this) set the pointer to start in Window mode
+	// above InitializePCOM
+	MemoryEdit::writeByte(0x009A0757 + 6, 0);
+}
+
+void PatchScreenSize() {
+// Hook screen size
+	DWORD TSingleton_CWvsContext___ms_pInstance = 0x00C2EFA4;
+	MemoryEdit::writeInt(TSingleton_CWvsContext___ms_pInstance + 16236, height);
+	MemoryEdit::writeInt(TSingleton_CWvsContext___ms_pInstance + 16232, width);
+
+	MemoryEdit::hookCall((BYTE*)0x00936FA0, (DWORD)&get_screen_width);
+	MemoryEdit::ret(0x00936FA5, 0);
+	MemoryEdit::hookCall((BYTE*)0x00936FB0, (DWORD)&get_screen_height);
+	MemoryEdit::ret(0x00936FB5, 0);
+}
+
+
+
 void ApplyPatches(){
+	ClientApp::getInstance()->AddLogMessage("Applying Windows Mode...");
 	PatchWindowsMode();
+//	ClientApp::getInstance()->AddLogMessage(std::format("Setting resolution to {} x {}", width, height));
+	PatchScreenSize();
 	// CWvsApp::CreateWndManager(_DWORD *this)
 	MemoryEdit::writeInt(0x00997A6D + 1, height);
 	MemoryEdit::writeInt(0x00997A68 + 1, width);
@@ -101,19 +124,17 @@ void ApplyPatches(){
 	MemoryEdit::writeInt(0x004430A2 + 1, height);
 	MemoryEdit::writeInt(0x0044309D + 1, width);
 
-	//
-	DWORD TSingleton_CWvsContext___ms_pInstance = 0x00C2EFA4;
-	MemoryEdit::writeInt(TSingleton_CWvsContext___ms_pInstance + 16236, height);
-	MemoryEdit::writeInt(TSingleton_CWvsContext___ms_pInstance + 16232, width);
+	
+	MemoryEdit::writeInt(0x00453453 + 1, width);
 
-	MemoryEdit::hookCall((BYTE*)0x00936FA0, (DWORD)&get_screen_width);
-	MemoryEdit::ret(0x00936FA5, 0);
-	MemoryEdit::hookCall((BYTE*)0x00936FB0, (DWORD)&get_screen_height);
-	MemoryEdit::ret(0x00936FB5, 0);
 
+	// SecurityClient
+	DWORD* TSingleton_CSecurityClient_ms_pInstance = reinterpret_cast<DWORD*>(0xC33D48);
+    *TSingleton_CSecurityClient_ms_pInstance = NULL;
+	MemoryEdit::ret(0x9EE3E0);
+
+	
 }
-
-
 
 
 BOOL APIENTRY DllMain(HMODULE hModule,
@@ -125,7 +146,15 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 	{
 	case DLL_PROCESS_ATTACH:
 		Logger->Log("DLL attached to host executable.");
+		ClientApp::getInstance()->Setup(hModule);
+		ClientApp::getInstance()->AddLogMessage("Testing");
 		ApplyPatches();
+		
+
+		//createMainWindow(hModule);
+		//AddLogMessage((const wchar_t*)"Testing");
+		//AddLogMessage((const wchar_t*)"Testing");
+		//AddLogMessage((const wchar_t*)"Testing");
 	case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:
 	case DLL_PROCESS_DETACH:
