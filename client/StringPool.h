@@ -19,8 +19,6 @@ public:
 	static const void hook() {
 		initialize();
 		auto addy = &StringPool::GetString;
-		//MemoryEdit::hookCall((BYTE*)0x00406465, (DWORD&)addy);
-		//MemoryEdit::hookCall((BYTE*)0x0079EAA3, (DWORD&)addy);
 	}
 	
 	

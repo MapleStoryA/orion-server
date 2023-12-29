@@ -12,124 +12,108 @@
 
 CLog *Logger = new CLog("./LOG.txt");
 
-extern void clientPatches();
+extern void ApplyPatches();
+
+static int height = 1080;
+static int width = 1980;
 
 
-bool Hook_SetUnhandledExceptionFilter(bool bEnable)
+void PatchWindowsMode() {
+	// on CWvsApp::SetUp(_DWORD *this) set the pointer to start in Window mode
+	// above InitializePCOM
+	MemoryEdit::writeByte(0x009A0757 + 6, 0);
+}
+
+int get_screen_width()
 {
-	static auto _SetUnhandledExceptionFilter =
-		decltype(&SetUnhandledExceptionFilter)(Utils::GetFuncAddress("KERNEL32", "SetUnhandledExceptionFilter"));
-
-
-	decltype(&SetUnhandledExceptionFilter) Hook = [](LPTOP_LEVEL_EXCEPTION_FILTER lpFilter) -> LPTOP_LEVEL_EXCEPTION_FILTER
-	{
-		auto addy = (DWORD)_ReturnAddress();
-		Logger->Log("[SetUnhandledExceptionFilter] RET [%#08x]", addy);
-
-		return _SetUnhandledExceptionFilter(lpFilter);
-	};
-
-	return Hook::SetHook(bEnable, reinterpret_cast<void**>(&_SetUnhandledExceptionFilter), Hook);
-
+	return width;
 }
 
-
-class CMSException {
-public:
-	DWORD m_hr;
-	void CMSException_(DWORD hr) {
-		this->m_hr = hr;
-		Logger->Log("Exception with code %d from [%#08x]", hr, (DWORD)_ReturnAddress());
-	}
-};
-
-bool Hook_GetModuleFileNameW(bool bEnable) {
-	static decltype(&GetModuleFileNameW) _GetModuleFileNameW = &GetModuleFileNameW;
-
-	decltype(&GetModuleFileNameW) GetModuleFileNameW_Hook = [](HMODULE hModule, LPWSTR lpFileName, DWORD dwSize) -> DWORD {
-		auto len = _GetModuleFileNameW(hModule, lpFileName, dwSize);
-		Logger->Log("Loading module %s", lpFileName);
-		/* Check to see if the length is invalid (zero) */
-		if (!len) {
-			/* Try again without the provided module for a fixed result */
-			len = _GetModuleFileNameW(NULL, lpFileName, dwSize);
-		}
-
-		return len;
-	};
-
-	return Hook::SetHook(bEnable, reinterpret_cast<void**>(&_GetModuleFileNameW), GetModuleFileNameW_Hook);
-}
-
-
-
-
-bool Hook_CreateWindowExA(bool bEnable)
+int get_screen_height()
 {
-	static auto _CreateWindowExA = decltype(&CreateWindowExA)(Utils::GetFuncAddress("USER32", "CreateWindowExA"));
-
-	decltype(&CreateWindowExA) Hook = [](DWORD dwExStyle, LPCTSTR lpClassName, LPCTSTR lpWindowName, DWORD dwStyle, int x, int y, int nWidth, int nHeight, HWND hWndParent, HMENU hMenu, HINSTANCE hInstance, LPVOID lpParam) -> HWND
-	{
-		auto windowName = lpWindowName;
-		auto ret = (DWORD)_ReturnAddress();
-		if (!strcmp(lpClassName, "StartUpDlgClass"))
-		{
-
-			//Start up.
-		}
-		else if (!strcmp(lpClassName, "MapleStoryClass"))
-		{
-			windowName = "MapleStory";
-			Logger->Log("Creating MapleStory window.");
-		}
-
-		return _CreateWindowExA(dwExStyle, lpClassName, windowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam);
-	};
-
-	return Hook::SetHook(bEnable, reinterpret_cast<void**>(&_CreateWindowExA), Hook);
+	return height;
 }
 
-bool Hook_DirectInput8Create(bool bEnable)
-{
-	typedef HRESULT(WINAPI *pDirectInput8Create)(HINSTANCE, DWORD, REFIID, LPVOID*, LPUNKNOWN);
-	static auto _DirectInput8Create =
-		(pDirectInput8Create)(Utils::GetFuncAddress("DINPUT8", "DirectInput8Create"));
+void ApplyPatches(){
+	PatchWindowsMode();
+	// CWvsApp::CreateWndManager(_DWORD *this)
+	MemoryEdit::writeInt(0x00997A6D + 1, height);
+	MemoryEdit::writeInt(0x00997A68 + 1, width);
+	// CWvsApp::CreateMainWindow(_DWORD *this)
 
-	pDirectInput8Create Hook = [](HINSTANCE hinst, DWORD dwVersion, REFIID riidltf, LPVOID * ppvOut, LPUNKNOWN punkOuter) -> HRESULT
-	{
-		auto addy = (DWORD)_ReturnAddress();
-		auto delay = 1000;
-		Sleep(delay);
-		return _DirectInput8Create(hinst, dwVersion, riidltf, ppvOut, punkOuter);
-	};
+	MemoryEdit::writeInt(0x0099CB4E + 3, height);
+	MemoryEdit::writeInt(0x0099CB55 + 3, width);
 
-	return Hook::SetHook(bEnable, reinterpret_cast<void**>(&_DirectInput8Create), Hook);
+	MemoryEdit::writeInt(0x004430A2 + 1, height);
+	MemoryEdit::writeInt(0x0044309D + 1, width);
+
+	MemoryEdit::writeInt(0x00443198 + 1, height);
+	MemoryEdit::writeInt(0x00443193 + 1, width);
+
+	MemoryEdit::writeInt(0x0044451C + 1, height);
+	MemoryEdit::writeInt(0x00444517 + 1, width);
+
+	MemoryEdit::writeInt(0x00444610 + 1, height);
+	MemoryEdit::writeInt(0x0044460B + 1, width);
+
+	MemoryEdit::writeInt(0x00533F92 + 1, height);
+	MemoryEdit::writeInt(0x00533F8D + 1, width);
+
+	MemoryEdit::writeInt(0x00534971 + 1, height);
+	MemoryEdit::writeInt(0x0053496C + 1, width);
+
+	MemoryEdit::writeInt(0x0054E1EB + 1, height);
+	MemoryEdit::writeInt(0x0054E1E6 + 1, width);
+
+	MemoryEdit::writeInt(0x0054E286 + 1, height);
+	MemoryEdit::writeInt(0x0054E281 + 1, width);
+
+	MemoryEdit::writeInt(0x005E5779 + 1, height);
+	MemoryEdit::writeInt(0x005E5774 + 1, width);
+
+	MemoryEdit::writeInt(0x005E80DF + 1, height);
+	MemoryEdit::writeInt(0x005E80DA + 1, width);
+
+	MemoryEdit::writeInt(0x00601170 + 1, height);
+	MemoryEdit::writeInt(0x0060116B + 1, width);
+
+	MemoryEdit::writeInt(0x006017DF + 1, height);
+	MemoryEdit::writeInt(0x006017DA + 1, width);
+
+	MemoryEdit::writeInt(0x00601E2E + 1, height);
+	MemoryEdit::writeInt(0x00601E29 + 1, width);
+
+	MemoryEdit::writeInt(0x0060223A + 1, height);
+	MemoryEdit::writeInt(0x00602235 + 1, width);
+
+	MemoryEdit::writeInt(0x006024FA + 1, height);
+	MemoryEdit::writeInt(0x006024F5 + 1, width);
+
+	MemoryEdit::writeInt(0x0075E146 + 1, height);
+	MemoryEdit::writeInt(0x0075E141 + 1, width);
+
+	MemoryEdit::writeInt(0x0082FB7E + 1, height);
+	MemoryEdit::writeInt(0x0082FB79 + 1, width);
+
+	MemoryEdit::writeInt(0x00857862 + 1, height);
+	MemoryEdit::writeInt(0x0085785D + 1, width);
+
+	MemoryEdit::writeInt(0x004430A2 + 1, height);
+	MemoryEdit::writeInt(0x0044309D + 1, width);
+
+	//
+	DWORD TSingleton_CWvsContext___ms_pInstance = 0x00C2EFA4;
+	MemoryEdit::writeInt(TSingleton_CWvsContext___ms_pInstance + 16236, height);
+	MemoryEdit::writeInt(TSingleton_CWvsContext___ms_pInstance + 16232, width);
+
+	MemoryEdit::hookCall((BYTE*)0x00936FA0, (DWORD)&get_screen_width);
+	MemoryEdit::ret(0x00936FA5, 0);
+	MemoryEdit::hookCall((BYTE*)0x00936FB0, (DWORD)&get_screen_height);
+	MemoryEdit::ret(0x00936FB5, 0);
+
 }
 
 
-void clientPatches() {
-	// Hook and log all CMSExceptions.
-	auto ptr_CmsException = &CMSException::CMSException_;
-	MemoryEdit::hook(0x0056171C, reinterpret_cast<DWORD&>(ptr_CmsException));
-
-	// Remove logo
-	MemoryEdit::nop(0x006B1F7D, 21);
-	// AP Check Removal (nAP > 200, "Please use AP")
-	MemoryEdit::changeByte((BYTE*)0x00B82429, 0xEB);
-	// Let GM/Admins Drop Items (default condition is 0x74/JE)
-	MemoryEdit::changeByte((BYTE*)0x00531515, 0xEB);
-	// Let GM/Admins Drop Mesos (default condition is 0x74/JE)
-	MemoryEdit::changeByte((BYTE*)0x00917505, 0xEB);
-	// Let GM/Admins Attack (default condition is 0x74/JE)
-	MemoryEdit::changeByte((BYTE*)0x00A7B859, 0xEB);
-	MemoryEdit::changeByte((BYTE*)0x00A838A8, 0xEB);
-	MemoryEdit::changeByte((BYTE*)0x00A882E4, 0xEB);
-	MemoryEdit::changeByte((BYTE*)0x00A95DA6, 0xEB);
-	MemoryEdit::changeByte((BYTE*)0x00A8C554, 0xEB);
-	// Delete Character No-PIC bypass (Fake PIC)
-	MemoryEdit::changeByte((BYTE*)0x00675C15, 0xEB);
-
-}
 
 
 BOOL APIENTRY DllMain(HMODULE hModule,
@@ -141,15 +125,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 	{
 	case DLL_PROCESS_ATTACH:
 		Logger->Log("DLL attached to host executable.");
-#if ENABLE_CONSOLE == 1
-		AllocConsole();
-		freopen("CONIN$", "r", stdin);
-		freopen("CONOUT$", "w", stdout);
-		freopen("CONOUT$", "w", stderr);
-#endif
-		clientPatches();
-		Hook_SetUnhandledExceptionFilter(true);
-		Hook_CreateWindowExA(true);
+		ApplyPatches();
 	case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:
 	case DLL_PROCESS_DETACH:

@@ -1,1 +1,1 @@
-__declspec(dllexport) extern void BmsClient();
+__declspec(dllexport) extern void OrionClient();
