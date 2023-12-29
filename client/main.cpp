@@ -34,7 +34,7 @@ void PatchWindowsMode() {
 }
 
 void PatchScreenSize() {
-// Hook screen size
+	// Hook screen size
 	DWORD TSingleton_CWvsContext___ms_pInstance = 0x00C2EFA4;
 	MemoryEdit::writeInt(TSingleton_CWvsContext___ms_pInstance + 16236, height);
 	MemoryEdit::writeInt(TSingleton_CWvsContext___ms_pInstance + 16232, width);
@@ -47,9 +47,9 @@ void PatchScreenSize() {
 
 
 
-void ApplyPatches(){
+void ApplyPatches() {
 	PatchWindowsMode();
-    ClientApp::getInstance()->AddLogMessage("Setting resolution to " + std::to_string(width) + " : " + std::to_string(height));
+	ClientApp::getInstance()->AddLogMessage("Setting resolution to " + std::to_string(width) + " : " + std::to_string(height));
 	PatchScreenSize();
 	// CWvsApp::CreateWndManager(_DWORD *this)
 	MemoryEdit::writeInt(0x00997A6D + 1, height);
@@ -116,16 +116,16 @@ void ApplyPatches(){
 	MemoryEdit::writeInt(0x004430A2 + 1, height);
 	MemoryEdit::writeInt(0x0044309D + 1, width);
 
-	
+
 	MemoryEdit::writeInt(0x00453453 + 1, width);
 
 
 	// SecurityClient
 	DWORD* TSingleton_CSecurityClient_ms_pInstance = reinterpret_cast<DWORD*>(0xC33D48);
-    *TSingleton_CSecurityClient_ms_pInstance = NULL;
+	*TSingleton_CSecurityClient_ms_pInstance = NULL;
 	MemoryEdit::ret(0x9EE3E0);
 
-	
+
 }
 
 
