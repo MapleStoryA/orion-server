@@ -26,23 +26,9 @@ int get_screen_height()
 	return height;
 }
 
-void CenterWindow() {
-
-}
-
-DWORD GetFuncAddress(LPCSTR lpModule, LPCSTR lpFunc)
-{
-	auto mod = LoadLibraryA(lpModule);
-
-	if (!mod) {
-		return 0;
-	}
-
-	return (DWORD)GetProcAddress(mod, lpFunc);
-}
 
 static bool HookCreateWindowExA(bool bEnable) {
-    static auto _CreateWindowExA = decltype(&CreateWindowExA)(GetFuncAddress("User32", "CreateWindowExA"));
+    static auto _CreateWindowExA = decltype(&CreateWindowExA)(Hook::GetFuncAddress("User32", "CreateWindowExA"));
 	decltype(&CreateWindowExA) Hook = [](DWORD dwExStyle, LPCTSTR lpClassName, LPCTSTR lpWindowName, DWORD dwStyle, int x, int y, int nWidth, int nHeight, HWND hWndParent, HMENU hMenu, HINSTANCE hInstance, LPVOID lpParam) -> HWND {
 		auto windowName = lpWindowName;
 		auto hwnd = _CreateWindowExA(dwExStyle, lpClassName, windowName, WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_OVERLAPPEDWINDOW, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam);

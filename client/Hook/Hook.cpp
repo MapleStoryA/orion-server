@@ -2,6 +2,19 @@
 
 namespace Hook {
 
+
+	DWORD GetFuncAddress(LPCSTR lpModule, LPCSTR lpFunc)
+	{
+		auto mod = LoadLibraryA(lpModule);
+
+		if (!mod) {
+			return 0;
+		}
+
+		return (DWORD)GetProcAddress(mod, lpFunc);
+	}
+
+
 	BOOL SetHook(BOOL bInstall, PVOID* ppvTarget, PVOID pvDetour)
 	{
 		if (DetourTransactionBegin() != NO_ERROR)
