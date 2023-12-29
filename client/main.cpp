@@ -12,7 +12,7 @@
 
 extern void ApplyPatches();
 
-static int width = 1980;
+static int width = 1920;
 static int height = 1080;
 
 
@@ -24,6 +24,44 @@ int get_screen_width()
 int get_screen_height()
 {
 	return height;
+}
+
+void CenterWindow() {
+
+}
+
+DWORD GetFuncAddress(LPCSTR lpModule, LPCSTR lpFunc)
+{
+	auto mod = LoadLibraryA(lpModule);
+
+	if (!mod) {
+		return 0;
+	}
+
+	return (DWORD)GetProcAddress(mod, lpFunc);
+}
+
+static bool HookCreateWindowExA(bool bEnable) {
+    static auto _CreateWindowExA = decltype(&CreateWindowExA)(GetFuncAddress("User32", "CreateWindowExA"));
+	decltype(&CreateWindowExA) Hook = [](DWORD dwExStyle, LPCTSTR lpClassName, LPCTSTR lpWindowName, DWORD dwStyle, int x, int y, int nWidth, int nHeight, HWND hWndParent, HMENU hMenu, HINSTANCE hInstance, LPVOID lpParam) -> HWND {
+		auto windowName = lpWindowName;
+		auto hwnd = _CreateWindowExA(dwExStyle, lpClassName, windowName, WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_OVERLAPPEDWINDOW, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam);
+		RECT rect;
+		
+		GetWindowRect(hwnd, &rect);
+		
+		int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+		int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+		int windowWidth = rect.right - rect.left;
+		int windowHeight = rect.bottom - rect.top;
+		int centerX = (screenWidth - windowWidth) / 3;
+		int centerY = (screenHeight - windowHeight) / 3;
+		
+		SetWindowPos(hwnd, NULL, centerX, centerY, 0, 0, SWP_NOZORDER);
+		return hwnd;
+
+	};
+    return Hook::SetHook(bEnable, reinterpret_cast<void**>(&_CreateWindowExA), Hook);
 }
 
 
@@ -51,6 +89,7 @@ void ApplyPatches() {
 	PatchWindowsMode();
 	ClientApp::getInstance()->AddLogMessage("Setting resolution to " + std::to_string(width) + " : " + std::to_string(height));
 	PatchScreenSize();
+	HookCreateWindowExA(true);
 	// CWvsApp::CreateWndManager(_DWORD *this)
 	MemoryEdit::writeInt(0x00997A6D + 1, height);
 	MemoryEdit::writeInt(0x00997A68 + 1, width);
