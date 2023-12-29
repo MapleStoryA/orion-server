@@ -48,10 +48,10 @@
     <ClCompile Include="Common\ZXString.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
-    <ClCompile Include="StringPool.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ClientApp.h">
+      <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="CLog.cpp">
+    <ClCompile Include="ClientApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,17 +68,11 @@
     <ClInclude Include="DummyExport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StringPool.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Common\ZXString.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
     <ClInclude Include="Common\Utils.h">
       <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="CLog.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

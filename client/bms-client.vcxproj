@@ -135,6 +135,8 @@
       <DebugInformationFormat>None</DebugInformationFormat>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -163,23 +165,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CLog.cpp" />
     <ClCompile Include="Common\ZXString.cpp" />
     <ClCompile Include="DummyExport.cpp" />
     <ClCompile Include="Hook/Hook.cpp" />
+    <ClCompile Include="ClientApp.cpp" />
+    <ClCompile Include="ClientApp.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Memory\MemoryEdit.cpp" />
-    <ClCompile Include="StringPool.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CLog.h" />
     <ClInclude Include="Common\Utils.h" />
     <ClInclude Include="Common\ZXString.h" />
     <ClInclude Include="detours.h" />
     <ClInclude Include="DummyExport.h" />
     <ClInclude Include="Hook/Hook.h" />
     <ClInclude Include="Memory\MemoryEdit.h" />
-    <ClInclude Include="StringPool.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Client.def" />
