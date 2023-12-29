@@ -172,7 +172,6 @@
     <ClCompile Include="ClientApp.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Memory\MemoryEdit.cpp" />
-    <ClCompile Include="StringPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\Utils.h" />
@@ -181,7 +180,6 @@
     <ClInclude Include="DummyExport.h" />
     <ClInclude Include="Hook/Hook.h" />
     <ClInclude Include="Memory\MemoryEdit.h" />
-    <ClInclude Include="StringPool.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Client.def" />

@@ -4,7 +4,6 @@
 #include <dbghelp.h>
 #include <iostream>
 #include "Config.h"
-#include "StringPool.h"
 #include "Hook\Hook.h"
 #include "Memory\MemoryEdit.h"
 #include "Common\Utils.h"

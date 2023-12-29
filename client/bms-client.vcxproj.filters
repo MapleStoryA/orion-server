@@ -48,9 +48,6 @@
     <ClCompile Include="Common\ZXString.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
-    <ClCompile Include="StringPool.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ClientApp.h">
       <Filter>Header Files</Filter>
     </ClCompile>
@@ -69,9 +66,6 @@
       <Filter>Header Files\Hook</Filter>
     </ClInclude>
     <ClInclude Include="DummyExport.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StringPool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Common\ZXString.h">
