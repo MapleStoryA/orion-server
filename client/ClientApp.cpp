@@ -51,14 +51,14 @@ LRESULT CALLBACK ClientApp::WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPAR
 
 void ClientApp::Setup(HMODULE hInst) {
 	WNDCLASSW wc = { 0 };
-
-	wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
+    auto lpszClasName = L"ClientAppClass";
+ 	wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hInstance = hInst;
-	wc.lpszClassName = L"LogWindowClass";
+	wc.lpszClassName = lpszClasName;
 	wc.lpfnWndProc = ClientApp::WindowEventProcedure;
 
 	RegisterClassW(&wc);
 
-	hwndMain = CreateWindowW(L"ClientAppClass", L"Orion Server Logs", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 100, 100, 500, 500, NULL, NULL, hInst, NULL);
+	hwndMain = CreateWindowW(lpszClasName, L"Orion Server Logs", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 100, 100, 500, 500, NULL, NULL, hInst, NULL);
 }

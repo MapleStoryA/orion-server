@@ -51,9 +51,6 @@
     <ClCompile Include="StringPool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CLog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ClientApp.h">
       <Filter>Header Files</Filter>
     </ClCompile>
@@ -82,9 +79,6 @@
     </ClInclude>
     <ClInclude Include="Common\Utils.h">
       <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="CLog.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -3,18 +3,12 @@
 #include <functional>
 #include <dbghelp.h>
 #include <iostream>
-#include <format>
 #include "Config.h"
 #include "StringPool.h"
 #include "Hook\Hook.h"
 #include "Memory\MemoryEdit.h"
 #include "Common\Utils.h"
-#include "CLog.h"
 #include "ClientApp.h"
-
-
-CLog *Logger = new CLog("./LOG.txt");
-
 
 
 extern void ApplyPatches();
@@ -55,9 +49,8 @@ void PatchScreenSize() {
 
 
 void ApplyPatches(){
-	ClientApp::getInstance()->AddLogMessage("Applying Windows Mode...");
 	PatchWindowsMode();
-//	ClientApp::getInstance()->AddLogMessage(std::format("Setting resolution to {} x {}", width, height));
+    ClientApp::getInstance()->AddLogMessage("Setting resolution to " + std::to_string(width) + " : " + std::to_string(height));
 	PatchScreenSize();
 	// CWvsApp::CreateWndManager(_DWORD *this)
 	MemoryEdit::writeInt(0x00997A6D + 1, height);
@@ -145,16 +138,10 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
-		Logger->Log("DLL attached to host executable.");
 		ClientApp::getInstance()->Setup(hModule);
-		ClientApp::getInstance()->AddLogMessage("Testing");
+		ClientApp::getInstance()->AddLogMessage("Starting Orion Client");
 		ApplyPatches();
-		
-
-		//createMainWindow(hModule);
-		//AddLogMessage((const wchar_t*)"Testing");
-		//AddLogMessage((const wchar_t*)"Testing");
-		//AddLogMessage((const wchar_t*)"Testing");
+		break;
 	case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:
 	case DLL_PROCESS_DETACH:
