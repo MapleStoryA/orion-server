@@ -14,8 +14,8 @@ CLog *Logger = new CLog("./LOG.txt");
 
 extern void ApplyPatches();
 
-static int height = 800;
-static int width = 1024;
+static int height = 1080;
+static int width = 1980;
 
 
 void PatchWindowsMode() {
