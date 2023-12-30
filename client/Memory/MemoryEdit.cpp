@@ -3,7 +3,7 @@
 namespace MemoryEdit {
 
 	
-void hookCall(BYTE* toHookAddy, DWORD jmpTo) {
+void hookCall(DWORD* toHookAddy, DWORD jmpTo) {
 		DWORD dwProtect;
 		VirtualProtect((DWORD*)toHookAddy, 100, PAGE_EXECUTE_READWRITE, &dwProtect);
 		DWORD hookAddy = jmpTo;

@@ -40,8 +40,8 @@ static bool HookCreateWindowExA(bool bEnable) {
 		int screenHeight = GetSystemMetrics(SM_CYSCREEN);
 		int windowWidth = rect.right - rect.left;
 		int windowHeight = rect.bottom - rect.top;
-		int centerX = (screenWidth - windowWidth) / 3;
-		int centerY = (screenHeight - windowHeight) / 3;
+		int centerX = (screenWidth - windowWidth) / 2;
+		int centerY = (screenHeight - windowHeight) / 2;
 		
 		SetWindowPos(hwnd, NULL, centerX, centerY, 0, 0, SWP_NOZORDER);
 		return hwnd;
@@ -63,9 +63,9 @@ void PatchScreenSize() {
 	MemoryEdit::writeInt(TSingleton_CWvsContext___ms_pInstance + 16236, height);
 	MemoryEdit::writeInt(TSingleton_CWvsContext___ms_pInstance + 16232, width);
 
-	MemoryEdit::hookCall((BYTE*)0x00936FA0, (DWORD)&get_screen_width);
+	MemoryEdit::hookCall((DWORD*)0x00936FA0, (DWORD)&get_screen_width);
 	MemoryEdit::ret(0x00936FA5, 0);
-	MemoryEdit::hookCall((BYTE*)0x00936FB0, (DWORD)&get_screen_height);
+	MemoryEdit::hookCall((DWORD*)0x00936FB0, (DWORD)&get_screen_height);
 	MemoryEdit::ret(0x00936FB5, 0);
 }
 
@@ -73,11 +73,12 @@ void PatchScreenSize() {
 
 void ApplyPatches() {
 	PatchWindowsMode();
-	ClientApp::getInstance()->AddLogMessage("Setting resolution to " + std::to_string(width) + " : " + std::to_string(height));
-	PatchScreenSize();
 	HookCreateWindowExA(true);
+#ifdef HD_CLIENT_ENABLED
+	ClientApp::GetInstance()->AddLogMessage("Setting resolution to " + std::to_string(width) + " : " + std::to_string(height));
+	PatchScreenSize();
 	// CWvsApp::CreateWndManager(_DWORD *this)
-	MemoryEdit::writeInt(0x00997A6D + 1, height);
+	MemoryEdit::writeInt(0x00997A6D + 1, width);
 	MemoryEdit::writeInt(0x00997A68 + 1, width);
 	// CWvsApp::CreateMainWindow(_DWORD *this)
 
@@ -142,17 +143,25 @@ void ApplyPatches() {
 	MemoryEdit::writeInt(0x0044309D + 1, width);
 
 
-	MemoryEdit::writeInt(0x00453453 + 1, width);
+	// CInputSystem::Init
+	MemoryEdit::writeInt(0x0056B491 + 4, width / 2);
+	MemoryEdit::writeInt(0x0056B497 + 4, height / 2);
 
+	// CInputSystem::SetCursorVectorPos
+	// MemoryEdit::writeInt(0x0056949D + 2, height / 2);
+	// MemoryEdit::writeInt(0x0056949D + 2, height / 2);
+	MemoryEdit::writeInt(0x00486BD1 + 1, width);
+	MemoryEdit::writeInt(0x00486BBE + 1, height);
+
+#endif
 
 	// SecurityClient
 	DWORD* TSingleton_CSecurityClient_ms_pInstance = reinterpret_cast<DWORD*>(0xC33D48);
 	*TSingleton_CSecurityClient_ms_pInstance = NULL;
 	MemoryEdit::ret(0x9EE3E0);
 
-
+	
 }
-
 
 BOOL APIENTRY DllMain(HMODULE hModule,
 	DWORD  ul_reason_for_call,
@@ -162,8 +171,10 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
-		ClientApp::getInstance()->Setup(hModule);
-		ClientApp::getInstance()->AddLogMessage("Starting Orion Client");
+		#ifdef ENABLE_CLIENT_APP_WINDOW
+				ClientApp::GetInstance()->Setup(hModule);
+				ClientApp::GetInstance()->AddLogMessage("Starting Orion Client");
+		#endif
 		ApplyPatches();
 		break;
 	case DLL_THREAD_ATTACH:

@@ -3,7 +3,7 @@
 ClientApp* App = new ClientApp();
 
 
-ClientApp *ClientApp::getInstance() {
+ClientApp *ClientApp::GetInstance() {
 	return App;
 }
 

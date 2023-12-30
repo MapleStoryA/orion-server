@@ -4,7 +4,7 @@
 
 namespace MemoryEdit {
 
-	void hookCall(BYTE* toHookAddy, DWORD jmpTo);
+	void hookCall(DWORD* toHookAddy, DWORD jmpTo);
 
 	void hook(DWORD toHookAddy, DWORD jmpTo);
 
