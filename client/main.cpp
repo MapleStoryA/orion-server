@@ -31,7 +31,7 @@ static bool HookCreateWindowExA(bool bEnable) {
     static auto _CreateWindowExA = decltype(&CreateWindowExA)(Hook::GetFuncAddress("User32", "CreateWindowExA"));
 	decltype(&CreateWindowExA) Hook = [](DWORD dwExStyle, LPCTSTR lpClassName, LPCTSTR lpWindowName, DWORD dwStyle, int x, int y, int nWidth, int nHeight, HWND hWndParent, HMENU hMenu, HINSTANCE hInstance, LPVOID lpParam) -> HWND {
 		auto windowName = lpWindowName;
-		auto hwnd = _CreateWindowExA(dwExStyle, lpClassName, windowName, WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_OVERLAPPEDWINDOW, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam);
+		auto hwnd = _CreateWindowExA(dwExStyle, lpClassName, windowName, WS_MINIMIZEBOX, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam);
 		RECT rect;
 		
 		GetWindowRect(hwnd, &rect);
