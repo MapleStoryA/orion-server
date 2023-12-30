@@ -18,6 +18,6 @@ public:
 	void AddLogMessage(std::string message);
 	static LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp);
 	static LRESULT CALLBACK WindowEventProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp);
-	static ClientApp* getInstance();
+	static ClientApp* GetInstance();
 	
 };
