@@ -1201,7 +1201,7 @@ public class DamageParse {
 
         ret.portals = lea.readByte();
         final boolean unkk = lea.readByte() == -1;
-        lea.skip(unkk ? 7 : 8);
+        lea.skip(unkk ? 8 : 7);
         ret.tbyte = lea.readByte();
         // log.info("TBYTE: " + tbyte);
         ret.targets = (byte) ((ret.tbyte >>> 4) & 0xF);
