@@ -1,9 +1,26 @@
 #include "./MemoryEdit.h"
+#include <vector>
+#include <sstream>
+#include <iostream>
+
 
 namespace MemoryEdit {
 
+using namespace std;
+
+
+	std::vector<BYTE> stringToByteArray(const std::string& s) {
+		std::vector<BYTE> result;
+		std::istringstream ss(s);
+		std::string byteString;
+		while (ss >> byteString) {
+			result.push_back(static_cast<BYTE>(std::stoi(byteString, nullptr, 16)));
+		}
+		return result;
+	}
+
 	
-void hookCall(DWORD* toHookAddy, DWORD jmpTo) {
+   void hookCall(DWORD* toHookAddy, DWORD jmpTo) {
 		DWORD dwProtect;
 		VirtualProtect((DWORD*)toHookAddy, 100, PAGE_EXECUTE_READWRITE, &dwProtect);
 		DWORD hookAddy = jmpTo;
@@ -72,6 +89,15 @@ void hookCall(DWORD* toHookAddy, DWORD jmpTo) {
 		*((BYTE*)addy) = value;
 	}
 
+	void writeByteArray(DWORD addy, std::string arrayOfBytes) {
+		DWORD dwProtect;
+		std::vector<BYTE> byteArray = stringToByteArray(arrayOfBytes);
+		size_t len = byteArray.size();
+		VirtualProtect((LPVOID)addy, len, PAGE_EXECUTE_READWRITE, &dwProtect);
+        memcpy((DWORD*)addy, &byteArray, len);
+		VirtualProtect((DWORD*)addy, 100, PAGE_EXECUTE, &dwProtect);
+	}
+
 	DWORD unprotect(LPVOID start, size_t len) {
 		DWORD dwProtect;
 		VirtualProtect(start, len, PAGE_EXECUTE_READWRITE, &dwProtect);
@@ -84,6 +110,8 @@ void hookCall(DWORD* toHookAddy, DWORD jmpTo) {
 		return dwProtect;
 	}
 
+
+	
 	
 	
 

@@ -54,7 +54,7 @@ static bool HookCreateWindowExA(bool bEnable) {
 void PatchWindowsMode() {
 	// on CWvsApp::SetUp(_DWORD *this) set the pointer to start in Window mode
 	// above InitializePCOM
-	//MemoryEdit::writeByte(0x009A0757 + 6, 0);
+	MemoryEdit::writeByte(0x009A0757 + 6, 0);
 }
 
 void PatchScreenSize() {
@@ -146,8 +146,8 @@ void ApplyPatches() {
 	MemoryEdit::writeInt(0x004E2A80 + 2, width);
 	MemoryEdit::writeInt(0x004E2A96 + 2, height);
 	// 41
-	MemoryEdit::writeInt(0x004EC596 + 1, 384);
-	MemoryEdit::writeInt(0x004EC59B + 1, 683);
+	MemoryEdit::writeInt(0x004EC596 + 1, height / 2);
+	MemoryEdit::writeInt(0x004EC59B + 1, width / 2);
 	// 42, 43
 	MemoryEdit::writeInt(0x004F9998 + 1, height);
 	MemoryEdit::writeInt(0x004F99A6 + 1, width);
@@ -227,13 +227,13 @@ void ApplyPatches() {
 	// 110
 	MemoryEdit::writeInt(0x005312CE + 1, 1359);
 	// 111
-	MemoryEdit::writeInt(0x00531C2F + 1, 683);
+	MemoryEdit::writeInt(0x00531C2F + 1, width / 2);
 	// 112
 	MemoryEdit::writeInt(0x00533F92 + 1, width);
 	MemoryEdit::writeInt(0x00533F8D + 1, height);
 	// 113
-	MemoryEdit::writeInt(0x005344F8 + 1, -384);
-	MemoryEdit::writeInt(0x00534500 + 1, -683);
+	MemoryEdit::writeInt(0x005344F8 + 1, -height / 2);
+	MemoryEdit::writeInt(0x00534500 + 1, -width / 2);
 	// 114
 	MemoryEdit::writeInt(0x0053496C + 1, height);
 	MemoryEdit::writeInt(0x00534971 + 1, width);
@@ -247,22 +247,114 @@ void ApplyPatches() {
 	MemoryEdit::writeInt(0x00534C17 + 2, 264);
 	MemoryEdit::writeInt(0x00534C1D + 2, 617);
 	// 118
-	MemoryEdit::writeInt(0x00540F93 + 1, 683);
+	MemoryEdit::writeInt(0x00540F93 + 1, width / 2);
 	// 119
 	MemoryEdit::writeInt(0x00548E33 + 1, 601);
 	// 120
 	MemoryEdit::writeInt(0x00549940 + 1, 452);
 	// 121
-	MemoryEdit::writeInt(0x005499FC + 1, 683);
+	MemoryEdit::writeInt(0x005499FC + 1, width / 2);
 	// 122
 	MemoryEdit::writeInt(0x00549AB5 + 1, 914);
 	// 123
 	MemoryEdit::writeInt(0x00549DE5 + 1, 600);
 	// 124
 	MemoryEdit::writeInt(0x00549EA1 + 1, 765);
+	// 125
+	MemoryEdit::writeInt(0x0054A72B + 1, 628);
+	// 126
+	MemoryEdit::writeByte(0x0054DA66 + 1, 0x7F);
+	// 127
+	MemoryEdit::writeInt(0x0054DA7A + 2, 0x00000208);
+	// 128
+	MemoryEdit::writeByte(0x0054DD44 + 2, 0x7F);
+	MemoryEdit::writeInt(0x0054DD48 + 2, 0x00000208);
+	// 129
+	MemoryEdit::writeByte(0x0054E007 + 2, 0x7F);
+	MemoryEdit::writeInt(0x0054E00B + 2, 0x00000208);
+	// 130
+	MemoryEdit::writeInt(0x0054E1E6 + 1, height);
+	MemoryEdit::writeInt(0x0054E1EB + 1, width);
+	// 131
+	MemoryEdit::writeInt(0x0054E281 + 1, height);
+	MemoryEdit::writeInt(0x0054E286 + 1, width);
+	// 132
+	MemoryEdit::writeInt(0x0054E796 + 1, -width / 2);
+	MemoryEdit::writeInt(0x0054E78E + 1, -height / 2);
+	// 133
+	MemoryEdit::writeInt(0x005603E7 + 1, width);
+	// 134 => packet or something
+	// 135 => same
+	// 136
+	MemoryEdit::writeInt(0x005694A4 + 2, -width / 2);
+	MemoryEdit::writeInt(0x0056949D + 2, height / 2);
+	// 137 / 138
+	MemoryEdit::writeInt(0x0056977E + 1, width);
+	MemoryEdit::writeInt(0x00569787 + 1, width);
 
+	// 139
+	MemoryEdit::writeInt(0x005697A0 + 1, height);
+	MemoryEdit::writeInt(0x005697A7 + 1, height);
 
+	// 140,141,142,143
+	MemoryEdit::writeInt(0x0056A503 + 1, width);
+	MemoryEdit::writeInt(0x0056A50D + 1, width);
+	MemoryEdit::writeInt(0x0056A516 + 1, height);
+	MemoryEdit::writeInt(0x0056A51F + 1, height);
 
+	// 144
+	MemoryEdit::writeInt(0x0056B491 + 2, width / 2);
+
+	// 145
+	MemoryEdit::writeInt(0x0056B497 + 6, width / 2);
+
+	// 146,147,148,149
+	MemoryEdit::writeInt(0x005739D4 + 1, height);
+	MemoryEdit::writeInt(0x005739E7 + 1, width);
+	MemoryEdit::writeInt(0x00574A56 + 1, height);
+	MemoryEdit::writeInt(0x00574A69 + 1, width);
+	// 150
+ 	MemoryEdit::writeInt(0x00575E19 + 1, width);
+	MemoryEdit::writeInt(0x00575E06 + 1, height); // Aqui mouse começou a ir << e acima
+	// 156
+	MemoryEdit::writeInt(0x00577B36 + 1, height);
+	MemoryEdit::writeInt(0x00577B49 + 1, width);
+	// 154,155
+	MemoryEdit::writeInt(0x00578D56 + 1, height);
+	MemoryEdit::writeInt(0x00578D69 + 1, width);
+	// 156, 157 => nope
+	// 158,159
+	MemoryEdit::writeInt(0x00586633 + 1, height);
+	MemoryEdit::writeInt(0x00586646 + 1, width);
+	// 160,161
+	MemoryEdit::writeInt(0x00587D27 + 1, height);
+	MemoryEdit::writeInt(0x00587D39 + 1, width);
+	// 162 => unknow weird patching
+	// 163 => hook
+	// 164 => nope
+	// 165 => nope
+	// 167
+	MemoryEdit::writeInt(0x005C26CF + 1, width);
+	MemoryEdit::writeInt(0x005C26C7 + 1, height);
+	// 168 => JUMP
+	// 169
+	MemoryEdit::writeInt(0x005CF269 + 1, -width / 2);
+	MemoryEdit::writeInt(0x005CF271 + 1, -height / 2);
+	// 170
+	MemoryEdit::writeByteArray(0x005E4BBF, "2E 02 00 00 8b f1 b9 25 01 00 00 51 50 50 51");
+	// 171 nope
+	// 172
+	MemoryEdit::writeInt(0x005E5774 + 1, height);
+	MemoryEdit::writeInt(0x005E5779 + 1, width);
+	// 173
+	MemoryEdit::writeInt(0x005E80DA + 1, height);
+	MemoryEdit::writeInt(0x005E80DF + 1, width);
+	// 174 175
+	MemoryEdit::writeInt(0x005E8188, 1273);
+	MemoryEdit::writeInt(0x005E8452, 1280);
+	// 176
+	MemoryEdit::writeInt(0x005EBB33 + 1, height);
+	MemoryEdit::writeInt(0x005EBB3A + 1, width);
 
 
 	// CWvsApp::CreateWndManager(_DWORD *this)
