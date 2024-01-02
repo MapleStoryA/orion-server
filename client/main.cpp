@@ -402,12 +402,28 @@ void ApplyPatches() {
 	MemoryEdit::writeInt(0x0060C69E + 2, width);
 	MemoryEdit::writeInt(0x0060C6A5 + 2, height / 2);
 	
-
-
-
-
-
-
+	// 192
+	MemoryEdit::writeInt(0x0060C6B5 + 1, width);
+	MemoryEdit::writeInt(0x0060C6BC + 1, -height / 2);
+	// 193
+	MemoryEdit::writeInt(0x0060C6C7 + 2, height / 2);
+	// 194
+	MemoryEdit::writeInt(0x0060C6EF + 1, width);
+	// 195
+	MemoryEdit::writeInt(0x0060C6F8 + 1, width / 2);
+	// 196
+	MemoryEdit::writeInt(0x0060C707 + 1, height);
+	MemoryEdit::writeInt(0x0060C70E + 1, width / 2);
+	// 197
+	MemoryEdit::writeInt(0x0060C719 + 2, height / 2);
+	// 198
+	MemoryEdit::writeInt(0x0060C812 + 1, width);
+	MemoryEdit::writeInt(0x0060C819 + 2, width / 2);
+	// 199
+	MemoryEdit::writeInt(0x0060C82F + 1, height / 2);
+	MemoryEdit::writeInt(0x0060C828 + 2, height);
+	// 200
+	MemoryEdit::writeInt(0x0060D589 + 2, - height / 2);
 
 
 
