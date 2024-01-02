@@ -349,14 +349,79 @@ void ApplyPatches() {
 	// 173
 	MemoryEdit::writeInt(0x005E80DA + 1, height);
 	MemoryEdit::writeInt(0x005E80DF + 1, width);
-	// 174 175
-	MemoryEdit::writeInt(0x005E8188, 1273);
-	MemoryEdit::writeInt(0x005E8452, 1280);
-	// 176
+	// 174
+	MemoryEdit::writeInt(0x005E8188 + 1, 1273);
+	// CRASH CRASH
+	MemoryEdit::writeInt(0x005E8452 + 1, 1280);
+	
 	MemoryEdit::writeInt(0x005EBB33 + 1, height);
 	MemoryEdit::writeInt(0x005EBB3A + 1, width);
 
+	// 175
+	MemoryEdit::writeInt(0x0060116B + 1, height);
+	MemoryEdit::writeInt(0x00601170 + 1, width);
+	
+	// 176
+	MemoryEdit::writeInt(0x006017DA + 1, height);
+	MemoryEdit::writeInt(0x006017DF + 1, width);
 
+	// 177
+	MemoryEdit::writeInt(0x00601E29 + 1, height);
+	MemoryEdit::writeInt(0x00601E2E + 1, width);
+	// 178
+	MemoryEdit::writeInt(0x00602235 + 1, height);
+	MemoryEdit::writeInt(0x0060223A + 1, width);
+	// 179
+	MemoryEdit::writeInt(0x006024F5 + 1, height);
+	MemoryEdit::writeInt(0x006024FA + 1, width);
+	
+	// 180 jmp to nmcom.dll
+	// 181 maybe login stuff
+	// 182
+	MemoryEdit::writeInt(0x0060C5FB + 1, width);
+	// 183
+	MemoryEdit::writeInt(0x0060C604 + 2, width / 2);
+	// 184
+	MemoryEdit::writeInt(0x0060C613 + 2, height);
+	// 185
+	MemoryEdit::writeInt(0x0060C61C + 2, height / 2);
+	// 186
+	
+	MemoryEdit::writeInt(0x0060C632 + 2, height / 2);
+	// 187
+	MemoryEdit::writeInt(0x0060C64D + 1, width);
+	// 188
+	MemoryEdit::writeInt(0x0060C656 + 2, width / 2);
+	// 189
+	MemoryEdit::writeInt(0x0060C665 + 2, height);
+	MemoryEdit::writeInt(0x0060C66C + 1, height / 2);
+	// 190
+	MemoryEdit::writeInt(0x0060C683 + 2, -height / 2);
+	
+	// 191
+	MemoryEdit::writeInt(0x0060C69E + 2, width);
+	MemoryEdit::writeInt(0x0060C6A5 + 2, height / 2);
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// 291
+	MemoryEdit::writeInt(0x007B07BA + 1, width / 2);
+	MemoryEdit::writeInt(0x007B0786 + 4, width / 2);
+	
+	
+	
+	
 	// CWvsApp::CreateWndManager(_DWORD *this)
 	MemoryEdit::writeInt(0x00997A6D + 1, width);
 	MemoryEdit::writeInt(0x00997A68 + 1, width);
