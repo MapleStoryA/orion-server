@@ -424,6 +424,56 @@ void ApplyPatches() {
 	MemoryEdit::writeInt(0x0060C828 + 2, height);
 	// 200
 	MemoryEdit::writeInt(0x0060D589 + 2, - height / 2);
+	// 201
+	MemoryEdit::writeInt(0x0060D5B3 + 2, height);
+	MemoryEdit::writeInt(0x0060D5BA + 2, width);
+	MemoryEdit::writeInt(0x0060D5C2 + 1, -height / 2);
+	// 202
+	MemoryEdit::writeInt(0x0060E526 + 1, width / 2);
+	// 203
+	MemoryEdit::writeInt(0x0060E5A6 + 1, height / 2);
+	// 204
+	MemoryEdit::writeInt(0x0060E626 + 1, height / 2);
+	// 205
+	MemoryEdit::writeInt(0x0060E6A6 + 1, width / 2);
+	// 206
+	MemoryEdit::writeInt(0x006115CA + 4, width);
+	// 207
+	MemoryEdit::writeInt(0x006115D6 + 4, height);
+	// 208
+	MemoryEdit::writeInt(0x00611734 + 4, width);
+	// 209
+	MemoryEdit::writeInt(0x00611740 + 4, height);
+	// 210 211 212 213 214 215
+	// 216
+	MemoryEdit::writeInt(0x00661BC2 + 1, height);
+	// 217 hooker
+	// 218 noper
+	// 219 noper
+	// 220 
+	// 221 - 226 noper or jumper
+	// 227
+	MemoryEdit::writeInt(0x006E2188 + 1, 36);
+	// 228 hooker
+	// 229
+	MemoryEdit::writeByteArray(0x006E2188, "94 35 77 8B C6 5E 5B 59");
+	// 230 item patch?
+	// 231 - 239 more item patch
+	// 240 Jumper
+	// 241 some mul stuff
+	// 242 jump
+	// 243 jump
+	// 244 jump
+	// 245 246 jump
+	// 247 noper
+	// 248 hooker
+	// 249 jumper
+	// 250 random stuffs
+	// 251
+	MemoryEdit::writeInt(0x0073D26D + 1, 361);
+	// 252
+	MemoryEdit::writeInt(0x0073D285 + 3, 680);
+	
 
 
 
@@ -433,7 +483,7 @@ void ApplyPatches() {
 
 	// 291
 	MemoryEdit::writeInt(0x007B07BA + 1, width / 2);
-	MemoryEdit::writeInt(0x007B0786 + 4, width / 2);
+	MemoryEdit::writeInt(0x007B0786 + 4, height / 2);
 	
 	
 	
