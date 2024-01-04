@@ -473,8 +473,44 @@ void ApplyPatches() {
 	MemoryEdit::writeInt(0x0073D26D + 1, 361);
 	// 252
 	MemoryEdit::writeInt(0x0073D285 + 3, 680);
+	// 253
+	MemoryEdit::writeInt(0x0073D41B + 1, 361);
+    // 254
+	MemoryEdit::writeInt(0x0073D433 + 3, 680);
+	// 255 item stuff
+	// 256
+	// 257 hooker
+	// 258 noper
+	// 259 noper
+	// 260
+	MemoryEdit::writeInt(0x007521D0 + 1, height);
+	// 261
+	MemoryEdit::writeInt(0x007521E3 + 1, width);
+	// 262
+	MemoryEdit::writeInt(0x0075E146 + 1, width);
+	MemoryEdit::writeInt(0x0075E141 + 1, height);
+	// 263
+	MemoryEdit::writeInt(0x0075EFC0 + 1, width);
+	// 264
+	MemoryEdit::writeInt(0x00765B21 + 3, width);
+	// 265
+	MemoryEdit::writeInt(0x00765FC8 + 1, width);
+	// 266
+	MemoryEdit::writeInt(0x0076617B + 2, width);
+	// 267
+	MemoryEdit::writeInt(0x0076CFB3 + 1, width);
+	MemoryEdit::writeInt(0x0076CFAB + 1, height);
+	// 268
+	MemoryEdit::writeInt(0x0076ED79 + 1, width);
+	MemoryEdit::writeInt(0x0076ED71 + 1, height);
+	// 269
+	MemoryEdit::writeInt(0x0077317D + 1, height);
+	// 270
+	MemoryEdit::writeInt(0x00773187 + 1, width);
+	// 271
+	MemoryEdit::writeInt(0x007738D1 + 1, height);
+	MemoryEdit::writeInt(0x007738D9 + 1, width);
 	
-
 
 
 
