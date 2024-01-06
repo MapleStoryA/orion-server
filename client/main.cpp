@@ -510,17 +510,101 @@ void ApplyPatches() {
 	// 271
 	MemoryEdit::writeInt(0x007738D1 + 1, height);
 	MemoryEdit::writeInt(0x007738D9 + 1, width);
-	
-
-
-
-
-
-
+	// 272
+	MemoryEdit::writeByteArray(0x007850C3, "39 C0 90 90 90 90 90");
+	// 273
+	MemoryEdit::writeByteArray(0x007850F4, "83 E8 00 90 90 90");
+	// 274
+	MemoryEdit::writeByteArray(0x00786584, "39 C0 00 90 90 90 90 90");
+	// 275
+	MemoryEdit::writeByteArray(0x007865B5, "83 E8 00 90 90 90");
+	// 276
+	MemoryEdit::writeByteArray(0x00786A01, "39 C0 90 90 90 90 90");
+	// 277
+	MemoryEdit::writeByteArray(0x00786A32, "83 E8 00 90 90 90");
+	// 278
+	MemoryEdit::writeInt(0x00788AA2 + 1, width);
+	// 279
+	MemoryEdit::writeInt(0x00788AB5 + 1, height);
+	// 280 // Something send packet
+	// 281 ?? packet something
+	// 282 - item scrolls related?
+	// 283 - again
+	// 284 - item stuff
+	// 285 - again
+	// 286 - admin account can't throw away money
+	MemoryEdit::writeByteArray(0x007A6AB1, "E9 9A 00 00 00 00");
+	// 287 - custom stuff I guess
+	// 288
+	MemoryEdit::writeInt(0x007B0724 + 4, height / 2);
+	// 289
+	MemoryEdit::writeInt(0x007B0755 + 1, height / 2);
+	// 290
+	MemoryEdit::writeInt(0x007B0786 + 4, width / 2);
 	// 291
 	MemoryEdit::writeInt(0x007B07BA + 1, width / 2);
-	MemoryEdit::writeInt(0x007B0786 + 4, height / 2);
-	
+	// 292
+	MemoryEdit::writeByteArray(0x007B1024, "02 00 00 00 F7 E1 90 90 90 89 96 7C 15 00 00 8D");
+	// 293 scroll stuff
+	// 294 other requests msg
+	// 295 same
+	// 296 same
+	// 297 same
+	// 298 same
+	// 299 same
+	// 300
+	MemoryEdit::writeInt(0x007CE782 + 1, 568);
+	MemoryEdit::writeInt(0x007CE788 + 1, 1202);
+	// 301
+	MemoryEdit::writeInt(0x007CE8A2 + 1, 464);
+	MemoryEdit::writeInt(0x007CE8A8 + 1, 1273);
+	// 302 chat stuff?
+	// 303
+	// 304 packet stuff
+	// 305
+	// 306
+	MemoryEdit::writeInt(0x007E152A + 2, height);
+	// 307
+	MemoryEdit::writeInt(0x007E1541 + 1, 729);
+	// 308
+	MemoryEdit::writeInt(0x007E154D + 2, width);
+	MemoryEdit::writeInt(0x007E1555 + 2, width - 70);
+	// 309 packet
+	// 310 same
+	// 311 // party stuff
+	// 312
+	// 313  all party stuff i guess level related
+	// 314 
+	// 315 jumper
+	// 316
+	// 317
+	MemoryEdit::writeInt(0x0081D647 + 1, 540);
+	// 318 hooker window related
+	// 319
+	MemoryEdit::writeInt(0x0081DE33 + 1, 611);
+	// 320
+	MemoryEdit::writeInt(0x0081DF07 + 1, 1010);
+	// 321
+	MemoryEdit::writeInt(0x0081E016 + 1, 443);
+	// 322
+	MemoryEdit::writeInt(0x0081E45F + 1, 1010);
+	// 323 jumper
+	// 324
+	// 325
+	MemoryEdit::writeInt(0x00821BC0 + 1, height);
+	// 326
+	MemoryEdit::writeInt(0x00821BD3 + 1, width);
+	// 327 jumper
+	// 328 jumper
+	// 329
+	MemoryEdit::writeInt(0x0082FB7E + 1, width);
+	MemoryEdit::writeInt(0x0082FB79 + 1, height);
+	// 330 jumper
+	// 331 jumper
+	// 332
+	MemoryEdit::writeInt(0x008433EB + 1, 370);
+	MemoryEdit::writeInt(0x008433F0 + 1, 525);
+
 	
 	
 	
