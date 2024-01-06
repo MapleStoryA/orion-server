@@ -72,6 +72,7 @@ void PatchScreenSize() {
 
 
 void ApplyPatches() {
+#ifdef HD_CLIENT_ENABLED
 	PatchWindowsMode();
 	PatchScreenSize();
 	HookCreateWindowExA(true);
@@ -602,145 +603,114 @@ void ApplyPatches() {
 	// 330 jumper
 	// 331 jumper
 	// 332
+	// 333
+	// 334
 	MemoryEdit::writeInt(0x008433EB + 1, 370);
 	MemoryEdit::writeInt(0x008433F0 + 1, 525);
+	// 335
+	MemoryEdit::writeInt(0x00844972 + 2, 200);
+	// 336
+	MemoryEdit::writeInt(0x00844B2B + 1, 200);
+	// 337
+	MemoryEdit::writeInt(0x00845518 + 2, 0x1863B300); // float 4.40
+	// 338
+	MemoryEdit::writeInt(0x00845BFD + 2, 0x7FADCE49);
+	// 339
+	MemoryEdit::writeInt(0x00845C0A + 3, 0x7FADCE49);
+	// 340
+	MemoryEdit::writeInt(0x00845C19 + 1, 0x7FADCE49);
+	// 341
+	MemoryEdit::writeInt(0x00845C22 + 1, 0x7FADCE49);
+	// 342
+	MemoryEdit::writeInt(0x00846C74 + 3, 400);
+	// 343
+	MemoryEdit::writeInt(0x00846FA2 + 2, 300);
+	// 344
+	MemoryEdit::writeInt(0x00846FAD + 3, 300);
+	// 345 - 350
+	MemoryEdit::writeInt(0x00847840 + 1, 183);
+	MemoryEdit::writeInt(0x008478A0 + 1, 183);
+	MemoryEdit::writeInt(0x00847900 + 1, 183);
+	MemoryEdit::writeInt(0x00847960 + 1, 183);
+	MemoryEdit::writeInt(0x008479C0 + 1, 183);
+	MemoryEdit::writeInt(0x00847A20 + 1, 183);
+	// 351 - 353
+	MemoryEdit::writeByte(0x00847AC1 + 1, 127);
+	MemoryEdit::writeByte(0x00847BA3 + 1, 127);
+	MemoryEdit::writeByte(0x00847C85 + 1, 127);
+	// 354
+	MemoryEdit::writeInt(0x008481CB + 1, 185);
+	// 355
+	MemoryEdit::writeInt(0x00849D77 + 1, 207);
+	// 356
+	MemoryEdit::writeInt(0x00849ED5 + 1, 186);
+	// 357
+	MemoryEdit::writeInt(0x0084A1A8 + 1, 206);
+	// 358
+	MemoryEdit::writeByte(0x0084A67A + 1, 127);
+	// 359
+	MemoryEdit::writeInt(0x0084A709 + 1, 200);
+	// 360 - 363 - I believe it's stats related from 999 to 32K
+	MemoryEdit::writeInt(0x0084D994 + 1, 32767);
+	MemoryEdit::writeInt(0x0084D9C1 + 1, 32767);
+	MemoryEdit::writeInt(0x0084D9EE + 1, 32767);
+	MemoryEdit::writeInt(0x0084DA1B + 1, 32767);
+	// 364
+	MemoryEdit::writeInt(0x0085041E + 1, -1213);
+	MemoryEdit::writeInt(0x00850424 + 1, -595);
+	// 365 - 370
+	MemoryEdit::writeInt(0x00850675 + 2, 675);
+	MemoryEdit::writeInt(0x0085068C + 2, 675);
+	MemoryEdit::writeInt(0x008506AE + 2, 675);
+	MemoryEdit::writeInt(0x008506F2 + 2, 595);
+	MemoryEdit::writeInt(0x008506FE + 2, 675);
+	MemoryEdit::writeInt(0x00850711 + 2, 675);
+	// 371
+	MemoryEdit::writeInt(0x0085210F + 1, 688);
+	// 372
+	MemoryEdit::writeInt(0x00852185 + 1, width / 2);
+	// 373
+	MemoryEdit::writeInt(0x008532AA + 1, 675);
+	// 374
+	MemoryEdit::writeInt(0x0085334B + 1, 675);
+	// 375
+	MemoryEdit::writeInt(0x008533CD + 1, width / 2);
+	// 376
+	MemoryEdit::writeInt(0x008533D9 + 1, 1139);
+	// 377
+	MemoryEdit::writeInt(0x00853464 + 1, 687);
+	// 378
+	MemoryEdit::writeInt(0x00853470 + 1, 1165);
+	// 379
+	MemoryEdit::writeInt(0x00854796 + 2, -727);
+	// 380
+	MemoryEdit::writeInt(0x0085484C + 2, -728);
+	// 381
+	MemoryEdit::writeInt(0x008549C6 + 1, width);
+	MemoryEdit::writeInt(0x008549C1 + 1, 746);
+	// 382
 
-	
-	
-	
-	// CWvsApp::CreateWndManager(_DWORD *this)
+
+	// 560
+	MemoryEdit::writeInt(0x00988638 + 1, width);
+	// 562
+	MemoryEdit::writeInt(0x009888D4 + 1, height);
+	// 563
+	MemoryEdit::writeInt(0x0098AEB0 + 1, -width / 2);
+	MemoryEdit::writeInt(0x0098AEA8 + 1, -height / 2);
+
+	// 567
 	MemoryEdit::writeInt(0x00997A6D + 1, width);
-	MemoryEdit::writeInt(0x00997A68 + 1, width);
-	// CWvsApp::CreateMainWindow(_DWORD *this)
-	MemoryEdit::writeInt(0x0099CB4E + 3, height);
-	MemoryEdit::writeInt(0x0099CB55 + 3, width);
+	MemoryEdit::writeInt(0x00997A68 + 1, height);
 
-
-	/*
-	// CWvsApp::CreateWndManager(_DWORD *this)
-	MemoryEdit::writeInt(0x00997A6D + 1, width);
-	MemoryEdit::writeInt(0x00997A68 + 1, width);
-	// CWvsApp::CreateMainWindow(_DWORD *this)
-	MemoryEdit::writeInt(0x0099CB4E + 3, height);
-	MemoryEdit::writeInt(0x0099CB55 + 3, width);
-
-
-	MemoryEdit::writeInt(0x004430A2 + 1, width);
-	MemoryEdit::writeInt(0x0044309D + 1, height);
-
-	MemoryEdit::writeInt(0x00443198 + 1, width);
-	MemoryEdit::writeInt(0x00443193 + 1, height);
-
-	MemoryEdit::writeInt(0x0044451C + 1, width);
-	MemoryEdit::writeInt(0x0444517 + 1, height);
-
-	MemoryEdit::writeInt(0x00444610 + 1, width);
-	MemoryEdit::writeInt(0x0044460B + 1, height);
-
-    MemoryEdit::writeInt(0x004446A4 + 1, -height / 2);
-    MemoryEdit::writeInt(0x004446AC + 1, -width / 2);
-
-
-	MemoryEdit::writeInt(0x00457D6F + 1, height);
-    MemoryEdit::writeInt(0x00457D76 + 1, width);
-    
-	MemoryEdit::writeInt(0x00457F64 + 1, height / 2);
-	MemoryEdit::writeInt(0x00457D6F + 1, width / 2);
+	// 568
+	MemoryEdit::writeInt(0x0099CB4E + 3, width);
+	MemoryEdit::writeInt(0x0099CB55 + 3, height);
+	// 632 633
+	MemoryEdit::writeInt(0x009BE584 + 6, width);
+	MemoryEdit::writeInt(0x009BE594 + 6, height);
 	
-
-	MemoryEdit::writeInt(0x00457F64 + 1, height / 2);
-	MemoryEdit::writeInt(0x00457F6B + 1, width / 2);
-
-	MemoryEdit::writeInt(0x0046B3CC + 1, 1141);
-	MemoryEdit::writeInt(0x0046B50F + 1, 1466);
-	MemoryEdit::writeInt(0x0046C0FF + 1, 1466);
-	MemoryEdit::writeInt(0x0046C243 + 1, 1141);
-
-	MemoryEdit::writeByte(0x0046D358, 0x75);
-
-	MemoryEdit::writeInt(0x00486BBE, height);
-	MemoryEdit::writeInt(0x00486BD1, width);
-	MemoryEdit::writeInt(0x00490E4B, height / 2);
-	MemoryEdit::writeInt(0x004932D2, height / 2);
-	*/
-
-#ifdef HD_CLIENT_ENABLED
-	ClientApp::GetInstance()->AddLogMessage("Setting resolution to " + std::to_string(width) + " : " + std::to_string(height));
-	PatchScreenSize();
-	// CWvsApp::CreateWndManager(_DWORD *this)
-	MemoryEdit::writeInt(0x00997A6D + 1, width);
-	MemoryEdit::writeInt(0x00997A68 + 1, width);
 	
-
-	MemoryEdit::writeInt(0x0099CB4E + 3, height);
-	MemoryEdit::writeInt(0x0099CB55 + 3, width);
-
-	
-
-	MemoryEdit::writeInt(0x00443198 + 1, height);
-	MemoryEdit::writeInt(0x00443193 + 1, width);
-
-	MemoryEdit::writeInt(0x0044451C + 1, height);
-	MemoryEdit::writeInt(0x00444517 + 1, width);
-
-	MemoryEdit::writeInt(0x00444610 + 1, height);
-	MemoryEdit::writeInt(0x0044460B + 1, width);
-
-	MemoryEdit::writeInt(0x00533F92 + 1, height);
-	MemoryEdit::writeInt(0x00533F8D + 1, width);
-
-	MemoryEdit::writeInt(0x00534971 + 1, height);
-	MemoryEdit::writeInt(0x0053496C + 1, width);
-
-	MemoryEdit::writeInt(0x0054E1EB + 1, height);
-	MemoryEdit::writeInt(0x0054E1E6 + 1, width);
-
-	MemoryEdit::writeInt(0x0054E286 + 1, height);
-	MemoryEdit::writeInt(0x0054E281 + 1, width);
-
-	MemoryEdit::writeInt(0x005E5779 + 1, height);
-	MemoryEdit::writeInt(0x005E5774 + 1, width);
-
-	MemoryEdit::writeInt(0x005E80DF + 1, height);
-	MemoryEdit::writeInt(0x005E80DA + 1, width);
-
-	MemoryEdit::writeInt(0x00601170 + 1, height);
-	MemoryEdit::writeInt(0x0060116B + 1, width);
-
-	MemoryEdit::writeInt(0x006017DF + 1, height);
-	MemoryEdit::writeInt(0x006017DA + 1, width);
-
-	MemoryEdit::writeInt(0x00601E2E + 1, height);
-	MemoryEdit::writeInt(0x00601E29 + 1, width);
-
-	MemoryEdit::writeInt(0x0060223A + 1, height);
-	MemoryEdit::writeInt(0x00602235 + 1, width);
-
-	MemoryEdit::writeInt(0x006024FA + 1, height);
-	MemoryEdit::writeInt(0x006024F5 + 1, width);
-
-	MemoryEdit::writeInt(0x0075E146 + 1, height);
-	MemoryEdit::writeInt(0x0075E141 + 1, width);
-
-	MemoryEdit::writeInt(0x0082FB7E + 1, height);
-	MemoryEdit::writeInt(0x0082FB79 + 1, width);
-
-	MemoryEdit::writeInt(0x00857862 + 1, height);
-	MemoryEdit::writeInt(0x0085785D + 1, width);
-
-	MemoryEdit::writeInt(0x004430A2 + 1, height);
-	MemoryEdit::writeInt(0x0044309D + 1, width);
-
-
-	// CInputSystem::Init
-	MemoryEdit::writeInt(0x0056B491 + 4, width / 2);
-	MemoryEdit::writeInt(0x0056B497 + 4, height / 2);
-
-	// CInputSystem::SetCursorVectorPos
-	// MemoryEdit::writeInt(0x0056949D + 2, height / 2);
-	// MemoryEdit::writeInt(0x0056949D + 2, height / 2);
-	MemoryEdit::writeInt(0x00486BD1 + 1, width);
-	MemoryEdit::writeInt(0x00486BBE + 1, height);
 
 #endif
 
