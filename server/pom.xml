@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.orionms</groupId>
     <artifactId>orion-ms</artifactId>
-    <version>1.0.0</version>
+    <version>1.3.0</version>
     <packaging>jar</packaging>
     <name>Orion MS server</name>
     <description>A Maple Story emulator for GMS 0.90</description>
