@@ -7,8 +7,8 @@ This is a fan project by someone who plays the game since 2006 and loves the pre
 
 ## Requirements
 The current client does not requires Admnistrator Access, but has a few issues that still need to be fixed. 
-### Client Setup v92.
-- [Link](https://mega.nz/file/MmNkRSQL#RWDW8FIbH7ocTkBDY8MXdw4cCbSjWELMqouC9tmG1z0)
+- [Client](https://mega.nz/file/MmNkRSQL#RWDW8FIbH7ocTkBDY8MXdw4cCbSjWELMqouC9tmG1z0)
+
 ## Dependencies
 - JDK 21
 - MySQL 5.6
