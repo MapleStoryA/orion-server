@@ -720,13 +720,34 @@ void ApplyPatches() {
 	MemoryEdit::writeInt(0x008581D3 + 1, 749);
 	// 395
 	MemoryEdit::writeInt(0x00858B16 + 1, 581);
-
-
-
-
-
-
-
+	// 396
+	MemoryEdit::writeInt(0x00859440 + 1, 749);
+	// 397
+	MemoryEdit::writeInt(0x00859D44 + 1, 749);
+	// 398
+	MemoryEdit::writeInt(0x0085A1D5 + 1, 712);
+	// 399
+	MemoryEdit::writeInt(0x0085A28A + 1, 717);
+	// 400
+	MemoryEdit::writeInt(0x0085A335 + 1, 716);
+	// 401
+	MemoryEdit::writeInt(0x0085A41E + 1, 717);
+	// 402
+	MemoryEdit::writeInt(0x0085A4C0 + 1, 712);
+	// 403
+	MemoryEdit::writeInt(0x0085A5DE + 1, 717);
+	// 404
+	MemoryEdit::writeInt(0x0085A6A1 + 1, 717);
+	// 405
+	MemoryEdit::writeInt(0x0085A701 + 1, 717);
+	// 407
+	MemoryEdit::writeInt(0x0085A8AA + 1, 716);
+	// 408 -> int stuff about skill?
+	// 409
+	MemoryEdit::writeInt(0x0085AA8C + 1, 717);
+	// 410 -> skill again?
+	// 411
+	MemoryEdit::writeInt(0x0085AC16 + 1, 717);
 
 
 
