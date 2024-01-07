@@ -13,7 +13,7 @@ The current client does not requires Admnistrator Access, but has a few issues t
 - JDK 21
 - MySQL 5.6
 - Intellij Community Edition
-- Visual Studio 2015
+- Visual Studio 2022
 - Maven
 - Docker
 
