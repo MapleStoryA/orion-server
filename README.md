@@ -1,12 +1,13 @@
 # Orion Server
-A Maple Story V90 Emulator
+A Maple Story V92 Emulator
 
 [![Build](https://github.com/MapleStoryA/orion-server/actions/workflows/build.yml/badge.svg)](https://github.com/MapleStoryA/orion-server/actions/workflows/build.yml)
 [![CodeQL](https://github.com/MapleStoryA/orion-server/actions/workflows/codeql.yml/badge.svg)](https://github.com/MapleStoryA/orion-server/actions/workflows/codeql.yml)
 
-## Client
-https://mega.nz/file/hpEywRYJ#EdEjnyfV6jiZf0Kfa5jHZq5CPJ3CzdNQunq4Y8ZeP5M
-
+## Requirements
+The current client does not requires Admnistrator Access, but has a few issues that still need to be fixed. 
+### Client Setup v92.
+- [Link](https://mega.nz/file/MmNkRSQL#RWDW8FIbH7ocTkBDY8MXdw4cCbSjWELMqouC9tmG1z0)
 ## Dependencies
 - JDK 21
 - MySQL 5.6
