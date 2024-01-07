@@ -1,5 +1,6 @@
 # Orion Server
-A Maple Story V92 Emulator
+
+This is a fan project by someone who plays the game since 2006 and loves the previous versions of the game, all the copyright belongs to Nexon.
 
 [![Build](https://github.com/MapleStoryA/orion-server/actions/workflows/build.yml/badge.svg)](https://github.com/MapleStoryA/orion-server/actions/workflows/build.yml)
 [![CodeQL](https://github.com/MapleStoryA/orion-server/actions/workflows/codeql.yml/badge.svg)](https://github.com/MapleStoryA/orion-server/actions/workflows/codeql.yml)
