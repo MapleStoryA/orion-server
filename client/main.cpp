@@ -76,7 +76,8 @@ void ApplyPatches() {
 	PatchWindowsMode();
 	PatchScreenSize();
 	HookCreateWindowExA(true);
-
+	// 1 hook: BOOL __cdecl is_vehicle(signed int a1)
+	
 	// 5
 	MemoryEdit::writeInt(0x0044309D + 1, height);
 	MemoryEdit::writeInt(0x004430A2 + 1, width);
@@ -689,6 +690,44 @@ void ApplyPatches() {
 	MemoryEdit::writeInt(0x008549C6 + 1, width);
 	MemoryEdit::writeInt(0x008549C1 + 1, 746);
 	// 382
+	MemoryEdit::writeInt(0x00854A2D + 1, 722);
+	// 383
+	MemoryEdit::writeInt(0x00854AE4 + 1, 713);
+	// 384
+	MemoryEdit::writeInt(0x00854BD5 + 1, 728);
+	// 385
+	MemoryEdit::writeInt(0x00855ED7 + 1, 748);
+	// 386
+	MemoryEdit::writeInt(0x008562C7 + 1, 748);
+	// 387
+	MemoryEdit::writeByte(0x00856878 + 1, 0xBD);
+	// 388
+	MemoryEdit::writeInt(0x00856920 + 1, 1213);
+	// 389
+	MemoryEdit::writeInt(0x00856A7D + 1, width / 2);
+	MemoryEdit::writeInt(0x00856A82 + 1, 1334);
+	// 390
+	MemoryEdit::writeInt(0x00856C5C + 1, 687);
+	// 391
+	MemoryEdit::writeInt(0x00856D02 + 1, 687);
+	// 392
+	MemoryEdit::writeInt(0x00857125 + 1, width / 2);
+	MemoryEdit::writeInt(0x0085712A + 3, 0x000004A0);
+	// 393
+	MemoryEdit::writeInt(0x0085785D + 1, 746);
+	MemoryEdit::writeInt(0x00857862 + 1, 1366);
+	// 394
+	MemoryEdit::writeInt(0x008581D3 + 1, 749);
+	// 395
+	MemoryEdit::writeInt(0x00858B16 + 1, 581);
+
+
+
+
+
+
+
+
 
 
 	// 560
