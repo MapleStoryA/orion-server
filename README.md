@@ -1,6 +1,8 @@
 # Orion Server
 
-This is a fan project by someone who plays the game since 2006 and loves the previous versions of the game, all the copyright belongs to Nexon.
+This project is a fan-based hobby initiative created by an individual who has been playing the game since 2006 and holds a deep appreciation for its earlier versions. All copyright for the game is owned by Nexon.
+
+If you're interested in contributing to this project, please feel free to send a message.
 
 [![Build](https://github.com/MapleStoryA/orion-server/actions/workflows/build.yml/badge.svg)](https://github.com/MapleStoryA/orion-server/actions/workflows/build.yml)
 [![CodeQL](https://github.com/MapleStoryA/orion-server/actions/workflows/codeql.yml/badge.svg)](https://github.com/MapleStoryA/orion-server/actions/workflows/codeql.yml)
