@@ -748,13 +748,171 @@ void ApplyPatches() {
 	// 410 -> skill again?
 	// 411
 	MemoryEdit::writeInt(0x0085AC16 + 1, 717);
+	// 412
+	MemoryEdit::writeInt(0x0085ACB8 + 1, 716);
+	// 413
+	MemoryEdit::writeInt(0x0085ADBB + 1, 716);
+	// 414
+	MemoryEdit::writeInt(0x0085AEA1 + 1, 717);
+	// 415 -> Int stuff?
+	// 416
+	MemoryEdit::writeInt(0x0085B02D + 1, 717);
+	// 417
+	MemoryEdit::writeInt(0x0085B0D6 + 1, 716);
+	// 418
+	MemoryEdit::writeInt(0x0085EC73 + 1, 677);
+	// 419
+	MemoryEdit::writeInt(0x0085ECEF + 1, 678);
+	// 420
+	MemoryEdit::writeInt(0x0085ED14 + 1, 748); // Client view port went up with this one
+	// 421
+	MemoryEdit::writeInt(0x0085ED3A + 6, 654);
+	// 422
+	MemoryEdit::writeInt(0x0085EDA8 + 1, 678);
+	// 423
+	MemoryEdit::writeInt(0x0085EDCD + 1, 748);
+	// 424
+	MemoryEdit::writeInt(0x0085EDFD + 6, 681); // crashing?
+	// 425
+	MemoryEdit::writeInt(0x0085EE6E + 1, 681);
+	// 426
+	MemoryEdit::writeInt(0x0085EE90 + 1, 748);
+	// 427
+	MemoryEdit::writeInt(0x0085F0CE + 1, 677);
+	// 428
+	MemoryEdit::writeInt(0x0085F151 + 1, 678);
+	// 429 - no idea
+	// 430
+	MemoryEdit::writeInt(0x00862313 + 2, 701);
+	MemoryEdit::writeInt(0x0086231A + 1, 1213);
+	// 431
+	MemoryEdit::writeInt(0x00862D6F + 1, 746);
+	MemoryEdit::writeInt(0x00862D74 + 1,  width);
+	// 432
+	MemoryEdit::writeInt(0x008630AC + 1, 746);
+	MemoryEdit::writeInt(0x008630B1 + 1, width);
+	// 433
+	MemoryEdit::writeInt(0x00863973 + 1, 735);
+	// 434
+	MemoryEdit::writeInt(0x00863E1C + 1, 749);
+	// 435
+	MemoryEdit::writeInt(0x0086419D + 1, 749);
+	// 436
+	MemoryEdit::writeInt(0x00864530 + 1, 749);
+	// 437
+	MemoryEdit::writeInt(0x0086499C + 1, 749);
+	// 438
+	MemoryEdit::writeInt(0x00864A5F + 1, 711);
+	MemoryEdit::writeInt(0x00864A64 + 1, 1139);
+	// 439
+	MemoryEdit::writeInt(0x00864B0B + 1, 711);
+	MemoryEdit::writeInt(0x00864B10 + 1, 1195);
+	// 440
+	MemoryEdit::writeInt(0x00864BDC + 1, 711);
+	MemoryEdit::writeInt(0x00864BE1 + 1, 1251);
+	// 441
+	MemoryEdit::writeInt(0x00864CAD + 1, 711);
+	MemoryEdit::writeInt(0x00864CB2 + 1, 1307);
+    // 442
+	MemoryEdit::writeInt(0x00864D3E + 1, width / 2);
+	MemoryEdit::writeInt(0x00864D43 + 1, 1184);
+	// 443
+	MemoryEdit::writeInt(0x00864DCF + 1, width / 2);
+	MemoryEdit::writeInt(0x00864DD4 + 1, 1214);
+	// 444
+	MemoryEdit::writeInt(0x00864E60 + 1, width / 2);
+	MemoryEdit::writeInt(0x00864E65 + 1, 1244);
+	// 445
+	MemoryEdit::writeInt(0x00864EF1 + 1, width / 2);
+	MemoryEdit::writeInt(0x00864EF6 + 1, 1274);
+	// 446
+	MemoryEdit::writeInt(0x00864F82 + 1, width / 2);
+	MemoryEdit::writeInt(0x00864F87 + 1, 1304);
+	// 447
+	MemoryEdit::writeInt(0x00865076 + 1, width / 2);
+	MemoryEdit::writeInt(0x0086507B + 1, 1334);
+    // 448
+	MemoryEdit::writeInt(0x0086516A + 1, width / 2);
+	MemoryEdit::writeInt(0x0086516F + 1, 1139);
+	// 449
+	MemoryEdit::writeByte(0x00865267 + 2, 127);
+	// 450
+	MemoryEdit::writeInt(0x00867F34 + 2, width - 1);
+	MemoryEdit::writeInt(0x00867F3C + 1, width - 1);
+	// 451
+	MemoryEdit::writeInt(0x00867F4C + 2, height - 1);
+	MemoryEdit::writeInt(0x00867F54 + 1, height - 1);
+	
+	// 452
+	MemoryEdit::writeByte(0x00870EFE + 1, 14);
+	// 453 - hooker gm stuff?
+	// 454
+	MemoryEdit::writeInt(0x00867F4C + 2, width);
+	MemoryEdit::writeInt(0x00867F54 + 1, width);
+	// 455
+	MemoryEdit::writeInt(0x00887F74 + 2, height);
+	MemoryEdit::writeInt(0x00887F7C + 1, height);
+	// 456
+	MemoryEdit::writeInt(0x008883CD + 2, width);
+	MemoryEdit::writeInt(0x008883D5 + 1, width);
+	// 457
+	MemoryEdit::writeInt(0x008883F1 + 2, height);
+	MemoryEdit::writeInt(0x008883F9 + 1, height);
+	// 458
+	MemoryEdit::writeInt(0x0088BEA8 + 2, width);
+	// 459
+	MemoryEdit::writeInt(0x0088BED4 + 1, width);
+
+	// 460
+	MemoryEdit::writeInt(0x0088BEF0 + 2, width);
+	MemoryEdit::writeInt(0x0088BEF7 + 1, width);
+
+	// 461
+	MemoryEdit::writeInt(0x0088BF17 + 2, height);
+	MemoryEdit::writeInt(0x0088BF1F + 1, height);
+
+	// 462 noper
+	// 463
+	// 464
+	// 465
+	// 466
+	// MemoryEdit::writeInt(0x0088D18E + 1, 0); Potential stuff?
+	// 467 changer
+	MemoryEdit::writeByte(0x00892549 + 3, 127);
+	// 468
+	MemoryEdit::writeByte(0x0089274E + 3, 127);
+	// 469 hoooker
+	// 470 hooker
+	// 471
 
 
+
+
+
+
+
+
+
+
+
+
+
+	// 551
+	MemoryEdit::writeInt(0x009525AA + 2, height);
+	MemoryEdit::writeInt(0x009525B2 + 1, height);
+	// 552
+	MemoryEdit::writeInt(0x009525C0 + 2, width);
+	MemoryEdit::writeInt(0x009525C8 + 1, width - 100);
+
+	// 553
+	MemoryEdit::writeInt(0x0095422A + 1, width);
+	// 554
+	MemoryEdit::writeInt(0x00954237 + 1, height);
 
 	// 560
-	MemoryEdit::writeInt(0x00988638 + 1, width);
+	MemoryEdit::writeInt(0x00864D3E + 1, width / 2);
 	// 562
-	MemoryEdit::writeInt(0x009888D4 + 1, height);
+	MemoryEdit::writeInt(0x00864D43 + 1, 1184);
 	// 563
 	MemoryEdit::writeInt(0x0098AEB0 + 1, -width / 2);
 	MemoryEdit::writeInt(0x0098AEA8 + 1, -height / 2);
