@@ -1,8 +1,11 @@
 #pragma once
 #include "Windows.h"
 #include "stdio.h"
+#include <string>
 
 namespace MemoryEdit {
+
+	using namespace std;
 
 	void hookCall(DWORD* toHookAddy, DWORD jmpTo);
 
@@ -19,6 +22,8 @@ namespace MemoryEdit {
 	void writeInt(DWORD addy, int value);
 
 	void writeByte(DWORD addy, BYTE value);
+
+	void writeByteArray(DWORD addy, string arrayOfBytes);
 
 	DWORD unprotect(LPVOID start, size_t len);
 

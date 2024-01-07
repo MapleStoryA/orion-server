@@ -16,9 +16,10 @@ public class BackupPacketHandler implements MaplePacketHandler {
         int dwErrorCode = packet.readInt();
         int dwBackupBufferSize = packet.readShort();
         byte[] buffer = packet.read(dwBackupBufferSize);
-        String.format(
+        String error = String.format(
                 "Call type: %s ErrorCode: %s, Size: %s Buffer: %s ",
                 nCallType, dwErrorCode, dwBackupBufferSize, HexTool.toStringFromAscii(buffer));
+        log.info(error);
     }
 
     @Override
