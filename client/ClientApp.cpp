@@ -15,7 +15,12 @@ void ClientApp::AddLogMessage(std::string message) {
 LRESULT CALLBACK ClientApp::WindowEventProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
 	switch (msg) {
 	case WM_CREATE:
-		App->hwndList = CreateWindowW(L"LISTBOX", NULL, WS_CHILD | WS_VISIBLE | WS_VSCROLL, 10, 10, 460, 430, hWnd, (HMENU)1, NULL, NULL);
+		App->hwndList = CreateWindowW(L"LISTBOX", NULL, WS_CHILD | WS_VISIBLE | WS_VSCROLL, 10, 10, 400, 300, hWnd, (HMENU)1, NULL, NULL);
+		break;
+	case WM_COMMAND:
+		if (LOWORD(wp) == 2) {
+			TerminateProcess(GetCurrentProcess(), 0);
+		}
 		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
@@ -30,23 +35,6 @@ LRESULT CALLBACK ClientApp::WindowEventProcedure(HWND hWnd, UINT msg, WPARAM wp,
 }
 
 
-LRESULT CALLBACK ClientApp::WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
-{
-	
-	switch (msg)
-	{
-	case WM_CREATE:
-		App->hwndList = CreateWindowW(L"LISTBOX", NULL, WS_CHILD | WS_VISIBLE | WS_VSCROLL, 10, 10, 460, 430, hWnd, (HMENU)1, NULL, NULL);
-		break;
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		break;
-	default:
-		return DefWindowProcW(hWnd, msg, wp, lp);
-	}
-
-	return 0;
-}
 
 
 void ClientApp::Setup(HMODULE hInst) {
@@ -60,5 +48,6 @@ void ClientApp::Setup(HMODULE hInst) {
 
 	RegisterClassW(&wc);
 
-	hwndMain = CreateWindowW(lpszClasName, L"Orion Server Logs", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 100, 100, 500, 500, NULL, NULL, hInst, NULL);
+	hwndMain = CreateWindowW(lpszClasName, L"Orion Server Logs", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 100, 100, 800, 600, NULL, NULL, hInst, NULL);
+	hwndTerminateButton = CreateWindowW(L"BUTTON", L"Terminate", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 500, 100, 100, 40, hwndMain, (HMENU)2, hInst, NULL);
 }

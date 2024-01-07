@@ -920,8 +920,6 @@ void ApplyPatches() {
 	MemoryEdit::writeInt(0x00947BD4 + 2, width);
 	MemoryEdit::writeInt(0x00947BDC + 1, width - 100);
 
-
-
 	// 551
 	MemoryEdit::writeInt(0x009525AA + 2, height);
 	MemoryEdit::writeInt(0x009525B2 + 1, height);
