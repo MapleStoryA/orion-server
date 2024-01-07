@@ -883,17 +883,42 @@ void ApplyPatches() {
 	MemoryEdit::writeByte(0x0089274E + 3, 127);
 	// 469 hoooker
 	// 470 hooker
-	// 471
+	// 471 - 479 Must be reviewed, too many random stuff
+	// 480
+	MemoryEdit::writeInt(0x008FC045 + 5, 1316);
+	// 481
+	MemoryEdit::writeInt(0x008FC46F + 1, 1316);
+	// 482
+	MemoryEdit::writeInt(0x008FC9DE + 1, width);
+	// 483
+	MemoryEdit::writeInt(0x008FCBF7 + 1, width);
+	// 484 - 488 random patches, review
+	// 489 - calculation stuff
+	// 490 - same
+	// 491 492 hooks
+	// 493 494 jmps
+	// 495 nops
+	// 496 patches
+	// 497
+	// 498 nops
+	// 499
+	// 500 - 544 random stuff must review
+	// 545
+	MemoryEdit::writeInt(0x00942C8F + 1, height);
+	MemoryEdit::writeInt(0x00942C87 + 4, 549);
+	// 546
+	MemoryEdit::writeInt(0x00942C9F + 4, 550);
+	// 547
+	MemoryEdit::writeInt(0x00943502 + 1, height);
+	// 548
+	MemoryEdit::writeInt(0x0094351D + 1, 465);
+	// 549
+	MemoryEdit::writeInt(0x00947BBE + 2, height);
+	MemoryEdit::writeInt(0x00947BC6 + 1, height);
 
-
-
-
-
-
-
-
-
-
+	// 550
+	MemoryEdit::writeInt(0x00947BD4 + 2, width);
+	MemoryEdit::writeInt(0x00947BDC + 1, width - 100);
 
 
 
